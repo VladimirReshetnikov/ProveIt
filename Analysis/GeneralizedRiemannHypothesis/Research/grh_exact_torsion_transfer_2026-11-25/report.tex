@@ -1,0 +1,75 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,longtable,tabularx,array}
+\usepackage[margin=0.9in]{geometry}
+\usepackage{microtype,xcolor,graphicx,enumitem,xurl,hyperref,fancyhdr}
+\definecolor{ink}{HTML}{173A52}
+\definecolor{accent}{HTML}{146C78}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=accent,urlcolor=accent,
+pdftitle={Beyond Dirichlet GRH: exact torsion specialization and the limits of transfer},
+pdfauthor={Research memorandum for Vladimir Reshetnikov}}
+\setlength{\emergencystretch}{2em}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Beyond Dirichlet GRH}
+\fancyhead[R]{\small 25 November 2026}
+\fancyfoot[C]{\thepage}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Rea}{\operatorname{Re}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\length}{\operatorname{length}}
+\newcommand{\G}{\mathsf G}
+\newcommand{\Sha}{\mathrm{Sha}}
+\newcommand{\src}[1]{\texttt{\small #1}}
+\title{\color{ink}\bfseries Beyond Dirichlet GRH\\[5pt]
+\Large Exact torsion specialization and the limits of transfer}
+\author{Research memorandum for Vladimir Reshetnikov\\
+\small Source analysis, complete mathematical proofs, and reproducible checks}
+\date{25 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The proof in \texttt{lsernau/grh-lean} contains reusable mathematics beyond its
+RH and Dirichlet-GRH conclusions. Its central construction compares upper and
+lower bounds for the same covolume of iterated theta lifts; its auxiliary
+arguments select roots of unity with controlled valuations and bound
+congruence denominators. After reviewing the 26 earlier incoming ProveIt
+archives, we develop an exact specialization theorem: an integral polynomial
+or bounded integral power series of fixed positive-radius Gauss valuation at
+most \(B\) admits a \(p\)-power torsion specialization of no larger valuation,
+with the explicit order-exponent bound
+\(H=h_0+\lceil p^{h_0}B(h_0+B+2)\rceil\).
+The same bound per coordinate works in any finite dimension and controls the
+total valuation of a packet, independently of its cardinality. Two
+counterexamples show why exact individual bounds and an exact moving-radius
+comparison cannot be inferred. The proof is complete on paper; finite checks
+use exact arithmetic, and no new Lean verification is claimed.
+We also distinguish the shortened proof from the original Step-17 input used
+in recent \(K\)-theory applications, and specify the missing arithmetic input
+for a nonabelian RH benchmark. We do not claim a new solution of Vandiver,
+BSD, Artin's primitive-root conjecture, or a nonabelian RH instance. The new
+specialization bound is an extension relative to the inspected reports;
+worldwide priority is not established.
+\end{abstract}
+\clearpage
+\tableofcontents
+\newpage
+\input{sections/assessment}
+\input{sections/architecture}
+\input{sections/exact_torsion}
+\input{sections/applications}
+\input{sections/targets}
+\input{sections/verification}
+\appendix
+\input{sections/corpus}
+\input{sections/references}
+\end{document}
+

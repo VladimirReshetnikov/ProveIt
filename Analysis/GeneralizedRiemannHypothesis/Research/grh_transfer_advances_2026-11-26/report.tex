@@ -1,0 +1,274 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=0.88in,top=0.82in,bottom=0.86in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,tabularx,longtable}
+\usepackage{graphicx,xcolor,microtype,enumitem,fancyhdr,needspace}
+\usepackage{xurl,hyperref}
+\definecolor{navy}{HTML}{17384B}
+\definecolor{teal}{HTML}{167D8D}
+\definecolor{muted}{HTML}{536675}
+\hypersetup{colorlinks=true,linkcolor=teal,urlcolor=teal,citecolor=teal,
+pdftitle={Beyond Dirichlet GRH: certified graph optima and quantitative local transfers},
+pdfauthor={Research prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\sffamily\color{navy}Beyond Dirichlet GRH}
+\fancyhead[R]{\small\sffamily\color{muted}26 November 2026}
+\fancyfoot[C]{\small\thepage}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt minus 1pt}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt,leftmargin=1.5em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\R}{\mathbb R}
+\newcommand{\F}{\mathbb F}
+\newcommand{\C}{\mathbb C}
+\newcommand{\cO}{\mathcal O}
+\newcommand{\Sha}{\mathrm{Sha}}
+\newcommand{\src}[2]{\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/#1}{#2}}
+\newcommand{\code}[1]{{\small\texttt{\detokenize{#1}}}}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\thispagestyle{empty}
+{\sffamily\large\color{teal}RESEARCH REPORT \hfill 26 NOVEMBER 2026\par}
+\vspace{1.1cm}
+{\fontsize{28}{34}\selectfont\bfseries\color{navy}Beyond Dirichlet GRH\par}
+\vspace{0.4cm}
+{\Large Certified graph optima and quantitative local transfers\par}
+\vspace{0.7cm}
+{\large Prepared for Vladimir Reshetnikov\par}
+\vspace{0.7cm}\hrule\vspace{0.6cm}
+
+\textbf{Question.} Can methods occurring in
+\href{https://github.com/lsernau/grh-lean}{\texttt{lsernau/grh-lean}}
+resolve other mathematical questions, beyond familiar consequences of RH and
+Dirichlet GRH, while building on the ProveIt incoming reports?
+
+\textbf{Answer.} Yes at the level of transferable ingredients, with concrete
+certified results. This report extends the previous signed-cycle analysis to
+seven previously untreated sizes, including an exact global optimum and all
+minimizers at fifty vertices. It proves an exact coefficient-valuation formula
+for Lubin--Tate logarithms and repairs the computational baseline for a related
+coefficient-depth problem. It also independently revalidates two substantial
+results already present in the incoming collection.
+
+The difficult arithmetic mechanism behind the GRH proof has a clear extension
+program, but this work does not prove a new general Artin, automorphic,
+Selmer-vanishing, or algebraic \(K\)-theory conjecture.
+
+\vspace{0.3cm}
+\begin{tabularx}{\linewidth}{@{}p{0.25\linewidth}X@{}}
+\toprule
+\textbf{Contribution} & \textbf{Result and evidence}\\
+\midrule
+New graph cases &
+Exact optima for \(n=34,36,38,42,44,46,50\), with complete rational and integer
+certificates. At \(50\), \(2.811568906156<\rho_{\min}<2.811568906157\).\\
+New local theorem &
+For \(q=p^f\), \(N=v_p(n)\), and \(1\le j\le p^N\),
+\(v_p([X^{n+j(q-1)}]L(X)^n)=N-v_p(j)-j\).\\
+Earlier results checked &
+Corrected optimum for every \(C_{8m}(1,2)\), \(m\ge4\), and strict
+natural-versus-upper density gaps for geometric-progression-free sets.\\
+Audit boundary &
+46 prior archives inventoried. Selected proofs and certificates reviewed.
+Upstream Lean source inspected; its full kernel build was not repeated.\\
+\bottomrule
+\end{tabularx}
+
+\vfill
+{\small\color{muted}
+Source snapshots: \texttt{grh-lean} \texttt{72fead102f66};
+\texttt{ProveIt} \texttt{5cc267af75a6}.\par
+New results are written proofs with exact executable certificates, not new Lean
+formalizations. Novelty is relative to the inspected incoming corpus;
+worldwide publication priority is not asserted.}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\section{Scope, evidence, and what has advanced}
+\label{sec:scope}
+
+The starting point is the theorem package as it is actually stated in the
+repository. \src{Statements.lean}{\texttt{Statements.lean}} defines assertions
+in Mathlib's own language, and \src{Main.lean}{\texttt{Main.lean}} exports five
+theorems. These cover the Riemann hypothesis, a critical-line formulation for
+the zeta function, and right-half-plane and critical-strip statements for
+Dirichlet \(L\)-functions, including imprimitive characters and every positive
+modulus. The pole exception for the principal character is explicit.
+The package does not state GRH for arbitrary nonabelian Artin representations
+or all automorphic \(L\)-functions \cite{Repo}.
+
+This scope leaves concrete extension targets. It also prevents treating an
+already-known consequence of the Dirichlet endpoint as a new transfer.
+We distinguish three kinds of work:
+
+\begin{enumerate}
+\item \textbf{Endpoint consequences.} Results obtained simply by assuming RH
+or Dirichlet GRH. These are outside the principal aim of this report.
+\item \textbf{Transfers of the arithmetic mechanism.} A new statistic is encoded
+by integral objects, amplified by lifts, and constrained by matching upper and
+lower determinant bounds. These are the ambitious arithmetic directions.
+\item \textbf{Transfers of ingredients.} A component such as a Schur complement,
+finite Fourier orthogonality, or sharp coefficient divisibility is adapted to
+a different problem. Such an adaptation can solve a real problem while using
+tools older than the GRH proof itself.
+\end{enumerate}
+
+The graph and local-series results below belong to the third category.
+The new mathematics is in the graph-specific exhaustive obstruction and
+boundary conditions, and in the exact coefficient calculation and its
+application. We do not credit the GRH repository with inventing the underlying
+Schur-complement or Fourier identities.
+
+\subsection{Pinned sources and verification levels}
+
+The upstream revision is
+\[
+\texttt{72fead102f663d5c7a407964a13dc0cf9d977207}.
+\]
+The ProveIt incoming snapshot is
+\[
+\texttt{5cc267af75a635199ac5d93a7d49cbce521daefc}.
+\]
+It contains 46 GRH-related ZIP archives. The archive names, SHA-256 hashes,
+internal TeX inventories, and selected source-file hashes are included.
+Inventorying an archive is not an endorsement of all its claims.
+
+The source pins Lean \(4.35.0\) and Mathlib revision
+\texttt{56a005855ea17e0b0958f73ec801ae140b0a1679}.
+Upstream reports kernel builds, the axiom list
+\code{propext}, \code{Classical.choice}, \code{Quot.sound}, independent
+export checkers, and Comparator checks \cite{Repo}. Here, neither Lean nor
+Lake was available, so these upstream checks were not repeated.
+
+A reproducible lexical audit removed nested comments and strings and found no
+\code{sorry}, \code{admit}, \code{axiom}, \code{unsafe},
+\code{implemented_by}, or \code{native_decide} token in either \code{src}
+tree. The simple import traversal reaches the 803 readable source modules
+and 794 compact source modules from their respective \code{Main} files.
+The challenge files are outside those source trees. This is a useful static
+check, not an axiom audit of compiled proof terms.
+
+\subsection{Advances over the incoming reports}
+
+The previous cycle report already proved the infinite \(8m\)-vertex optimum
+and left lengths incompatible with period eight open. We independently
+replayed its certificates and then resolved seven additional cases. In
+particular, the \(50\)-vertex optimum uses positive Hamilton-cycle sign product,
+whereas the \(8m\)-vertex minimizers use negative product. Thus the new case
+requires both a different triangle pattern and a different global boundary
+condition.
+
+The previous Lubin--Tate report gave a coarse coefficient-integrality window
+involving \(j+\lfloor\log_p j\rfloor\). We replace it with an exact coefficient
+valuation in a larger natural formulation, \(q=p^f\), and identify the first
+nonintegral coefficient exactly. For the quadratic coefficient-depth
+application, the author's published erratum requires correcting the old
+experimental code \cite{BergerErrata}. We supply genuine-module computations
+and a second elimination method; this changes the numerical evidence.
+
+\section{The arithmetic mechanism worth trying to transfer}
+\label{sec:arithmetic}
+
+The decisive source file is
+\src{New/Reduction/MainInequality.lean}{\texttt{MainInequality.lean}}.
+Its theorem \code{New.star_inequality} combines three inputs:
+
+\begin{itemize}
+\item short integral forms with controlled index;
+\item a second-moment argument producing sufficiently many independent forms;
+\item a lower bound on the size of integral forms, proved through twisted
+determinants and controlled denominators.
+\end{itemize}
+
+Let \(D\) be the target dimension, \(n\) the selected rank, \(M\) the common
+main term, \(R\) the statistic to be bounded, \(m\) the amplification length,
+\(V\) a logarithmic squared covolume, and \(\delta\) an index loss. Abstractly,
+the comparison has the form
+\begin{equation}
+D(M-E_-)\ \le\ V+2\delta\
+\le n(M-mR+E_+)+2\delta .
+\label{eq:covolume}
+\end{equation}
+If \(M\ge0\) and \(0<n\le D\), subtraction gives the elementary consequence
+\begin{equation}
+mR\le E_++\frac{D}{n}E_-+\frac{2\delta}{n}.
+\label{eq:budget}
+\end{equation}
+This records the rank dependence of the error budget. It is not legitimate
+to omit the factors \(D/n\) when the span becomes small.
+
+The source establishes more than a fixed positive rank proportion:
+the chosen rank is at least \((1-4/b^2)D\). This near-fullness is used by the
+determinant-completion machinery. The final comparison can subsequently use
+the weaker \(n\ge D/2\). Its proved endpoint is
+\[
+m\,\mathrm{totalRemainder}\le f\,a(\log b)^5.
+\]
+The number of successive lifts is on a square-root scale. A carefully
+chosen second cutoff and the prime number theorem turn the comparison into
+a one-sided prime-remainder estimate.
+
+\subsection{Why a detector alone does not finish an extension}
+
+In \src{New/Reduction/Zeros/Criterion.lean}{\texttt{Zeros/Criterion.lean}},
+the analytic conversion uses the transform of a weighted prime sum, its
+meromorphic continuation, information on real residues, and an auxiliary
+quadratic twist that avoids cancellation in a specified zero rectangle.
+The hypotheses quantify over the required auxiliary primes; a convenient
+finite set of twists is not a replacement.
+
+Finite-group character identities can specify a statistic detecting zeros
+of a new \(L\)-function. They do not create its arithmetic inequality.
+For a substantive transfer of \eqref{eq:covolume}, one must construct:
+
+\begin{enumerate}
+\item integral objects whose local divisibility records the desired
+Frobenius information;
+\item uniform archimedean size and denominator bounds;
+\item enough independent objects in the relevant target;
+\item a determinant lower bound for compatible global twists and local data;
+\item an analytic endgame with the correct sign and zero-cancellation control.
+\end{enumerate}
+
+These are mathematical hypotheses to prove. The prior nonabelian reports
+make progress on some finite-field and lattice interfaces, but their desired
+arithmetic estimates remain additional inputs.
+
+\subsection{The smaller components used here}
+
+\src{Lib/General/LinearAlgebra/HermitianMatrices.lean}
+{\texttt{HermitianMatrices.lean}} uses principal-submatrix positivity and
+Schur complements. These operations yield a complete local rejection test
+for signed graph matrices in Sections~\ref{sec:graphs}--\ref{sec:newgraphs}.
+The root-of-unity tight-frame identity in
+\src{New/Derivatives/Vacuum/TightFrames.lean}{\texttt{TightFrames.lean}}
+is the orthogonality underlying the finite Fourier block calculation.
+
+\src{New/Derivatives/Sharpness/OneCurve.lean}{\texttt{OneCurve.lean}}
+studies sharpness by isolating Taylor coefficients and attaining extremal
+divisibility. Section~\ref{sec:log-window} follows that style of argument for
+a precise local formal-series question. Its proof is self-contained.
+
+\input{sections/graphs}
+\input{sections/density}
+\input{sections/log_window}
+\input{sections/congruence_appendix}
+\input{sections/targets}
+\input{sections/reproduction}
+\clearpage
+\input{sections/references}
+\end{document}

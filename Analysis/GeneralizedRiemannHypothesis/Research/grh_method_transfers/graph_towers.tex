@@ -1,0 +1,290 @@
+\section{A linear bound for stabilization in rank-two graph towers}
+\label{sec:rank-two-onset}
+Let $p$ be prime. A rank-two integral voltage tower attaches a vector of
+$\mathbb Z^2$ to each oriented base edge, with negation on reversal. At
+level $n$ the deck group is $(\mathbb Z/p^n\mathbb Z)^2$ and following
+an edge adds its voltage to the deck coordinate. Write $v_n$ for the
+$p$-adic valuation of the number of spanning trees. DuBose and
+Vallières proved eventual polynomiality of $v_n$ in $p^n,n$
+(\href{https://doi.org/10.5802/alco.304}{Theorem~6.2}).
+The preceding \href{https://github.com/VladimirReshetnikov/ProveIt/blob/bd8864aa31430944f587f544213d562665f1d817/docs/incoming/Effective_Graph_Towers.zip}{ProveIt graph-tower report}
+gives an algorithm in every rank and asks, in its first further research
+question, for the growth of the worst possible onset as a function of
+voltage bit length. We obtain a sharp order in rank two at $p=3$ for a
+bouquet of five loops. The upper estimate works for all primes and
+rank-two Laurent determinants. It uses the cyclotomic identity
+$v_p(\zeta_{p^h}-1)=1/\varphi(p^h)$, also used in
+\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/New/Congruences/Selmer/RootsOfUnity.lean}{the repository's specialization argument}.
+The new ingredient is separation of the finitely many rational slopes
+where pairs of Laurent monomials coincide.
+
+\paragraph{Quantitative shell theorem.}
+Let $F\ne0$ be an integral Laurent polynomial in two variables,
+supported in $[-H,H]^2$, with $H\ge1$. Assume $F$ is nonzero at all
+nontrivial pairs of $p$-power roots of unity. For $h\ge1$ write
+$S_h$ for the sum of $v_p(F(x,y))$ over pairs of joint order exactly
+$p^h$. Set
+\[
+ K=\lceil\log_p(8H^2+1)\rceil,\quad
+ M=\lceil\log_p(2H+1)\rceil,\quad h_0=K+M+2.
+\]
+There exist rational $s_2,s_1,t_1,s_0$ such that for every $h\ge h_0$,
+\[
+ S_h=s_2p^{2h}+(s_1+t_1 h)p^h+s_0.
+\]
+All constants are independent of the level. The bound $h_0$ only
+depends on the exponents and $p$.
+
+\paragraph{Proof.}
+Normalize $v_p(p)=1$ and write $e_h=(p-1)p^{h-1}$.
+Dividing $F$ by the common $p$-power $p^g$ of its coefficients adds
+$g(p^{2h}-p^{2h-2})$ back to the shell. Collect equal exponents and
+assume henceforth that $F=\sum_i c_i X^{a_i}Y^{b_i}$ has a unit
+coefficient. Fix compatible primitive roots $\zeta_h$. Simultaneous
+raising to units modulo $p^h$ preserves the valuation, with each
+orbit of size $e_h$. Its contribution is therefore
+$\operatorname{ord}_h(F)=e_h v_p(F)$. Each orbit is uniquely
+represented in one of two charts, $(\zeta_h,\zeta_h^z)$ for any $z$
+modulo $p^h$, or $(\zeta_h^z,\zeta_h)$ with $p\mid z$. In the
+second chart interchange the two exponent coordinates below.
+
+The projected exponents in the first chart are $a_i+b_i z$. Take as
+centers the distinct $p$-integral rational solutions of
+$a_i+b_i z=a_j+b_j z$ lying in the chart. Write each center as a
+reduced fraction $A/B$, with $p\nmid B$, $|A|,|B|\le2H$. The
+difference of two distinct centers has nonzero numerator of absolute
+value at most $8H^2$. Hence their disks $z\equiv A/B\pmod{p^K}$
+are disjoint. In the restricted chart each disk is entirely inside
+or outside the chart since $K\ge1$.
+
+Outside these disks the projected exponents are pairwise distinct
+modulo $p^J$, where $J=K+M$. In fact a nonzero slope difference
+$b_i-b_j$ has valuation $<M$, and the distance factor
+$z-(a_j-a_i)/(b_i-b_j)$ has valuation $<K$; this covers centers
+outside the chart too. A nonzero constant difference has valuation
+$<M$. For each fixed $z\bmod p^J$ in this complement let
+$n_i\in[0,p^J)$ be the distinct exponent residues. The polynomial
+$\sum_i c_i(1+T)^{n_i}$ is nonzero modulo $p$ by the distinct
+degrees and the unit coefficient. Its first nonzero coefficient
+occurs at $j<p^J$. For any lift of $z$ and $h\ge h_0$, the orbit
+contributes exactly $j$. Indeed, modulo $(p,T^{p^J})$ the binomial
+expansion of each monomial depends only on its exponent modulo $p^J$.
+One may choose nonnegative representatives modulo $p^h$ in forming
+the actual polynomial. At $T=\zeta_h-1$ a coefficient divisible
+by $p$ has order at least $e_h\ge p^J$, and all later terms have
+larger order than $j$. Each class contributes $j p^{h-J}$ to $S_h$.
+
+Fix a center $A/B$. Applying the Galois automorphism
+$\zeta_h\mapsto\zeta_h^B$ expresses the same valuation as the one of
+\[
+ P(\zeta_h,W),\qquad
+ W=\zeta_h^{Bz-A},\qquad
+ P(X,Y)=\sum_i c_i X^{B a_i+A b_i}Y^{b_i},
+\]
+up to multiplication by a monomial of valuation zero. Shift each
+exponent axis by its minimum so that $P$ is a polynomial of degrees
+$D\le8H^2$ in $X$ and $E\le2H$ in $Y$. The exponent transformation
+is injective, so $P$ still has a unit coefficient. As $z$ ranges over
+the disk modulo $p^h$, $W$ ranges exactly once over the roots of
+order dividing $p^{h-K}$, since $B$ is a unit. Write $r$ for the
+conductor exponent of $W$, with $r=0$ for $W=1$, and put $R=M+1$.
+
+For $0\le r\le R$, use $e_0=1$ and write
+$P(1+T,W)=\sum_{j=0}^{D} d_j(W)T^j$.
+This polynomial is nonzero: its vanishing would give a torsion zero
+of $F$ at the pair represented by $z$. Its nonzero coefficients have
+valuations in $e_r^{-1}\mathbb Z$. Let $\mu_W$ be their minimum
+and let $j_W$ be the first index attaining it. We have
+$e_h/e_r>D$ (for $r\ge1$ the quotient is $p^{h-r}$ and for $r=0$
+use $e_h\ge p^{h-1}$). Thus terms with larger coefficient valuation
+cannot minimize. The unique minimum has order $e_h\mu_W+j_W$.
+The set of all $W$ with $r\le R$ is fixed for every $h\ge h_0$.
+Its total is a constant multiple of $p^h$ plus a constant.
+
+For $R<r\le h-K$, put $k=h-r$. Then
+$\operatorname{ord}_h(W-1)=p^k>D$ and $e_r>E+1$.
+Expand
+$P(X,1+U)=\sum_{i=0}^E P_i(X)U^i$, and take the smallest $l$
+such that $P_l(X)$ is nonzero modulo $p$. Such an $l$ exists.
+Let $d\le D$ be the order of $P_l(1+T)$ at $T=0$ modulo $p$.
+Its value at $X=\zeta_h$ has order exactly $d$. Terms with $i<l$
+have order at least $e_h=e_rp^k>lp^k+d$. Terms with $i>l$ have
+order at least $(l+1)p^k>lp^k+d$. The orbit contribution is exactly
+$lp^k+d$ for every root of conductor $p^r$. The contribution from
+all these roots is
+\[
+ \sum_{k=K}^{h-R-1}e_{h-k}(lp^k+d)
+ =l(h-R-K)e_h+d(p^{h-K}-p^R).
+\]
+Adding the finitely many disks in each chart, their complements,
+and the removed content proves the shell formula.
+
+\paragraph{Consequence for graph towers.}
+Let $F$ be the determinant of the Laurent voltage Laplacian of a
+finite connected base graph, and assume the finite lifts are
+connected. Diagonalizing by the characters of the deck group splits
+the lifted Laplacian into blocks. The trivial character yields the
+base Laplacian; connectedness gives invertible blocks at every
+nontrivial character, since the lifted Laplacian has nullity one.
+Applying the matrix-tree identity to the base and the lift gives
+\[
+ v_n=v_0-2n+\sum_{h=1}^{n} S_h .
+\]
+Summing the shell formula shows that from $n=h_0$ onward
+\[
+ v_n=A p^{2n}+(B+C n)p^n+D' n+E'
+\]
+for rational constants. For a bouquet the support of its Laurent
+Laplacian consists of zero and the signed voltage vectors. Thus if
+the absolute values of the coordinates are at most $2^b$, the
+first stable level is at most $3b\log_p 2+O_p(1)$. For a fixed base
+graph the coordinates in the determinant support are bounded by
+the vertex count times the largest voltage coordinate, by determinant
+expansion. The same bit-length estimate follows with a base-dependent
+additive constant. Five consecutive values beyond this upper bound
+suffice to recover the law: the evaluation matrix on
+$1,n,p^n,np^n,p^{2n}$ is nonsingular since these sequences solve the
+order-five recurrence with characteristic polynomial
+$(x-1)^2(x-p)^2(x-p^2)$ and are linearly independent. Checking the
+finitely many preceding levels then gives the least onset. This is a
+bound on conductor precision; enumerating all the characters there
+can still be expensive.
+
+\paragraph{Matching lower bound at $p=3$.}
+The preceding graph report gives five-loop bouquets with directions
+$3^s e_1,e_2,e_1,e_1,e_1$ for $s\ge2$.
+For completeness let $A(U)=2-U-U^{-1}$. At joint conductor $3^j$
+the sum $A(U)+A(V)$ has valuation exactly $2/e_j$: its normalized
+quadratic coefficient in $\zeta_j-1$ is $-(a^2+b^2)$ for exponents
+$a,b$ not both divisible by $3$, which is nonzero modulo $3$.
+Consequently $A(X^{3^s})+A(Y)$ dominates $3A(X)$ off the
+kernel of $(X,Y)\mapsto(X^{3^s},Y)$, since its valuation is at most
+one. Put $t=\min(n,s)$. The image is $C_{3^{n-t}}\times C_{3^n}$
+and each fiber has size $3^t$. Its order-$3^j$ shells have sizes
+$3^{2j}-3^{2j-2}$ for $j\le n-t$ and $3^{n-t}e_j$ for $n-t<j\le n$.
+The kernel contributes $3^t-1+2t$, using
+$\prod_{X^{3^t}=1,\ X\ne1}(1-X)=3^t$.
+Adding these contributions and subtracting $2n$ gives
+\[
+ v_n=2t3^n+4(3^n-3^t)+(3^t-1)+2t-2n.
+\]
+At $n\ge s$ this is the eventual polynomial obtained by substituting
+$t=s$. At $n=s-1$ its actual value exceeds the extrapolated polynomial
+by $4\cdot3^{s-1}-2$. The least onset is therefore $s$. With
+$3^s\le2^b$, the worst-case onset for this fixed prime and loop count
+grows as $\Theta(b)$. The sharp leading constant and higher ranks
+remain questions.
+
+\paragraph{Sharp order at every prime for fixed loop count.}
+The coefficient of $p^{2n}$ in the graph formula is exactly the
+common $p$-adic content $g=\min_i v_p(c_i)$ of its Laurent
+determinant, in the sense of the valuation of the content. Indeed,
+restoring the removed power contributes exactly $g(p^{2n}-1)$
+to the cumulative sum. Every other summand grows as $O(np^n)$.
+This yields a second lower bound that uses no restriction on $p$.
+On a bouquet of $2p+1$ loops put $p$ copies each of $e_1,e_2$ and
+one step $p^s e_1$, with $s\ge1$. Compare with the same assignment
+where the final step is zero. Both towers are connected, and the
+graphs agree through level $s$. The zero-step determinant is
+$p(A(X)+A(Y))$ and has content valuation one. The extra summand
+$A(X^{p^s})$ changes the content valuation to zero because its
+two nonconstant exponents are new. The two eventual laws have
+different $p^{2n}$ coefficients. For $s$ large enough that
+$s-4\ge h_0(1)$, the zero-step law is already exact throughout
+$[s-4,s]$. If the other law were exact from $s-4$ onward the
+two would agree on these five consecutive levels, which the
+recurrence argument excludes. Its least onset is at least $s-3$.
+Taking $s=\lfloor\log_p(2^b)\rfloor$ gives worst-case onset
+$\Theta_p(b)$ on this one fixed bouquet for every prime. Padding
+with zero-voltage loops gives the same order for any larger fixed
+loop count. The five-loop ternary calculation above gives a
+smaller loop count at that prime and identifies the exact onset.
+
+\paragraph{Classification by number of loops.}
+In fact the threshold loop count can be found exactly. Let $L_{p,m}(b)$
+be the largest least onset over connected rank-two towers on one bouquet
+of $m\ge2$ loops, with coordinates bounded by $2^b$ in absolute value.
+Repeated directions and zero voltages are allowed. As $b\to\infty$,
+\[
+ \boxed{\quad L_{p,m}(b)=
+ \begin{cases}
+ O_p(1),&2\le m<\max(3,p),\\
+ \Theta_p(b),&m\ge\max(3,p).
+ \end{cases}\quad}
+\]
+Constants here can also be taken independent of $m$ in the upper
+bound. For odd $p$ and $m<p$, the onset is at most one.
+
+To see the bounded range for odd $p$, take a projective direction
+modulo $p$. The projected step residues are not all zero because
+connectedness forces the steps to span $\mathbb F_p^2$. In the group
+ring $\mathbb F_p[Z]/(Z^p-1)$ take any nonzero residue $a$ occupied
+by a step, and let $j$ count the steps in $\{a,-a\}$. The
+coefficient of $Z^a$ in the projected Laplacian is $-j\ne0$
+since $a\ne-a$ and $1\le j\le m<p$. Thus its expansion at $Z=1$
+has first surviving order $<p$. Since $e_h\ge p$ for $h\ge2$,
+every orbit of depth $h$ lifting that projective direction has exactly
+that integral order. Every residue direction has $p^{h-1}$ lifts,
+so $S_h$ is a fixed multiple of $p^{h-1}$ for $h\ge2$. Summation
+from level one proves the claim.
+For $p=2,m=2$ the two steps form an invertible basis modulo $2$,
+hence modulo $2^n$ for every $n$. A change of coordinates gives the
+same square grid at every fixed level for all choices of voltages,
+so the support bound $h_0$ evaluated at $H=1$ suffices.
+
+For the lower range it is enough to work at the threshold value
+and pad with zero voltages. We use a test supplied by the shell proof.
+If a Laurent polynomial is primitive modulo $p$, the coefficient of
+$np^n$ in the cumulative formula is positive precisely when some
+nonzero rational direction $(u,v)$ satisfies
+\[
+                F(Z^u,Z^v)\equiv0\pmod p
+                \quad\text{as a Laurent polynomial in }Z,
+\]
+where $(u,v)$ is taken to be a primitive integer representative.
+Indeed the coefficient of $h p^h$ in $S_h$ is the sum of the
+nonnegative disk contributions $l(p-1)/p$. A disk contributes
+positively exactly when $P(X,1)$ vanishes modulo $p$. This is the
+displayed identity after the monomial shift and the change of
+coordinates defining the disk. Conversely any such identity must
+group at least two distinct exponents with the same projection
+because there is a unit coefficient. This yields one of the
+rational centers, using the chart where the direction has a unit
+pivot. Summing $hp^h$ gives a positive multiple of $np^n$
+plus a multiple of $p^n$ and a constant. This proves the test.
+
+Suppose $m=p$ is odd. Use $p-2$ copies of $(1,0)$, one copy
+of $(1,1)$ and one copy of $(1+\delta,2)$, first with $\delta=0$
+and then with $\delta=p^s>4$. In both cases the content is a unit
+and the first two directions ensure connectedness. In the first
+case projection along $(u,v)=(1,0)$ makes all $p$ exponents equal
+to one, so the test is positive. For the second case a vanishing
+projection must have all $p$ absolute projected exponents equal
+to one another and nonzero. Indeed an occupied positive absolute
+frequency $d$ contributes the negative of its multiplicity to the
+coefficient of $Z^d$. This multiplicity must equal $p$, and a
+nonzero direction cannot annihilate every step. Thus $u\ne0$ and
+$|u+v|=|u|$, so $v=0$ or $v=-2u$. The last projected absolute
+value is now $|(1+\delta)u|$ or $|(\delta-3)u|$, both different
+from $|u|$. The $np^n$ term vanishes after perturbation.
+
+For $p=2,m=3$ use the three steps
+$(1,0),(1,1),(\delta,1+2\delta)$ with $\delta=0$ or $2^s$.
+Again the content is a unit. In characteristic two every positive
+absolute projected frequency must occur an even number of times.
+Three steps spanning the plane therefore give a zero Laurent
+polynomial exactly when one projected value is zero and the other
+two have equal nonzero absolute value. A direction annihilating
+one step projects the other two in proportion to their determinants
+with that step. For $\delta=0$ the three pairwise absolute
+determinants all equal one, and such a direction exists. For $\delta>0$
+the determinants are $1,1+\delta,1+2\delta$, all distinct.
+Thus this pair also has different $np^n$ coefficients.
+
+In both constructions the perturbed tower agrees exactly with the
+fixed initial tower up through level $s$. Once the fixed initial
+tower has stabilized by $s-4$, the five-consecutive-values argument
+forces onset at least $s-3$ for the perturbed tower. The heights
+are at most $1+2p^s$, allowing $s=b\log_p 2+O_p(1)$. Together with
+the upper bound this proves the classification. It leaves open the
+optimal leading constant within the linear-growth range.

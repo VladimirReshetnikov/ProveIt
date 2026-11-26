@@ -1,0 +1,102 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,booktabs,microtype,xcolor,fancyhdr}
+\usepackage[margin=0.90in,top=0.82in,bottom=0.85in,headheight=15pt]{geometry}
+\usepackage{titlesec,needspace}
+\definecolor{ink}{HTML}{173449}
+\definecolor{link}{HTML}{00675E}
+\usepackage[colorlinks=true,urlcolor=link,linkcolor=link,pdftitle={What Dirichlet GRH settles beyond the zero theorem}]{hyperref}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4.5pt plus 1pt minus 1pt}
+\setlength{\emergencystretch}{2em}
+\setcounter{secnumdepth}{1}
+\titleformat{\section}{\large\bfseries\color{ink}}{\thesection}{0.65em}{}
+\titlespacing{\section}{0pt}{2ex}{1ex}
+\titleformat{\paragraph}[runin]{\normalfont\bfseries\color{ink}}{}{0pt}{}
+\titlespacing{\paragraph}{0pt}{1ex}{0.45em}
+\pagestyle{fancy}\fancyhf{}\lhead{\small\sffamily DIRICHLET GRH}\rhead{\small\sffamily Arithmetic applications}\cfoot{\small\thepage}
+\renewcommand{\headrulewidth}{0.35pt}
+\raggedbottom
+\begin{document}
+\thispagestyle{plain}
+{\sffamily\small\bfseries\color{link} MATHEMATICAL RESEARCH NOTE\hfill 25 NOVEMBER 2026}\par
+\vspace{6pt}
+{\fontsize{24}{27}\selectfont\bfseries\color{ink} What Dirichlet GRH settles\\beyond the zero theorem\par}
+\vspace{4pt}
+{\large Prime cubes, primes in geometric intervals, and isogenies over sextic fields\par}
+\medskip
+The Lean development of the Alp\"oge--Claude proof in Luke Sernau's
+\texttt{grh-lean} repository proves the Riemann hypothesis for ordinary
+Dirichlet $L$-functions. This note uses its public theorem to discharge
+analytic hypotheses and its one-sided zero-detection argument to isolate a
+remaining nonabelian problem. The arithmetic deductions have written proofs
+and executable certificates. The verified Lean declarations belong to the
+upstream development.
+
+\paragraph{An exact additive threshold.}
+Every integer greater than $10{,}500$ is a prime plus a positive multiple
+of a prime cube. Exactly $62$ positive integers are exceptions. This
+strengthens the prime-square question treated by Lee and O'Clarey.
+
+\paragraph{A published conjecture on geometric intervals.}
+For every modulus $q\ge2$, every reduced class occurs among the primes
+between $q^t$ and $q^{t+1}$ for every integer $t\ge2$. This completes that
+range of Barthel and M\"uller's conjecture. The first interval is also
+verified through $q=50{,}000$. A related argument identifies every possible
+failure of Pomerance's divisibility conjecture with a least prime in
+$1\bmod q$, and gives a GRH-independent finite verification through
+$2\cdot10^{14}+1$.
+
+\paragraph{A partial answer to even-degree isogeny uniformity.}
+For two families of sextic fields, all odd Momose type 2 isogeny primes lie
+in an explicit $66$-prime set with maximum $253{,}507$. In each family a
+single field realizes all $66$ as possibilities for the local necessary
+condition. The primitive family has normal closure group $A_5$.
+A classification using binary expansions extends the uniform bound to
+certain alternating-group fields of arbitrarily large even degree.
+
+\paragraph{A boundary for the analytic method.}
+For any number field we compute exactly how well a congruence test can predict
+complete splitting. For the primitive sextic fields a one-sided inequality
+with four explicit prime weights is equivalent to the missing Dedekind-zeta
+Riemann hypothesis. The inequality remains to be proved.
+
+\paragraph{Relation to the earlier reports.}
+The five \href{https://github.com/VladimirReshetnikov/ProveIt/tree/a92443f00663b1b8b3c233d17df0ad49dc4f2b2c/docs/incoming}{ProveIt incoming archives}
+treat CM coefficient fields, an abelian zeta-function classification, quadratic
+class groups, primitive roots, norm-Euclidean fields, weighted prime races and auxiliary twists.
+Our isogeny question concerns Galois-stable lines on elliptic curves, a
+different uniformity problem from classifying CM coefficient fields. The
+last section extends the earlier congruence and one-sided tests to arbitrary
+number fields. The comparisons establish what is added to those reports.
+No claim of publication priority is required by the proofs.
+\clearpage
+\input{audit}
+\input{cube}
+\input{progressions}
+\input{isogenies}
+\input{simultaneous}
+\input{a5sharp}
+\input{subsets}
+\input{strict-cc}
+\input{rigidity}
+
+\section{Further research questions}
+\begin{enumerate}
+\item Is there a prime $q$ for which the first prime $1\bmod q$ is already
+$1\bmod q^2$? The geometric-interval argument makes this precise question
+equivalent to Pomerance's divisibility conjecture failing. The first interval
+of Barthel--M\"uller's conjecture would rule out every such $q$.
+\item Which of the $66$ local candidates actually occur as degrees of
+elliptic-curve isogenies over the specified sextic fields? The constructions
+show that the local condition, even when tested at every rational prime,
+cannot further shorten the list uniformly. The next obstruction must use
+additional arithmetic of the curves or of their moduli.
+\item For which further transitive Galois actions do suitable abelian
+splitting conditions force short odd Frobenius orbits? A positive answer
+gives more even-degree uniformity bounds. The subset theorem gives an exact odd-orbit criterion for the alternating-group actions considered here.
+\item Can a theta-lift or height estimate bound $U_K(x)$ from below in
+the primitive $A_5$ sextic setting? The explicit weights and the best
+periodic approximation quantify the missing arithmetic information.
+\end{enumerate}
+\end{document}

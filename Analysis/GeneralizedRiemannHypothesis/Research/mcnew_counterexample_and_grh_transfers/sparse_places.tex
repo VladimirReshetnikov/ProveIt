@@ -1,0 +1,202 @@
+\section{How many sparse places can the construction use?}
+\label{sec:spcap}
+
+The choice of infinite places in the Lean proof poses a finite extremal
+problem on residue classes. Two of its prime constraints admit an exact
+joint solution. Keeping the other prime constraints gives both an upper
+bound and a larger explicit construction.
+
+\paragraph{The finite problem.}
+Fix a positive multiple $q_0$ of $18480$, and let $s\ge1$ be an integer.
+Put
+\[
+ z=3^{\lfloor\log_3s\rfloor+4},\qquad q_1=q_0\,3z\,2^s,\qquad
+ C=\{x\in(\mathbb Z/q_1\mathbb Z)^\times:x\equiv-1\pmod{q_0}\}.
+\]
+For a prime $p$, let $m_p=q_1/p^{v_p(q_1)}$. Say that $T\subset C$
+satisfies the condition at $p$ if there are no $x,y,t\in T$ and
+$0<i<j<z$ with
+\[
+  y/x\equiv\pm p^i\pmod {m_p},\qquad
+  t/x\equiv\pm p^j\pmod {m_p}.
+\]
+The signs are independent and the three places may coincide. Imposing
+this condition at all primes $p\le L$ is exactly the sparse-set requirement
+on the $b$-places. The source gives the
+\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/New/Reduction/Data/FieldsAndPlaces.lean\#L65-L110}{moduli and tower parameters}
+and the
+\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/New/Reduction/Data/AdmissibleData.lean\#L54-L62}{definition of sparsity}.
+Its
+\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/New/Reduction/Data/Existence.lean\#L164-L238}{construction of sparse places}
+fixes one odd residue and uses a large set of exponents in the $2$-primary
+coordinate.
+
+\paragraph{Exact two-prime theorem.}
+For $p=2,3$ write $b_p=q_0/p^{v_p(q_0)}$ and $N_p=m_p/b_p$, so
+$N_2=3z$ and $N_3=2^s$. Let $d_p$ be the least positive integer for
+which $p^{d_p}\equiv\pm1\pmod{b_p}$. Let $g_p=\epsilon_p p^{d_p}$,
+where $\epsilon_p\in\{-1,1\}$ is the unique sign giving
+$g_p\equiv1\pmod{b_p}$. Define
+\[
+ H_p=\operatorname{ord}_{m_p}(g_p),\qquad
+ w_p=\lceil z/d_p\rceil,\qquad
+ A_p=\frac{N_p}{H_p}\min\left(H_p,
+           \left\lfloor\frac{2H_p}{w_p}\right\rfloor\right).
+\]
+The largest size of a set $T\subset C$ satisfying the conditions at both
+$2$ and $3$ is $A_2A_3$. Thus $A_2A_3$ is the exact optimum for $L=3,4$,
+and an upper bound for every $L\ge3$. In particular,
+\[
+    \frac{|T|}{|C|}\le \frac{4d_2d_3}{z^2}\quad (L\ge3).
+\]
+Both $d_p$ depend only on the fixed modulus $q_0$.
+
+\paragraph{Proof.}
+The possible images in $(\mathbb Z/m_p\mathbb Z)^\times$ are precisely
+the residues $a\equiv-1\pmod{b_p}$. They number $N_p$, since every
+prime divisor of $m_p$ already divides $b_p$. If $\pm p^i$ takes one
+of these residues to another, then $d_p\mid i$ by the order of the
+class of $p$ in $(\mathbb Z/b_p\mathbb Z)^\times/\{\pm1\}$. Since
+$b_p>2$, the sign is unique and the step is multiplication by
+$g_p^{i/d_p}$. Multiplication by $g_p$ partitions the possible images
+into $N_p/H_p$ cycles of length $H_p$.
+
+Write $H=H_p$ and $w=w_p$. On one such cycle mark the residues in the
+image of $T$, reading their indicator as a periodic binary sequence on
+$\mathbb Z$. Three marked positions in a window of $w$ consecutive
+indices give a forbidden triple by subtracting the first index and
+multiplying both differences by $d_p$. Conversely, the three indices in any
+forbidden triple fit in such a window because
+$\lfloor(z-1)/d_p\rfloor=w-1$. If a window goes around the cycle twice,
+all its occurrences count, as required for repeated places. For $K$ marks
+the sum of occupancies of the $H$ windows is $wK$, so $K\le H$ and
+$K\le\lfloor2H/w\rfloor$. Both bounds are attained together. With
+$K=\min(H,\lfloor2H/w\rfloor)$ mark the indices with
+\[
+ \left\lfloor\frac{(h+1)K}{H}\right\rfloor-
+ \left\lfloor\frac{hK}{H}\right\rfloor=1 .
+\]
+There are $K$ such indices per period, and the sum on every window is at
+most $\lceil wK/H\rceil\le2$ by telescoping. This proves the formula for
+the largest allowable projected support $A_p$.
+
+Write $q_0=2^v3^a b$ with $\gcd(b,6)=1$. The component modulo $b$ is
+fixed to $-1$ in every element of $C$. The two remaining freely varying
+components are a lift of $-1\bmod 2^v$ and a lift of $-1\bmod 3^a$.
+The condition at $2$ uses only the second of these, and the condition
+at $3$ only the first. Any two permissible projected supports can
+therefore be combined by taking their full Cartesian product under
+the Chinese remainder theorem. Every eligible $T$ is contained in the
+product of its own projections. This proves exactness. Finally
+$A_p/N_p\le 2/w_p\le2d_p/z$ and $|C|=N_2N_3$.\hfill$\square$
+
+\paragraph{The base modulus $18480$.}
+Here $b_2=1155$ and $b_3=6160$. The orders of $2$ modulo $3,5,7,11$
+are $2,4,3,10$. The powers of $2$ cannot reach $-1$ modulo $7$. The orders of $3$
+modulo $16,5,7,11$ are $4,4,6,5$. The powers of $3$ cannot reach $-1$ modulo $16$.
+Consequently $d_2=d_3=60$ and both signs are positive. The identities
+\[
+ v_3(2^{60}-1)=2,\qquad v_2(3^{60}-1)=4
+\]
+give $H_2=z$, $H_3=2^s$. Indeed, in the first case replacing the
+exponent $60$ by $60k$ adds $v_3(k)$ to the valuation. In the second
+case it adds $v_2(k)$, since $3^{60}\equiv1\pmod4$. These elementary
+lifting identities follow by factoring powers with exponent prime to
+the valuation prime and then expanding the next prime power by the
+binomial theorem. The other prime-power components already have order
+one. With $w=\lceil z/60\rceil$, the answer is therefore
+\[
+ 3\min\bigl(z,\lfloor 2z/w\rfloor\bigr)\,
+   \min\bigl(2^s,\lfloor 2^{s+1}/w\rfloor\bigr).
+\]
+For $s\ge81$ this simplifies to
+$357\lfloor2^{s+1}/\lceil z/60\rceil\rfloor$.
+In fact $z=6561$ gives $w=110$ and $\lfloor2z/w\rfloor=119$.
+The next possible $z$ is $19683$. For it and all larger $z$,
+$120z/(z+59)>119$, while $2z/w<120$ because $60\nmid z$.
+The possible $3z$ odd residues have thus shrunk to exactly $357$ before
+any of the primes $p\ge5$ are considered.
+
+\paragraph{An all-prime construction.}
+The exact extremizer at $2$ can also be retained when imposing \emph{every}
+prime up to $L$. Let $q_0=2^v u$ with $u$ odd. For positive integers $n,h$
+assume
+\[
+ ((z-1)h)^n\le2^s,\qquad (L+1)(z-1)<2^{v+s}.
+\]
+There exists $T\subset C$ satisfying all conditions at $p\le L$ with
+\[
+                    |T|\ \ge\ A_2\frac{h^n}{n h^2}.
+\]
+For the same $n,h$ this multiplies the cited lower bound by $A_2$
+and relaxes its two sufficient size conditions.
+
+To prove it, choose $S\subset[0,2^s)\cap\mathbb Z$ of size at least
+$h^n/(nh^2)$ such that every weighted relation
+$j e_2\equiv (j-i)e_1+i e_3\pmod{2^s}$ with $0<i<j<z$ forces
+$e_1=e_2=e_3$. This is the source's
+\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/New/Reduction/Data/Existence.lean\#L77-L117}{weighted Behrend lemma}
+with coefficient budget $z-1$. In brief, encode the vectors of
+$\{0,\ldots,h-1\}^n$ using base $(z-1)h$. At most $nh^2$ distinct
+squared lengths occur, so some sphere contains at least $h^n/(nh^2)$
+vectors. In a weighted relation all digit sums
+are below the base, so each integer is strictly less than $((z-1)h)^n\le2^s$. Equality modulo $2^s$ is therefore equality coordinatewise. Strict
+convexity of the squared norm forces equality on the sphere.
+
+Take as the $2$-primary component $-(1+2^v)^e\bmod 2^{v+s}$ for $e\in S$,
+and independently take an optimal support of size $A_2$ in the odd
+modulus $m_2$. The first components are distinct since $1+2^v$ has
+order $2^s$, by the same binomial lifting identity. The condition at $2$
+holds by construction. Let $p\le L$ be odd and let $t_p$ be the choice
+of $p$ or $-p$ that equals $1\bmod4$. Project a proposed forbidden
+triple to $2^{v+s}$, a divisor of $m_p$. The two ratios are $1\bmod4$,
+so their signs are forced and their values are $t_p^i,t_p^j$.
+Raising the first to the $j$th power and the second to the $i$th
+gives the weighted relation on exponents. All three exponents are equal,
+which would give $t_p^i\equiv1\pmod{2^{v+s}}$. Yet
+\[
+ 2^{v_2(t_p^i-1)}=2^{v_2(t_p-1)}2^{v_2(i)}
+        \le(p+1)i<2^{v+s},
+\]
+a contradiction. The argument explains why the coefficient budget can
+drop from $2z$ to $z-1$: the sign is determined modulo $4$ before the
+powers are compared.\hfill$\square$
+
+\paragraph{Sharp order for every fixed prime cutoff.}
+Let $M(q_0,s,L)$ denote the maximum over sets satisfying every condition
+at $p\le L$. For each fixed $q_0$ as above and each fixed $L\ge3$,
+\[
+  M(q_0,s,L)=\Theta_{q_0,L}(2^s/z),\qquad
+  \frac{M(q_0,s,L)}{|C|}=\Theta_{q_0,L}(z^{-2})
+  \quad(s\longrightarrow\infty).
+\]
+The upper bound is the two-prime theorem. For the lower bound, form a
+graph on the $2^s$ possible $2$-primary components. Join $x$ to $y$
+if $y/x$ is a signed $p^i$ for some odd prime $p\le L$ and $0<i<z$,
+or if $x/y$ has this form. The preceding valuation bound rules out
+loops once $(L+1)(z-1)<2^{v+s}$, which holds for all large $s$ since
+$z\le81s$. For each pair $p,i$, the residue modulo $4$ forces the sign,
+so the degree is at most $2r(z-1)$ where $r$ counts the odd primes up to $L$.
+Greedily choosing a vertex and discarding its neighbors yields an
+independent set of size at least $2^s/(1+2r(z-1))$. This excludes even
+the first nontrivial step of each forbidden triple at an odd prime.
+Use its full product with an optimal even-prime support.
+The latter has $A_2\ge1$: a singleton odd residue could return under
+a signed $2^i$ only if $4^i\equiv1\pmod{3z}$, whereas $4=1+3$
+has order $z$ there. Consequently
+\[
+ M(q_0,s,L)\ \ge\ \frac{A_2\,2^s}{1+2r(z-1)}.
+\]
+This proves the claimed order and gives an explicit lower bound whenever
+the displayed size condition on $L$ holds.\hfill$\square$
+
+\paragraph{Reproduction.}
+The companion program \path{sparse_places.py} independently evaluates
+the two orders, enumerates all binary cycle supports for $108$ small
+size/window pairs, and tests explicit attaining supports against the
+signed-power predicate. For $q_0=18480$, $s=40$, $L=19$, $n=2$, $h=40$,
+it takes eight exponents on a single digit sphere and $354$ projected
+residues at $2$, obtaining $2832$ eligible places. The source's
+construction and the two extremal formulas are finite combinatorics
+independent of RH. Determining the exact all-prime capacity for the
+growing cutoff used in the Lean proof remains a separate question.

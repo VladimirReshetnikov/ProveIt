@@ -1,0 +1,72 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=.9in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,longtable,array,microtype,xcolor,fancyhdr,enumitem,hyperref}
+\microtypesetup{expansion=false}
+\definecolor{ink}{HTML}{17384A}
+\definecolor{accent}{HTML}{176B65}
+\hypersetup{colorlinks=true,linkcolor=accent,citecolor=accent,urlcolor=accent,pdftitle={Beyond Dirichlet GRH: orthogonal kernels and sharp p-adic recovery},pdfauthor={Research analysis prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small\sffamily\color{ink}Method transfers from the GRH formalization}
+\fancyhead[R]{\small\sffamily 26 November 2026}\fancyfoot[C]{\thepage}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt plus 1pt minus 1pt}
+\setlength{\emergencystretch}{2em}
+\setlist{nosep,leftmargin=*}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\F}{\mathbb F}\newcommand{\Z}{\mathbb Z}\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}\newcommand{\OO}{\mathcal O}
+\newcommand{\Sp}{\operatorname{Sp}}\newcommand{\GL}{\operatorname{GL}}
+\newcommand{\SO}{\operatorname{SO}}\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Span}{\operatorname{span}}\newcommand{\TV}{d_{\mathrm{TV}}}
+\newcommand{\Prob}{\mathbb P}\newcommand{\E}{\mathbb E}
+\newcommand{\src}[2]{\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/#1}{#2}}
+\newcommand{\prior}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/9816644452bb42827167d6110e6d0322315a02b9/docs/incoming/#1}{#2}}
+\newcommand{\code}[1]{\texttt{\small #1}}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\begin{document}
+\thispagestyle{plain}
+{\large\sffamily\color{accent}Research report \hfill 26 November 2026}\par
+\vspace{.7em}
+{\fontsize{25}{29}\selectfont\bfseries\color{ink}Beyond Dirichlet GRH\par}
+\vspace{.35em}
+{\Large Orthogonal kernels and sharp $p$-adic recovery\par}
+\vspace{.55em}
+{\large Source analysis, complete mathematical proofs, and exact checks}\par
+\vspace{.7em}\hrule\vspace{.7em}
+
+\textbf{Answer to the research question.}
+The repository contains useful methods beyond its final RH and Dirichlet-GRH theorems. This report develops three such transfers. The most direct answer to a separately posed question concerns random binary orthogonal matrices. If $Q$ is uniform in
+\[
+ \mathcal O_n=\{Q\in\GL(n,\F_2):Q^{\mathsf T}Q=I\},\qquad
+ \nu(Q)=\max_{J\subseteq\{1,\ldots,n\}}\dim_{\F_2}\ker Q[J],
+\]
+then
+\begin{equation}\label{eq:headline-binary}
+ \boxed{\quad\Prob\{\nu(Q)\ge r\}\le
+ \min\{1,\;6\,2^{\,n-r(r-1)/2}\}.\quad}
+\end{equation}
+Here $1\le r\le\lfloor n/2\rfloor$; for larger $r$ the probability is zero. Thus $\nu(Q)=O(\sqrt n)$ with exponentially high probability. In particular, for every fixed $c>0$, a linear lower bound $\nu(Q)\ge cn$ has probability tending to zero at a quadratic exponential rate, contrary to the proposed high-probability behavior in the public question of Vaas~\cite{vaas}. This settles that question's proposed linear alternative and supplies an explicit upper tail. It does not establish the exact typical order.
+
+A second theorem answers the multibranch sharpness question explicitly left in an earlier ProveIt report~\cite{priorjets}. At precision modulo $\pi^r$, write $a_c=v_\pi(b-c)$ for the contact depths of a fixed Lubin--Tate branch, $W=\sum_{c\ne b}q^{a_c}$, $A=\max a_c$, and $m=\#\{c:a_c=A\}$. In the coordinate $[\pi](X)=\pi X+X^q$, the inverse interpolation denominator has pole order
+\[
+ t_b\le W+(r-1)(q-1)q^{A-1}\qquad(A\ge1).
+\]
+Equality holds exactly when adding $m-1$ and $r-1$ in base $p$, the residue characteristic, has no carry. We also give an exact formula at every precision when all contacts have depths zero or one, and prove the branch recovery cutoff is precisely $1+t_b$.
+
+The third result determines an exact total-variation distance for half-size blocks of uniformly random split special orthogonal matrices over fields of odd order. A rank-parity constraint survives at that boundary; the distance from an independent-entry matrix is exactly its odd-rank probability.
+
+\textbf{Status.} These are ordinary mathematical proofs with independently executable finite checks. They do not use RH or GRH. They are not newly kernel-checked Lean theorems. The source proof and the earlier archives are pinned below. We make no worldwide priority claim for the new formulations, and no claim to have proved nonabelian GRH, Artin holomorphy, or BSD.
+
+\newpage
+\tableofcontents
+\newpage
+\input{sections/source}
+\input{sections/binary}
+\input{sections/jets}
+\input{sections/orthogonal}
+\input{sections/assessment}
+\input{sections/references}
+\end{document}

@@ -1,0 +1,48 @@
+\section{Nine suggested formulas of Kataoka}\label{sec:kataoka}
+Kataoka's 2026 preprint \cite[\S6.3, Tables 6--7]{Kat} treats dyadic
+towers with prescribed leading coefficient $\lambda$. Table 7 lists data
+through level six and suggests a full formula for each $0\le\lambda\le8$.
+The author verifies the coefficient of $n2^n$ there and leaves the
+remaining coefficients unconfirmed. The following result establishes those
+coefficients and the indicated ranges. Here $X,Y$ denote voltage
+monomials for the two basis vectors, so $X^aY^b$ corresponds to the step
+$(a,b)$. A superscript on $X$ is an exponent; a repeated entry means
+parallel generators.
+
+\Needspace{15\baselineskip}
+\begin{theorem}\label{thm:kataoka}
+Put $N=2^n$. For the nine step lists below, the valuation $T_n$ equals the
+given expression for every $n$ in the displayed range.
+\begin{center}\small
+\begin{tabular}{cllc}
+\toprule
+$\lambda$ & Generators & $T_n$ & First $n$\\
+\midrule
+0 & $X^3Y^2,X,Y$ & $9N-2n-3$ & 3\\
+1 & $X^2Y^2,X,Y$ & $nN+(15/2)N-4n-7$ & 3\\
+2 & $X,Y,Y$ & $2nN+2n+1$ & 2\\
+3 & $XY,X,Y$ & $3nN+9N-8n-9$ & 1\\
+4 & $X^2,X,X,Y,Y$ & $4nN-4N+6n+8$ & 2\\
+5 & $X^2Y^2,X^2Y,XY^2,X,Y$ & $5nN+5N-16n+22$ & 3\\
+6 & $X^3,X,Y,Y$ & $6nN-10N+14n+14$ & 3\\
+7 & $X^3Y^3,X^3Y^2,X^2Y^3,X^2Y,XY^2,XY$ & $7nN+4N-20n+14$ & 3\\
+8 & $X^4,X,X,Y,Y$ & $8nN-16N+14n+6$ & 2\\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{theorem}
+
+\subsection{Bounded orders in the row $\lambda=0$}
+For $u=(a,b)$, the projected steps are $3a+2b,a,b$. Reduce the expansion
+of $F_u(1+t)$ modulo $(2,t^8)$, exactly as for the ternary table above.
+For $(1,b)$, $0\le b\le7$, the orders are
+$6,2,4,2,6,2,4,2$ in sequence. For $(a,1)$, $a=0,2,4,6$, they are all $2$.
+These orders are stable on lifting each class modulo eight, and they are
+strictly smaller than $e=2^{h-1}$ for $h\ge4$.
+The sum of the twelve entries is $36$, so $W_h=36\cdot2^{h-3}$.
+The first three exact shell sums $7,18,44$ give $T_3=63$. The recurrence
+\eqref{eq:shells} yields $T_n=9\cdot2^n-2n-3$ for $n\ge3$.
+
+\input{kataoka-one}
+\input{kataoka-even}
+\input{kataoka-odd}

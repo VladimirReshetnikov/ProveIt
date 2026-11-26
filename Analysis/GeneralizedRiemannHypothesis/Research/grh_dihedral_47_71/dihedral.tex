@@ -1,0 +1,41 @@
+\section{Which rotation classes detect integer zero multiplicities?}
+\label{sec:rotation}
+Suppose $G=A\rtimes\{1,\iota\}$ with $A$ a nontrivial abelian group of odd order $n$ and $\iota a\iota^{-1}=a^{-1}$. The ordinary dihedral group $D_{2n}$ is the case $A=C_n$. Write a nonidentity rotation class as $[a]=\{a,a^{-1}\}$. In contrast to the fixed-sign condition of Section~\ref{sec:detector}, a single measured class may now have both positive and negative character coefficients. What keeps zero multiplicities from cancelling is their integrality.
+
+Nonlinear irreducible representations of $G$ are the two-dimensional inductions from the nontrivial characters $\psi$ of $A$, indexed by pairs $\{\psi,\psi^{-1}\}$. Indeed the inductions are irreducible by the index-two character calculation, and their squared degrees, together with the two linear characters, sum to $2n$. For a vector of zero multiplicities put $m_1=0$ and write $m_{\psi}=m_{\psi^{-1}}$ for each paired coordinate. The residue seen at the class $[a]$ is proportional to
+\[
+              T_m(a)=\sum_{\psi\in\widehat A}m_{\psi}\psi(a).
+\]
+
+\paragraph{Theorem.}
+A collection $\mathcal S$ of nonidentity rotation classes detects every nonzero vector of nonnegative integral multiplicities, in the sense that some $T_m(a)\ne0$, if and only if for every nontrivial cyclic subgroup $C\le A$ it contains the class of a generator of $C$. The least number of classes equals the number of nontrivial cyclic subgroups of $A$. In particular, for ordinary $D_{2n}$ this number is $\tau(n)-1$, where $\tau(n)$ counts positive divisors. For prime $n$, each single nonidentity rotation class suffices.
+
+\paragraph{Proof.}
+For any $u$ coprime to the order of $a$, the automorphism $\zeta\mapsto\zeta^u$ of the corresponding cyclotomic field carries $T_m(a)$ to $T_m(a^u)$, since $m_\psi$ is an integer. If every cyclic subgroup has a generator in the measured classes, vanishing there forces $T_m$ to vanish everywhere on $A\setminus\{1\}$. Fourier inversion on $A$ makes all the $m_\psi$ equal; $m_1=0$ forces vanishing.
+
+Conversely, let $C$ be a nontrivial cyclic subgroup with no measured generator. Let $R$ be its set of generators and put
+\[
+            m_\psi=|R|-\sum_{a\in R}\overline{\psi(a)}.
+\]
+The inner sum is a rational algebraic integer: it is a sum of roots of unity invariant under every automorphism of the cyclotomic field of order $|C|$, since that group permutes $R$. Hence it is an integer, and it is at most $|R|$ by the triangle inequality. These $m_\psi$ are symmetric, nonnegative integers with $m_1=0$. Character orthogonality gives
+\[
+             T_m(b)=n|R|\mathbf 1_{\{1\}}(b)-n\mathbf 1_R(b).
+\]
+Thus $m$ is nonzero and invisible at every measured class. Distinct cyclic subgroups have disjoint generator sets, proving the minimum. For cyclic $A$ the inner sum is a Ramanujan sum. In $C_9$, for example, observation of its generator alone misses the multiplicities $(3,3,0,3)$ at the pairs $\{\pm j\}$ for $j=1,2,3,4$. An additional class of order three gives full detection. The necessity statement is algebraic and makes no prediction that specified Artin factors actually have common zeros with these orders.
+
+\paragraph{Arithmetic consequence.}
+Let $E/\mathbb Q$ be a fixed Galois extension with group $G$ as above, and write $L_\psi$ for its induced factors. Each is the Hecke $L$-function of a nontrivial finite-order character over the quadratic field $E^A$, hence entire with the usual functional equation. For unramified rational primes define
+\[
+ S_a(x)=\sum_{\substack{p\le x\\ \mathrm{Frob}_p\in[a]}}\log p\,(1-p/x).
+\]
+Assume the repository's Dirichlet GRH and choose one generator class for each nontrivial cyclic subgroup of $A$. Then all $L_\psi$ satisfy RH if and only if for every selected $[a]$ and every $\epsilon>0$,
+\[
+             S_a(x)=x/(2n)+O_{E,\epsilon}(x^{1/2+\epsilon}).
+\]
+Under the critical-line conclusion the right side improves to $x/(2n)+O_E(\sqrt x)$. If all the nonlinear factors are known to have no real zeros in $(1/2,1)$, one can use only an upper bound for each centered sum.
+
+To see this, insert all prime powers into $S_a$ at cost $O_E(\sqrt x)$ as in Section~\ref{sec:detector}. The class indicator has coefficient $1/n$ on the trivial character and coefficient $(\psi(a)+\overline{\psi(a)})/n$ on the corresponding nonlinear character. The latter occurs once for each pair. The pole at one therefore contributes $x/(2n)$, and at a zero $\rho$ in the right half of the strip the centered Mellin transform has residue
+\[
+                    -\frac{T_m(a)}{n\rho(\rho+1)}.
+\]
+Here $m_\psi$ counts the order of each individual Hecke factor at $\rho$; Dirichlet GRH protects the two linear terms. The two-sided estimate gives holomorphy to the right of $1/2$, so the theorem excludes every such zero. For the converse the Riesz explicit formula of the preceding section applies to each fixed factor and the functional equation supplies the opposite half of the strip. If all the real candidates are already excluded, the transform of a nonnegative majorant minus the centered sum has no real singularity to the right of the proposed exponent. Landau's argument then gives the same holomorphy from the one-sided estimate. This proves the stated transfer without an assumption of linear independence of zero ordinates, simplicity, or disjoint zero sets.

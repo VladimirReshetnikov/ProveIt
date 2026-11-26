@@ -1,0 +1,183 @@
+\section{An optimal test for symmetric powers of an elliptic curve}
+\label{sec:sym}
+Fix a non-CM elliptic curve $E/\mathbb Q$ and an integer $d\ge1$.
+Write $L_j(s)=L(s,\mathrm{Sym}^j E)$ in unitary normalization
+(the center is $1/2$), and put $L_0=\zeta$.
+For each good prime $p$, let $2\cos\theta_p=(p+1-\#E(\mathbb F_p))/\sqrt p$
+with $0\le\theta_p\le\pi$. Define $V_0=1$, $V_1=z$ and
+$V_{j+1}=zV_j-V_{j-1}$. Thus $V_j(2\cos\theta)=
+\sin((j+1)\theta)/\sin\theta$, with endpoint values given by continuity.
+
+\paragraph{An extremal polynomial.}
+For a nonzero polynomial $f\ge0$ on $[-2,2]$ of degree at most $2d$,
+write $f=\sum_{j=0}^{2d} a_j V_j$. The largest possible ratio $a_1/a_0$ is
+\[
+ u=2\cos\frac{\pi}{d+2}.
+\]
+The unique optimizer up to positive scale is
+\[
+ f_d(z)=\left(\sum_{j=0}^d V_j(u)V_j(z)\right)^2 .
+\]
+Every coefficient $a_0,\ldots,a_{2d}$ of this optimizer is strictly positive.
+The ratio measures the coefficient of the ordinary trace when the mean
+of the test is fixed. Other objectives, such as minimizing sample variance,
+give different optimization problems.
+
+\emph{Proof.}
+The $V_j$ are orthonormal for
+$d\mu(z)=\sqrt{4-z^2}\,dz/(2\pi)$ by sine orthogonality.
+Write $\theta_i=i\pi/(d+2)$, $z_i=2\cos\theta_i$ and
+$w_i=2\sin^2\theta_i/(d+2)$, for $1\le i\le d+1$.
+The rule $\int g\,d\mu=\sum_i w_i g(z_i)$ holds through degree $2d+1$.
+Indeed, divide $g$ by $V_{d+1}$, which vanishes at all nodes. The quotient
+has degree at most $d$, so the integral of the multiple of $V_{d+1}$
+vanishes by orthogonality. Discrete sine orthogonality gives the formula for
+the remainder. Now $a_1/a_0=\int zf\,d\mu/\int f\,d\mu$ is a weighted
+average of the nodes, so it is at most $z_1=u$.
+Equality forces $f$ to have a double zero at every other node, fixing its
+shape up to scale. Discrete sine orthogonality gives
+$\sum_{j=0}^d V_j(z_1)V_j(z_i)=0$ for $i>1$, so $f_d$ attains equality.
+Each $V_j(u)$ is positive for $0\le j\le d$. The product rule
+$V_j V_k=V_{j+k}+V_{j+k-2}+\cdots+V_{|j-k|}$ follows from the sine formula.
+For each $0\le m\le2d$, some $j,k\le d$ have $j+k=m$, so $a_m>0$.
+\hfill$\square$
+
+\paragraph{A fourth-power criterion.}
+Use the extremizer just obtained and form the positive sum
+\[
+ S_f(x)=\sum_{\substack{p^k\le x,\ k\ge1\\p\ {\rm good}}}
+ (\log p)\, f(2\cos(k\theta_p))\left(\frac1{p^k}-\frac1x\right).
+\]
+Write $L_j^{(S)}$ for the Euler product with bad primes omitted and set
+\[
+ D(s)=-\sum_{j=0}^{2d}a_j\frac{(L_j^{(S)})'}{L_j^{(S)}}(s),\qquad
+ C=\lim_{s\to1}\left(D(s)-\frac{a_0}{s-1}\right)-a_0,\qquad
+ R_f(x)=S_f(x)-a_0\log x-C .
+\]
+Bad Euler factors have normalized inverse roots of modulus at most one,
+so their removal introduces no zeros in $\Re s>0$. For fixed $j\ge1$,
+cuspidal automorphy, entireness of the completed function and functional
+equation are available by modularity and Newton--Thorne, Theorem A and
+Corollary B (\emph{Publ. Math. IH\'ES} 134, 2021,
+\href{https://doi.org/10.1007/s10240-021-00126-4}{doi:10.1007/s10240-021-00126-4}).
+We use Jacquet and Shalika's nonvanishing theorem on $\Re s=1$
+(\emph{A non-vanishing theorem for zeta functions of $\mathrm{GL}_n$},
+\emph{Invent. Math.} 38 (1976), 1--16). In particular the displayed limit exists.
+
+\textbf{Theorem.}
+All nontrivial zeros of $L_0,\ldots,L_{2d}$ have real part $1/2$
+if and only if, for each $\epsilon>0$, there exists $B_\epsilon>0$ with
+\[
+ R_f(n^4)\le B_\epsilon n^{-2+4\epsilon}
+ \qquad\hbox{for all sufficiently large integers }n.
+\]
+Here $E$ and $d$ are fixed. The theorem yields a single positive prime
+sum for a finite family of conjectures. Under the premise of the question,
+the $j=0$ member is already supplied.
+
+\emph{Interpolation.}
+In $t=1/x$, the function $S_f(1/t)$ is convex. Each summand is a
+nonnegative coefficient times $(p^{-k}-t)_+$. Between
+$t_-=(n+1)^{-4}$ and $t_+=n^{-4}$ it is bounded by its secant.
+The secant of $-a_0\log t$ exceeds that function by at most
+$a_0(t_+-t_-)^2/(8t_-^2)=O_d(n^{-2})$, by the interpolation
+remainder and the second derivative $a_0/t^2$. Since $x\asymp n^4$,
+the sample bounds imply $R_f(x)\le B'_\epsilon x^{-1/2+\epsilon}$.
+This argument accounts for the fourth powers and the sign of the test.
+
+\emph{Zeros from the upper bound.}
+In $\Re s>1$ termwise integration gives
+\[
+ H(s):=\int_1^\infty R_f(x)x^{-s}\,dx
+  =\frac{D(s)}{s(s-1)}-\frac{a_0}{(s-1)^2}-\frac C{s-1}.
+\]
+Indeed $V_j(2\cos(k\theta_p))$ is the trace of the $k$th power of
+the normalized Frobenius in $\mathrm{Sym}^j$. The definition of $C$
+removes the singularity at $1$. At a zero $\rho$ in the open critical strip,
+the residue is
+\[
+ \frac{\sum_j a_j\,\mathrm{ord}_{\rho}L_j}{\rho(1-\rho)}.
+\]
+It is positive at every real zero and nonzero at every nonreal zero,
+including a zero shared by several factors.
+For $\beta=1/2+\epsilon<1$, take the eventually nonnegative function
+$B'_\epsilon x^{\beta-1}-R_f(x)$. Changing it on a compact interval
+affects its transform by an entire function. If the Mellin integral of
+this function has abscissa of convergence $\sigma_c>\beta$, Landau's
+theorem forces a singularity there. The continued transform is meromorphic
+with at most simple poles there, and a real pole has negative residue
+by the displayed formula. This is impossible for an integral of a
+nonnegative function as $s\downarrow\sigma_c$.
+Consequently $H$ is holomorphic for $\Re s>\beta$. Letting
+$\epsilon\downarrow0$ and using the functional equations proves the claim.
+This argument allows arbitrary orders at the central point.
+
+\emph{The reverse implication.}
+Assume the stated zero location and fix $0<\epsilon<1/2$.
+Invert $D(s)/(s(s-1))$ on $\Re s=2$ against $x^{s-1}$.
+The inverse of each prime-power term is $(p^{-k}-x^{-1})_+$.
+Shift the line to $\Re s=1/2+\epsilon$. The double pole at $1$
+contributes $a_0\log x+C$. For clarity, the usual justification of
+the shift uses the fixed-degree unitary $L$-functions' order-one Hadamard
+products, their gamma factors and the local zero count
+$N(T+1)-N(T)=O_{E,d}(\log(2+T))$.
+Subtracting the logarithmic derivative at $2+it$ from that at
+$\sigma+it$ gives an absolutely convergent zero sum: the zeros with
+$|\Im\rho-t|\le1$ contribute $O_{E,d,\epsilon}(\log(2+|t|))$ since
+$|\sigma+it-\rho|\ge\epsilon$. More distant zeros contribute the same
+bound by summing unit bands with weights $O((1+|t-\Im\rho|)^{-2})$.
+Stirling's formula bounds the gamma terms. Thus $D(\sigma+it)$ is
+$O_{E,d,\epsilon}(\log(2+|t|))$ uniformly on the shifted strip for
+$|t|\ge2$. The quadratic denominator gives absolute convergence on the
+new line and vanishing horizontal integrals. This gives the stronger
+two-sided bound $|R_f(x)|\ll_{E,d,\epsilon} x^{-1/2+\epsilon}$.
+
+\paragraph{The first four symmetric powers.}
+For $d=2$, $u=\sqrt2$ and $f_2(z)=(z^2+\sqrt2 z)^2$.
+Its character coefficients are $(4,4\sqrt2,5,2\sqrt2,1)$.
+This gives an explicit target for an arithmetic upper bound at $x=n^4$.
+The determinant estimates in the repository count congruence classes and
+quadratic characters. A corresponding divisibility or height estimate
+with these elliptic Frobenius weights is an additional arithmetic input.
+The extremal problem and the sparse criterion are solved here. The bound
+for this curve, and hence symmetric-power GRH, remains open in this analysis.
+
+For the curve $y^2+y=x^3-x$, the discriminant is $37$ and
+$j=48^3/37$ is nonintegral, which excludes CM. The accompanying
+sample calculation counts points at every good prime up to $10^4$
+and includes each admissible prime power. It gives
+$S_f(16)=1.17616326$ and $S_f(10^4)=19.38460159$.
+The table also gives consecutive differences of $S_f(x)-4\log x$,
+in which the unknown additive constant cancels. These values illustrate
+the observable at finite $x$.
+
+\paragraph{How well can congruence weights approximate this test?}
+For any fixed modulus $q$ and real function $g$ on its unit classes, write
+$\pi_S(X)$ for the number of good primes $p\le X$ coprime to $q$.
+The squared error for the local observable in the preceding example obeys
+\[
+ \lim_{X\to\infty}\frac{1}{\pi_S(X)}
+ \sum_{\substack{p\le X\ {\rm good}\\p\nmid q}}
+ \bigl(f_2(2\cos\theta_p)-g(p\bmod q)\bigr)^2
+ =
+ 66+\frac1{\varphi(q)}\sum_{b\in(\mathbb Z/q\mathbb Z)^\times}
+ (4-g(b))^2 .
+\]
+Indeed, in each unit residue class the average of
+$V_j(2\cos\theta_p)$ tends to zero for $1\le j\le8$. Expand the class
+indicator in Dirichlet characters and apply the prime number theorem to
+the standard $L$-functions of $\mathrm{Sym}^j E$ twisted by these characters.
+Each twist is cuspidal of degree $j+1>1$. Its standard $L$-function is
+holomorphic and nonzero on $\Re s=1$, and its normalized prime-power traces
+are bounded by $j+1$. These facts give the prime number theorem for the
+trace by the usual Tauberian argument (add a sufficiently large constant
+multiple of the zeta logarithmic derivative to bound the real and imaginary
+coefficients by nonnegative ones, then subtract the ordinary prime number
+theorem). Prime powers of exponent at least two cost $o(X)$ in the
+log-weighted sum. Partial summation removes the logarithm.
+Consequently the required average on class $b$ is its semicircle integral.
+Orthonormality gives the squared fluctuation
+$(4\sqrt2)^2+5^2+(2\sqrt2)^2+1^2=66$.
+This quantifies precisely which local information survives every fixed
+congruence test. It leaves open cancellation in a smoothed sum and the use
+of moduli growing with the cutoff.

@@ -1,0 +1,166 @@
+\section{The sharp conductor bound for a fixed Gauss valuation}
+\label{sec:fixed-radius}
+
+Fix a prime $p$. Normalize the valuation of $\mathbf C_p$ by $v(p)=1$ and
+write $v(0)=+\infty$. Set $e_h=(p-1)p^{h-1}$, $r_h=1/e_h$, and
+$U_h=\{\zeta:\operatorname{ord}(\zeta)=p^h\}$. For a nonzero polynomial
+$g(T)=\sum_n a_nT^n$ with coefficients in $\mathcal O_{\mathbf C_p}$ let
+$G_\rho(g)=\min_n(v(a_n)+n\rho)$. The same definition applies to integral
+formal series at every $\rho>0$. A shell $h$ is \emph{blocked} at tolerance
+$\delta\ge0$ when every $\zeta\in U_h$ satisfies
+$v(g(\zeta-1))>G_\rho(g)+\delta$. Equality is a successful specialization.
+
+\paragraph{Theorem (exact worst conductor).}
+Fix $h_0\ge1$ and $\rho\ge r_{h_0}$. The smallest value of $G_\rho(g)$
+among all integral polynomials blocking the $L$ consecutive shells starting
+at $h_0$ at tolerance zero is
+\[
+                        Lp^{1-h_0}.
+\]
+Consequently, given $G_\rho(g)\le B$, the least endpoint that guarantees
+a successful specialization in $[h_0,H]$ for every $g$ is
+\[
+                 \boxed{H=h_0+\lfloor p^{h_0-1}B\rfloor.}
+\]
+Both assertions hold for integral formal series. The same endpoint works
+for a series in any finite number of variables, with independent choices
+of coordinates on the indicated shells.
+
+The prior \emph{Exact torsion specialization} report gave the sufficient
+endpoint $h_0+\lceil p^{h_0}B(h_0+B+2)\rceil$ and left its optimal value
+open. The prior \emph{Torsion and zero data} report computed the extremal
+loss \emph{within} a shell. Across shells the fixed Gauss valuation
+retains the savings from roots on every earlier shell. Keeping these
+savings yields an exact balance and the linear answer above.
+
+\subsection{A calculation on one shell}
+With a primitive $p^h$th root $\xi$, write $z_a=\xi^a-1$ for unit
+residues $a\bmod p^h$. Let $D_h(m)$ be the largest possible value of
+\[
+   \min_a \sum_{i=1}^m \big(v(z_a-\alpha_i)-r_h\big),
+        \qquad v(\alpha_i)=r_h.
+\]
+The following formula is the shell calculation in the earlier
+\emph{Torsion and zero data} report:
+\[
+ D_h(m)=
+ \begin{cases}
+  e_h^{-1}\displaystyle\sum_{j=1}^{h-1}e_j\lfloor m/e_j\rfloor,
+                    &0\le m<e_h,\\
+  +\infty,&m\ge e_h.
+ \end{cases}
+\]
+Here $v(z_a)=r_h$ follows by evaluating $\Phi_{p^h}(1)=p$, since
+primitive conjugates yield factors of equal valuation. For each $\alpha_i$,
+replace it by a shell point $z_b$ nearest to it. For every $a$,
+$v(z_a-z_b)\ge\min(v(z_a-\alpha_i),v(\alpha_i-z_b))
+=v(z_a-\alpha_i)$, so the replacement can only raise the minimum.
+
+Now $m$ marks occupy unit residues. Write $N_j(a)$ for the number
+congruent to $a$ modulo $p^j$. If $a$ is unmarked, then
+$v(z_a-z_b)=p^{v_p(a-b)}/e_h$. Expanding $p^t-1=\sum_{j=1}^t e_j$
+shows the excess at $a$ is $e_h^{-1}\sum_{j<h} e_jN_j(a)$.
+Follow a least-occupied unit class modulo $p$ and then a least-occupied
+child at each subsequent level. This gives
+$N_j(a)\le\lfloor m/e_j\rfloor$ simultaneously, and ends at an unmarked
+point if $m<e_h$. This proves the upper bound. Conversely, the first $m$
+positive integers prime to $p$ give at least $\lfloor m/e_j\rfloor$
+marks in every unit class modulo $p^j$, since each successive block of
+$e_j$ unit exponents covers every such class. This attains the bound.
+For $m\ge e_h$, covering the entire shell gives infinite excess.
+
+\subsection{The exact budget for any finite set of shells}
+In fact let $S$ be any nonempty finite set of positive indices with
+$\rho\ge\max_{h\in S}r_h$. In increasing order of $h\in S$, define
+\[
+  m_h=\min\left\{0\le m\le e_h:
+  D_h(m)>\delta+\sum_{s\in S,\,s<h}m_s(r_s-r_h)\right\}.
+\]
+The exact minimum budget for blocking every shell in $S$ is then
+\[
+                           \sum_{h\in S}m_hr_h.                 \tag{*}
+\]
+To prove necessity, factor $g=b\prod_i(T-\alpha_i)$ in $\mathbf C_p$.
+Gauss multiplicativity gives
+$G_u(g)=v(b)+\sum_i\min(u,v(\alpha_i))$. Let $M_h$ count roots of
+valuation $r_h$, with multiplicity. Then
+$G_\rho(g)\ge G_\rho(g)-G_0(g)\ge\sum_{h\in S}M_hr_h$ by integrality.
+At shell $h$ all other roots contribute exactly their Gauss term at $r_h$.
+The savings relative to the target include
+\[
+ G_\rho(g)-G_{r_h}(g)\ \ge\sum_{s\in S,\,s<h} M_s(r_s-r_h).
+\]
+Thus blocking forces $D_h(M_h)>\delta+\sum_{s<h}M_s(r_s-r_h)$, with
+$s$ restricted to $S$. Induction in $S$ gives $M_h\ge m_h$. The
+argument permits roots at zero or of negative valuation.
+
+For equality, take on each shell the first $m_h$ unit exponents in the
+construction above, and form the monic polynomial with exactly these
+shifted roots. Its Gauss valuation is $\sum m_hr_h$. At each selected
+shell the savings equal the displayed sum exactly, and the minimum
+excess over $G_{r_h}$ is $D_h(m_h)$. The strict inequality in the
+recurrence blocks every shell. The coefficients belong to
+$\mathbf Q_p(\mu_{p^{\max S}})$.
+
+\subsection{Evaluation for consecutive shells and zero tolerance}
+For $h=h_0+k-1$, put $c=p^{1-h_0}$, so $e_k/e_h=c$. We claim
+$m_h=e_k$. Assume inductively the previous values have this form.
+Their savings at shell $h$ are
+\[
+   d_h=(k-1)c-\frac{p^{k-1}-1}{e_h}.
+\]
+Indeed every earlier shell costs $c$ and their total number of marks
+is $\sum_{i<k}e_i=p^{k-1}-1$. Direct evaluation gives
+\[
+  D_h(e_k-1)=
+       \frac{(k-1)e_k-(p^{k-1}-1)}{e_h}=d_h.
+\]
+Here only $j<k$ contribute and $\lfloor(e_k-1)/e_j\rfloor=e_k/e_j-1$
+for those $j$. The strict blocking test fails at $e_k-1$. If $k=h$ then
+$D_h(e_k)=+\infty$. If $k<h$, the summand with $j=k$ appears, giving
+$D_h(e_k)=ke_k/e_h>d_h$. This proves the claim from the first step,
+including $p=2$ and $h_0=k=h=1$. Equation~$(*)$ gives $Lc$.
+The forced number of roots is also sharp: its sum is
+$\sum_{k=1}^L e_k=p^L-1$, achieved by the same monic polynomial.
+For polynomials of degree at most $D$ and budget at most $B$, the exact
+first guaranteed endpoint is therefore
+\[
+ h_0+\min\bigl(\lfloor p^{h_0-1}B\rfloor,
+                    \lfloor\log_p(D+1)\rfloor\bigr).
+\]
+A budget $B$ can block precisely up to $\lfloor B/c\rfloor$
+initial consecutive shells in the worst case. If this number is zero,
+the first shell itself is successful. When $p=3$, $h_0=2$ and $B=1$,
+the extremizer blocks levels $2,3,4$ with $2,6,18$ roots respectively.
+Level $5$ is guaranteed, improving the previous sufficient level $47$.
+
+\paragraph{Passing to power series and several variables.}
+For a fixed finite set of shells and a nonzero integral series, truncate
+after degree $N$ with $(N+1)\min_{h\in S} r_h>G_\rho(g)+\delta$.
+The tail has larger valuation than the comparison threshold at every
+test point, and the truncation preserves $G_\rho$. This transfers the
+polynomial result to series, including the sharpness examples.
+
+In several variables, choose a coefficient $a_{\mathbf n}$ attaining the
+weighted Gauss minimum $A=\min_{\mathbf n}(v(a_{\mathbf n})+\rho|\mathbf
+n|)$. It exists since the coefficients are integral and $\rho>0$.
+Within the first variable take the series $b(T_1)$ obtained by fixing all
+other indices at $(n_2,\ldots,n_d)$. Then $G_\rho(b)+
+\rho\sum_{j>1}n_j=A$. The one-variable theorem selects $z_1$ with
+$v(b(z_1))\le G_\rho(b)$, so the remaining Gauss minimum is at most
+$A$. Successive evaluation and induction give the same endpoint
+independently in every coordinate. A polynomial depending on one
+coordinate already forces the stated worst endpoint. Applying this to
+a finite product gives an aggregate valuation bound by Gauss
+multiplicativity.
+
+\paragraph{Relation to earlier maximum principles.}
+Kriz and Nordentoft, \emph{Horizontal $p$-adic $L$-functions},
+arXiv:2310.20678v3, Propositions 2.7 and 2.11, establish discrete maximum
+principles for Fourier transforms of measures on finite abelian groups.
+In the cyclic case their second proposition gives the one-shell threshold
+$p^{1-h}$ relative to the trivial-character value. Here the reference
+is the coefficient Gauss valuation at positive radius, and the proof
+computes the obstruction from every previous shell and realizes the
+sharp cost simultaneously. The optimality claim concerns the explicit
+extremal problem above.   

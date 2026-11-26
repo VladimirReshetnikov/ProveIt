@@ -1,0 +1,62 @@
+\section{What the repository proves and how the method works}
+
+\subsection{Endpoint and verification boundary}
+
+The source's public statement file imports Mathlib and states zeros of the Riemann zeta function and complex Dirichlet $L$-functions. The five exports are:
+\begin{itemize}
+\item \code{riemannHypothesis};
+\item \code{riemannZeta_eq_zero_re};
+\item \code{LFunction_ne_zero_of_half_lt_re};
+\item \code{LFunction_eq_zero_re};
+\item \code{LFunction_eq_zero_re_of_isPrimitive}.
+\end{itemize}
+They cover all positive moduli and both primitive and imprimitive characters, with the principal-character pole treated separately.\cite{repo,repo_readme}
+
+The repository specifies Lean 4.35.0 and Mathlib revision
+\begin{center}\code{56a005855ea17e0b0958f73ec801ae140b0a1679}.\end{center}
+Its README and the independent verification page report compilation, axiom inspection, kernel replay and comparison of the public statements. The reported axioms are \code{propext}, \code{Classical.choice}, and \code{Quot.sound}.\cite{repo_readme,verification}
+
+We inspected the pinned source and public types. Lean and Lake were unavailable on the execution path, and we did not perform a new full build or independent kernel replay. Thus statements about those earlier checks are attributed to their published records. The new proofs in this report have not been checked by Lean.
+
+The endpoint does not quantify over arbitrary Hecke characters of arbitrary fields, arbitrary Artin representations, or general automorphic $L$-functions. An abelian factorization can transfer Dirichlet GRH to certain Dedekind zeta functions, but a nonabelian factorization contains genuinely additional functions. Renaming an input character does not supply a new zero theorem.
+
+\subsection{Three arithmetic estimates and a one-sided remainder}
+
+The reading guide isolates three inputs: short integral forms, enough independent forms, and a lower bound for integral forms. Their comparison is the mechanism to transfer.\cite{guide}
+
+\begin{enumerate}
+\item \textbf{Divisibility makes forms arithmetically short.} Derivatives of theta functions carry prime-power divisibility. Chains of theta lifts repeat the gain. After normalization, many source vectors give integral vectors whose archimedean norm bounds contain the weighted prime sum.
+\item \textbf{A second moment supplies rank.} Spanning estimates ensure that the short vectors occupy almost all of the target space. Without independence, many small vectors say little about a determinant.
+\item \textbf{Congruences and twists control denominators.} The lower bound uses determinants of lifts, heights, and integral structures shared across auxiliary characters. Selmer estimates are used to find characters that keep congruence losses within budget.
+\item \textbf{The product formula compares the two sides.} The same determinant is constrained by its archimedean size and finite-place divisibility. The principal terms cancel, leaving an upper bound for a centered prime remainder.
+\item \textbf{A one-sided analytic criterion excludes zeros.} A smoothed prime sum has a meromorphic transform whose poles encode zeros. Positivity and a suitable auxiliary quadratic twist prevent the relevant residues from cancelling.
+\end{enumerate}
+
+Schematically, the remainder at an identity residue class is
+\[
+ R_{q,d}(x)=
+ \sum_{\substack{n\le x\\ n\equiv1\pmod q}}
+ \Lambda(n)(1-\chi_{-d}(n))
+       \left(\frac1n-\frac1x\right)
+ -\frac{\log x}{\varphi(q)}-c_{q,d}.
+\]
+The actual parameters obey special congruence and CM-field conditions. The guide gives a chain length $m$ between $\sqrt x$ and $2\sqrt x$, and an eventual upper bound of size $x^{-1/2+6\varepsilon}$ after the remaining parameters are chosen. The analytic argument must work with the required family of auxiliary primes $d$, so that one with a zero-free prescribed rectangle can be selected. A bound for a single convenient twist does not automatically replace this quantifier.\cite{guide}
+
+\subsection{Which statements are reusable?}
+
+The abstract theorem \code{New.TwistedLattice.covolume_add_index_nonneg} has the form
+\begin{equation}\label{eq:covolume-source}
+ 0\le c+2\delta+n'(b_{\rm short}+b_{\rm denom})+b_{\rm volume}.
+\end{equation}
+Its parameters describe the short family, an index bound, a completion to a basis, and a height bound for a ratio of determinants. This is an actual abstract transfer interface. The concrete \code{integral_forms_long} and \code{star_inequality} instantiate it with the source's special cyclotomic-CM data, not with arbitrary $L$-functions.\cite{covolume_source}
+
+The auxiliary twisting statements also carry substantial hypotheses. The readable development's general theorem requires residual absolute irreducibility, finiteness of conjugate-dual congruence terms, finite local determinant terms, and a scalar inertia condition of the form
+\[
+ \rho(\gamma)=\rho(\gamma^{-c})=\zeta I,
+ \qquad \zeta^2-1\text{ a unit}.
+\]
+The specialized main-summand predicate asks for a stronger family of nontrivial scalar powers. These conditions cannot be suppressed when testing a Tate twist or an elliptic-curve representation. The compact development packages its own conditions using balanced data and auxiliary twists.\cite{selmer_source}
+
+One further condition is central below. The predicate \code{IsFromU1} forces triviality on the \emph{whole decomposition group} at specified places, not just on inertia. At a prime outside the conductor, that means its Frobenius must also map to one. The source proves this explicitly as \code{IsFromU1.eq_one_of_mem_decompGroup}.\cite{decomp_source}
+
+Finally, the source's uniformly bounded odd-cocycle module is a custom object. The comparison with the usual strict Selmer or Tate--Shafarevich group is additional mathematics. A bound for that custom module alone does not establish a new vanishing theorem for an algebraic $K$-group.\cite{odd_source}

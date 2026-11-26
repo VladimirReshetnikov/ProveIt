@@ -1,0 +1,125 @@
+\section{A bipartite family with all zeros on the canonical line}\label{sec:ehrhart}
+For a graph $G$ on $v$ vertices let $P_G$ be the convex hull of
+$\pm(e_i-e_j)$ over its edges, in the lattice $\mathbb Z^v\cap\{\sum x_i=0\}$.
+Write $E_{m,n}(k)=|kP_{K_{m,n}}\cap\mathbb Z^{m+n}|$ for its Ehrhart polynomial.
+The degree is $d=m+n-1$. Higashitani, Kummer and Michałek asked whether all zeros lie
+on $\Re z=-1/2$ and whether decreasing a largest part gives interlacing, for
+complete multipartite graphs (Conjecture~4.10, \href{https://arxiv.org/abs/1612.07538}{arXiv:1612.07538}).
+A recent public manuscript reports a counterexample with six parts of size two
+(\href{https://itsdavis.com/solved-conjectures/results/hkm-ehrhart/}{Cinna Davis, proof and verification}).
+It leaves the complete bipartite question intact. Kölbl gave a conditional
+result for $K_{4,n}$ (\href{https://arxiv.org/abs/2404.02136}{arXiv:2404.02136}, Theorem~3.3).
+Carptopus then proved the line property through smaller part five using positive Jacobi
+matrices (\href{https://doi.org/10.5281/zenodo.22486582}{2026 preprint}).
+These are direct antecedents of the construction below.
+
+\paragraph{Finite-width theorem.}
+For $2\le m\le 32$ and every integer $n\ge m$, all the zeros of $E_{m,n}$
+are simple and lie on $\Re z=-1/2$. The ordinates of the zeros strictly alternate with
+those for $E_{m,n-1}$. Width $32$ is the last width for which we certify a positive Bezoutian.
+The proof uses no zero-location theorem for analytic $L$-functions.
+
+\subsection*{Reduction to two short polynomials}
+Put $r=m-1$, $d=n+r$, and let $C_k$ denote the Ehrhart polynomial of a $k$-dimensional
+cross-polytope. Its Ehrhart series is $(1+t)^k/(1-t)^{k+1}$.
+Set $Q_k(y)=k!\,i^{-k}C_k((iy-1)/2)$. The cross-polytope recurrence
+gives $Q_0=1$, $Q_1=y$, $Q_{k+1}=yQ_k-k^2Q_{k-1}$.
+In particular, $Q_k$ is the characteristic polynomial of a real symmetric
+tridiagonal matrix with consecutive off-diagonal entries $1,2,\ldots,k-1$.
+The formula of Higashitani, Jochemko and Michałek for the $h^*$-polynomial
+(\href{https://arxiv.org/abs/1807.07678}{arXiv:1807.07678}, Theorem~4.1)
+has coefficients $\gamma_j=\binom{2j}{j}\binom{r}{j}\binom{n-1}{j}$ in the
+basis $t^j(1+t)^{d-2j}$. Use $4t=(1+t)^2-(1-t)^2$ in the Ehrhart series.
+Binomial expansion expresses $4^rE_{m,n}$ as
+$\sum_{h=0}^r(-1)^h c_h C_{d-2h}$, where
+$c_h=\sum_{j=h}^r4^{r-j}\gamma_j\binom{j}{h}$.
+Thus the rotated polynomial has the exact expression
+\[
+ R_n(y)=4^r d!\,i^{-d} E_{m,n}((iy-1)/2)
+       =\sum_{h=0}^r c_h(d)_{2h}Q_{d-2h}(y)
+       =A_n(y)Q_n(y)-B_n(y)Q_{n-1}(y),
+\]
+where $(d)_k=d(d-1)\cdots(d-k+1)$. Expand each $Q_{d-2h}$ from
+$Q_n,Q_{n-1}$ by forward or backward recurrence to define $A_n,B_n$.
+Their $y$-degrees are at most $r,r-1$. $A_n$ has degree $r$ with
+positive leading coefficient $c_0$. Their parities are $r,r-1$ respectively.
+The construction also works at $n=m-1$, including a possible $Q_0$.
+
+\subsection*{The positive form and the interlacing determinant}
+Let $A=A_n$, $B=B_n$. Form the real symmetric matrix $H$ of coefficients in
+$u^iv^j$ ($0\le i,j<r$) of the Bezoutian
+\[
+ \frac{A(u)B(v)-B(u)A(v)}{u-v}.
+\]
+Suppose $H$ is positive definite. Substitution $v=\bar u$ shows that
+$A,B$ have no common zero and that $\Im(B(u)/A(u))<0$ for $\Im u>0$
+where the quotient is defined. In fact $A(u)$ cannot vanish there, since
+the diagonal Hermitian form at $(1,u,\ldots,u^{r-1})$ would vanish.
+On the upper half-plane $Q_n/Q_{n-1}$ has positive imaginary part by
+induction using $Q_{k+1}/Q_k=y-k^2/(Q_k/Q_{k-1})$.
+The two ratios cannot coincide, so $R_n$ has only real zeros.
+On the real axis the diagonal limit gives $W=A'B-AB'>0$.
+Also $W_n=Q_n'Q_{n-1}-Q_nQ_{n-1}'>0$, since $W_1=1$ and
+$W_n=Q_{n-1}^2+(n-1)^2W_{n-1}$ for $n\ge2$.
+
+Set $C=y A_{n+1}-B_{n+1}$ and $D=n^2 A_{n+1}$, so that
+$R_{n+1}=CQ_n-DQ_{n-1}$. The polynomial
+\[
+ T_n(y)=AD-BC=n^2 A_n A_{n+1}-y B_n A_{n+1}+B_n B_{n+1}
+\]
+is even in $y$. At every real root $t$ of $R_n$ there is a nonzero
+$\lambda$ with $(Q_n,Q_{n-1})(t)=\lambda(B,A)(t)$.
+Both vectors are nonzero by the recurrence and positive definiteness.
+Differentiation gives $R_n'(t)=(\lambda^2W(t)+W_n(t))/\lambda$,
+which proves simplicity. Moreover
+\[
+ \frac{R_{n+1}(t)}{R_n'(t)}
+ =-\frac{\lambda^2 T_n(t)}{\lambda^2 W(t)+W_n(t)} .
+\]
+When $T_n$ is positive on the real axis, signs force a root of
+$R_{n+1}$ in each interior gap and one in each exterior gap, since
+both leading coefficients are positive. The degree difference is one,
+so this accounts for all its roots, with multiplicity one.
+
+\subsection*{Exact certification for unbounded $n$}
+Only short polynomials involving $r$ occur in the two positivity tests.
+The following details explain how finite calculations prove the universal
+quantifier over $n$. In performing the backward recurrence, multiply
+both coordinates by $S(n)=\prod_{j=1}^{r-1}(n-j)^2$.
+Backward steps divide by distinct squared linear factors of $S$.
+In the forward direction at most $r$ steps increase the degree
+in $n$ by at most $2r$. In the backward direction the coordinates
+have denominators dividing $S$ and, after multiplication by $S$,
+degrees at most $2r$ (each step is $[yq_{k+1}-q_{k+2}]/(n+k+1)^2$,
+where indices are relative to $n$). Thus each cleared coordinate in the
+mixture has degree at most $7r$ in $n$:
+$2r$ allows for $S$, $2r$ for forward recurrence, $r$ for $c_h$,
+and $2r$ for $(d)_{2h}$. At $7r+1$ consecutive integers beginning at
+$m$, the checker verifies that the coordinates divided by $S$ agree with
+polynomials of degrees at most $r$ for $A_n$ and $r+1$ for $B_n$, by taking
+forward differences. Multiplying these interpolants by $S$ and applying the
+polynomial identity principle proves the degree bounds identically.
+
+The Bezoutian splits into even and odd blocks by parity. Each entry has
+degree at most $2r+1$ in $n$. For the leading minor of order $j$ of
+either block, the checker computes its exact integer values at
+$n=m,m+1,\ldots,m+(2r+1)j$ by fraction-free elimination.
+All forward differences at $m$, through its actual degree, are positive.
+For every integer $s\ge0$, Newton's identity
+$F(m+s)=\sum_h\binom{s}{h}\Delta^h F(m)$ now proves strict positivity.
+Sylvester's criterion applies to both blocks. At $n=m-1$ the two
+blocks are also tested directly.
+
+Finally, write $T_n(y)=U(n,y^2)$. Its degree in $n$ is at most $2r+2$.
+The checker obtains $\Delta_n^h U(m,z)$ from $2r+3$ rows. For each nonzero
+polynomial in $z$ it verifies a positive constant term and equal numbers
+of Sturm sign changes at $0$ and $+\infty$. Hence each is positive
+on $[0,\infty)$, and so is $U(m+s,z)$ for integral $s\ge0$ by
+Newton's identity (the zeroth row is positive). The same Sturm test at
+$n=m-1$ completes the square boundary case.
+The scripts \texttt{verify\_ehrhart.py} and \texttt{verify\_interlacing.py}
+perform the integer calculations. Each accepts the first and last widths
+as arguments. Run both with \texttt{2 32}. Width one follows at once from
+the cross-polytope recurrence. A proof for all complete bipartite graphs
+would require a uniform argument controlling the forms or another way to
+localize the roots as $r$ grows.

@@ -1,0 +1,59 @@
+\section{A strict gap between natural density and upper density}
+\label{sec:gap}
+Let $b_q$ denote the supremum for sets whose degree-ball density converges and $u_q$ the supremum when a limsup is allowed. Ratios range over nonconstant rational functions, including those of degree zero. Proportions for monic polynomials suffice as in the preceding section.
+
+\begin{theorem}\label{th:gap}
+For every prime power $q$, $u_q>b_q$. For each $T\ge3$,
+\[
+ u_q-b_q\ \ge\ (1-q^{-1}) c_T q^{-3}
+            -\frac{q^{-T}}{(T+1)(q-1)} .
+\]
+In particular $u_2-b_2>0.003660$. As $q\to\infty$ through prime powers, $\liminf q^3(u_q-b_q)\ge e^{-11/6}$.
+\end{theorem}
+
+\paragraph{Separate optimization at each cutoff.}
+Let $J_T(t)$ be the largest admissible subset of the monic $S_T$-smooth polynomials of degree at most $t$. Define
+\[
+ U_T=(1-q^{-1})c_T\sum_{t\ge0}q^{-t}J_T(t).
+\]
+The upper-density inequalities $v_T U_T\le u_q\le U_T$ occur in the incoming report \emph{A counterexample to the geometric-progression density conjecture over finite fields}, section on computing the extremal upper density. Here is a direct proof for signed valuation steps. A ball through degree $N$ has $(q^{N+1}-1)/(q-1)$ monic elements. The number of rough cores of degree $N-t$ divided by $q^{N-t}$ tends to $c_T$. There are at most $J_T(t)$ admissible smooth factors per core. Dominated convergence gives the upper bound since $J_T(t)\le(t+1)^{|S_T|}$. For the lower bound use only squarefree rough cores; their degree proportions tend to $c_Tv_T$ by finite divisibility and the convergent square tail. Fix $N_j=2^{j+1}$, with an initial cutoff $N_0=0$. For each such core with degree in $(N_{j-1},N_j]$, permanently choose a maximizing smooth fiber at cutoff $N_j-\deg g$. Distinct cores cannot occur in a progression because their outside valuations are all in $\{0,1\}$. At $N_j$ the entire contribution from $t<N_j-N_{j-1}$ attains the finite-fiber bound. The summable tail tends to zero. This proves the lower estimate. Taking all possible smooth factors in the same count gives $U_T\le1$.
+
+For any fixed admissible smooth set $A$, let $A(t)$ count its elements through degree $t$. A geometric series gives
+\[
+ \sum_{h\in A}\|h\|^{-1}=(1-q^{-1})\sum_{t\ge0}q^{-t}A(t).
+\]
+Each difference $J_T(t)-A(t)$ is a nonnegative integer. We will show that one is positive for $1\le t\le3$. Because $T\ge3$, the smooth elements through these cutoffs are all the monic polynomials there.
+
+\paragraph{Why the three cutoffs are incompatible.}
+Write $\mathcal L$ for the $q$ monic linears. Every monic rational-ratio progression has the form
+\[
+                  a d^2,\quad a d e,\quad a e^2,
+\]
+for distinct relatively prime monic $d,e$ and monic $a$. This follows by expressing the ratio in lowest terms. At cutoff three, $d,e\in\{1\}\cup\mathcal L$ and $\deg a\le1$. At cutoff two we must have $a=1$. For each pair of distinct diagonal entries $d^2,e^2$, its unique middle entry $de$ is required to be absent if both diagonals are retained. Retaining $k$ of $q+1$ diagonals costs at least
+\[
+                  q+1-k+\binom{k}{2}\ \ge\ q
+\]
+deletions, with distinct middle entries for distinct pairs. The bound is attained by deleting all $q$ linear squares. At cutoff one all $q+1$ entries are admissible. Thus any set optimizing both cutoffs one and two must delete precisely those $q$ squares. For each $a,d\in\mathcal L$ with $a\ne d$, the lower-degree entries $a,ad$ have been retained. Their progression forces deletion of $ad^2$. These $q(q-1)$ distinct cubics give at least $q^2$ deletions through degree three.
+
+There is a set at cutoff three with only $q^2-1$ deletions. Start with the deletion list consisting of every $P^2$ and every $ad^2$ for distinct $a,d\in\mathcal L$. Choose distinct $X,Y\in\mathcal L$, restore $Y^2$ and $YX^2$, and delete $Y$. To check it, group the triples by their common factor $a$ in the displayed parametrization. For $a=1$ the retained diagonals are $1,Y^2$, whose middle is the missing $Y$. For $a=Y$ the retained diagonals are $Y^3,YX^2$, whose middle is the missing $XY^2$. For each remaining linear $a$, the only retained diagonals are $a,a^3$, whose middle $a^2$ is missing. This exhausts the possibilities, including ratios of degree zero.
+
+\paragraph{The gap in the limit.}
+The integer loss has weight at least $q^{-3}$ in the series. Maximizing over $A$ gives $U_T-B_T\ge(1-q^{-1})c_Tq^{-3}$. Together with $u_q\ge v_T U_T$ and $b_q\le B_T$ this proves the bound, since $I_q(d)\le q^d/d$ gives
+\[
+ 1-v_T\le\sum_{d>T} I_q(d)q^{-2d}
+       \le q^{-T}/((T+1)(q-1)).
+\]
+The product defining $c_T$ decays sufficiently slowly: its first factor is $(1-1/q)^q\ge1/4$, and for $d\ge2$ Bernoulli's inequality gives $(1-q^{-d})^{I_q(d)}\ge1-1/d$. Hence $c_T\ge1/(4T)$, and sufficiently large $T$ gives a positive gap for every $q$. For the asymptotic, take $T=3$ and use $I_q(1)=q$, $I_q(2)=(q^2-q)/2$, $I_q(3)=(q^3-q)/3$. Then $c_3\to e^{-11/6}$.\hfill$\square$
+
+\begin{center}\small
+\begin{tabular}{c r l@{\qquad}c r l}\toprule
+$q$&$T$&Certified gap exceeds&$q$&$T$&Certified gap exceeds\\\midrule
+2&8&0.003660&5&4&0.000715\\
+3&5&0.002149&7&4&0.000297\\
+4&4&0.001192&&&\\\bottomrule
+\end{tabular}
+\end{center}
+The script \texttt{check\_gap.py} verifies the table with rational arithmetic. It also exhausts the $2^{15}$ subsets in the binary degree-three ball: its optimal sizes through degrees $0,1,2,3$ are $1,3,5,12$. Preserving the optima through degree two allows at most $11$ at degree three.
+
+\paragraph{Polynomial ratios.}
+The same separation holds if $r$ must be a nonconstant polynomial. Use admissibility for this ratio convention in both optimizations; outside-squarefreeness still fixes the rough core. At cutoff two the unique monic constant $1$ meets every forbidden triple, so one deletion suffices and is necessary. A set optimal at cutoff one retains $1$ and all $q$ linears and must delete all $q$ linear squares at cutoff two. This proves incompatibility already through degree two and replaces $q^{-3}$ in Theorem~\ref{th:gap} by $q^{-2}$ for this convention.

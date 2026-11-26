@@ -1,0 +1,98 @@
+\section{The polynomial-ratio supremum at large field size}
+\label{sec:charging}
+Let $\beta_q$ be the supremum of upper densities of subsets of
+$\mathbb F_q[x]$ containing no triple $f,fr,fr^2$ with $f\ne0$ and
+$\deg r\ge1$. Densities use balls of bounded degree. Write $A$ for the
+nonnegative integers with ternary digits in $\{0,1\}$. The degree-set
+construction of Asada, Fourakis, Manski, McNew, Miller and Moreland
+(Theorem~4.3 and Corollary~4.4 of the author manuscript,
+\href{https://doi.org/10.1016/j.ffa.2016.10.002}{Finite Fields Appl.\ 44
+(2017), 135--147}) gives
+\[
+ m_q=(1-q^{-1})\sum_{j\in A}q^{-j}\ \le\ \beta_q .
+\]
+The earlier ProveIt counterexample proves strict inequality. The next
+estimate locates the size of the discrepancy. Its proof uses only polynomial
+factorization and counting.
+
+\paragraph{Theorem.}
+For every prime power $q\ge16$,
+\[
+ 0\le \beta_q-m_q\le (2q+1)q^{-q+14}.
+\]
+In particular $\beta_q$ and $m_q$ agree to every fixed order in $1/q$ as
+$q$ tends to infinity through prime powers. The upper limit of
+$\log(\beta_q-m_q)/(q\log q)$ is at most $-1$.
+
+\paragraph{Proof.}
+Put $K=q$ and fix a degree cap $N\ge K$ and a progression-free set $E$.
+Call degree $N-k$ layer $k$, and call a layer preferred if $k\in A$.
+For each $k\in[0,K]\setminus A$, form $a,b$ by replacing every digit
+$2$ of $k$ by $0,1$, respectively, keeping the other digits.
+Then $a,b\in A$, $a<b<k$, and $k+a=2b$.
+Set $d=k-b$. For every $f\in E$ on layer $k$ and every monic
+irreducible $P$ of degree $d$, at least one of $fP$ on layer $b$ and
+$fP^2$ on layer $a$ is missing from $E$. Assign weight $1/I_d$ to one
+such missing polynomial, where $I_d$ counts the monic irreducibles of
+degree $d$. The weights sent by each $f$ sum to one. All three polynomials
+have the same leading coefficient, so counting also applies to sets which
+distinguish associates.
+
+For a nonzero polynomial $g$, let $\omega_d(g)$ count its distinct monic
+irreducible factors of degree $d$. For fixed $k$ and target $g$, at most
+$\omega_d(g)$ choices of $P$ can send weight to $g$. Its layer determines
+whether to recover $f$ as $g/P$ or $g/P^2$.
+In fact a target layer $h$ and a ratio degree $d$ determine at most
+one source layer $k$. The ternary digits of $d$ are ones precisely
+where $k$ has twos. On this nonempty set of positions $b$ has only ones
+and $a$ has only zeros. Thus $h$ cannot occur in both roles for the same
+$d$. The role fixes $k$ as $h+d$ or $h+2d$.
+
+Choose
+\[
+ \theta_1=1-8/q,\qquad \theta_d=\frac{8}{q d(d-1)}
+ \quad(d\ge2),\qquad \sum_{d\ge1}\theta_d=1.
+\]
+Call $(k,g)$ exceptional if $\omega_d(g)>\theta_d I_d$.
+Across all its nonexceptional pairs, $g$ receives at most one unit
+of weight, by uniqueness of the source layer for each $d$.
+Hence the missing elements on preferred layers can account for all
+nonexceptional weight. The weight at an exceptional pair is at most one.
+
+For $g$ uniform on any prescribed degree $n$ (also with leading
+coefficient fixed), the probability that each of $t$ prescribed distinct
+degree-$d$ primes divides $g$ is at most $q^{-dt}$. It equals that value
+if $dt\le n$ and is zero otherwise. Taking
+$t=\lfloor\theta_d I_d\rfloor+1$ and using the union bound gives
+\[
+ \Pr\big(\omega_d(g)\ge t\big)\le {I_d\choose t}q^{-dt}.
+\]
+For $d=1$ we have $I_1=q$ and $t=q-7$. The probability is at most
+$\binom q7q^{-(q-7)}\le q^{-q+14}$. For $d\ge2$,
+$dI_d\ge q^d-\sum_{j=1}^{\lfloor d/2\rfloor}q^j\ge q^d/2$ since
+every element of $\mathbb F_{q^d}$ with degree less than $d$ belongs
+to a proper subfield of degree at most $d/2$.
+Hence
+\[
+  t>\frac{4q^{d-1}}{d^2(d-1)}\ge q,\qquad
+  \frac{\mathrm e}{\theta_d q^d}
+    =\frac{\mathrm e\,d(d-1)}{8q^{d-1}}\le\frac{\mathrm e}{4q}<\frac1q .
+\]
+The two elementary bounds hold first at $d=2$. When $d$ increases by
+one, the denominators $d^2(d-1)$ and $d(d-1)$ grow by factors at
+most $9/2$ and $3$, respectively, while $q\ge16$.
+Using $\binom{I_d}{t}\le(\mathrm e I_d/t)^t$ now bounds the probability
+by $q^{-q}$ for $d\ge2$.
+
+Write $B_N$ for the nonzero polynomials of degree at most $N$.
+Across all $k\le K$ the exceptional weight is at most
+$2q|B_N|q^{-q+14}$. The proportion of $B_N$ on layers deeper than
+$K$ is $(q^{N-K}-1)/(q^{N+1}-1)\le q^{-K-1}$.
+The count of $E$ is at most the full count on preferred layers,
+plus the exceptional weight and this deeper-layer allowance. Every
+remaining member on a nonpreferred layer has one unit of weight, which
+has already been charged against a missing preferred-layer element.
+The proportion of $B_N$ on preferred layers tends to
+$(1-q^{-1})\sum_{j\in A}q^{-j}=m_q$. Taking the upper limit in $N$,
+then the supremum over $E$, and using $K=q$ proves the bound.
+\hfill$\square$

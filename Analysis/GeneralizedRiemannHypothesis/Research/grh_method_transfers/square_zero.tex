@@ -1,0 +1,103 @@
+\section{Progression-free sets over finite local rings}\label{sec:rings}
+
+Asada, Fourakis, Manski, McNew, Miller and Moreland ask how geometric-progression avoidance over $\mathbb F_q[x]$ changes when another finite ring replaces the coefficient field \cite[Question 6.5]{asada}. An earlier ProveIt manuscript classifies growing products of fields using disjoint triples and the density Hales--Jewett theorem. It ends by asking for a classification with nonzero radicals \cite{products}. We resolve the growing-product question for all finite commutative local rings whose maximal ideals square to zero, including mixed characteristic. A bounded family of unequal exponent gaps has exactly the same threshold.
+
+\subsection{Statement and consequences}
+All rings have an identity, and all local rings here have a nonzero residue field. Put $B_n(R)=\{f\in R[x]:\deg f\le n\}$, including zero, and take $\deg 0=-\infty$. For an integer $L\ge2$, call a set admissible if it contains no three distinct polynomials of the form
+\begin{equation}\label{eq:pattern}
+              f,\quad r^a f,\quad r^{a+b}f,\qquad
+ r\in R[x]\text{ a nonunit},\quad a,b\ge1,\quad a+b\le L .
+\end{equation}
+Thus $L=2$ is the published progression problem. Write $\Delta_L(R)$ for the supremum over admissible $E$ of $\limsup_{n\to\infty}|E\cap B_n(R)|/|R|^{n+1}$. The proofs work also if triples with repeated terms are forbidden. In lower-bound constructions we discard polynomials with a zero residue component, and all triples used in upper bounds are distinct.
+
+\begin{theorem}\label{thm:local}
+Let $(A_i,\mathfrak m_i)$ be finite commutative local rings with $\mathfrak m_i^2=0$. Write $q_i=|A_i/\mathfrak m_i|$, $Q_i=|A_i|$, and $R_s=\prod_{i=1}^s A_i$. Define
+\[
+ w_i=\begin{cases}
+       Q_i^{-2},& q_i\text{ even},\\
+       (q_iQ_i)^{-1},& q_i\text{ odd}.
+     \end{cases}
+\]
+For every fixed $L\ge2$ the limit $\lim_{s\to\infty}\Delta_L(R_s)$ exists, and it is positive if and only if $\sum_i w_i<\infty$. For one local factor, uniformly in $L$,
+\[
+       \gamma_i w_i\ \le\ 1-\Delta_L(A_i)\ \le\ w_i,\qquad
+ \gamma_i=\begin{cases}
+    1-Q_i^{-1},&q_i\text{ even},\\
+    (1-q_i^{-1})^2,&q_i\text{ odd}.
+ \end{cases}
+\]
+\end{theorem}
+
+Here $Q_i$ and $q_i$ measure different features. At fixed odd $q_i=q$ the density loss has order $Q_i^{-1}$, whereas at fixed even $q$ it has order $Q_i^{-2}$. For example take $A_i=\mathbb F_q\oplus V_i$ with $V_i^2=0$ and $1+\dim V_i=\max(2,\lceil\log_q(i+1)\rceil)$. Then $Q_i$ is comparable to $i+1$ for fixed $q$. The limiting extremal density is positive for $q=2$ and zero for $q=3$. Both families have growing square-zero radicals. Also, $A=\mathbb Z/p^2\mathbb Z$ is covered with $q=p$ and $Q=p^2$.
+
+\subsection{The degree restrictions at a single factor}
+Write $\bar f$ for coefficientwise reduction and $k=A/\mathfrak m$. A polynomial is a unit if and only if its reduction is a nonzero constant: lift that constant to a unit and invert the remaining nilpotent correction. The same fact holds for every finite local ring since its maximal ideal is nilpotent. In the present square-zero case, a polynomial with reduction of degree $e\ge1$ can be written $r=t+u$ with $\deg t=e$, leading coefficient of $t$ a unit, and $u\in\mathfrak m[x]$. Choose lifts only of the coefficients of $\bar r$ up to degree $e$. Then
+\[
+              r^j=t^j+j t^{j-1}u,\qquad j\ge1 .
+\]
+If the residue characteristic $p$ divides $j$, then $ju=0$, since $p\in\mathfrak m$. Multiplication by $t$ increases the degree of every nonzero polynomial by exactly $e$. These assertions allow the characteristic of $A$ itself to be $p^2$.
+
+Suppose $f,y=r^af,z=r^{a+b}f$ are in $B_n(A)$ with all three reductions nonzero. If $r$ is a nonunit, its reduction must have positive degree $e$. In residue characteristic two, at least one of $a,b,a+b$ is even. The corresponding relation $y=t^a f$, $z=t^b y$, or $z=t^{a+b}f$ forces $f$ or $y$ to have degree at most $n-2$. Remove $B_{n-2}(A)$, of relative size $Q^{-2}$.
+
+For odd $p$ remove instead
+\[
+        D_n=\{f:\deg f\le n-1,\ \deg\bar f\le n-2\}.
+\]
+Its probability is $(qQ)^{-1}$ by the independent uniform coefficients of $x^n$ and $x^{n-1}$. If $p\mid b$, then $z=t^b y$ forces $\deg y\le n-2$. Otherwise $b$ is a unit in $A$, and elimination of $u$ gives
+\begin{equation}\label{eq:eliminate}
+       (a+b)t^b y-a z=b t^{a+b} f .
+\end{equation}
+Consequently $\deg f\le n-ae\le n-1$. Also $\bar z=\bar r^{a+b}\bar f$ forces $\deg\bar f\le n-(a+b)e\le n-2$. The first term lies in $D_n$. This proves the asserted finite-ball deletions. Removing the zero-reduction fiber as well costs at most $q^{-(n+1)}$.
+
+\subsection{Disjoint triples and the odd-characteristic construction}
+One can pack triples occupying a positive multiple of the deleted fraction. By a packing we mean a collection of vertex-disjoint ordered triples \eqref{eq:pattern} with $a=b=1$. It is enough to specify their first terms and an injective rule for each of the three positions.
+
+For even $q$ take every $f$ of actual degree $n-2$, with triple $(f,xf,x^2f)$. The three positions have different actual degrees. The proportion of first terms is $(1-Q^{-1})Q^{-2}$. This argument also applies over arbitrary finite coefficient rings.
+
+For odd $q$ and $n\ge3$ take all $f=\sum f_jx^j$ satisfying
+\[
+   f_n=0,\qquad f_{n-1}\in\mathfrak m,\qquad
+   f_{n-2},\,f_0\in A^\times .
+\]
+There are $(1-q^{-1})^2/(qQ)$ of these as a proportion of the whole ball. Set
+\[
+       c=-\frac{f_{n-1}}{2 f_{n-2}}\in\mathfrak m,\qquad
+       r=x+c(x^2+1),\qquad y=rf,\quad z=r^2f .
+\]
+The term $x^2c$ cancels the unwanted degree $n+1$ term of $z$. Indeed $c f_{n-1}=0$ and $f_{n-1}+2c f_{n-2}=0$; both $y$ and $z$ are in $B_n(A)$. Their residue degrees are $n-1,n$, distinct from the starting degree $n-2$ in the residue field. To recover the start, the scalar polynomial $\bar f$ is obtained from $\bar y=x\bar f$ or $\bar z=x^2\bar f$. The coefficients
+\[
+       [x^n]y=-c f_{n-2},\qquad [x]z=2c f_0
+\]
+determine $c$ from either position: $\mathfrak m$ is a vector space over $k$ and the indicated scalars are known and nonzero in $k$. The constant correction $c$ in $r$ is what permits recovery at the third position. Finally $r(x-c(x^2+1))=x^2$ shows that multiplication by $r$ and by $r^2$ is injective. The triples are pairwise disjoint, including between different starting polynomials. This proves the single-factor upper estimate on density and supplies the product obstruction.
+
+\subsection{From finite balls to arbitrarily many factors}
+For a fixed finite product let $M(n)$ be the largest fraction of its ball occupied by an admissible set. We record why $\Delta_L(R_s)=\limsup_n M(n)$. Choose a subsequence $n_j$ approaching the upper limit so rapidly that
+\[
+      n_j-j>(1+L)n_{j-1},\qquad n_j-(1+L)j>n_{j-1}.
+\]
+From an optimizer at $n_j$ keep only elements whose residue degrees in all coordinates lie in $[n_j-j,n_j]$. The fraction discarded is at most $\sum_{i\le s}q_i^{-j-1}$, by uniform reduction. The union of the retained blocks is admissible. In each coordinate the three residue degrees are $d,d+ae,d+(a+b)e$ for $e\ge0$, and all are finite. If just the last term were in the latest block, its degree in each coordinate would be at most $(1+L)n_{j-1}$ because the middle degree is at most $n_{j-1}$. If the last two were in that block, their difference $be$ would be at most $j$, so the first degree would be at least $n_j-(1+L)j$. Both possibilities contradict the separation. This proves the equality with $\limsup M(n)$; the converse inequality is immediate. Slicing the product by its last coordinate shows $\Delta_L(R_{s+1})\le\Delta_L(R_s)$, using ratio $1$ in the coordinate held fixed.
+
+The product of the single-factor constructions, trimmed to nonzero residues, gives
+\begin{equation}\label{eq:product-bound}
+                    \Delta_L(R_s)\ge \prod_{i=1}^s(1-w_i).
+\end{equation}
+In a progression the ratio must be a nonunit in at least one coordinate. There all three residue degrees are finite, so the deletion argument in that coordinate applies.
+
+For the reverse bound put $u_i=\gamma_i w_i$. Partition $B_n(A_i)$ into the packed triples above and singleton cells. A uniformly drawn point falls in a triple with probability $3u_i$, independently across the coordinates. Conditional on the cells, if $K$ coordinates fall in triples the point is uniform on a ternary cube of dimension $K$. Every combinatorial line gives a forbidden triple, since its moving coordinates have their respective fixed ratios, and the other coordinates can use ratio $1$. If $\alpha_k$ denotes the maximal density of a line-free subset of $\{0,1,2\}^k$, with $\alpha_0=1$, then
+\[
+          M(n)\le \mathbb E\,\alpha_K,\qquad
+          K=\sum_{i=1}^s X_i,\quad X_i\sim{\rm Bernoulli}(3u_i)
+          \ \text{independently}.
+\]
+The density Hales--Jewett theorem gives $\alpha_k\to0$ \cite{dhj}. Since $\gamma_i\ge4/9$ and $\operatorname{Var}K\le\mathbb EK$, divergence of $\sum_iw_i$ gives $K\to\infty$ in probability. The upper bound then tends to zero. When the sum converges, the product in \eqref{eq:product-bound} is positive, since $w_i\le1/4$. This completes the proof of Theorem~\ref{thm:local}.
+
+\subsection{A direct use of the weighted Behrend lemma}
+There is also a quantitative lower bound valid for \emph{every} finite product of commutative local rings, with radicals of arbitrary nilpotence order. Put $V=\sum_i q_i/(q_i-1)^2$. For a constant $C_L$ depending only on the allowed exponent sum,
+\begin{equation}\label{eq:behrend}
+            \Delta_L(R_s)\ \ge\ \exp[-C_L\sqrt{\log(2+V)}] .
+\end{equation}
+The incoming field-product argument treats ordinary midpoints \cite{products}. Here the choices $a,b$ of \eqref{eq:pattern} give precisely the several weights that the Lean construction handles simultaneously.
+
+For each integer $m\ge2$, the lemma \texttt{exists\_three\_term\_free} gives a set $S\subset[0,m)$ of size at least $m\exp[-C'_L\sqrt{\log(2+m)}]$ avoiding all nonconstant weighted means $(a+b)d_2=b d_1+a d_3$ with $a+b\le L$. Indeed choose dimension $\lfloor\sqrt{\log m}\rfloor$ and digit-side length $\lfloor m^{1/d}/L\rfloor$ for sufficiently large $m$; absorb rounding and smaller $m$ in the constant. The Lean lemma obtains a whole congruence-free set, stronger than the integer version needed here \cite{lean}.
+
+At cutoff $n$ sum the residue degree deficits $D_n=\sum_i(n-\deg\bar f_i)$ over tuples with each residue nonzero. Its limiting law for fixed $s$ is the sum $D$ of independent variables with masses $(1-q_i^{-1})q_i^{-j}$ for $j\ge0$. Its variance is $V$. By Chebyshev an interval of $m\le4\sqrt V+4$ consecutive integers, enlarged to length two if needed, carries at least $3/4$ of the mass. Among the $2m-1$ translations of $S$ that could meet that interval some translate receives probability at least $3|S|/(4(2m-1))$. Use that translate to select $D_n$. Along any surviving progression the sum of the residue degrees increases with step size $\sum_i\deg\bar r_i>0$ before multiplication by the respective exponents $a,b$. Its three deficits would satisfy the forbidden weighted mean. Passing to the limit and applying the block argument proves \eqref{eq:behrend}; it only used finite local rings and reduction to their residue fields.

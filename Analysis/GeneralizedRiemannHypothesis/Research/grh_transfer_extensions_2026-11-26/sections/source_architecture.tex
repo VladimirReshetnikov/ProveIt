@@ -1,0 +1,109 @@
+\section{The methods that actually transfer}
+\label{sec:source-architecture}
+
+The exported statements concern the Riemann zeta function and
+\emph{Dirichlet} $L$-functions, including imprimitive characters. They do not
+quantify over arbitrary Hecke or Artin representations; see
+\src{Statements.lean}{the precise statements} and
+\src{Main.lean}{the five exported theorems}~\cite{upstream}.
+The relevant opportunity is to reuse the arguments inside the proof.
+
+\subsection{One determinant, two bounds}
+
+The source constructs integral forms whose divisibility records a weighted
+prime sum, obtains many independent images by a second-moment argument,
+and compares upper and lower bounds for the same Gram determinant.
+Write $D$ for the target dimension, $n$ for the selected independent
+vectors, $H$ for the main amount, $R$ for the prime remainder, and $m$ for
+the number of lifts. With controlled errors, the comparison has the form
+\[
+ D(H-E_-)\le \log\det\operatorname{Gram}(y)+2\delta
+       \le n(H-mR+E_+)+2\delta.
+\]
+Here $\delta$ measures the logarithmic index needed to make the vectors
+integral. The main amount cancels, producing a bound on $R$.
+The actual source conclusion is
+$m\,\mathrm{totalRemainder}\le fa(\log b)^5$;
+\src{New/Reduction/MainInequality.lean}{the main inequality}
+identifies each contribution.
+
+This comparison needs all three ingredients. The short forms span; their
+images have controlled index; and a small set of translates spans at least
+$(1-4/b^2)D$ dimensions, while its size times the source dimension is at
+most $5D\log(1+2b^2)$. These are the distinct declarations
+\texttt{span\_short\_integralRamified\_eq\_top},
+\texttt{indexLe\_normalizedPoincare}, and \texttt{enough\_forms} in
+\src{New/Reduction/ShortAndEnough.lean}{ShortAndEnough}.
+An integral vector with a large divisibility exponent alone does not
+provide this comparison.
+
+The lower-bound interface is already abstract.
+\texttt{TwistedLattice.covolume\_add\_index\_nonneg} in
+\src{New/Reduction/Lattices/TwistedLattice.lean}{TwistedLattice}
+asserts
+\[
+ 0\le c+2\delta+n'(b_{\mathrm{short}}+b_{\mathrm{denom}})
+                   +b_{\mathrm{volume}}.
+\]
+Here $n'$ completion vectors extend the selected family to a basis, $c$
+bounds its logarithmic Gram determinant, and the remaining terms bound
+completion norms, denominators, and ratios of lift determinants.
+Injectivity and compatible integral lattices are hypotheses.
+The theorem allows one twist \emph{per prime}, connected by a common height
+estimate. Its index correction matrix must nevertheless work for every
+allowed twist at that prime. The specialized lower bound is
+\texttt{integral\_forms\_long} in
+\src{New/Determinant/Twist/LongForms.lean}{LongForms}.
+
+\subsection{A necessary correction concerning Selmer precision}
+
+Some earlier transfer discussions treated the twisting result as only
+providing a new character at each finite precision. The inspected source
+is stronger. Its \texttt{TwistedLengthLe} predicate bounds the length of
+the module with coefficients $\operatorname{Frac}(O')/O'$ itself, over
+all sufficiently large coefficient rings $O'$;
+see \src{New/Congruences/Selmer/Line.lean}{the definitions in Line}.
+The passage from finite coefficients uses the following elementary fact.
+
+\begin{lemma}[Finite-level stopping]
+Let $O$ be a discrete valuation ring with uniformizer $\pi$, let $X$ be
+a torsion $O$-module, and let $N\ge1$. If
+$\operatorname{length}_O X[\pi^N]<N$, then
+$X=X[\pi^N]$ and $X$ has that same finite length.
+\end{lemma}
+\begin{proof}
+If $\pi^Nx\ne0$, choose the least $r>N$ such that $\pi^rx=0$.
+The element $\pi^{r-N}x$ has exact order $\pi^N$ and generates a
+length-$N$ submodule of $X[\pi^N]$, a contradiction.
+\end{proof}
+
+No finite-generation assumption on $X$ is needed. In the source, a locally
+constant cocycle on the compact Galois group has finite image, so a common
+denominator kills it. Finite-coefficient cocycles identify with the
+corresponding torsion subgroup. Thus a strict determinant bound below the
+chosen torsion precision controls the whole module
+(\texttt{length\_selmerModule\_divisibleQuot\_le} in
+\src{New/Congruences/Selmer/Line.lean}{Line}).
+\texttt{exists\_anticyclotomic\_twist} in
+\src{New/Congruences/Selmer/GeneralTheorem.lean}{GeneralTheorem}
+then supplies one character whose first $m$ powers meet all the stated
+conditions simultaneously. The specialized endpoint in
+\src{New/Congruences/Selmer/TwistingTheorem.lean}{TwistingTheorem}
+also explicitly bounds divisible coefficients.
+
+The qualifications are arithmetic, not a missing interchange of these
+precision quantifiers. A \texttt{SelmerDatum} requires residual absolute
+irreducibility, a local-rank budget, finite conjugate-dual and local
+defects, and an inertial element acting by a scalar $\zeta$ with
+$\zeta^2-1$ invertible; see
+\src{New/Congruences/Selmer/SelmerData.lean}{SelmerData}.
+Its local conditions must agree with those of the intended arithmetic
+group. The normalization of cocycles is legitimate when
+$\rho(\gamma)-1$ is invertible: subtracting the coboundary of
+$(\rho(\gamma)-1)^{-1}z(\gamma)$ gives the unique representative vanishing
+at $\gamma$.
+
+Finally, small normalized length does not mean zero. If $O'$ has absolute
+ramification index $e$, the nonzero module $O'/\pi$ has normalized length
+$1/e$. The twisting construction may enlarge $e$. Finiteness, vanishing,
+and an exact arithmetic order therefore require different arguments.

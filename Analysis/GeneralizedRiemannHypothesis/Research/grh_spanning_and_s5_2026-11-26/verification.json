@@ -1,0 +1,36 @@
+{
+  "status": "PASS",
+  "python": "3.12.14",
+  "upstream_commit": "72fead102f663d5c7a407964a13dc0cf9d977207",
+  "prior_corpus_commit": "9816644452bb42827167d6110e6d0322315a02b9",
+  "executions": [
+    {
+      "name": "integer_spanning",
+      "script": "checks/verify_spanning.py",
+      "script_sha256": "d85f2a3d45191891c022f4df4d693869a6a0f2f8d67d0c471901da0f6626b245",
+      "output": "checks/spanning_certificates.json",
+      "output_sha256": "513231941d143c956131679c28f572074639eaf645a554767f3d891d904a0028",
+      "return_code": 0,
+      "reported_status": "PASS"
+    },
+    {
+      "name": "cyclic_models",
+      "script": "checks/verify_cyclic_models.py",
+      "script_sha256": "ddeee8e6e9e657e881f78369d67ac82e856c195b9076fa15a8cf20577ad8b9e0",
+      "output": "checks/cyclic_models_verification.json",
+      "output_sha256": "dcb9a2fbd12a9e71d615cd59b1b4b317e595b5b02f004477599ad53cfd202672",
+      "return_code": 0,
+      "reported_status": "all exact-arithmetic checks passed"
+    },
+    {
+      "name": "s5_characters",
+      "script": "checks/check_sn5_identity.py",
+      "script_sha256": "7f13e0e9b13043e09966dc8c5cf37287fa7c52b28aed2c271f218dc38dac0626",
+      "output": "checks/sn5_verification.json",
+      "output_sha256": "034742f76909e8797c8941702c89d5cadefa69ce82538126493b0f4025005a56",
+      "return_code": 0,
+      "reported_status": "PASS: exact rational identities verified on all S5 classes"
+    }
+  ],
+  "scope": "Exact finite algebraic checks only. General proofs are in report.pdf. No upstream Lean build or new Lean proof was run."
+}

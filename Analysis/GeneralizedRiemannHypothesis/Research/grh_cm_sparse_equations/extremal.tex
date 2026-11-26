@@ -1,0 +1,20 @@
+\section{An infinite family with exact minimum support}
+The logarithmic loss can disappear entirely. This is an application of the same single-disk root count at a fixed prime; all its inputs are independent of RH.
+
+\begin{theorem}\label{th:extreme}
+Let $k\ge2$, $n=3\cdot7^{k-1}$ and $\Delta=-4\cdot 2^{2n}$. Then
+\[
+             s(\Delta)=h(\Delta)+1=2^{n-1}+1 .
+\]
+In particular every nonzero rational polynomial vanishing at a singular modulus of discriminant $-2^{44}$ has at least $1{,}048{,}577$ terms. The minimal polynomial attains that number.
+\end{theorem}
+\begin{proof}
+Here $K=\Q(i)$ and $f=2^n$. The conductor formula gives $h=2^{n-1}$ because the prime 2 ramifies in $K$ and the unit index is two. The prime 7 is inert and prime to the conductor. All $h$ distinct roots lie in one multiplicative unit disk of depth one.
+
+Write $W(m)=m-v_7(m!)=(5m+s_7(m))/6$. We prove that $W(i)<W(h)$ for $i<h$ and $W(i)>W(h)$ for $i>h$. It then follows that $B_7(h,1)<h$. A polynomial with at most $h$ terms cannot have the $h$ required zeros, by Lemma~\ref{lem:disk}.
+
+Put $Q=7^k$. Since $2^3=1+7$, successive seventh powers show that $2h=2^n\equiv1\pmod Q$. For $2m+1<Q$ the valuations of $h+j$ equal those of $1+2j$ for $1\le j\le m$, as both numbers after multiplying the former by 2 agree modulo $Q$ and $0<1+2j<Q$. Similarly $v_7(h-j)=v_7(1-2j)$ for $0\le j<m$. Each of the corresponding two sums of valuations is at most $v_7((2m+1)!)$; in the second sum the only possible repeated absolute value is 1. For $m\ge1$ this bound is at most $(2m+1)/6<m$. Subtracting the factorial valuations proves the required strict inequalities at both offsets $m$.
+
+For $m\ge(Q-1)/2$, use $s_7(i)\le6(1+\log_7 h)$ for $0\le i\le h$. Both $W(h+m)-W(h)$ and $W(h)-W(h-m)$, the latter for $m\le h$, are at least $(5m-6(1+\log_7 h))/6$. Since $\log_7 h<n/2=3Q/14$ and $5(Q-1)/2>6+9Q/7$ for $Q\ge49$, this is positive. The two ranges cover every integer $m\ge1$. The upper bound $s\le h+1$ completes the proof.
+\end{proof}
+The case $k=2$ has $n=21$ and $h=2^{20}$. The calculation proves that every coefficient of this million-degree class polynomial is nonzero. Multiplying it by a polynomial of any degree can never reduce its number of terms.

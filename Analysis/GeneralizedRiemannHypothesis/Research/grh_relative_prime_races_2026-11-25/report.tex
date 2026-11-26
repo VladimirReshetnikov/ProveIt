@@ -1,0 +1,261 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.88in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,array,xcolor,hyperref,microtype,enumitem,xurl}
+\usepackage[T1]{fontenc}
+\definecolor{ink}{HTML}{17334A}
+\hypersetup{colorlinks=true,linkcolor=ink,urlcolor=ink,citecolor=ink}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Q}{\mathbb Q}\newcommand{\C}{\mathbb C}\newcommand{\R}{\mathbb R}\newcommand{\ind}{\mathbf 1}\newcommand{\ord}{\operatorname{ord}}\newcommand{\Rea}{\operatorname{Re}}
+\newcommand{\up}{\texttt{grh-compact/src/}}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\title{\color{ink}\bfseries Relative zeta zeros from compressed prime races\\[5pt]\large A transfer of the Alp\"oge--Claude one-sided method beyond Dirichlet GRH}
+\author{Research note prepared for ProveIt}
+\date{25 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We inspect the compact Lean proof of RH and Dirichlet GRH at commit
+\nolinkurl{72fead102f663d5c7a407964a13dc0cf9d977207}. Its arithmetic core is a two-sided covolume comparison, followed by a one-sided Mellin--Landau argument. We give a rigorous extension of the latter to positive combinations of entire relative Dedekind zeta-functions, without assuming Artin holomorphy. In a tower of Galois fields, carefully chosen positive coefficients cancel all intermediate Frobenius strata. This yields a single, constant-free, prime-only, integer-scale inequality equivalent to the relative Riemann hypothesis. For the splitting field of $X^4-X-1$, only the factorization types $1^4$ and $1\,3$ are needed, with weights $8$ and $-1$. The remaining analytic estimate is specified as a target for the geometric proof, not established by the repository. We also give a mixed-factor criterion for linearly disjoint Galois composita using Brauer's known entireness theorem. Exact finite group and polynomial checks accompany the note. No new major open conjecture is claimed solved; originality of these formulations relative to all literature is not certified.
+\end{abstract}
+\tableofcontents
+\section{Scope and evidence}
+The upstream project \cite{upstream} states RH, an equivalent zeta-zero statement, and three statements of Dirichlet nonvanishing or critical-line zeros. Its \texttt{Statements.lean} imports only Mathlib; the proof entry point is \texttt{Main.lean}. The compact README reports Lean 4.35.0, Mathlib revision \nolinkurl{56a005855ea17e0b0958f73ec801ae140b0a1679}, and the axioms \texttt{propext}, \texttt{Classical.choice}, \texttt{Quot.sound}. The upstream comparator challenge intentionally contains \texttt{sorry} and is not imported into the proof. Independent verification reports by Rubinstein and Sutherland \cite{rubinstein,sutherland} document machine checks; this report did not run a local Lean build. We take the Dirichlet theorem as an available mathematical input, not a conjecture about all number fields.
+
+The target is the extended RH for nonabelian Dedekind zeta-functions and, more selectively, their relative factors. For abelian fields over $\Q$, the factorization into Dirichlet $L$-functions makes the corresponding RH a standard consequence, not a new transfer. We deliberately avoid counting standard RH consequences (e.g. idoneal numbers and abelian ERH) as new results.
+
+\paragraph{Earlier ProveIt work.} The incoming directory was listed via the GitHub connector. Four archives were fetched as binary content encoded in base64, and selected README or TeX sections were extracted in memory. The accessible summaries of \texttt{grh\_transfers.zip} include an exponent-six census, a mod-four prime race, and a conditional cubic discriminant $-23$ Artin criterion. \texttt{grh-transfer.zip} reports a 229-field abelian classification and a test involving irreducible primes of $X^\ell-2$. \nolinkurl{grh_method_transfers_2026-11-25.zip} includes sections on periodic obstructions, ramification budgets and sparse sampling; only selected portions were inspected. \nolinkurl{grh_cm_prime_applications.zip} includes CM computations and a sparse-twist criterion. The larger \nolinkurl{grh_beyond_dirichlet_grh_2026-11-25.zip} returned empty encoded content. These prior claims are not independently certified here; see the directory listing \cite{prior}. Our emphasis is instead on exact positive quotient combinations and cancellation of intermediate splitting strata in arbitrary normal towers, together with a constant-free prime-only criterion. We cannot exclude overlap with unexamined reports.
+
+\section{The reusable parts of the proof}
+All source paths in this section are relative to \up. The key files and exact Git blob identifiers are supplied in \texttt{source-audit.tsv}. The main inequality is in \texttt{New/Main.lean}. In its notation, $m$ is the number of theta lifts, $d$ the target dimension (here not the auxiliary prime), $h$ the main height, $\mathcal B=fa\log^3 b$, $L=\mathcal B\log b$ and $R$ the prime remainder. The upper and lower estimates combine as
+\begin{align*}
+d(h-3L)&\le V+2\delta,\\
+V&\le n(h-mR+L),\\
+(1-4/b^2)d&\le n\le d,\qquad
+\delta\le 5d\log(1+b^2)\mathcal B,\\
+-(h-mR+L)&\le b^2x^{99}.
+\end{align*}
+The last line is a one-sided bound; no upper bound on the absolute value is needed. Dividing by $d>0$ and bounding the cost of the missing dimensions gives
+\begin{equation}\label{eq:budget}
+mR\le 4L+4x^{99}+10\log(1+b^2)\mathcal B\le \log^2 b\,\mathcal B.
+\end{equation}
+This recovers the endgame algebra of \texttt{star\_inequality}, not the deep inputs A--C. The three main results are \texttt{Data.short\_forms}, \texttt{Data.enough\_forms} (\nolinkurl{New/Endgame/ShortAndEnough.lean}), and \nolinkurl{Data.integral_forms_long} (\nolinkurl{New/Endgame/LongForms.lean}). The short forms use $p$-adic gains, a rational rescaling and a prime level that pays for the archimedean excess; the filling result produces a nearly spanning family; the long forms use a product formula and a determinant-height bound with twists. The latter uses \texttt{exists\_isFitFamily} in \nolinkurl{New/Selmer/FitTwistsExist.lean}, and the lift volume comparison in \nolinkurl{New/Rows/LiftVolumeHeight.lean}. The existing proof takes $m\asymp\sqrt{x}$, ranks $\asymp x^5$, and very separated scales. Thus it gets square-root saving from the number of lifts, rather than a square-root cancellation assumption.
+
+\paragraph{Exact analytic interface.} The file \nolinkurl{New/Endgame/PrimeError.lean} defines
+\begin{equation}\label{eq:source}
+R_M(x)=\sum_{n\le x}\Lambda(n)\ind_{n\equiv1\ (M)}(1-\chi_d(n))
+(1/n-1/x)-\frac{\log x}{\varphi(M)}-\kappa.
+\end{equation}
+Here $\chi_d$ is the quadratic symbol in the source, and $\kappa$ is the specific real logarithmic-derivative constant. The code proves an exact finite-sum rewriting and a polar Mellin transform. \nolinkurl{New/Endgame/OneSidedCriterion.lean} proves a window-selection lemma and a zero detector using auxiliary quadratic twists to avoid cancellation. Its last nonvanishing step is not a general-purpose theorem about Artin or Hecke $L$-functions. We keep its kernel and its one-sided principle but replace the twist separation by entireness of relative zeta-functions. The coefficient weights below are signed, so the geometric theorem cannot simply be instantiated with them.
+
+\section{A general analytic detector}
+Throughout, all fields are fixed; no uniformity in conductor, degree or discriminant is claimed. Let $E/\Q$ be finite Galois, $G=\operatorname{Gal}(E/\Q)$, $S$ a finite set of rational primes containing those ramified in $E$, and $g_p$ a Frobenius conjugacy class for $p\notin S$. For a real bounded class function $w$ define
+\begin{align*}
+D_w(s)&=\sum_{p\notin S}\sum_{k\ge1}w(g_p^k)\log p\,p^{-ks},\quad \Rea s>1,\\
+A_w(x)&=\sum_{p^k\le x,\ p\notin S}w(g_p^k)\log p(1/p^k-1/x),\\
+P_w(x)&=\sum_{p\le x,\ p\notin S}w(g_p)\log p(1/p-1/x).
+\end{align*}
+We write $\zeta_L$ for Dedekind zeta of a field $L$. Suppose we have a finite list $Q_j$ of meromorphic products of Dedekind zeta-functions, with integer exponents, satisfying the following properties:
+\begin{enumerate}[label=(\roman*)]
+\item Each $Q_j$ is holomorphic in $\Rea s>0$, nonzero on $\Rea s\ge1$ (with removable singularity at $1$), and has only zeros, not poles, in the open critical strip.
+\item For positive real constants $a_j$, an Euler-factor identity gives
+\begin{equation}\label{eq:identity}
+D_w(s)=-\sum_j a_j Q_j'(s)/Q_j(s)+H(s),
+\end{equation}
+where $H$ is a finite combination of logarithmic derivatives of omitted local Euler factors, holomorphic for $\Rea s>0$. In particular it is bounded on every closed vertical strip bounded away from $\Rea s=0$.
+\item The product exponents in each $Q_j$ sum to zero, and its signed combination of prime-ideal Chebyshev functions has cancellation of the main term $x$.
+\end{enumerate}
+Condition (iii) is automatic for all the quotients used here. A field zeta-function has a simple pole at 1, no zeros on the line $\Rea s=1$, a completed entire zeta of order one, and the fixed-field prime ideal theorem with error $O_L(x\exp(-c_L\sqrt{\log x}))$ as $x\to\infty$ (a possible fixed exceptional real zero is absorbed for sufficiently large $x$). These are classical analytic inputs; see \cite{neukirch,montgomery,grenier}. No Artin RH or individual Artin holomorphy is assumed.
+
+\begin{theorem}[Constant-free detector]\label{thm:detector}
+Under (i)--(iii), the following are equivalent:
+\begin{enumerate}[label=(\alph*)]
+\item No $Q_j$ has a zero in $\Rea s>1/2$.
+\item For every $0<\varepsilon<1/2$ there are $C_\varepsilon,x_\varepsilon>0$ such that for all integers $x\ge x_\varepsilon$,
+\begin{equation}\label{eq:criterion}
+ P_w(x)-P_w(x^2)\le C_\varepsilon x^{-1/2+\varepsilon}.
+\end{equation}
+\item For every $0<\varepsilon<1/2$, $|A_w(x)-D_w(1)|=O_{w,\varepsilon}(x^{-1/2+\varepsilon})$.
+\end{enumerate}
+In fact an eventual one-sided bound in (b) for a single $\beta=1/2+\varepsilon$ excludes zeros of every $Q_j$ in $\Rea s>\beta$.
+\end{theorem}
+\begin{proof}
+\emph{The limit and removal of prime powers.} For $\Rea s>1$, write $D_w=\sum_n c_n n^{-s}$ with $c_{p^k}=w(g_p^k)\log p$ and all other coefficients zero. By the prime ideal theorem, (ii)--(iii), and the finitely many removed primes, $C(t)=\sum_{n\le t}c_n=O(t\exp(-c\sqrt{\log t}))$. Partial summation shows $\sum_n c_n/n$ converges, equals $D_w(1)$ by Abelian continuity, and $C(t)/t\to0$. Hence $A_w(x)\to\kappa=D_w(1)$. For the contribution of powers $k\ge2$, the Chebyshev bound $\sum_{p\le y}\log p=O(y)$ gives
+\[
+\sum_{p^k\le t,\ k\ge2}\log p=O(\sqrt t+t^{1/3}\log t)=O(\sqrt t).
+\]
+By partial summation the omitted tail in $\sum_{p,k\ge2}w(g_p^k)\log p/p^k$ is $O(x^{-1/2})$, and the $1/x$ correction is of the same size. Thus for a real constant $B$,
+\begin{equation}\label{eq:powers}
+ A_w(x)-P_w(x)=B+O_w(x^{-1/2}).
+\end{equation}
+In particular $P_w$ also has a limit $\kappa-B$.
+
+\emph{Integer sampling and telescoping.} The continuous function $P_w(x)$ is differentiable between primes, with derivative $x^{-2}\sum_{p\le x}w(g_p)\log p=O_w(x^{-1})$. The same estimate, by the chain rule, holds for $P_w(x^2)$ as a function of $x$. Continuity gives a uniform $O_w(1/x)$ error on intervals $[m,m+1]$. Consequently the integer bound in (b) holds for all sufficiently large real $x$, with a changed constant. For $\beta\in(1/2,1)$, (\ref{eq:powers}) transfers it to $A_w(x)-A_w(x^2)\le C' x^{\beta-1}$. Telescoping at the scales $x^{2^i}$ yields
+\begin{equation}\label{eq:telescoping}
+ A_w(x)-\kappa\le C'\sum_{i\ge0}x^{(\beta-1)2^i}\le 2C'x^{\beta-1}
+\end{equation}
+for all sufficiently large $x$, since $2^i\ge i+1$. Only upper bounds were summed. This is why no unknown constant has to be computed.
+
+\emph{Mellin transform and the sign of real poles.} Put $R(x)=A_w(x)-\kappa$. For $\Rea s>1$, absolute convergence and termwise integration give
+\begin{equation}\label{eq:mellin}
+ \Phi(s)=\int_1^\infty R(x)x^{-s}\,dx
+ =\frac{D_w(s)}{s(s-1)}-\frac{\kappa}{s-1}.
+\end{equation}
+Indeed the integral of $(1/n-1/x)x^{-s}$ over $[n,\infty)$ is $n^{-s}/[s(s-1)]$. The singularity at 1 is removable. A zero $\rho$ of any $Q_j$ in the strip has residue
+\begin{equation}\label{eq:residue}
+ \operatorname{Res}_{s=\rho}\Phi(s)=\frac{-\sum_j a_j\ord_\rho Q_j}{\rho(\rho-1)}\ne0.
+\end{equation}
+For a \emph{real} $\rho\in(0,1)$ this is positive. This sign is essential: the reversed prime race does not give the same one-sided implication.
+
+Suppose (\ref{eq:telescoping}) holds. Set $f(v)=C''e^{(\beta-1)v}-R(e^v)$ for $v\ge v_0$, so $f\ge0$. Its transform with kernel $e^{-(s-1)v}$ equals $C''e^{-(s-\beta)v_0}/(s-\beta)-\Phi(s)$ plus an entire finite-interval correction. If its abscissa of convergence $\sigma_c$ exceeds $\beta$, Landau's theorem for a nonnegative function requires a singularity at the real point $\sigma_c$. (For completeness: if the transform were analytic there, its Taylor expansion at a nearby real point to the right would have coefficients given by nonnegative moments with alternating signs; evaluating to the left and applying monotone convergence would extend convergence past $\sigma_c$.) The only possible such singularities are simple poles at real zeros of $Q_j$ with strictly negative residue, by (\ref{eq:residue}). They are impossible, because the transform is nonnegative on the real axis to the right and would tend to $-\infty$ there. Thus $\sigma_c\le\beta$; absolute convergence gives holomorphy in $\Rea s>\beta$. Equation (\ref{eq:residue}) now excludes every zero there, including nonreal ones. Applying all $\beta>1/2$ proves (b)$\Rightarrow$(a).
+
+\emph{Converse.} Assume (a). The completed field zetas $\xi_L$ (with the simple poles removed by $s(s-1)$) have Hadamard products of genus at most one over nontrivial zeros. Their local zero count in $[t-1,t+1]$ is $O_L(\log(|t|+3))$. In the signed sum of logarithmic derivatives defining any $Q_j$, the multiplicity at each nontrivial zero is its order as a holomorphic quotient, hence nonnegative. The terms off the critical line cancel: right of the line by (a), left of it by the field functional equations, which preserve zero multiplicities under $\rho\mapsto1-\overline\rho$. The gamma and polynomial factors are holomorphic and nonzero on $1/2<\Rea s\le2$, except the explicit pole-removing factors at 1, whose signed exponents sum to zero.
+
+For fixed $\sigma\ge1/2+\varepsilon$ up to 2, subtract the Hadamard logarithmic derivative at $2+it$ from the one at $\sigma+it$. Each zero term is then a difference of two reciprocals. Zeros within $|\Im\rho-t|\le1$ contribute $O_\varepsilon(\log(|t|+3))$; zeros in the $k$th unit shell contribute $O(\log(|t|+k+3)/k^2)$ in total. Gamma terms satisfy the usual Stirling estimate; the Euler series at $2+it$ converges absolutely. Hence $D_w(\sigma+it)=O_{w,\varepsilon}(\log(|t|+3))$ uniformly in this strip (with the removable value at 1 understood). This argument uses only the standard field-zeta zero counts, not estimates for individual Artin factors.
+
+Mellin inversion (or the elementary Perron kernel for $(1/n-1/x)_+$) yields
+\[
+ A_w(x)=\frac1{2\pi i}\int_{2-i\infty}^{2+i\infty}
+ \frac{D_w(s)x^{s-1}}{s(s-1)}\,ds.
+\]
+Shift to $\sigma=1/2+\varepsilon$. The only crossed pole is $1$ with residue $\kappa$. The horizontal integrals tend to zero by the uniform logarithmic bound; the new vertical integral is $O_{w,\varepsilon}(x^{-1/2+\varepsilon})$ since $\log(|t|+3)/(1+t^2)$ is integrable. This proves (c). Finally (c) and (\ref{eq:powers}) immediately imply (b).
+\end{proof}
+
+\section{Compression along normal towers}
+Let
+\[
+\Q\subseteq F_0\subsetneq F_1\subsetneq\cdots\subsetneq F_r=E
+\]
+be a tower with every field Galois over $\Q$ (the bottom can be $\Q$), $r\ge1$. Set $H_i=\operatorname{Gal}(E/F_i)$, $d_i=[F_i:\Q]$, $n_i=d_i/d_{i-1}\ge2$; thus $H_i\triangleleft G$ and $H_r=\{1\}$. Write $Q_i=\zeta_{F_i}/\zeta_{F_{i-1}}$. By Aramata--Brauer \cite{brauer,murty}, each $Q_i$ is entire. Its value at 1 is the ratio of two positive residues and it is nonzero on $\Rea s\ge1$. No unproved Dedekind quotient assertion is needed.
+
+\begin{lemma}[Local coefficient]\label{lem:local}
+For an unramified prime $p$, the coefficient of $\log p\,p^{-ks}$ in $-\zeta_{F_i}'/\zeta_{F_i}$ is $d_i\ind_{g_p^k\in H_i}$. Consequently for
+\[
+w_i(g)=n_i\ind_{H_i}(g)-\ind_{H_{i-1}}(g)
+\]
+we have $D_{w_i}(s)=-d_{i-1}^{-1}Q_i'(s)/Q_i(s)+H_i^*(s)$ with a finite local correction as in Theorem~\ref{thm:detector}.
+\end{lemma}
+\begin{proof}
+If the image of $g_p$ in $G/H_i$ has order $f$, then $p$ has $d_i/f$ prime ideals of norm $p^f$ in $F_i$. Differentiation of their Euler factors gives coefficient $(d_i/f)f=d_i$ when $f\mid k$ and zero otherwise. Ramified Euler terms have the same geometric series form with possible smaller multiplicities, and all their poles lie on $\Rea s=0$. Subtracting the two logarithmic derivatives gives the stated formula.
+\end{proof}
+
+\begin{theorem}[Tower compression]\label{thm:tower}
+Put $c_1=1$ and $c_j=(n_1-1)\prod_{i=2}^{j-1}n_i$ for $2\le j\le r$. Then all $c_i>0$, and
+\begin{equation}\label{eq:compressed}
+w(g):=\sum_{i=1}^r c_iw_i(g)
+= (n_1-1)\frac{|H_1|}{|H_r|}\ind_{H_r}(g)-\ind_{H_0\setminus H_1}(g).
+\end{equation}
+The relative RH for $\zeta_E/\zeta_{F_0}$ is equivalent to (\ref{eq:criterion}) for this $w$. If $F_0$ is abelian over $\Q$, Dirichlet GRH turns this into an equivalent criterion for the RH of $\zeta_E$ itself.
+\end{theorem}
+\begin{proof}
+On $H_0\setminus H_1$ the sum is $-1$. On $H_{j-1}\setminus H_j$ for $j\ge2$ it is $\sum_{i<j}c_i(n_i-1)-c_j=0$: the recursive choice is exactly this sum, since the partial sum multiplies by $n_j$ at each step. On $H_r$, the sum is $(n_1-1)\prod_{i=2}^r n_i$. Outside $H_0$ all terms vanish. By Lemma~\ref{lem:local}, $D_w=-\sum_i(c_i/d_{i-1})Q_i'/Q_i+H$ with positive coefficients. Theorem~\ref{thm:detector} applies. Since the entire quotients telescope to $\zeta_E/\zeta_{F_0}$, they cannot cancel each other's zeros. Their zeros in the strip are symmetric under the functional equation of the completed zeta quotients. Finally abelian factorization proves the last assertion.
+\end{proof}
+
+\begin{remark}[Support and a direct alternative]
+The compressed weight needs only completely split primes of $E$ and primes split in $F_0$ but not $F_1$. Its density of support, by ordinary Chebotarev, is $(1+|H_0|-|H_1|)/|G|$. For comparison the simple direct quotient race $([E:F_0]-1)\ind_{\{1\}}-\ind_{H_0\setminus\{1\}}$ uses density $|H_0|/|G|$. The compression removes $|H_1|-1$ group elements from the support, although the positive weight at identity may be large. Among strictly positive linear combinations of the particular $w_i$, the first stratum and identity must remain, and cancellation of every other stratum uniquely fixes $c_i/c_1$. This is an optimality statement within this cone, not among all possible class functions or arithmetic constructions.
+\end{remark}
+
+\section{A concrete $S_4$ problem}
+Take $f(X)=X^4-X-1$ and $E$ its splitting field. Its discriminant is $-283$ (using $\operatorname{disc}(X^4+aX+b)=256b^3-27a^4$). Modulo 2 the polynomial is irreducible, as it has no root and is not divisible by the only irreducible quadratic $X^2+X+1$. Modulo 7 the values at $0,1,\ldots,6$ are $6,6,6,0,6,3,1$, so there is exactly one root and the squarefree factorization has type $1\,3$; a 4-cycle and a 3-cycle force a transitive subgroup of $S_4$ to have order divisible by 12 and not equal to $A_4$, so the group is $S_4$. The intermediate fields are $F_0=\Q(\sqrt{-283})$, fixed by $A_4$, and $F_1$, the splitting field of the cubic resolvent $Y^3+4Y-1$, fixed by the Klein four group $V_4$. Here $n_1=3,n_2=4$ and the coefficients in Theorem~\ref{thm:tower} are $(1,2)$.
+\begin{center}
+\begin{tabular}{@{}lrrr r@{}}
+\toprule
+Cycle type & Class size & $w_1$ & $w_2$ & $w=w_1+2w_2$\\\midrule
+$1^4$ & 1 & 2 & 3 & 8\\
+$1^2 2$ & 6 & 0 & 0 & 0\\
+$2^2$ & 3 & 2 & $-1$ & 0\\
+$1\,3$ & 8 & $-1$ & 0 & $-1$\\
+$4$ & 6 & 0 & 0 & 0\\\bottomrule
+\end{tabular}
+\end{center}
+The exact series identity is
+\[
+ D_w(s)=-\tfrac12\frac{(\zeta_{F_1}/\zeta_{F_0})'}{\zeta_{F_1}/\zeta_{F_0}}(s)
+        -\tfrac13\frac{(\zeta_E/\zeta_{F_1})'}{\zeta_E/\zeta_{F_1}}(s)+H(s).
+\]
+The support density is $9/24=3/8$. The sole ramified candidate prime 283 is excluded, whether or not needed. Since $F_0$ is quadratic, the available Dirichlet GRH proves RH for $\zeta_{F_0}$.
+\begin{corollary}[Single quartic prime race]
+Given Dirichlet GRH, $\zeta_E$ satisfies RH if and only if for every $\varepsilon\in(0,1/2)$, for all sufficiently large integers $x$,
+\[
+P_w(x)-P_w(x^2)\le C_\varepsilon x^{-1/2+\varepsilon},
+\qquad w(p)=8\ind_{1^4}(p)-\ind_{1\,3}(p).
+\]
+\end{corollary}
+\paragraph{Why this is not a standard application.} Congruence classes can determine the sign of Frobenius in $S_4$ via the discriminant character, but cannot distinguish identity and 3-cycles: both project to identity in $S_4/A_4$. More generally, a finite periodic function on rational primes factors through the cyclotomic Galois group; restricting to $E$ sees only $E\cap\Q(\zeta_M)$, which lies in its maximal abelian subfield. By Chebotarev in the compositum, there exist primes with identical residue class modulo $M$ and each of these two Frobenius types (choose the identity on the cyclotomic field, compatible on the intersection). Thus no fixed finite periodic weighting can equal this race outside a finite set. This is a structural obstruction to obtaining the estimate by substitution into (\ref{eq:source}); it is not a proof of logical independence from Dirichlet GRH.
+
+\section{A second extension: mixed factors of composita}
+Let $E_1,E_2$ be Galois over $\Q$, both containing $F$, also Galois over $\Q$, and linearly disjoint over $F$ (equivalently here $E_1\cap E_2=F$). Put $E=E_1E_2$, $d=[F:\Q]$, $n_i=[E_i:F]>1$. Brauer's 1973 theorem \cite{brauer} proves entireness of
+\[
+ Q_{12}(s)=\frac{\zeta_E(s)\zeta_F(s)}{\zeta_{E_1}(s)\zeta_{E_2}(s)}.
+\]
+It is nonzero for $\Rea s\ge1$ and its completed functional equation follows by multiplication. On $G=\operatorname{Gal}(E/\Q)$ put
+\[
+ w_{12}(g)=\ind_{g|_F=1}\big(n_1\ind_{g|_{E_1}=1}-1\big)
+                            \big(n_2\ind_{g|_{E_2}=1}-1\big).
+\]
+Expanding the product gives $n_1n_2\ind_{g=1}-n_1\ind_{g|_{E_1}=1}-n_2\ind_{g|_{E_2}=1}+\ind_{g|_F=1}$. By Lemma~\ref{lem:local}'s Euler-factor calculation, $D_{w_{12}}=-Q_{12}'/(dQ_{12})+H$. Thus Theorem~\ref{thm:detector} proves that the RH of this mixed factor is equivalent to a single prime-only two-scale inequality. It does not require RH for either constituent field. Brauer's inclusion-exclusion theorem for more than two jointly linearly disjoint Galois fields gives the identical conclusion with a product of the factors $n_i\ind-1$; the required hypothesis is joint disjointness, not merely pairwise disjointness.
+
+\paragraph{Interpretation.} For $F=\Q$ and $G=G_1\times G_2$, the weight is the character of the tensor product of the two augmentation representations (regular minus trivial). The criterion detects the mixed relative zeros without relying on holomorphy of each tensor-product Artin function. Even if both constituent zetas satisfy RH, the mixed part is not discharged by that alone. One could test products of two small nonabelian splitting fields, or a cubic splitting field times an independent quadratic field, to isolate a family of new twists. This is an analytic target; the entireness theorem and the representation identity are classical, not discoveries of this report.
+
+\section{Geometric transfer: concrete obligations}
+\paragraph{A sufficient replacement for the existing arithmetic star.}
+For one fixed target class function $w$ above, let $R_w(x)=A_w(x)-D_w(1)$. Suppose for every small $\eta>0$ and every sufficiently large $x$ an analogue of the short/enough/long covolume package exists, with positive integers $m,d,n$, and a parameter $b$ with $\log b\le x^\eta$, such that $m\ge\sqrt{x}$ and
+\begin{align*}
+ &(1-4/b^2)d\le n\le d,\quad h_{\rm top}=h-m\mathcal R+L,\quad -h_{\rm top}\le b^2x^A,\\
+ &d(h-3L)\le V+2\delta,\quad V\le n h_{\rm top},\quad
+  \delta\le5d\log(1+b^2)\mathcal B,\quad L=\log b\,\mathcal B,\\
+ &\mathcal R=aT\{R_w(x)-R_w(x_1)+\lambda R_*(x_1)\},\quad
+  \mathcal B=fa\log^3 b,\quad f/T\le C\log b.
+\end{align*}
+Here $T>0$, $a>0$, $A$ fixed, $R_*$ is a reference remainder, and $x_1$ is adjustable in a window. Require $4x^A+4L+10\log(1+b^2)\mathcal B\le C'\log^2 b\mathcal B$. Finally require an admissible choice with $R_w(x_1)-\lambda R_*(x_1)\le x^{-1}$; the source proves a suitable window lemma for its own polar transforms, not this geometric data. Then division of (\ref{eq:budget}) in its abstract form gives
+\[
+ R_w(x)\le C''\frac{\log^6 b}{m}+x^{-1}\le C''' x^{-1/2+6\eta}.
+\]
+Theorem~\ref{thm:detector}, or its Mellin--Landau implication directly, now proves relative RH by taking $\eta$ arbitrarily small. This conditional endgame is rigorous; the construction of the data is precisely the new burden. A geometric proof may instead target the constant-free difference directly, which avoids the second-scale reference function but is not yet supplied by the upstream proof.
+
+\paragraph{What must change.} The following is a research specification, not a claim that the modules already prove the new lemmas.
+\begin{enumerate}[leftmargin=*,label=\textbf{G\arabic*.}]
+\item \textbf{Frobenius-selective divisibility.} Construct algebraic sections and local jets whose net divisibility/size balance realizes $8\ind_{1^4}-\ind_{1\,3}$, or its expression as two positive quotient weights. The existing \nolinkurl{New/Curve/JetDivisibility.lean}, \texttt{KatzDivisibility.lean} are candidate modules to inspect, not verified generalizations. The source uses specific CM and quadratic splitting; one cannot treat a quartic Frobenius cycle as a Legendre symbol. Prove a local formula at all good primes and control bad primes and prime powers.
+\item \textbf{Short forms with a signed net gain.} Replace the nonnegative source \texttt{lambdaClass} by a net difference of two effective divisibility sums, with the same common main height; preserve uniform archimedean norm and index bounds in \texttt{ShortAndEnough}. A literal signed divisor or a negative $p$-adic gain is not automatically legitimate. Check that cancellation occurs in the upper/lower comparison, not by assuming negative valuations of integral sections.
+\item \textbf{Filling and admissibility.} Prove analogues of \texttt{Data.enough\_forms} and \texttt{exists\_data}; retain a positive-dimensional row space, near-full rank, and the polynomial loss bound. Auxiliary field, archimedean types, level and ramification constraints must be constructed simultaneously. The fact that \nolinkurl{Lib/ClassField/Chebotarev/FrobeniusFilter.lean} proves Frobenius existence is insufficient for the quantitative scale constraints.
+\item \textbf{Twisted volumes and global budgets.} Reprove \texttt{exists\_isFitFamily} and the covolume lower bound for the modified rows. The existing fit family involves twists depending on each $\ell$-adic embedding and their first $m$ powers. Reusing the statement without checking the new local types and Selmer length budgets would be circular. The product formula must still yield exactly the common main height with error $O(\mathcal B\log b)$.
+\item \textbf{Second scale.} Prove the admissible-window estimate for the new remainder, without invoking ERH in the unknown field. The polar transform above is holomorphic on and to the right of 1 by classical results, so the abstract moment technique in \texttt{OneSidedCriterion} is a plausible port; its growth and window hypotheses must be checked in the new setting. Alternatively prove the integer two-scale criterion directly.
+\end{enumerate}
+
+\paragraph{An exact structural gate.} Every arithmetic weighting built solely as a finite linear combination of Dirichlet characters factors through an abelian quotient. Therefore it cannot represent the quartic weight or the nonabelian mixed weight in general. Any successful G1 must incorporate noncommutative Frobenius information through local geometry, representation traces, or an equivalent new input. This identifies a concrete missing lemma rather than proposing an automatic corollary of RH.
+
+\section{Other conjectures: status of the transfer}
+\begin{center}\small
+\begin{tabular}{@{}p{0.24\linewidth}p{0.30\linewidth}p{0.38\linewidth}@{}}
+\toprule Target & Reusable part & Main obstruction / next test\\\midrule
+Dedekind ERH, small solvable fields & Exact detector, tower compression, covolume pattern & G1--G4 for a nonabelian Frobenius detector. Start with cubic, then the $S_4$ example.\\[3pt]
+Hecke GRH over number fields & Mellin--Landau, entireness for nontrivial Hecke characters & Geometry over a new base; ensure norm and archimedean parameters; sign/cancellation for complex twists.\\[3pt]
+Artin holomorphy & Relative zeta quotients, Heilbronn/Stark order bounds & Individual Artin factors may have poles at zeros of field zeta. Relative entireness alone does not settle holomorphy.\\[3pt]
+Automorphic GRH & Theta-lift, norm and Selmer infrastructure & Identify local trace weights, pole structure, and sign of residues; new conductor and ramification estimates.\\[3pt]
+BSD, Bloch--Kato & Determinant heights, congruence denominators, Selmer control & Existing bounds address selected twists and lift spaces, not exact order of vanishing or full arithmetic rank.\\[3pt]
+Twin primes, Goldbach & Prime-sum method as inspiration only & One-point distribution estimates do not control two-prime correlations; no justified transfer found.\\\bottomrule
+\end{tabular}
+\end{center}
+A useful consequence \emph{if} Dedekind ERH is established for a Galois field $E$ is zero/pole-freeness of every irreducible Artin $L$-function in $\Rea s>1/2$ (apart from the trivial pole at 1). Stark's inequality \cite{stark}, at a point $s_0\ne1$ in the strip, bounds the sum of squared Artin orders by the square of the order of $\zeta_E$; if the latter is zero, all individual orders are zero. This still leaves the critical line, and hence does not solve general Artin holomorphy. It gives a meaningful further payoff for the quartic or general field targets.
+
+\section{Reproducibility and limitations}
+The Python checker uses exact permutations and modular polynomial arithmetic, checks the $S_4$ weights and the tower and compositum identities, and enumerates primes for sample values of $P_w(x)-P_w(x^2)$. The race values use floating-point logs and are illustrations, not interval certificates or evidence of a uniform asymptotic estimate. For an integer $x$ the finite sum can alternatively be converted to a logarithm of a positive rational with integer exponents by multiplying by a common denominator of all rational coefficients; this makes comparisons with rational logarithmic thresholds exact in principle. The group and factorization checks are independently reproducible with the included standard-library script.
+
+The new mathematical results are the proved analytic reductions, not a proof of G1--G4. The report covers selected upstream files, selected previous archives and classical references, not all 76,000 lines of compact Lean or all earlier archives. No Lean compilation or formalization of the new proof was performed (a Lean toolchain was not available in this runtime). No repository was modified. The source audit includes a script to reproduce blob hashes on an external checkout and a CSV of the diagnostic prime race. The material is intended as a precise starting point for an actual geometric extension.
+
+\begin{thebibliography}{9}
+\bibitem{upstream} L. Sernau and collaborators, \emph{GRH for Dirichlet L-functions, in Lean 4}, revision \nolinkurl{72fead102f663d5c7a407964a13dc0cf9d977207}, 25 Nov. 2026. \url{https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207}.
+\bibitem{rubinstein} M. Rubinstein, \emph{Alp\"oge/Claude proof of the Generalized Riemann Hypothesis}, verification notes, Nov. 2026. \url{https://www.math.uwaterloo.ca/~mrubinst/alpoge_claude_grh/}.
+\bibitem{sutherland} A. Sutherland, \emph{Shorter GRH Lean proof: verification files}, Nov. 2026. \url{https://math.mit.edu/~drew/shortgrh/}.
+\bibitem{brauer} R. Brauer, A note on zeta-functions of algebraic number fields, \emph{Acta Arith.} 24 (1973), 325--327. \href{https://doi.org/10.4064/aa-24-3-325-327}{doi:10.4064/aa-24-3-325-327}.
+\bibitem{murty} M. R. Murty and V. K. Murty, \emph{Non-vanishing of L-Functions and Applications}, Birkh\"auser, 1997, Ch. 2, \S3 (Aramata--Brauer).
+\bibitem{neukirch} J. Neukirch, \emph{Algebraic Number Theory}, Springer, 1999, Ch. VII (zeta and L-functions).
+\bibitem{montgomery} H. L. Montgomery and R. C. Vaughan, \emph{Multiplicative Number Theory I: Classical Theory}, Cambridge, 2007, \S15.1--15.2 (Landau).
+\bibitem{grenier} L. Greni\'e and G. Molteni, Explicit versions of the prime ideal theorem for Dedekind zeta functions under GRH, \emph{Math. Comp.} 85 (2016), 889--906, \href{https://doi.org/10.1090/mcom3031}{doi:10.1090/mcom3031}. Classical analytic setup and zero-count estimates; its GRH conclusions are not assumed in our forward proof.
+\bibitem{stark} See \emph{On holomorphy and non-vanishing of Artin L-functions}, \href{https://doi.org/10.1007/s00605-025-02060-7}{doi:10.1007/s00605-025-02060-7}, for the stated Stark order inequality and the relative zeta context.
+\bibitem{prior} ProveIt incoming report directory, \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/docs/incoming}, accessed 25 Nov. 2026. Selected archives listed in Section 1.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,57 @@
+\section{A uniform lower bound for arbitrary orders}\label{sec:uniform}
+\begin{theorem}\label{thm:growth}
+With Dirichlet GRH as supplied by the repository, there is an absolute constant $c>0$ such that for all sufficiently large $D=|\Delta|$,
+\[
+ s(\Delta)\ \ge\ c\,\frac{h(\Delta)}{(\log D)^2}
+ \ \gg\ \frac{\sqrt D}{(\log D)^2\log\log D}.
+\]
+Consequently $\log s(\Delta)/\log D\to1/2$ through all imaginary quadratic order discriminants.
+\end{theorem}
+The earlier ProveIt bound used many conjugates separated in ordinary absolute value and gave $D^{1/4}/\sqrt{\log D}$. The companion report subsequently gave $s\gg\sqrt h$ with Dirichlet GRH and $s\gg_\epsilon D^{1/4-\epsilon}$ independently.\cite{companion} The later parallel report independently gives both exponents stated in this section.\cite{sparseparallel} The exponent comes from counting conjugates with the same reduction at a small inert prime. The distribution of primes gives a supply of possible characteristics. A global norm argument then finds one in which most of the conjugates are units.
+
+\begin{proof}
+Write $h=h(\Delta)$ and $D=f^2|d_K|$. We record the uniform inputs explicitly.
+
+\emph{Class number and norm.}
+For the possibly imprimitive Kronecker character $\chi_\Delta$ of modulus $D$, the analytic class number formula for orders gives
+$h=w_\Delta\sqrt D L(1,\chi_\Delta)/(2\pi)$, with $w_\Delta\in\{2,4,6\}$ the number of units. Under Dirichlet GRH one has $L(1,\chi_\Delta)\gg1/\log\log D$ uniformly in $f$. For detail, the standard square-root estimate for the primitive character follows by subtracting the prime ideal sums of $\Q$ from those of $K$. The primes removed on induction to modulus $D$ cost $O(\log(2D)\log(2t))$ in $\sum_{n\le t}\Lambda(n)\chi(n)$. Thus the total character sum with von Mangoldt weight is $O(\sqrt t\log^2(2Dt))$. By partial summation the tail of $\sum_{n}\Lambda(n)\chi_\Delta(n)/(n\log n)$ beyond $Y=(\log D)^8$ is $o(1)$ uniformly. This sum equals $\log L(1,\chi_\Delta)$ by passage from $s>1$. The partial sum is at least $-\sum_{p\le Y}1/p-O(1)$ since all higher powers contribute absolutely $O(1)$. Mertens' estimate gives the claimed bound after exponentiation. The same proof with the signs reversed gives $h\ll\sqrt D\log\log D$.
+
+Put $N=|H_\Delta(0)|$. It is nonzero away from $\Delta=-3$. Sutherland's Lemma 8, including its proof for quadratic orders, gives
+\[
+ \log N\ll\sqrt D\log D\log\log D .
+\]
+The GRH ingredient of this height estimate is the quadratic-character bound of Littlewood, as identified in the proof of that lemma. Hence $\log N/h\ll\log D(\log\log D)^2$.\cite{suth,gm}
+
+\emph{A supply of inert primes.}
+Let $X=C(\log D)^2$ for a sufficiently large absolute $C$. For $M=\Q,K$ put
+\[
+ W_M(X)=\sum_{N\mathfrak a\le X}\Lambda_M(\mathfrak a)(1-N\mathfrak a/X).
+\]
+The smoothed prime ideal theorem, divided by $X$, gives
+$W_M(X)=X/2+O(\sqrt X\log(2D)+\log X+\log(2D))$
+in these degrees, with an absolute constant. Both zeta hypotheses follow from Dirichlet RH and GRH. In $2W_{\Q}-W_K$, first powers of split primes cancel, inert primes have coefficient two, and ramified primes coefficient one. Prime powers of rational base $p$ with exponent at least two cost $O(\sqrt X\log^2(2X))$ by elementary counting, and the ramified first powers and the primes dividing $f$ cost $O(\log D)$. Dropping primes below 5 is harmless. Comparing with the main term $X/2$, and using $0\le1-p/X\le1$, gives
+\[
+ \sum_{p\in\mathcal P}\log p\gg X,\qquad
+ \mathcal P=\{5\le p\le X:\ p\text{ inert in }K,\ p\nmid f\}.
+\]
+The error $O(\sqrt X\log(2D))$ is a sufficiently small fraction of $X$ once $C$ is large.\cite{gms}
+
+\emph{Selecting the disk.}
+Choose a place of the ring class field over each $p\in\mathcal P$. This field is unramified locally, and all roots of $H_\Delta$ are integral. Each of the $z_p$ roots reducing to zero has normalized valuation at least one, so $z_p\le v_p(N)$. Consequently
+\[
+ \sum_{p\in\mathcal P} z_p\log p\le\log N
+       =o(hX).
+\]
+For some $p\in\mathcal P$ at least $h/2$ of the roots are units. Every reduction is supersingular by Deuring's theorem. Over the algebraic closure of $\F_p$ there are $p/12+O(1)$ such invariants. At least $\gg h/p$ distinct roots therefore lie in one disk above a nonzero residue. Corollary~\ref{cor:coarse} gives $2(s(\Delta)-1)\gg h/p$, proving the lower bound. Combining it with $s(\Delta)\le h+1$ and the upper class number estimate proves the limit.\cite{cmred,supersing}
+\end{proof}
+
+\begin{corollary}[A comparison independent of GRH]\label{cor:pollack}
+For every $\epsilon>0$,
+\[
+ s(\Delta)\gg_\epsilon D^{1/2-1/(4\sqrt{\mathrm e})-\epsilon}
+\]
+for all sufficiently large $D$. The constant obtained by this argument is ineffective.
+\end{corollary}
+\begin{proof}
+Apply Pollack's Theorem 1.1 to the nontrivial quadratic character $\chi_\Delta$ modulo $D$. For any $\delta>0$ it yields $>D^\kappa$ prime nonresidues below $D^{1/(4\sqrt{\mathrm e})+\delta}$, with $\kappa=\kappa(\delta)>0$. They are inert and coprime to $D$. The unconditional half of Sutherland's Lemma 8 gives $\log N\ll\sqrt D\log^2D$, and Siegel's class number bound and the order formula give $h\gg_\eta D^{1/2-\eta}$ for every $\eta>0$. For the latter, use the maximal-order bound and $\prod_{p\mid f}(1-\chi_{d_K}(p)/p)\ge\varphi(f)/f\gg1/\log\log(3f)$, with unit index at most three. Choose $\delta<\epsilon/2$ and $\eta<\min(\epsilon/2,\kappa/2)$. The same norm average, whose denominator now exceeds a constant multiple of $D^\kappa$, gives a prime with at least $h/2$ nonzero reductions. The disk argument gives $s(\Delta)\gg h/D^{1/(4\sqrt{\mathrm e})+\delta}$. The use of Siegel's bound accounts for ineffectivity.\cite{pollack,suth}
+\end{proof}

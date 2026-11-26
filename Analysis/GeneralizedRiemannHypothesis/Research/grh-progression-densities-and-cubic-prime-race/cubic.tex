@@ -1,0 +1,194 @@
+\section{A sign test for the cubic of discriminant $-23$}
+Let $g(T)=T^3-T-1$. For a prime $p\ne23$, put
+$a(p)=\#\{t\in\mathbb F_p:g(t)=0\}-1$. This is $2,0,-1$ according
+as $g$ has three, one or no roots. Consider the prime-only sum
+\[
+ H(x)=\sum_{p\le x,\ p\ne23}a(p)\log p\,(1-p/x).
+\]
+The splitting field has group $S_3$, since $g$ is irreducible and
+its discriminant is $-23$. Write $L$ for the Artin $L$-function of
+its standard representation. The classical identification with the
+weight-one newform $f(z)=\eta(z)\eta(23z)$ is recorded by
+D.~Zagier, \emph{Elliptic modular forms and their applications},
+\S4.3, Proposition~14 and the discussion following it.
+The cubic-field zeta function factors as $\zeta L$.
+For this fixed field, let $\mathrm{RH}(L)$ mean that every nontrivial zero
+of $L$ has real part $1/2$.
+
+\paragraph{Sparse sign theorem.}
+Fix any positive integer $k$. Then $\mathrm{RH}(L)$ is equivalent to
+$H(m^k)\le0$ for every sufficiently large integer $m$.
+On $\mathrm{RH}(L)$,
+\[
+ \limsup_{x\to\infty}\frac{H(x)}{\sqrt{x}}
+ \ \le\ \frac{6}{\pi\sqrt{23}}-\frac23 < -0.268 .
+\]
+Unconditionally, $H(m^k)<0$ for infinitely many $m$.
+All these statements hold with an arbitrary increasing unbounded grid
+$x_j$ in place of $m^k$, provided that $x_{j+1}-x_j=O(x_j^{1-\delta})$
+for a fixed $0<\delta\le1$.
+
+\paragraph{The spectral bound.}
+Put $\Lambda_L(s)=(\sqrt{23}/(2\pi))^s\Gamma(s)L(s)$.
+It is entire of order one and invariant under $s\mapsto1-s$. Its real
+values are positive by the Mellin integral of the positive eta product.
+The following bound is the eta-product curvature estimate in the incoming
+report \texttt{grh\_transfers.zip}. For completeness, set
+$V(u)=-\log f(i e^u)$. From the eta product,
+$-(\log\eta(i e^u))''\ge\pi e^u/12$, as each
+$\log(1-e^{-c e^u})$ has nonpositive second derivative.
+Eta inversion gives the same lower bound with $e^{-u}$.
+Consequently
+\[
+ V''(u)\ge\tfrac\pi{12}(e^{-u}+23e^u)\ge c,\qquad c=\pi\sqrt{23}/6.
+\]
+The second derivative of $\log\Lambda_L(\sigma)$ is the variance of
+$U$ with density proportional to $\exp(\sigma u-V(u))$. Indeed the
+conductor contributes a linear term to the logarithm. If $\mu=\mathbb E U$,
+integration by parts gives
+$1=\mathbb E[(U-\mu)(V'(U)-V'(\mu))]\ge c\operatorname{Var}(U)$.
+The eta transformation and the product give rapid decay at both ends.
+By symmetry $(\log\Lambda_L)'(1/2)=0$, hence
+$2\Lambda_L'(1)/\Lambda_L(1)\le 1/c$.
+On $\mathrm{RH}(L)$ this last logarithmic derivative, multiplied by two,
+equals
+\[
+ Z=\sum_{\rho}\frac{1}{1/4+(\Im\rho)^2}.
+\]
+To see this, pair the zeros of the even entire function
+$\Lambda_L(1/2+s)$ in its order-one Hadamard product.
+Its value at the origin is positive. Differentiate the paired product at
+$s=1/2$, counting zeros with multiplicity.
+
+\paragraph{Why the race favors the irreducible primes.}
+Write $b(p^j)=\operatorname{tr}(\rho(\operatorname{Frob}_p)^j)\log p$
+at unramified primes, with the usual inertia-invariant trace at $23$.
+Here $\rho$ denotes the standard representation.
+The explicit formula for the first Riesz mean is, on $\mathrm{RH}(L)$,
+\[
+ \sum_{p^j\le x} b(p^j)(1-p^j/x)
+   =-\sum_{\rho_0}\frac{x^{\rho_0}}{\rho_0(\rho_0+1)}
+       +O((1+\log x)^2).
+\]
+The Mellin integrand is $(-L'/L)(s)x^s/[s(s+1)]$.
+Mellin inversion starts on $\Re s=2$, where the integral converges
+absolutely and the kernel inverts to $(1-p^j/x)_+$. One may shift to $\Re s=-1/2$ on good heights between successive
+integers, where the fixed-degree log derivative is $O(\log^2(2+|s|))$
+at distance $\gg1/\log T$ from the zero ordinates. Such heights
+exist in $[T,T+1]$ by the local count $O(\log T)$, and the two
+horizontal integrals are $O_x(T^{-2}\log^2 T)$. On the new vertical line the functional equation gives
+$O(\log(2+|s|))$. Its integral is $O(x^{-1/2})$.
+At zero the gamma pole and $\Lambda_L(0)>0$ give a simple zero of $L$,
+so the resulting double-pole residue is $O(1+\log x)$.
+The zero sum converges absolutely by the fixed-degree zero count.
+Thus the oscillating sum has modulus at most $Z\sqrt{x}$, since
+$|\rho_0+1|\ge|\rho_0|$ on the critical line.
+
+At the squares the character $h\mapsto\operatorname{tr}(\rho(h^2))$
+has group mean $(2+3\cdot2+2\cdot(-1))/6=1$.
+The ordinary Chebotarev prime number theorem for the fixed splitting field
+and partial summation give
+\[
+ \sum_{p\le\sqrt x,\ p\ne23} b(p^2)(1-p^2/x)
+ =\biggl(\int_0^1(1-y^2)\,dy+o(1)\biggr)\sqrt{x}
+ =(2/3+o(1))\sqrt{x}.
+\]
+Indeed the unweighted partial sum to $u$ is $u+o(u)$, and integration
+against $2u/x$ yields the displayed result.
+The terms of exponent at least three contribute $O(x^{1/3}\log^2 x)$
+in absolute value, and the omitted ramified powers cost $O(\log x)$.
+Subtracting proves the asserted upper bound and the forward implication.
+
+\paragraph{From sparse signs back to zeros.}
+For $\Re s>1$ the Mellin transform of $H$ is
+\[
+ \int_1^\infty H(x)x^{-s-1}\,dx
+  =\frac{-L'(s)/L(s)-E(s)}{s(s+1)}.
+\]
+The correction $E$ collects higher powers and the ramified prime;
+it is absolutely and locally uniformly convergent for $\Re s>1/2$.
+Thus every zero of $L$ there produces a pole, and positivity of the
+eta Mellin integral excludes every real pole on that interval.
+If $H(x)\le Cx^a$ for $a>1/2$, Landau's lemma for the nonnegative
+tail $Cx^a-H(x)$ excludes poles in $\Re s>a$. Indeed its Mellin
+integral has a singularity at its real abscissa of convergence if this
+is finite (Taylor expansion at a point just to its right, followed
+by monotone convergence, proves this assertion). The continuation of
+the transform is regular on the real interval $(a,\infty)$.
+The same reasoning applies to $-H$.
+
+Suppose $L$ has no zeros in $\Re s>\theta$, with $1/2\le\theta\le1$.
+For each $\epsilon>0$, the prime sum $U(x)=\sum_{p\le x,p\ne23}a(p)\log p$
+is $O_\epsilon(x^{\theta+\epsilon})$.
+At $\theta=1$ the trivial estimate suffices. Otherwise use the standard
+truncated explicit formula for the fixed Artin factor at half-integers,
+with a good height $T\asymp x^2$. The truncated zero contribution is
+$O(x^\theta\sum_{|\Im\rho_0|\le T}1/|\rho_0|)
+=O(x^\theta\log^2 T)$, using the zero count.
+The truncation error at a half-integer is $O(\log^{O(1)}x)$ by Perron's
+formula on $b=1+1/\log x$. In $[x/2,2x]$ its absolute bound is
+$O((x\log x/T)\sum_{x/2\le n\le2x}|n-x|^{-1})$ and the remaining
+terms cost $O(x^b T^{-1}\sum_{n\ge2}2\log(n)n^{-b})$.
+The shift for $x^s/s$ costs $O(x^b\log^2 T/T)$ on the horizontal
+edges and $O(x^{-1/2}\log^2 T)$ on the new vertical segment.
+Omitting higher powers costs
+$O(\sqrt{x}\log^2 x)$. Passage to all real $x$ changes at most one term.
+For explicit-formula details see N.~Ng, \emph{Limiting distributions and
+zeros of Artin $L$-functions}, \S3.4 and Example~3.5.6.
+
+Partial summation now gives, between primes,
+\[
+ |H'(x)|=x^{-2}\left|\sum_{p\le x,p\ne23}p\,a(p)\log p\right|
+   =O_\epsilon(x^{\theta-1+\epsilon}).
+\]
+The sum $H$ is continuous at primes. If $H(x_j)\le0$ eventually,
+integrate from $x_j$ across a gap of size $O(x_j^{1-\delta})$.
+This proves $H(x)\ll_\epsilon x^{\theta-\delta+\epsilon}$ as an
+\emph{upper} bound. Landau's lemma and arbitrarily small positive
+$\epsilon$ now exclude all zeros in
+$\Re s>\max(1/2,\theta-\delta)$.
+Beginning with $\theta=1$ and iterating at most
+$\lceil1/(2\delta)\rceil$ times proves the zero-free half-plane.
+The functional equation gives $\mathrm{RH}(L)$. For powers use $\delta=1/k$.
+If $H(x_j)$ were eventually nonnegative, applying this same argument
+to $-H$ would prove $\mathrm{RH}(L)$ and hence eventual strict negativity,
+a contradiction. This proves the unconditional recurrence statement.
+
+The same iteration gives a quantitative unconditional conclusion. If a zero
+has real part $\beta>1/2$, then for every $1/2\le a<\beta$ and every
+permitted grid,
+\[
+ \limsup_j H(x_j)/x_j^a=+\infty,\qquad
+ \liminf_j H(x_j)/x_j^a=-\infty .
+\]
+Indeed, a finite upper bound for either signed sequence gives the same
+iteration with new endpoint $\max(a,\theta-\delta)$, contradicting that
+zero. Combining the two alternatives gives, without any Artin RH assumption,
+$\liminf_j H(x_j)/\sqrt{x_j}\le 6/(\pi\sqrt{23})-2/3$.
+
+\paragraph{Excursions on both sides of the square-term drift.}
+On every grid covered by the theorem one in fact has
+\[
+   \liminf_{j\to\infty} H(x_j)/\sqrt{x_j} < -2/3
+   < \limsup_{j\to\infty} H(x_j)/\sqrt{x_j}.
+\]
+If the critical-line assertion fails, the sparse oscillation just proved gives both infinite extrema. Suppose it holds. With $t=\log x$, the explicit formula and the square calculation give
+\[
+ e^{-t/2}H(e^t)=-2/3+F(t)+o(1),\qquad
+ F(t)=-\sum_{\rho_0=1/2+i\gamma}
+       \frac{e^{i\gamma t}}{\rho_0(\rho_0+1)} .
+\]
+Absolute uniform convergence makes $F$ real and uniformly continuous. Positivity of the central Mellin integral rules out $\gamma=0$, so the average of $F$ over $[0,T]$ tends to zero by termwise integration. There is at least one zero. A zero-free entire function of order one would be the exponential of an affine function by Hadamard factorization. Symmetry would make it constant, contrary to Stirling's formula at large positive real $s$.
+Choose one positive ordinate $\gamma$ and put $C=-m/(\rho_0(\rho_0+1))$, where $m$ is its multiplicity. Then $C$ is its nonzero Fourier coefficient in $F$. The weight $1+\cos(\gamma t+\phi)$ is nonnegative, has mean 1, and its product with $F$ has mean $\Re(e^{-i\phi}C)$. The phases giving $-|C|$ and $|C|$ imply $\liminf F\le-|C|$ and $\limsup F\ge|C|$. Finally $\log x_{j+1}-\log x_j\to0$ and uniform continuity give the same two limiting extrema on the grid. This proves the strict inequalities.
+
+\paragraph{Comparison and finite check.}
+The incoming \texttt{grh\_transfers.zip} treats a two-scale cubic sign
+race with continuous cutoffs. The incoming
+\texttt{grh-torsion-and-prime-sampling.zip} treats all fixed-power
+meshes for a full prime-ideal statistic of a Dedekind zeta function.
+Here the finite sum requires only prime root counts, a single cutoff
+and a sign on one prescribed sparse mesh. The estimate producing that
+eventual sign is still open. The script \texttt{check\_eta23.py} compares
+all 78,497 unramified primes through $10^6$ against the eta-product
+coefficients by two independent exact integer algorithms. It gives
+$H(10^6)/1000=-0.788953233$ to the displayed precision.

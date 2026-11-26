@@ -1,0 +1,84 @@
+\section{The cubic classification without a zero hypothesis}
+\label{sec:class-three}
+
+In weight two precisely eighteen cubic fields occur as coefficient
+fields of CM newforms, across all levels and nebentypus. The
+discriminants are
+\[
+\begin{gathered}
+49,\ 81,\ 321,\ 621,\ 837,\ 993,\ 1593,\ 1929,\ 2241,\ 3753,\\
+5697,\ 7641,\ 8289,\ 10233,\ 13473,\ 14769,\ 23841,\ 24489 .
+\end{gathered}
+\]
+Martin's Table 1.2 identifies each field up to isomorphism by its
+discriminant. His proof used a GRH-conditional list of fields whose
+class-group exponent is three. The degree of the character's value
+field lets us use the unconditional class-number-three list instead.
+
+\paragraph{The algebraic restriction.}
+A cubic field $K$ has a real embedding. Its embedding conjugates the
+newform to one with real coefficients, so Sch\"utt's Corollary~1.2(i)
+forces its nebentypus, and therefore the original one, to be trivial.
+Write $E$ for the imaginary quadratic CM field, $L=EK$ for the
+value field of the inducing character $\psi$, and $\eta$ for its finite
+modulus character. Then $[L:E]=3$ and $\exp\mathrm{Cl}(E)\mid3$ by
+the ideal-norm argument of Section~\ref{sec:cm}.
+\href{https://arxiv.org/pdf/math/0511228}{Sch\"utt, Corollary~1.2}.
+
+Assume $h_E>1$. We first show that $\eta$ has order two. If its order
+is $r$, then $\mathbb Q(\zeta_r)\subseteq L$, so $\varphi(r)\mid6$.
+Also $r$ is even since $\eta(-1)=-1$. If $\varphi(r)=2$, the cyclotomic
+quadratic field would have to equal $E$, as $[L:E]$ is odd, but both
+$\mathbb Q(i)$ and $\mathbb Q(\sqrt{-3})$ have class number one.
+If $\varphi(r)=6$ then $r=14$ or $18$. The sextic cyclotomic field
+would equal $L$, whose quadratic subfield would respectively be
+$\mathbb Q(\sqrt{-7})$ or $\mathbb Q(\sqrt{-3})$, again of class
+number one. Only $r=2$ remains.
+
+For any ideal class $c$ choose a fractional ideal $\mathfrak a$
+representing $c$ prime to the conductor and choose $\theta_c\in E^\times$
+with $\mathfrak a^3=(\theta_c)$. The assignment
+\[
+\mathrm{Cl}(E)\longrightarrow E^\times/(E^\times)^3,\qquad
+c\longmapsto [\theta_c]
+\]
+is a well-defined injective homomorphism. A change of representative
+multiplies $\theta_c$ by a cube times a unit, and both units
+$\pm1$ are cubes. The law follows from ideal multiplication.
+If $\theta_c=b^3$, unique factorization of fractional ideals gives
+$\mathfrak a=(b)$. This proves injectivity.
+
+Every $\theta_c$ acquires a cube root in $L$ because
+$\psi(\mathfrak a)^3=\eta(\theta_c)\theta_c=\pm\theta_c$.
+Set $F=E(\zeta_3)$. Since $[F:E]=2$, the norm from $F$ to $E$ proves
+that $E^\times/(E^\times)^3\longrightarrow F^\times/(F^\times)^3$
+is injective: if $b$ becomes a cube, then $b^2$ is a cube in $E$,
+so $b$ is a cube already. By the Kummer correspondence over $F$,
+adjoining cube roots of a subgroup of $F^\times/(F^\times)^3$
+of order $3^m$ gives an extension of degree $3^m$.
+The subgroup just constructed has order $h_E$ and its radicals are
+all in $FL$. It follows that
+\[
+               h_E\mid[FL:F]\mid3 .
+\]
+In particular every possible nontrivial class group here is cyclic of order
+three. This excludes fields with arbitrarily many independent classes
+of order three without enumerating them.
+
+\paragraph{Finish from finite tables.}
+There are sixteen imaginary quadratic fields of class number three,
+with the largest absolute discriminant $907$. The unconditional
+classification goes back to Oesterl\'e and is included in Watkins's
+classification up through class number $100$.
+For these sixteen fields Martin's Corollary~4.5 and Section~6.2
+give the unique cubic coefficient field in each case, and
+Table~6.3 gives its discriminant; the constructions there establish
+occurrence. For the class-number-one case his Section~5.3 gives just
+$\mathbb Q(\zeta_7)^+$ and $\mathbb Q(\zeta_9)^+$. These are precisely
+the eighteen entries displayed above. The computation of the individual
+fields is Martin's. Yang's divisibility, as applied by Gonz\'alez in Section~3 of his paper,
+also gives $h_E\mid3$ directly. The Kummer argument above supplies
+a separate proof in this degree. The change relative to Martin's proof is the uniform exclusion
+of class groups of order greater than three.
+\href{https://arxiv.org/pdf/2509.24119v2}{Martin, Sections~5.3 and~6.2, Tables~1.2 and~6.3};
+\href{https://magma.maths.usyd.edu.au/~watkins/papers/smallcn.pdf}{Watkins, \emph{Class numbers of imaginary quadratic fields}}.

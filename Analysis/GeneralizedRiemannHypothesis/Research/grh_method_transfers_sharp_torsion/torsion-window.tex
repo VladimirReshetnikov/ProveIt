@@ -1,0 +1,116 @@
+\documentclass[11pt]{article}
+\newcommand{\runningtitle}{The optimal torsion window}
+\input{layout}
+\begin{document}
+\headline{LOCAL ARITHMETIC}{The optimal torsion window}{A sharp specialization theorem for cyclotomic and formal-group torsion \hfill 25 November 2026}
+An auxiliary step in the Lean proof chooses a finite-order twist while
+controlling the divisibility of a polynomial value. A previous analysis
+obtained zero loss at a fixed positive Gauss radius and asked for the
+best possible bound on the order. We determine the least upper exponent,
+construct an extremal polynomial, and show that one whole coset of
+twists always works. The threshold remains exact for bounded integral
+power series. The method also determines the answer in every finite
+formal height over an unramified base, including supersingular elliptic
+curves. Its proof uses local interpolation alone.
+
+\paragraph{An example to fix the scale.}
+For $p=3$, allow roots of order at least $9$. A budget of one means that
+the least valuation of a coefficient, after the degree penalty is
+added, is at most one. At every comparison radius $\rho\ge1/6$ the old
+sufficient order bound was $3^{47}$. The optimal order bound is
+$3^5=243$. There is a degree-26 polynomial that defeats every permissible
+root through order $81$. No polynomial of smaller degree does so, at
+any budget.
+
+\paragraph{The source of the question.}
+The five conclusions in \grhlink{src/Statements.lean}{Statements} and
+\grhlink{src/Main.lean}{Main} concern zeta and Dirichlet characters.
+The readable \grhlink{GUIDE.md}{guide} traces the half-plane
+estimate back to three comparisons. Short integral theta lifts give
+an upper bound on a lattice covolume, a second moment supplies enough
+independent forms to use that bound, and twist-dependent lower bounds
+control the same determinant with its index correction. In the
+\grhlink{src/New/Reduction/MainInequality.lean}{main inequality} the
+common leading height cancels. Local twists help control the denominators
+of projections in the lower bound. The pertinent
+\grhlink{src/New/Congruences/Selmer/RootsOfUnity.lean}{roots-of-unity
+lemmas} use a positive tolerance for a finite list of polynomial
+evaluations. This note concerns exact control of one valuation, or of
+the sum for a product. Zero error for each member of an arbitrary list
+is a stronger requirement.
+
+The direct predecessor is the \incominglink{grh_exact_torsion_transfer_2026-11-25.zip}
+{exact torsion report}, which explicitly lists optimal constants among
+its remaining questions. Other incoming work already gives sharp
+unramified and packet results in related formulations. The improvement
+here concerns one fixed-radius objective with unrestricted coefficients.
+The notes and scripts in this archive are independent arguments and
+checks; the upstream \grhlink{README.md}{replay records} concern the
+original Lean development. We inspected that source without rebuilding it.
+
+\input{sections/torsion}
+\input{sections/formal-height}
+
+\clearpage
+\section{Consequences and remaining questions}
+\paragraph{An application to Fourier coefficients of measures.}
+Let $\mu$ be a bounded $\mathcal O_{\mathbb C_p}$-valued measure on
+$\mathbb Z_p$, and let $a_j=\int\binom{x}{j}\,d\mu(x)$ be its
+Mahler moments. For a root of unity $\zeta$ of $p$-power order,
+the finite-order Fourier coefficient satisfies
+\[
+       \widehat\mu(\zeta)=\int_{\mathbb Z_p}\zeta^x\,d\mu(x)
+            =\sum_{j\ge0}a_j(\zeta-1)^j .
+\]
+The identity follows by uniform convergence of the binomial expansion
+on $\mathbb Z_p$ when $v(\zeta-1)>0$, first on nonnegative integers
+and then by continuity. Thus a single observed moment with
+$v(a_j)+j\rho\le B$ guarantees an entire coset of characters of
+orders in the sharp window, each with Fourier coefficient of valuation
+at most $\min_i(v(a_i)+i\rho)$. In this setting order $p^h$ means
+exact additive conductor $p^h$ on $\mathbb Z_p$.
+Sharpness persists among finite atomic measures supported on nonnegative
+integers: each $T^j=((1+T)-1)^j$ is an integral linear combination
+of $(1+T)^r$, $0\le r\le j$, the transforms of point masses.
+Accordingly the joint degree and budget obstruction above can be
+realized with support in $\{0,\ldots,q^L-1\}$ in the cyclotomic
+case $q=p$.
+
+\paragraph{Arithmetic twists.}
+An arithmetic use requires an integral interpolation function and a
+nonzero witness with a valuation bound. Once these data are given,
+the theorem supplies a precise finite range of character orders to
+search. For instance, if a determinant has a suitable interpolation
+series, the selected determinant value is nonzero. A bound on the
+conductor norm, or a numerical Selmer rank bound, requires further
+global arithmetic input.
+\begin{enumerate}
+\item For a fixed ramified coefficient field, which polynomials over
+that field attain the unrestricted threshold? The Newton polygon
+bound in the first section and the congruences between attainable
+conjugate roots impose different restrictions.
+\item Over a ramified base for the formal group, can one compute the
+threshold for a prescribed order interval when the interval is not a
+valuation cutoff? The last formula covers the case of a cutoff exactly.
+\item For a positive allowed loss at a fixed Gauss radius, determine the
+sharp joint dependence on degree, order interval and tolerance.
+\end{enumerate}
+\paragraph{Further literature.}
+Manjul Bhargava's work on
+\href{https://doi.org/10.1006/jnth.1998.2220}{generalized factorials and
+fixed divisors} supplies a broader setting for finite-set polynomial
+interpolation. Kriz and Nordentoft study torsion specialization for
+\href{https://arxiv.org/abs/2310.20678}{horizontal $p$-adic $L$-functions}.
+Boxall and Grant describe the elliptic formal groups used here in
+\href{https://boxall.pages.math.cnrs.fr/pages-web-mathematiques-de-john-boxall/wwwMaths/SingularFinal.pdf}{their
+paper on singular torsion points}, \S4. We claim the improvement over
+the stated ProveIt bound. Historical priority in the full interpolation
+literature remains unestablished.
+
+\paragraph{Verification.} The companion arithmetic checker computes
+cyclotomic polynomials, valuations and values in exact Eisenstein
+coordinates. A second checker computes Newton polygons of iterated
+Lubin--Tate polynomials and verifies the finite group metric, node
+budgets and obstructions in small higher-height examples. The general
+claims follow from the proofs above.
+\end{document}

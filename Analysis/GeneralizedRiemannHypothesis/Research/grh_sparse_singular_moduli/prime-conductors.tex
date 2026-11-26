@@ -1,0 +1,80 @@
+\subsection*{Full support for a positive proportion of prime conductors}
+Let $\ell\ne2,7$ be prime, $\Delta=-4\ell^2$ and
+$h=(\ell-\chi_{-4}(\ell))/2$. All $h$ conjugates reduce to the same
+nonzero supersingular $j$ in characteristic $7$. Write
+$w(n)=n-v_7(n!)$. By the local argument, $s(\Delta)=h+1$ whenever
+\[
+ w(u)<w(h)<w(v)\qquad (0\le u<h<v).
+\]
+Among primes $\ell$, this sufficient condition has a relative natural
+density $d>0.6133$. Consequently the lower relative density of primes
+giving $s(-4\ell^2)=h+1$ exceeds $61.33\%$. This result is independent
+of Dirichlet GRH.
+
+\smallskip\noindent\emph{Proof.}
+An obstruction at distance $r$ requires
+$\sum_{t\in I}v_7(t)\ge r$ on at least one of
+$I=[h-r+1,h]$ (when $r\le h$) and $I=[h+1,h+r]$.
+Let $b=\max_{t\in I}v_7(t)$. Counting multiples of $7^a$ in the
+interval gives
+\[
+ \sum_{t\in I}v_7(t)\le\sum_{a=1}^b(r/7^a+1)\le r/6+b.
+\]
+Hence $q_r=7^{\lceil5r/6\rceil}$ divides $h+j$ for an offset
+$1-r\le j\le r$. For fixed $r$, the prime number theorem in
+progressions, applied separately to each sign $\sigma=\chi_{-4}(\ell)$
+with $\ell=2h+\sigma$, bounds the relative density of the obstruction by
+$u_r=2r/\varphi(q_r)$. Indeed there are at most $2r$ admissible classes
+of $\ell$ per sign modulo $4q_r$, each of density $1/(2\varphi(q_r))$.
+
+For completeness, these fixed-modulus bounds can be summed to control
+arbitrarily distant obstructions. For primes $\ell\le X$ and
+$q_r\le\sqrt X$, Brun--Titchmarsh bounds the count for each coprime
+residue modulo $q_r$ by $2X/(\varphi(q_r)\log(X/q_r))$.
+Ignoring the congruence modulo $4$, both signs and all offsets cost at
+most $4r$ such classes. Thus for $r>R$ in this range the total is at
+most $(X/\log X)\sum_{r>R}16r/\varphi(q_r)$. If $q_r>\sqrt X$,
+a positive integer $h+j$ in the interval is divisible by
+$7^{\lfloor\log_7\sqrt X\rfloor}$. Necessarily
+$5r/6\le\log_7(h+r)$. For $r>h$ this fails, since $2r\le2^r$ and
+$\log_7 2<5/6$. For $r\le h$ it implies $r=O(\log X)$.
+There are $O(\sqrt X)$ possible multiples and $O(\log X)$ offsets,
+hence $O(\sqrt X\log X)$ possible primes. This is $o(\pi(X))$.
+The sieve inequality used here is due to Montgomery and Vaughan,
+\emph{The large sieve}, Mathematika 20 (1973), 119--134
+(\url{https://doi.org/10.1112/S0025579300004708}).
+
+For fixed $R$, the event of no obstruction at distances $r\le R$ has
+a density $d_R$, computable using complete residue classes modulo
+$4\cdot7^R$: every valuation may be truncated at $R$ without affecting
+a comparison with $r\le R$. The finitely many $h<R$ are immaterial.
+The tail estimate just proved and convergence of $\sum u_r$ imply that
+the density of no obstruction at any distance exists and equals
+$d=\lim_Rd_R$. Applying the fixed-$r$ union bound first on
+$R<r\le T$ and then letting $T\to\infty$ improves the error to
+\[
+                  0\le d_R-d\le\sum_{r>R}u_r.
+\]
+For instance, if $a=R+1$ and $b=(1+6/a)7^{-5}$, then
+$u_{r+6}/u_r=(1+6/r)7^{-5}$ gives the explicit bound
+$\sum_{r>R}u_r\le (u_a+\cdots+u_{a+5})/(1-b)$.
+
+The supplied exact calculation gives
+\[
+ d_{10}=\frac{14143023}{23059204},\qquad
+ d_{40}=\frac{33191837301111812268560181397}
+              {54116956037952111668959660849},\qquad
+ 0\le d_{40}-d<5.6\cdot10^{-28}.
+\]
+To reproduce it, start with the twelve pairs consisting of a sign
+$\sigma$ and a residue $h$ modulo $7$ with $7\nmid 2h+\sigma$.
+Each pair has mass $1/12$. At depth $v$, compute each interval sum
+with valuations capped at $v$. Discard the class if a sum already
+reaches its interval length. Keep the class if every sum is smaller
+and every valuation below $v$. Otherwise split into its seven lifts,
+each with one seventh of the mass. At depth $R$, every ambiguous
+interval already has truncated sum at least $R$ and is discarded.
+Summing the kept masses yields $d_R$.
+Thus $d$ rounds to $0.6133352599845868$ at sixteen places after the
+decimal point. The exact-support set could contain further primes
+for which this sufficient condition fails.\hfill$\square$

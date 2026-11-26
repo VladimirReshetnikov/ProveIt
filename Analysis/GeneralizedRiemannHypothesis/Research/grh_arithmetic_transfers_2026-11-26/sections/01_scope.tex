@@ -1,0 +1,92 @@
+\section{Answer, scope, and evidentiary status}
+\label{sec:scope}
+
+\textbf{Yes: the internal arithmetic machinery has useful transfers beyond
+standard consequences of RH and Dirichlet GRH.} The concrete gain in this
+report is an exact, computable version of a global congruence term used
+to control denominators. It gives both a sharper source estimate and a
+worked family of modular Galois representations. The existing corpus also
+contains completed results outside the usual RH consequences; one such
+result is revalidated in Appendix~\ref{app:density-audit}.
+The analysis does not turn the available nonabelian zero criteria into
+proofs of their missing arithmetic inequalities.
+
+\subsection{Pinned sources}
+
+The upstream snapshot is
+\[
+ \texttt{72fead102f663d5c7a407964a13dc0cf9d977207}.
+\]
+The ProveIt snapshot is
+\[
+ \texttt{5cc267af75a635199ac5d93a7d49cbce521daefc}.
+\]
+The latter has 46 relevant ZIP archives in \path{docs/incoming}.
+All were downloaded; their Git blob hashes were verified, and their
+main TeX members were indexed. The attached ledger records the actual
+review depth for each archive. This is not a claim to have independently
+proved every assertion in all 46 reports.\cite{upstream,priorinventory}
+
+The exported upstream statements are Mathlib's Riemann hypothesis and
+four assertions about zeros of zeta and Dirichlet \(L\)-functions.
+In particular, the strongest nonvanishing endpoint ranges over
+\(\chi:\) Dirichlet characters of every positive integer modulus:
+\[
+ \Re s>\tfrac12,\qquad (\chi\ne1\ \text{or}\ s\ne1)
+ \quad\Longrightarrow\quad L(s,\chi)\ne0.
+\]
+The use of automorphic forms, Hecke values, or Galois representations
+inside the proof does not expand this exported quantifier to arbitrary
+Artin or automorphic \(L\)-functions.\cite{statements}
+Throughout this report, the unqualified source endpoint means
+\emph{Dirichlet} GRH; the broader problems are stated separately.
+
+\subsection{What was verified in this investigation}
+
+The static source scan covered 803 readable-edition and 794 compact-edition
+Lean source files. After removing comments and string literals, it found
+none of the listed proof-placeholder or trust-sensitive tokens in either
+\path{src} tree. The intentional Comparator placeholders in
+\path{Challenge.lean} are outside those trees and are not imported by
+the endpoint sources. The scan is reproducible from the supplied
+\path{checks/upstream_audit.py} and JSON certificate.
+
+The release and independent verification pages report successful
+compilation, standard-axiom checks, and kernel replays. We read those
+reports; we did \emph{not} repeat the complete Lean build or independent
+kernel replay here.\cite{upstream,sutherland,rubinstein}
+The distinction matters: a static scan is useful evidence about source
+structure, but is not a replacement for a compiled axiom check.
+
+Our positive mathematical claims consist of full paper proofs below,
+classical arithmetic inputs cited at their point of use, and exact
+computations checking concrete certificates. There is no claim that the
+new refinements have already been formalized in Lean.
+
+\subsection{What advances the supplied work}
+
+The earlier structural report already isolated rational conjugate
+self-duality, the general Smith-factor formula, and symmetric mirror
+targets. It also showed that anticyclotomic twisting preserves the
+self-duality obstruction.\cite{priorstruct}
+We retain those findings. The additional work here treats the
+\emph{finite-depth} case: when no rational intertwiner survives, the
+global term is still exactly recoverable from traces under integral
+matrix span. This makes the following progression concrete:
+\[
+ \text{trace discrepancy}
+ \ \Longrightarrow\
+ \text{exact congruence length}
+ \ \Longrightarrow\
+ \text{sharper denominator input}.
+\]
+It does not bypass the construction of a Selmer datum or an arithmetic
+lattice. The distinction is tested by the Ramanujan example, where the
+global term is completely determined but the source's auxiliary
+scalar-inertia hypothesis is still absent.
+
+Carayol's trace rigidity and elementary divisor theory underlie the
+algebraic arguments.\cite{carayol}
+The contribution is their exact application to the source's internal
+quantity, the arithmetic example, and a precise account of what remains
+before an open-conjecture transfer could be claimed.

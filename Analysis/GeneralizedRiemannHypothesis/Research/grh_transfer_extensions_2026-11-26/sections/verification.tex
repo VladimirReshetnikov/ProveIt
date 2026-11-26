@@ -1,0 +1,78 @@
+\section{Verification, reproducibility, and formalization scope}
+\label{sec:verification}
+
+\subsection{What was actually checked}
+The archive contains the LaTeX source, this PDF, three executable mathematical
+checkers, their data and transcripts, the pinned repository inventories, and
+the selected upstream source files with their license and attribution notices.
+No numerical floating-point solver is part of the proof of any stated theorem.
+
+\begin{center}\small
+\begin{tabular}{p{0.23\textwidth}p{0.66\textwidth}}
+\toprule
+Result & Verification performed\\\midrule
+Density exchange & Replayed both predecessor methods. For the improved constants,
+checked a 496-node cover proof and replayed its leaf inequalities, then visited
+416,653 search nodes in an independent subset enumeration. Checked the ratio charge,
+sieve, product, and tail with outward integer rounding.\\[4pt]
+Wild-radical approximation & Constructed explicit maximizing polynomials and evaluated
+their norms by exact resultants in six cases: $(3,2),(3,3),(3,4),(5,2),(5,3),(7,2)$.
+Checked every valuation class of each resulting monic basis.\\[4pt]
+Graph extremum & Enumerated 19,392 spanning multisets in two small parameter cases,
+checked 2,200 seeded samples and ten equality constructions, computed four families
+of cyclotomic norm determinants, and evaluated actual Laplacian cofactors for graphs
+with 25 and 169 vertices.\\[4pt]
+Source provenance & Matched all 52 incoming ZIP Git blob hashes; checked 21 selected
+upstream source files against the pinned Git tree and recorded their SHA-256 hashes.
+The complete upstream Lean development was not rebuilt.\\\bottomrule
+\end{tabular}
+\end{center}
+
+The general local-field and graph theorems are proved in the manuscript.
+The finite examples test their formulas through independent arithmetic operations;
+they do not replace the all-parameter proofs. The density theorem is explicitly
+computer-assisted at the finite inequality, with a proof certificate and two
+independent checking strategies.
+
+\subsection{Reproducing the package}
+The two density and graph checkers use Python's standard library. The
+local-field checker additionally uses SymPy 1.14.0 for exact polynomial resultants.
+From the archive's top-level directory run
+\begin{verbatim}
+python3 code/certify_density.py
+python3 code/check_false_tate.py
+python3 code/verify_moment_extremum.py
+latexmk -pdf -interaction=nonstopmode -halt-on-error report.tex
+\end{verbatim}
+The scripts recreate the numerical JSON files and the density proof tree.
+The package's checksum file describes the delivered files before any local
+regeneration. The source excerpts are evidence for the analysis, not a complete
+standalone Lean build with every transitive dependency.
+
+\subsection{A concrete formalization path}
+The companion formalization plan separates the three proofs at their natural
+interfaces. For the density result, one can check the finite hypergraph certificate
+in a small verified kernel and then prove the smooth-weight and natural-density
+bridge. For the graph result, the first nonzero moment lemma is finite-field
+linear algebra, followed by a polynomial root count and a matrix-tree computation.
+For the local result, the essential additions are the ramification calculation,
+the triangular valuation basis, and the Gauss-valuation reduction for packets.
+
+None of the new source files in this package is represented as a completed Lean
+formalization. A future formal proof should preserve all strict inequalities:
+the stopping condition below a torsion exponent, the strict loss threshold
+in Theorem~\ref{thm:false-tate-cost}, and the prime-size hypotheses in the
+graph theorem. Changing an endpoint can change the conclusion.
+
+\subsection{Limits of the conclusions}
+We establish three definite results and a source-based arithmetic assessment.
+The natural-density separation answers the mathematical question as formulated
+in McNew's paper, while giving explicit credit to the earlier incoming proof.
+The local-field and graph results resolve extensions posed in the supplied
+research corpus. A targeted search of primary literature supplied context,
+but did not establish worldwide publication priority for the exact formulations.
+
+There is no claimed new proof of Artin holomorphy, nonabelian GRH, BSD,
+Vandiver, Bloch--Kato, or an additional algebraic $K$-group vanishing theorem.
+For those directions the report identifies an actual missing construction
+or estimate, rather than treating a conditional criterion as a solution.

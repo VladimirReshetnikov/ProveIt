@@ -1,0 +1,54 @@
+\section{Findings and the precise advance}
+\label{sec:assessment}
+
+The answer to the research question is affirmative at the level of reusable methods and a completed local extremal problem. It is conditional at the level of new global \(L\)-function conjectures. The strongest completed advance in this pass is the sharp torsion-selection theorem of Section~\ref{sec:torsion}; its proof does not assume RH or GRH.
+
+\subsection{Scope of the source}
+The frozen repository proves RH and GRH for Dirichlet \(L\)-functions. Its external statements do not quantify over arbitrary number fields, general Hecke characters, Artin representations, or automorphic representations. This distinction leaves meaningful extension targets even while accepting its five theorems as established. The statement file imports Mathlib directly, and the proof file derives those statements from the internal argument \cite{grh}.
+
+We inspected commit
+\[
+\texttt{72fead102f663d5c7a407964a13dc0cf9d977207}.
+\]
+The source pins Lean \texttt{4.35.0} and Mathlib commit
+\[
+\texttt{56a005855ea17e0b0958f73ec801ae140b0a1679}.
+\]
+The source audit and complete source-file hashes are included in the archive.
+
+\subsection{What was already done}
+The preceding corpus is substantial. All 31 ZIP archives in the incoming directory at ProveIt commit
+\[
+\texttt{274841c1cb137aafbb60ab5f519c51fd42eee98e}
+\]
+were retrieved and matched to their Git blob identifiers and byte lengths. Relevant sections were read; every theorem and computation in the predecessors was not independently reverified. The complete inventory and detailed overlap notes are in \path{evidence/verified_corpus.json} and \path{evidence/prior_review.md}.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}p{.25\textwidth}XX@{}}
+\toprule
+Earlier direction & Already available & Consequence for this pass\\
+\midrule
+Exact torsion selection & Fixed aggregate comparison with a conservative quadratic endpoint \cite{exactprior} & Determine its optimal endpoint and prove sharpness.\\
+Shell minimax & Exact one-shell capacities; positive individual losses and moving-radius comparisons \cite{shellprior,samplingprior} & Reuse the shell idea while retaining all savings from earlier shells.\\
+Averaged analytic transfer & Positive-part Mellin criteria, \(L^p\) estimates and averaged determinant losses \cite{meanprior} & Do not repackage an averaging corollary as a new result.\\
+Nonabelian detectors & Sylow, cyclic-generator, reflection, \(A_6\), and \(\mathrm{PSL}_2(2^r)\) constructions \cite{sylowprior,cyclicprior,pslprior} & Optimize a different resource: tensor exponent of a specified representation.\\
+Selmer and duality & An explicit obstruction from conjugate Tate-dual maps \cite{structuralprior} & A better local selector cannot remove a failed global hypothesis.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The smaller-degree \(A_5\) detector discussed later is already the \(q=4\) case of the prior \(\mathrm{PSL}_2(2^r)\) report. It is included for comparison, not claimed as a new discovery. Likewise, earlier arithmetic censuses and sparse CM applications are not re-claimed here.
+
+\subsection{Completed statements and their status}
+\begin{enumerate}
+\item \textbf{Sharp fixed-aggregate torsion selection.} The least budget needed to defeat \(N\) consecutive shells is exactly \(Np^{1-h_0}\). The optimal universal endpoint is
+\(H=h_0+\lfloor Bp^{h_0-1}\rfloor\).
+The proof, extremizers, bounded-series extension, and exact calculations are complete.
+\item \textbf{A Lubin--Tate extension.} The same rooted residue-tree proof works with residue cardinality \(q\), primitive \(\pi^h\)-division points, and valuation normalized by \(v(\pi)=1\). This is an extension of the local theorem, not a statement about the conductor or density of global arithmetic characters.
+\item \textbf{A sharp fourth-tensor \(A_5\) certificate.} A specified nonnegative tensor character detects the full splitting-field zeta zero set without Artin holomorphy assumptions. The proof uses exact character identities and standard Artin--Hecke formalism.
+\item \textbf{A conditional nonabelian RH criterion.} A one-sided square-root bound for the displayed centered prime-power sum would imply RH for every \(A_5\)-extension's Dedekind zeta function. The criterion is proved; the needed arithmetic bound is not.
+\end{enumerate}
+
+The first statement improves a quantitative problem explicitly left unoptimized in the inspected predecessor. These scoped claims do not establish worldwide priority. The proof uses established ideas from ultrametric interpolation, \(P\)-orderings, and character induction; related literature is compared in Sections~\ref{sec:applications} and \ref{sec:targets}.
+

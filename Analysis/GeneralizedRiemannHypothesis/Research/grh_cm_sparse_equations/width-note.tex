@@ -1,0 +1,18 @@
+\section{The first remaining quintic}
+At $\Delta=-131$, $5\le s(-131)\le6$. Two independent tests restrict a hypothetical five-term relation. Divide by its lowest monomial, so its exponents are $0=e_0<e_1<e_2<e_3<e_4$.
+\begin{enumerate}\setlength{\itemsep}{.15em}
+\item \emph{Bounded width.} For $e_4\le2048$ the five powers are independent over $\Q$. The checker reduces powers of $X$ modulo $H_{-131}$ over $\F_{2147483647}$ and drops the constant coordinate (the column of $e_0$). For each of the first two resulting four-vectors, fix their span, project the subsequent vectors into its two-dimensional quotient and compare projective directions. A collision is resolved by computing the rank at $1000000007$. These are prime moduli, so full rank at either proves rational independence. There are $\binom{2048}{4}=730{,}862{,}190{,}080$ normalized supports. All pass; 327 require the second prime.
+\item \emph{Arbitrary width.} Some pair $1\le j<i\le4$ must satisfy $17^{e_j}\mid(e_i-e_j)$. In particular $e_4\ge e_1+17^{e_1}$.
+\end{enumerate}
+To prove the second test, the coefficient valuations at $(17,0,8)$ on page~\pageref{sec:cert} give four unit roots of the form $u_\ell=8\exp x_\ell$, with $v_{17}(x_\ell)\ge1$ by the Newton polygon, and the fifth root $w$ has valuation three since $v_{17}(H(0))=3$. For any four distinct exponents $b_j$ the determinant $\det(u_\ell^{b_j})$ has valuation
+\[
+ C+\sum_{i<j}v_{17}(b_j-b_i),
+\]
+where $C$ is independent of the exponents. Indeed expand $\det(\exp(x_\ell b_j))$ by Cauchy--Binet. For indices $0\le m_0<\cdots<m_3$, factor the Vandermondes in the $x$'s and $b$'s. Each remaining quotient of alternating monomials is an integral homogeneous symmetric polynomial of degree $d=\sum(m_i-i)$ (alternating determinant divisibility). Its $x$-evaluation has valuation at least $d$ and its $b$-evaluation has nonnegative valuation. The leading indices $m_i=i$ give $1/\prod_{i=0}^3i!$, a unit. For each $m_i>i$, $v_{17}(m_i!/i!)<m_i-i$, by the factorial bound on page~\pageref{lem:disk}; the remaining normalized terms have positive valuation. The exponential expansions converge, so the first term determines the valuation. The column factors $8^{b_j}$ are units.
+
+Expand the full five-row determinant along $w$. If it vanishes, some term $j>0$ has valuation no larger than term 0. Canceling the common factors gives
+\[
+  3e_j\le\sum_{1\le i\le4,\ i\ne j}
+       \big(v_{17}(e_j-e_i)-v_{17}(e_i)\big).
+\]
+One of the three summands is at least $e_j$. Its index exceeds $j$ because $17^{e_j}>e_j$. This proves the divisibility test. It also extends the exact computation to width $32{,}768$: only $e_1=1,2,3$ need to be considered there. Of $48{,}029{,}600{,}424{,}386{,}560$ total supports, the first-exponent filter leaves $17{,}587{,}354{,}664{,}945$; 8,275 modular collisions all pass the second check. Among supports of width $\le N$, at most $6N^3\sum_{m\ge1}17^{-m}=3N^3/8$ pass it: choose the pair, its smaller exponent $m$, the larger one in its congruence class and the two other exponents. Whether even one support yields a relation at unrestricted width remains open here.

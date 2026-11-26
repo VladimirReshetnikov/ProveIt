@@ -1,0 +1,115 @@
+\section{An unramified nonabelian extension of the source field}
+\label{sec:unramified}
+
+\subsection{The degree-three extension costs no new different}
+
+Let $k=\Q(\sqrt{229})$. It is the quadratic subfield of the $S_3$ splitting field $F$. The elementary ramification calculation above gives a particularly favorable arithmetic situation.
+
+\begin{theorem}[Unramified cubic base change]\label{thm:unramified}
+The extension $F/k$ is cyclic of degree three and unramified at every finite prime. Let $q$ be divisible by $229$ and let $K$ be the imaginary quadratic field from the source. Set
+\[
+ E_0=K\Q(\zeta_q),\qquad E=F E_0.
+\]
+Then $[E:E_0]=3$, this extension is unramified at every finite prime, and
+\begin{equation}\label{eq:different-inherited}
+ \DD_{E/K}=\DD_{E_0/K}\OO_E,\qquad
+ \DD_{E/\Q}=\DD_{E_0/\Q}\OO_E,\qquad
+ \rd(E)=\rd(E_0).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The subgroup fixing $k$ is $A_3$, so $F/k$ is cyclic cubic. Away from $229$ the splitting field is unramified. At $229$ its inertia group is a transposition subgroup of $S_3$, whose intersection with $A_3$ is trivial. Relative inertia for $F/k$ is exactly that intersection. Thus the relative different is the unit ideal.
+
+The quadratic field $k$ has conductor $229$, so it lies in $\Q(\zeta_q)$. The field $E_0/\Q$ is abelian. Therefore $F\cap E_0$ is an abelian Galois subextension of $F/\Q$, and is contained in $k$; since it contains $k$, equality holds. Hence $[E:E_0]=3$.
+
+An unramified extension of local fields remains an unramified finite etale algebra after base change; each field factor is unramified. Apply this at all finite places to $F/k$. This gives $\DD_{E/E_0}=\OO_E$. Transitivity of the different gives the first two identities in \eqref{eq:different-inherited}. The relative discriminant formula gives
+\[
+ |\operatorname{disc}(E)|=|\operatorname{disc}(E_0)|^3,
+\]
+and $[E:\Q]=3[E_0:\Q]$, proving the root-discriminant identity.
+\end{proof}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[>=Stealth,every node/.style={align=center}]
+\node (E) at (0,2.8) {$E=F E_0$};
+\node (E0) at (-2.8,1.35) {$E_0=K\Q(\zeta_q)$};
+\node (F) at (2.8,1.35) {$F$};
+\node (k) at (0,0) {$k=\Q(\sqrt{229})$};
+\draw (E0) -- node[above=3pt,midway,font=\small,sloped] {degree $3$} (E);
+\draw (F) -- (E);
+\draw (k) -- (E0);
+\draw (k) -- node[above=3pt,midway,font=\small,sloped] {degree $3$} (F);
+\end{tikzpicture}
+\caption{The favorable nonabelian benchmark, with $F\cap E_0=k$. Both displayed degree-three extensions are unramified at every finite prime.}
+\end{figure}
+
+This corrects the general different-related uncertainty in the earlier synthesis for its specific example. A principal generator of the old different remains a generator after extension. This statement does not say that an arbitrary fractional ideal is principal, or that adjoining an arbitrary nonabelian field has the same property.
+
+\subsection{The fractional lattice and trace self-duality}
+
+From this point on, let $q$ be an admissible source tower modulus, with $229$ included in its fixed base modulus. Let $A_0$ be the source's fractional Weil lattice. In ideal notation its local construction gives
+\begin{equation}\label{eq:half-different}
+ A_0\overline{A_0}=\DD_{E_0/K}^{-1}.
+\end{equation}
+It permits inverse-different denominators on one side of each selected conjugate pair of primes, and remains integral on the other side. This is described explicitly by
+\src{New/Derivatives/Vacuum/ShortVectors}{finiteImage_mem_iff} and the finite-idele valuation identity in
+\src{New/Derivatives/Field/WeilData}{v_alpha_mul_star_mul_relDifferentGen}.\cite{shortVectors,weilField}
+
+For the positive definite Hermitian pairing
+\[
+ h(x,y)=\Tr_{E/K}(\overline{x}y),
+\]
+the dual of a fractional ideal $A$ is
+\begin{equation}\label{eq:hermitian-dual}
+ A^\#=\DD_{E/K}^{-1}\overline A^{-1}.
+\end{equation}
+Indeed, $h(z,A)\subseteq\OO_K$ is equivalent to
+$\overline z A\subseteq\DD_{E/K}^{-1}$; conjugate this condition and use conjugation stability of the different. Trace duality and different transitivity are standard number-field facts.\cite{Milne}
+
+\begin{corollary}[The corrected lattice]
+The ideal $A=A_0\OO_E$ satisfies
+\[
+ A\overline A=\DD_{E/K}^{-1},\qquad A^\#=A.
+\]
+It is a full projective $\OO_K$-lattice in $E$, with its positive definite Hermitian trace pairing.
+\end{corollary}
+
+\begin{proof}
+Extend \eqref{eq:half-different} to $\OO_E$ and apply Theorem~\ref{thm:unramified}. Equation~\eqref{eq:hermitian-dual} gives self-duality. A fractional ideal is finite and torsion-free over the Dedekind domain $\OO_K$, hence projective. Under the induced CM type, the trace of $\overline x x$ is a sum of squared complex absolute values, proving positivity.
+\end{proof}
+
+For clarity, a more general ideal construction is also available. If every rational prime below $\DD_{E/K}$ splits in $K$, choose one of its two $K$-primes. Put valuation $-v_{\mathfrak P}(\DD_{E/K})$ in $A$ above the chosen prime and valuation zero above its conjugate. Then $A\overline A=\DD_{E/K}^{-1}$ prime by prime. If $E/K$ is Galois, this choice is stable under that Galois group. No principal different is required. The special unramified benchmark is stronger because it reuses the old lattice directly.
+
+\subsection{An existing source theorem supplies the Weil data}
+
+An important internal theorem was absent from the earlier transfer discussion:
+\begin{center}
+\src{Lib/ClassField/Grunwald}{New.nonempty_weilData_of_not_dvd_differentIdeal}.
+\end{center}
+It says that a CM extension with compatible CM types inherits Weil data when no finite prime fixed by conjugation divides the relative different. Its proof retains the purely imaginary parameter $j$, pulls the splitting character along the idele norm, and constructs a compatible finite idele.\cite{grunwald}
+
+Theorem~\ref{thm:unramified} verifies the hypothesis in the strongest possible way. Here one can retain the old finite idele by extension, because the different is unchanged. The remaining structural conditions also transport: the root of unity of order $5040$ already lies in the base, the parameter $j$ has the same positive imaginary values on the induced CM type, and its trace-one algebraic integer remains integral. The splitting character is the original one composed with the idele norm $E\to E_0$.
+
+This is an application of an existing theorem in the proof library. It must not be counted as a newly proved general theorem or as a newly compiled Lean instantiation.
+
+\subsection{Period normalization and the old unit witnesses}
+
+The source frame construction needs more than the matrix identity. For each $p$-adic embedding, at least one frame member $y$ must make all of its normalized CM-coordinate coefficients units. In the source, the two possible witnesses are
+\begin{equation}\label{eq:unit-witnesses}
+ 1,\qquad
+ \zeta_q\,\mathrm{dualVector}(\varphi(q)-1).
+\end{equation}
+Their property is the norm assertion
+\[
+ \left|\iota_p\bigl(c\,\overline{\tau(y)}\bigr)\right|_p=1
+ \quad\text{for every CM embedding }\tau,
+\]
+with the source's period normalization $c$.\cite{shortVectors,tightFrames}
+
+Every new CM embedding restricts to an old one. The finite-idele valuations and root discriminant extend unchanged. Consequently the same norm assertions hold for the two old witnesses in $A$.
+
+There is a normalization subtlety. The source defines its vacuum root by a principal complex root. Under degree-three base change, the quantity whose root is taken is cubed and the root degree triples. Recomputing the principal root need not give the same complex number: the new and old choices can differ by a root of unity. Their absolute values at all archimedean and $p$-adic places agree. Alternatively, choose the inherited old root as the new normalization; it satisfies the new power equation. Thus the unit-witness statement transports as an equality of norms. Literal equality of independently chosen principal-root values is not asserted.
+
+The witnesses alone cannot span the new embedding directions. The next section proves that one can include them in genuine frames at every sufficiently large integer bound, without assuming a free lattice.

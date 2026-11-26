@@ -1,0 +1,75 @@
+\section{Exact finite selection certificates}
+
+The real-valued greedy estimate is convenient for asymptotics. For
+specified finite dimensions, integrality gives a more precise computable
+guarantee. This section describes a certificate using rational arithmetic
+only. It computes guaranteed ranks, not actual optimizing translates of an
+unspecified map.
+
+Let $u,v$ be rational and retain the notation of
+Section~\ref{sec:sharp-spanning}. Put
+\[
+ R=\left\lceil\frac{(1-u)^2}{1+v}d\right\rceil.
+\]
+At a current span of dimension $k$, the square-root estimate and
+rank-nullity guarantee a gain of at least
+\[
+ g(k)=\max\left\{0,\ s-\left\lfloor
+ su+s\sqrt{(1+v)k/d}\right\rfloor\right\}.
+\]
+In particular $g(k)\ge1$ when $k<R$. The actual rank can exceed a
+previous lower certificate, so blindly iterating $k\mapsto k+g(k)$ on a
+lower bound would require a monotonicity argument. We avoid that issue by
+taking an envelope. Define
+\[
+ T(k)=\min\{R,k+g(k)\},\qquad
+ H(q)=\min_{q\le k\le R}T(k),\qquad
+ q_0=0,\quad q_{j+1}=H(q_j).
+\]
+If the actual rank is at least $R$, the target is already reached.
+Otherwise the actual integer rank lies between $q_j$ and $R-1$, so the
+next actual rank is at least $H(q_j)$. Thus $q_j$ is a rigorous lower
+certificate after at most $j$ selected translates. Furthermore
+$q_{j+1}>q_j$ whenever $q_j<R$, hence the certificate reaches $R$ in at
+most $R$ steps. The table of $H$ is obtained from one backward pass over
+the values of $T$.
+
+\subsection{Eliminating all square-root comparisons}
+
+To decide whether an integer $m$ is at most
+$su+s\sqrt{(1+v)k/d}$, set $z=m-su$. The answer is yes if $z\le0$;
+if $z>0$, it is yes exactly when
+\[
+ z^2\le s^2(1+v)k/d.
+\]
+Every quantity is rational. Binary search over $0\le m\le s$ suffices
+because values above $s$ all give gain zero. This constructs the table in
+$O(R\log(s+1))$ exact comparisons and $O(R)$ storage. There is no
+floating-point eigenvalue calculation or numerical linear program in the
+acceptance test.
+
+If the source is restricted to a subspace of codimension $r_0$, the same
+$j$ selected translates retain rank at least $q_j-jr_0$, by the restriction
+lemma. This keeps the dimension loss from source conditions explicit.
+
+\subsection{An illustrative comparison}
+
+For $d=1000$, $s=20$, and $u=v=1/100$, the sharp universal ceiling is
+$R=971$. The exact integer certificate reaches rank $840$ after $148$
+translates and rank $971$ after $261$. The exponential greedy bound in
+the source, with its $16\varepsilon$ cutoff and rate $2s/(5d)$, certifies
+rank $840$ after $230$ translates. These figures compare sufficient
+guarantees; they do not assert a lower bound on the optimal number of
+translates for a particular family.
+
+The supplied checker also instantiates the source errors
+$u=5/b^4$, $v=9/b^4$, verifies rational equality examples, and checks the
+constants used in the $20/b^4$ theorem. Its output records the exact inputs,
+rank trajectories, and certified translate budgets. The illustrative
+dimensions are not claimed to occur as admissible automorphic data.
+
+There is a second dimension constraint:
+$\rank(PB)\ge\lceil(1-u)s\rceil$. Consequently $R$ is the ceiling of the
+optimal \emph{universal coefficient times $d$}, not necessarily the
+exact minimum possible total rank for every fixed triple $(d,s,u,v)$.
+The cyclic examples establish the sharpness actually claimed.

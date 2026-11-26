@@ -1,0 +1,49 @@
+\documentclass[11pt]{article}
+\newcommand{\runningtitle}{Prime sums and individual Hecke factors}
+\input{layout}
+\begin{document}
+\headline{ANALYTIC NUMBER THEORY}{Prime sums that isolate a Hecke factor}{One-sided criteria beyond Dirichlet characters and an excursion bound \hfill 25 November 2026}
+A one-sided bound on a prime sum can locate zeros only if the relevant
+zero contributes a pole with a controlled sign. In the readable Lean
+\grhlink{src/New/Reduction/Zeros/PrimeError.lean}{prime-error computation}
+the residues depend on the difference of two zero multiplicities.
+Its \grhlink{src/New/Reduction/Zeros/Criterion.lean}{criterion}
+chooses a quadratic twist that has no competing zero in a prescribed
+rectangle. We instead choose weights on ideal classes so that unwanted
+unknown factors disappear from the logarithmic derivative. The remaining
+residues have a common sign. The result identifies one prime estimate
+equivalent to RH for a selected Hecke function, including functions of
+genuinely nonabelian origin over $\mathbb Q$.
+
+For example, over $\mathbb Q(\sqrt{-95})$, three positive definite
+binary quadratic forms with weights $1/2,\sqrt{2}/2,1$ suffice to test
+one faithful order-eight character pair. The other faithful pair is
+eliminated identically. Rational-valued weights cannot achieve this
+specific separation. A second example uses a single quadratic form at
+each step in the Gaussian ring class tower.
+
+The \incominglink{grh_sparse_singular_moduli.zip}{prior sparse singular
+moduli report} already gives the aggregate commutator test and a
+dihedral order-eight field example. Our contributions are the
+factor-specific optimization, its precise rationality obstruction and
+the explicit tower formulation. These are equivalences for open zero
+problems. The estimates required for a new Hecke or Dedekind RH remain
+unproved here. The last section obtains a numerical-width bound for the
+lower limit of a different observable, the repository's signed
+modulus-one remainder; it uses RH and Dirichlet GRH.
+
+\input{sections/extension}
+\input{sections/gaussian}
+\input{sections/oscillation}
+
+\paragraph{Sources and comparison.} For ideal-class characters and
+their Hecke functions see Duke, Friedlander and Iwaniec,
+\href{https://www.math.ucla.edu/~wdduke/preprints/classgroup.pdf}{\emph{Class
+group $L$-functions}}. For the form--field correspondence see Cox,
+\href{https://www.math.utoronto.ca/~ila/Cox-Primes_of_the_form_x2%2Bny2.pdf}{\emph{Primes
+of the form $x^2+ny^2$}}, especially \S9. Suzuki gives related
+\href{https://doi.org/10.1007/s11139-025-01238-9}{one-sided criteria}
+for zeta and Dirichlet functions. The references and pinned source
+links identify which inputs are imported. The exact Fourier
+optimization and the equivalences in this note are proved in the text.
+\end{document}

@@ -1,0 +1,31 @@
+\section{A simultaneous congruence for weighted Fleck sums}
+The multiple-branch calculation has an arithmetic interpretation involving only ordinary integers. Fix a prime $p$, a modulus $M=p^t$ with $t\ge1$, and a positive integer $m$. For $0\le u<M$ and $0\le j<m$ define
+\[
+ S_{j,u}(n)=\sum_{\substack{0\le k\le n\\ k\equiv u\bmod M}}
+ (-1)^{n-k}\binom nk\binom{(k-u)/M}{j}.
+\]
+The lower argument $(k-u)/M$ is nonnegative at every summand. Sums of this type are the cyclotomic $\psi$-coefficients before normalization, up to the displayed sign. Sun and Wan prove Lucas-type congruences for individual normalized coefficients in \emph{Lucas-type congruences for cyclotomic $\psi$-coefficients} (\url{https://arxiv.org/abs/math/0512012}). Their integrality statement gives $v_p(S_{j,u}(n))\ge\lfloor(n-M/p-jM)/(M-M/p)\rfloor$. At $j=m-1$ it supplies the sufficient common threshold $U_r$ below. Here we determine the least simultaneous threshold and identify the obstruction one step earlier. The derivation is independent of any claim to priority about these congruences.
+
+\paragraph{Corollary.}
+For $r\ge1$ take $T_r$ from the Lubin--Tate calculation with $K=\mathbb Q_p$, $\pi=p$ and the contact list consisting of $m$ copies of $t$. Then
+\[
+  p^r\mid S_{j,u}(n)\quad\text{for every }j,u
+  \quad\Longleftrightarrow\quad n\ge T_r.
+\]
+Here $\omega=mM$, $D=M-M/p$, and $U_r=mM+(r-1)D$. Thus
+$U_r-(m-1)D\le T_r\le U_r$, with equality at the upper endpoint precisely when $r-1$ and $m-1$ add without a base-$p$ carry. For every $r$, the values $S_{m-1,u}(T_r-1)$ are all equal modulo $p^r$ to a single nonzero class, and $S_{j,u}(T_r-1)\equiv0$ for $j<m-1$. When the upper endpoint is attained, the common class is
+\[
+            (-p)^{r-1}\binom{m+r-2}{r-1}\pmod {p^r}.
+\]
+\paragraph{Proof.}
+Set $R=\mathbb Z/p^r$, $W=Y^M-1$, $P=W^m$. In the multiplicative Lubin--Tate coordinate $X=Y-1$ the denominator is associated to $P$. Hence $T_r$ is the nilpotency index of $Y-1$ in $R[Y]/P$, by monic division as in the cyclic special case above. The polynomials $Y^uW^j$ with $0\le u<M$, $0\le j<m$, form a basis over $R$. Their leading monomials run through degrees $0$ to $mM-1$ with coefficient one. Writing $Y^{u+Ml}=Y^u(1+W)^l$ in the binomial expansion of $(Y-1)^n$ identifies its coordinates in this basis with $S_{j,u}(n)$. This proves the threshold.
+
+Let $Q(Y)$ be the polynomial remainder of $(Y-1)^{T_r-1}$ on division by $P$. Then $Q\ne0$ and $(Y-1)Q= cP$ for some scalar $c\in R$, by the degree bound and the vanishing at $T_r$. Multiplication by the monic $Y-1$ is injective in $R[Y]$, whence
+\[
+ Q=cW^{m-1}(1+Y+\cdots+Y^{M-1}),\qquad c\ne0 .
+\]
+This gives the claimed full vector of residues at the last exceptional index.
+
+For the explicit value of $c$ at saturation, put $P_X=((1+X)^M-1)^m$ and $F_*(z)=z^{mM}P_X(1/z)$. In the variable $X$ the leading coefficient in degree $mM-1$ of the remainder of $X^{T_r-1}$ is still $c$. Monic division at infinity identifies it with $[z^{T_r-mM}]F_*^{-1}$, by comparing the coefficients of $X^{-1}$ in $X^{T_r-1}/P_X$. In the reverse polynomial of a single factor the nonconstant coefficients are $\binom Mj$ in deficit $M-j$, $1\le j<M$. They have valuations $t-v_p(j)$, since $\binom{M-1}{j-1}$ is prime to $p$. The unique coefficient with deficit equal to its valuation times $D$ is at $j=M/p$. Its coefficient divided by $p$ is $1\bmod p$, as follows by reducing $\binom{M-1}{M/p-1}$ modulo $p$. The top-degree computation for $(1+pz^D)^{-m}$ now gives the stated residue.\hfill$\square$
+
+For example, take $p=2$, $t=2$, $m=2$, $r=2$. The general upper endpoint is $10$ and the exact threshold is $8$. Indeed $(Y^4-1)^2\equiv(Y-1)^8\bmod4$ by the binomial theorem. At $n=7$ direct expansion gives $S_{1,u}(7)\equiv1\bmod4$ for every $u$. The direct integer check in the archive computes these residues, as well as both sides of the threshold for further parameters.

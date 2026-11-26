@@ -1,0 +1,43 @@
+\section{Which binary Frobenius tests see the entire nonabelian spectrum?}
+The one-sided argument also suggests an inverse question. Given the Dirichlet factors, which individual Frobenius events have a strictly negative coefficient at every remaining irreducible character? The two ProveIt reports on relative prime races and cyclic generators give useful signed tests. Imposing a binary indicator and this particular strict sign condition makes a full classification possible.
+
+Let $H\ne1$ be a normal subgroup of a finite group $G$, $\pi:G\to G/H$, $q=[G:H]$, and $h=|H|$. For a real inversion-symmetric function $f$ put $A_{uv}=f(u^{-1}v)$. Write $V$ for the subspace of $\mathbb R^G$ consisting of vectors whose coordinates sum to zero on each coset of $H$. Simultaneous left translation by $H$ acts transitively on each coset, so the coset blocks have constant row and column sums and $A$ preserves $V$.
+
+\paragraph{Integral rigidity.}
+Suppose $f$ takes integer values and $A|_V$ is negative definite. Then
+\[
+ \sum_{u\in H}\bigl(f(u)-f(1)\bigr)\ge h-1.
+\]
+Equality is equivalent to $f=k\circ\pi-\mathbf1_{\{1\}}$ for an integer-valued, inversion-symmetric function $k$ on the quotient. In particular, for binary $f$, negative definiteness is equivalent to
+\[
+ f=\mathbf1_{\pi^{-1}(D)}-\mathbf1_{\{1\}},
+ \qquad 1\in D=D^{-1}\subseteq G/H.
+\]
+Indeed $T=-A|_V$ preserves the full lattice $V\cap\mathbb Z^G$ and is positive definite, hence $\det T$ is a positive integer. On the coset-constant subspace the trace of $A$ is $q\sum_{u\in H}f(u)$, by taking normalized coset indicators as an orthonormal basis. Its full trace is $qh f(1)$. Consequently
+\[
+ 1\le (\det T)^{1/[q(h-1)]}\le
+ \frac{\operatorname{tr}T}{q(h-1)}
+ =\frac{\sum_{u\in H}(f(u)-f(1))}{h-1}.
+\]
+Equality in the displayed inequality of the assertion forces all eigenvalues of $T$ to equal one. Then $(A+I)(e_u-e_v)=0$ for $u,v$ in the same coset. Reading row $1$ gives the quotient factorization. The reverse implication follows since the convolution matrix of a quotient pullback annihilates $V$. In the binary case the numerator is at most $h-1$, so equality is forced and $f(1)=0$.
+
+For a conjugacy-invariant $f$ and $H=[G,G]\ne1$, $V$ is precisely the sum of the nonlinear isotypic subspaces. On the subspace of an irreducible character $\chi$, convolution has eigenvalue $|G|\langle f,\chi\rangle/\chi(1)$. Thus all strictly negative nonlinear coefficients of a binary test are forced to equal $-\chi(1)/|G|$. Its minimum support is $H\setminus\{1\}$, uniquely, of density $(h-1)/|G|$. This optimization concerns the stated uniform sign condition. Tests using virtual-character information, signed weights, or selected irreducibles have other possibilities.
+
+\paragraph{An arithmetic consequence.}
+Fix a nonabelian finite Galois extension $L/\mathbb Q$, let $G$ be its group, $H=[G,G]$, $K=L^H$, $a=[K:\mathbb Q]$, $n=[L:\mathbb Q]$, and $\delta=1/a-1/n$. At unramified primes write $g_p$ for a representative of Frobenius. Given Dirichlet GRH, the following inequality for every $\epsilon>0$ is equivalent to RH for $\zeta_L$.
+\[
+ \sum_{p\le x,\ g_p\in H\setminus\{1\}}\log p-\delta x
+ \le C_{L,\epsilon} x^{1/2+\epsilon}.
+\]
+To prove this, put $f=\mathbf1_H-\mathbf1_{\{1\}}$ and
+$\Psi(x)=\sum_{p^j\le x} f(g_p^j)\log p$, omitting ramified primes throughout. The terms with $j\ge2$ sum to $O(\sqrt x\log^2(2x))$. The transform of $\Psi(x)-\delta x$ against $x^{-s-1}dx$ on $[1,\infty)$ equals
+\[
+ T(s)=\frac1s\left(-\frac{\zeta'_K(s)}{a\zeta_K(s)}
+                   +\frac{\zeta'_L(s)}{n\zeta_L(s)}+U(s)\right)
+                  -\frac{\delta}{s-1}.
+\]
+Here $U$ is holomorphic in $\Re s>0$. Indeed the normalized unramified coefficient of $-\zeta'_F/\zeta_F$ at $p^j$, divided by $\log p$, is one precisely when the $j$th Frobenius power becomes trivial on $F$. Terms from the finitely many excluded factors are holomorphic in this half-plane. The pole at 1 cancels. Since $K$ is abelian, its Dirichlet factorization leaves no zero with $\Re s>1/2$. Consequently $T$ has a pole at each such zero $\rho$ of $\zeta_L$, with residue $m_\rho/(n\rho)$.
+
+Choose $\theta=1/2+\epsilon<1$. The one-sided bound gives a nonnegative function $C x^\theta-\Psi(x)+\delta x$ for suitable $C$, with Mellin transform $C/(s-\theta)-T(s)$. If its finite abscissa of convergence exceeded $\theta$, Landau's lemma would force a real singularity there. The meromorphic formula permits only a simple pole of strictly negative residue at that real point; this is impossible because the transform is nonnegative as the point is approached from the right. The transform therefore converges absolutely for $\Re s>\theta$ and is holomorphic there. Varying $\theta$ excludes every zero to the right of the critical line, and the functional equation gives the assertion. Conversely, RH for the two Dedekind functions gives $\psi_F(x)=x+O_F(\sqrt x\log^2(2x))$ for both fields by the prime ideal theorem under RH \cite{gm}. Subtracting their normalized counts proves the required inequality. The contributions at omitted primes are $O_L(\log(2x))$. The other classified binary events differ by abelian Frobenius classes, whose centered sums are within the same error under Dirichlet GRH. This argument requires no Artin holomorphy conjecture.
+
+For the splitting field of $X^3-X-1$, the group is $S_3$ by irreducibility modulo 2 and discriminant $-23$, giving $K=\mathbb Q(\sqrt{-23})$. The minimal event counts primes $p\ne23$ at which the polynomial stays irreducible, with density $1/3$. An upper square-root-scale estimate for that count remains the missing arithmetic input. Identity and the two 3-cycles have identical images in $G^{\rm ab}$, which explains why Dirichlet GRH by itself supplies no such estimate through the abelian character expansion.

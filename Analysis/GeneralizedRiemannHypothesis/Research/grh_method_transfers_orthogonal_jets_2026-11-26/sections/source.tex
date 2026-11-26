@@ -1,0 +1,83 @@
+\section{What the repository proves and what can transfer}
+\label{sec:source}
+
+\subsection{Pinned evidence and scope}
+
+The inspected upstream commit is
+\begin{center}\code{72fead102f663d5c7a407964a13dc0cf9d977207}.\end{center}
+The ProveIt intake snapshot is
+\begin{center}\code{9816644452bb42827167d6110e6d0322315a02b9}.\end{center}
+We inventoried all 52 incoming GRH ZIP archives at that snapshot, verified their Git blob hashes, and extracted 1,630 text/code members for comparison. The directory inventory, archive hashes, and coverage notes accompany this report. Extraction and comparison are not independent validation of every prior theorem.
+
+The upstream \src{src/Statements.lean}{statement file} defines the zero statements using Mathlib's zeta function and \code{DirichletCharacter.LFunction}. The five final exports in \src{src/Main.lean}{Main.lean} cover ordinary RH, its all-nontrivial-zero formulation, Dirichlet nonvanishing to the right of $1/2$ with the principal pole exception, and the all-character and primitive-character critical-strip formulations. These endpoints concern Dirichlet characters over $\Q$. Auxiliary CM fields and higher-rank groups inside their proofs do not enlarge the quantifiers of those conclusions.\cite{repo,statements}
+
+The upstream README reports Lean 4.35.0 and Mathlib revision
+\begin{center}\code{56a005855ea17e0b0958f73ec801ae140b0a1679},\end{center}
+with dependencies only on
+\code{propext}, \code{Classical.choice}, and \code{Quot.sound}, together with additional machine checks. We inspected source and declarations; we did not repeat the full Lean build. Taking the user's premise as the starting point is compatible with keeping that validation distinction explicit.\cite{repo}
+
+\subsection{The arithmetic mechanism}
+
+The central construction has three tightly connected estimates. Integral theta derivatives encode divisibility by prime powers. This makes normalized source forms small. A second-moment argument then ensures that enough independent target forms have been obtained. Finally, determinant identities, congruence control, and carefully selected twists prevent their corrected covolume from being too small.
+
+\begin{center}\small
+\begin{tabular}{P{.18\linewidth}P{.38\linewidth}P{.34\linewidth}}
+\toprule
+Stage & Precise role & Source landmark\\
+\midrule
+Short forms & Prime-sensitive divisibility and an upper norm/index bound & \code{ShortAndEnough.lean}, Theorem A\\[4pt]
+Enough forms & Independent vectors occupying at least $1-4/b^2$ of the target dimension & \code{Data.enough\_forms}, Theorem B\\[4pt]
+Long integral forms & A lower bound for the same covolume after paying for index and twist heights & \code{integral\_forms\_long}, Theorem C\\[4pt]
+Cancellation & Matching large main terms leave a bound for the desired prime remainder & \code{star\_inequality}\\[4pt]
+Zero exclusion & An auxiliary twist removes cancellation; a one-sided transform argument excludes poles & \code{Zeros/Criterion.lean}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The explicit comparison is
+\[
+ m\,\mathrm{totalRemainder}\le f a(\log b)^5.
+\]
+Here the number of lifts satisfies $\sqrt x\le m\le2\sqrt x$. Scale choices and the remaining estimates yield
+\[
+ R_{d,q}(x)\le(64\varphi(q)+3)x^{-1/2+6\epsilon}
+\]
+eventually, for fixed admissible $q,d$ and every sufficiently small $\epsilon>0$. The remainder centers the sum of
+$\Lambda(n)(1-\chi_d(n))(1/n-1/x)$ over $n\le x$ in the class $1\bmod q$.
+The residue calculation sees differences of zero multiplicities. The extra quadratic twist is selected so its contribution vanishes in the relevant region, leaving nonnegative multiplicities. This noncancellation step matters as much as the final transform.\cite{guide,mainineq,criterion}
+
+The same outline does not prove RH for a new Euler product merely by replacing a Dirichlet character in a formula. Its divisibility interpretation, spanning estimate, determinant main term, denominator costs, and noncancellation device must all survive the change.
+
+\subsection{The two ingredients used in this report}
+
+The source's
+\src{src/New/Spanning/SecondMoment/PositiveType.lean}{positive-type matrix lemma}
+\code{New.card\_mul\_sum\_det\_eq\_zero\_le} bounds the mass of singular compressions
+$A_1^{\mathsf T}\pi(g)A_0$ in a finite-group representation over a finite field. It counts kernel vectors by Fourier orthogonality and controls the resulting coefficients through stabilizer masses and Cauchy--Schwarz. The incoming corpus already extends this to rectangular matrices, frame moments, and symplectic boundary blocks.\cite{positivetype,priorrank,priorsymplectic}
+
+Sections~\ref{sec:binary} and \ref{sec:orthogonal} continue this direction. Their proofs use direct frame-orbit counts suited to orthogonal groups. The binary result handles the characteristic-two canonical vector explicitly. The odd-characteristic boundary result retains the component and parity information that a generic stabilizer bound can lose. These are developments prompted by the source ingredient, not applications of a GRH consequence.
+
+The source's
+\src{src/New/Derivatives/Sharpness/OneCurve.lean}{one-curve sharpness lemma}
+\code{New.exists\_monomial\_max\_norm\_coeff} reduces an extremal integral Taylor coefficient to a finite monomial choice. The previous branch-interpolation report transferred that finite-jet viewpoint to Lubin--Tate substitutions and left a precise cancellation question at finite precision. Section~\ref{sec:jets} answers that question through interpolation denominators and their leading Newton face.\cite{onecurve,priorjets}
+
+\subsection{What the earlier corpus already contains}
+
+The following are comparison landmarks, not claims independently certified here.
+
+\begin{center}\small
+\begin{tabular}{P{.29\linewidth}P{.59\linewidth}}
+\toprule
+Prior packet & Content relevant to this analysis\\
+\midrule
+\path{grh_beyond_dirichlet_2026-11-25.zip} & Rectangular factorial kernel moments and rank tails; therefore a general frame-moment extension is not new to this corpus.\\[4pt]
+\path{grh_sharp_torsion_and_symplectic_blocks.zip} & Exact torsion refinements and symplectic compression laws, including boundary behavior.\\[4pt]
+\path{grh_transfers_cycle_signings_and_lubin_tate.zip} & Sharp residue-field branch precision; the inverse-pole characterization modulo $\pi^r$; an explicit question about multibranch cancellations.\\[4pt]
+\path{grh_arithmetic_transfers_2026-11-26.zip} & Integral congruence/intertwiner depth and related arithmetic transfers.\\[4pt]
+\path{grh_ideal_densities_and_transfer_conditions_2026-11-26.zip} & Density problems and explicit limitations of noncyclotomic/Selmer transfers.\\[4pt]
+Other nonabelian and symmetric-power packets & Numerous exact detecting weights and one-sided analytic criteria; the required new global arithmetic inequalities remain separate tasks.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+We therefore do not present another equivalent nonabelian zero criterion as a newly solved conjecture. The advances developed here have complete finite-group or local-algebra proofs and an explicit comparison with the immediately preceding results.

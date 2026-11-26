@@ -1,0 +1,128 @@
+\section{Reducing the global five-term question to 71 discriminants}\label{sec:global-five}
+Here $\Delta=-D=f^2d_K$ and $h=h(\Delta)$. We exclude any rational
+annihilator with at most five nonzero terms if $h\ge5$, apart from the
+explicit residual list treated separately. All reductions in this
+section are unconditional. They use the local root bound in Section~\ref{sec:local} and determinants built from five conjugates.
+
+\paragraph{The local choices.}
+At $p=7,13$ the unique supersingular $j$ is nonzero. If $p\nmid f$
+and $p$ does not split in $K$, the ring class field has absolute
+ramification index at most two above $p$. Deuring reduction therefore
+puts all $h$ roots into one nonzero multiplicative disk of depth
+at least $1/2$. Five distinct roots in this disk are impossible for a
+five-term polynomial. For completeness, in the local bound take
+$\lambda=1/2$ and $k=5$. For $n=5,6$ one has
+$n/2-v_p(n!)>2$, and for $n\ge7$ one has
+$n/2-v_p(n!)\ge n/2-(n-1)/6>2$.
+The first five weights are at most $2$.
+
+If $7\cdot13\mid f$ we may also use $p=19$ when $19\nmid f$ and $19$
+is nonsplit. The order class number formula gives
+$h\ge\varphi(f)/3\ge\varphi(91)/3=24$.
+There are only two supersingular $j$-values in characteristic 19, both
+nonzero. For instance, the coefficient of $x^{18}$ in
+$(x^3+Ax+B)^9$ is $B(10A^3+8B^2)$ modulo 19. Vanishing gives the
+values $18$ and $7$ for nonsingular curves. One disk therefore holds
+at least twelve roots. Absolute ramification index at most two again
+suffices.
+
+\paragraph{Archimedean certificates from split and conductor primes.}
+A split odd prime $p\nmid f$ permits factors $p^j$ in the leading
+coefficient of a primitive reduced form. One can combine these
+factors with the square of a squarefree divisor of the conductor.
+Specifically take $a=t^2s$, where $t\mid f$ is odd and squarefree,
+$s$ is odd and coprime to $t$, and each prime dividing $s$ splits and
+does not divide $D$. Assume $D\ge4a^2$. Put $D'=D/t^2$ and choose
+$v$ with its parity prescribed by $D'$, so $4\mid v^2+D'$.
+Modulo each prime power dividing $s$, lift a unit square root of $-D'$
+by Hensel's lemma. For each $q\mid t$ avoid the at most two roots
+of $v^2+D'\equiv0\pmod q$. The Chinese remainder theorem gives a
+representative with $|v|\le ts$. Taking $b=tv$ and
+$c=(v^2+D')/(4s)$ gives $|b|\le a\le c$. The choices at primes dividing
+$t$ ensure $q\nmid c$, and those at primes dividing $s$ ensure
+$q\nmid b$. Thus the form $[a,b,c]$ is primitive and reduced,
+after normalizing boundary signs if necessary.
+
+For two available coefficients $a<b$ the sufficient integral checks
+are $D\ge16a^2$ and
+$9D(b-a)^2\ge16a^2b^2$. They give a factor exceeding 16 between
+the corresponding moduli: the cusp estimate
+$||j_a|-\exp(\pi\sqrt D/a)|\le2079$ gives
+$U\ge e^{4\pi}>34\cdot2079$ and $U/V\ge e^{4\pi/3}>32$ for the two
+exponentials. Four successive gaps give five rows. To see that these rows work for all
+increasing integer exponents, order the radii increasingly and scale
+successive columns by factors in ratios
+$(r_jr_{j+1})^{-(e_{j+1}-e_j)/2}$. In any row, moving by one entry
+away from the diagonal loses a factor at least four. The off-diagonal
+sum is at most $2\sum_{m\ge1}4^{-m}=2/3$ of the diagonal magnitude.
+The generalized Vandermonde determinant is nonzero.
+
+The following cases are disjoint. In the last two rows both 7 and 13
+divide $f$. If a local choice above applies, that settles the case.
+Every available local prime in the row otherwise splits, and the
+displayed leading coefficients then exist and pass the separation
+checks at and above the indicated bound. The conductor-only last row
+needs no splitting assumption.
+\begin{center}\small
+\begin{tabular}{lrr}
+\toprule
+Conductor condition & Five leading coefficients & $D$ sufficient\\
+\midrule
+$7,13\nmid f$ (both absent) & $1,7,13,49,91$ & 38,416\\
+$7\mid f$, $13\nmid f$ & $1,13,49,169,637$ & 1,623,076\\
+$13\mid f$, $7\nmid f$ & $1,7,49,169,343$ & 470,596\\
+$7\cdot13\mid f$, $19\nmid f$ & $1,19,49,169,361$ & 521,284\\
+$7\cdot13\cdot19\mid f$ & $1,49,169,361,8281$ & 274,299,844\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{Checking the finite ranges.}
+For each odd $p$, one has $p\mid f$ exactly when $p^2\mid D$.
+Enumerating the values $D\equiv0,3\pmod4$ in the five ranges, with
+these divisibility restrictions, gives the following counts.
+The leading-coefficient test searches integers $a\le251$ using only
+the exact inequalities above and a directly verified primitive
+reduced form at each $a$.
+\begin{center}\small
+\begin{tabular}{rrrrr}
+\toprule
+Row & Candidates & Local & Five leading coefficients & Remaining\\
+\midrule
+1 &18,705&14,908&3,667&130\\
+2 &16,464& 8,820&7,634&10\\
+3 & 1,364&   768&  594&2\\
+4 &    30&    16&   14&0\\
+5 &    45&     0&   45&0\\
+\midrule
+Total &36,608&24,512&11,954&142\\
+\bottomrule
+\end{tabular}
+\end{center}
+Counting all primitive reduced forms for the 142 remaining values
+gives 21 with $h<5$ and four with $h=5$ already covered by the
+degree-five theorem. For 46 more, a prime
+$p\in\{7,13,19,31,37,43\}$ satisfies
+$(\Delta/p)=-1$ and $h>4(\lfloor p/12\rfloor+
+\mathbf1_{p\equiv7\bmod12})$. All these primes are $1\pmod3$,
+so $j=0$ is ordinary. The classical count of supersingular $j$-invariants
+in these characteristics is the parenthesized number. One nonzero
+residue disk must therefore hold at least five conjugates. The
+remaining 71 discriminants have $87\le D\le4563$.
+The complete integer sieve and its final list are reproduced by
+\texttt{global\_five.py}.
+
+\paragraph{Certifying 67 of the 71 cases.}
+The five-conjugate complex determinant test works for 49 discriminants.
+Here the successive radii can be closer than the factor 16 used in the global cutoff.
+Let $0<r_1<\cdots<r_5$ be the radii of the selected conjugates.
+For an off-diagonal permutation $\sigma$, compare its term to the diagonal term
+in the determinant with exponents $e_1<\cdots<e_5$.
+Writing $g_j=e_{j+1}-e_j$, this ratio equals
+\[
+ \prod_{j=1}^4
+ \left(\frac{\prod_{\sigma(i)>j}r_i}{\prod_{i>j}r_i}\right)^{g_j}.
+\]
+Each numerator has the same number of factors as its denominator, which is the product of the largest radii of that cardinality. The ratio is largest when all gaps are one. The checker encloses the five radii using the dyadic evaluation of $j$ in Section~\ref{sec:finite}. With exponents $0,1,2,3,4$, the lower bound for the diagonal magnitude exceeds the sum of upper bounds for the 119 other terms. This proves independence for arbitrary exponents.
+
+For 18 further discriminants, an exact Newton polygon count and Lemma~\ref{lem:disk} exclude five terms in a single disk. The remaining four have $D=87,348,432,675$, all of class number six. For the 18 disk tests and these four remaining cases, the checker derives the class polynomial from interval enclosures and CM integrality. The file \texttt{checks/five\_small\_witnesses.json} records the forms, coefficients and local parameters used, and \texttt{checks/verify\_five\_small.py} verifies that its inputs match the 71 discriminants output by the global reduction.

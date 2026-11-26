@@ -1,0 +1,308 @@
+\section{A transfer criterion requiring only positive error in mean}
+\label{sec:mean-transfer}
+
+This section gives a self-contained strengthening of the analytic interface used in
+the repository.  It does not establish a new zero-free region for a new
+$L$-function: the arithmetic estimate in the application below remains to be
+proved.  The contribution relative to the incoming reports is to replace the
+pointwise arithmetic target by a positive-part estimate in mean, and to state
+exactly how nonuniform rank and denominator losses can feed that estimate.
+The analytic argument is an adaptation of classical Landau theory, not a claim
+that the underlying analytic principle is new to the literature.
+
+For a real number $u$, write $u_+=\max(u,0)$ and $u_-=\max(-u,0)$.
+
+\begin{theorem}[Positive-part Mellin criterion]\label{thm:positive-mellin}
+Let $\beta>0$, and let $R:[1,\infty)\to\mathbb R$ be measurable and locally
+integrable, with $|R(x)|\le Cx^A$ for all sufficiently large $x$, for some
+finite constants $A,C$. Suppose
+\[
+ F(s)=\int_1^\infty R(x)x^{-s}\,dx
+\]
+initially defined for $\Re s>A+1$, has a meromorphic continuation to
+$\Re s>\beta$ with at most simple poles.  At every real $u>\beta$, suppose
+the residue of $F$ is a nonnegative real number, with residue zero at a
+regular point.  If
+\begin{equation}\label{eq:positive-integrability}
+ \int_1^\infty R(x)_+x^{-\sigma}\,dx<\infty
+ \qquad\hbox{for every real }\sigma>\beta,
+\end{equation}
+then $F$ is holomorphic throughout $\Re s>\beta$. Moreover
+\[
+ \int_1^\infty |R(x)|x^{-\sigma}\,dx<\infty
+ \qquad(\sigma>\beta).
+\]
+\end{theorem}
+
+\begin{proof}
+Put $H(s)=\int_1^\infty R(x)_+x^{-s}\,dx$. Condition
+\eqref{eq:positive-integrability}, with a slightly smaller real exponent to
+dominate derivatives, makes $H$ holomorphic on $\Re s>\beta$. Far to the
+right,
+\[
+ G(s):=H(s)-F(s)=\int_1^\infty R(x)_-x^{-s}\,dx.
+\]
+The right-hand side is the Mellin transform of a nonnegative function. Let
+$a\in[-\infty,\infty)$ be its abscissa of convergence; the polynomial growth
+hypothesis makes $a$ bounded above. It is enough to prove $a\le\beta$.
+
+Suppose $a>\beta$. The meromorphic function $H-F$ continues $G$ to a
+neighborhood of $a$. It agrees with $G$ in $\Re s>a$ by the identity theorem.
+Its residue at $a$ equals $-\operatorname{Res}_{s=a}F(s)\le0$. On the other
+hand, $G(\sigma)\ge0$ for real $\sigma>a$, so
+\[
+ \operatorname{Res}_{s=a}(H-F)
+ =\lim_{\sigma\downarrow a}(\sigma-a)G(\sigma)\ge0.
+\]
+Thus the residue is zero. Because the possible pole is at most simple,
+$H-F$ is holomorphic at $a$. This contradicts Landau's theorem: a Mellin
+transform of a nonnegative locally integrable function, equivalently its
+Laplace transform after $x=e^v$, cannot be holomorphic at its finite abscissa
+of convergence. Hence $a\le\beta$.
+
+Both positive and negative parts now have absolutely convergent transforms
+for every real $\sigma>\beta$. Their difference is holomorphic there and,
+by analytic continuation, equals $F$. Their sum proves the final assertion.
+\end{proof}
+
+The exact source interface for the Landau step is
+\path{Lib/Analytic/Landau.lean}, especially
+\path{exists_Ioi_subset_integrableExpSet_of_analyticAt}
+(lines 160--176) and
+\path{exists_Ioi_subset_integrableExpSet}
+(lines 182--210) at the pinned commit.  The repository's
+\texttt{IsPolar.landau} (lines 217--259) instead subtracts a fixed
+exponential majorant. The present proof subtracts the holomorphic transform
+of the whole positive part \cite{landau}.
+
+\begin{corollary}[Dyadic and square-mean versions]\label{cor:mean-versions}
+Under the analytic hypotheses of Theorem~\ref{thm:positive-mellin}, either
+of the following conditions suffices to exclude all poles with $\Re s>\beta$:
+\begin{align}
+ \int_X^{2X}R(x)_+\,dx&\ll_\varepsilon X^{\beta+\varepsilon},
+       &&\hbox{for every }\varepsilon>0,\label{eq:mean-lone}\\
+ \int_X^{2X}R(x)_+^2\,dx&\ll_\varepsilon X^{2\beta-1+\varepsilon},
+       &&\hbox{for every }\varepsilon>0.\label{eq:mean-ltwo}
+\end{align}
+Here it is enough that the estimates hold for all sufficiently large
+dyadic $X=2^k$. In fact \eqref{eq:mean-lone} is equivalent to
+\eqref{eq:positive-integrability}.
+\end{corollary}
+
+\begin{proof}
+For $\sigma>\beta$, choose $0<\varepsilon<\sigma-\beta$ and sum
+\[
+ \int_{2^k}^{2^{k+1}} R(x)_+x^{-\sigma}\,dx
+ \ll_\varepsilon 2^{k(\beta+\varepsilon-\sigma)}.
+\]
+The geometric series converges. Conversely, integrability at
+$\sigma=\beta+\varepsilon$ bounds a dyadic block by a constant times
+$X^{\beta+\varepsilon}$. Finally Cauchy--Schwarz gives
+\[
+ \int_X^{2X}R(x)_+\,dx
+ \le X^{1/2}\left(\int_X^{2X}R(x)_+^2\,dx\right)^{1/2},
+\]
+which takes \eqref{eq:mean-ltwo} to \eqref{eq:mean-lone}.
+\end{proof}
+
+The integral condition really allows positive spikes that no eventual
+pointwise bound allows. For example, let $R$ be the indicator of the disjoint
+intervals $[2^k,2^k+2^{-2k}]$, $k\ge1$. Its Mellin transform is holomorphic
+on $\Re s>-2$, and its positive part satisfies the criterion for
+$\beta=1/2$, but $R(x)\le x^{-1/2+\varepsilon}$ fails arbitrarily far out
+for every $0<\varepsilon<1/2$.
+
+\subsection{An exact averaged determinant certificate}
+
+The source proof compares a lower bound on the same covolume plus twice an
+index with an upper bound obtained from many short vectors. Its scalar
+content can be retained while allowing the fraction of available vectors to
+vary strongly with $x$.
+The scalar rearrangement already appears in the predecessors; its use
+below with an averaged inverse-rank loss is the additional interface.
+
+\begin{proposition}[Rank-sensitive loss]\label{prop:rank-loss}
+At each $x$ suppose $d>0$, $0<n\le d$, $M>0$, $H\ge0$, and $L,U,I\ge0$.
+Suppose a real number $V$ satisfies
+\[
+ d(H-L)\le V+2dI,
+ \qquad
+ V\le n\bigl(H-MR(x)+U\bigr).
+\]
+Writing $\alpha=n/d$, one has the exact scalar implication
+\begin{align}
+ R(x)_+
+ &\le\frac{\bigl(L+\alpha U+2I-(1-\alpha)H\bigr)_+}{\alpha M}
+ \label{eq:rank-exact}\\
+ &\le\frac{1}{M}\left(U+\frac{L+2I}{\alpha}\right).
+ \label{eq:rank-coarse}
+\end{align}
+\end{proposition}
+
+\begin{proof}
+Combine the two inequalities, divide by $d$, and rearrange to obtain
+\[
+ \alpha M R(x)\le L+\alpha U+2I-(1-\alpha)H.
+\]
+Taking positive parts and dividing by $\alpha M>0$ proves
+\eqref{eq:rank-exact}. Since $H\ge0$, $\alpha\le1$, and
+$L+\alpha U+2I\ge0$, dropping the nonpositive term gives
+\eqref{eq:rank-coarse}.
+\end{proof}
+
+Thus one must first combine the bounds for each $x$, and then average the
+combined loss. Let
+\[
+ A(x)=U(x)+\frac{L(x)+2I(x)}{\alpha(x)}.
+\]
+If $M(x)\ge c x^\theta$ with $0<\theta<1$, and for every
+$\varepsilon>0$
+\begin{equation}\label{eq:mean-arithmetic-target}
+ \int_X^{2X} A(x)\,dx\ll_\varepsilon X^{1+\varepsilon},
+\end{equation}
+then \eqref{eq:rank-coarse} implies
+\[
+ \int_X^{2X}R(x)_+\,dx
+ \ll_\varepsilon X^{1-\theta+\varepsilon}.
+\]
+If $R$ has the analytic properties of Theorem~\ref{thm:positive-mellin},
+this excludes poles with $\Re s>1-\theta$. The factor $M$ may itself
+be a product of the number of lifts and the normalization of the prime
+statistic; keeping that normalization is essential when applying the formula.
+
+There is no requirement of a uniform positive lower bound for $\alpha$.
+For example, conjugate exponents $p,q>1$ with $1/p+1/q=1$ give the
+sufficient conditions
+\begin{align*}
+ \int_X^{2X}U(x)\,dx&\ll_\varepsilon X^{1+\varepsilon},\\
+ \int_X^{2X}(L(x)+2I(x))^p\,dx&\ll_\varepsilon X^{1+\varepsilon},\\
+ \int_X^{2X}\alpha(x)^{-q}\,dx&\ll_\varepsilon X^{1+\varepsilon}.
+\end{align*}
+H\"older's inequality proves \eqref{eq:mean-arithmetic-target}. The
+case $p=q=2$ gives a particularly concrete square-mean test. Bounding
+the averages of $L,I,\alpha$ separately is insufficient: on a probability
+space, let $L=1$, and let $\alpha=\delta^2$ with probability $\delta$
+and $\alpha=1$ otherwise. Then $\mathbb E L=1$ and
+$\mathbb E\alpha=1-\delta+\delta^3\to1$, but
+$\mathbb E(L/\alpha)=1-\delta+\delta^{-1}\to\infty$.
+
+\subsection{Application to the nonabelian cubic target}
+
+Let $K=\mathbb Q(\sqrt{-23})$, let $H$ be its Hilbert class field, and
+let $\mathcal R_H$ be the earlier report's principal-ideal remainder
+\[
+ \mathcal R_H(x)=
+ 3\sum_{\substack{N\mathfrak a\le x\\{}[\mathfrak a]=1}}
+ \Lambda_K(\mathfrak a)\left(\frac1{N\mathfrak a}-\frac1x\right)
+ -\log x+1+\gamma_H.
+\]
+Its Mellin transform is
+\[
+ \frac{-\zeta_H'(s)/\zeta_H(s)}{s(s-1)}
+ -\frac1{(s-1)^2}+\frac{1+\gamma_H}{s-1}.
+\]
+The singularity at $s=1$ is removable. A nontrivial zero $\rho$ of
+multiplicity $m_\rho$ gives residue
+$m_\rho/[\rho(1-\rho)]$, which is nonnegative at real
+$0<\rho<1$. The coefficient bound
+$0\le\Lambda_H(n)\le6\Lambda(n)$ gives the required elementary growth.
+Consequently either one of
+\begin{align*}
+ \int_X^{2X}\mathcal R_H(x)_+\,dx
+    &\ll_\varepsilon X^{1/2+\varepsilon},\\
+ \int_X^{2X}\mathcal R_H(x)_+^2\,dx
+    &\ll_\varepsilon X^\varepsilon
+\end{align*}
+for every $\varepsilon>0$ would prove RH for $\zeta_H$ and hence for the
+degree-two class-character $L$-function and the cubic Dedekind zeta function.
+These require a weaker form of arithmetic control than the earlier eventual
+pointwise bound; for this fixed remainder, successful control would still
+be equivalent to the same zero-location assertion. They remain unproved here. The new calculation identifies what an
+arithmetic construction in mean would have to deliver; it does not supply
+that construction.
+
+\subsection{Signed moving averages also suffice, if every starting point is controlled}
+
+There is a different useful relaxation in which cancellation is allowed but
+the starting point of the averaging interval must vary continuously. This
+must be distinguished from checking only the fixed dyadic partition.
+
+\begin{theorem}[Signed moving-window criterion]\label{thm:moving-window}
+Assume the analytic hypotheses of Theorem~\ref{thm:positive-mellin}, and
+fix $h>1$. If, for some $C\ge0$,
+\begin{equation}\label{eq:moving-signed}
+ \int_x^{hx}R(t)\,dt\le Cx^\beta
+ \qquad\hbox{for every sufficiently large real }x,
+\end{equation}
+then $F$ is holomorphic in $\Re s>\beta$.
+It also suffices, for a desired boundary $\beta$, to prove
+\eqref{eq:moving-signed} with exponent $\beta+\varepsilon$ for every
+$\varepsilon>0$, with constants allowed to depend on $\varepsilon$.
+\end{theorem}
+
+\begin{proof}
+Set $T_hR(x)=x^{-1}\int_x^{hx}R(t)\,dt$. Fubini's theorem, initially
+far to the right, gives
+\begin{align*}
+ F_{T_hR}(s)
+ &=\frac{h^s-1}{s}F(s)
+ -\frac1s\int_1^h R(t)\bigl(h^s t^{-s}-1\bigr)\,dt.
+\end{align*}
+Indeed the inner integral in the reversed order is
+$\int_{\max(1,t/h)}^t x^{-s-1}\,dx$; splitting the outer integral
+at $t=h$ proves the formula. The finite-interval correction is entire:
+the apparent singularity at $s=0$ is removable. The multiplier
+$A_h(s)=(h^s-1)/s$ is entire, is nonzero on $\Re s>0$, and is
+strictly positive for real $s>0$. Thus the poles of $F_{T_hR}$ in
+$\Re s>\beta$ have exactly the poles of $F$, and their real residues
+are nonnegative.
+
+The estimate \eqref{eq:moving-signed} gives
+$T_hR(x)\le Cx^{\beta-1}$ eventually. Since $R$ is locally integrable,
+$T_hR$ is continuous and bounded on each compact interval. Enlarge $C$ to
+$K$ so that $Kx^{\beta-1}-T_hR(x)\ge0$ for all $x\ge1$.
+Its transform is
+$K/(s-\beta)-F_{T_hR}(s)$. At real points greater than $\beta$
+its residues are nonpositive. The same Landau abscissa argument as above
+therefore shows that $F_{T_hR}$ has no pole to the right of $\beta$.
+Since $A_h$ has no zero there, neither does $F$ have a pole. Apply the
+fixed-exponent result for each $\beta+\varepsilon$ to get the last claim.
+\end{proof}
+
+In particular, for the cubic-field target one may instead aim for
+$\int_x^{2x}\mathcal R_H(t)\,dt\le C_\varepsilon
+x^{1/2+\varepsilon}$ for \emph{every} sufficiently large real $x$.
+This allows signed cancellation.  No corresponding arithmetic estimate is
+proved here. The positive-part criterion is more robust when the available
+information is restricted to the sampled dyadic intervals.
+
+\subsection{Why signed averages on the dyadic grid are insufficient}
+
+The positive part in the criterion cannot simply be removed. Fix
+$0<\beta<a<1$, put $\tau=2\pi/\log2$, and set
+\[
+ R(x)=\frac{d}{dx}\bigl(x^a\sin(\tau\log x)\bigr)
+ =x^{a-1}\bigl(a\sin(\tau\log x)+\tau\cos(\tau\log x)\bigr).
+\]
+For every integer $k\ge0$,
+\[
+ \int_{2^k}^{2^{k+1}}R(x)\,dx=0.
+\]
+Nevertheless
+\[
+ F(s)=\int_1^\infty R(x)x^{-s}\,dx
+ =\frac{\tau s}{(s-a)^2+\tau^2}
+ \qquad(\Re s>a),
+\]
+which has nonzero simple poles at $a\pm i\tau$, to the right of
+$\beta$, and no real poles. All other analytic hypotheses of
+Theorem~\ref{thm:positive-mellin} hold. Moreover
+\[
+ \int_{2^k}^{2^{k+1}}R(x)_+\,dx=C_a\,2^{ka}
+ \quad\hbox{with }C_a>0.
+\]
+This follows by substituting $x=2^k e^u$, $0\le u\le\log2$.
+Thus cancellation in signed bin averages can hide precisely the poles
+that the arithmetic transfer is intended to exclude. This example concerns
+signed averages on the fixed dyadic partition; it does not assert failure of
+every translated smoothing condition.

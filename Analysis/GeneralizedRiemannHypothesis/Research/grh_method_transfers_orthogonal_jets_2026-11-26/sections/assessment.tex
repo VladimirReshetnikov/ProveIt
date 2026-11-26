@@ -1,0 +1,91 @@
+\section{What this establishes, and where the larger conjectures still resist}
+\label{sec:assessment}
+
+\subsection{Claim ledger}
+
+\begin{longtable}{P{.29\linewidth}P{.29\linewidth}P{.30\linewidth}}
+\toprule
+Claim & Status in this report & Boundary of the claim\\
+\midrule\endhead
+Binary principal-nullity tail & Complete all-dimension proof; explicit upper tail and negative answer to the linear-growth proposal & No matching lower bound or exact typical order.\\[5pt]
+Lubin--Tate finite-precision bound & Complete proof and exact carry criterion for attaining the sharpened bound & For maximal contact depth $\ge2$ when the leading coefficient cancels, no general closed formula for the next pole is claimed.\\[5pt]
+Depth-zero/one branch contacts & Exact formula at every coefficient precision; explicit eventual affine period & The displayed period is not asserted minimal.\\[5pt]
+Split orthogonal half-block law & Exact total-variation formulas for determinant-one and full groups, for every odd $q$ and every block size & This is a boundary calculation in the specified hyperbolic basis, not a theorem for arbitrary real orthogonal blocks.\\[5pt]
+Novelty relative to prior reports & The closest source files and 52-archive inventory were compared; specific duplication was excluded & Inventory and targeted reading are not a proof audit of the whole corpus or a worldwide priority determination.\\[5pt]
+Formal verification & Source declarations inspected; new mathematical proofs and exact Python checks supplied & No fresh Lean build of upstream or of these new theorems.\\[5pt]
+General automorphic or nonabelian RH & Precise transfer requirements identified & No new case proved here.\\
+\bottomrule
+\end{longtable}
+
+The first theorem is an explicit resolution of a part of a publicly posted question. The second completes a sharpness problem deliberately left open in the supplied research corpus. Those are concrete outcomes beyond listing standard conditional consequences of RH. Their mathematical ingredients, such as Witt extension, Gaussian-binomial counts, Lagrange interpolation, and factorial valuations, are classical and retain that status.
+
+\subsection{The strongest independent arithmetic theorem inside the source}
+
+A particularly worthwhile extraction target is
+\src{src/New/Congruences/Selmer/GeneralTheorem.lean}{\code{New.Selmer.exists\_anticyclotomic\_twist}}.
+For a fixed coefficient prime, finitely many compatible Selmer data and Stickelberger systems, and specified torsion-level hypotheses, it constructs anticyclotomic characters whose first several powers simultaneously have bounded normalized Selmer lengths, controlled valuations of the group-ring systems, and small auxiliary ramification costs. This is a substantive arithmetic result inside the proof, and it is not an ordinary consequence of RH.\cite{selmer}
+
+The quantifiers matter. The character order, coefficient extension, and auxiliary primes can vary with the requested tolerance. The cost constants include data-dependent local and global terms; they are not automatically zero. The theorem does not prescribe a fixed character order, establish positive density in a conductor family, or supply one character simultaneously good at every coefficient prime. Its later use in a regular family intentionally permits place-dependent choices compatible with a height bound.
+
+Nor is ``simultaneous nonvanishing for a finite family'' by itself a new target. Kriz--Nordentoft's horizontal $p$-adic $L$-functions already address simultaneous nonvanishing and Diophantine stability, while Mazur--Rubin establish broad stability results in prime-power extensions. A publishable extension would need a specified new family, an improved quantitative estimate, or genuinely stronger order/density constraints.\cite{kriznordentoft,mazurrubin}
+
+\begin{proposition}[A normalized-length warning with an exact example]\label{prop:length-warning}
+For any prime $\ell$, there are nonzero modules $M_N$ over coefficient DVRs $O_N$ such that their lengths normalized by $\operatorname{length}_{O_N}(O_N/\ell)=1$ tend to zero.
+\end{proposition}
+\begin{proof}
+Take $O_N=\Z_\ell[\zeta_{\ell^N}]$, with uniformizer $\varpi_N=\zeta_{\ell^N}-1$, and put $M_N=O_N/(\varpi_N)$. The ramification index is
+$e_N=\ell^{N-1}(\ell-1)$. The ordinary lengths of $M_N$ and $O_N/\ell$ are $1$ and $e_N$, respectively. Thus the normalized length is $1/e_N\to0$, while every $M_N$ is nonzero. For $\ell=2$ one can start at $N=2$.
+\end{proof}
+
+This refutes only the inference from shrinking normalized bounds over increasingly ramified coefficient rings to vanishing. It does not assert that any actual Selmer group produced by the source is nonzero. Over a fixed coefficient DVR, an ordinary nonnegative integer length smaller than one would of course vanish. A transfer to BSD, Goldfeld, or a fixed-order twist question must first supply the missing comparison and uniformity.
+
+\subsection{A quantitative test for a proposed global extension}
+
+The essential screening question is whether the new arithmetic construction supplies both bounds on the same object, with a loss small enough after division by the amplification parameter. One useful algebraic model is the following; it is an abstraction, not a new claim of historical novelty.
+
+\begin{proposition}[Spanning fraction and error budget]\label{prop:budget}
+Let $D,n,m,\eta>0$, with $\eta D\le n\le D$. Let $U,L,I\ge0$, and suppose $A+U\ge0$ and real quantities $V,\delta,R$ satisfy
+\[
+ D(A-L)\le V+2\delta,\qquad
+ V\le n(A-mR+U),\qquad \delta\le DI.
+\]
+Then
+\[
+ R\le\frac{U+L+2I}{\eta m}.
+\]
+\end{proposition}
+\begin{proof}
+Combining the three inequalities gives
+\[
+ nmR\le(n-D)(A+U)+D(U+L+2I)
+ \le D(U+L+2I).
+\]
+Divide by $nm>0$ and use $n\ge\eta D$ and nonnegativity of the numerator.
+\end{proof}
+
+In an actual theorem, the cost of completing the independent family must be included in $U,L,I$ or in the comparison itself. The near-full spanning fraction in the source cannot be replaced casually by a fixed positive fraction without paying that cost. If an extension gives $m\ge x^\alpha$, $\eta\ge x^{-\lambda}$, and a normalized error budget $x^{u+o(1)}$, this model yields at most
+$R(x)\le x^{-\alpha+\lambda+u+o(1)}$. Square-root strength requires $\alpha-\lambda-u\ge1/2$. This is a useful way to reject an attractive but quantitatively insufficient construction before completing a large formal development.
+
+\begin{center}\small
+\begin{tabular}{P{.21\linewidth}P{.33\linewidth}P{.36\linewidth}}
+\toprule
+Target & Reusable source mechanism & Decisive missing result\\
+\midrule
+Hecke RH over a new base field & Theta norms, twisting, determinant framework & Prime-ideal divisibility and period cancellation with the correct errors.\\[5pt]
+RH for a fixed non-CM $\GL_2$ form & Norm identities and congruence control & An arithmetic detector retaining that form's zero information and a full matching comparison.\\[5pt]
+Nonabelian Artin RH & Representation separation and one-sided transforms & A Frobenius-sensitive arithmetic estimate; cancellation and possible poles must also be controlled.\\[5pt]
+Fixed-order Selmer/nonvanishing conjectures & Simultaneous anticyclotomic specialization & Fixed order, fixed coefficients or a uniform descent theorem, and conductor/density control as appropriate.\\[5pt]
+Simplicity and pair correlation & The source controls real parts of zeros & New information about multiplicities or correlations; zero exclusion alone does not provide it.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For larger zero-location conjectures, the most promising next step is an arithmetic construction for one fully specified target, with its error budget written in advance. More equivalent prime-sum criteria do not resolve that task. The independent finite and local theorems in this report demonstrate a second productive route: isolate a precise internal method, adapt its hypotheses, and solve a concrete problem for which all required estimates can be proved.
+
+\subsection{Reproducibility and formalization}
+
+The ZIP contains the complete \LaTeX{} source, compiled PDF, four new Python checkers, their machine-readable results, a source manifest, and a formalization plan. All checkers use only Python's standard library. The main verifier examined 23,817 binary orthogonal matrices, 1,498,426 principal submatrices, and 238,557 independent symplectic frames. An independently written binary enumerator reproduced the group orders and nullity histograms. The local checker performed 210 exact Laurent inversions. The odd-characteristic block checker enumerated all 33,880 three-dimensional subspaces of $\F_3^6$ and all 19,683 matrices of size three, with direct group checks at sizes one and two.
+
+The proofs establish the infinite families. The computations check the definitions, arithmetic, and small examples; their scope is recorded explicitly in each JSON file. A source manifest records upstream paths and hashes, and the prior-archive manifest records original download identities. The previous archives themselves are not duplicated inside this deliverable.
+
+The formalization plan separates the finite symplectic incidence lemma, the characteristic-two quotient, the coefficient valuation face, and the interpolation theorem over a nonreduced ring. It names mathematical interfaces rather than presenting uncompiled sketches as completed Lean code. No new theorem in this report is represented as accepted by Lean's kernel.

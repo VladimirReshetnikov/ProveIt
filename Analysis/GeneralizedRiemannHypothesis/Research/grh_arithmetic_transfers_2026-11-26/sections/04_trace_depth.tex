@@ -1,0 +1,214 @@
+% TeX-ready research section. Uses standard theorem/proposition/corollary environments.
+% No Lean compilation is asserted. Carayol trace rigidity is classical.
+\section{Exact trace depth and a smaller Selmer congruence budget}
+\label{sec:trace-depth}
+
+The source contains an internal quantity which is useful independently of
+the RH endpoint.  If $T$ is a lattice over a discrete valuation ring
+$\mathcal O$, it measures congruences between $T$ and its conjugate Tate
+dual $D(T)$:
+\[
+ C(T)=\sup_{n\geq1}\operatorname{length}_{\mathcal O}
+ \operatorname{Hom}_{(\mathcal O/\pi^n)[G]}
+       (T/\pi^nT,D(T)/\pi^nD(T)).
+\]
+Here $\pi$ is a uniformizer.  This is the source's
+\texttt{New.Selmer.congruenceTerm}; it is a term in a Selmer bound,
+not the Selmer group itself.  The present section identifies this term
+exactly under the integral irreducibility hypothesis already imposed
+by \texttt{SelmerDatum}.\cite{selmerdata}
+
+\begin{theorem}[Exact trace-congruence depth]
+\label{thm:trace-depth}
+Let $\rho,\sigma:G\to\mathrm{GL}_d(\mathcal O)$, $d\geq1$, be
+representations such that
+\[
+ \operatorname{span}_{\mathcal O}\rho(G)
+  =M_d(\mathcal O)
+  =\operatorname{span}_{\mathcal O}\sigma(G).
+\]
+Set
+\[
+ a=\min_{g\in G}v_\pi\bigl(\operatorname{tr}\rho(g)
+                       -\operatorname{tr}\sigma(g)\bigr)
+       \in\mathbb N\cup\{\infty\}.
+\]
+For every $n\geq1$, the module
+\[
+ H_n=\operatorname{Hom}_{(\mathcal O/\pi^n)[G]}
+           (\rho\bmod\pi^n,\sigma\bmod\pi^n)
+\]
+is cyclic and isomorphic to
+$\mathcal O/\pi^{\min(n,a)}$.  In particular,
+\[
+ \operatorname{length}_{\mathcal O}H_n=\min(n,a),
+ \qquad \sup_n\operatorname{length}_{\mathcal O}H_n=a.
+\]
+No restriction on the residue characteristic relative to $d$ is needed. The trace-rigidity ingredient is classical.\cite{carayol}
+\end{theorem}
+
+\begin{proof}
+We first recall the trace-rigidity argument, a classical theorem of
+Carayol.  Put $A=\mathcal O/\pi^r$, and suppose the two traces agree
+modulo $\pi^r$ at every group element.  Sending $\rho(g)$ to $\sigma(g)$
+defines an $A$-algebra automorphism of $M_d(A)$.  Indeed, if
+$\sum_i b_i\rho(g_i)=0$, then for every $h\in G$,
+\[
+ \operatorname{tr}\left(\left(\sum_i b_i\sigma(g_i)\right)\sigma(h)\right)
+ =\sum_i b_i\operatorname{tr}\sigma(g_i h)
+ =\sum_i b_i\operatorname{tr}\rho(g_i h)=0.
+\]
+The $\sigma(h)$ span $M_d(A)$, and the trace pairing on that algebra
+is perfect: each matrix unit pairs with its transpose.  Thus
+$\sum_i b_i\sigma(g_i)=0$.  The same argument in reverse supplies the
+inverse, and the group law gives multiplicativity.
+
+An automorphism of $M_d(A)$ is inner because $A$ is local.  One elementary
+proof takes the images $F_{ij}$ of the matrix units, chooses a generator
+$v_1$ of the rank-one direct summand $F_{11}A^d$, and uses
+$v_i=F_{i1}v_1$ as a basis.  In this basis the $F_{ij}$ are the usual
+matrix units.  Consequently $\rho$ and $\sigma$ are equivalent modulo
+$\pi^r$.  The converse follows from invariance of trace.
+
+Next, the $\pi$-torsion submodule of $H_n$ is naturally
+\[
+ H_n[\pi]\simeq
+ \operatorname{Hom}_{k[G]}(\bar\rho,\bar\sigma),
+ \qquad k=\mathcal O/\pi,
+\]
+by multiplying an entrywise lift by $\pi^{n-1}$.  The matrix-span
+hypotheses imply absolute irreducibility of the residual representations.
+Schur's lemma bounds the displayed $k$-dimension by one.  The structure
+theorem over a DVR therefore makes $H_n$ cyclic or zero; write its
+length as $r\leq n$.
+
+If $r>0$, choose a generator $X$ of exact order $\pi^r$ and write
+$X=\pi^{n-r}Y$, with $Y$ a matrix modulo $\pi^r$ having a unit entry.
+The intertwining equation descends to $Y$.  Its residual reduction is
+a nonzero map between irreducible representations of equal dimension,
+hence invertible; therefore $Y$ is invertible modulo $\pi^r$.
+The representations are equivalent there, which gives $r\leq a$.
+
+Conversely, for $s=\min(n,a)>0$, trace rigidity supplies an invertible
+intertwiner modulo $\pi^s$.  Multiplying any lift by $\pi^{n-s}$
+gives an element of $H_n$ of exact order $\pi^s$.  Thus $r\geq s$,
+proving the formula; the case $s=0$ follows from the first inequality.
+\end{proof}
+
+\paragraph{Classical status and comparison with the earlier report.}
+The trace-rigidity input is Carayol's classical theorem, and the length
+formula is a standard consequence of Schur's lemma and DVR module
+structure.  We do not claim these as new representation theory.
+The earlier structural-transfer report established an arbitrary Smith
+formula and treated the exact rationally self-dual case.  The result
+above treats the finite non-self-dual congruence case and identifies
+its length with a trace ideal.  Its purpose here is to sharpen and
+make computationally accessible a particular internal source estimate.
+
+\subsection{Removing the rank factor in the source}
+
+For the conjugate Tate dual,
+\[
+ \sigma(g)=\chi(g^c)\rho(g^c)^{-\mathsf t},
+\]
+where $\chi$ is the cyclotomic character.  The full matrix-span
+condition for $\rho$ automatically gives the same condition for
+$\sigma$: conjugation and inversion permute the group elements,
+transpose preserves matrix span, and the extra factors are units.
+Identifying the finite character module of $\mathcal O/\pi^n$ with
+itself by a generating additive character does not affect length.
+Theorem~\ref{thm:trace-depth} therefore applies to the source quantity.
+
+\begin{corollary}[Sharp scalar-discrepancy bound]
+\label{cor:sharp-scalar}
+Suppose $\rho(g)=\alpha I$ and
+$\rho((g^c)^{-1})=\alpha'I$.  Then
+\[
+ C(T)\leq v_\pi\bigl(\alpha-\chi(g^c)\alpha'\bigr).
+\]
+\end{corollary}
+\begin{proof}
+The intertwining equation says that
+$\Delta=\alpha-\chi(g^c)\alpha'$ annihilates $H_n$.
+Since $H_n$ is cyclic, its length is at most $v_\pi(\Delta)$.
+Take the supremum over $n$.  If $\Delta=0$, the bound is vacuous.
+\end{proof}
+
+The source's \texttt{congruenceTerm\_le} gives instead
+$d\,v_\pi(\Delta)$.  Its proof embeds the Hom module into a rank-$d$
+character module; cyclicity removes this unnecessary factor.
+In \texttt{MainSummands.lean}, the proof of
+\texttt{IsMainSummandLike.normLength\_congruenceTerm\_le}
+already establishes the necessary scalar discrepancy.  With the same
+hypotheses its conclusion improves to
+\[
+ \texttt{O.normLength(congruenceTerm }\ell\texttt{ u)}
+ \ \leq\ v_\ell(\texttt{D.chosenGroupOrder}),
+\]
+instead of $d$ times the right side.  This changes only the global
+congruence term.  The local terms in the full Selmer budget still have
+their original estimates; no factor-$d$ improvement of the entire
+RH proof is asserted.\cite{selmerdata,mainsummands}
+
+\subsection{Finite-depth symmetry, including the dyadic caveat}
+
+The source's mirror map has a symmetric image, as established in the
+earlier structural report.  The finite-depth theorem gives an exact
+version of that refinement.  Assume $0<a<\infty$ for the conjugate-dual
+pair, and choose an invertible intertwiner $P$ modulo $\pi^a$.
+Transposition preserves the intertwining equation, because $c^2=1$
+and $\chi(g^c)=\chi(g)$.  Theorem~\ref{thm:trace-depth} makes the
+module at level $a$ a free line, so
+\[
+ P^{\mathsf t}=\epsilon P,\qquad
+ \epsilon\in(\mathcal O/\pi^a)^\times,\qquad \epsilon^2=1.
+\]
+Put $s=\min(a,v_\pi(\epsilon-1))$, interpreting the valuation through
+any lift and truncating at $a$.  Then the symmetric finite-level Hom
+module has exact length
+\[
+ \operatorname{length}H_n^+=\min(n,a,s)=\min(n,s),
+ \qquad C^+(T)=s.
+\]
+Indeed, for $r=\min(n,a)$ every intertwiner is a scalar multiple of
+$\pi^{n-r}P\bmod\pi^r$; symmetry imposes exactly
+$(\epsilon-1)b=0\pmod{\pi^r}$.
+When the residue characteristic is odd, $\epsilon=1$ or $-1$, and
+$C^+(T)$ equals $a$ or $0$ respectively.
+
+At residue characteristic two one must retain the measured value of
+$s$.  A scalar whose square is one modulo $8$ need not be $\pm1$:
+$3$ and $5$ also occur.  The invertible matrix
+\[
+ P_\epsilon=\begin{pmatrix}0&1\\\epsilon&0\end{pmatrix}
+ \quad\text{over }\mathbb Z/8\mathbb Z
+\]
+satisfies $P_\epsilon^{\mathsf t}=\epsilon P_\epsilon$ for each of
+$\epsilon=1,3,5,7$.  This is a finite algebra illustration, not a
+Galois realization.  The original rational self-dual sign dichotomy
+remains as in the prior report; the present statement concerns
+congruences that disappear beyond a finite depth.
+
+\subsection{Exact model and verification}
+
+Let $G$ be free on $x,y,z$, and over $\mathbb Z_p$ put
+\[
+ A=\begin{pmatrix}1&1\\0&1\end{pmatrix},\quad
+ B=\begin{pmatrix}1&0\\1&1\end{pmatrix},\quad q=1+p^b,\quad b\geq1.
+\]
+Set $\rho(x)=\sigma(x)=A$, $\rho(y)=\sigma(y)=B$,
+$\rho(z)=I$, and $\sigma(z)=qI$.
+The matrices $I,A,B,AB$ form an integral basis of $M_2(\mathbb Z_p)$.
+Commuting with $A,B$ forces an intertwiner to be scalar, and its last
+relation is $p^bt=0$.  Hence $\operatorname{length}H_n=\min(n,b)$.
+The sharper bound is $b$, where the source estimate is $2b$.
+
+For $p=2,b=3$, the discrepancy at $z$ is $-16$, of valuation $4$;
+the discrepancy at $zxy$ is $-24$, of valuation $3$.  Thus tracing
+only the scalar element can lose information when $p\mid d$, while
+the complete trace criterion remains exact.  The relation matrix has
+Smith factors $1,1,1,p^b$.
+The accompanying Python certificate checks these Smith factors,
+the unit basis and trace-Gram determinants, exhaustive small-ring
+kernels, and the dyadic transpose examples.  It is a finite algebra
+check; no Lean build or arithmetic realization is claimed.

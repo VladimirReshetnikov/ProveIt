@@ -1,0 +1,108 @@
+\section{What the repository proves and what its method supplies}
+\label{sec:source}
+
+\subsection{Pinned sources and verification scope}
+
+The primary source is \texttt{lsernau/grh-lean} at commit
+\nolinkurl{72fead102f663d5c7a407964a13dc0cf9d977207}~\cite{repo}.
+The comparison corpus is the incoming directory of
+\texttt{VladimirReshetnikov/ProveIt} at
+\nolinkurl{6fe2c1bd450aa7f19eab17fb9a6e76170b4fce00}~\cite{prior}.
+All twenty-six ZIPs were downloaded, and their Git blob hashes were matched.
+The exact source manifest, prior-report inventory, and overlap notes are
+included in the archive.
+
+The five public Lean statements concern the Riemann zeta function and
+Dirichlet $L$-functions, for every positive modulus and every character,
+including imprimitive ones. They do not quantify over arbitrary number
+fields, Artin representations, or cuspidal automorphic representations.
+The proof's use of Hecke values over CM fields does not change the scope of
+these statements. We use \emph{Dirichlet GRH} throughout to avoid ambiguity.
+
+Andrew Sutherland's independent verification page reports successful builds,
+axiom audits, statement comparison, and independent kernel checks of this
+exact shorter commit~\cite{verification}. Our local clone matches all
+1,625 files in the published SHA-256 manifest. We also performed the
+included reproducible lexical scan: 803 Lean files in the readable
+\texttt{src} tree and 794 in the compact tree contain no active
+\texttt{sorry}, \texttt{admit}, \texttt{axiom}, \texttt{unsafe},
+\texttt{implemented\_by}, or \texttt{native\_decide} tokens after comments
+and strings are stripped. The separate challenge deliberately contains
+placeholder proofs; it is outside these source trees.
+
+\emph{No local Lean rebuild or kernel replay was performed in this work.}
+The published checks and our file-identity verification are distinct from
+our new mathematical arguments, which are paper proofs with finite exact
+computations. This report contains no claim that the new results have
+already been formalized.
+
+\subsection{The arithmetic comparison}
+
+The source compares one common covolume, corrected by an index, from two
+directions. In schematic notation let $D$ be the target dimension, $n$ the
+number of independent short vectors, $A$ the main amount, $R$ the arithmetic
+remainder, $m$ the number of theta lifts, $V$ the logarithm of a squared
+covolume, and $\delta$ the index cost. Its architecture is
+\[
+ D(A-\text{lower error})\ \le\ V+2\delta,
+ \qquad
+ V\ \le\ n(A-mR+\text{upper error}).
+\]
+The main amounts cancel. Almost-full spanning controls $D/n$, and a chain
+length $m\asymp\sqrt{x}$ produces the square-root scale. In the source's
+actual notation, \texttt{star\_inequality} proves
+\begin{equation}\label{eq:star}
+ m\,\mathrm{totalRemainder}\le f a(\log b)^5.
+\end{equation}
+The final reduction gives
+\begin{equation}\label{eq:remainder}
+ R_q(x)\le \frac{\varphi(q)(\log b)^6}{m}
+       +|R_q(x_1)|+\log b\,|R_1(x_1)|.
+\end{equation}
+Here $m\ge\sqrt{x}$, $\log b$ can grow as an arbitrarily small power of $x$,
+and $x_1$ is much larger. These are fixed-target eventual estimates, not
+uniform conductor-aspect constants supplied for every prospective target.
+
+Crucially, the coefficients in $R_q$ are
+\[
+ \Lambda(n)(1-\chi_K(n))\,\mathbf 1_{n\equiv1\pmod q},
+\]
+where $\chi_K$ is a quadratic character. Their occurrence is proved through
+the local divisibility of theta derivatives and matching global periods.
+A useful nonabelian Frobenius class function or Hecke trace is not a
+substitutable parameter of this theorem.
+
+\subsection{Reusable interfaces and their costs}
+
+\begin{longtable}{p{0.25\textwidth}p{0.69\textwidth}}
+\toprule
+Interface & What a transfer must preserve\\\midrule
+\endhead
+Common twisted lattice & A single family of vectors, compatible integrality
+matrices at each finite place, and a global comparison of determinant heights.
+Choosing favorable local twists independently is allowed only inside this
+common comparison.\\
+Short forms and coverage & Integral short vectors span, while controlled
+translates fill at least $(1-4/b^2)$ of the target dimension. Restricting to a
+small eigenspace does not inherit the required lower determinant estimate.\\
+Long forms & The lower bound uses determinant ratios and congruence-denominator
+control for theta lifts. It is not a lower bound for every individual
+eigenvalue of a positive operator.\\
+Selmer twisting & Finite families of admissible representations and a finite
+global/local length budget admit favorable anticyclotomic twists. Admissibility,
+the original untwisted Selmer group, and vanishing are separate issues.\\
+One-sided zero detector & An arithmetic remainder bound is turned into
+nonvanishing by an analytic argument. Earlier reports substantially generalize
+this endpoint; those generalizations do not supply the new arithmetic bound.\\
+\bottomrule
+\end{longtable}
+
+The exact source declarations are recorded in
+\sourcepath{evidence/source_audit.md}. The most relevant files are
+\sourcepath{New/Reduction/MainInequality.lean},
+\sourcepath{New/Determinant/Twist/LongForms.lean},
+\sourcepath{New/Congruences/Selmer/GeneralTheorem.lean}, and
+\sourcepath{New/Congruences/Selmer/SelmerData.lean}, all under
+\sourcepath{grh/src/}~\cite{mainineq,selmerdata,mirror}.
+The next sections analyze the last interface rather than presenting another
+equivalent prime-sum criterion.

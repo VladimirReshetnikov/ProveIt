@@ -1,0 +1,874 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,booktabs}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{xcolor,fancyhdr}
+\definecolor{ink}{HTML}{193E58}
+\usepackage[colorlinks=true,linkcolor=ink,urlcolor=ink,citecolor=ink]{hyperref}
+\usepackage{microtype}
+\pagestyle{fancy}\fancyhf{}\lhead{\small Dirichlet GRH and its applications}\rhead{\small Research note}\cfoot{\thepage}
+\hypersetup{pdftitle={What Dirichlet GRH settles},pdfsubject={Abelian fields, Mertens errors, and one-sided zero detection}}
+\setlength{\parskip}{4pt plus 1pt}\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\Q}{\mathbb Q}\newcommand{\R}{\mathbb R}
+\newcommand{\SP}{\mathrm{Spl}}\newcommand{\RH}{\mathrm{RH}}
+\newcommand{\repo}{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207}
+\newcommand{\src}[2]{\href{\repo/grh/src/#1.lean}{#2}}
+\title{\color{ink}\bfseries What Dirichlet GRH settles\\[4pt]\large A classification of abelian fields, short representations,\\ and a test for nonabelian fields}
+\author{}\date{25 November 2026}
+\begin{document}
+\maketitle\vspace{-14pt}
+\begin{abstract}
+Exactly 229 finite abelian extensions of $\mathbb Q$ satisfy the sufficient zero-sum condition in Zhao's question on prime-ideal Mertens errors. We give the full list, including 168 quadratic fields, 47 quartic fields, and one field of degree eight, $\mathbb Q(\zeta_{15})$. The proof combines Dirichlet GRH from the Lean development of Sernau and collaborators with a conductor bound and an interval-certified enumeration of character groups. For a general field satisfying its own zeta-function RH, the condition forces degree at most eight and absolute discriminant below $193{,}000{,}000$. The same development supplies the missing hypothesis for the norm-Euclidean cyclic quintic and septic classifications. In a different direction, every sufficiently large integer $n$ has many representations as $xy+yz+zx$ with distinct positive coordinates and with $x+y$ a prime of order at most $(\log n)^2$. A common small prime can serve any fixed number of inputs of comparable size. The proof's one-sided zero-detection idea gives a test for the Dedekind zeta function of the splitting field of $X^\ell-2$. It uses only rational primes where that polynomial is irreducible. We prove the equivalence and identify the missing nonabelian estimate. We also compute an exact upper limiting value of a smoothed split-prime error. In the identity residue class this removes a linear-independence hypothesis from one endpoint in a published Mertens-error estimate.
+\end{abstract}
+
+\section{The result that can be imported}
+The pinned source is \href{\repo/README.md}{\texttt{lsernau/grh-lean}, commit \texttt{72fead102f66}}. It rewrites the proof of Levent Alpöge with Claude. The readable rewrite obtains an eventual bound at \emph{every} sufficiently large real argument. Its formal interface uses Mathlib's Riemann zeta function and Dirichlet characters over $\mathbb C$.
+
+\begin{center}\small
+\begin{tabular}{@{}p{0.44\linewidth}p{0.49\linewidth}@{}}\toprule
+Declaration in \src{Main}{\texttt{Main.lean}} & Mathematical content \\ \midrule
+\texttt{riemannHypothesis} & Mathlib's Riemann hypothesis.\\
+\texttt{riemannZeta\_eq\_zero\_re} & All zeta zeros apart from the trivial zeros and the excluded pole location have real part $1/2$.\\
+\texttt{LFunction\_ne\_zero\_of\_half\_lt\_re} & For every $N>0$ and $\chi\bmod N$, $L(s,\chi)\ne0$ for $\Re s>1/2$, except that the principal character at $s=1$ is excluded.\\
+\texttt{LFunction\_eq\_zero\_re} & Every zero in $0<\Re s<1$ has real part $1/2$.\\
+\texttt{LFunction\_eq\_zero\_re\_of\_isPrimitive} & The same strip assertion for primitive characters.\\ \bottomrule
+\end{tabular}\end{center}
+
+\src{Statements}{\texttt{Statements.lean}, lines 1--16}, imports only Mathlib. Both editions have the same statement file. Their pins are Lean v4.35.0 and Mathlib \texttt{56a005855ea1}. The local inventory checks the pinned Git objects and the complete Git archive hash against Andrew Sutherland's verification record. His independent runs replayed 803 readable modules and 794 compact modules, compared the challenge and the solution, and confirmed the three standard axioms \texttt{propext}, \texttt{Classical.choice} and \texttt{Quot.sound}. Both editions passed the paranoid comparator on machine B. We use the published kernel runs; we did not rerun the full Lean build. The deductions in this paper combine ordinary mathematical proofs with finite interval computations. \href{https://math.mit.edu/~drew/shortgrh/}{Verification logs and source digest.}
+
+\subsection{Where the difficult inequality enters}
+For a suitable modulus $q$ and an auxiliary prime $d$, let
+\[
+ R_{q,d}(u)=\sum_{\substack{n\le u\\n\equiv1\pmod q}}
+ \Lambda(n)\left(1-\left(\frac nd\right)\right)
+ \left(\frac1n-\frac1u\right)-\frac{\log u}{\varphi(q)}-c_{q,d}.
+\]
+Here $\Lambda(p^k)=\log p$ and is zero off prime powers. The constant centers the sum at infinity. The proof obtains short integral vectors from theta lifts and normalized Poincaré series. A second-moment estimate gives enough independent vectors. A second estimate, using twisted lifts and heights of determinants, bounds from below the same lattice covolume corrected for its index. Subtracting the common main term exposes a multiple of the prime remainder. The auxiliary rank parameter $m$ is comparable to $\sqrt{x}$. This is the origin of the half-power in the final estimate.
+
+More precisely, the readable edition gives, with a much larger auxiliary scale $x_1$,
+\[
+ R_{q,d}(x)\le \varphi(q)\frac{(\log b)^6}{m}
+                  +|R_{q,d}(x_1)|+(\log b)|R_{1,d}(x_1)|.
+\]
+A fixed-modulus prime number theorem controls the last two terms at $x_1$. For $18480\mid q$ and prime $d\equiv q/2-1\pmod q$, the result is
+$R_{q,d}(u)\le u^{-1/2+\varepsilon}$ eventually for every $\varepsilon>0$. The threshold may depend on $q,d,\varepsilon$.
+
+The Mellin transform of the remainder detects differences of zero multiplicities for the original and quadratically twisted characters. To test a proposed zero $\rho$ with $\Re\rho>\beta>1/2$, the proof chooses one auxiliary $d$ for which the twisted functions have no zeros in the relevant rectangle up to $|\Im\rho|$. What remains at $s$ is a positive multiplicity sum divided by $\varphi(q)s(1-s)$. On the real interval $(\beta,1)$ these residues are nonnegative. A transform of an eventually nonnegative function must have a real singularity at its finite abscissa of convergence. Applied with the upper bound subtracted in the appropriate order, this excludes the pole. Inflating a character of modulus $N$ to modulus $18480N$ and accounting for finite Euler factors gives the public result. \src{New/Reduction/MainInequality}{Covolume comparison, line 87}; \src{New/Reduction/OneSidedBound}{one-sided estimate, lines 33, 125, 200, 239}; \src{New/Reduction/Zeros/Criterion}{choice of twist and zero detection, lines 37--85}.
+
+
+% abelian
+\section{An abelian answer to Zhao's classification question}
+In Section 8, question (3), of his 2025 paper, Tianyu Zhao asks for a number-field classification related to the sign of the integrated prime-ideal Mertens error. His sufficient condition compares 2 with a sum over the nontrivial zeros of $\zeta_K$. With RH for $K$ in force, write
+\[
+     B_K=\sum_{\zeta_K(1/2+i\gamma)=0}^{*}
+                   \frac{1}{1/4+\gamma^2}.
+\]
+The star means that zeros are counted with multiplicity, with all ordinates of both signs and any central zero included. For every finite abelian extension $K/\Q$, Dirichlet GRH supplies field RH by the factorization \eqref{eq:abel}. We resolve the numerical condition in this entire class. \href{https://arxiv.org/pdf/2411.18903}{Zhao, Section 8(3) and equation (32)}.
+
+\begin{theorem}\label{thm:Zhao}
+Up to isomorphism over $\Q$, exactly 229 finite abelian extensions $K/\Q$ satisfy $B_K<2$. Their distribution is given below. For all 229 fields the integral of the reciprocal prime-ideal Mertens error is strictly positive for every sufficiently large upper endpoint.
+\end{theorem}
+\begin{center}\small\begin{tabular}{@{}lrl@{}}\toprule
+Galois group & Number & Identification or conductors \\\midrule
+Trivial & 1 & $\Q$\\
+$C_2$ & 168 & 116 real, 52 imaginary; list in \texttt{fields.json}\\
+$C_3$ & 7 & $7,9,13,19,31,43,63$\\
+$C_2\times C_2$ & 38 & 10 totally real; generator pairs below\\
+$C_4$ & 9 & $5,13,15,16,16,17,20,35,40$\\
+$C_5$ & 1 & $\Q(\zeta_{11})^+$\\
+$C_6$ & 4 & $7,9,13,35$\\
+$C_2\times C_4$ & 1 & $\Q(\zeta_{15})$\\ \bottomrule
+\end{tabular}\end{center}
+Here $C_m$ denotes a cyclic group of order $m$, and the plus sign denotes the maximal real subfield. Conductors can identify several fields: the file \texttt{abelian\_fields.json} specifies each of the 229 fields uniquely, through generators of its character group. For example, among the cyclic cubic fields of conductor 63, the one selected has a generator with local angle $1/3$ at both 3 and 7 in the convention below. Both cyclic quartic fields of conductor 16 pass.
+
+As a special case, the distinct full cyclotomic fields passing this test have minimal conductors $1,3,4,5,7,8,9,12,15$. In particular $\Q(\zeta_{15})$ has $1.9967391<B_K<1.9967467$. All fields of degree greater than eight fail the abelian test.
+
+\paragraph{Reduction to characters.}
+By the Kronecker--Weber theorem, every abelian $K/\Q$ is a subfield of a cyclotomic field. Galois duality identifies it uniquely with the finite group $V$ of Dirichlet characters trivial on the subgroup fixing $K$. Take every character at its primitive conductor when forming its $L$-function. Products of characters in this description mean products followed by passage to the inducing primitive character. Factoring the Dedekind zeta function and adding zero multiplicities gives
+\[
+       B_K=B_{\Q}+\sum_{1\ne\chi\in V}B_\chi,
+       \qquad B_{\Q}=2+\gamma_{\rm E}-\log(4\pi).
+\]
+Here $B_\chi$ is the same zero sum for $L(s,\chi)$; the formula for $B_\Q$ follows by logarithmically differentiating the completed zeta function at 1. Every summand is positive. A real nontrivial character must satisfy $B_\chi<2-B_\Q$. A nonreal one comes paired with its conjugate of equal weight and must satisfy $B_\chi<(2-B_\Q)/2$. The next two computations find every character satisfying the appropriate inequality. This permits a finite exhaustive group calculation.
+
+
+
+% classification
+\subsection{Quadratic characters and multiquadratic fields}
+\smallskip\noindent\textbf{Classification.}
+Exactly 207 multiquadratic fields satisfy $B_K<2$, up to isomorphism over
+$\mathbb Q$. There are 168 quadratic fields, 38 biquadratic fields and the
+rational field. None has degree eight or greater. For each biquadratic field
+$K$ the following table specifies the two generators
+$K=\mathbb Q(\sqrt{d_1},\sqrt{d_2})$. Each entry in the second column
+gives a separate field.
+\begin{center}
+\begin{tabular}{r|l}
+$d_1$ & choices of $d_2$ \\ \hline
+$-3$ & $-23,-20,-19,-11,-8,-7,-4,5,8,13$ \\
+$-4$ & $-24,-15,-11,-8,-7,5,17$ \\
+$5$  & $-11,-8,-7,8,12,13,17,21$ \\
+$-7$ & $-15,-8,8,17$ \\
+$-8$ & $-20,-11,12$ \\
+$8$  & $12,17,28$ \\
+$12$ & $-15,21,33$
+\end{tabular}
+\end{center}
+The accompanying \texttt{fields.json} lists every quadratic discriminant
+and all three quadratic subfield discriminants of each biquadratic field.
+The classification establishes the stated sufficient condition. The sign
+of the prime-ideal average for fields with $B_K\ge2$ is a separate question.
+
+\smallskip\noindent\emph{Proof.}
+The character group of $K$ corresponds to a finite subgroup $V$ of
+$\mathbb Q^\times/(\mathbb Q^\times)^2$. Label each nonidentity element by
+the fundamental discriminant $d$ of its quadratic field.
+Abelian factorization and Dirichlet GRH give
+\[
+ B_K=B_{\mathbb Q}+\sum_{d\in V\setminus\{1\}} B_{\chi_d},
+ \qquad B_{\mathbb Q}=2+\gamma_{\rm E}-\log(4\pi).
+\]
+All summands are positive. In particular, each individual character of a
+qualifying field satisfies $B_{\chi_d}<2$. We can prove an exterior cutoff directly. Write $a=0$ for an even character and $a=1$ for an odd character. The real part of the logarithmic derivative of the completed primitive $L$-function at 2 is the sum of $(3/2)/((3/2)^2+\gamma^2)$ over the ordinates of its zeros. This follows by subtracting the Hadamard logarithmic derivatives at 2 and $-1$ and using the functional equation. Each term is at most $(3/2)/(1/4+\gamma^2)$. Consequently
+\[
+ B_{\chi_d}\ge\frac13\left[\log(q/\pi)+\psi((2+a)/2)+2\frac{L'}{L}(2,\chi_d)\right],
+\]
+where $q=|d|$ and $\psi=\Gamma'/\Gamma$. The digamma term is at least $-\gamma_{\rm E}$. The Euler product gives $L'/L(2,\chi_d)\ge\zeta'/\zeta(2)$. Summing $\Lambda(k)/k^2$ up to 1000 and bounding the tail by $\int_{1000}^\infty (\log t)/t^2\,dt$ gives $-\zeta'/\zeta(2)<0.577$. The displayed bound exceeds $2.0371$ for $q\ge8000$, including both parities.
+
+This leaves 4,861 nontrivial fundamental discriminants with $|d|<8000$. We divided these at the extrema $-551$ and $1201$ reported by Zhao. The 534 interior values recover the 178 characters with $B_{\chi_d}<2$ in his study. A separate computation treats all 4,327 exterior values in the finite range: every lower endpoint exceeds 2.0442. Thus completeness here is independent of his numerical search. The 178 characters are candidates for the stricter field bound, which must also pay the cost $B_{\mathbb Q}$.
+
+For completeness the numerical comparison can be reproduced without
+locating zeros. For $q=|d|$, Zhao's equation~(32) is
+\[
+ B_{\chi_d}=\log(q/\pi)-\gamma_{\rm E}
+      -2\,\mathbf{1}_{d>0}\log 2+
+        2\,\frac{L'(1,\chi_d)}{L(1,\chi_d)} .
+\]
+Evaluate the sums with weights $f(t)=1/t$ and $g(t)=\log(t)/t$,
+respectively, for $L$ and $-L'$. The code sums $m=24$ periods and then
+uses Euler--Maclaurin separately on each residue class, starting at
+$t=mq+r$, $1\le r\le q$. For either weight $h$ with primitive $H$, the
+three retained terms for the tail are
+\[
+ -H(t)/q+h(t)/2-qh'(t)/12.
+\]
+The common integration constant cancels because $\sum_r\chi_d(r)=0$.
+With the $B_4$ endpoint term absorbed in the error, the omitted terms
+have total absolute value per progression at most
+$q^3(|h'''(t)|+\int_t^\infty|h^{(4)}(u)|\,du)/720$.
+This follows from $|B_4(\{u\})|\le 1/30$. In the range used here
+$h^{(4)}>0$ and $h'''<0$, so the integral equals $|h'''(t)|$.
+Summing these bounds over $r$ gives errors at most $1/(60m^4)$ for
+$f$ and $\log(mq+q)/(60m^4)$ for $g$. The interior program uses 30-decimal-place
+interval arithmetic and compares an interval with 2 only when they
+are disjoint. The exterior checker uses twelve periods, fixed-point integer sums with rounding allowances, and interval arithmetic for the final enclosure. Its error analysis is included with the code.
+
+Start with the 168 singleton characters for which
+$B_{\mathbb Q}+B_{\chi_d}<2$. Given a qualifying subgroup $V$, adjoin a
+character $a$ by taking $V\cup aV$. Retain the larger subgroup only if
+each character lies in the allowed set and the total is below 2. If a
+subgroup fails, positivity excludes every overgroup. Every finite
+elementary abelian group has a flag of subgroups with successive index
+two, so this enumeration is exhaustive. It produces the 38 fields above,
+then no rank-three group. One near miss illustrates why a certified
+comparison matters. For the biquadratic field with subfield discriminants
+$-15,-24,40$ the computed interval lies strictly inside
+$(2.0000952,\,2.0000983)$. \hfill$\square$
+
+\paragraph{Rounding in the exterior calculation.}
+In the following bounds $P=12$, $S=2^{42}$ and $n=Pq$. The integer weights tabulated by the script approximate
+$1/t,(\log t)/t,\log t,(\log t)^2,1/t^2,(\log t-1)/t^2$ to within $2/S$.
+For $1\leq t\leq104000$, 50-significant-digit decimal arithmetic with
+correctly rounded logarithms contributes less than $10^{-40}$ to each weight
+before scaling; truncating the scaled weight contributes less than $1/S$.
+For either sum, the rounded coefficients and the finite prefix therefore
+contribute at most
+$(2/S)(n+1+q/2+q^2/12)$ in addition to the stated tail error.
+All dot products are signed 64-bit integer operations:
+the sum of absolute values for any correction row is at most $144Sq<2^{63}$,
+and for a full prefix row at most $nS<2^{63}$. Subsequent integer operations
+use arbitrary precision. Interval substitution in
+$B_{\chi_d}=\log(q/\pi)-\gamma_E-2(1-a)\log 2-2J/L(1,\chi_d)$
+closes each test, including positivity of the denominator.
+
+
+
+% nonreal_verification
+\subsection*{Certifying the nonreal character search}
+For a primitive character $\chi$ of conductor $q$ and parity
+$a\in\{0,1\}$, let $B_\chi=\sum_\rho 1/(1/4+\gamma^2)$ under
+Dirichlet GRH. The ordinates for $\bar\chi$ are the negatives of those
+for $\chi$, so $B_{\bar\chi}=B_\chi$. Each nonreal character in a field
+therefore has to meet the stricter bound $B_\chi<(2-B_{\mathbb Q})/2$.
+For the completed $L$-function $\Lambda(s,\chi)$, the real part of its
+Hadamard logarithmic derivative at $s=2$ gives
+\[
+ \frac32 B_\chi\ \ge\ \sum_\rho
+ \frac{3/2}{9/4+\gamma^2}
+ =\frac12\log(q/\pi)+\frac12\psi(1+a/2)
+   +\Re\frac{L'}{L}(2,\chi)
+ \ \ge\ \frac12\log(q/\pi)-\frac{\gamma_{\rm E}}2
+   +\frac{\zeta'}{\zeta}(2).
+\]
+Here $\psi=\Gamma'/\Gamma$ is increasing on the positive real axis.
+The last inequality follows from the absolutely convergent Euler series.
+The bound $-\zeta'(2)/\zeta(2)<0.6$ follows by summing
+$\sum_{n\le1000}\Lambda(n)/n^2$ and bounding the tail by
+$(1+\log 1000)/1000$. For $q\ge400$ the displayed lower bound implies
+$B_\chi>1$, which excludes this character.
+
+For $q<400$, the code generates primitive local characters by the Chinese
+remainder theorem. At odd $p$ take the least primitive root modulo $p^2$,
+which also generates the units modulo every $p^e$. Write its character
+value as $\exp(2\pi i j/\varphi(p^e))$. A nontrivial character at $e=1$
+is primitive locally, and for $e\ge2$ primitivity requires $p\nmid j$.
+At $2^e$, $e\ge3$, use $-1$ and $5$ and require the exponent numerator
+on $5$ to be odd when expressed with denominator $2^{e-2}$. Modulo 4
+there is one primitive local character and modulo 2 there are none.
+This generates each primitive character exactly once. Independently the
+Dirichlet convolution $\mu*\varphi$ counts 29405 primitive characters
+of conductor below 400 including the trivial conductor-one character.
+Applying the same inversion to the size of the two-torsion of the
+unit group counts 243 real characters, leaving 29162 nonreal characters.
+
+For the finite comparisons use the real part of the same logarithmic
+derivative at $s=1$, or equivalently the functional equation, to obtain
+\[
+ B_\chi=\log(q/\pi)-\gamma_{\rm E}-2(1-a)\log 2
+       +2\Re\frac{L'}{L}(1,\chi).
+\]
+The real and imaginary parts of $L(1,\chi)$ and $-L'(1,\chi)$ follow from
+the same Euler--Maclaurin progression sums as in the quadratic calculation,
+now using 32 complete periods. For a transparent rounding bound choose
+$S=2^{34}$. For each unit residue $r$ let $w_r/S$ approximate the
+Euler--Maclaurin weight and $h_r/S$ the coordinate of its root of unity.
+The program verifies their absolute errors are each at most $1/S$ in
+32-decimal-place interval arithmetic. It accumulates the dot product
+$\sum_r w_r h_r$ in exact integer arithmetic. The absolute rounding
+error after dividing by $S^2$ is at most
+\[
+ \frac{\varphi(q)(S+1)+\sum_r |w_r|}{S^2}.
+\]
+Indeed $|h_r|\le S$, and expanding one product gives this bound term
+by term. Add the analytic tail error to each component and use complex
+interval division to enclose $B_\chi$. All comparisons with the budget
+separate it from the computed interval. The file \texttt{nonreal.json}
+records the 394 qualifying characters (197 conjugate pairs) by their
+local angles with rigorous decimal bounds. Their largest conductor is 109.
+
+
+
+% group_enum
+\paragraph{Exhaustion of the character groups.}
+Encode a character by its nonzero local values on the fixed generators, as angles in $\mathbb Q/\mathbb Z$. At each odd prime these generator choices are compatible through the prime-power tower. At 2 use one coordinate for $-1$ and another for 5. Thus adding angle vectors modulo one gives the primitive product, including products of different conductors. There are 168 admissible quadratic characters and 394 admissible nonreal characters, with the identity adjoined. For each single generator form its cyclic subgroup. Discard it if any power is absent or its total lower weight reaches 2. Keep one generator of each remaining cyclic subgroup. Start at the identity subgroup, and repeatedly adjoin each retained generator, forming the union of the distinct cosets until it closes. A group with an inadmissible member or total lower weight at least 2 can be discarded together with its overgroups. Each qualifying character group has a generating sequence whose every intermediate subgroup qualifies, so this procedure reaches all of them. Canonical sets of angle vectors prevent multiple counting.
+
+The sums of interval endpoints are compared with 2 by exact rational arithmetic. Every tested full group either has lower endpoint at least 2 or upper endpoint strictly below 2. The resulting group counts give Theorem~\ref{thm:Zhao}. The conductor assigned to a field is the least common multiple of its members' conductors. Two Galois subfields of $\overline{\mathbb Q}$ that are isomorphic over $\mathbb Q$ coincide, which justifies counting the distinct character subgroups themselves. All output includes group type, conductor, local generators and an enclosing interval for $B_K$.
+
+\paragraph{Which step actually needs GRH?}
+There is also an interpretation of the finite calculation before assuming any zero-location theorem. Set $A_\chi=2\Re(\Lambda'/\Lambda)(1,\chi)$ for a nonprincipal primitive character, with the harmless factors at 0 and 1 included for the zeta factor. In the Hadamard formula the functional equation pairs $\beta+i\gamma$ with $1-\beta+i\gamma$. At $s=1$ the two real logarithmic-derivative terms together are at least $1/(1+\gamma^2)$; at $s=2$ they are at most $3/(1+\gamma^2)$. The inequalities follow by bounding the two denominators and adding their numerators. Fixed points are counted with half weight when making pairs. Thus $A_\chi\ge(2/3)\Re(\Lambda'/\Lambda)(2,\chi)$ even before localization, and $A_\chi>0$. The conductor cutoffs and finite comparisons therefore classify the corresponding completed logarithmic-derivative constant on their own. Dirichlet GRH makes $A_\chi$ equal to the absolute zero sum $B_\chi$ and makes the resulting statement about the Mertens integral possible.
+
+
+
+% mean
+\paragraph{From the zero sum to the sign of the mean.}
+Here the sums run over prime ideals of $K$, including each ideal separately. Let $E_{1,K}(x)$ be the sum of $\log N\mathfrak p/N\mathfrak p$ for $N\mathfrak p\le x$, less $\log x$ and its limiting constant. Define $E_{2,K}$ in the same way using $1/N\mathfrak p$ and $\log\log x$. Under RH for $K$, the integrated explicit formula used in the split-prime calculation below gives
+\[
+ \frac{F(x)}{\sqrt x}
+ =2+\sum_{\rho=1/2+i\gamma}
+             \frac{e^{i\gamma\log x}}{1/4+\gamma^2}+o_K(1),
+ \qquad F(x)=\int_2^x E_{1,K}(u)\,du .
+\]
+Indeed integration of the first Mertens error gives $-x\int_x^\infty(\theta_K(t)-t)t^{-2}dt+O_K(1)$, where $\theta_K$ counts prime ideals with weight $\log N\mathfrak p$. Replacing $\theta_K$ by $\psi_K$ gives the displayed zero series, as in formula (1.3a) of Grenié--Molteni. Removing prime-ideal squares restores the term $2$, since $\theta_K(\sqrt t)\sim\sqrt t$ by the prime ideal theorem. Higher powers contribute $o(\sqrt t)$ before integration. This square term counts all prime ideals and consequently differs from the completely split rational-prime term considered later.
+
+Thus $F(x)=O_K(\sqrt x)$ and $F(x)/\sqrt x\ge2-B_K+o_K(1)$. To pass to the reciprocal sum, use the exact identity of Stieltjes differentials $dE_{2,K}(t)=dE_{1,K}(t)/\log t$. Integration to infinity gives
+\[
+ E_{2,K}(x)=\frac{E_{1,K}(x)}{\log x}
+     -\int_x^\infty\frac{E_{1,K}(t)}{t\log^2 t}\,dt .
+\]
+The last integral is $O_K(x^{-1/2}/\log^2 x)$ by integration by parts against $dF(t)$. Integrating in $x$ and integrating the first term by parts once more yields
+\[
+ \int_2^x E_{2,K}(t)\,dt
+     =\frac{F(x)}{\log x}+O_K\!\left(\frac{\sqrt x}{\log^2 x}\right).
+\]
+It follows that the reciprocal prime-ideal Mertens error has strictly positive integral for all sufficiently large $x$ whenever $B_K<2$. For $B_K\ge2$, the zero phases can restrict the lower endpoint more strongly than the triangle inequality. Excluding such fields from this numerical test leaves their eventual sign undecided.
+
+
+
+% frontier
+\subsection*{A finite frontier for arbitrary number fields}
+
+Let $K$ be any number field of signature $(r_1,r_2)$ and degree $n=r_1+2r_2$.
+Assume RH for $\zeta_K$. If $B_K<2$, then
+\[
+ n\le 8,\qquad |D_K|<193\,000\,000.
+\]
+The degree bound is sharp: $\mathbb Q(\zeta_{15})$ attains it. In degree 8 only signatures $(0,4)$, $(2,3)$ and $(4,2)$ survive.
+This gives a finite search by Hermite's theorem for the fields satisfying
+Zhao's sufficient condition, subject to their own zeta-function hypotheses.
+
+Write $u=s-1/2$ and let $\xi_K(s)$ be the completed Dedekind zeta function
+multiplied by $s(s-1)$. The paired Hadamard formula on real $s>1$ gives
+$(\log\xi_K)'(s)=\sum_\rho u/(u^2+\gamma^2)$. Its derivative converges
+locally uniformly. Since
+$(\gamma^2-u^2)/(u^2+\gamma^2)^2\le(1/4+\gamma^2)^{-1}$,
+we have $B_K\ge(\log\xi_K)''(2)$. The Euler product gives
+$(\log\zeta_K)''(2)\ge0$. The pole-removal and gamma factors therefore give
+\[
+ B_K\ \ge\ \frac{\pi^2}{24}r_1+
+       \left(\frac{\pi^2}{6}-1\right)r_2-\frac54 .
+\]
+For fixed degree the right side increases with $r_1$, since two real places
+contribute more than one complex place. Direct substitution gives the degree
+bound $n\le10$. To sharpen it, set $s=5/2$, $u=2$, $c=47/48$, and
+$F(u,t)=u/(u^2+t)$. For every $t\ge0$,
+\[
+    (t+1/4)^{-1}\ge F_u(u,t)-cF_{uu}(u,t).
+\]
+Indeed after multiplication by $(t+1/4)(t+4)^3$ the difference has
+numerator $(64+13c)t+68+4c$. The coefficient of $t^2$ vanishes for
+this choice of $c$. Apply the inequality to $t=\gamma^2$. Each prime-power
+term in $(\log\zeta_K)''-c(\log\zeta_K)'''$ is nonnegative, giving
+\[
+ B_K\ge Ar_1+Hr_2-J>0.4618 r_1+0.7216r_2-1.3101 ,
+\]
+where $A=\psi'(s/2)/4-c\psi''(s/2)/8$,
+$H=\psi'(s)-c\psi''(s)$, and
+$J=s^{-2}+(s-1)^{-2}+2c(s^{-3}+(s-1)^{-3})$.
+For the numerical lower bounds on $A,H$ one may sum the first $100{,}000$
+positive terms of $\psi'(x)=\sum_{j\ge0}(x+j)^{-2}$ and
+$-\psi''(x)=2\sum_{j\ge0}(x+j)^{-3}$. At degree $9$ even the smallest
+possible signature contribution, for $(1,4)$, exceeds 2 after subtraction
+of $J$. At degree $10$ the pair $(0,5)$ already exceeds 2.
+At degree $8$ at least six real places would give a contribution above 2.
+
+For the discriminant, use $(\log\xi_K)'(4)\le(7/2)B_K$. The local Euler
+factors imply $\zeta'_K/\zeta_K(4)\ge n\,\zeta'/\zeta(4)$, since the
+coefficient at $p^k$ in $-\zeta_K'/\zeta_K$ is at most $n\log p$.
+With $c=-(\zeta'/\zeta)(4)$, $\psi=\Gamma'/\Gamma$, this gives
+\[
+ \log |D_K|<\frac{77}{6}
+ +r_1\bigl(\log\pi-\psi(2)+2c\bigr)
+ +r_2\bigl(2\log(2\pi)-2\psi(4)+4c\bigr)
+ <\frac{77}{6}+0.850r_1+1.420r_2 .
+\]
+Here $c<0.0638$, by summing $\Lambda(m)/m^4$ through 100 and bounding
+the tail by $\int_{100}^\infty (\log t)t^{-4}\,dt$.
+Use $\psi(2)=1-\gamma_{\rm E}$ and $\psi(4)=11/6-\gamma_{\rm E}$.
+The largest resulting right side over the allowed signatures is
+$77/6+4(0.850)+2(1.420)<\log(193\,000\,000)$. The degree bound and the discriminant
+bound use only the functional equation, the Euler product, and RH for $K$.
+
+
+
+% cubic23
+\paragraph{An explicit nonabelian case on its own RH.}
+Let $F$ be the cubic field defined by $x^3-x-1$ and let $E$ be its splitting
+field. The discriminant is $-23$, and the irreducible polynomial has group
+$S_3$. Its standard two-dimensional Artin factor is the $L$-series of the
+weight-one form $f(z)=\eta(z)\eta(23z)$ (Zagier,
+\href{https://people.mpim-bonn.mpg.de/zagier/files/scanned/PolylogsDedekindZetaAndKTheory/fulltext.pdf}{\emph{Polylogarithms, Dedekind zeta functions and the algebraic $K$-theory of fields}}).
+The permutation representation on the three roots and the regular representation
+give, respectively, $\zeta_F=\zeta L_f$ and
+$\zeta_E=\zeta L_{-23}L_f^2$. For $G(t)=f(it/\sqrt{23})$, the Mellin transform
+and the eta transformation $G(1/t)=tG(t)$ give the completed factor
+\[
+ A(s)=\left(\frac{\sqrt{23}}{2\pi}\right)^s\Gamma(s)L_f(s)
+     =\int_1^\infty G(t)(t^{s-1}+t^{-s})\,dt.
+\]
+Consequently $2A'(1)/A(1)$ is twice the ratio of the integrals of
+$G(t)\log t(1-1/t)$ and $G(t)(1+1/t)$. The supplied
+\texttt{cubic23.py} encloses this ratio with its factor of 2 in
+$(0.32770,0.35161)$. It evaluates the positive eta product on intervals of
+width $1/64$ up to 16, using the first 12 factors of each infinite product.
+For omitted factors $1-u_i$ their product lies between $1-\sum u_i$ and 1.
+For the integral tails use $0<G(t)\le e^{-2\pi t/\sqrt{23}}$ and $\log t\le t$.
+With $B_{\chi_{-23}}\in(0.56930,0.56931)$ from the quadratic calculation,
+the completed logarithmic derivatives thus yield
+\[
+           0.3738<B_F<0.3979,\qquad 1.2708<B_E<1.3188
+\]
+under RH for the respective zeta functions. The arithmetic integrals and
+their enclosures hold independently of those hypotheses. RH identifies the
+logarithmic derivatives with Zhao's positive spectral sums. In particular
+the remaining analytic input in this $S_3$ case is localization of zeros of
+the single degree-two Artin factor $L_f$.
+
+
+\section{Number fields with a Euclidean algorithm}
+A field $K$ is norm-Euclidean when division with remainder in $\mathcal O_K$ can always be performed with strictly decreasing absolute norm. Equivalently, each $\xi\in K$ admits $\gamma\in\mathcal O_K$ with $|N_{K/\Q}(\xi-\gamma)|<1$. Lezowski and McGown's classification now gives the following complete answers.
+\begin{center}
+\begin{tabular}{@{}lll@{}}\toprule
+Cyclic degree & Conductors of the norm-Euclidean fields & Discriminants\\\midrule
+5 & $11,31,41$ & $11^4,31^4,41^4$\\
+7 & $29,43$ & $29^6,43^6$\\\bottomrule
+\end{tabular}
+\end{center}
+There are no such cyclic fields in degrees $19,31,37,43,47,59,67,71,73,79,97$. The authors' theorem supplies both directions, including the finite computations for positive cases. The point to verify is what their analytic hypothesis means.
+
+For an abelian extension $K/\Q$, class field theory attaches a group $X_K$ of Dirichlet characters. With each character taken at its primitive conductor,
+\begin{equation}\label{eq:abel}
+             \zeta_K(s)=\prod_{\chi\in X_K} L(s,\chi^*).
+\end{equation}
+At an unramified prime, if Frobenius has order $h$, its values under the characters run through all $h$th roots equally often. Thus the local factor is $(1-p^{-hs})^{-[K:\Q]/h}$. At a ramified prime the characters trivial on inertia supply the local factors for the quotient by inertia, which explains the conductor convention. The trivial character supplies $\zeta(s)$. The Euler product proves the identity initially in $\Re s>1$ and meromorphic continuation extends it. Every factor is nonzero in the open right half of the critical strip by the Lean theorem. This proves the required Dedekind assertion for abelian $K$ and also supplies GRH directly for the individual Dirichlet factors used to bound the small inert primes. In a cyclic field of prime degree $\ell$ and prime conductor $f$, the nontrivial factors are the powers $\chi,\ldots,\chi^{\ell-1}$ of one character of order $\ell$.
+
+The authors use GRH to bring the infinite range of possible conductors down to the reach of finite tests. For a check of one exclusion, the archive verifies the degree-97 example with $f=59{,}999{,}999{,}974{,}303$. The first two inert primes are 2 and 3. The integer $431$ satisfies the character and congruence conditions of Proposition 3.1. This checks one field. The full lists above use the authors' published computation. For comparison, the cyclic cubic classification already has a separate unconditional proof. \href{https://arxiv.org/pdf/1601.03433}{Lezowski--McGown, Theorems 1.3--1.4, Proposition 3.1 and Table 3.1}; \href{https://www.numdam.org/article/JTNB_2012__24_2_425_0.pdf}{McGown, Lemma 2.1}; \href{https://arxiv.org/abs/2507.05862}{Bagger et al., cyclic cubic fields}.
+
+\section{Euler's list, integer boxes and K3 surfaces}
+A positive integer $n$ is idoneal precisely when the class group of primitive positive binary forms of discriminant $-4n$ has exponent dividing two. This discriminant can belong to a nonmaximal order. Weinberger's theorem concerns fundamental discriminants and uses a zero-free interval near 1 for real quadratic Dirichlet characters. Kani's reduction to orders, together with the finite list, gives exactly 65 idoneal numbers, with largest $1848$. The October 2026 quasi-RH preprint already explicitly drew this conclusion. The shorter Lean proof supplies a separate route. \href{https://mast.queensu.ca/~kani/papers/2011K1.pdf}{Kani, Theorems 6 and 22, Corollary 23}; \href{https://github.com/openai/math/tree/main/preprints/The-Quasi-Riemann-Hypothesis-October-5-2026}{October preprint}.
+
+A concrete interpretation uses a box with integer side lengths $x,y,z$. Its surface area is $2n$ with $n=xy+yz+zx$. Kani's Remark 35(b), crediting Rains, identifies the idoneal numbers with the failures for $0<x<y<z$. Hence every even area above $3696$ occurs with three different sides, while $3696$ does not. Allowing equal sides leaves exactly 18 missing positive even areas, the doubles of
+\[
+ 1,2,4,6,10,18,22,30,42,58,70,78,102,130,190,210,330,462.
+\]
+Thus $924$ is the last missing even area. Borwein and Choi gave the conditional classification with repetitions. For a nearby positive example, $8\times9\times23$ has area $926$. The bundled integer sieve checks the two exception lists through $5{,}000{,}000$ in the variable $n$. The infinite tail follows from the class-group theorem. \href{https://www.sfu.ca/~schoia/paper/rep.pdf}{Borwein--Choi, Theorem 1.1}.
+
+
+% geometry
+\subsection*{A geometric consequence: the K3--Enriques obstruction list}
+Which complex algebraic K3 surfaces admit a fixed-point-free involution?
+The quotient by such an involution is an Enriques surface. A precise consequence
+of the quadratic-character part of Dirichlet GRH is that the published list of
+550 co-idoneal lattices occurring in the criterion for this question is complete.
+Exactly 65 have rank ten. The counts concern isometry classes of lattices;
+a lattice can occur for many surfaces.
+
+Here is the passage from arithmetic to geometry. An integral positive definite
+lattice has a symmetric integer-valued pairing. Its genus consists of the
+isometry classes locally isometric to it over every $\mathbb Z_p$ and over
+$\mathbb R$. The genus is \emph{idoneal} if each member has a vector of
+square one. In rank two such a vector $u$ splits off a copy of $[1]$, since
+$v-(v,u)u$ is integral and orthogonal to $u$ for every $v$. The determinant
+$n$ fixes the remaining one-dimensional factor $[n]$. Hence the idoneal genus
+must consist of the single class $[1]\oplus[n]$. The characterization of
+idoneal numbers by genera identifies the allowed determinants with Euler's
+list. By Weinberger's theorem and Kani's Corollary~23 the list is complete
+under the relevant quadratic zero-free result. Brandhorst, Sonel and Veniani
+(BSV, Remark~1.2 and Addendum~1.6) enumerate the other ranks. The counts for
+$r=1,\dots,13$ are respectively
+\[
+1,65,110,122,107,76,47,24,13,6,4,1,1.
+\]
+They total 577, and the count vanishes for $r>13$. This gives the complete
+enumeration asked for in Kani's Problem~45.
+
+For the geometric statement put
+$\Lambda^-=U\oplus U(2)\oplus E_8(-2)$, where $U$ is the hyperbolic
+plane, $E_8$ is positive definite, and parentheses scale the pairing.
+Let $T$ be the orthogonal complement of the N\'eron--Severi lattice in
+$H^2(X,\mathbb Z)$. Keum's criterion asks for a primitive embedding
+$T\hookrightarrow\Lambda^-$ whose orthogonal complement contains no vector
+of square $-2$. Among the lattices that embed primitively, the co-idoneal
+ones are precisely those for which every such embedding has a vector of
+square $-2$ in its complement. BSV Proposition~3.15 identifies each
+complement for a co-idoneal $T$ with $L(-2)$, where $L$ belongs to a
+uniquely determined idoneal genus of rank $12-\operatorname{rank}T$. Their
+Algorithm~4 enumerates the candidate $T$ from the genera and discriminant
+forms. Thus rank two in the arithmetic enumeration supplies rank ten on the
+geometric side. BSV Addendum~1.11 and Table~1 give, in ascending ranks
+$\lambda=2,\ldots,11$, the counts
+\[
+3,8,17,41,76,107,122,110,65,1.
+\]
+They sum to 550, with zero in higher ranks. Together with the primitive
+embedding test this decides the lattice criterion for existence of an Enriques
+quotient. Both finite enumerations are the published computations of BSV.
+Their data, including Gram matrices, are available at
+\href{https://doi.org/10.5281/zenodo.10617125}{Zenodo}.
+
+\emph{Attribution.} The enumeration and its dependence on Euler's list are due
+to BSV, \href{https://doi.org/10.1016/j.jpaa.2025.107974}{J. Pure Appl. Algebra,
+2025}. See also \href{https://mast.queensu.ca/~kani/papers/2011K1.pdf}{Kani,
+2011, Corollary~23}. The October 2026 preprint
+\href{https://github.com/openai/math/tree/main/preprints/The-Quasi-Riemann-Hypothesis-October-5-2026}{\emph{The Quasi-Riemann Hypothesis}}
+already draws the idoneal-number consequence from a weaker zero-free
+half-plane. The Dirichlet GRH archive gives another route to the analytic
+input. The geometric enumeration follows by composing these existing results.
+
+
+
+% refinement
+\section{Many representations with a small prime as the sum of two coordinates}
+
+For $n\ge 1$, consider the strictly ordered positive integral solutions of
+\[
+                  n=xy+yz+zx,\qquad 0<x<y<z .
+\]
+The following quantitative argument uses only the quadratic special case of
+Dirichlet GRH and ordinary RH. Its constants are absolute.
+
+\paragraph{Theorem.}
+There exist $C,c>0$ such that for every sufficiently large $n$ and every real
+$X$ in the range
+\[
+             C\log^2(4n)\le X\le \tfrac12\sqrt n
+\]
+there are at least $cX/\log X$ solutions for which $x+y$ is a prime in
+$(X,2X)$. In particular there are $\gg \log^2 n/\log\log n$ solutions
+with both $x,y\ll\log^2 n$, and $\gg \sqrt n/\log n$ solutions altogether.
+
+\paragraph{From a split prime to three coordinates.}
+Put $q=4n$ and let $\chi(k)=(\frac{-4n}{k})$ be the real Kronecker character
+modulo $q$. It is nonprincipal since $\chi(-1)=-1$. If an odd prime
+$p\nmid q$ satisfies $\chi(p)=1$, there is a unique integer
+$0<b<p/2$ with $b^2\equiv -n\pmod p$.
+If also $p\le\sqrt n$, put
+\[
+ x=b,\qquad y=p-b,\qquad z=\frac{n+b^2}{p}-b.
+\]
+Then $x<y<z$, since $n+b^2>p^2$, and $(x+y)(x+z)=n+x^2$.
+The pair sum recovers $p$, so different primes give different solutions.
+There is a converse when $p=x+y\le\sqrt n$ is prime. The same product identity
+implies $x^2\equiv -n\pmod p$, with $0<x<p/2$, and hence $p\nmid 2n$
+and $\chi(p)=1$. Thus on this range the correspondence is exact.
+
+\paragraph{Counting the desired primes.}
+Fix a nonnegative smooth function $w$ supported in $(1,2)$ with
+$\int w(t)\,dt=1$. Write $\Lambda$ for the von Mangoldt function,
+$\chi_0$ for the principal character modulo $q$, and
+$S(\eta)=\sum_k\Lambda(k)\eta(k)w(k/X)$.
+For either $\eta=\chi_0$ or $\eta=\chi$, the smoothed explicit formula gives
+\[
+ S(\eta)={\bf 1}_{\eta=\chi_0} X+
+             O_w\bigl(\sqrt X\log(2q)\bigr),\qquad X\ge2.
+\]
+Here is the uniformity argument. First use the inducing primitive character
+$\eta^*$ of conductor $f\mid q$, treating $f=1$ as the zeta function.
+Its Mellin integral has integrand
+$-(L'/L)(s,\eta^*)X^s\widehat w(s)$, where
+$\widehat w(s)=\int_0^\infty w(u)u^{s-1}\,du$. Shift from $\Re s=2$
+to $\Re s=-1/2$. The pole of zeta gives $X\widehat w(1)=X$.
+The possible trivial zero at zero costs $O_w(1)$.
+At each nontrivial zero $\rho$ the residue is
+$-X^\rho\widehat w(\rho)$ counted with multiplicity.
+Mellin integration by parts gives
+$|\widehat w(\sigma+it)|\ll_w(1+|t|)^{-3}$
+uniformly for $-1/2\le\sigma\le2$.
+The number of zeros with $j\le |\Im\rho|<j+1$ is
+$O(\log(2f(j+2)))$ by the Dirichlet zero-counting formula
+(Bennett, Martin, O'Bryant and Rechnitzer, \emph{Math. Comp.} 90 (2021),
+\href{https://doi.org/10.1090/mcom/3599}{doi:10.1090/mcom/3599}),
+and the corresponding classical estimate for zeta. Thus on GRH the
+absolutely convergent zero sum is $O_w(\sqrt X\log(2f))$.
+The functional equation and the Euler product at $\Re(1-s)=3/2$ give
+$L'/L\ll\log(2f(|t|+2))$ on the new line, contributing
+$O_w(X^{-1/2}\log(2f))$. The usual contour shift can be taken along
+heights avoiding zero ordinates, using the local partial fraction formula
+for $L'/L$ and the same zero count. Returning to modulus $q$ changes
+the sum by $O_w(\log q)$, since for each $p\mid q$ at most one power
+of $p$ lies in the open interval $(X,2X)$.
+
+On integers coprime to $q$, $(\chi_0+\chi)/2$ selects those with
+$\chi=1$, and it vanishes on the remaining integers not coprime to $q$.
+Deleting higher prime powers gives
+\[
+ \sum_{\substack{p\ \mathrm{prime}\\\chi(p)=1}}
+             (\log p)w(p/X)
+       =\frac X2+O_w\!\left(\sqrt X\log(2q)
+                                  +\sqrt X\log^2(2X)\right).
+\]
+Indeed each exponent $k\ge2$ contributes at most
+$(2X)^{1/k}\log(2X)$, and there are $O(\log(2X))$ exponents.
+For $X\ge C\log^2(4n)$ the first error is at most $X/8$ once $C$ is
+large enough. The prime-power error is $o(X)$ uniformly as the lower
+endpoint tends to infinity. Each prime contributes at most
+$\|w\|_\infty\log(2X)$, which proves the theorem.
+Use $X=C\log^2(4n)$ for the small coordinates and $X=\sqrt n/3$
+for the total count.
+
+\paragraph{A logarithmic obstruction.}
+Infinitely many $n$ have no solution with $x+y\le(1-o(1))\log n$,
+even allowing composite pair sums. For $Y\to\infty$, put
+$M=4\prod_{3\le p\le Y,\,p\ {\rm prime}}p$. Prescribe $n\equiv1\pmod4$
+and choose $-n$ to be a quadratic nonresidue at every odd prime $p\le Y$.
+Take the representative in $[M,2M)$ given by the Chinese remainder theorem.
+Every integer $3\le a\le Y$ has an odd prime divisor at most $Y$ or is
+divisible by 4. Thus $x^2\equiv -n\pmod a$ has no solution, ruling out
+$a=x+y$. The prime number theorem gives $\log n=(1+o(1))Y$.
+This construction gives an unconditional lower bound. The prime-input version below strengthens its order of growth using the quadratic zero theorem.
+
+\paragraph{Several integers at once.}
+For each fixed $k\ge1$ and sufficiently large $N$, given
+$n_1,\dots,n_k\in[N,2N]$, there are
+$\gg_k\log^2 N/\log\log N$ primes $p\ll_k\log^2 N$ for which
+\emph{every} $n_i$ has a strictly ordered representation with $x_i+y_i=p$.
+Indeed inflate the $k$ quadratic characters to modulus
+$Q=4\prod_{i=1}^k n_i$ and let $H$ be the group they generate.
+The function $|H|^{-1}\sum_{\eta\in H}\eta$ selects simultaneous splitting.
+Its smoothed prime-power sum has main term $X/|H|$ and error
+$O_w(\sqrt X\log(2Q))$ by the same estimate for each member
+(the inducing primitive characters are real, with either parity).
+Since $|H|\le2^k$ and $\log Q=O_k(\log N)$, taking
+$X=C_k\log^2 N$ with $C_k$ sufficiently large absorbs the error.
+Removing prime powers and constructing the $k$ solutions gives the claim.
+
+\paragraph{Finding a witness.}
+The accompanying \texttt{represent.py} tests $a=x+y$ in increasing order.
+For each $a$ it tries $0<b<a/2$ with $b^2\equiv-n\pmod a$ and
+$n+b^2>a^2$, and uses the displayed formula with $p$ replaced by $a$.
+Every strict solution satisfies $3a^2<4n$, so exhaustive failure proves
+that there is none. For a positive answer, the first witness minimizes $x+y$.
+The theorem implies that, for large $n$, at most $O(\log^4 n)$ pairs $(a,b)$
+are tested. This is deterministic polynomial time in the input bit length.
+The program uses neither the unknown lower threshold for the asymptotic
+estimate nor a factorization of $n$.
+
+\paragraph{A stronger obstruction at prime inputs.}
+Under the same quadratic GRH hypothesis, there are infinitely many primes $n$
+such that every representation satisfies
+\[
+          x+y > \bigl(1/\log 4-o(1)\bigr)\log n\,\log\log n.
+\]
+To see this, impose the previous signs modulo
+$M=4\prod_{3\le p\le Y,\,p\ {\rm prime}}p$, this time seeking a prime $n$.
+The sign modulo 4 and the quadratic signs at the odd primes give
+$r=\pi(Y)$ independent binary conditions on the units modulo $M$, by the
+Chinese remainder theorem. The indicator of the prescribed set on these units
+is the product of $r$ terms $(1+\varepsilon_j\eta_j)/2$, with
+$\varepsilon_j\in\{1,-1\}$ and the corresponding local quadratic characters
+$\eta_j$ inflated to modulus $M$. Extend the indicator by zero off the units,
+so the constant term in its expansion is the principal character divided by
+$2^r$. Independence makes every other character nonprincipal. The absolute
+values of all the coefficients sum to one. Hence for $X\ge2$ its smoothed
+prime sum, with weight $(\log p)w(p/X)$ at each prime, is
+\[
+    \frac{X}{2^r}+O_w\bigl(\sqrt X\,[\log(2M)+\log^2(2X)]\bigr).
+\]
+Take $X=4^r\log^6(2M)$. As $Y\to\infty$, $\log M\sim Y$ and
+$r\sim Y/\log Y$ by the prime number theorem. After division by $\sqrt X$,
+the main term is $\log^3(2M)$ whereas the error is $O_w(Y^2)$.
+There is therefore a prime $n\in(X,2X)$ satisfying all prescribed signs.
+The previous congruence argument rules out $x+y\le Y$, and
+$\log n=(\log 4+o(1))Y/\log Y$ yields the claimed bound.
+\paragraph{When the least splitting prime is the exact minimum.}
+For all sufficiently large squarefree $n\equiv1,2\pmod4$, the minimum
+of $x+y$ over strict representations is exactly the least odd prime splitting
+in $\mathbb Q(\sqrt{-n})$. Indeed, put $a=x+y$ and $b=x$ in any solution.
+Then $a\mid n+b^2$ and $0<b<a/2$. Since $-n$ is $2$ or $3$ modulo $4$,
+we have $4\nmid a$. If every odd prime $p\mid a$ divided $n$, it would also
+divide $b$, and squarefreeness would give $v_p(n+b^2)=1$. The odd part of $a$
+would therefore divide $b$, although it is at least $a/2$. Thus some odd
+$p\mid a$ is coprime to $n$ and $-n$ is a square modulo $p$. This splitting
+prime satisfies $p\le a$. Conversely, the least odd splitting prime is at most
+$\sqrt n$ for large $n$ by the theorem, so it supplies a representation with
+this pair sum. The congruence restriction matters. For $n\equiv3\pmod4$ and
+$n>15$, the triple $(1,3,(n-3)/4)$ always works.
+
+
+\section{Detecting zeros with completely split rational primes}
+
+% criterion
+Let $M/\Q$ be finite Galois of degree $n$, and let $P_M$ consist of the unramified rational primes splitting completely in $M$. For a prime set $P$ put
+\[
+ S_P(x)=\sum_{p\in P,\,p\le x}\log p\,(1/p-1/x),
+ \qquad \theta_P(x)=\sum_{p\in P,\,p\le x}\log p .
+\]
+Write $\delta_M=1/n$. The centered remainder is
+$R_M(x)=S_{P_M}(x)-\delta_M\log x-c_M$, where $c_M$ makes the remainder tend to zero. Equivalently, if
+$D_M(s)=\sum_{p\in P_M}(\log p)p^{-s}=\delta_M/(s-1)+d_M+O(s-1)$ near 1, then $c_M=d_M-\delta_M$. To see existence of the first normalization, the fixed-field prime ideal theorem with its classical zero-free-region error gives $\int_2^\infty |\theta_{P_M}(t)-\delta_M t|t^{-2}dt<\infty$. A possible exceptional real zero of a fixed field still contributes an integrable power. The Euler-factor calculation below shows that replacing the prime-ideal sum by the rational split-prime sum costs $O_M(\sqrt t)$. Since $S_{P_M}(x)=\int_1^x\theta_{P_M}(t)t^{-2}dt$, the limit exists. Taking the Mellin transform below and letting real $s\downarrow1$ identifies the two constants.
+
+\begin{theorem}\label{thm:detect}
+The Riemann hypothesis for $\zeta_M$ is equivalent to
+\[
+               \sup_{x\ge2}\sqrt{x}\,R_M(x)<\infty .
+\]
+In the forward direction $|R_M(x)|=O_M(x^{-1/2})$. Conversely, even an eventual upper bound $R_M(x)\le C_{M,\varepsilon}x^{-1/2+\varepsilon}$ for each $\varepsilon>0$ suffices.
+\end{theorem}
+
+\begin{proof}
+The coefficient at $p^j$ in $-\zeta'_M/\zeta_M$, for an unramified $p$ of residue degree $f$, is $n\log p$ if $f\mid j$ and zero otherwise. Thus
+\[
+ D_M(s)=-\frac1n\frac{\zeta'_M(s)}{\zeta_M(s)}+H_M(s),
+ \qquad \Re s>1,
+\]
+where $H_M$ extends holomorphically to $\Re s>1/2$. Indeed the series of corrections with $j\ge2$ converges absolutely and locally uniformly there, and each ramified local correction is holomorphic for $\Re s>0$. The same counting argument shows $\psi_M(t)/n-\theta_{P_M}(t)=O_M(\sqrt t)$ by the Chebyshev bound for rational primes and by summing over powers.
+
+Integration term by term for $\Re s>1$ gives the continuation
+\begin{equation}\label{eq:mellin}
+ F_M(s)=\int_1^\infty R_M(x)x^{-s}\,dx
+       =\frac{D_M(s)}{s(s-1)}-
+           \frac{\delta_M}{(s-1)^2}-\frac{c_M}{s-1}.
+\end{equation}
+The centering removes the singularity at 1. Each zero $\rho$ of multiplicity $m_\rho$ in $1/2<\Re\rho<1$ gives a simple pole with residue
+$m_\rho/[n\rho(1-\rho)]$. This is strictly positive for a real zero.
+
+Suppose a zero $\rho$ lies to the right of $1/2$, and take $1/2<\beta<\Re\rho$. By the one-sided hypothesis $g(x)=C x^{\beta-1}-R_M(x)$ is nonnegative for all $x\ge X_0$ with suitable $C,X_0$. Its tail transform has the meromorphic continuation $C/(s-\beta)-F_M(s)$ up to an entire function. Its abscissa of convergence $\sigma_c$ satisfies $\Re\rho\le\sigma_c\le1$, since the transform is holomorphic wherever the tail integral converges in an open half-plane. Landau's theorem forces a real singularity at $\sigma_c$. One way to see this is to change variables $x=e^v$ and expand the transform about a real point just to the right of $\sigma_c$. In the direction of decreasing $s$ the Taylor coefficients are integrals of nonnegative multiples of $v^k$. If the transform were regular at $\sigma_c$, choosing the center sufficiently near it would give a convergent Taylor series across $\sigma_c$. Monotone convergence would then continue the integral itself across its abscissa. At 1 our transform is regular. At a point of $(\beta,1)$ its only possible real pole has \emph{negative} residue by \eqref{eq:mellin}. That would force the tail integral to tend to $-\infty$ from the right, despite its nonnegative integrand. This contradiction excludes $\rho$. The functional equation supplies the other half of the critical strip.
+
+For the forward direction, under field RH the integrated explicit formula gives
+$\int_0^x(\psi_M(t)-t)\,dt=O_M(x^{3/2})$.
+The comparison with $\theta_{P_M}$ gives the same bound for $A(x)=\int_1^x(\theta_{P_M}(t)-\delta_Mt)\,dt$. Integrate by parts in
+$R_M(x)=-\int_x^\infty(\theta_{P_M}(t)-\delta_M t)t^{-2}\,dt$.
+The endpoint term $A(x)/x^2$ and the integral $2\int_x^\infty A(t)t^{-3}dt$ are both $O_M(x^{-1/2})$. The next subsection on the endpoint derives the more precise expansion. \href{https://arxiv.org/pdf/1312.4465}{Grenié--Molteni, integrated explicit formula (1.3a)}.
+\end{proof}
+
+\subsection{A test expressed entirely in finite sums}
+Let $E\subset M$ with $E/\Q$ abelian. Omit the finite set of primes ramifying in $M$ from all sets. Define $I=P_E\setminus P_M$ and $\delta=1/[E:\Q]-1/[M:\Q]$. By \eqref{eq:abel} the field $E$ satisfies RH, and hence $R_E=O_E(x^{-1/2})$ by Theorem~\ref{thm:detect} (the implied constant can also depend on the omitted primes). After centering, $R_I=R_E-R_M$ exactly. Consequently a \emph{lower} bound $R_I(x)\ge-Cx^{-1/2}$ is equivalent to RH for $M$. To remove its centering constant, put
+\begin{equation}\label{eq:dyad}
+ B_I(x)=\frac{1}{2x}\sum_{p\in I,\,p\le x}\log p
+       +\sum_{\substack{p\in I\\x<p\le2x}}\log p\left(\frac1p-\frac1{2x}\right)
+       -\delta\log 2.
+\end{equation}
+This is $R_I(2x)-R_I(x)$. Under RH for $M$ we have $|B_I(x)|=O_M(x^{-1/2})$. Conversely if $B_I(x)\le Cx^{-1/2}$, telescope on $x,2x,4x,\ldots$. The remainder tends to zero, so $-R_I(x)\le Cx^{-1/2}/(1-2^{-1/2})$. Hence an \emph{upper} bound for the explicit increment suffices. It is enough to check all integers $x\ge2$: off the primes the derivative of $S_I$ is $\theta_I(x)/x^2=O(1/x)$, and $S_I$ is continuous across primes. Varying $x$ by at most one costs $O(1/x)$.
+
+\begin{corollary}\label{cor:poly}
+For any odd prime $\ell$, put $M_\ell=\Q(\zeta_\ell,2^{1/\ell})$. In \eqref{eq:dyad} take $I$ to be the primes $p\nmid 2\ell$ for which $X^\ell-2$ is irreducible modulo $p$, and $\delta=1/\ell$. Then
+\[
+       \RH(\zeta_{M_\ell})
+          \quad\Longleftrightarrow\quad
+       \sup_{m\in\mathbb Z,\ m\ge2}\sqrt m\, B_I(m)<\infty .
+\]
+\end{corollary}
+\begin{proof}
+Put $E=\Q(\zeta_\ell)$. The binomial is Eisenstein at 2 over $\Q$, so the degree of $M_\ell$ is divisible by $\ell$ and $\ell-1$. The tower bound gives the degree exactly $\ell(\ell-1)$. Its Galois action on the roots is the full affine group $t\mapsto at+b$ on $\mathbb F_\ell$. For a good prime $p$, $a=p\bmod\ell$. If $a\ne1$ the affine map fixes a root. If $a=1$, the identity splits the polynomial completely while each nonidentity translation acts as an $\ell$-cycle. Thus $I=P_E\setminus P_{M_\ell}$. Its density is $1/(\ell-1)-1/[\ell(\ell-1)]=1/\ell$. Equivalently one tests $p\equiv1\pmod\ell$ and $2^{(p-1)/\ell}\not\equiv1\pmod p$. Apply the preceding argument.
+\end{proof}
+
+For $\ell=3$ the group is $S_3$. The three Frobenius types are completely split (density $1/6$), linear times irreducible quadratic ($1/2$), and irreducible cubic ($1/3$). The middle condition is just $p\equiv2\pmod3$ at good primes, so its centered sum already has the square-root estimate. The missing estimate distinguishes the two types within $p\equiv1\pmod3$. For example both 7 and 31 are $7\bmod12$, but 2 is a cube only modulo 31.
+
+In fact no fixed modulus can make this distinction. Enlarge any proposed modulus to a multiple $q$ of $\ell$. The commutator of the affine group is its translation subgroup: all commutators lie there, and commuting a nonidentity dilation with the translations generates the entire subgroup. Hence the maximal abelian subextension is $E$ and $M_\ell\cap\Q(\zeta_q)=E$. For any reduced residue class $a\bmod q$ with $a\equiv1\bmod\ell$, the lifts of $a$ to the compositum pair it with each of the $\ell$ translations. The identity and the nonidentity translations give conjugacy-stable sets. Chebotarev therefore gives relative densities $1/\ell$ and $1-1/\ell$ for the two splitting types within \emph{every} such progression. This identifies exactly what fixed Dirichlet congruence information loses. It leaves open the possibility of a new uniform argument with varying moduli or a construction using additional arithmetic data.
+
+
+
+% endpoint
+\subsection*{The exact upper endpoint for completely split primes}
+Let $M/\mathbb Q$ be finite Galois with group $G$ and degree $n$.
+Let $R_M(x)$ be its centered completely split prime sum, formed with weights
+$\log p\,(1/p-1/x)$ for $p\le x$, log term $(\log x)/n$, and the unique
+centering constant for which the remainder tends to zero. Write
+\[
+ b_M=\frac{\#\{g\in G:g^2=1\}}{n}.
+\]
+The identity is included in this count.
+
+\noindent\textbf{Endpoint theorem.}
+If $\zeta_M$ satisfies RH, with nontrivial zeros $\rho=\frac12+i\gamma$
+listed with multiplicity, then
+\[
+ \limsup_{x\to\infty}\sqrt{x}\,R_M(x)
+ =2b_M+\frac1n\sum_{\rho}\frac{1}{1/4+\gamma^2}.
+\]
+If RH fails for $\zeta_M$, the same limsup is $+\infty$. In particular the
+one-sided criterion can use the exponent $-1/2$ exactly. For abelian $M$
+the repository and the abelian factorization supply the first case.
+
+\smallskip\noindent\emph{Proof.}
+Put $\theta(t)=\sum_{p\le t,\ p\text{ splits completely}}\log p$,
+where the sum excludes ramified primes. Integrating this step function
+gives the ramp sum as $\int_1^x\theta(t)t^{-2}\,dt$. Thus
+\[
+ R_M(x)=-\int_x^\infty (\theta(t)-t/n)t^{-2}\,dt .
+\]
+Under field RH this integral converges absolutely by the prime ideal theorem.
+For the moment replace $\theta$ by $\psi_M/n$, with $\psi_M$ the sum of
+$\log N\mathfrak p$ over prime ideal powers of norm at most $t$.
+The integrated explicit formula of
+\href{https://arxiv.org/pdf/1312.4465}{Greni\'e--Molteni, (1.3a) and Lemma~3.3},
+gives for the fixed field
+\[
+ A(t):=\int_0^t (\psi_M(u)-u)\,du
+    =-\sum_\rho\frac{t^{\rho+1}}{\rho(\rho+1)}+O_M(t\log t)
+ \qquad (t\ge 3).
+\]
+The completed Dedekind zeta function has order one, so its zeros have
+$\sum_\rho(1+|\rho|^2)^{-1}<\infty$. Under RH the series for $A(t)$
+is bounded absolutely by a constant times $t^{3/2}$. Integrating by parts
+and then integrating that series term by term gives
+\[
+\begin{aligned}
+ -\int_x^\infty (\psi_M(t)-t)t^{-2}\,dt
+ &=\frac{A(x)}{x^2}-2\int_x^\infty\frac{A(t)}{t^3}\,dt\\
+ &=\sum_\rho\frac{x^{\rho-1}}{\rho(1-\rho)}
+     +O_M\!\left(\frac{\log x}{x}\right).
+\end{aligned}
+\]
+Indeed the coefficient of $x^{\rho-1}$ on the first line is
+$-\bigl(1-2/(1-\rho)\bigr)/(\rho(\rho+1))$.
+
+For unramified $p$ with Frobenius $g$, the coefficient of $p^j$ in
+$\psi_M/n$ is $\log p$ when $g^j=1$, and zero otherwise. This follows
+by counting the $n/f$ primes above $p$, each of norm $p^f$, for
+$f=\operatorname{ord}(g)$. The $j=1$ terms give $\theta$. The $j=2$
+terms sum to $b_M\sqrt{t}+o_M(\sqrt{t})$ by the Chebotarev density theorem
+and partial summation. The terms $j\ge3$ contribute
+$O(t^{1/3}\log t)$, since $\sum_{p\le y}\log p=O(y)$ and
+$j\le\log_2 t$. The finitely many ramified primes contribute $O_M(\log t)$.
+Consequently
+\[
+ \sqrt{x}\,R_M(x)=
+  2b_M+\frac1n\sum_\rho\frac{e^{i\gamma\log x}}{1/4+\gamma^2}+o_M(1).
+\]
+Here $2b_M$ comes from integrating $b_M\sqrt t/t^2$ from $x$ to
+infinity, and the sum is real by conjugation. The triangle inequality
+gives the claimed upper endpoint. To attain it in the limit, truncate the
+absolutely convergent series and apply simultaneous Dirichlet approximation
+to the finitely many numbers $\gamma/(2\pi)$. There are arbitrarily large
+integers $k$ with every $e^{i\gamma k}$ as close to $1$ as desired
+(exact periodicity also suffices). Put $x=e^k$ and let the tail bound
+tend to zero. This requires no independence assumption on the ordinates.
+If the limsup were bounded above while RH failed, the resulting eventual
+one-sided $O_M(x^{-1/2})$ bound would contradict the one-sided criterion.
+\hfill$\square$
+
+\smallskip\noindent\emph{A cyclotomic specialization.}
+For $M=\mathbb Q(\zeta_q)$ the counted primes, up to finitely many
+exceptions, are $p\equiv1\pmod q$. Write
+$C(q,1)=\#\{a\in(\mathbb Z/q\mathbb Z)^\times:a^2=1\}$.
+Centering separately absorbs the constant from any omitted primes.
+For the first Mertens error in this residue class
+\[
+ E_1(t;q,1)=\sum_{p\le t,\,p\equiv1\,(q)}\frac{\log p}{p}
+           -\frac{\log t}{\varphi(q)}-e_{q,1},
+ \qquad \lim_{t\to\infty}E_1(t;q,1)=0,
+\]
+integration gives $x^{-1}\int_2^x E_1(t;q,1)\,dt=R_M(x)+O_q(1/x)$.
+The sharp limsup of $x^{-1/2}\int_2^x E_1(t;q,1)\,dt$ is therefore
+$(2C(q,1)+\sum_\rho(1/4+\gamma^2)^{-1})/\varphi(q)$ for every $q$.
+\href{https://doi.org/10.1007/s40993-025-00640-y}{Tianyu Zhao (2025)},
+Theorem~4 and Section~7, treats residue-class versions of these mean errors
+and gives their explicit formula. For the identity residue class the
+upper endpoint follows with no linear-independence hypothesis, since every
+character equals one there. Zhao also gives the exact rational-prime case
+$M=\mathbb Q$. The proof above extends this calculation to arbitrary finite
+Galois extensions using a count of the elements whose square is the identity.
+
+\paragraph{A numerical value given by special functions.}
+For $M=\Q(i)$ let $\beta(s)=L(s,\chi_{-4})$, the Dirichlet beta function. The limit superior for the centered sum over $p\equiv1\pmod4$ is
+\[
+       3+\frac{\beta'(1)}{\beta(1)}-\log\pi
+        =2.10087969891685\ldots .
+\]
+Indeed $n=2$, $b_M=1$, and the completed entire function is proportional to
+$\xi_M(s)=s(s-1)4^{s/2}(2\pi)^{-s}\Gamma(s)\zeta(s)\beta(s)$.
+The Hadamard product and the symmetry around $1/2$ give
+$\sum_\rho[\rho(1-\rho)]^{-1}=\xi'_M(1)/\xi_M(1)-\xi'_M(0)/\xi_M(0)=2\xi'_M(1)/\xi_M(1)$.
+Evaluating the logarithmic derivative at 1 cancels the Euler constants from $\Gamma(s)$ and $(s-1)\zeta(s)$. The exact formula above follows. The displayed decimal illustrates it.
+
+
+\section{Applications and further questions}
+
+% riemann95-paragraph
+\paragraph{A 95-state machine runs forever.}
+Let $M$ be the explicitly tabulated machine \texttt{riemann95} in
+\href{https://github.com/google-deepmind/cryptids/tree/30d3f611b16faeb13f4d8281204253d36e4fae01}{the Cryptids repository}.
+It has 95 working states, two tape symbols and one tape extending in both directions.
+It starts in state zero on the all-blank tape and halts on a missing transition.
+Its \href{https://github.com/google-deepmind/cryptids/blob/30d3f611b16faeb13f4d8281204253d36e4fae01/Cryptids/Semantics/Riemann95.lean}{correctness theorem}
+states, with no hypotheses, that $M$ halts exactly when Mathlib's Riemann hypothesis is false.
+Consequently $M$ runs forever: a finite halting execution would give a negation of the very proposition proved by \texttt{riemannHypothesis}.
+The two repositories pin Lean 4.35.0-rc4 and 4.35.0 respectively; the Mathlib source file defining that proposition is byte-identical at both pins. The enclosed \texttt{Riemann95Transfer.lean} gives the composition as a source-level example; a joint build was not performed.
+
+
+
+\paragraph{What blocks a primitive-root proof?}
+Hooley's conditional proof of Artin's conjecture for the fixed base 2 involves the Dedekind zeta functions of $\Q(\zeta_k,2^{1/k})$ for squarefree $k$. Already $k=3$ requires a nonabelian field. The test above isolates that first genuinely different input, and the density argument explains why a fixed collection of congruence classes cannot specify its splitting primes. Proving the tests individually for prime $\ell$ would still leave the composite squarefree fields and the uniform estimates needed in the sieve. \href{https://doi.org/10.1515/crll.1967.225.209}{Hooley, On Artin's conjecture}.
+
+\paragraph{An internal cyclotomic result worth distinguishing.}
+\src{Lib/Cyclotomic/OddSha}{\texttt{OddSha.lean}, lines 645--653}, gives one positive integer $A\le 2^{4(N+t+3)^{27}}h_E$ for a fixed CM subfield $E$ of $\Q(\mu_N)$ and cutoff $t$. For every admissible coefficient ring $\mathcal O$ over $\mathbb Z_\ell$, every $e<t$ and every $n$, the length of the repository's odd cocycle module is at most $v_{\mathcal O}(A)$. In particular those modules all vanish for $\ell\nmid A$. The statement concerns an explicitly defined model of cocycles with local conditions. Identifying it with a standard Tate--Shafarevich group requires a comparison theorem. Its quantifiers fix $E,N,t$ before varying $\ell$. Vandiver's conjecture varies the cyclotomic field with $\ell$ and asks for vanishing at that very prime. Both the comparison and that diagonal control would be substantive further steps.
+
+\paragraph{Two focused research questions.}
+For $n$ outside Euler's list let $b(n)$ be the smallest $x+y$ among its strictly increasing representations. Can the uniform upper bound $O((\log n)^2)$ be lowered while retaining an explicit algorithm? The prime-input construction forces order at least $\log n\,\log\log n$ on a sequence. On squarefree inputs $n\equiv1,2\pmod4$ the minimum eventually equals the least odd splitting prime of $\Q(\sqrt{-n})$. For the nonabelian problem, can a height or divisibility calculation be found whose prime contribution detects cubic residuacity of 2 among $p\equiv1\pmod3$? Such a calculation with the sign and exponent of the dyadic test would settle the corresponding splitting-field RH. Producing the calculation is the open step.
+
+\paragraph{Scope of the evidence.}
+The archive contains the human proofs, exact finite checks and their outputs, source fingerprints and reproduction commands. The finite classifications rely on the named published results. The abelian enumeration, the prime-window refinement, the one-sided field criterion and its endpoint calculation are deductions worked out here. The comparison to Zhao is specific to his upper bound in the identity class. Priority for these formulations has not been established.
+\end{document}

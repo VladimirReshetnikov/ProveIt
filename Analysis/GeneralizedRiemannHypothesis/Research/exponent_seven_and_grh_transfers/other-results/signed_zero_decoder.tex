@@ -1,0 +1,204 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.84in]{geometry}\usepackage{amsmath,amssymb,amsthm,microtype,hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue}
+\newtheorem{theorem}{Theorem}\newtheorem{lemma}[theorem]{Lemma}
+\title{Recovering the modulus and quadratic twist\\from one finite band of signed zeros}
+\author{Research note on the Dirichlet GRH development}\date{}
+\begin{document}\maketitle
+\begin{abstract}
+The signed zero multiplicities in the Lean proof forget the names of the
+characters and allow cancellations at common zeros. An earlier ProveIt note
+recovered the parameters from limiting high-band data and asked for a
+certified stopping rule. We give one for the lattice parameters, with
+explicit constants and an error model. Its conductor bound is inferred from
+the same band used for reconstruction. The estimates prioritize certification over numerical efficiency.
+\end{abstract}
+\section{Data and conclusion}
+Suppose $18480\mid q$ and $d$ is a positive prime with
+$d\equiv q/2-1\pmod q$. Then $(d,q)=1$, $8\mid q$, $d\equiv7\pmod8$,
+and $q\le 2(d+1)$. Let $h=\varphi(q)$, $\eta(n)=(n/d)$, and let
+$\chi^*$ denote the primitive character inducing $\chi$. For
+$\rho=1/2+i\gamma$ define
+\[
+ m(\gamma)=h^{-1}\sum_{\chi\bmod q}
+ \bigl(\operatorname{ord}_\rho L(s,\chi^*)-
+       \operatorname{ord}_\rho L(s,\chi^*\eta)\bigr).
+\]
+These are the signed orders in the residue calculation for the Lean
+development's smoothed prime remainder \cite{lean}. Dirichlet GRH
+accounts for all the nontrivial zeros. Both signs of the ordinate are used.
+\begin{theorem}
+From a sufficiently high band $T\le |\gamma|\le 2T$ of the aggregate
+signed data one can recover $(q,d)$ with a computable certificate.
+No upper bound for $q$ or $d$ is part of the input. On an insufficient
+band the procedure may return \emph{undetermined}. If the band measurements
+defined below have certified absolute errors $e_u(T)$ tending to zero for
+each fixed observation site $u$, the procedure succeeds on every
+sufficiently high band.
+\end{theorem}
+A single accepted band certifies both integers. This assumes a genuine packet
+in the stated parameter class. Authenticating a putative spectrum is a separate problem.
+\section{Identities and a conductor bound}
+Write
+\[
+ F(t)=\sum_\gamma\frac{m(\gamma)e^{i\gamma t}}{1/4+\gamma^2},
+ \qquad \mu=(D^2-1/4)F.
+\]
+The series for $F$ is absolutely convergent. As a distribution, $\mu$
+has an atom of mass $J(0)=\log d$, smooth density
+$-2\cosh(t/2)/h$, and remaining atoms among $\pm\log(p^k)$.
+At a prime $p\nmid qd$ its mass is
+\begin{equation}
+ J(\log p)=\frac{\log p}{\sqrt p}(1-\eta(p))\mathbf1_{p\equiv1\bmod q}.
+ \label{eq:mass}
+\end{equation}
+These identities were proved in the archived \texttt{cusp.tex} \cite{incoming}.
+Apply the primitive Dirichlet explicit formula to both
+families \cite{chirre}. The gamma terms cancel because the two families
+have identical parity counts. The conductor is multiplied by $d$ in every
+twist. Only the untwisted principal character produces poles, contributing
+the density above after division by $h$. At unramified prime powers average
+the character values by orthogonality and multiply by $1-\eta(p^k)$.
+At ramified primes the coefficients change but the support
+still consists of logarithms of prime powers. The sign follows from
+$\mu=-\sum m(\gamma)e^{i\gamma t}$.
+
+\begin{lemma}
+For this entire parameter class, $\|F\|_\infty\le 9\log d+60$.
+\end{lemma}
+\begin{proof}
+For a primitive character of conductor $f$, let $\Xi$ be its completed
+function, with an additional factor $s(s-1)$ in the zeta case. Its
+Hadamard logarithmic derivative and functional equation give
+\[
+ \sum_\rho \Re\frac1{2-\rho}=\Re\frac{\Xi'}{\Xi}(2)
+ \le \tfrac12\log f+4.
+\]
+Indeed the constant in the real part of the Hadamard logarithmic
+derivative vanishes by evaluating at a regular point on the critical
+line, where both real parts vanish by GRH and reflection. At $2$ the
+gamma contribution is at most $1/2$, since the digamma function is
+increasing and $\psi(2)<1$. The logarithmic Euler derivative has absolute
+value at most $\sum_{n\ge2}(\log n)/n^2<2$ by the integral test, and the
+zeta correction is $1+1/2$. Discard $-\tfrac12\log\pi$. On GRH,
+$(1/4+\gamma^2)^{-1}\le 6\Re(2-\rho)^{-1}$. Adding the two families
+therefore gives $\|F\|_\infty\le6\log q+3\log d+48$.
+Now $q\le 2(d+1)\le4d$.
+\end{proof}
+
+\section{A computable bound from a high band}
+Use $\widehat g(s)=\int g(t)e^{-ist}\,dt$. Set
+\[
+ g(t)=\cos(3t/2)\bigg(\frac{\sin(t/16)}{t/16}\bigg)^8,\qquad g(0)=1.
+\]
+Its transform is supported on $[-2,-1]\cup[1,2]$. Each sinc factor
+has frequency support $[-1/16,1/16]$. The transform is an explicit
+piecewise polynomial, obtained by eight convolutions of interval
+indicators followed by two translations. Define
+\[
+ A_T(u)=-T^{-1}\sum_{T\le|\gamma|\le2T}m(\gamma)
+                \widehat g(\gamma/T)e^{i\gamma u}.
+\]
+It equals $\langle\mu,g(T(\cdot-u))\rangle$, with the pairing defined as
+$\int F(t)(D^2-1/4)[g(T(t-u))]\,dt$.
+Termwise integration follows from absolute uniform convergence of $F$.
+
+Choose $0<r\le1$ such that $(u-2r,u+2r)$ contains no potential atom except
+possibly $u$. At zero use $r=\log(2)/3$. At $u=\log p$ take one third
+of $\min\{\log(p/(p-1)),\log((p+1)/p)\}$. For $Tr\ge1$, put
+\begin{align*}
+ B_u(T)&=\frac{512}{7T}\cosh\big((|u|+2r)/2\big),\\
+ K_u(T)&=\frac{2\cdot16^8}{7r^7 T^8}
+        \left(108T^2+40T/r+6/r^2+1/4\right).
+\end{align*}
+Then
+\begin{equation}
+ |A_T(u)-J(u)|\le B_u(T)+(9\log d+60)K_u(T).
+ \label{eq:error}
+\end{equation}
+To verify the constants, multiply the test by a cutoff equal to one on
+$|t-u|\le r$, zero on $|t-u|\ge2r$, and between these use
+$1-10z^3+15z^4-6z^5$ at $z=|t-u|/r-1$.
+Its first two derivative bounds are $2/r,6/r^2$. On the local part only
+the selected mass and the density contribute. Since
+$\int|g|\le2(16+16/7)=256/7$, the latter costs at most $B_u(T)$.
+For the complementary part integrate by parts onto the test. Writing
+$g(t)=16^8t^{-8}\cos(3t/2)\sin^8(t/16)$ shows that for $|t|\ge1$
+its derivatives of orders $0,1,2$ are bounded by
+$16^8|t|^{-8}$ times $1,10,108$, respectively. The trigonometric
+factor has frequency at most $2$ and total absolute exponential coefficients
+at most $1$. The product rule and
+$\int_{|t-u|\ge r}|t-u|^{-8}dt=2/(7r^7)$ give $K_u$.
+The cutoff is $C^2$, which suffices by approximation. The integrable
+differentiated tests justify passage to the full real line.
+
+\section{Certification and noise}
+Let $a$ be the real part of the observed $A_T(0)$ and write $K=K_0(T)$,
+$D=B_0(T)+60K+e_0(T)$. When $9K<1$, \eqref{eq:error} confines $\log d$ to
+\[
+ \left[\frac{a-D}{1+9K},\frac{a+D}{1-9K}\right].
+\]
+Use outward-rounded arithmetic and test the primes in the exponential of
+this interval. If there is a unique eligible prime, it is $d$. Otherwise
+decline this band. For fixed true $d$ the interval shrinks to $\log d$.
+List the divisors $q'$ of $2(d+1)$ with $18480\mid q'$ and
+$d\equiv q'/2-1\pmod {q'}$.
+
+For every pair of distinct candidate moduli, find a prime $p$ coprime to
+all candidates and $d$, with $\eta(p)=-1$, for which their
+indicators in \eqref{eq:mass} differ. Enumerating primes terminates.
+Indeed choose a prime power $\ell^a$ occurring to a higher exponent in one
+modulus than in the other. Modulo the full least common multiple of the
+candidates choose $1$ at all other components and a unit congruent to $1$
+modulo the lower $\ell$-power but distinct from $1$ modulo $\ell^a$.
+If the lower power is $1$, then $\ell$ is odd, since $8$ divides each
+candidate. Set a nonresidue at $d$ independently. Dirichlet's theorem
+supplies infinitely many primes in this class.
+For each witness intersect the two possible masses, $0$ and
+$2\log p/\sqrt p$, with the certified interval around the observed
+$\Re A_T(\log p)$ from \eqref{eq:error} plus measurement error. Retain
+compatible moduli. Each witness eventually separates its pair because $p$
+is fixed and $B_u,K_u,e_u$ tend to zero. A surviving singleton is certified.
+
+The errors are errors in individual band readings. For example, let
+$E_T$ bound the total absolute missing, inserted, or altered weight and
+let $\delta_T$ bound the displacement of matched ordinates. Use records
+in a padded band so every entry that can cross an endpoint is included.
+If $M_T$ bounds the absolute weight of the matched entries, a valid error is
+\[
+ e_u(T)=\frac{\|\widehat g\|_\infty E_T}{T}
+ +\frac{M_T\delta_T}{T}
+ \left(|u|\|\widehat g\|_\infty+\|\widehat g'\|_\infty/T\right)
+ +e_{\rm arithmetic}.
+\]
+Both norms can be bounded from the explicit spline. For each fixed packet
+$M_T=O_{q,d}(T\log(2+T))$ by zero counting. Thus
+$E_T=o(T)$ and $\delta_T=o(1/\log T)$ suffice asymptotically for a
+fixed-width padding when $\delta_T\le1$, if the
+arithmetic error tends to zero. For actual certificates $M_T$ can be
+bounded by the observed absolute weight plus the certified weight budget.
+The earlier single-band proof already establishes limiting recovery
+and robustness. The affine bound in \eqref{eq:error} supplies the
+test for accepting a band before either parameter is known.
+\paragraph{A finite example.}
+Take $d=46199$ and either $q=18480$ or $q=92400$. A genuine band at
+$T=10^{12}$ suffices, even with absolute reading error $10^{-7}$ at each
+of the two sites. Use $r=1/8$ at zero and $r=1/(4p)$ at $p=110881$.
+The origin interval contains only $d$, which leaves exactly these two
+candidate moduli. The witness $p$ is an inert prime, with $p-1=6\cdot18480$.
+The two possible masses differ by more than $2/334$. The accompanying
+\texttt{check\_decoder\_example.py} verifies the error margins by rational
+arithmetic. This is an a priori guarantee for either packet; no zero
+ordinate at height $10^{12}$ was computed.
+\begin{thebibliography}{9}
+\bibitem{lean} L. Sernau and collaborators,
+\href{https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207}{\emph{GRH for Dirichlet $L$-functions, in Lean 4}},
+especially \texttt{grh/src/New/Reduction/Zeros}.
+\bibitem{incoming} V. Reshetnikov, ProveIt incoming collection,
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/d31039a48d963692e5a5176f47b6603fc9e9d9cf/docs/incoming/dirichlet-grh-research.zip}{\texttt{dirichlet-grh-research.zip}},
+\texttt{critical-line/cusp.tex}, \texttt{band.tex}, and research question 3
+in \texttt{critical-line.tex}.
+\bibitem{chirre} A. Chirre, V. J. Pereira J\'unior and D. de Laat,
+\href{https://doi.org/10.1090/mcom/3638}{Primes in arithmetic progressions
+and semidefinite programming}, Math. Comp. 90 (2021), section 2.1.
+\end{thebibliography}\end{document}

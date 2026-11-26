@@ -1,0 +1,77 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=0.95in,top=0.90in,bottom=0.92in]{geometry}
+\usepackage{booktabs,array,longtable,microtype,xcolor,fancyhdr,enumitem}
+\usepackage[colorlinks=true,linkcolor=teal!65!black,citecolor=teal!65!black,urlcolor=teal!65!black]{hyperref}
+\usepackage{xurl}
+\definecolor{deepblue}{HTML}{183E50}
+\pagestyle{fancy}\fancyhf{}
+\lhead{\small\color{deepblue}Beyond Dirichlet GRH}
+\rhead{\small Mathematical research report}
+\cfoot{\small\thepage}\setlength{\headheight}{14pt}
+\setlength{\parskip}{3pt}\setlength{\parindent}{1.1em}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\allowdisplaybreaks
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Q}{\mathbb Q}\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}\newcommand{\R}{\mathbb R}
+\newcommand{\src}[2]{\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/#1}{#2}}
+\newcommand{\repo}[2]{\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/#1}{#2}}
+\newcommand{\incoming}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/d80526e4212e80f52046395005562b12d900dc37/docs/incoming/#1}{#2}}
+\hypersetup{pdftitle={Beyond Dirichlet GRH: sharp specialization, graph towers, and a certified density gap},pdfauthor={Research analysis prepared for Vladimir Reshetnikov},pdfsubject={Methods from grh-lean and extensions of prior ProveIt research}}
+\begin{document}
+\thispagestyle{plain}
+\noindent{\small\sffamily\color{deepblue}RESEARCH REPORT\hfill 26 NOVEMBER 2026}
+\vspace{0.55cm}
+\begin{flushleft}
+{\Huge\bfseries Beyond Dirichlet GRH}\\[0.22cm]
+{\Large Sharp specialization, graph towers,\\[2pt]
+and a certified density gap}\\[0.25cm]
+{Prepared for Vladimir Reshetnikov}
+\end{flushleft}
+\vspace{0.1cm}\hrule\vspace{0.25cm}
+\noindent\textbf{Abstract.}
+We analyze the methods of \texttt{lsernau/grh-lean} at a pinned revision,
+compare all 52 archives in the current ProveIt incoming snapshot, and develop
+three complete extensions beyond standard consequences of RH and Dirichlet GRH.
+First, we strengthen an incoming solution of McNew's density-separation question to
+$\beta-\alpha>0.0001351$, with two exact finite verifiers and a replayable certificate.
+Second, over $K=\Q_p((pu)^{1/p})$ for every odd prime $p$ and every $p$-adic unit $u$,
+we determine the exact simultaneous torsion-specialization obstruction at every
+primitive $p$-power order. Third, for two-dimensional Cayley graph towers with an
+even number $m$ of steps and $p>2m$, $p\equiv1\pmod{2m}$, we prove the exact maximum
+$m(p+1+m)(p^n-1)/(p-1)-2n$ for the $p$-adic valuation of the spanning-tree count
+at every layer. The latter two results extend explicitly unresolved questions in
+the supplied reports. The source audit also corrects an earlier overly broad
+finite-precision objection: the repository's twisting theorem controls the full
+divisible Selmer module. A new proof of nonabelian RH, BSD, Vandiver, or a new
+algebraic $K$-group vanishing statement is not obtained; we specify the arithmetic
+estimates still needed for those transfers.
+
+\vspace{0.15cm}
+\noindent\textbf{Status of the mathematics.}
+The new statements here have human-readable proofs and exact computational checks.
+They are not newly formalized or kernel-checked in Lean. The full upstream Lean
+build was not repeated. Novelty claims are relative to the inspected incoming
+corpus; historical publication priority has not been established.
+\clearpage
+\tableofcontents
+\clearpage
+\input{sections/assessment}
+\input{sections/source_architecture}
+\input{sections/density}
+\clearpage
+\input{sections/false_tate}
+\input{sections/graph_extremum}
+\input{sections/arithmetic_targets}
+\input{sections/verification}
+\begingroup\small
+\input{sections/references}
+\endgroup
+\end{document}

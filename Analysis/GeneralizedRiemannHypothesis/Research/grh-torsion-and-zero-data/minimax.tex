@@ -1,0 +1,102 @@
+\section{The exact minimum budget for a counterexample}
+\label{sec:exact}
+Fix any prime $p$, depth $\rho=1$, and tolerance $\epsilon\ge0$. A family
+\emph{blocks} the first $H$ shells if every allowed root of unity in those shells
+has total positive excess strictly greater than $\epsilon$. Write
+$C_p(\epsilon,H)$ for the least witness budget of such a family, allowing
+arbitrarily many integral polynomials of arbitrary degrees over
+$\overline{\mathbb Q}_p$. The minimum is attained. The following formula
+computes it without searching over polynomials or coefficient fields.
+
+\begin{theorem}\label{th:cost}
+With $e_j=\varphi(p^j)$ define
+\[
+ U_h(m)=
+ \begin{cases}
+ \displaystyle\frac{1}{e_h}\sum_{j=1}^{h-1}e_j
+                  \left\lfloor\frac{m}{e_j}\right\rfloor,&0\le m<e_h,\\[5pt]
+ +\infty,& m\ge e_h .
+ \end{cases}
+\]
+Let $m_h$ be the least nonnegative integer with $U_h(m_h)>\epsilon$. Then
+\[
+ \boxed{\displaystyle C_p(\epsilon,H)=\sum_{h=1}^H\frac{m_h}{e_h}.}
+\]
+Thus $B<C_p(\epsilon,H)$ guarantees success somewhere in shells $1$ through $H$.
+At equality an explicit counterexample already exists with every witness at zero.
+The statement also holds for a single polynomial if the excess in shell $h$ is
+measured over its moving Gauss valuation $G_{r_h}$ and its budget is $G_1$.
+\end{theorem}
+
+\subsection*{A single shell}
+Set $z_a=\xi^a-1$ for a fixed primitive $p^h$-th root $\xi$ and let $a$ run through
+the units modulo $p^h$. Given $m$ algebraic roots $\alpha$ of valuation $r_h$,
+counted with multiplicity, consider
+\[
+ \min_{a}\sum_\alpha \big(v(z_a-\alpha)-r_h\big).
+\]
+Its largest possible value is $U_h(m)$. To see the upper bound, replace each
+$\alpha$ by a $z_b$ maximizing $v(z_b-\alpha)$ on this finite set.
+For every $a$ the ultrametric inequality gives
+$v(z_a-z_b)\ge\min\{v(z_a-\alpha),v(z_b-\alpha)\}=v(z_a-\alpha)$.
+This replacement can only raise the minimum. We may therefore reason about a
+multiset of $m$ unit residues $b$.
+
+For a given $a$ write $N_j(a)$ for the number of these residues congruent to $a$
+modulo $p^j$. If $a$ itself is unoccupied, the order of $\xi^{a-b}$ gives
+\[
+ v(z_a-z_b)=r_h p^{v_p(a-b)},\qquad
+ \sum_b(v(z_a-z_b)-r_h)=r_h\sum_{j=1}^{h-1} e_j N_j(a).
+\]
+The second equality expands $p^t-1=\sum_{j=1}^t(p-1)p^{j-1}$.
+Choose a least occupied unit class modulo $p$, then a least occupied child
+modulo $p^2$, and continue. The first choice has at most $\lfloor m/(p-1)\rfloor$
+occupants, and at each subsequent step one divides by $p$ and rounds down.
+Consequently $N_j(a)\le\lfloor m/e_j\rfloor$ at every depth. If $m<e_h$, the
+terminal residue is unoccupied. This proves the upper bound simultaneously at
+all depths.
+
+For the reverse bound, place the roots at the first $m$ positive unit exponents
+in increasing order, omitting multiples of $p$. In every block of $e_j$
+successive unit exponents, each unit class modulo $p^j$ occurs once. Thus every
+$N_j(a)\ge\lfloor m/e_j\rfloor$. Occupied leaves give infinite valuation and
+the other leaves give at least the required sum. For $m\ge e_h$, putting a root
+at every leaf makes the minimum infinite. This includes the shell of order two
+and the case $m=0$ by the empty-sum convention. The one-shell argument is a
+cyclotomic instance of the fixed-divisor extremal principle underlying
+Bhargava's $P$-orderings \cite{bhargava}. The global budget is a separate constraint.
+
+\subsection*{Passing from one shell to every shell}
+For a general family, take all roots of all the $g_i$, with multiplicities, and
+let $M_h$ count the ones with valuation $r_h$. Factorization, or
+multiplicativity of the Gauss valuation, yields
+\[
+ \sum_{h=1}^H M_h r_h\ \le\ \sum_i\big(G_1(g_i)-G_0(g_i)\big)
+ \ \le\ \sum_i v(g_i(x_i)).
+\]
+In fact a root of valuation $w$ contributes $\min(1,w)-\min(0,w)$ to the
+middle expression, which also handles roots of negative valuation, and
+all $G_0(g_i)$ are nonnegative. For a primitive point in shell $h$ we have
+$t_i\ge G_1(g_i)\ge G_{r_h}(g_i)$. The total positive excess is bounded by
+$\sum_i (v(g_i(z_a))-G_{r_h}(g_i))$. In that sum every root with valuation
+different from $r_h$ contributes zero, by the strict ultrametric equality.
+The single-shell upper bound shows that blocking requires $M_h\ge m_h$.
+Summing the charges proves the lower bound on $C_p$.
+
+For equality, use one monic polynomial per shell, with roots at the first
+$m_h$ ordered unit exponents as above. Its value at zero has valuation exactly
+$m_hr_h$. On its designated shell its excess is at least $U_h(m_h)>\epsilon$.
+The positive part prevents any saving from the other polynomials from canceling
+this excess. All coefficients lie in $\mathbb Q_p(\zeta_{p^H})$. Multiplying
+the polynomials gives the corresponding attainment for the moving Gauss
+valuation, because its excess is additive and each summand is nonnegative.
+\hfill$\square$
+
+\paragraph{An exact contrasting case.}
+For coefficients in a finite unramified extension of $\mathbb Q_p$,
+the bound in the preceding section guarantees zero excess within the first
+$\lfloor B\rfloor+1$ shells. It is optimal for every finite tolerance.
+Indeed $\Phi_{p^h}(1+T)$ vanishes throughout shell $h$ and has value
+$p$ at zero. Taking one such polynomial per shell costs exactly $H$ for $H$
+shells. For unrestricted algebraic coefficients, subdividing the cost within
+one shell is precisely what the floor sums measure.

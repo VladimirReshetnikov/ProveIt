@@ -1,0 +1,49 @@
+\section{The genus field inside the value field of a CM newform}
+\label{sec:genus}
+
+After Theorem~2 of his paper, Martin observes that when a weight-two CM newform of trivial nebentypus has quadratic coefficient field $K$ and its imaginary quadratic CM field $E$ has class number two, $EK$ is the Hilbert class field of $E$. He obtains the equality from the field tables and singles out the lack of a non-computational proof. The following containment explains the equality, extends to every even weight, and removes the analytic hypothesis from his classification in coefficient degree two. The ramified-prime square-root identity in the proof has a weight-two antecedent in Yang's Lemma~3.3. Gonz\'alez's earlier treatment of the 83 quadratic pairs already identifies the weight-two fields, including the class-number-two case. The following argument provides an alternative proof. Its local sign uses the trivial nebentypus and works in every even weight. See \href{https://arxiv.org/pdf/math/0301306}{Yang, \emph{On CM abelian varieties over imaginary quadratic fields}}. See \href{https://arxiv.org/html/2509.24119v2}{Martin, introduction, Lemma~2.2 and Sections~5--7}.
+
+\paragraph{Theorem.} Let $f$ be a normalized CM newform of trivial nebentypus and even weight $k\ge2$, with imaginary quadratic CM field $E$, coefficient field $K$, and Hecke-character value field $L$. Write $D<0$ for the fundamental discriminant of $E$ and $t$ for the number of distinct primes dividing $D$. The genus field $G_E$ of $E$ satisfies
+\[
+        G_E\subseteq L=EK,\qquad G_E\cap\mathbb R\subseteq K,
+        \qquad 2^{t-1}\mid[K:\mathbb Q].
+\]
+In particular, if $h_E=[K:\mathbb Q]=2$, then $EK=H_E$, the Hilbert class field, and $K$ has discriminant equal to the positive signed prime-discriminant factor of $D$.
+
+\paragraph{The sign at an odd ramified prime.}
+Write $w=k-1$, which is odd. The algebraic Hecke character $\psi$ attached to $f$ has infinity type $(w,0)$ and conductor $\mathfrak f$. Its finite character $\eta:(\mathcal O_E/\mathfrak f)^\times\to\mathbb C^\times$ satisfies
+\[
+       \psi((a))=\eta(a)a^w\quad (a\in E^\times\text{ a unit at }\mathfrak f).
+\]
+The restriction of $\eta$ to rational units is the primitive quadratic character $\chi_D$ away from the moduli, by the formula for the nebentypus of $f_\psi$. Its finite image $U$ lies in $L$ by the displayed identity, since $E\subset L$ and each residue unit has a lift. Group the local components of $\eta$ over each rational prime $v$ into $\eta_v$. Their restrictions to diagonal rational units are exactly the corresponding local components of $\chi_D$. This follows by factoring the equality of Dirichlet characters into prime-power components using the Chinese remainder theorem. The assertion allows $\mathfrak f$ to be asymmetric over a split prime.
+
+Fix any odd prime $s\mid D$ and let $P_s^2=(s)$ be its ramified prime ideal. By weak approximation choose $x\in E^\times$ such that $\mathfrak a=xP_s$ is prime to $\mathfrak f$. Then $\mathfrak a^2=(\theta)$ for $\theta=sx^2$. The defining formula for $\eta$ gives
+\begin{equation}
+      b^2=s\eta(\theta),\qquad
+      b=\frac{\psi(\mathfrak a)}{x^w s^{(w-1)/2}}\in L.   \label{eq:genus-square}
+\end{equation}
+We now compute $\eta(\theta)$ in $U/U^2$. At a prime $v\ne s$ in the conductor, $\theta$ equals $s$ times a local unit square at each relevant place. At $s$ use instead
+\[
+                 \theta=(D/s)(s x/\sqrt D)^2.
+\]
+Here $D/s$ is a rational local unit and the second factor is a local unit square. Put $e_s=(-1)^{(s-1)/2}$, $s^*=e_s s$, and $d'=D/s^*$. The factorization into primitive quadratic characters gives $\chi_D=\chi_{s^*}\chi_{d'}$ on common units, with coprime conductors. Away from $s$ the rational local components evaluated at $s$ multiply to $\chi_{d'}(s)=(\frac{d'}s)$. At $s$ the restriction to rational units is $(\frac{\cdot}s)$. Multiplying in $U/U^2$ yields
+\[
+     \eta(\theta)\equiv
+        \left(\frac{d'}s\right)\left(\frac{D/s}{s}\right)
+        =\left(\frac{e_s(d')^2}{s}\right)=e_s
+        \pmod {U^2}.
+\]
+All signs belong to $U$ since $\eta(-1)=-1$. Consequently there is a $u\in U\subset L$ with $\eta(\theta)=e_s u^2$. Equation~\eqref{eq:genus-square} gives $(b/u)^2=s^*$. We have proved $\sqrt{s^*}\in L$ for every odd prime $s\mid D$, without any restrictions on the conductor, the order of $\eta$, or the class of $P_s$.
+
+\paragraph{Recovering the genus field.}
+Gauss genus theory gives $G_E=\mathbb Q(\sqrt{d_1},\ldots,\sqrt{d_t})$, where $D=\prod_j d_j$ is the factorization into signed prime discriminants, and $[G_E:E]=2^{t-1}$. Equivalently $\operatorname{Gal}(G_E/E)$ is the class group modulo squares. The odd factors are the $s^*$ just obtained. If a dyadic factor $-4,8,$ or $-8$ occurs, its square root also belongs to $L$ by dividing $\sqrt D\in E$ by the product of the odd-factor square roots. This proves $G_E\subseteq L$. Martin's Lemma~2.2 identifies $L=EK$, and $K$ is totally real. Thus $L\cap\mathbb R=K$ and $[L:E]=[K:\mathbb Q]$, giving both remaining conclusions. For $h_E=2$ the class group has trivial subgroup of squares, so $G_E=H_E$ has degree two over $E$. When $[K:\mathbb Q]=2$, containment is therefore equality. The two signed prime discriminants have opposite signs; the positive one defines the unique real quadratic subfield. For genus theory see \href{https://www.math.purdue.edu/~jlipman/MA598/Lemmermeyer-principal\%20genus.pdf}{Lemmermeyer, \emph{The development of the principal genus theorem}}. \hfill$\square$
+
+\paragraph{Corollary in weight two.}
+Suppose $k=2$ and $[K:\mathbb Q]=2$. Martin's Corollary~3.2 implies $\exp\operatorname{Cl}(E)\mid 2$. The class group hence equals its quotient by squares. By the theorem its order $2^{t-1}$ divides two. Thus $h_E$ is one or two. The unconditional classifications of imaginary quadratic fields of class numbers one and two provide exactly the possible base fields to check. Martin's local arguments and constructions for these fields now give the degree-two part of his Theorem~2 without ERH. Equivalently, the complete list of $K$ consists of the real quadratic fields with these 23 discriminants:
+\[
+\begin{gathered}
+ 5,8,12,13,17,21,24,28,29,33,37,41,\qquad\\[-2pt]
+ 44,57,61,76,89,129,172,201,268,489,652 .
+\end{gathered}
+\]
+The list and its existence proofs are Martin's Table~1.1 and Sections~5--7. The genus argument excludes any further exponent-two fields by their class-group rank. Earlier work gives another route in weight two: Yang's Theorem~3.1 implies $h_E\mid[K:\mathbb Q]$, and Gonz\'alez's Theorem~3.2 already classifies the 83 pairs of CM field and quadratic coefficient field when nebentypus is allowed to vary. These results predate Martin's list; we claim no priority for the weight-two quadratics. See \href{https://ems.press/content/serial-article-files/38349}{Gonz\'alez, \emph{Endomorphism algebras of CM modular abelian varieties}}. The finite positive constructions are independent of ERH, as are the specific class-number-one exclusions. This deduction concerns trivial nebentypus and degree two; Martin's cubic classification has a different exponent obstruction. For the class-number-two classification see \href{https://magma.maths.usyd.edu.au/~watkins/papers/smallcn.pdf}{Watkins, \emph{Class numbers of imaginary quadratic fields}}.

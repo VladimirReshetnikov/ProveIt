@@ -1,0 +1,84 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,booktabs,array,geometry,fancyhdr,xcolor,hyperref}
+\geometry{top=.88in,bottom=.86in,left=.94in,right=.94in}
+\definecolor{ink}{HTML}{18344A}
+\definecolor{linkcol}{HTML}{1D6172}
+\hypersetup{colorlinks=true,urlcolor=linkcol,linkcolor=linkcol,citecolor=linkcol,
+pdftitle={Sparse equations for singular moduli and the sign of weighted prime sums}}
+\urlstyle{same}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\color{ink}Sparse CM equations and weighted prime sums}
+\fancyhead[R]{\small\color{ink}Research note}
+\fancyfoot[C]{\small\thepage}
+\setlength{\emergencystretch}{2em}\raggedbottom
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newcommand{\upfile}[2]{\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/#1}{#2}}
+\begin{document}
+\thispagestyle{plain}
+\noindent{\small\color{linkcol}\scshape Analytic and algebraic number theory}\hfill{\small November 25, 2026}\par
+\vspace{.7em}
+\noindent{\fontsize{24}{28}\selectfont\bfseries\color{ink}Sparse equations for singular moduli\\ and the sign of weighted prime sums\par}
+\vspace{.6em}
+\noindent{\large Applications and extensions of the Dirichlet GRH development}\par
+\vspace{.7em}
+\begin{abstract}
+A singular modulus of degree at least four cannot satisfy a rational polynomial with four or fewer nonzero coefficients, of any degree. We prove this using the behavior of its conjugates at 7 and 13, elementary determinants, and an exhaustive finite certificate. The proof also closes all 79 residual cases in an earlier ProveIt report. A single-prime argument completes the published unconditional reductions of Riffaut's trinomial conjecture. The minimum support of a relation grows at least as $|\Delta|^{1/4-\epsilon}$ unconditionally, and at least as the square root of the class number using Dirichlet GRH.
+
+For two questions of Suzuki about prime powers, we prove a fixed-modulus sign reversal between $Q=138$ and $139$ and a lower logarithmic density exceeding $99.677\%$ for a negative unsmoothed error. For general fixed $Q\ge139$ the eventual sign in his equation (29) detects precisely a central Dirichlet zero of conductor at most $Q$. A separate application of localized averaging proves simultaneous convex balance of prime-power errors in every sufficiently large multiplicative interval. We distinguish the Lean theorems, published analytic inputs, and the new paper arguments with their finite checks.
+\end{abstract}
+
+\section{Which parts of the Lean proof transfer?}
+The \href{https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207}{examined revision} proves Mathlib's Riemann hypothesis and zero location for all Dirichlet characters over $\mathbb Q$. The readable edition's \upfile{grh/src/Statements.lean}{\texttt{Statements.lean}} imports Mathlib alone. Its \upfile{grh/src/Main.lean}{\texttt{Main.lean}} exports five results: ordinary RH, its explicit zeta-zero formulation, half-plane nonvanishing for every modulus $N\ge1$ and character $\chi$ (with the principal pole excepted), zero location in $0<\Re s<1$, and the primitive-character specialization. Central vanishing is allowed. The \upfile{grh/README.md}{upstream verification record} reports Lean 4.35.0, Mathlib \texttt{56a00585}, and the three axioms \texttt{propext}, \texttt{Classical.choice}, \texttt{Quot.sound}. The authors report kernel and independent-checker verification. Our inspection covers declarations and source identities. We have not independently rebuilt either complete Lean project or formalized the extensions in this paper.
+
+\paragraph{The arithmetic estimate.}
+In the notation of the \upfile{grh/GUIDE.md}{reading guide}, the proof compares two estimates for the same twisted lattice of automorphic forms. Short integral vectors from theta constructions and a spanning result from a second moment give one inequality. Determinants of chains of theta lifts give another. Their cancellation in \upfile{grh/src/New/Reduction/MainInequality.lean}{\texttt{star\_inequality}} bounds a remainder in
+\[
+ \sum_{\substack{n\le x\\n\equiv1\pmod q}}\Lambda(n)(1-\chi_K(n))
+            (1/n-1/x)-\frac{\log x}{\varphi(q)}-c_q.
+\]
+The choice of a chain of length comparable with $\sqrt x$ supplies a saving of its reciprocal. The \upfile{grh/src/New/Reduction/OneSidedBound.lean}{one-sided estimate} is combined with auxiliary quadratic twists and a Landau argument to exclude a putative zero. The twist matters because residues involving different $L$-functions can cancel. The selection of $K$, the theta data and the denominator estimates are family-specific. For a general nonabelian Artin or modular $L$-function, a suitable inequality with its Frobenius or Hecke coefficients would be an additional arithmetic theorem. We obtain no such zero-location assertion here.
+
+\paragraph{Two paths out of this argument.}
+First, observing what happens at each nonsplit prime is also fruitful for singular moduli. For this purpose a single prime where several conjugates have the same reduction can be decisive. This comes from CM reduction theory; the local matrix below is a generalized Vandermonde, distinct from the theta-lift determinant used upstream.
+Second, the \upfile{grh-compact/src/New/Endgame/OneSidedCriterion.lean}{compact edition's endgame} explicitly points to Suzuki's study of signs. There the Mellin transform turns zero multiplicity into a pole residue, and high Laplace moments localize a positive average in a long window. We use the residue at the center to compute a sign, and generalize localization to vector-valued errors. These uses have different dependencies: the CM classification survives removal of the analytic input, while the sign and convex-hull theorems use its zero-location conclusion.
+
+\paragraph{Starting point in ProveIt.}
+We compared the \href{https://github.com/VladimirReshetnikov/ProveIt/tree/c59bde1a0f52eee7a7a8dc6b326072f9b71f76a6/docs/incoming}{incoming reports at \texttt{c59bde1a}}. They investigate, among other topics, CM newform coefficient fields, abelian-field classifications, nonabelian one-sided zero tests, and several smoothed prime races. The direct predecessor for Sections~2--3 is \href{https://github.com/VladimirReshetnikov/ProveIt/blob/c59bde1a0f52eee7a7a8dc6b326072f9b71f76a6/docs/incoming/grh_cm_prime_applications.zip}{\texttt{grh\_cm\_prime\_applications.zip}}. It supplied the residual list, the archimedean separation idea and the prior asymptotic benchmark. In the present proof the exhaustive reduction, disk certificates, and growing-support arguments can be checked independently of that archive. We make no claim to bibliographic priority for the new formulations.
+\input{cm}
+\input{quintic}
+\input{growth}
+\input{suzuki}
+\input{suzuki_fixed_q}
+\input{balancing}
+
+\section{Further research questions}
+\begin{enumerate}
+\item Does every singular modulus of degree at least five require at least six terms? The full four-term result and the five-root certificates at 28 individual discriminants leave a concrete test case at $\Delta=-131$. More generally, can one certify $s(\Delta)$ from a combination of disks at different places?
+\item Can the lower bound $s(\Delta)\gg\sqrt{h(\Delta)}$ be improved to a larger power of $h$? The proof balances the number of distinct residues against the size of a disk on which sparse powers are independent.
+\item Does the ordinary logarithmic density in Suzuki's unsmoothed question exist at the specified threshold, and what is its value? The uniform bounds in Section~\ref{sec:suzuki-density} leave room for a small positive exceptional density.
+\item For Suzuki's equation (29), what is the sign in the intermediate regime $Q\to\infty$ with $Q=o(x)$? For (30), can one replace the finite-logarithmic-measure exceptional set by an eventual pointwise statement at fixed $Q$?
+\item Can the convex-hull radius and interval ratio in Section~\ref{sec:balancing} be made effective in terms of the modulus? A ranking at one sample would require stronger information than convex balance.
+\end{enumerate}
+
+\clearpage
+\begin{thebibliography}{10}
+\bibitem{upstream} L. Sernau and collaborators, \emph{GRH for Dirichlet $L$-functions, in Lean 4}, based on the method of L. Alp\"oge. \href{https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207}{Pinned repository and build record}.
+\bibitem{prior} ProveIt incoming report, \emph{Sparse CM equations, prime-generating constants, and additive representations}, November 25, 2026. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/c59bde1a0f52eee7a7a8dc6b326072f9b71f76a6/docs/incoming/grh_cm_prime_applications.zip}{Archived manuscript and candidate list}.
+\bibitem{avk} M. Avenda\~no and T. Krick, \emph{Sharp bounds for the number of roots of univariate fewnomials}, J. Number Theory 131 (2011), 1209--1228. \href{https://arxiv.org/abs/1008.4808}{Author manuscript}.
+\bibitem{blp} Y. Bilu, F. Luca and A. Pizarro-Madariaga, \emph{Trinomials, singular moduli and Riffaut's conjecture}, Ann. Sc. Norm. Super. Pisa Cl. Sci. 23 (2022), 2003--2048. \href{https://arxiv.org/abs/2003.06547}{Author manuscript}.
+\bibitem{cox} D. A. Cox, \emph{Primes of the Form $x^2+ny^2$}, 2nd ed., Wiley, 2013. See sections 8--11 for class fields and complex multiplication, and Theorem 7.24 for the order class number formula.
+\bibitem{eoy} N. Elkies, K. Ono and T. Yang, \emph{Reduction of CM elliptic curves and modular function congruences}, Int. Math. Res. Not. 2005, 2695--2707. \href{https://arxiv.org/abs/math/0512350}{Author manuscript}.
+\bibitem{lenstra} H. W. Lenstra, Jr., \emph{On the factorization of lacunary polynomials}, in \emph{Number Theory in Progress}, 1999, 277--292. \href{https://pub.math.leidenuniv.nl/~lenstrahw/PUBLICATIONS/1999b/art.pdf}{Author copy}.
+\bibitem{silverman} J. H. Silverman, \emph{The Arithmetic of Elliptic Curves}, 2nd ed., Springer, 2009. Chapter V, \S4, gives the Hasse invariant test.
+\bibitem{suzuki} M. Suzuki, \emph{On variants of Chebyshev's conjecture}, Ramanujan J. 68 (2025), art. 95, with \href{https://doi.org/10.1007/s11139-025-01289-y}{correction}. \href{https://arxiv.org/abs/2411.07436v3}{Corrected author manuscript}.
+\bibitem{platt} D. J. Platt, \emph{Numerical computations concerning the GRH}, Math. Comp. 85 (2016), 3009--3027. \href{https://doi.org/10.1090/mcom/3077}{Paper}.
+\bibitem{pt} D. Platt and T. Trudgian, \emph{The Riemann hypothesis is true up to $3\cdot10^{12}$}, Bull. Lond. Math. Soc. 53 (2021), 792--797. \href{https://doi.org/10.1112/blms.12460}{Paper}.
+\bibitem{hsw} E. Hasanalizade, Q. Shen and P.-J. Wong, \emph{Counting zeros of the Riemann zeta function}. \href{https://arxiv.org/abs/2107.06506}{Author manuscript}.
+\bibitem{banks} W. D. Banks, \emph{Comparing zeros of distinct Dirichlet $L$-functions}. \href{https://arxiv.org/abs/2302.07073}{Author manuscript}.
+\bibitem{kr} J. Kaczorowski and O. Ramar\'e, \emph{Almost periodicity of some error terms in prime number theory}, Acta Arith. 106 (2003), 277--297. \href{https://doi.org/10.4064/aa106-3-6}{Paper}.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,222 @@
+% Optional worked arithmetic application of the exact trace-depth theorem.
+\section{A worked arithmetic certificate: the Ramanujan representation}
+\label{sec:delta-congruence}
+
+The trace interface can be evaluated on a genuine modular Galois
+representation.  This supplies a complete arithmetic example of the
+global congruence term, while keeping the remaining Selmer hypotheses
+visible.
+
+Let
+\[
+ \Delta(q)=q\prod_{n\geq1}(1-q^n)^{24}
+          =\sum_{n\geq1}\tau(n)q^n
+\]
+and let $\rho_\ell:G_{\mathbb Q}\to\mathrm{GL}_2(\mathbb Z_\ell)$
+be its usual representation, so that at $p\ne\ell$
+\[
+ \operatorname{tr}\rho_\ell(\mathrm{Frob}_p)=\tau(p),
+ \qquad \det\rho_\ell(\mathrm{Frob}_p)=p^{11}.
+\]
+Use arithmetic Frobenius, with cyclotomic character
+$\chi_\ell(\mathrm{Frob}_p)=p$ throughout.
+Put $E=\mathbb Q(\sqrt{-23})$ and restrict $\rho_\ell$ to $G_E$.
+Write $T_\ell$ for its lattice, and let $D$ be the conjugate Tate dual.
+
+\begin{proposition}[Two-prime certificate]
+\label{prop:delta-global-term}
+For every prime
+\[
+ \ell\notin\{2,3,5,7,23,691\},
+\]
+the source-style global congruence term is
+\[
+ C(T_\ell)=
+ \begin{cases}
+ 1,&\ell=11,\\
+ 0,&\ell\ne11.
+ \end{cases}
+\]
+This statement is unconditional and does not use RH or GRH.
+\end{proposition}
+\begin{proof}
+The classical Serre--Swinnerton-Dyer image theorem says that outside the
+six displayed primes the residual image contains
+$\mathrm{SL}_2(\mathbb F_\ell)$.\cite{swinnerton,edixhoven}  Restriction to $G_E$ retains this
+subgroup: its image has index at most two, and
+$\mathrm{SL}_2(\mathbb F_\ell)$ is perfect for $\ell\geq5$.
+Thus the restricted residual representation is absolutely irreducible,
+and the integral matrix-span hypothesis holds.
+
+Because $\rho_\ell$ extends to $G_{\mathbb Q}$, conjugation by complex
+conjugation is an integral change of basis.  In rank two, the wedge
+pairing identifies $\rho_\ell^\vee$ with
+$\rho_\ell\otimes(\det\rho_\ell)^{-1}$ integrally.
+Consequently
+\[
+ D(T_\ell)\simeq T_\ell\otimes\chi_\ell^{-10}.
+\]
+Both $2$ and $3$ split in $E$.  For $2$ this follows from
+$-23\equiv1\pmod8$; for $3$, from $-23\equiv1\pmod3$.
+At a degree-one place above either prime $p$, the trace discrepancy is
+\[
+ \tau(p)(1-p^{-10}).
+\]
+The denominators are $\ell$-adic units under the stated exclusions.
+The first coefficients $\tau(2)=-24$ and $\tau(3)=252$ give
+\[
+ \begin{aligned}
+ 24(2^{10}-1)&=24552=2^3\,3^2\,11\,31,\\
+ 252(3^{10}-1)&=14880096=2^5\,3^2\,7\,11^2\,61,\\
+ \gcd(24552,14880096)&=792=2^3\,3^2\,11.
+ \end{aligned}
+\]
+The exact trace-depth theorem now gives $C(T_\ell)=0$ unless
+$\ell=11$, and $C(T_{11})\leq1$.  At $11$, the character
+$\chi_{11}^{10}$ is trivial modulo $11$ on every group element.
+Therefore $T_{11}$ and $D(T_{11})$ are equivalent modulo $11$, giving
+$C(T_{11})\geq1$.  This proves the result.
+\end{proof}
+
+\subsection{The entire Tate-twist family}
+
+The same example admits an exact formula for every integral Tate shift.
+Write $T_\ell(j)=T_\ell\otimes\chi_\ell^j$, $j\in\mathbb Z$, and set
+$M=10+2j$.
+
+\begin{theorem}[Exact global term at every Tate shift]
+\label{thm:delta-all-twists}
+For $\ell\notin\{2,3,5,7,23,691\}$,
+\[
+ C(T_\ell(j))=
+ \begin{cases}
+ \infty,&M=0,\\
+ 1+v_\ell(|M|),&M\ne0\ \text{and}\ (\ell-1)\mid M,\\
+ 0,&(\ell-1)\nmid M.
+ \end{cases}
+\]
+For every finite level $n$, the full conjugate-dual Hom module is
+cyclic of length $\min(n,C(T_\ell(j)))$.
+\end{theorem}
+\begin{proof}
+The conjugate dual is integrally equivalent to
+$T_\ell(j)\otimes\chi_\ell^{-M}$.  Tate twists preserve the matrix-span
+condition, since they multiply each group image by a unit.  In an
+intertwining equation between these two representations, the factor
+$\chi_\ell^j$ cancels.  We can therefore work with $\rho_\ell|_{G_E}$
+and its character twist by $\psi=\chi_\ell^{-M}$.
+
+First, the residual representation has no nontrivial character
+self-twist.  If an invertible $U$ satisfies
+$U\bar\rho(g)=\bar\psi(g)\bar\rho(g)U$, then
+$\bar\psi$ is trivial on $\ker\bar\rho$, and so factors through
+$\Gamma=\operatorname{im}\bar\rho$.
+Since $\Gamma$ contains the perfect group
+$\mathrm{SL}_2(\mathbb F_\ell)$, this character is trivial on that
+subgroup.  The matrix $U$ then commutes with all elementary unipotents,
+and hence with every matrix; it is scalar.  The intertwining equation
+now forces $\bar\psi=1$ on all of $G_E$.
+
+Suppose an equivalence exists modulo $\ell^n$.  Its reduction and the
+preceding argument give $\psi\equiv1\pmod\ell$.
+Taking determinants gives $\psi^2\equiv1\pmod{\ell^n}$.
+Because $\ell$ is odd, $\psi+1$ is a unit at every group element;
+thus $\psi\equiv1\pmod{\ell^n}$.  Conversely, a trivial character
+modulo $\ell^n$ plainly gives an equivalence.  The exact trace-depth
+theorem identifies the global term with the largest depth at which
+$\chi_\ell^M$ is trivial.
+
+The cyclotomic image of $G_E$ is all of $\mathbb Z_\ell^\times$.
+Indeed, $E\cap\mathbb Q(\mu_{\ell^\infty})=\mathbb Q$:
+any nontrivial intersection would contain the quadratic field $E$,
+which ramifies at $23$, whereas the $\ell$-power cyclotomic tower is
+unramified there for $\ell\ne23$.
+If $(\ell-1)\nmid M$, some unit already has $u^M\ne1\pmod\ell$.
+If $(\ell-1)\mid M\ne0$, the decomposition
+\[
+ \mathbb Z_\ell^\times\simeq\mu_{\ell-1}\times(1+\ell\mathbb Z_\ell)
+\]
+and the elementary lifting-the-exponent formula give
+\[
+ \min_{u\in\mathbb Z_\ell^\times}v_\ell(u^M-1)
+  =1+v_\ell(|M|),
+\]
+with equality at $u=1+\ell$.  For $M=0$ the character is identically
+trivial at every depth.  These are exactly the three stated cases.
+\end{proof}
+
+\paragraph{The symmetric mirror target in this family.}
+The symmetric refinement does not lower these values.  The wedge
+pairing of $T_\ell(j)$ takes values in $\mathbb Z_\ell(11+2j)$.
+At any depth where $\chi_\ell^M=1$, this target equals the Tate twist
+$\mathbb Z_\ell(1)$ modulo that depth.  If $C_j$ is complex
+conjugation on $T_\ell(j)$, then $\det C_j=-1$.
+The conjugate pairing $B(v,w)=v\wedge C_jw$ is consequently symmetric
+and perfect.  It generates the entire finite-level intertwiner line.
+Thus $C^+(T_\ell(j))=C(T_\ell(j))$, including the infinite value at
+$j=-5$.  This gives a concrete family where the earlier
+sign-sensitive mirror refinement retains the central obstruction.
+
+\begin{center}
+\begin{tabular}{r r l}
+\hline
+$j$ & $M=10+2j$ & Nonzero terms at nonexceptional primes \\
+\hline
+$-5$ & $0$ & $C(T_\ell(-5))=\infty$ for every such $\ell$ \\
+$-1$ & $8$ & None \\
+$0$ & $10$ & $C(T_{11})=1$ \\
+$1$ & $12$ & $C(T_{13}(1))=1$ \\
+$2$ & $14$ & None \\
+$3$ & $16$ & $C(T_{17}(3))=1$ \\
+$4$ & $18$ & $C(T_{19}(4))=1$ \\
+$50$ & $110$ & $C(T_{11}(50))=2$ \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{corollary}[No bound independent of Tate weight]
+Fix a nonexceptional prime $\ell$ and any $r\geq1$.  For
+\[
+ j=\frac{(\ell-1)\ell^{r-1}-10}{2}
+\]
+one has $C(T_\ell(j))=C^+(T_\ell(j))=r$.
+\end{corollary}
+\begin{proof}
+The numerator defining $j$ is even, and the theorem applies with
+$M=(\ell-1)\ell^{r-1}$.
+\end{proof}
+This is a concrete constraint on a transfer scheme seeking a uniform
+congruence budget while changing Tate weight.  It does not assert that
+every displayed Tate shift satisfies the separate local-rank conditions
+of a full \texttt{SelmerDatum}.
+
+\paragraph{Source status and provenance.}
+The image theorem is classical; see H.~P.~F.~Swinnerton-Dyer,
+\emph{On $\ell$-adic representations and congruences for coefficients
+of modular forms}, Lecture Notes in Mathematics 350 (1973),
+Corollary to Theorem~4.  A modern research exposition is B.~Edixhoven
+et al., \emph{On the computation of coefficients of a modular form},
+Section~5, pp.~21--22.  The two-prime arithmetic above is an elementary
+application of the present trace interface to those established facts,
+not a new theorem about Ramanujan's function.
+
+\paragraph{What it does and does not supply.}
+This computes one genuine arithmetic input needed by the source's
+general twisting theorem.\cite{selmergeneral}  It does not by itself give a Selmer datum.
+The untwisted representation is unramified at all finite primes away
+from $\ell$, whereas the source requires a nontrivial scalar inertia
+element there with scalar $\zeta$ satisfying $\zeta^2-1\in\mathcal
+O^\times$.  A preliminary ramified twist and the local crystalline
+conditions would have to be established separately.  An anticyclotomic
+preliminary twist preserves the computed conjugate-dual global term.
+
+The central Tate shift illustrates the remaining obstruction.  For
+$T_\ell(j)=T_\ell\otimes\chi_\ell^j$,
+\[
+ D(T_\ell(j))\simeq
+       T_\ell(j)\otimes\chi_\ell^{-(10+2j)}.
+\]
+At $j=-5$ this is a genuine conjugate Tate self-duality; the global
+term is infinite.  Thus the finite certificate at $j=0$ does not
+remove the central self-duality obstruction relevant to a direct
+Bloch--Kato transfer.

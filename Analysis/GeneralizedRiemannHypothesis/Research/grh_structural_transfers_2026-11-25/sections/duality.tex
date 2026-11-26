@@ -1,0 +1,223 @@
+% Research contribution prepared for the parent report. Not a Lean formalization.
+\section{A structural obstruction to a direct BSD transfer}
+\label{sec:polarization-obstruction}
+
+The general twisting theorem has a more restrictive hypothesis than the
+existence of a convenient scalar in inertia.  The definition
+\sourcepath{New.Selmer.congruenceTerm} in
+\sourcepath{New/Congruences/Selmer/SelmerData.lean} is
+\[
+ C(T)=\sup_{a\ne0}\operatorname{length}_{\mathcal O}
+ \operatorname{Hom}_{G_K}\bigl(T/aT,(T/aT)^{*c}\bigr).
+\]
+Here $K$ is CM, $c$ is complex conjugation, and $*$ is the Tate dual:
+the action on the dual includes the cyclotomic character.  The structure
+\texttt{SelmerDatum} explicitly requires $C(T)<\infty$.
+This is not a bound on the Mordell--Weil rank, and it is not the length of
+the Selmer group.  It is a uniform bound on congruences between a
+representation and its conjugate Tate dual.
+
+Let $\mathcal O$ be the integers of a finite extension $F/\mathbb Q_\ell$,
+with uniformizer $\pi$.  Write $G$ for a group equipped with an involution
+$g\mapsto g^c$, and let $\chi:G\to\mathcal O^\times$ be invariant under
+that involution.  For a free finite-rank $\mathcal O$-representation $T$,
+write
+\[
+ D(T)=\operatorname{Hom}_{\mathcal O}(T,\mathcal O)(1)^c,
+ \qquad
+ D(\rho)(g)=\chi(g^c)\rho(g^c)^{-\mathsf t}.
+\]
+These formulas describe the source's conjugate Tate dual after identifying
+the character module of $\mathcal O/\pi^n$ with
+$\mathcal O/\pi^n$.  Such an identification is available because a finite
+quotient of a discrete valuation ring has a generating additive character,
+meaning that its kernel contains no nonzero ideal.
+For example, one obtains it from the field trace and a generator of the
+inverse different.  The particular identification does not affect any
+length.
+
+\begin{proposition}[A rational self-duality forces an infinite global term]
+\label{prop:infinite-global}
+If
+\[
+ \operatorname{Hom}_{F[G]}(T\otimes F,D(T)\otimes F)\ne0,
+\]
+then $C(T)=\infty$.  More precisely, for every $n\ge1$,
+\[
+ \operatorname{length}_{\mathcal O}
+ \operatorname{Hom}_{(\mathcal O/\pi^n)[G]}
+       (T/\pi^nT,D(T)/\pi^nD(T))\ge n.
+\]
+No residual irreducibility assumption is needed for this conclusion.
+\end{proposition}
+\begin{proof}
+Choose a nonzero rational equivariant map, clear its denominators, and
+divide by the largest common power of $\pi$ in its entries.  The resulting
+map $P:T\to D(T)$ is equivariant and has at least one unit matrix entry.
+Consequently
+\[
+ \mathcal O/\pi^n\longrightarrow
+ \operatorname{Hom}_{(\mathcal O/\pi^n)[G]}
+       (T/\pi^nT,D(T)/\pi^nD(T)),
+ \qquad b\longmapsto b\overline P,
+\]
+is injective: a unit entry detects $b$.  Its source has length $n$.
+Taking the supremum proves the assertion.
+\end{proof}
+
+\begin{proposition}[Anticyclotomic twisting preserves the obstruction]
+\label{prop:anti-invariance}
+Suppose $\psi:G\to\mathcal O^\times$ satisfies
+$\psi(g^c)=\psi(g)^{-1}$.  For every $n$, the modules of equivariant maps
+for $T$ and $T\otimes\psi$ into their respective conjugate Tate duals are
+identical submodules of the same underlying matrix module.  In particular,
+$C(T\otimes\psi)=C(T)$.
+\end{proposition}
+\begin{proof}
+The two representations in the equivariance equation acquire the same
+scalar factor:
+\[
+ (\rho\otimes\psi)(g)=\psi(g)\rho(g),\qquad
+ D(\rho\otimes\psi)(g)=\psi(g^c)^{-1}D(\rho)(g)
+                      =\psi(g)D(\rho)(g).
+\]
+Since $\psi(g)$ is a unit, it cancels from
+$X(\rho\otimes\psi)(g)=D(\rho\otimes\psi)(g)X$.
+This argument works modulo every $\pi^n$.
+If the character takes values in a larger coefficient ring, extend
+scalars first; a rational self-duality remains nonzero under that
+extension.  Thus the infinitude assertion survives all the coefficient
+extensions allowed by the source theorem.
+\end{proof}
+
+\begin{corollary}[Polarized abelian varieties at the BSD Tate module]
+Let $A$ be an abelian variety over a totally real field $k$, let $K/k$ be
+a CM quadratic extension, and put $T=T_\ell A|_{G_K}$, after any finite
+extension of coefficients.  Then $C(T)=\infty$; the same holds after
+every finite-order anticyclotomic twist.  In particular, the source's
+\texttt{SelmerDatum} hypothesis cannot be instantiated directly with the
+Tate module relevant to BSD for an elliptic curve over $\mathbb Q$.
+\end{corollary}
+\begin{proof}
+A polarization gives a nondegenerate rational Weil pairing
+$e:V\times V\to F(1)$ for $V=T\otimes F$.
+Let $C$ denote the action of a chosen complex conjugation on $V$ and set
+$B(v,w)=e(v,Cw)$.  For $g\in G_K$,
+\[
+ \begin{split}
+ B(\rho(g)v,w)
+ &=\chi(g)e(v,\rho(g)^{-1}Cw)\\
+ &=\chi(g^c)e(v,C\rho(g^c)^{-1}w)
+ =B(v,\chi(g^c)\rho(g^c)^{-1}w).
+ \end{split}
+\]
+Thus $v\mapsto B(v,-)$ is a nonzero rational map $V\to D(V)$.
+Apply the two propositions.  For an elliptic curve its principal
+polarization is already perfect on the Tate lattice; the rational
+argument also covers nonprincipal polarizations without excluding primes
+dividing their degree.
+\end{proof}
+
+\subsection{The exact algebraic correction, and the remaining arithmetic}
+
+There is an exact way to separate fixed self-dual maps from congruences
+that only appear modulo powers of $\pi$.  This does not by itself extend
+the Selmer theorem.
+
+\begin{proposition}[Uniform relation matrix and length formula]
+Let $T,T'$ be finite free $\mathcal O$-representations of an arbitrary
+group $G$.  Put $N=\operatorname{rank}_{\mathcal O}
+\operatorname{Hom}_{\mathcal O}(T,T')$ and
+$H=\operatorname{Hom}_{\mathcal O[G]}(T,T')$.
+There are finitely many group elements whose intertwining equations
+impose all the intertwining equations, over $\mathcal O$ and modulo every
+power of $\pi$.  Let the nonzero Smith factors of their relation matrix
+have valuations $a_1,\dots,a_r$, and let $h=N-r=\operatorname{rank}H$.
+Then
+\[
+ \operatorname{length}_{\mathcal O}
+ \operatorname{Hom}_{(\mathcal O/\pi^n)[G]}
+      (T/\pi^nT,T'/\pi^nT')
+ =hn+\sum_{j=1}^r\min(n,a_j).
+\]
+The submodule $H/\pi^nH$ injects into this module, and the quotient has
+length $\sum_j\min(n,a_j)\le\sum_j a_j$.
+\end{proposition}
+\begin{proof}
+Let $M=\operatorname{Hom}_{\mathcal O}(T,T')$.
+Each matrix coordinate of
+$X\rho(g)-\rho'(g)X$ is a member of $M^*$.
+Their $\mathcal O$-span is finitely generated because $M^*$ is
+Noetherian.  A finite subset of the original coordinates generates it,
+so a finite set of group elements suffices, even after reduction.
+Write its relation matrix in Smith normal form.  For the $r$ nonzero
+diagonal coordinates the solutions of $\pi^{a_j}x=0$ modulo $\pi^n$
+have length $\min(n,a_j)$; the remaining $h$ coordinates are free modulo
+$\pi^n$ and have length $n$ each.
+Finally $H$ is saturated in $M$, since it is the kernel of a map to a
+torsion-free module.  Hence $H\cap\pi^nM=\pi^nH$, giving the claimed
+injection and quotient formula.
+\end{proof}
+
+\begin{corollary}[Exact finiteness criterion]
+The source's global congruence term is finite if and only if
+$\Hom_{F[G]}(T_F,D(T)_F)=0$. In that case its value is
+$\sum_j a_j$ for a relation matrix as above. If this rational Hom space
+has dimension $h>0$, the divergence has exact slope $h$.
+\end{corollary}
+\begin{proof}
+Every nonzero element of a discrete valuation ring generates the same
+ideal as a unit times $\pi^n$. Apply the length formula and let $n$ tend
+to infinity. The term $\sum_j\min(n,a_j)$ eventually equals $\sum_j a_j$.
+\end{proof}
+
+\paragraph{An explicit finite calculation.}
+For $\OO=\Z_\ell$, $r\ge0$, and the representation generated by
+\[
+ A=\begin{pmatrix}1&\ell^r\\0&1\end{pmatrix},\qquad
+ B=\begin{pmatrix}1&0\\\ell^r&1\end{pmatrix},
+\]
+the commutation relations for
+$X=\left(\begin{smallmatrix}a&b\\c&d\end{smallmatrix}\right)$ are
+$\ell^r b=\ell^r c=\ell^r(a-d)=0$ modulo $\ell^n$.
+Consequently the full commutant has length $n+3\min(n,r)$, while its
+quotient by the scalar line has length $3\min(n,r)\le3r$.
+The relation matrix has Smith diagonal
+$(\ell^r,\ell^r,\ell^r,0)$.
+This is a general linear-algebra model, not a claimed Galois realization
+or an admissible source row: when $r>0$ its residual image is trivial,
+so the source's integral Burnside hypothesis fails. The certificate
+checks the Smith factors by minors and the finite-level formula by
+exhaustive modular enumeration.
+
+The source identifies exactly where a new arithmetic argument is needed.
+In \texttt{Mirror.lean}, the theorem
+\texttt{SelmerDatum.length\_dualSelmer\_le} constructs an injection
+\[
+ \Phi_n:\mathcal S_n^{\mathrm{dual}}\hookrightarrow
+ \operatorname{Hom}_{G_K}(T/\pi^nT,D(T)/\pi^nD(T)).
+\]
+It is characterized on the subgroup used to detect cocycles by
+$\Phi_n(y)(z(g))=y(g^c)$ for a fixed primitive Selmer cocycle $z$.
+Projecting the target modulo $H/\pi^nH$ can destroy injectivity.  The
+correct unconditional inequality is
+\[
+ \operatorname{length}\mathcal S_n^{\mathrm{dual}}
+ \le
+ \operatorname{length}\Phi_n^{-1}(H/\pi^nH)
+ +\sum_j\min(n,a_j)
+ \le\operatorname{length}\Phi_n^{-1}(H/\pi^nH)+\sum_j a_j.
+\]
+Thus the missing estimate is a uniform bound, or another suitable
+interpretation, for the polarization component
+$\Phi_n^{-1}(H/\pi^nH)$.  The elementary Smith computation supplies only
+the second term.  The theorem in \texttt{Descent.lean} feeds the full
+dual length into the tied Selmer bound, and
+\texttt{Line.lean}'s \texttt{IsTorsionLevel} requires a fixed finite
+budget independent of the torsion level.  Replacing that budget by the
+bounded quotient without controlling this kernel would be a gap.
+
+This is an obstruction to a direct use of the existing proof, not a
+negative theorem about BSD.  It identifies a specific new lemma that a
+successful extension would have to prove, or a rank-sensitive replacement
+for the existing descent.

@@ -1,0 +1,107 @@
+\section{Exact spectral tests for Grover walks}
+A Grover walk on a finite graph acts on its directed edges. From an arc ending
+at $v$, the amplitude to each outgoing arc is $2/\deg(v)$, with $1$
+subtracted for the reversed arc. A loop has two directed arcs, exchanged by
+reversal. On an abelian cover, Fourier transformation along the deck group
+splits the transition matrix into blocks $U(\xi)$, one for each character
+$\xi$. For integer voltages the block entries are rational multiples of
+Laurent monomials in the coordinates of $\xi$: a deck translation contributes
+its character value, and an opposite voltage contributes the inverse.
+
+\subsection*{Deciding spectral occurrence and computing determinants}
+Given $P\in\mathbb Q[A]$, form the rational Laurent polynomial
+$F_P(X)=\det P(U(X))$ on the finite base arc space.
+At level $n$ one has the exact factorization
+\[
+                \det P(U_n)=\prod_{\xi\in\mu_{p^n}^d}F_P(\xi).
+\]
+This is the direct arc-space version of the spectral resultant factorization
+of Akahori, Hayashi and Suzuki \cite[Theorems 3.3 and 4.3]{AHS}.
+Using the full block retains the eigenvalues $1$ and $-1$ as well.
+If $F_P$ is identically zero or $F_P(1)=0$, a base-level eigenvalue
+already answers the occurrence question. Otherwise choose a positive
+integer $b$ with $G=bF_P$ integral. A reachable exact-zero test for $G$
+decides whether a root of $P$ occurs as an eigenvalue at any finite layer.
+If it does, a shortest accepted digit word gives the first such level.
+If it does not, the valuation sequence is the sum of the nontrivial
+character valuations for $G$, plus $v_p(G(1))-p^{dn}v_p(b)$.
+Thus the finite automaton gives its exact generating function. Monsky's
+torsion-sum theorem \cite{monsky} supplies the eventual polynomial shape
+in the nonvanishing case; clearing $b$ adds the displayed degree-$d$
+term. The computation recovers that polynomial and its least starting
+level. The leading spectral asymptotics in \cite[Theorem 4.3]{AHS}
+allow more general coefficient and voltage data.
+
+\subsection*{An all-level formula on the ternary square grid}
+Take the square torus with side $3^n$, $N=9^n$ vertices, and the four
+directional arcs at each vertex, including at $n=0$. Set
+$S(X,Y)=4-X-X^{-1}-Y-Y^{-1}$. The characteristic polynomial is
+\[
+ \det(AI-U_n)=(A^2-1)^N
+  \prod_{X,Y\in\mu_{3^n}}\left((A-1)^2+\tfrac A2 S(X,Y)\right).
+\]
+Indeed each of the $N$ character blocks has the two factors $A^2-1$ and
+$A^2+1-(A/2)(X+X^{-1}+Y+Y^{-1})$ by the Grover spectral
+factorization, giving the displayed identity.
+
+\begin{theorem}
+For every $n\ge0$ and integer $a\ne\pm1$,
+\[
+ v_3(\det(aI-U_n))=
+ \begin{cases}
+ 0,& a\equiv0\pmod3,\\
+ m9^n+4\cdot3^n+2m-4,& a\equiv1\pmod3,\quad m=v_3(a-1),\\
+ v_3(a+1)9^n,&a\equiv-1\pmod3 .
+ \end{cases}
+\]
+At $A=1$ the zero has order $N+2$, with first nonzero Taylor coefficient
+of valuation $4(3^n-1)$. At $A=-1$ the zero has order $N$ and the
+first nonzero Taylor coefficient is a $3$-adic unit.
+\end{theorem}
+\begin{proof}
+If $(X,Y)$ has joint conductor $3^h>1$, the ternary sum of squares argument
+above gives $v_3(S)=3^{1-h}$. There are $8\cdot9^{h-1}$ such pairs,
+so the sum of $v_3(S)$ over nontrivial pairs is $4(3^n-1)$. At $(1,1)$
+the value of $S$ is zero.
+
+If $a\equiv1\pmod3$, the term $(a/2)S$ in every nontrivial block has
+valuation at most one, and $(a-1)^2$ has valuation $2m\ge2$.
+The trivial block contributes $2m$ and the factor $(a^2-1)^N$ contributes
+$mN$. For the two other residue classes $(a-1)^2$ is a unit while $aS/2$
+is in the maximal ideal in each character field. Only $(a^2-1)^N$
+can then contribute. At $A=1$ the trivial quadratic block contributes
+a double zero; the leading coefficient is $2\prod_{(X,Y)\ne(1,1)} S(X,Y)$.
+At $A=-1$ all quadratic blocks are units.
+\end{proof}
+
+For example, at $a=4$ the successive values for $n=0,1,2$ are
+$3,19,115$. The script \texttt{verify\_grover.py} checks exact determinants
+of the full arc matrices for $n=0,1$ and of the vertex factor through $n=2$.
+
+\subsection*{Periodic states on an odd rectangular grid}
+Remark 6.5 of \cite{AHS} proposes using a reduced polynomial derived from
+$A^r-1$ to study periodic eigenvalues after removing the factors at $\pm1$.
+Here the entire periodic subspace can be counted. Let the side lengths
+$L,M$ be odd, $N=LM$ and $g=\gcd(L,M)$. In addition to the eigenvalues
+$1$ and $-1$, of multiplicities $N+2$ and $N$, respectively, the
+root-of-unity eigenvalues are precisely the nontrivial $g$-th roots,
+each of multiplicity four. Thus the periodic subspace has dimension
+$2LM+4g-2$, and the restriction of the walk to it has exact period $2g$.
+
+To verify the only delicate point, a root of unity $w$ in a quadratic
+block must satisfy
+\[
+              2(w+w^{-1})=X+X^{-1}+Y+Y^{-1}.
+\]
+This is a special case of the rational-angle cosine equation treated by
+Speyer \cite{speyer}. On an odd rectangular grid a short residue argument
+suffices. Reduce in the common cyclotomic field at a prime above $2$.
+The residue of $Y$ must solve the quadratic with roots the residues of
+$X,X^{-1}$. Distinct roots of odd order stay distinct under this reduction:
+if a nontrivial odd-order root $u$ reduced to $1$, its vanishing geometric
+sum would reduce to its odd order, which is nonzero. Hence $Y=X$ or
+$Y=X^{-1}$, and substitution forces $w=X$ or $X^{-1}$. For a nontrivial
+$g$-th root $w$, the four pairs in $\{w,w^{-1}\}^2$ each contribute one
+simple root. For $w=1$ only $(1,1)$ contributes the extra double root,
+and for $w=-1$ no quadratic block contributes. The unitary walk is
+diagonalizable, so these algebraic multiplicities count dimensions.

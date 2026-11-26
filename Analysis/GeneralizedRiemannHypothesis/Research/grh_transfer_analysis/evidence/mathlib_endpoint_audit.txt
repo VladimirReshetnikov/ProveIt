@@ -1,0 +1,200 @@
+# Supplement: pinned Mathlib endpoints and independent transfer check
+
+Inspected the actual local Mathlib checkout at
+`derived_lean/.lake/packages/mathlib`; `git rev-parse HEAD` returns
+`56a005855ea17e0b0958f73ec801ae140b0a1679`, the repository's pinned commit.
+This is a source-level semantic audit, not a rebuild of the GRH proof.
+
+## 1. Standard scalars, characters, and analytic continuations
+
+The pinned Mathlib definitions are the intended conventional objects:
+
+- `Mathlib/Basic/Real/Basic.lean:33-41` defines `Real` through the Cauchy
+  completion of the rational numbers. Its ordinary field structure is supplied
+  at lines 481-496; its order is constructed from the Cauchy order.
+- `Mathlib/Basic/Complex/Basic.lean:33-41` defines `Complex` with real and
+  imaginary components in `ℝ`. Real embedding is `(r,0)` at lines 81-89;
+  complex multiplication and the usual ring/field structures are constructed
+  in the same file, including `instField` at lines 712-720. These are not
+  singleton or characteristic-two fields. Consequently `1/2` in the endpoint
+  is the ordinary real half.
+- `Mathlib/NumberTheory/DirichletCharacter/Basic.lean:37-39` defines
+  `DirichletCharacter R N` as `MulChar (ZMod N) R`.
+  `Mathlib/NumberTheory/MulChar/Basic.lean:70-74` makes this a multiplicative
+  monoid homomorphism that maps nonunits to zero. In particular its value at
+  1 is 1; the family is not defined to consist of zero functions.
+- `Mathlib/NumberTheory/LSeries/RiemannZeta.lean:119-121` defines
+  `riemannZeta` as the even Hurwitz zeta function at parameter 0. The file
+  proves analyticity away from 1 (lines 138-148), value `ζ(0)=-1/2`
+  (lines 150-152), the usual negative-even trivial zeros (lines 172-174),
+  and the identity with `Σ_(n≥0)(n+1)^(-s)` for `Re(s)>1`
+  (`zeta_eq_tsum_one_div_nat_add_one_cpow`, following line 212).
+- `RiemannZeta.lean:185-186` defines **exactly**
+
+  ```lean
+  def RiemannHypothesis : Prop :=
+    ∀ (s : ℂ) (_ : riemannZeta s = 0)
+      (_ : ¬∃ n : ℕ, s = -2 * (n + 1)) (_ : s ≠ 1), s.re = 1 / 2
+  ```
+
+  This agrees with the expanded source statement in `grh/src/Statements.lean`.
+- `Mathlib/NumberTheory/LSeries/DirichletContinuation.lean:50-60` defines
+  `DirichletCharacter.LFunction χ s := ZMod.LFunction χ s` for `[NeZero N]`.
+  `Mathlib/NumberTheory/LSeries/ZMod.lean:85-86` gives the latter as
+
+  ```lean
+  N ^ (-s) * ∑ j : ZMod N, Φ j * hurwitzZeta (toAddCircle j) s
+  ```
+
+  This is the usual finite Hurwitz-zeta formula for meromorphic continuation.
+  The character specialization agrees with its Dirichlet series when
+  `Re(s)>1` (DirichletContinuation lines 74-76), is holomorphic away from the
+  principal-character pole (lines 90-99), and specializes to zeta at modulus 1
+  (lines 66-68).
+
+**An important semantic distinction was checked:** the endpoint uses the
+analytic continuation `LFunction`, not a naive infinite sum which defaults to
+zero when an unordered series is nonsummable. The pinned Mathlib documentation
+explicitly distinguishes `LFunction` from `LSeries` for this reason. Thus the
+critical-strip assertion does not exploit the totalization convention for
+infinite sums.
+
+Formalized meromorphic functions are still total functions, so an arbitrary
+finite value is assigned at a pole. The exclusion of `s=1` for the principal
+character is correct and prevents that value from being mistaken for a zero.
+The usual residue of the principal-character pole is separately proved in
+DirichletContinuation lines 179-194. The zeta endpoint similarly excludes 1.
+
+The fixed endpoint definitions import only Mathlib. Therefore later changes
+to proof-search priorities in `Lib/Speed.lean` do not replace their fields,
+arithmetic, or L-functions. No misleading degenerate definition was found.
+This judgment does not claim to have audited every foundational Mathlib proof.
+
+## 2. Independent check of the transfer analysis
+
+I independently reviewed `transfer_methods.md`, especially its general
+Landau criterion and the proposed principal-class target for `K=Q(sqrt(-23))`.
+**The substantive statements and calculations are correct**, subject to the
+classical background results named there. They remain reductions: the missing
+one-sided estimate is not proved by the current source.
+
+### General analytic criterion
+
+Local boundedness plus the eventual upper bound allows a single finite `K`
+with `K exp((β-1)v)-E(v)≥0` for every `v≥0`. Therefore
+
+\[
+ F(s)=K/(s-\beta)-H(s)
+\]
+
+is the Laplace transform of the nonnegative density
+`K exp(βv)-E(v)exp(v)`. Exponential growth bounds the abscissa of convergence
+above. If that abscissa is a finite real `a>β`, Landau's theorem forces a
+singularity at `a`. The continuation is meromorphic with at most a simple pole,
+so its residue must be nonzero. Positivity from the right makes it positive,
+but it is minus the nonnegative residue of `H`; contradiction. The case of
+abscissa minus infinity is harmless. Thus the proof does establish
+holomorphy of `H` on `Re(s)>β`, not merely vanishing of some residues.
+
+The quantitative determinant comparison and its completion-defect variant
+also follow by the displayed algebra. One small qualification is advisable:
+the generic sentence “amplification `x^θ` excludes zeros right of `1-θ`” should
+assume `0<θ<1`, or instead state the conclusion in
+`Re(s)>max(0,1-θ)`, since the analytic continuation used in that lemma is only
+specified for `Re(s)>0`. The intended `θ=1/2` case is unaffected.
+
+### The discriminant -23 reduction
+
+The polynomial `x^3-x-1` is irreducible by the rational-root test and has
+squarefree discriminant `-23`. Its splitting field `H` has group `S3`, with
+quadratic subfield `K=Q(sqrt(-23))`. The three reduced forms listed in the
+analysis exhaust the discriminant `-23` classes, giving class number 3.
+The only ramified rational prime is 23; its tame inertia in the splitting
+field is a transposition. For additional explicit verification, modulo 23
+
+\[
+ x^3-x-1=(x-10)^2(x-3).
+\]
+
+Since this inertia maps nontrivially into `Gal(K/Q)`, its intersection with
+`Gal(H/K)=A3` is trivial. Thus the cyclic cubic extension `H/K` is unramified
+at every finite prime; there are no real places of `K`. By class-field theory
+it is the Hilbert class field. These arguments support the identification
+used in the target, rather than merely inferring it from matching degrees.
+
+Artin induction/Hecke formalism gives
+
+\[
+ \zeta_F=\zeta\,L_K(s,\psi),\qquad
+ \zeta_H=\zeta\,L(s,\chi_{-23})L_K(s,\psi)^2.
+\]
+
+The equality `L_K(s,ψ)=L_K(s,ψ^{-1})` follows from conjugating ideals: norms
+are unchanged and ideal classes invert. No general Artin-entireness
+conjecture is needed for this dihedral factor. The claimed equivalences of
+critical-strip RH statements are correct once the indicated Dirichlet factors
+are supplied, because all factors are holomorphic in that strip, leaving no
+poles with which zeros could cancel.
+
+### Principal-class selector and the exact constant
+
+For `a` a nonzero integral ideal of `K`, a nontrivial class character has order
+3 and is faithful. Therefore
+
+\[
+ \mathbf1_{[a]=1}=(1+\psi(a)+\psi(a)^2)/3.
+\]
+
+Set
+
+\[
+ A(s)=\sum_a\Lambda_K(a)\mathbf1_{[a]=1}(Na)^{-s}.
+\]
+
+Then `A(s)=-(1/3)ζ'_H(s)/ζ_H(s)` is correct, with no omitted Euler factor:
+`H/K` is everywhere unramified at finite primes. For a prime ideal `p` of
+class order `f∈{1,3}`, the logarithmic derivative contributes `log(Np)` at
+precisely the powers `p^k` with `f|k`, exactly the principal powers.
+
+If `ζ_H(s)=κ_H/(s-1)+κ_H γ_H+O(s-1)`, then
+
+\[
+ A(s)=\frac1{3(s-1)}-\frac{\gamma_H}{3}+O(s-1).
+\]
+
+The proposed remainder is consequently normalized correctly:
+
+\[
+ R(X)=\sum_{Na\le X}\Lambda_K(a)\mathbf1_{[a]=1}
+       (1/Na-1/X)-\frac{\log X}{3}+\frac{1+\gamma_H}{3}.
+\]
+
+Termwise integration on `Re(s)>1` gives exactly
+
+\[
+ \int_1^\infty R(X)X^{-s}\,dX
+ =\frac{A(s)}{s(s-1)}-\frac1{3(s-1)^2}
+   +\frac{1+\gamma_H}{3(s-1)}.
+\]
+
+Expanding `1/s` at 1 confirms cancellation of **both** the double pole and the
+simple pole. At a zero `ρ` of `ζ_H` with multiplicity `m`, the residue is
+`m/[3ρ(1-ρ)]`, so it has the required positive sign at real `0<ρ<1`.
+Dedekind zeta has no zeros on `Re(s)≥1`; the cancellation handles 1 itself.
+The claimed growth justification is sound: the coefficient of norm `p^k` in
+`-ζ'_K/ζ_K` is at most `2 log p=2Λ(p^k)`, and the selector only decreases it.
+
+It follows rigorously that the proposed family of one-sided bounds for `R`
+would imply RH for `ζ_H`, hence GRH for the selected Hecke function. This
+direct selector needs **no auxiliary-twist nonvanishing assumption**, because
+its residues are nonnegative target multiplicities already. The optional
+`(1-η)` variant correctly reintroduces differences of multiplicities and then
+does require an auxiliary noncancellation argument. For clarity, qualify the
+sentence in section 4 about conjugate-character summation as applying to that
+*difference-of-orders* setting; it should not obscure the valid direct route.
+
+The obstruction described in the analysis is also accurate: primes inert in
+`K/Q` give principal ideals `(p)` of norm `p^2`, so a class character is blind
+to new class information there. The current divisibility gains at nonsplit
+primes do not automatically detect classes of split primes. The proposed
+arithmetic extension has therefore been identified, not solved.

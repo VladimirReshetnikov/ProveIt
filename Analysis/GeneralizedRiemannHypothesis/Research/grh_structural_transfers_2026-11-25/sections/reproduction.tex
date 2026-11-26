@@ -1,0 +1,87 @@
+\section{Reproduction and formalization plan}
+
+The archive is self-contained for the new finite calculations and for
+compiling this report. It includes nineteen unmodified upstream files
+most relevant to the analysis, with the upstream Apache license and
+attribution. These excerpts are not the complete Lean dependency tree.
+The full repository can be cloned at the pinned commit to reproduce the
+upstream build or the full lexical scan.
+
+\begingroup\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.49\textwidth}>{\raggedright\arraybackslash}p{0.45\textwidth}@{}}
+\toprule
+Artifact & Purpose\\\midrule
+\endhead
+\sourcepath{report.tex}, \sourcepath{sections/*.tex},\newline
+\sourcepath{report.pdf} & Complete argument and compiled report.\\
+\sourcepath{computation/verify_exact.py} & Python standard-library certificate:
+integer $q$-expansions, Hecke matrices and projector arithmetic,
+Smith factors by minors, and exhaustive finite-module calculations.\\
+\sourcepath{computation/exact_results.json} & Exact outputs of the checked
+calculations, including all parameters and matrices.\\
+\sourcepath{computation/static_audit.py} & Reproducible lexical scan, explicitly
+not a Lean compiler or kernel.\\
+\sourcepath{evidence/source_manifest.json} & Pinned URLs and SHA-256 hashes of
+the included source files.\\
+\sourcepath{evidence/published_hash_comparison.json} & All 1,625 source files
+matched the independent published hash manifest.\\
+\sourcepath{evidence/prior_inventory.json}\newline
+and \sourcepath{evidence/prior_inventory.csv} & All 26
+incoming archives, their Git identities, main reports, claims and gaps.\\
+\sourcepath{evidence/source_audit.md}\newline
+\sourcepath{evidence/duality_source_notes.md} & Exact declarations, proof
+interfaces, and verification limitations.\\
+\sourcepath{SHA256SUMS} & Integrity manifest for the delivered files.\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+From the top directory, run:
+\begin{verbatim}
+python3 computation/verify_exact.py
+sh build_report.sh
+\end{verbatim}
+The build script uses three \texttt{pdflatex} passes to settle the table of
+contents and cross-references. Standard \TeX{} Live packages suffice; the
+exact environment used here is recorded in
+\sourcepath{evidence/tex_build_environment.json}.
+The certificate uses no floating point. It passed 26 exhaustive commutant
+counts, 27 symmetric-pairing counts, eight Smith-factor calculations, and
+eleven prime Hecke-operator checks. The largest finite enumeration is a
+small auxiliary check of the general proofs; no enumeration over arbitrary
+torsion levels is claimed. The new arguments themselves are proved in the
+body of the report.
+
+For the unipotent matrix model in Section~\ref{sec:polarization-obstruction},
+the symmetric invariant forms have exact length
+\[
+ 2\min(n,r)+\min(n,r+v_\ell(2)).
+\]
+Indeed a symmetric matrix
+$\left(\begin{smallmatrix}u&v\\v&w\end{smallmatrix}\right)$ is fixed by
+$A^{\mathsf t}(-)A$ and $B^{\mathsf t}(-)B$ precisely when
+$\ell^r u=\ell^r w=2\ell^r v=0$ modulo $\ell^n$.
+The script verifies the resulting formula independently by enumerating the
+three matrix entries. At $r=0$ it gives exactly the $2$-torsion term of
+the alternating-sign theorem.
+
+\clearpage
+\paragraph{Suggested Lean work, in dependency order.}
+Define the symmetric submodule of \texttt{conjDualHom}; prove that the
+constructed map \texttt{Phi} factors through it; derive the improved length
+bound. Next prove the matrix-algebra commutant and primitive-intertwiner
+lemmas, and the exact two-sign length theorem. Only then remove the old
+finite-full-Hom field from a generalized datum and replay
+\texttt{Descent}, \texttt{Line}, and \texttt{GeneralTheorem}. Existing
+\texttt{MainSummands} constructions remain eligible because the symmetric
+submodule is contained in the original Hom module. A successful extension
+must finally instantiate every other arithmetic hypothesis in a concrete
+new setting. This plan is a specification, not an already compiled patch.
+
+\paragraph{Validation limits.}
+The new paper proofs were cross-reviewed; exact finite calculations passed;
+the PDF was rendered and inspected. We did not re-prove every predecessor
+claim, independently rebuild the large Lean project, or establish a new
+generalized RH or Selmer vanishing theorem. Keeping these distinctions is
+essential to using the archive as a reliable starting point for further
+research.

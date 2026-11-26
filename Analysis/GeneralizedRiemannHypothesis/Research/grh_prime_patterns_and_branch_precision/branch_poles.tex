@@ -1,0 +1,57 @@
+\section{Sharp precision for intersecting Lubin--Tate branches}
+Let $K/\mathbb Q_p$ be finite, $\mathcal O$ its ring of integers, $\pi$ a uniformizer and $q$ the size of its residue field. Normalize $v(\pi)=1$. For the Lubin--Tate formal $\mathcal O$-module attached to $\pi$, write $[a](X)$ for multiplication by $a$. Choose a finite set $B\subset\mathcal O$ of $d\ge2$ distinct directions. Fix $b\in B$ and put
+\[
+ \Delta_b=\prod_{c\in B\setminus\{b\}}([b](X)-[c](X)),\quad
+ h_c=v(b-c),\quad \omega=\sum_{c\ne b}q^{h_c}.
+\]
+Over $A_r=\mathcal O/\pi^r$, $r\ge1$, define $T_r$ to be the least $T$ for which $X^T/\Delta_b\in A_r[[X]]$. Inversion takes place in $A_r((X))$. A distinguished factor $X^s+\pi V$ is invertible there by a geometric expansion of length $r$.
+
+The earlier \emph{Cycle signings and Lubin--Tate} report \cite{priorlt}, \texttt{lubin\_tate.tex}, uses this pole to measure the precision of an observation. At each $c$ one observes $H(X,[c](X))\bmod X^{n_c}$ for unknown $H\in A_r[[X,Y]]$. The componentwise least precision at $b$ that permits recovery of every coefficient of total degree $<d$ is $1+T_r$, with the corresponding minimum at each other branch. Indeed, divide $H$ by the monic polynomial $\prod_c(Y-[c](X))$ using formal Weierstrass division. Its terms have total degree $\ge d$, so the remainder has the desired jet. Lagrange interpolation of the remainder multiplies each observed value by $P_b/\Delta_b$, where $P_b=\prod_{c\ne b}(Y-[c](X))$. An error divisible by $X^{1+T_r}$ therefore only affects terms in $(X,Y)^d$. Conversely $(X^{T_r}/\Delta_b)P_b$ vanishes on the other branches, has value $X^{T_r}$ at $b$, and has nonzero constant-in-$X$ coefficient at $Y^{d-1}$. The earlier report gives the bound $T_r\le\omega+(r-1)(q^{\max h_c}-1)$ and asks in its third further research question when simultaneous branches attain it.
+
+\paragraph{Theorem.}
+If all $h_c=0$, then $T_r=\omega$ for every $r$. Otherwise write
+\[
+ t=\max h_c,\qquad D=q^t-q^{t-1},\qquad m=\#\{c:h_c=t\},\qquad U_r=\omega+(r-1)D .
+\]
+Then
+\[
+ U_r-(m-1)D\ \le\ T_r\ \le\ U_r,\qquad
+ T_r=U_r\ \Longleftrightarrow\
+ \binom{m+r-2}{r-1}\not\equiv0\pmod p .
+\]
+Equivalently, equality holds precisely when adding $r-1$ to $m-1$ produces no carry in base $p$. In particular the pole grows with exact slope $D$. When the deepest contact is unique the displayed upper bound is exact at every precision.
+
+\paragraph{Proof.}
+The difference $[b]-[c]$ is the product of $[b-c]$ and a unit, since $F(U,V)-U$ is $V$ times a unit for the formal group law $F$. Also $[b-c]=[a]\circ[\pi]^{\circ h_c}$ with $a$ a unit, and $[a](Z)/Z$ is a unit. Multiplying by a unit does not change the pole. An invertible coordinate substitution $X\mapsto X u(X)$ also preserves it since it preserves every fractional lattice $X^jA_r[[X]]$. By the Lubin--Tate isomorphism theorem for one uniformizer \cite{lt}, we may take $[\pi](X)=\pi X+X^q$. Set $f_0=X$ and $f_h=\pi f_{h-1}+f_{h-1}^q$. We have reduced the full denominator to the monic polynomial $\prod_c f_{h_c}$. This proves that the contact multiset completely determines $T_r$ for the fixed field and uniformizer.
+
+For $h\ge1$ write $s=q^h$, $D_h=s-q^{h-1}$. Then
+\[
+ f_h(X)\equiv X^s+\pi X^{s-D_h}\pmod{\pi^2}.
+\]
+Indeed $f_{h-1}\equiv X^{q^{h-1}}\bmod\pi$ and replacing it by this monomial in the $q$th power is valid modulo $\pi^2$ because $\pi\mid q$. The polynomial $X^{-s}f_h$ therefore has the form $1+\pi X^{-D_h}+\pi^2 V_h(X^{-1})$, with $\deg V_h\le s-1<2D_h$, since $f_h(0)=0$. For $h=0$ the normalized factor equals one.
+
+Put $z=X^{-1}$. Give a term of $\pi$-adic order $j$ a degree allowance $jD$. In the finite nilpotent expansion of $X^{\omega}/\prod_c f_{h_c}$ modulo $\pi^r$, every positive-order term obeys this allowance. A factor with $h<t$ has strict inequality, as does every contribution from $\pi^2V_h$. To reach degree $(r-1)D$ one must spend exactly $r-1$ powers of $\pi$ on the terms $\pi z^D$ from the $m$ deepest factors. Its coefficient is thus congruent modulo $\pi^r$ to
+\[
+ (-1)^{r-1}\binom{m+r-2}{r-1}\pi^{r-1},
+\]
+the corresponding term of $(1+\pi z^D)^{-m}$. All greater degrees vanish. This proves the upper bound and its equality test. If $t=0$, each normalized factor is one.
+
+For the lower bound put $a_k=\binom{m+k-1}{k}\bmod p$. Its generating series is $(1-z)^{-m}$. The recurrence from multiplication by $(1-z)^m$ and the nonzero constant and leading coefficients forbid $m$ consecutive zeros: such a block would force all later coefficients to vanish, while $(1-z)^{-m}$ is not a polynomial. Since $a_0=1$, some $j$ in $[\max(0,r-m),r-1]$ has $a_j\ne0$. Reduction modulo $\pi^{j+1}$ gives $T_r\ge T_{j+1}=\omega+jD$. The carry formulation follows from the base-$p$ binomial criterion.\hfill$\square$
+
+\paragraph{Answer to the earlier question.}
+At $r=1$ the original bound is always attained. For $r>1$ with $t=1$, its slope $q-1$ equals $D$ and the binomial criterion classifies all cases. If $t\ge2$, then $D<q^t-1$, so no branch attains the original bound. When all contacts have exponent zero the original bound is exact. For example in $\mathbb Q_2$ take $B=\{0,4,12\}$ and $b=0$. Here $\omega=8$, $D=2$ and $m=2$. The pole is $8$ at $r=2$, where $f_2^2\equiv X^8\bmod4$, and $12$ at $r=3$, where the top coefficient survives. The corresponding observation precisions are $9$ and $13$. These are rigorous finite-level consequences of the interpolation problem and require no zero-location hypothesis.
+
+\paragraph{Corollary (optimal sampling at every modulus).}
+Suppose $d\ge2$ directions must be chosen inside one coset of $\pi^a\mathcal O$, $a\ge0$. For $1\le j<d$ put
+\[
+ H_j=a+\max\{h:q^h\mid j\}.
+\]
+The least possible common observation precision is $1+T_r(H_1,\ldots,H_{d-1})$, where the notation means the pole of the reciprocal of $\prod_{j=1}^{d-1} f_{H_j}$. A single set of $d$ directions attains this simultaneously for every $r$. Choose representatives of the residue field numbered $0$ through $q-1$ with $0$ representing zero. Map the base-$q$ digits of $0,\ldots,d-1$ to these representatives in a $\pi$-adic expansion, then scale by $\pi^a$ and translate into the required coset.
+
+To see optimality, first observe that $f_u$ divides $f_v$ in $\mathcal O[X]$ for $u\le v$, by iteration and $f_1(0)=0$. Replacing any contact exponent with a larger one therefore cannot decrease the reciprocal pole: multiply a power series clearing the larger denominator by the integral quotient to clear the smaller denominator. Scale the coset back to $\mathcal O$ for the counting argument. Starting with any $d$ directions, continue down the most populous child residue class. Its occupancy at depth $h$ is at least $\lceil d/q^h\rceil$, by induction. The path selects some $b$ since the finite set is nonempty at every depth. The number of other directions with $v(b-c)\ge h$ is at least $\lceil d/q^h\rceil-1=\lfloor(d-1)/q^h\rfloor$. These are the tail counts of the list $H_j-a$. Sorted in decreasing order, this branch's contacts dominate that list coordinatewise. Conversely in the indicated digit construction each residue class at depth $h$ has at most $\lceil d/q^h\rceil$ members, so every branch's sorted contacts are bounded above by the list. The zero-indexed direction reaches equality at every depth. Restoring the shift $a$ and applying monotonicity proves the claim.
+
+For example $d=q^k+1$ with $k\ge1$ has a unique deepest contact in the extremal list. Counting the multiples of $q^h$ gives $\omega=q^a(q^k+k(q-1)q^{k-1})$, so the optimal common precision is exactly
+\[
+  1+q^a\big(q^k+k(q-1)q^{k-1}\big)+(r-1)(q-1)q^{a+k-1}.
+\]
+For $q=2$, five directions constrained to one coset of $\pi\mathcal O$ need $17+4(r-1)$ coefficients per branch.

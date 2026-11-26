@@ -1,0 +1,213 @@
+\section{A three-subgroup identity for an \texorpdfstring{$S_5$}{S5} comparison quotient}
+\label{sec:sn5-identity}
+
+The previous reflection report establishes the optimal total-multiplicity
+factor $n-1$ for $S_n$ in the degrees $3\leq n\leq12$, by positive rational
+combinations of characters induced from linear subgroup characters.
+Here we isolate a more specific comparison in degree five. Three small
+subgroups give an integral decomposition and an explicit product of
+Hecke $L$-functions. This is an additional comparison relative to the
+reports reviewed \cite{priorreflection}; priority in the full literature has not been established.
+
+\subsection{The exact character identity}
+
+Put $G=S_5$, $t=(12)$, and let $\sigma$ be the nontrivial character of
+$\langle t\rangle$. Write $\mathrm{std}$ for the four-dimensional standard
+character, so that $\mathrm{std}(g)=\#\mathrm{Fix}(g)-1$.
+Use the following subgroups and linear characters:
+\[
+\begin{array}{c|c|c}
+H&\text{generators}&\text{character values on generators}\\ \hline
+C=C_6 &(12)(345)&\chi((12)(345))=e^{\pi i/3}\\
+V=C_2\times C_2 &(12),(34)&\eta((12))=\eta((34))=-1\\
+W=C_5\rtimes C_4 &(12345),(2354)&\xi((12345))=1,\quad\xi((2354))=i
+\end{array}
+\]
+The last group is the affine group of the field with five elements:
+its generators $a=(12345)$, $b=(2354)$ satisfy $bab^{-1}=a^2$.
+The exact identity is
+\begin{equation}
+ \operatorname{Ind}_{\langle t\rangle}^{G}\sigma-\mathrm{std}
+ =\operatorname{Ind}_{C}^{G}\chi
+  +\operatorname{Ind}_{V}^{G}\eta
+  +\operatorname{Ind}_{W}^{G}\xi .
+\label{eq:v5-identity}
+\end{equation}
+The three summands have degrees $20,30,6$, respectively.
+
+\paragraph{Proof.}
+Order the conjugacy types, suppressing fixed points, as
+$1,2,3,22,4,32,5$. Their sizes are
+\[
+(c_T)_T=(1,10,20,15,30,20,24).
+\]
+For a linear character $\theta$ of $H$, define the aggregated row
+$B_{H,\theta}(T)=\sum_{h\in H\cap T}\theta(h)$.
+Direct enumeration gives
+\[
+\begin{array}{c|rrrrrrr}
+ &1&2&3&22&4&32&5\\ \hline
+B_{C,\chi}&1&-1&-1&0&0&1&0\\
+B_{V,\eta}&1&-2&0&1&0&0&0\\
+B_{W,\xi}&1&0&0&-5&0&0&4
+\end{array}
+\]
+For $C$, the two order-three values sum to $-1$, and the two
+order-six values sum to $1$. In $W$, its four nonidentity translations
+are five-cycles of value $1$; its five elements with multiplier $-1$
+are double transpositions of value $-1$; its ten elements of order four
+have five values $i$ and five values $-i$, and their sum is zero.
+All entries are therefore integers despite the nonreal characters.
+
+The induction formula at type $T$ is
+\[
+ (\operatorname{Ind}_{H}^{G}\theta)(T)
+ =\frac{120}{|H|c_T}\,B_{H,\theta}(T).
+\]
+The coordinate row paired with the left side of
+\eqref{eq:v5-identity}, against an arbitrary real class function, equals
+\[
+ \frac12\delta_1-\frac12\delta_2
+ -\left(\frac{c_T(\#\mathrm{Fix}(T)-1)}{120}\right)_T
+ =\left(\frac7{15},-\frac23,-\frac16,0,0,\frac16,\frac15\right).
+\]
+Entry by entry this is
+\[
+ \frac16 B_{C,\chi}+\frac14 B_{V,\eta}+\frac1{20}B_{W,\xi}.
+\]
+The denominators are precisely the subgroup orders, so the induction
+formula proves \eqref{eq:v5-identity}. The character values of either
+side are $(56,-8,-1,0,0,1,1)$.
+
+\subsection{An entire quotient of four Dedekind zeta functions}
+
+Let $M/K$ be any finite Galois extension of number fields with group
+identified with $S_5$. Define fixed fields
+\[
+ E=M^{\langle t\rangle},\quad P=M^{S_4},\quad
+ A=M^C,\quad F=M^V,\quad J=M^W,
+\]
+where $S_4$ is a point stabilizer. Their degrees over $K$ are
+$60,5,20,30,6$, respectively. The characters $\chi,\eta,\xi$ correspond
+to finite-order Hecke characters over $A,F,J$ of orders $6,2,4$.
+Denote their Hecke $L$-functions by $L_A(s,\chi)$, and so forth.
+All $L$-functions here include their canonical local factors, including
+ramified primes; the induction identities are exact for these factors.
+
+\paragraph{Theorem.}
+The quotient
+\begin{equation}
+ \mathcal Z(s)=\frac{\zeta_M(s)\zeta_K(s)}{\zeta_E(s)\zeta_P(s)}
+\label{eq:sn5-four-zeta}
+\end{equation}
+extends to an entire function, is nonzero at $s=1$, and has the direct
+factorization
+\begin{equation}
+ \mathcal Z(s)=L_A(s,\chi)L_F(s,\eta)L_J(s,\xi).
+\label{eq:sn5-four-zeta-factorization}
+\end{equation}
+Consequently, at every $\rho\in\mathbb C$,
+\begin{equation}
+ \operatorname{ord}_{\rho}\zeta_E+
+ \operatorname{ord}_{\rho}\zeta_P
+ \leq \operatorname{ord}_{\rho}\zeta_M+
+       \operatorname{ord}_{\rho}\zeta_K.
+\label{eq:sn5-four-zeta-order}
+\end{equation}
+Orders are signed, with negative order denoting a pole.
+
+\paragraph{Proof.}
+Induction from the regular representation of $C_2$ gives
+$\operatorname{Ind}_{C_2}^{G}\sigma
+ =\operatorname{Reg}_{G}-\operatorname{Ind}_{C_2}^{G}1$.
+Also $\mathrm{std}=\operatorname{Ind}_{S_4}^{G}1-1$.
+Thus the left side of \eqref{eq:v5-identity} has Artin $L$-function
+$\mathcal Z$. Applying Artin induction and multiplicativity gives
+\eqref{eq:sn5-four-zeta-factorization}, first for $\Re s>1$ and then
+by meromorphic continuation. Every character on the right is nontrivial,
+so all three Hecke factors are entire and nonzero at $1$.
+The theorem follows, including \eqref{eq:sn5-four-zeta-order}.
+
+\paragraph{Related literature and scope.}
+Four-zeta quotients also occur in S.~Gun, S.~Hazra and D.~Sahu,
+\href{https://doi.org/10.1007/s00605-025-02060-7}{\emph{On holomorphy and
+non-vanishing of Artin $L$-functions}}, Monatshefte f\"ur Mathematik
+206 (2025), 853--883 \cite{gun}. Their Theorem~1 concerns solvable Galois groups
+and specified normal subgroups. The present $S_5$ calculation concerns
+nonnormal subgroups and supplies its own positive character certificate.
+This comparison does not establish that the precise quotient above is
+new in the full literature.
+
+\subsection{The sign-twisted companion}
+
+Let $\varepsilon$ be the sign character, put
+$\tau=\varepsilon\,\mathrm{std}$, and set
+$\alpha=(\varepsilon|_C)\chi$. The character $\alpha$ has order three.
+On $V$, one has $\varepsilon\eta=1$. On $W$, the generator $a$ is even
+and $b$ is odd, so $\varepsilon\xi=\overline\xi$.
+Twisting \eqref{eq:v5-identity} therefore gives
+\[
+ \operatorname{Ind}_{\langle t\rangle}^{G}1-\tau
+ =\operatorname{Ind}_{C}^{G}\alpha
+   +\operatorname{Ind}_{V}^{G}1
+   +\operatorname{Ind}_{W}^{G}\overline\xi.
+\]
+Hence the meromorphic quotient
+\begin{equation}
+ \mathcal H(s)=\frac{\zeta_E(s)}{L_K(s,\tau,M/K)}
+ =L_A(s,\alpha)\,\zeta_F(s)\,L_J(s,\overline\xi)
+\label{eq:sn5-comparison-quotient}
+\end{equation}
+is holomorphic on $\mathbb C\setminus\{1\}$ and has a simple pole
+at $1$. In particular,
+\begin{equation}
+ \operatorname{ord}_{\rho}L_K(s,\tau,M/K)
+ \leq \operatorname{ord}_{\rho}\zeta_E(s)
+ \qquad(\rho\ne1).
+\label{eq:sn5-order-bound}
+\end{equation}
+No holomorphy assumption on the individual Artin factor
+$L_K(s,\tau,M/K)$ is needed: Brauer's theorem provides meromorphy,
+and the product in \eqref{eq:sn5-comparison-quotient} proves the claimed
+properties of the quotient. The two nontrivial Hecke factors are
+nonzero at $1$, and $\zeta_F$ has a simple pole there.
+
+The classical arithmetic inputs are Artin induction, Brauer meromorphy,
+and finite-order Hecke holomorphy and nonvanishing at $1$. Their use in
+zero-order comparisons is surveyed by R.~Foote, H.~Ginsberg and
+V.~K.~Murty, \href{https://doi.org/10.1090/BULL/1492}{\emph{Heilbronn
+characters}}, Bull. Amer. Math. Soc. 52 (2015), 465--496 \cite{heilbronn}.
+
+\subsection{What remains open}
+
+The two quotient theorems give specific zero-order comparisons.
+They do not prove that $L_K(s,\tau,M/K)$ is entire:
+\eqref{eq:sn5-order-bound} permits a negative left-hand side.
+They also leave the zero locations of $\zeta_E$ and $\zeta_M$ open.
+The one-sided prime estimate required for a further RH transfer remains
+an arithmetic input. Both quotient theorems are independent of RH and
+Dirichlet GRH.
+
+The character identity verifies one step in a possible general induction.
+For $n\geq4$ put
+\[
+ U_n=(n-1)\operatorname{Ind}_{C_2}^{S_n}\sigma-\operatorname{Reg}_{S_n}+1,
+ \qquad
+ V_n=\operatorname{Ind}_{C_2}^{S_n}\sigma-\mathrm{std}_n.
+\]
+Induction in stages gives the exact recurrence
+\[
+ U_n=\operatorname{Ind}_{S_{n-1}}^{S_n}U_{n-1}+V_n.
+\]
+A positive monomial decomposition of every $V_n$ would extend the
+previous $U_n$ result to every degree. Equation~\eqref{eq:v5-identity}
+supplies the degree-five step; no uniform formula is asserted here.
+
+The accompanying \texttt{check\_sn5\_identity.py} verifies subgroup
+orders, every multiplication and character relation in the three
+subgroups, the individual cyclotomic character sums, and the untwisted
+and sign-twisted identities using exact integer and rational arithmetic.
+Its only dependency is Python's standard library.
+Inputs are in \texttt{sn5\_certificate.json};
+\texttt{sn5\_verification.json} records the successful run.
+This supports the written proof and is not a Lean formalization.

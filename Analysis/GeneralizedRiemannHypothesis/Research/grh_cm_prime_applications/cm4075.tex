@@ -1,0 +1,32 @@
+\paragraph{The class-number-six case.}
+At $\Delta=-4075$ take the three conjugates of forms with $a=25$ and
+$b=25,15,5$, in that order, and append the principal conjugate. Call their increasing moduli $r_1,r_2,r_3,r_4$.
+The certified enclosures are $2365<r_1<2366$, $2846<r_2<2847$,
+$3701<r_3<3703$, $r_4>10^{80}$. Remove the smallest exponent from
+a four-term polynomial and let $g_i=e_{i+1}-e_i\ge1$ be the three gaps,
+so $e_1=0$. We show that $\det(z_i^{e_j})$ is nonzero for every choice.
+
+For a permutation $\sigma$, the magnitude of its term divided by the
+diagonal magnitude equals
+\[
+ \prod_{j=1}^3(r_j/r_{j+1})^{\sum_{i\le j}(e_{\sigma(i)}-e_i)} .
+\]
+Each exponent on a radius ratio is a nonnegative linear combination of
+the $g_i$, by comparing the selected $j$ exponents with the $j$ smallest.
+If $g_1\ge12$ or $g_2\ge12$, the sum over the 23 nonidentity permutations
+is bounded above by its value at the appropriate gap vector $(12,1,1)$ or
+$(1,12,1)$ with $r_j/r_{j+1}$ replaced by their outward rational bounds.
+Both sums are strictly less than one.
+
+It remains to check $1\le g_1,g_2\le11$. Divide all four roots by $4096$,
+which rescales the determinant by columns. The contribution from
+permutations placing the largest exponent at the principal root, after
+dividing by that root's scaled largest power, is the $3\times3$ determinant
+of the scaled smaller roots with exponents $(0,g_1,g_1+g_2)$. Its modulus
+exceeds $10^{-3}$ in all 121 cases, certified by complex interval
+arithmetic. Each of the other 18 permutation terms contains a factor
+$r_3/r_4$ in the ratio formula at $j=3$. After the same division the
+diagonal magnitude is at most one, so their sum in modulus is below
+$18\cdot3703/10^{80}$. This proves the exclusion uniformly in $g_3$.
+The certificate \texttt{checks/verify\_4075.py} encloses the complex roots
+using the Eisenstein series and discriminant product with explicit tails.

@@ -1,0 +1,104 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=0.9in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,tabularx,longtable}
+\usepackage{graphicx,xcolor,microtype,enumitem,fancyhdr,needspace}
+\usepackage{xurl,hyperref}
+\definecolor{navy}{HTML}{17384B}
+\definecolor{teal}{HTML}{167D8D}
+\definecolor{muted}{HTML}{536675}
+\hypersetup{colorlinks=true,linkcolor=teal,urlcolor=teal,citecolor=teal,
+pdftitle={Beyond Dirichlet GRH: sharper spanning and an S5 zeta quotient},
+pdfauthor={Research prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\sffamily\color{navy}Beyond Dirichlet GRH}
+\fancyhead[R]{\small\sffamily\color{muted}26 November 2026}
+\fancyfoot[C]{\small\thepage}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt minus 1pt}
+\setlength{\emergencystretch}{2.5em}
+\setlist{itemsep=3pt,topsep=5pt,leftmargin=1.5em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\F}{\mathbb F}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\cO}{\mathcal O}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\HS}{\mathrm{HS}}
+\newcommand{\src}[2]{\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/#1}{#2}}
+\newcommand{\prior}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/9816644452bb42827167d6110e6d0322315a02b9/docs/incoming/#1}{#2}}
+\newcommand{\code}[1]{{\small\texttt{\detokenize{#1}}}}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}\thispagestyle{empty}
+{\sffamily\large\color{teal}RESEARCH REPORT\hfill 26 NOVEMBER 2026\par}
+\vspace{1cm}
+{\fontsize{29}{35}\selectfont\bfseries\color{navy}Beyond Dirichlet GRH\par}
+\vspace{0.35cm}
+{\Large Sharper spanning and an $S_5$ zeta quotient\par}
+\vspace{0.7cm}
+{\large Prepared for Vladimir Reshetnikov\par}
+\vspace{0.7cm}\hrule\vspace{0.55cm}
+\textbf{Question.} Which ingredients of \texttt{lsernau/grh-lean} can advance
+other mathematical problems, beyond familiar consequences of RH and Dirichlet GRH?
+
+\textbf{Main result.} Keeping the two errors already proved in the source,
+rather than enlarging them, improves its spanning theorem. The weighted
+translate budget decreases from $5d\log(1+2b^2)$ to $4d\log(1+2b^2)$,
+while the guaranteed missing fraction decreases from $4/b^2$ to $20/b^4$.
+This is a mathematical strengthening under the same admissible-data hypotheses;
+it has not been compiled as a new Lean theorem.
+
+\textbf{Second result.} An exact identity involving three subgroups of $S_5$
+gives explicit Hecke factorizations and holomorphic comparison quotients,
+including an entire quotient of four Dedekind zeta functions.
+It is independent of RH and requires no individual Artin holomorphy conjecture.
+
+\begin{tabularx}{\linewidth}{@{}p{0.27\linewidth}X@{}}
+\toprule
+\textbf{Deliverable} & \textbf{Evidence and limit}\\
+\midrule
+Sharp abstract interface & Full proof, finite greedy bounds, and equality examples;
+classical second-moment ingredients are explicitly credited.\\
+Source improvement & Exact source constants $5b^{-4}$ and $9b^{-4}$ retained;
+the new $b^{-4}$ scale is optimal from these abstract inputs.\\
+$S_5$ comparison & Three explicit subgroup rows and an exact rational checker;
+the uniform $S_n$ induction remains unproved.\\
+Research assessment & 52 previous archives inventoried, focused review of the
+latest frontiers, and precise missing arithmetic hypotheses.\\
+\bottomrule
+\end{tabularx}
+\vfill
+{\small\color{muted}
+Source revisions: \texttt{grh-lean} \texttt{72fead102f66};
+\texttt{ProveIt} \texttt{9816644452bb}. No new case of full nonabelian or
+automorphic GRH is claimed. Novelty is assessed against the inspected corpus;
+worldwide publication priority has not been established.\par}
+\end{titlepage}
+\hypersetup{pageanchor=true}\pagenumbering{roman}
+\begingroup\small\setlength{\parskip}{0pt}\tableofcontents\endgroup
+\clearpage\pagenumbering{arabic}
+\input{sections/scope}
+\input{sections/mechanism}
+\input{sections/prior}
+\input{sections/spanning}
+\input{sections/integer_certificates}
+\input{sections/s5}
+\input{sections/targets}
+\input{sections/verification}
+\clearpage\input{sections/references}
+\end{document}

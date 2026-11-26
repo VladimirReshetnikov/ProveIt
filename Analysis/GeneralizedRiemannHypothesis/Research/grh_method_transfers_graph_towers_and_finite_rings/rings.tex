@@ -1,0 +1,208 @@
+\section{Geometric progressions over products of finite fields}
+\label{sec:products}
+Asada, Fourakis, Manski, McNew, Miller and Moreland ask in Question~6.5
+of their \href{https://doi.org/10.1016/j.ffa.2016.10.002}{2017 paper}
+how their density problem changes over other finite coefficient rings.
+Their Remark~1.1 specifies polynomial ratios that are nonunits.
+A finite product of fields gives a new feature: multiplication by $x$ can be
+switched on independently in any subset of the factors. This yields a sharp
+criterion for whether a positive upper density can survive as factors are added.
+
+For $R_b=\prod_{i=1}^b\mathbb F_{q_i}$ take
+$B_n(R_b)=\{f\in R_b[x]:\text{all coefficients above degree }n\text{ vanish}\}$.
+It is the product of the coordinate balls and has size $|R_b|^{n+1}$.
+Write $\Delta(R_b)$ for the supremum of
+$\limsup_{n\to\infty}|E\cap B_n(R_b)|/|B_n(R_b)|$ over sets $E$
+avoiding triples $f,rf,r^2f$ with a nonunit $r\in R_b[x]$.
+All constructions below have every component nonzero. The upper bound
+uses only progressions with three distinct terms. Thus possible conventions
+about repeated terms or zero leave the results unchanged: the proportion of
+tuples having a zero component is at most $\sum_i q_i^{-(n+1)}$ at fixed $b$.
+
+\begin{theorem}[Criterion for growing products]\label{thm:products}
+For an arbitrary sequence of prime powers $q_1,q_2,\ldots$, the limit
+$\lim_{b\to\infty}\Delta(R_b)$ exists. It is positive precisely when
+$\sum_i q_i^{-2}$ converges. For every finite $b$,
+\[
+ \prod_{i=1}^b(1-q_i^{-2})\ \le\ \Delta(R_b)
+ \ \le\ \mathbb E\, a_K,\qquad
+ K=\sum_{i=1}^b X_i,\qquad
+ \Pr(X_i=1)=\frac{3}{q_i^2+q_i+1},
+\]
+where $X_i$ are independent Bernoulli variables and $a_k$ is the largest
+proportion of the ternary word cube $\{0,1,2\}^k$ containing no
+combinatorial line, with $a_0=1$. In particular $\Delta(\mathbb F_q^b)\to0$
+for fixed $q$. There is an absolute $C>0$ such that for every $b\ge1$
+and all $q_i$,
+\[
+ \Delta(R_b)\ge \exp\!\big(-C\sqrt{\log(2+b)}\big).
+\]
+\end{theorem}
+
+\subsection{Packing the polynomial ball with word cubes}
+A combinatorial line has three words, with a nonempty set of variable
+positions reading respectively $0,1,2$ in unison and all other positions
+fixed. Fix a field of order $q$. Each nonzero polynomial in its ball
+has a unique expression $x^eg$ where $g(0)\ne0$. For each fixed $g$,
+partition the exponent interval $0\le e\le n-\deg g$ into disjoint
+successive triples starting at $0,3,6,\ldots$, leaving up to two singleton
+cells. Put zero in a singleton. For $3j+2\le n$, the number of triples
+starting at exponent $3j$ equals $(q-1)q^{n-2-3j}$, the number of choices
+of $g$ having nonzero constant term and degree at most $n-2-3j$.
+Consequently the fraction of the ball lying in triple cells is
+\[
+ \theta_{q,n}=3(q-1)\sum_{0\le j\le(n-2)/3}q^{-3j-3}
+ \ \longrightarrow\ \frac{3}{q^2+q+1}.
+\]
+
+Choose a point uniformly in the product ball, then condition on the cell
+of each coordinate. The coordinates in triple cells are independent
+uniform letters. Their count $K_n$ has the law of a sum of independent
+Bernoulli variables with parameters $\theta_{q_i,n}$. Within a cell
+with $k$ active coordinates, each combinatorial line is
+$f,rf,r^2f$: take $r_i=x$ on its variable positions and $r_i=1$
+elsewhere. The three tuples are distinct, since the variable positions
+belong to nonzero chains. Conditional occupancy by any admissible set
+is at most $a_k$. Averaging gives an upper bound $\mathbb E a_{K_n}$
+even for the finite-ball maximum. At fixed $b$, passage to the limit in
+this finite distribution gives the asserted upper bound.
+
+The \href{https://annals.math.princeton.edu/2012/175-3/p06}{density
+Hales--Jewett theorem} gives $a_k\to0$. Write
+$\mu_b=\sum_{i\le b}3/(q_i^2+q_i+1)$. For $q_i\ge2$ the summands
+are between $(12/7)q_i^{-2}$ and $3q_i^{-2}$. Thus $\mu_b\to\infty$
+when $\sum_iq_i^{-2}$ diverges. Since $\mathrm{Var}(K)\le\mu_b$,
+the probability $\Pr(K<\mu_b/2)$ is at most $4/\mu_b$. The contribution
+of larger $K$ is bounded by $\sup_{k\ge\mu_b/2}a_k\to0$. This proves the
+vanishing assertion, using only the $2^b-1$ possible nonconstant ratios
+whose coordinates are in $\{1,x\}$.
+
+\subsection{Passing from a degree cutoff to a single infinite set}
+Let $M_b(n)$ be the largest admissible fraction of $B_n(R_b)$.
+Then
+\begin{equation}\label{eq:glueproduct}
+ \Delta(R_b)=\limsup_{n\to\infty} M_b(n).
+\end{equation}
+For the nontrivial direction choose $n_j$ so that $M_b(n_j)$ approaches
+its upper limit, $n_j-j>2n_{j-1}$, and $n_j-2j>n_{j-1}$.
+In a maximizing set at cutoff $n_j$ keep only tuples with all degrees
+between $n_j-j$ and $n_j$, taking $n_1>1$. This deletes a proportion
+at most $\sum_i q_i^{-j-1}$. Form the union of the retained boxes.
+In any progression in this union all $f_i,r_i$ are nonzero, and
+the three degrees in each coordinate are nondecreasing and equally spaced.
+If the last term alone lies in the latest box, each last degree is at
+most $2n_{j-1}$, too small. If the last two lie there, the first degree
+in each coordinate is at least $n_j-2j>n_{j-1}$. Within one box avoidance
+was imposed already. This proves \eqref{eq:glueproduct}. Slicing a finite
+product ball by its last coordinate gives $M_{b+1}(n)\le M_b(n)$:
+any forbidden triple in a slice lifts by adjoining ratio $1$. Hence
+$\Delta(R_b)$ is nonincreasing and has a limit.
+
+The tuples with every component degree in $\{n-1,n\}$, $n\ge1$,
+occupy exactly $\prod_i(1-q_i^{-2})$ of $B_n(R_b)$. A surviving nonunit
+ratio would have at least one component of positive degree. In that
+coordinate its first and last degrees would differ by at least two.
+This proves the lower product bound by \eqref{eq:glueproduct}.
+Since $0<q_i^{-2}\le1/4$, the infinite product is positive exactly when
+the sum of its deficits converges. Together with the cube bound this
+completes the dichotomy.
+
+\begin{corollary}[The regime of densities close to one]\label{cor:nearone}
+For any sequence of finite products (with no nesting assumption), set
+$S=\sum_i q_i^{-2}$ for each product. Along such a sequence,
+$\Delta\to0$ exactly when $S\to\infty$, and $\Delta\to1$ exactly when
+$S\to0$. In the latter regime the first-order estimate is uniform:
+\[
+ 1-\Delta=S+O(S^{3/2}).
+\]
+\end{corollary}
+\begin{proof}
+The upper estimate from word cubes tends to zero when $S\to\infty$
+by the variance argument above. The product lower bound is at least
+$\exp(-4S/3)$, since $-\log(1-u)\le4u/3$ for $0\le u\le1/4$.
+For the other endpoint, slicing any nonempty-dimensional ternary cube
+into parallel lines shows $a_k\le2/3$ for $k\ge1$. With
+$p_i=3/(q_i^2+q_i+1)$ this gives
+\[
+ \frac{1-\prod_i(1-p_i)}{3}\le 1-\Delta\le S.
+\]
+As $\sum_i p_i\ge12S/7$, the left side stays positive when $S$ stays
+bounded below. As $S\to0$ each $q_i^{-1}\le\sqrt S$. Thus
+$\sum_i p_i=3S+O(S^{3/2})$.
+The first two inclusion--exclusion bounds give
+$1-\prod_i(1-p_i)=\sum_i p_i+O((\sum_i p_i)^2)$. This proves the
+uniform expansion.
+\end{proof}
+
+For a finite illustration, the bounds for two copies of $\mathbb F_2$ are
+$9/16\le\Delta\le38/49$; for
+$\mathbb F_2\times\mathbb F_3\times\mathbb F_5$ they are
+$16/25\le\Delta\le322/403$. These use the values
+$a_1=a_2=a_3=2/3$ from
+\href{https://arxiv.org/abs/1002.0374}{D.~H.~J. Polymath's finite cube calculation}.
+The program \texttt{check\_products.py} verifies the chain counts by direct
+enumeration at small cutoffs, checks all $37$ lines in a three-coordinate
+cell, and computes the displayed bounds in rational arithmetic.
+
+\subsection{Using the repository's Behrend lemma for a lower bound}
+\label{sec:behrend-products}
+The source lemma
+\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/New/Reduction/Data/Existence.lean\#L77-L113}{\texttt{exists\_three\_term\_free}}
+works with points on a sphere in a digit box. It supplies $S\subset[0,o)$
+of size at least $H^d/(dH^2)$ for $(LH)^d\le o$, avoiding nontrivial
+weighted three-term congruences with positive weights of sum at most $L$.
+In its application to infinite places, multiplicative relations impose
+additive constraints on exponents. Here the transfer uses ordinary
+midpoints ($L=2$) and projects each polynomial tuple to a single integer.
+
+In particular there is an absolute $C_0$ such that for each $m\ge2$ some
+$S\subset\{0,\ldots,m-1\}$ contains no nontrivial three-term arithmetic
+progression and has size at least $m\exp(-C_0\sqrt{\log(2+m)})$.
+For large $m$ take $d=\lfloor\sqrt{\log_2m}\rfloor$,
+$H=\lfloor m^{1/d}/2\rfloor$, and $o=m$. Then $(2H)^d\le m$,
+$H^d\ge m/4^d$, and $H^2\le m^{2/d}$. Substitution gives the bound;
+a larger absolute $C_0$ covers the finitely many smaller values.
+
+For a random tuple at cutoff $n$ with nonzero components consider its
+total degree deficit $D_n=\sum_{i=1}^b(n-\deg f_i)$. For fixed $b$ its
+limiting law is the sum $D$ of independent geometric variables with
+\[
+ \Pr(D_i=t)=(1-q_i^{-1})q_i^{-t}\quad(t\ge0),\qquad
+ V=\mathrm{Var}(D)=\sum_{i=1}^b\frac{q_i}{(q_i-1)^2}\le2b .
+\]
+Indeed the stated geometric probability for a given $t\le n$ is the
+exact unconditioned probability of degree $n-t$; zero components have
+vanishing probability. An integer interval $I$ of length (cardinality)
+$m\le4\sqrt V+3$, enlarged to at least two points if necessary, captures
+at least $3/4$ of $D$ by Chebyshev's inequality. As $h$ ranges over
+$I-\{0,\ldots,m-1\}$, an interval of $2m-1$ integers, each $t\in I$
+belongs to exactly $|S|$ sets $h+S$. Consequently for some $h$,
+\[
+ \Pr(D\in h+S)\ge\frac{3|S|}{4(2m-1)}.
+\]
+At cutoff $n$ take the nonzero-component tuples with $D_n\in h+S$.
+Along a candidate progression the total degree rises by $\sum_i\deg r_i>0$,
+so its three deficits would form a forbidden arithmetic progression.
+This admissible finite construction has limiting proportion at least the
+last displayed bound. Applying \eqref{eq:glueproduct} and $V\le2b$ proves
+the stated lower estimate, after enlarging the absolute constant. In fact
+the proof gives $\exp(-C\sqrt{\log(2+V)})$. This application uses the
+finite Behrend construction inside the Lean proof and the density
+Hales--Jewett theorem from outside it; neither estimate requires RH.
+
+\paragraph{Comparison with a local algebra.}
+For even $q$ let $A_b=\mathbb F_q\oplus V$ with $\dim_{\mathbb F_q}V=b-1$
+and $V^2=0$. The earlier
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/5ed40f562710fcc2770bbb463dba528a6727f7ae/docs/incoming/grh_method_transfers_research.zip}{ProveIt report},
+in its section on finite local rings, proves
+$1-Q^{-2}\le\Delta(A_b)\le1-(Q^2+Q+1)^{-1}$ for $Q=q^b$.
+One can see the limit $1$ already from the earlier report's
+squarefree-gcd construction: in this algebra $(a+v)^2=a^2$, so a
+nonunit square producing a nonzero endpoint forces every scalar component
+of that endpoint to have a common squared prime divisor. By excluding
+all such endpoints one retains natural density $1-q/Q^2$.
+For the same $q,b$, the reduced algebra $\mathbb F_q^b$ has the same
+cardinality $Q$, yet its maximal upper density tends to zero. Its
+coordinate idempotents permit the independent ratios that realize the
+ternary word cube. Question~6.5 includes both examples; its general
+finite-ring form and the exact finite-factor extrema remain open here.

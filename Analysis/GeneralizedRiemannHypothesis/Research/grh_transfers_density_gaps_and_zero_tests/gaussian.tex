@@ -1,0 +1,15 @@
+\subsection{A necessary condition on perturbations of the Gaussian}
+The calculation also classifies the possible first-order changes of the kernel if all the cubic tests are to survive near a Gaussian. Let $V:[0,\infty)\to\mathbb R$ be continuous, bounded below and of at most polynomial growth. For $\epsilon>0$ use
+\[
+ K_\epsilon(u)=\exp\{-u^2-\epsilon V(u^2)\}.
+\]
+Suppose there is a sequence $\epsilon_i\downarrow0$ along which the cubic Jensen polynomials at every shift are real-rooted. Then $V(x)$ is a polynomial of degree at most two. The same conclusion holds if for each fixed shift the sequence may be chosen separately. The statement is a necessary condition on this family of perturbations.
+
+Indeed, for $X_n$ of gamma law with shape $n+1/2$ and rate one, put $m_n=\mathbb E V(X_n)$. With the rescaling of the preceding proof,
+$c_n(\epsilon)=1-\epsilon m_n+O_n(\epsilon^2)$. The assumptions bound the integrated quadratic Taylor remainder: for $V\ge0$ use $\epsilon^2 V^2/2$, and for $V<0$ multiply this bound by $\exp(\epsilon|\inf V|)$. At shift $n$ the translated cubic has constant term $\epsilon\Delta^3m_n+O_n(\epsilon^2)$, where $\Delta m_n=m_{n+1}-m_n$. Its quadratic and linear coefficients are $O_n(\epsilon)$ and its leading coefficient is $1+O_n(\epsilon)$. Its discriminant begins with
+\[
+                   -27\epsilon^2(\Delta^3m_n)^2+O_n(\epsilon^3).
+\]
+Thus $\Delta^3m_n=0$ at each $n$. The sequence $m_n$ is quadratic in $n$. There is a unique polynomial $Q$ of degree at most two with $\mathbb E Q(X_n)=m_n$ for all $n$, since the expectations of $1,x,x^2$ are $1,p,p(p+1)$ at $p=n+1/2$.
+
+Now $(V-Q)x^{-1/2}e^{-x}\,dx$ on $(0,\infty)$ is a finite signed measure with all moments zero. Its Laplace transform, in the convention $e^{zx}$, is analytic for $\Re z<1$ by the growth assumption and all its derivatives at zero vanish. Analytic continuation followed by uniqueness of Fourier transforms of finite measures gives the zero measure. Continuity gives $V=Q$ everywhere. For any other $V$ in this class there is at least one fixed shift whose cubic has a nonreal pair for every sufficiently small positive perturbation. This explains the third finite difference in the explicit sextic example.

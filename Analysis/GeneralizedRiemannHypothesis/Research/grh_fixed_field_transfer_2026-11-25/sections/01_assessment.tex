@@ -1,0 +1,68 @@
+\section{Findings and their status}
+\label{sec:findings}
+
+\subsection{What this report establishes}
+The answer to the requested transfer question has two parts. The repository contains methods that can yield further theorems, and we give two precise examples with complete proofs. It does not presently furnish a completed argument for a further major global conjecture. The most promising global extension still needs an arithmetic construction, not another reformulation of its desired zero estimate.
+
+Our two main results address explicit outstanding questions in the preceding report \pr{grh-torsion-and-prime-sampling.zip}{\emph{Torsion and prime sampling}}, especially \file{sections/field.tex}:
+\begin{enumerate}
+\item For a fixed finite coefficient field $K/\Q_p$, determine the exact cost of preventing \emph{every separate} valuation constraint from holding at a common torsion point. We solve the zero-tolerance case for every such $K$, not only cyclotomic coefficient fields.
+\item Replace the earlier multivariable recurrence, which repeatedly enlarged the coefficient field and produced a tower of bounds. We prove an explicit bound without that tower, while retaining every separate constraint with zero additive loss.
+\end{enumerate}
+The formulas and proofs are new deductions in this report relative to the inspected corpus. We do not claim established bibliographic priority for their exact formulations. They build on standard Gauss valuation, residual polynomial, interpolation, and fixed-divisor ideas; the relationship to $P$-orderings is discussed in Section~\ref{sec:scalar-literature}.
+
+Let $e=e(K/\Q_p)$ and $w=v_p(e)$. At torsion level $h$, write
+\[
+N_h=\varphi(p^h)=(p-1)p^{h-1},
+\qquad r_h=N_h^{-1}.
+\]
+For any finite set $S$ of admissible levels, the exact minimum budget that blocks all of them is
+\begin{equation}
+\boxed{\ C_K(S)=\sum_{h\in S}p^{-\min(w,h-1)}.\ }
+\label{eq:executive-scalar}
+\end{equation}
+Blocking means that at every primitive point of each level, at least one polynomial exceeds its own allowed valuation. The full definition, sharp examples, and proof appear in Section~\ref{sec:scalar}.
+
+For $d$ variables, integral polynomials $F_i$, radius $\rho>0$, and
+\[
+ A_i=\min_{\boldsymbol\alpha}
+ \bigl(v([T^{\boldsymbol\alpha}]F_i)+\rho|\boldsymbol\alpha|\bigr),
+ \qquad \sum_i A_i\le B,
+\]
+choose $h_0\ge1$ with $r_{h_0}\le\rho$. One torsion tuple satisfies every
+$v(F_i(\zeta_1-1,\ldots,\zeta_d-1))\le A_i$, with all coordinate order exponents in $[h_0,H]$, where
+\begin{equation}
+\boxed{\ H=h_0+
+ \ceil{(3^{d-1}-1)\log_p(1+B/\rho)}
+ +\floor{p^w B}.\ }
+\label{eq:executive-multi}
+\end{equation}
+There is no degree or packet-cardinality term. The dependence on dimension is exponential, and is not asserted to be optimal. The roots of unity themselves have orders as large as $p^H$: this is a bound on the \emph{order exponent}, not a polynomial bound on order or on an arithmetic conductor norm.
+
+\subsection{Scope of the upstream result}
+The five public declarations in \up{grh/src/Main.lean}{\file{Main.lean}}, with their types in \up{grh/src/Statements.lean}{\file{Statements.lean}}, prove RH and GRH for Dirichlet characters. The half-plane assertion includes every modulus and every character, with the principal-character point $s=1$ excluded. The critical-strip assertion includes imprimitive characters. General Hecke, Artin, and automorphic $L$-functions are not quantified over by these exported statements.
+
+We take those exported statements as the starting point of the requested analysis. The repository documents machine checks and the standard three axioms. We inspected the source and reported validation records; we did not independently rebuild the project or generate a new kernel certificate. This distinction does not diminish the transfer results here, whose proofs are supplied directly and do not invoke RH.
+
+\subsection{A compact status ledger}
+\begin{center}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.29\linewidth}>{\raggedright\arraybackslash}p{.62\linewidth}@{}}
+\toprule
+Item & Status in this report\\
+\midrule
+RH and Dirichlet GRH & Existing upstream exports; source inspected.\\
+Exact fixed-field scalar cost & Proved here, with sharp binomial examples.\\
+Multivariable bound without a tower & Proved here by finite-slope interpolation.\\
+Formal power series and minors & Corollaries of the preceding theorems.\\
+Rank versus completion cost & Exact algebraic consequence of the source determinant principle.\\
+A new nonabelian RH theorem & Not obtained; the Frobenius-sensitive arithmetic estimate remains absent.\\
+BSD, Vandiver, or a new $K$-group vanishing theorem & Not obtained; the relevant comparisons and hypotheses remain unproved.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{How the previous reports were used}
+All 31 ZIP archives in the pinned incoming snapshot were inventoried. Their introductions and relevant theorem sections were read, including the exact torsion and fixed-field questions. This is an audit of manuscript claims and dependencies, not a recertification of every previous proof, computational census, or external input.
+
+The corpus already contains extensive nonabelian character detectors, sparse analytic sampling, sharp unrestricted torsion minimax formulas, and Selmer obstructions. Repeating an $S_3$ character table or a generic roots-of-unity argument would add little. The two local questions above were chosen because the latest report explicitly leaves them open and because their resolution improves a real proof interface. Appendix~A and the machine-readable inventory distinguish prior claims, superseded claims, and remaining gaps.
+

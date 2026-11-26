@@ -1,0 +1,277 @@
+\section{Sharp finite-precision recovery along Lubin--Tate branches}
+\label{sec:jets}
+
+\subsection{The question left by the preceding report}
+
+Berger and Sprang recover bivariate Taylor coefficients from substitutions along finitely many Lubin--Tate branches. Their Lemma~4.2 gives a finite truncation by a compactness argument, and their Proposition~4.4 uses it in coefficient extraction.\cite{bergersprang}
+The earlier ProveIt packet computes the exact residue-field cutoff and characterizes the cutoff modulo powers of the uniformizer by an inverse pole. It gives the general bound
+\begin{equation}\label{eq:old-jet-bound}
+ t_b\le W_b+(r-1)\max_{c\ne b}(q^{v_\pi(b-c)}-1),
+\end{equation}
+then explicitly asks which multibranch configurations attain it, since the highest inverse terms can cancel.\cite{priorjets}
+We sharpen the bound, characterize equality exactly, and give an exact all-precision formula for contacts of depths zero and one.
+
+This is a local quantitative problem. It is distinct from the global bounded-functions conjecture motivating Berger--Sprang, for which subsequent work announces proofs. Our result neither relies on nor claims to supersede those global results.\cite{bergersprang,colovic}
+
+\subsection{Setup and the exact interpolation threshold}
+
+Let $K/\Q_p$ be finite, let $\OO$ be its ring of integers, and fix a uniformizer $\pi$. Normalize $v_\pi(\pi)=1$, write $q$ for the residue cardinality, and put $e=v_\pi(p)$. Fix the Lubin--Tate coordinate
+\begin{equation}\label{eq:lt-coordinate}
+ [\pi](X)=\pi X+X^q.
+\end{equation}
+All pole formulas below are proved in this coordinate; an integral conjugating change of coordinate preserves them, as explained at the end of the section.
+Let $B\subset\OO$ be a finite set of $d\ge1$ distinct directions. For $r\ge1$ set $A_r=\OO/\pi^r\OO$ and
+\[
+ u_b(X)=[b](X)\bmod\pi^r\in XA_r[[X]],\quad
+ P_b(X,Y)=\prod_{c\in B\setminus\{b\}}(Y-u_c(X)),\quad
+ \Delta_b(X)=P_b(X,u_b(X)).
+\]
+Each branch difference is invertible in $A_r((X))$. Define
+\begin{equation}\label{eq:inverse-pole}
+ t_b(r)=\min\{t\ge0:X^t/\Delta_b\in A_r[[X]]\}.
+\end{equation}
+For $d=1$, the empty product is $1$ and $t_b(r)=0$.
+
+\begin{proposition}[Exact componentwise recovery threshold]\label{prop:jet-threshold}
+Observing $H(X,u_b(X))$ modulo $X^{n_b}$ for every $b\in B$ determines all coefficients of total degree $<d$ in every $H\in A_r[[X,Y]]$ if and only if
+\[
+ n_b\ge1+t_b(r)\quad\text{for every }b.
+\]
+The least common precision is $1+\max_b t_b(r)$. Precision $n$ retains the coefficients of $X^0,\ldots,X^{n-1}$.
+\end{proposition}
+
+\begin{proof}
+Put $P=\prod_{b\in B}(Y-u_b(X))$. Division by this monic distinguished polynomial over the complete ring $A_r[[X]]$ gives a remainder $R$ of $Y$-degree $<d$. Since $P\in(X,Y)^d$, $H$ and $R$ have the same coefficients of total degree $<d$. Over $A_r((X))$, Lagrange interpolation is valid because every $u_b-u_c$ is a unit:
+\[
+ R(X,Y)=\sum_{b\in B}\frac{H(X,u_b(X))}{\Delta_b(X)}P_b(X,Y).
+\]
+If all observed residues vanish and $n_b\ge1+t_b(r)$, each quotient belongs to $XA_r[[X]]$. Since $P_b\in(X,Y)^{d-1}$, the remainder belongs to $(X,Y)^d$.
+
+For necessity fix $b$ and set
+$g_b=X^{t_b(r)}/\Delta_b\in A_r[[X]]$. Its constant coefficient is nonzero. Otherwise it would be divisible by $X$, contradicting the minimality of $t_b(r)$ (the case $t_b=0$ is immediate from the inverse identity). The series
+\[
+ H_b(X,Y)=g_b(X)P_b(X,Y)
+\]
+has nonzero coefficient $g_b(0)$ at $Y^{d-1}$, vanishes on every other branch, and evaluates to $X^{t_b(r)}$ on branch $b$. If $n_b\le t_b(r)$, all its observations vanish, so recovery fails. The argument only needs $g_b(0)\ne0$, not that it be a unit. It therefore remains valid in the presence of nilpotents in $A_r$.
+\end{proof}
+
+\subsection{Contact depths determine the inverse pole}
+
+Fix $b$ and suppose $d\ge2$. Write
+\[
+ a_c=v_\pi(b-c),\qquad
+ W=\sum_{c\ne b}q^{a_c},\qquad
+ A=\max_{c\ne b}a_c.
+\]
+Define $F_a=[\pi^a](X)$, so
+\begin{equation}\label{eq:lt-recurrence}
+ F_0=X,\qquad F_a=\pi F_{a-1}+F_{a-1}^{\,q}.
+\end{equation}
+
+\begin{lemma}[Removing all unit parts]\label{lem:associate}
+The unreduced denominator $\prod_{c\ne b}([b](X)-[c](X))$ in $\OO[[X]]$ is a unit times $\prod_{c\ne b}F_{a_c}$. Reducing modulo $\pi^r$ gives the same assertion for $\Delta_b$. Thus, for fixed $K,\pi$ and the coordinate~\eqref{eq:lt-coordinate}, $t_b(r)$ depends on the contact multiset $\{a_c:c\ne b\}$ and not on the unit parts of the differences $b-c$.
+\end{lemma}
+\begin{proof}
+For the formal group law $\mathcal F$, the difference $\mathcal F(U,V)-U$ equals $V$ times a power series with constant term $1$. Consequently $[b]-[c]$ is a unit multiple of $[b-c]$. If $b-c=\pi^a v$ with $v\in\OO^\times$, then
+$[b-c]=[v](F_a)=F_a V_a(X)$ with $V_a(0)=v$ a unit. Multiplying gives the assertion.
+
+Multiplication by a unit power series preserves the smallest exponent of any nonzero Laurent series over $A_r$. At that exponent the coefficient is multiplied by the unit constant term and remains nonzero. This argument works even when that coefficient is nilpotent.
+\end{proof}
+
+\subsection{The leading Newton face}
+
+\begin{lemma}\label{lem:newton-face}
+For $a\ge1$ put $\lambda_a=(q-1)q^{a-1}$ and write
+$F_a=\sum_jc_{a,j}X^j$. The polynomial is monic of degree $q^a$ and reduces to $X^{q^a}$ modulo $\pi$. Every nonzero lower coefficient satisfies
+\[
+ q^a-j\le\lambda_a v_\pi(c_{a,j}).
+\]
+Among lower coefficients equality occurs only at $j=q^{a-1}$, where
+$c_{a,j}\equiv\pi\pmod{\pi^2}$. Thus the two terms on this leading face are exactly
+\[
+ X^{q^a}+\pi X^{q^{a-1}}.
+\]
+\end{lemma}
+
+\begin{proof}
+The case $a=1$ is immediate. For the inductive step note that
+$\lambda_a=q\lambda_{a-1}$ and use~\eqref{eq:lt-recurrence}. In a nonleading product monomial from $F_{a-1}^{q}$, the total degree deficit from $q^a$ is at most $k\lambda_{a-1}$, where $k\ge1$ is the sum of the valuations of the chosen coefficients. Multinomial coefficients can only increase valuation. Hence this term is strictly above the proposed face of slope $\lambda_a$.
+
+A monomial $\pi c_jX^j$ from the first summand has valuation $1+k$, where $k=v_\pi(c_j)$, and deficit
+\[
+ q^a-j=\lambda_a+(q^{a-1}-j)
+ \le\lambda_a+k\lambda_{a-1}.
+\]
+This is strictly smaller than $(1+k)\lambda_a$ when $k>0$. When $k=0$ it is precisely $\pi X^{q^{a-1}}$. All other contributions at that exponent have valuation at least two, so they cannot cancel its residue after division by $\pi$. Adding coefficients elsewhere can only increase their valuations. This proves the assertions.
+\end{proof}
+
+\subsection{A sharp bound and a complete equality test}
+
+\begin{theorem}[Finite-precision pole and carry criterion]\label{thm:jet-carry}
+If $A=0$, then $t_b(r)=W=d-1$ for every $r$. If $A\ge1$, put
+\[
+ m=\#\{c\ne b:a_c=A\},\qquad \lambda=(q-1)q^{A-1}.
+\]
+Then
+\begin{equation}\label{eq:new-jet-bound}
+ \boxed{\quad t_b(r)\le W+(r-1)\lambda.\quad}
+\end{equation}
+Equality holds if and only if
+\begin{equation}\label{eq:carry-test}
+ \binom{m+r-2}{r-1}\not\equiv0\pmod p,
+\end{equation}
+equivalently, the addition of $m-1$ and $r-1$ in base $p$ is carry-free.
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{lem:associate}, compute with the product of the $F_{a_c}$. For $a\ge1$ write
+$F_a=X^{q^a}(1+G_a)$, where $G_a$ is a Laurent polynomial all of whose coefficients are divisible by $\pi$. Modulo $\pi^r$,
+\[
+ (1+G_a)^{-1}=\sum_{k=0}^{r-1}(-G_a)^k.
+\]
+Every monomial of coefficient valuation $k$ in this inverse has exponent at least $-k\lambda_a$. At the common slope $\lambda=\lambda_A$, all nonconstant contributions from $a<A$ lie strictly above the boundary. For $a=A$ the only boundary term of $G_a$ is $\pi X^{-\lambda}$, with its coefficient interpreted modulo $\pi^2$. This is Lemma~\ref{lem:newton-face}.
+
+The product inverse can therefore have no nonzero exponent below $-W-(r-1)\lambda$. To reach exactly that exponent with coefficient valuation below $r$, a term must use precisely the boundary contributions of the $m$ maximal-depth factors. Its coefficient modulo $\pi^r$ is consequently the coefficient supplied by
+\[
+ X^{-W}(1+\pi X^{-\lambda})^{-m},
+\]
+namely
+\[
+ (-1)^{r-1}\pi^{r-1}\binom{m+r-2}{r-1}.
+\]
+It is nonzero in $A_r$ exactly when the integer binomial coefficient is prime to $p$. This proves the inequality and equality test.
+
+For completeness, the carry statement follows from the digit identity
+\[
+ v_p\binom{u+v}{u}
+ =\frac{s_p(u)+s_p(v)-s_p(u+v)}{p-1},
+\]
+where $s_p$ is the sum of base-$p$ digits. This identity follows by applying
+$v_p(n!)=\sum_{h\ge1}\lfloor n/p^h\rfloor=(n-s_p(n))/(p-1)$ to the three factorials. Its value is zero exactly when the addition has no carry. If $A=0$, every $F_{a_c}=X$ and the conclusion is immediate.
+\end{proof}
+
+\paragraph{Exactly when the previous bound can be sharp.}
+The preceding estimate~\eqref{eq:old-jet-bound} is $W+(r-1)(q^A-1)$. The new theorem gives a full componentwise classification of its attainment:
+
+\begin{center}\small
+\begin{tabular}{ll}
+\toprule
+Case & Attainment of the preceding bound\\
+\midrule
+$r=1$ & Always.\\
+$A=0$ & Always, at every $r$.\\
+$r>1$, $A=1$ & Exactly when $(m-1)+(r-1)$ has no base-$p$ carry.\\
+$r>1$, $A\ge2$ & Never: $q^A-q^{A-1}<q^A-1$.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Thus the question left by the prior report is answered for each branch. The sharpened bound itself has the exact carry criterion at every depth. When that criterion fails and $A\ge2$, lower Newton faces can determine the precise smaller pole; we do not claim a closed formula for all those remaining values.
+
+\begin{corollary}[Two branches at arbitrary contact depth]\label{cor:two-branches}
+For exactly two branches with $a=v_\pi(b-c)\ge1$,
+\[
+ t_b(r)=q^a+(r-1)(q-1)q^{a-1},
+\]
+and both branches have the same least precision $1+t_b(r)$.
+\end{corollary}
+\begin{proof}
+There is one maximal-depth factor, so $m=1$ and the binomial coefficient is $1$ at every $r$.
+\end{proof}
+
+\subsection{An exact formula when all contacts have depth at most one}
+
+\begin{theorem}[All-precision depth-one formula]\label{thm:depth-one}
+Suppose every $a_c\in\{0,1\}$ and let $m\ge1$ count the contacts of depth one. Set
+\[
+ K_m(r)=\max\left\{0\le k<r:
+ k+e\,v_p\binom{m+k-1}{k}<r\right\}.
+\]
+Then
+\begin{equation}\label{eq:exact-depth-one}
+ \boxed{\quad t_b(r)=W+(q-1)K_m(r).\quad}
+\end{equation}
+The candidate set is nonempty, since it contains $k=0$.
+\end{theorem}
+\begin{proof}
+The unit-free denominator is exactly
+\[
+ X^W(1+\pi X^{-(q-1)})^m.
+\]
+Its reciprocal is
+\[
+ X^{-W}\sum_{k=0}^{r-1}(-1)^k
+ \binom{m+k-1}{k}\pi^kX^{-k(q-1)}
+ \pmod{\pi^r}.
+\]
+Distinct $k$ give distinct exponents. The coefficient at index $k$ has valuation
+$k+e\,v_p\binom{m+k-1}{k}$, so it survives exactly under the condition in the maximum. No cancellation between different $k$ is possible.
+\end{proof}
+
+\paragraph{A complete three-branch example.}
+Take $K=\Q_3$, $\pi=3$, $q=3$, and $B=\{0,3,6\}$. Every pair of directions has contact depth one. At each branch $W=6$ and $m=2$. For $r=3$, the indices $k=0,1$ survive, whereas the coefficient at $k=2$ is
+$3^2\binom32=27$, which vanishes modulo $27$. Thus
+\[
+ t_b(3)=8,\qquad \text{least common precision}=9.
+\]
+The prior upper bound gives precision $11$. Observations through degree eight suffice; through degree seven they do not, by the explicit interpolation witness of Proposition~\ref{prop:jet-threshold}.
+
+\begin{center}\small
+\begin{tabular}{c|rrrrrrrrr}
+\toprule
+$r$ &1&2&3&4&5&6&7&8&9\\
+\midrule
+$K_2(r)$ &0&1&1&3&4&4&6&7&7\\
+Exact precision $1+t_b(r)$ &7&9&9&13&15&15&19&21&21\\
+Prior upper precision &7&9&11&13&15&17&19&21&23\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The plateau at a multiple of three is an arithmetic cancellation, not a rounding effect. For comparison, two branches with contact depth two at $q=3,r=3$ have precision
+$1+9+2\cdot6=22$, improving the earlier upper precision $1+9+2\cdot8=26$ even without multibranch cancellation.
+
+\subsection{A bounded and eventually periodic precision defect}
+
+The exact formula also controls its dependence on the requested precision. This gives an additional computable consequence without a new global arithmetic input.
+
+\begin{corollary}\label{cor:period}
+In Theorem~\ref{thm:depth-one}, let $P$ be the least power of $p$ with $P\ge m$. For every $r\ge1$,
+\[
+ \max(0,r-P)\le K_m(r)\le r-1.
+\]
+For $m\ge2$ set $d=m-1$,
+\[
+ L=\left\lfloor\frac{P-1}{e}\right\rfloor,
+ \quad T=L+v_p(d!)+1,\quad Q=p^T.
+\]
+Then, for $r\ge P$,
+\[
+ K_m(r+Q)=K_m(r)+Q.
+\]
+Thus $t_b(r+Q)=t_b(r)+(q-1)Q$. For $m=1$ the exact formula is $K_1(r)=r-1$ from the start.
+\end{corollary}
+
+\begin{proof}
+Every $k$ divisible by $P$ has no carry when added to $m-1<P$, so its binomial coefficient is a $p$-adic unit. The largest such $k\le r-1$ proves the first assertion.
+For $r\ge P$, write a potential maximum as $k=r-1-\delta$ with $0\le\delta<P$. It is admissible exactly when
+\[
+ e\,v_p\binom{k+d}{d}\le\delta.
+\]
+All thresholds for the binomial valuation are at most $L$. Since
+$\binom{k+d}{d}=\prod_{i=1}^d(k+i)/d!$, these comparisons are determined by $k\bmod p^T$. If a numerator valuation reaches $T$, it already exceeds every relevant threshold $L+v_p(d!)$; below that threshold each factor's valuation is determined by its residue modulo $p^T$. Replacing $r$ by $r+Q$ leaves the admissible $\delta$ unchanged. Its smallest value, which gives the largest $k$, is therefore unchanged.
+\end{proof}
+
+The period displayed here is a safe explicit period, not a claim of optimality. The finite maximum~\eqref{eq:exact-depth-one} is usually the simpler algorithm.
+
+\subsection{Coordinate changes, verification, and remaining limits}
+
+Suppose an integral invertible coordinate change $h(X)=uX+\cdots$, $u\in\OO^\times$, conjugates the formal modules. Then
+\[
+ h(U)-h(V)=(U-V)H(U,V),\qquad H(0,0)=u.
+\]
+Every transformed branch difference is therefore the old difference, after the invertible substitution in $X$, times a unit. Invertible substitution preserves the smallest Laurent exponent, including over $A_r$. Consequently the pole formulas persist under such an integral conjugacy. The total-degree filtration of $A_r[[X,Y]]$ is preserved as well. This is the exact coordinate-invariance assertion used; no arbitrary nonintegral change of parameter is allowed.
+
+The verifier \path{code/check_jets.py} independently builds $F_a$ by recursion and inverts the normalized products by finite geometric series in sparse Laurent polynomials. It checks the full inverse-product identity, the improved upper bound, its equality criterion, strictness relative to the older bound, and the depth-one formula. All 210 exact cases passed for $(p,q)=(2,2),(2,4),(3,3),(3,9)$ at precisions through $r=6$, with the contact profiles recorded in \path{checks/jet_checks.json}. These examples use unramified coefficient arithmetic; the proof above, including the factor $e$, handles ramified fields. No finite experiment substitutes for that argument.
+
+The new conclusion is a precise answer to a question in the supplied earlier analysis and a quantitative refinement of a published interpolation method. We do not claim that the local formulas themselves were a named longstanding conjecture, nor that a broad literature search establishes their first publication here.

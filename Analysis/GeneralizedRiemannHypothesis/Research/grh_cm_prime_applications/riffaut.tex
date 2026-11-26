@@ -1,0 +1,353 @@
+\section{Riffaut's conjecture and sparse equations for singular moduli}
+
+A singular modulus is a value $\alpha=j(\tau)$ of the modular invariant at
+an imaginary quadratic argument in the upper half-plane. The corresponding
+elliptic curve has complex multiplication by an order of discriminant
+$\Delta<0$. The conjugates of $\alpha$ over $\mathbb Q$ are exactly the
+singular moduli of discriminant $\Delta$, and their number is the order's
+class number $h(\Delta)$. A polynomial's support size is its number of
+nonzero coefficients. Write $s(\Delta)$ for the minimum support size of a
+nonzero rational polynomial vanishing at one, and hence every, such modulus.
+
+\begin{theorem}[Transfer to Riffaut's conjecture]
+Accepting the Dirichlet GRH theorem exported by the repository,
+$s(\Delta)\ge4$ whenever $h(\Delta)\ge3$.
+\end{theorem}
+\begin{proof}
+Suppose $\alpha$ satisfies a relation of support at most three.
+It is nonzero since it has degree at least three. Dividing by its smallest
+power of $\alpha$ and its leading coefficient gives
+$\alpha^u+A\alpha^v+B=0$, with $u>v>0$, $A,B\in\mathbb Q$ and
+$B\ne0$. A binomial relation of degree at least three permits $A=0$.
+
+Bilu, Luca and Pizarro-Madariaga call such a $\Delta$ a trinomial
+discriminant. Their Theorems 1.3 and 1.4 imply
+$m=|\Delta|>10^{11}$ and $\Delta=-p$ or $-pq$ for distinct odd primes
+in the second case, with $\Delta$ fundamental. Hence the Kronecker character
+$\chi=(\Delta/\cdot)$ is primitive, real, and odd, of conductor $m$ with at
+most two distinct prime factors. Their Corollary 5.2 forces every prime $p$
+with $\chi(p)=1$ to satisfy $p>4\sqrt m/\log m$. Their Proposition 9.2,
+under Dirichlet GRH, produces a prime with $\chi(p)=1$ and
+$p\le4\sqrt m/\log m$ for this very character, since $m\ge10^{10}$.
+This contradiction is their Theorem 9.1. Its zero-location input is supplied
+by the upstream theorems for the Riemann zeta-function and primitive Dirichlet
+characters. The results about singular moduli and the explicit constants
+are the published authors' work.
+\end{proof}
+
+The two arguments meet at a specific arithmetic object. Section 9.1 of
+the published proof uses the smoothed sum
+$T(x,\chi)=\sum_{n\le x}\chi(n)\Lambda(n)(1/n-1/x)$.
+The repository's prime remainder uses the same kernel with weight
+$1-\chi_K(n)$ in the progression $1\bmod q$. Its eventual estimate has
+parameters depending on the modulus. The explicit conductor threshold in
+Proposition 9.2 enters through the published argument after applying GRH.
+Full details appear in Y.~Bilu, F.~Luca and A.~Pizarro-Madariaga,
+\emph{Trinomials, singular moduli and Riffaut's conjecture},
+Ann. Sc. Norm. Super. Pisa Cl. Sci. (5) 23 (2022), 2003--2048,
+\href{https://arxiv.org/pdf/2003.06547}{arXiv:2003.06547v2},
+especially \S\S2, 5--7, 9.
+A literature search located this earlier conditional proof. We make no claim
+to be the first to observe the consequence of the new upstream theorem.
+
+\begin{corollary}[Coefficients in the CM field]
+Let $K=\mathbb Q(\sqrt\Delta)$. The minimum support size stays exactly
+$s(\Delta)$ when the coefficients range over $K$.
+\end{corollary}
+\begin{proof}
+The ring class field theorem gives
+$[K(\alpha):K]=h(\Delta)=[\mathbb Q(\alpha):\mathbb Q]$.
+Consequently the natural map
+$K\otimes_{\mathbb Q}\mathbb Q(\alpha)\to K(\alpha)$ is an isomorphism.
+For any finite choice of exponents, independence of the corresponding powers
+over $\mathbb Q$ therefore persists over $K$. Conversely a rational relation
+is also a relation over $K$. The same argument works for any coefficient
+field linearly disjoint from $\mathbb Q(\alpha)$ over $\mathbb Q$.
+\end{proof}
+
+\subsection{A density-one extension to any fixed number of terms}
+
+For four or more terms, the preceding published trinomial theorem leaves the
+minimum support undetermined. The same geometry of CM conjugates yields a bound
+which can exceed any prescribed support size. The following calculation
+uses the reduced forms of Bilu--Luca--Pizarro-Madariaga, \S2 and the proof
+of Proposition 3.1(6), and the root-counting argument of their Lemma 12.3.
+It holds independently of the repository's GRH theorem.
+
+\begin{proposition}[Support from coprime factorizations]
+Let $\omega(n)$ be the number of distinct prime divisors of $n$. Then
+\[
+\begin{aligned}
+ s(-4n)&\ge 1+2^{\omega(n)-1} &&(n>1),\\
+ s(-N)&\ge 1+\left\lceil 2^{\omega(N)-2}\right\rceil
+ &&(N>3,\ N\equiv3\pmod4).
+\end{aligned}
+\]
+In particular every order discriminant $-4n$ with at least three distinct
+primes dividing $n$ excludes all four-term rational polynomials.
+\end{proposition}
+\begin{proof}
+There are $2^{\omega(n)-1}$ unordered coprime factorizations $n=uv$,
+$u<v$. Assign each full prime power to one of two factors and identify the
+two orderings. The forms $[u,0,v]$ are distinct primitive reduced forms
+of discriminant $-4n$. Their CM points are $i\sqrt{v/u}$. All give positive
+conjugates, since for $z$ on the positive imaginary axis the formula
+$j(z)=E_4(z)^3/(q\prod_{m\ge1}(1-q^m)^{24})$, $q=e^{2\pi iz}$, has
+positive numerator and denominator by the Eisenstein series expansion.
+Descartes' rule gives at most $k-1$ positive roots for a polynomial with
+$k$ terms. This proves the even bound.
+
+For $N=uv$ odd, again use coprime pairs $u<v$. They are opposite modulo
+$4$. If $v>3u$, take $[u,u,(u+v)/4]$. If $v<3u$, take
+$[(u+v)/4,(v-u)/2,(u+v)/4]$. Equality forces $(u,v)=(1,3)$, excluded.
+Each triple is integral, reduced and has discriminant $-N$. For
+primitivity, an odd common prime divisor would divide both $u$ and $v$,
+and the middle coefficient is odd. Each pair can be recovered from its
+triple, and the two types have disjoint shapes. The associated CM points
+$z=(b+i\sqrt N)/(2a)$ have either $\Re z=1/2$ or $|z|=1$. In the first
+case $-\bar z=z-1$ and in the second $-\bar z=-1/z$, so modular invariance
+and the real Fourier coefficients of $j$ show that $j(z)$ is real. All
+these conjugates are nonzero because the unique zero of $j$ on the
+modular quotient has discriminant $-3$. Of $2^{\omega(N)-1}$ real
+conjugates, at least half have the same sign. Apply Descartes' rule to
+$P(X)$ or $P(-X)$ to finish.
+\end{proof}
+
+\begin{corollary}[Density for order discriminants]
+Fix $k\ge1$. Among negative order discriminants, counted once each in
+order of absolute value, the proportion with $s(\Delta)\le k$ tends to zero.
+The same holds for equations with coefficients in the corresponding CM field.
+\end{corollary}
+\begin{proof}
+For either branch of the proposition, bounded $s$ forces bounded $\omega$.
+For clarity, fix $L$ and select the odd primes up to $y$. For
+integers $m$ with natural-density weights, divisibility by these primes is a
+family of independent indicators, by the Chinese remainder theorem.
+Independence and the individual probabilities $1/p$ persist on
+$m\equiv3\pmod4$. Their sum has mean $\mu_y=\sum_{2<p\le y}1/p$
+and variance at most $\mu_y$. For $\mu_y>L$, Chebyshev's inequality bounds
+the upper density of $\omega(m)\le L$ by $\mu_y/(\mu_y-L)^2$ in either
+population. Divergence of the prime reciprocal sum lets $y$ tend to
+infinity. Apply this to $m=n$ in the even case and to $m=N$ in the odd case.
+The two cases exhaust the order discriminants up to finitely many exceptions.
+\end{proof}
+
+Two examples attain the bound. At $\Delta=-120$ the complete list of
+reduced primitive forms is $[u,0,30/u]$ for $u=1,2,3,5$. At $\Delta=-840$
+it is $[u,0,210/u]$ for $u=1,2,3,5,6,7,10,14$. The class polynomials have
+degrees $4$ and $8$, so their support sizes are at most $5$ and $9$.
+The even bound proves equality for the minimum over all polynomial
+multiples, of arbitrary degree. The accompanying
+\texttt{verify\_cm\_support.py} checks the reduced-form lists with integer
+arithmetic. The density statement weights each discriminant once. Individual
+odd prime discriminants can have arbitrarily large absolute value while
+giving only one coprime factor pair, so the factor-pair bound alone gives no growing lower bound in that case.
+
+\subsection{A uniform support bound from primes splitting in the CM field}
+
+The zero-location theorem also gives a bound that grows with the discriminant
+even when the discriminant has only one prime factor. We derive it by finding
+many conjugates of different absolute sizes. The exponents and coefficients
+of a potential sparse equation may be arbitrarily large.
+
+\begin{lemma}[Separated conjugate sizes]
+Let $z_1,\ldots,z_t$ be nonzero complex numbers whose moduli $r_i=|z_i|$
+satisfy $r_{i+1}\ge16r_i$. For any integers $0\le e_1<\cdots<e_t$,
+the matrix $(z_i^{e_j})_{i,j=1}^t$ is invertible. In particular a polynomial
+vanishing on all these points has more than $t$ terms unless it is zero.
+\end{lemma}
+\begin{proof}
+Multiply column $j$ by a positive number $c_j$, starting with $c_1=1$ and
+choosing $c_{j+1}/c_j=(r_jr_{j+1})^{-(e_{j+1}-e_j)/2}$.
+In row $i$ the ratio of successive absolute entries is
+$(r_i/\sqrt{r_jr_{j+1}})^{e_{j+1}-e_j}$. It is at least $4$ up to the
+diagonal ($j<i$) and at most $1/4$ subsequently ($j\ge i$). The sum of the
+off-diagonal magnitudes in a row is at most $2\sum_{m\ge1}4^{-m}=2/3$
+times its diagonal magnitude. Strict diagonal dominance implies
+invertibility. To see this, take a putative nonzero kernel vector, choose a coordinate of
+largest modulus and use the corresponding row. Column scaling is reversible.
+For a polynomial with fewer than $t$ terms apply the same result to an
+equal-sized subset of the points.
+\end{proof}
+
+\begin{theorem}[Uniform support growth]
+With the Dirichlet GRH theorem as input, for every sufficiently large
+absolute order discriminant $D=|\Delta|$,
+\[
+                  s(\Delta)\gg\frac{D^{1/4}}{\sqrt{\log D}} .
+\]
+The implied constant is absolute. Thus each fixed support size occurs at
+only finitely many discriminants, including orders of arbitrary conductor.
+\end{theorem}
+\begin{proof}
+Write $D=f^2|d_K|$ for $K=\mathbb Q(\sqrt\Delta)$, with $d_K$ its
+fundamental discriminant. Set
+$X=\lfloor D^{1/4}\sqrt{\log D}/10\rfloor$ and
+$H=\lfloor\log X\rfloor$. Let $S$ consist of the odd primes in $(X/2,X]$
+which split in $K$ and do not divide $f$.
+
+\emph{Counting the split primes.}
+The quadratic factorization $\zeta_K(s)=\zeta(s)L(s,\chi_{d_K})$
+supplies RH for this specific Dedekind zeta function. The uniform prime
+ideal theorem of Greni\'e and Molteni, Corollary 1.2, yields, for $y\ge100$,
+\[
+  |\psi_K(y)-y|
+   \ll\sqrt y\big((1+\log y)\log |d_K|+1+\log^2y\big).
+\]
+Here $\psi_K$ assigns weight $\log N\mathfrak p$ to every power of a prime
+ideal $\mathfrak p$. In degree two the contributions other than first powers
+of split rational primes are $O(\sqrt y\log y+\log|d_K|)$.
+Indeed, over each $p\le\sqrt y$ all prime-power terms have combined
+weight $O(\log y)$, and the sum of $\log p$ at first powers of ramified
+primes is at most $\log|d_K|$. A split $p$ contributes $2\log p$ at first
+powers. Removing the primes dividing $f$ costs another $O(\log(2f))$.
+Taking the difference at $y=X$ and $X/2$ therefore gives
+$2\sum_{p\in S}\log p=X/2+o(X)$ uniformly in $\Delta$.
+In particular $|S|\gg X/\log X$.
+See L.~Greni\'e and G.~Molteni,
+\href{https://arxiv.org/pdf/1312.4463}{\emph{Explicit versions of the
+prime ideal theorem for Dedekind zeta functions under GRH}}.
+
+\emph{Extracting spaced primes.}
+For $1\le m\le X$ let $b_m=|S\cap(m,m+H]|$.
+Then $\sum b_m=H|S|\gg X$, since each selected prime occurs for exactly
+$H$ starts. The unconditional prime second-moment estimate of
+Bazzanella, Languasco and Zaccagnini, Lemma 4 with $k=2$, states in our
+range that $\sum_{m\le X}(\psi(m+H)-\psi(m))^2\ll X\log^2X$.
+As $b_m\log(X/2)\le\psi(m+H)-\psi(m)$, this gives $\sum b_m^2\ll X$.
+Cauchy--Schwarz shows that at least a constant times $X$ starts have
+$b_m>0$. Take a maximal subset $S'$ of $S$ with pairwise distances at
+least $H$. For every occupied start some $p\in S$ lies in $(m,m+H]$
+and some $p'\in S'$ has $|p-p'|<H$. Each $p'$ accounts for at most
+$3H+1$ such starts. Thus $t=|S'|\gg X/H$.
+See D.~Bazzanella, A.~Languasco and A.~Zaccagnini,
+\href{https://arxiv.org/pdf/0809.2967}{\emph{Prime numbers in logarithmic
+intervals}}, \S3. Only the upper bound for the second moment is used.
+
+\emph{Producing separated conjugates.}
+For $p\in S'$, $(\Delta/p)=1$, $p\nmid\Delta$ and $4p^2<D$ for large
+$D$. Choose a root of $b^2\equiv\Delta\pmod p$, impose the parity
+$b\equiv\Delta\pmod2$, and take the representative $-p<b\le p$.
+Then $c=(b^2+D)/(4p)$ is integral, $p<c$, and $[p,b,c]$ is a primitive
+reduced form. Its conjugate $z_p$ satisfies
+$\big||z_p|-\exp(\pi\sqrt D/p)\big|\le2079$ by the uniform estimate
+in Bilu--Luca--Pizarro-Madariaga, \S2. Since $\sqrt D/X\to\infty$,
+we have $\log|z_p|=\pi\sqrt D/p+o(1)$ uniformly. For $p<p'$ in
+$S'$ the difference of these log-magnitudes is at least
+\[
+ \frac{\pi\sqrt D\,H}{X^2}-o(1)\longrightarrow 25\pi>\log16
+\]
+in the sense that the displayed lower bound tends to $25\pi$.
+Order the $t$ conjugates by increasing modulus and apply the lemma. Every
+annihilating polynomial has at least $t+1\gg X/H\gg D^{1/4}/\sqrt{\log D}$
+terms.
+\end{proof}
+
+This proof of uniform growth uses two published estimates and an explicit
+matrix argument. It does not determine the exceptional discriminants for
+four terms. For an elementary variant avoiding the prime second moment,
+take $X=D^{1/4}/10$ and use all eligible primes with spacing at least one.
+The same proof then yields $s(\Delta)\gg D^{1/4}/\log D$.
+
+There is also an unconditional qualitative comparison. For each fixed
+$t$, choose $t$ relatively compact open disks in the modular curve with
+positive hyperbolic area, such that every $j$-modulus in each disk is more
+than sixteen times every $j$-modulus in the preceding disk. Such disks
+exist by continuity near points $iy$ tending to the cusp, where
+$j(iy)\sim e^{2\pi y}$. Equidistribution of full CM packets, including
+nonmaximal orders, implies that for all sufficiently large $D$ the packet
+meets each disk. Indeed one can integrate a nonnegative continuous bump of
+positive integral supported in each disk. The lemma then gives
+$s(\Delta)>t$. This independently yields qualitative finiteness for bounded
+support. The split-prime argument gives the quantitative lower bound
+$D^{1/4}/\sqrt{\log D}$. See L.~Clozel and E.~Ullmo,
+\href{https://ullmo.ihes.fr/publications/clozel-ullmo.pdf}{\emph{\'Equidistribution
+de points de Hecke}}, Theorem 2.4.
+
+\begin{corollary}[A finite certificate with 7,958 conjugates]
+For $\Delta=1-2^{61}$, every nonzero rational polynomial vanishing at
+$j$ of discriminant $\Delta$ has at least $7{,}959$ terms, independently of
+any zero-location theorem.
+\end{corollary}
+\begin{proof}
+Let $D=2^{61}-1$ and $B=\lfloor D^{1/4}\rfloor=38{,}967$.
+The accompanying integer sieve counts $7{,}958$ integers $1\le a\le B$
+all of whose odd prime factors $p$ have $(\Delta/p)=1$.
+For each such $a$, Hensel lifting at odd primes and the Chinese remainder
+theorem show that $\Delta$ is a square modulo $4a$. The $2$-part follows
+from $\Delta\equiv1\pmod{2^{61}}$. Every $a$ counted is coprime to
+$\Delta$. Hence there is a primitive reduced form with leading coefficient
+$a$ by Proposition 3.1(1) of Bilu--Luca--Pizarro-Madariaga.
+For $a<a'\le B$, the exponents $\pi\sqrt D/a$ and $\pi\sqrt D/a'$
+differ by at least $\pi\sqrt D/B^2\ge\pi$. Their exponentials are
+both at least $e^{\pi B}$, so the absolute error $2079$ changes their
+magnitudes by less than one percent. The actual ratio therefore exceeds
+$(0.99/1.01)e^\pi>16$. Apply the separated-size lemma to all $7{,}958$
+moduli. The computation needs neither a numerical value of $j$ nor the
+coefficients of the class polynomial.
+\end{proof}
+
+\subsection{An explicit cutoff for equations with four terms}
+
+\begin{theorem}[Four-term cutoff]
+Using Dirichlet GRH as supplied by the upstream result,
+$s(\Delta)\ge5$ for every negative order discriminant with
+$D=|\Delta|\ge10^{11}$.
+\end{theorem}
+\begin{proof}
+Put $R=\sqrt D$. Seek one odd split prime coprime to the conductor in
+each of the three intervals $(uR,vR]$ in the table below. Write
+\[
+ E(y)=\sqrt y\left[\left(\frac{\log y}{2\pi}+2\right)\log D+
+                  2\left(\frac{\log^2 y}{8\pi}+2\right)\right],
+ \quad B(y)=2\sqrt y\log y+\log D+2\log2 .
+\]
+Put $E(0)=0$. Corollary 1.2 of Greni\'e--Molteni gives
+$|\psi_K(y)-y|\le E(y)$ for $y\ge100$.
+Twice the sum of $\log p$ for the desired primes in $(x,y]$ is at least
+$y-x-E(x)-E(y)-B(y)$ when $x=0$ or $x\ge100$.
+To see the removal cost, all prime ideal powers over the rational primes
+$p\le\sqrt y$ contribute at most $2\sqrt y\log y$. At larger $p$,
+inert primes make no contribution. Ramified primes cost at most
+$\log|d_K|$, and removing the split primes at the conductor costs at most
+$2\log f$. Their sum is $\log D$. The term $2\log 2$ permits the
+explicit removal of $2$.
+
+At $D=10^{11}$ the following are outward integer bounds, computed with
+$316227<R<316228$ and $\pi>3.14$. The columns correspond to $x=uR$ and
+$y=vR$. The accompanying \texttt{verify\_four\_term.py} checks them using
+rational arithmetic, including the logarithm bounds.
+\[
+\begin{array}{c|r|r|r}
+ (u,v] & \text{lower bound on }y-x & \text{upper bound on }E(x)+E(y)
+      & \text{upper bound on }B(y) \\ \hline
+ (0,0.046]       &14546&12138&2340\\
+ (0.048,0.189]   &44588&38992&5405\\
+ (0.230,0.500]   &85381&75082&9548
+\end{array}
+\]
+All three margins are positive. They persist for larger $R$ after
+normalizing by $R$. Indeed $E(cR)/R$ is a positive sum of constants
+times $R^{-1/2}$ times products of at most two factors chosen from
+$\log R,\log(cR)$. For $c\ge0.046$ these logarithms exceed $9$.
+The derivative of the logarithm of each term with respect to $\log R$
+is at most $-1/2+2/9<0$. The terms in $B(cR)/R$ decrease by the same
+argument, including $R^{-1}\log D$. The normalized interval widths are
+constant.
+
+For each of the resulting primes $p_1,p_2,p_3$, Proposition 3.1(1) of
+Bilu--Luca--Pizarro-Madariaga gives a reduced form of leading
+coefficient $p_i$ since $p_i\nmid D$, $\Delta$ is a square modulo $4p_i$,
+and $4p_i^2\le D$. Include the principal form of leading coefficient $1$.
+For successive prime intervals ending at $v$ and beginning at $u'$, the
+ratio of the associated larger modulus to the smaller one is at least
+\[
+       \frac{e^{\pi/v}-2079}{e^{\pi/u'}+2079}.
+\]
+Here $\pi(1/v-1/u')>2.84$ for both gaps and all four exponentials exceed
+$e^{13}>207900$. Thus the ratio exceeds $(0.99/1.01)e^{2.84}>16$.
+For the principal form versus $p_1\ge3$, the ratio is at least
+$(e^{\pi R}-2079)/(e^{\pi R/3}+2079)>16$. The separated-size lemma
+applies to the four resulting conjugates. This gives an explicit finite
+range for the remaining four-term classification.
+\end{proof}

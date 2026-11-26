@@ -1,0 +1,23 @@
+\section{Small-degree certificates and the previous four-term problem}\label{sec:finite}
+The earlier CM report used separated complex conjugates and a prime-ideal estimate to reduce the four-term problem to 79 order discriminants. We reproduced its large and small range sieves, the 121 exceptional minors at $\Delta=-4075$ and the constants in the analytic cutoff. The 79 cases comprise 50 quartic and all 29 quintic orders. Their independent certification is also a direct way to establish the small-degree inputs required for the five-term theorem. The earlier four-term reduction is documented in Appendix~\ref{sec:earlier} and its checkers under \texttt{previous/}.\cite{prior}
+\paragraph{The final 79.}
+For each remaining discriminant we computed $H_\Delta$ by enumerating its primitive reduced forms and evaluating
+\[
+ j(\tau)=\frac{E_4(q)^3}{q\prod_{n\ge1}(1-q^n)^{24}},\qquad
+ E_4(q)=1+240\sum_{n\ge1}\sigma_3(n)q^n,\quad q=e^{2\pi i\tau}.
+\]
+All evaluations use outward-rounded dyadic intervals. Reduction gives $|q|<1/200$. The 164-term truncation of $E_4$ has error at most $960\cdot165^3/200^{165}$, since $\sigma_3(n)<2n^3$. For the omitted factors of the product the sum of $|q|^n$ is at most $2/200^{165}$, which gives an absolute full-product error below $8/200^{165}$. Each coefficient enclosure contains exactly one integer, determining the monic class polynomial by CM integrality. The checker independently reconstructs all 79 polynomials.
+
+For each one, a row of \texttt{cm/disk\_witnesses.csv} specifies $p,a,u,\lambda$ in the Newton polygon test of Section~\ref{sec:local}. It verifies that at least four conjugates lie in the disk and that $w_{p,\lambda}(n)>\max_{i<4} w_{p,\lambda}(i)$ for all $n\ge4$. To test this infinite condition it uses exact factorial valuations up to the point where $n\lambda-(n-1)/(p-1)$ exceeds the required maximum and increases thereafter. Thus each certificate excludes all rational four-term relations, including those of arbitrarily large degree. The following counts describe the 79 four-term exclusions and the quintic subset for which one disk also excludes five terms.
+\begin{center}
+\begin{tabular}{lrrrrrr}
+\toprule Witness prime&2&3&7&13&17&Total\\\midrule
+Four-term exclusions&1&48&23&5&2&79\\
+Five-term exclusions by a single disk&0&20&5&3&0&28\\\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{One certificate by hand.}
+At $\Delta=-68$ expand $2^{-24}H_{-68}(2^6(3+Y))$. From constant to leading term the valuations are $13,10,6,5,0$. With $\lambda=5/2$ the unique minimizing index of $v_2(B_i)+5i/2$ is 4. All four conjugates are inside the disk. For $i=0,1,2,3$, the maximum of $5i/2-v_2(i!)$ is $13/2$. At $n=4$ the weight is $7$, and for $n\ge5$ it is at least $3n/2+1$. Strassmann gives at most three sparse roots for any polynomial of support at most four. This proves $s(-68)=5$ with a small integer calculation.
+
+\input{quintic}

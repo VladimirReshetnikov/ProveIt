@@ -1,0 +1,435 @@
+\section{Sharp interpolation and sparse nonabelian tests}\label{sec:sparse-sampling}
+
+\paragraph{Status and attribution.}
+Fourth-power sampling is already present in Sandi Setiawan's
+\href{https://www.preprints.org/manuscript/202611.0738}{November 2026 preprint},
+whose abstract explicitly states the fourth-power square-root scale.
+We make no novelty claim for that scale. This section gives a self-contained
+version for arbitrary positive ramp measures, an exact interpolation loss,
+a sharpness example within that class, and a centering-free specialization
+to nonabelian Dedekind zeta functions. The latter is a reduction of an open
+estimate, not a proof of that estimate.
+
+Let $\mu$ be a positive locally finite Borel measure on $[1,\infty)$,
+let $A\ge0$, and let $c\in\mathbb R$. Put
+\[
+ S(x)=\int_{[1,x]}\left(\frac1u-\frac1x\right)d\mu(u),
+ \qquad R(x)=S(x)-A\log x-c\quad(x\ge1).
+\]
+No convergence assumption on $R$ is needed for the interpolation argument.
+For prime weights, $\mu=\sum_p w(p)\log p\,\delta_p$ with $w(p)\ge0$.
+For the source repository's remainder, use the nonnegative prime-power
+weights $\lambda_{d,q}(n)$ and $A=1/\varphi(q)$.
+
+\begin{lemma}[Exact interpolation loss]\label{lem:sampling-jensen}
+Suppose $1\le x_0<x_1$ and $x\in[x_0,x_1]$. Define
+\[
+ t_i=x_i^{-1},\qquad t=x^{-1},\qquad
+ \lambda=\frac{t-t_1}{t_0-t_1}\in[0,1].
+\]
+Then
+\begin{align}
+ R(x)&\le\lambda R(x_0)+(1-\lambda)R(x_1)+A J_\lambda(t_0,t_1),
+ \label{eq:sampling-interpolation}\\
+ J_\lambda(t_0,t_1)
+ &=\log\bigl(\lambda t_0+(1-\lambda)t_1\bigr)
+       -\lambda\log t_0-(1-\lambda)\log t_1\nonumber\\
+ &\le\frac18\log^2(x_1/x_0).
+ \label{eq:sampling-loggap}
+\end{align}
+The exact maximum of $J_\lambda$ over $\lambda\in[0,1]$ is
+\[
+ J(r)=\log\frac{r-1}{\log r}-1+\frac{\log r}{r-1},
+ \qquad r=x_1/x_0>1.
+\]
+As $r\downarrow1$, $J(r)\sim\frac18\log^2r$.
+\end{lemma}
+
+\begin{proof}
+The function
+\[
+ H(t)=S(1/t)=\int_{[1,\infty)}(u^{-1}-t)_+\,d\mu(u),\qquad t>0,
+\]
+is convex, since each integrand is the maximum of two affine functions
+and the measure is positive. Only $u\le1/t$ contributes, so every integral
+is finite. Apply convexity to $H(t)$ and substitute
+$H(t)=R(1/t)-A\log t+c$. This gives
+\eqref{eq:sampling-interpolation}.
+
+For the bound, set $y=\log(t_0/t_1)$ and
+$f_\lambda(y)=\log(1-\lambda+\lambda e^y)-\lambda y$.
+The cases $\lambda=0,1$ are immediate. Otherwise
+\[
+ f_\lambda(0)=f'_\lambda(0)=0,
+ \qquad f''_\lambda(y)=p(y)(1-p(y))\le\tfrac14,
+ \quad p(y)=\frac{\lambda e^y}{1-\lambda+\lambda e^y}.
+\]
+Two integrations give $f_\lambda(y)\le y^2/8$.
+For the exact maximum, write $u=t/t_1\in[1,r]$. The gap is
+$\log u-(u-1)\log r/(r-1)$, maximized at
+$u=(r-1)/\log r$. Substitution proves the formula. Taylor expansion
+at $r=1$ gives the asymptotic; it also follows by the preceding
+second-derivative calculation at $\lambda=1/2$.
+\end{proof}
+
+\begin{theorem}[Nonuniform sampling]\label{thm:sampling-general}
+Let $\theta>0$ and $1\le x_1<x_2<\cdots\to\infty$. Suppose
+\[
+ \log(x_{j+1}/x_j)=O(x_j^{-\theta/2}).
+\]
+Then the following are equivalent:
+\[
+ \exists C\ge0\ \forall x\text{ sufficiently large},\quad
+ R(x)\le Cx^{-\theta};
+\]
+\[
+ \exists C_0\ge0\ \forall j\text{ sufficiently large},\quad
+ R(x_j)\le C_0x_j^{-\theta}.
+\]
+More quantitatively, if the sampled inequality holds and
+$\log^2(x_{j+1}/x_j)\le Kx_j^{-\theta}$, then for
+$x\in[x_j,x_{j+1}]$,
+\[
+ R(x)\le(C_0+AK/8)x_j^{-\theta}
+ \le(C_0+AK/8)(x_{j+1}/x_j)^\theta x^{-\theta}.
+\]
+When $A>0$, the scale of the required gaps is
+$x_{j+1}-x_j=O(x_j^{1-\theta/2})$.
+\end{theorem}
+
+\begin{proof}
+The continuous inequality implies its restriction to the samples.
+For the reverse implication, both endpoint values in
+\eqref{eq:sampling-interpolation} are at most $C_0x_j^{-\theta}$;
+use \eqref{eq:sampling-loggap}. The ratio $x_{j+1}/x_j$ tends to one,
+so it is bounded. The assertion about gaps follows from
+$e^v-1\sim v$ as $v\to0$.
+\end{proof}
+
+\begin{corollary}[Fourth powers]\label{cor:sampling-quartic}
+For every positive ramp measure as above,
+\[
+ R(x)=O_+(x^{-1/2})
+ \quad\Longleftrightarrow\quad
+ R(n^4)=O_+(n^{-2}),
+\]
+where $O_+$ means an eventual upper bound, with no lower bound asserted.
+If $R(n^4)\le Cn^{-2}$ for $n\ge n_0$ and $C\ge0$, then
+\[
+ R(x)\le(C+8A)x^{-1/2}\qquad(x\ge n_0^4).
+\]
+For the polynomial grid $x_j=j^r$, the general theorem applies whenever
+$r\theta\le2$.
+\end{corollary}
+
+\begin{proof}
+Here $\log(x_{n+1}/x_n)=4\log(1+1/n)\le4/n$, so the interpolation
+loss is at most $2A/n^2$. Because $C\ge0$ and the square root is
+concave, the endpoint contribution is
+$C[\lambda\sqrt{t_0}+(1-\lambda)\sqrt{t_1}]\le C\sqrt t$.
+For $x\in[n^4,(n+1)^4]$ one has $n^{-2}\le4x^{-1/2}$.
+Thus the total loss is at most $8Ax^{-1/2}$. In general the logarithmic gap is
+$r\log(1+1/j)\sim r/j$, while $x_j^{-\theta}=j^{-r\theta}$.
+\end{proof}
+
+There is a sharper asymptotic statement. If
+$L=\limsup_{n\to\infty}n^2R(n^4)$ is finite, then
+\[
+ L\le\limsup_{x\to\infty}\sqrt x\,R(x)\le L+2A.
+\]
+Indeed, for $x\in[n^4,(n+1)^4]$ the normalized endpoint weights
+$\sqrt x/n^2$ and $\sqrt x/(n+1)^2$ tend uniformly to one.
+Multiplying \eqref{eq:sampling-interpolation} by $\sqrt x$ bounds the
+endpoint term by $L+o(1)$, with an arbitrarily small fixed slack,
+and bounds the Jensen loss by
+$2A(n+1)^2\log^2(1+1/n)=2A+o(1)$. The first inequality is restriction
+to the sampled subsequence. The same argument handles $L=-\infty$
+by first imposing an arbitrary negative bound on the sampled terms.
+
+\begin{proposition}[Sharpness of the positivity argument]\label{prop:sampling-sharp}
+Fix $A>0$, $r>0$, and nodes $x_j=j^r$. There is a positive measure
+$\mu$ supported on these nodes for which $c=0$,
+\[
+ R(x_j)=0\quad\text{for every }j,\qquad R(x)\longrightarrow0,
+\]
+but at suitable $x_j^*\in(x_j,x_{j+1})$,
+\[
+ R(x_j^*)=A J((1+1/j)^r)\sim\frac{Ar^2}{8j^2}.
+\]
+Consequently $x^{\theta}R(x)$ is unbounded above if $r\theta>2$.
+If $r$ is an integer, the measure is supported on positive integers.
+At the critical case $r=4$, $\theta=1/2$, the asymptotic loss $2A$
+cannot be improved using positivity alone.
+\end{proposition}
+
+\begin{proof}
+Write $t_j=j^{-r}$ and define $H(t)$ to be the piecewise affine
+interpolant of $-A\log t$ on the nodes $t_j$, with $H(t)=0$ for
+$t\ge1$. It is convex. On $[t_{j+1},t_j]$ its slope is $-D_j$, where
+\[
+ D_j=\frac{A\log(x_{j+1}/x_j)}{x_j^{-1}-x_{j+1}^{-1}}.
+\]
+The $D_j$ strictly increase. Set $D_0=0$ and
+\[
+ \mu=\sum_{j\ge1}(D_j-D_{j-1})\delta_{x_j}.
+\]
+This is positive and locally finite. The function
+$\sum_j(D_j-D_{j-1})(x_j^{-1}-t)_+$ has the same piecewise slopes
+and the same value at $t=1$ as $H$, so it equals $H$.
+Therefore $S(x_j)=A\log x_j$ and $R(x_j)=0$.
+Between nodes the remainder is exactly the Jensen gap in
+Lemma~\ref{lem:sampling-jensen}. Its maximum occurs at
+\[
+ x_j^*=\frac{\log(x_{j+1}/x_j)}{x_j^{-1}-x_{j+1}^{-1}}
+       \sim j^r.
+\]
+The asserted asymptotic follows from that lemma. It also implies
+$R(x)\to0$, since the maximum on the $j$th interval is $O(j^{-2})$.
+Multiplying by $(x_j^*)^{\theta}$ proves the divergence assertion.
+For $r=4$ the limiting normalized maximum is $2A$.
+\end{proof}
+
+This counterexample is deliberately a statement about what positivity
+and interpolation can prove. Its masses satisfy
+$\mu(\{j^r\})\sim Arj^{r-1}$; they are not von Mangoldt coefficients.
+It does not establish that a sparser arithmetic sampling criterion is
+false. Analytic continuation or additional arithmetic structure could
+give stronger sampling results.
+
+\subsection{Eliminating the unknown centering constant}
+
+Suppose now that $R(x)\to0$ and let $q\ge2$ be an integer. For
+the quartic grid define the explicitly finite statistic
+\begin{align}
+ B_q(n)&=4A\log q-\bigl(S((qn)^4)-S(n^4)\bigr)\label{eq:sampling-B}\\
+ &=R(n^4)-R((qn)^4).\nonumber
+\end{align}
+The centering constant $c$ cancels. With $X=n^4$ and $Q=q^4$,
+\begin{align}
+ S(QX)-S(X)
+ &=\frac{Q-1}{QX}\,\mu([1,X])
+   +\int_{(X,QX]}\left(\frac1u-\frac1{QX}\right)d\mu(u).
+ \label{eq:sampling-finite-increment}
+\end{align}
+Thus only the weights at $u\le(qn)^4$ are used.
+
+\begin{proposition}[One-sided finite certificate]\label{prop:sampling-certificate}
+If $B_q(n)\le Cn^{-2}$ for all sufficiently large integers $n$,
+with $C\ge0$, then
+\[
+ R(n^4)\le\frac{C}{1-q^{-2}}n^{-2}
+\]
+for those integers, and hence $R(x)=O_+(x^{-1/2})$.
+Conversely, the two-sided estimate $R(x)=O(x^{-1/2})$ implies
+$B_q(n)=O(n^{-2})$.
+\end{proposition}
+
+\begin{proof}
+For every integer $N\ge0$,
+\[
+ R(n^4)-R((q^{N+1}n)^4)=\sum_{k=0}^{N}B_q(q^kn)
+ \le\frac{C}{n^2}\sum_{k=0}^{N}q^{-2k}.
+\]
+Let $N\to\infty$ and use $R(x)\to0$. Then apply
+Corollary~\ref{cor:sampling-quartic}. The converse follows directly
+from \eqref{eq:sampling-B} and a two-sided bound at both endpoints.
+\end{proof}
+
+The converse here deliberately assumes a \emph{two-sided} estimate.
+Subtracting two upper bounds does not bound their difference.
+For zeta-function applications RH supplies the two-sided estimate, so
+this distinction does not weaken the resulting equivalence.
+
+\subsection{A nonabelian criterion using polynomial root counts}
+
+Let $f\in\mathbb Z[T]$ be monic and irreducible, let
+$K=\mathbb Q[T]/(f)$, and omit primes dividing $\operatorname{disc}(f)$.
+For every other prime $p$, let
+\[
+ r_f(p)=\#\{a\in\mathbb F_p:f(a)=0\}.
+\]
+It counts the degree-one prime ideals of $K$ above $p$ and lies between
+zero and $[K:\mathbb Q]$. Define
+\[
+ S_f(x)=\sum_{\substack{p\le x\\p\nmid\operatorname{disc}(f)}}
+       r_f(p)\log p\left(\frac1p-\frac1x\right),
+ \qquad R_f(x)=S_f(x)-\log x-c_f,
+\]
+where $c_f$ is the unique constant making $R_f(x)\to0$.
+Its existence follows from the fixed-field prime ideal theorem:
+if $\theta_f(x)=\sum_{p\le x}r_f(p)\log p$, then
+\[
+ \theta_f(x)=x+O_f(xe^{-b_f\sqrt{\log x}}),
+ \qquad
+ c_f=\int_1^\infty(\theta_f(t)-t)t^{-2}\,dt.
+\]
+In this estimate a possible exceptional zero of the fixed field is
+absorbed for sufficiently large $x$. Higher residue degrees and ideal
+powers cost $O_f(\sqrt x\log^2(2x))$, which is also absorbed.
+
+\begin{theorem}[A finite quartic criterion for any number field]
+\label{thm:sampling-numberfield}
+With the notation above, set
+\begin{align}
+ B_f(n)=\log16
+ &-\frac{15}{16n^4}
+       \sum_{\substack{p\le n^4\\p\nmid\operatorname{disc}(f)}}r_f(p)\log p
+ \nonumber\\[-2pt]
+ &-\sum_{\substack{n^4<p\le16n^4\\p\nmid\operatorname{disc}(f)}}
+       r_f(p)\log p\left(\frac1p-\frac1{16n^4}\right).
+ \label{eq:sampling-polynomial-statistic}
+\end{align}
+Then
+\[
+ \operatorname{RH}(\zeta_K)
+ \quad\Longleftrightarrow\quad
+ \sup_{n\ge1}n^2B_f(n)<\infty.
+\]
+Equivalently, RH holds if and only if
+$\sup_{n\ge1}n^2R_f(n^4)<\infty$.
+The bound on $B_f$ is one-sided; no unspecified centering constant
+appears in its definition.
+\end{theorem}
+
+\begin{proof}
+We first justify the continuous analytic criterion. For $\Re s>1$,
+\[
+ D_f(s)=\sum_{p\nmid\operatorname{disc}(f)}r_f(p)(\log p)p^{-s}
+       =-\frac{\zeta'_K(s)}{\zeta_K(s)}+H_f(s),
+\]
+where $H_f$ is holomorphic in $\Re s>1/2$. Indeed the omitted
+prime-power coefficients have absolute value at most
+$[K:\mathbb Q]\log p$, and the series with exponent $p^{-js}$,
+$j\ge2$, converges locally uniformly there. The finitely many
+ramified local factors are holomorphic for $\Re s>0$.
+Termwise integration gives
+\[
+ T_f(s)=\int_1^\infty R_f(x)x^{-s}\,dx
+       =\frac{D_f(s)}{s(s-1)}-\frac1{(s-1)^2}-\frac{c_f}{s-1}.
+\]
+The apparent singularity at one is removable by the definition of
+$c_f$. Every zero $\rho$ of $\zeta_K$ with $\Re\rho>1/2$ supplies
+a simple pole with residue
+\[
+ \frac{m_\rho}{\rho(1-\rho)},
+\]
+where $m_\rho>0$ is its multiplicity. In particular each real pole
+in $(1/2,1)$ has positive residue, and there are no poles on the real
+line at or above one.
+
+If $R_f(x)\le Cx^{-1/2}$ eventually, fix $\beta>1/2$. The function
+$Cx^{\beta-1}-R_f(x)$ is eventually nonnegative after increasing $C$.
+Its tail Mellin transform equals $C/(s-\beta)-T_f(s)$ plus an entire
+function. A convergence abscissa to the right of $\beta$ would, by
+Landau's lemma for a nonnegative integrand, force a real singularity
+there. Such a singularity is either removable or a simple pole with
+negative residue, the latter impossible for an integral tending to
+a nonnegative value or $+\infty$ from the right. Thus its transform
+is holomorphic in $\Re s>\beta$ and $T_f$ has no poles there.
+As $\beta\downarrow1/2$, there are no zeros to the right of the
+critical line. The Dedekind functional equation supplies the other
+half of the critical strip.
+
+In the forward direction, under RH the integrated explicit formula
+gives
+\[
+ \int_0^x(\psi_K(t)-t)\,dt=O_K(x^{3/2}).
+\]
+This form is given, with explicit constants, by
+\href{https://arxiv.org/abs/1312.4465}{Greni\'e and Molteni,
+\emph{Explicit smoothed prime ideals theorems under GRH}}.
+The difference $\psi_K(t)-\theta_f(t)=O_f(\sqrt t\log^2(2t))$
+can be sharpened here to $O_f(\sqrt t)$: for $j=2$ use
+$\sum_{p\le\sqrt t}\log p=O(\sqrt t)$; the sum over $j\ge3$
+is $O_f(t^{1/3}\log(2t))$, and finitely many bad primes contribute
+$O_f(\log(2t))$. Therefore
+$A_f(x)=\int_1^x(\theta_f(t)-t)\,dt=O_f(x^{3/2})$.
+Integration by parts in
+$R_f(x)=-\int_x^\infty(\theta_f(t)-t)t^{-2}\,dt$ gives
+\[
+ R_f(x)=\frac{A_f(x)}{x^2}-2\int_x^\infty\frac{A_f(t)}{t^3}\,dt
+       =O_f(x^{-1/2}).
+\]
+This proves the continuous equivalence, including the exact exponent.
+
+Apply Corollary~\ref{cor:sampling-quartic} to the positive measure
+$\sum_p r_f(p)\log p\,\delta_p$, with $A=1$.
+Finally \eqref{eq:sampling-polynomial-statistic} is $B_2(n)$ of
+\eqref{eq:sampling-B}. Proposition~\ref{prop:sampling-certificate}
+proves the reverse implication from its upper bound, and the
+two-sided estimate just proved gives the forward implication.
+Finitely many initial terms are finite, so eventual boundedness and
+the displayed supremum condition are equivalent.
+\end{proof}
+
+\paragraph{The first nonabelian example.}
+Take $f(T)=T^3-T-1$, let $\alpha$ be a root, and set
+$K=\mathbb Q(\alpha)$. The rational-root test proves irreducibility,
+and $\operatorname{disc}(f)=4-27=-23$; hence the Galois closure $M$
+has group $S_3$, with quadratic subfield $\mathbb Q(\sqrt{-23})$.
+Only $p=23$ is omitted from the prime sum. For every other prime,
+\[
+ r_f(p)=\deg\gcd(T^p-T,T^3-T-1)\quad\text{in }\mathbb F_p[T],
+\]
+so it is computable by modular polynomial arithmetic. The possible
+factorization types are three linear factors, one linear factor times
+an irreducible quadratic, and an irreducible cubic; their root counts
+are respectively $3,1,0$. The corresponding Frobenius characters are
+\[
+ \begin{array}{c|ccc}
+ \text{type}&111&12&3\\ \hline
+ r_f&3&1&0\\
+ \operatorname{sgn}&1&-1&1\\
+ \operatorname{tr}\rho&2&0&-1
+ \end{array}
+\]
+with $r_f=1+\operatorname{tr}\rho$ for the standard two-dimensional
+representation $\rho$ of $S_3$. The uniform upper bound in
+Theorem~\ref{thm:sampling-numberfield} would therefore prove RH for
+this nonabelian cubic field. The repository's Dirichlet GRH does not
+supply that upper bound: the root-count character contains $\rho$.
+
+For the Galois closure, the analogous statistic uses the indicator
+$r_f(p)=3$ and replaces $\log16$ by $(\log16)/6$. Its boundedness is
+equivalent to $\operatorname{RH}(\zeta_M)$ by the completely split
+criterion in the prior reports. Under Dirichlet GRH these two target
+RH statements are equivalent, since
+\[
+ \zeta_K=\zeta L(s,\rho),\qquad
+ \zeta_M=\zeta L(s,\chi_{-23})L(s,\rho)^2.
+\]
+To justify using the factorization on the right half-plane, ordinary
+RH makes $\zeta$ nonzero there away from its pole, so
+$L(s,\rho)=\zeta_K(s)/\zeta(s)$ is holomorphic there; the value at
+one is obtained by removing the simple poles. The one-dimensional
+factor is nonzero there by Dirichlet GRH. Consequently the remaining
+zeros are exactly the degree-two target zeros, with their indicated
+multiplicities. The functional equations finish both RH statements.
+
+For comparison with a full prime-power computation, the squarefree
+polynomial discriminant implies $\mathcal O_K=\mathbb Z[\alpha]$.
+Modulo 23,
+\[
+ T^3-T-1=(T-3)(T-10)^2.
+\]
+There are two prime ideals above 23, each of residue degree one
+(and ramification indices one and two), so the local zeta factor is
+$(1-23^{-s})^{-2}$ and its logarithmic-derivative coefficient at
+$23^j$ is $2\log23$ for every $j\ge1$. The prime-only statistic
+omits 23 and requires no such local correction.
+
+The root-count version also works for arbitrary irreducible
+polynomials without assuming holomorphy of every irreducible Artin
+factor: the Dedekind zeta function itself supplies the required
+meromorphic continuation and nonnegative zero multiplicities.
+
+\paragraph{What remains to be proved.}
+The new task is an arithmetic upper bound for
+\eqref{eq:sampling-polynomial-statistic}, uniformly over all sufficiently
+large $n$. No finite computation establishes that bound. Positivity
+and interpolation reduce the number of scales at which a proposed
+arithmetic argument must work; they do not generate the needed
+arithmetic information. To transfer the repository's determinant
+construction, one must represent these root-count or splitting
+weights by new arithmetic objects and prove their shortness,
+spanning, and determinant lower bounds with the required error.

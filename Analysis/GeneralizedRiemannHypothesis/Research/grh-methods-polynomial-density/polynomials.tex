@@ -1,0 +1,149 @@
+\section{A counterexample to the polynomial-ring density conjecture}
+\label{sec:density}
+For every prime power $q$, there is a subset of $\mathbb F_q[x]$ containing
+no triple $f,rf,r^2 f$ with $f\ne0$ and $r$ a nonconstant polynomial, whose
+upper density strictly exceeds
+\[
+ m_q=(1-q^{-1})\sum_{a\in A}q^{-a}
+     =(1-q^{-2})\prod_{j\ge1}(1+q^{-3^j}),
+ \qquad A=\{a\ge0:\text{all ternary digits of }a\text{ are }0\text{ or }1\}.
+\]
+Here upper density means $\limsup_{N\to\infty}|E\cap\{f:\deg f\le N\}|/q^{N+1}$.
+This disproves Conjecture 6.3 of Asada, Fourakis, Manski, McNew, Miller and
+Moreland, \emph{Subsets of $\mathbb F_q[x]$ free of 3-term geometric progressions},
+\emph{Finite Fields Appl.} 44 (2017), 135--147,
+\href{https://doi.org/10.1016/j.ffa.2016.10.002}{doi:10.1016/j.ffa.2016.10.002}.
+Their Theorem 4.3 proves that $m_q$ is optimal among sets defined solely by degree.
+Our construction uses the factorization of polynomials of the same degree.
+An earlier ProveIt analysis, \texttt{progressions.tex} inside
+\texttt{grh-progression-densities-and-cubic-prime-race.zip}, improved other bounds
+and explicitly left Conjecture 6.3 open. Its use of exponents suggested revisiting
+the fixed-radius digit construction in \texttt{exists\_three\_term\_free}
+in the readable Lean edition. The construction there selects embeddings of CM fields.
+Its elementary combinatorial ingredient, the classical \href{https://doi.org/10.1073/pnas.32.12.331}{Behrend sphere method},
+here selects degrees inside a class of smooth polynomials.
+
+\subsection*{An arithmetic-progression-free replacement}
+In a ball of cutoff degree $N$, call $d=N-\deg f$ the deficit.
+The rule $d\in A$ gives a progression-free set with density tending to $m_q$ as
+$N\to\infty$. Indeed, nonconstant polynomial ratios give strictly increasing
+degrees in arithmetic progression, and the equation $a+c=2b$ for $a,b,c\in A$
+has no ternary carries, forcing equality at every digit.
+
+Put $M=3^{20}$. For $u=(u_0,\ldots,u_8)\in\{0,\ldots,5\}^9$, write
+$b(u)=\sum_{i=0}^8u_i11^i$. Take the set $B$ of these integers satisfying
+$\sum_i(2u_i-5)^2=105$. The one-digit squared contributions are $1,9,25$,
+each with multiplicity two. If their respective counts are $i,j,k$, then
+$i+j+k=9$ and $j+3k=12$. The possibilities $(i,j,k)$ are $(1,6,2)$,
+$(3,3,3)$ and $(5,0,4)$. Hence
+\[
+ |B|=2^9\!\left(\frac{9!}{1!6!2!}+\frac{9!}{3!3!3!}
+                       +\frac{9!}{5!0!4!}\right)
+     =1{,}053{,}696 > 2^{20}=|A\cap[0,M)|.
+\]
+Also $\max B\le(11^9-1)/2<M/2$. Neither the sum of two digits nor a
+doubled digit exceeds 10. Thus a midpoint identity implies a
+coordinatewise midpoint identity. Strict convexity of the squared norm
+on a line forces all three centered vectors to coincide. This is the
+part of the proof shared with the source Lean construction.
+
+We claim that $D=B\cup(A\cap[M,\infty))$ is also progression-free.
+Two low terms cannot reach a high term, since twice the largest low term
+is less than $M$. Suppose $a<b<c$ with $a\in B$ and $b,c\in A$ high.
+Write $S=3^j$ for the largest ternary place of $c$, so that
+$S\le c\le(3S-1)/2$. If $b<S$ then $2b\le S-1<c$.
+If $b\ge S$ then $2b-c\ge(S+1)/2>M/2>a$.
+Neither case admits $a+c=2b$. Triples lying entirely on one side
+are excluded by the progression-free property already proved.
+
+\subsection*{A smooth factor of fixed degree records a strict gain}
+Let $\mathcal P$ be the finite set of all monic irreducibles in
+$\mathbb F_q[x]$ of degree at most $M$. Call a monic polynomial smooth
+if all its factors belong to $\mathcal P$ and rough if none do.
+Let $H_n$ count the monic smooth polynomials of degree $n$, with
+$H_n=0$ for $n<0$ and $H_0=1$. Unique factorization gives
+\[
+ H(z)=\sum_{n\ge0}H_n z^n=\prod_{P\in\mathcal P}(1-z^{\deg P})^{-1}.
+\]
+For $0<z<1$ this series is absolutely convergent. The polynomial
+$J(z)=\sum_{d\in B}z^d-\sum_{d\in A,\,d<M}z^d$ satisfies $J(1)>0$.
+For real $z<1$ sufficiently near 1 we have $H(z)J(z)>0$. Its coefficients
+cannot all be nonpositive. Fix an $R\ge0$ for which
+\[
+ \Delta=[z^R]H(z)J(z)
+   =\sum_{d\in B}H_{R-d}-\sum_{d\in A,\,d<M}H_{R-d}\ \ge1.
+\]
+All parameters so far depend at most on $q$. They are finite and can in
+principle be found by integer enumeration. The positivity argument avoids
+evaluating an infeasibly large coefficient.
+
+An explicit bound on the search is
+$R\le R_* = M(1+2^{20}|\mathcal P|)$. To see this, put
+$z=1-1/(1024M)$ and give $T=n$ probability $H_nz^n/H(z)$.
+Logarithmic differentiation at $z$ gives
+\[
+ \mathbb E T=\sum_{P\in\mathcal P}
+ \frac{(\deg P)z^{\deg P}}{1-z^{\deg P}}
+ \le \frac{|\mathcal P|}{1-z}=1024M|\mathcal P|.
+\]
+Indeed $1-z^e=(1-z)\sum_{j<e}z^j\ge e(1-z)z^e$ for $e\ge1$.
+By Markov's inequality $\Pr(T\le R_*-M)\ge1023/1024$.
+Also $z^M\ge1023/1024$ by Bernoulli's inequality. In the sum of
+coefficients of $H J$ through $R_*$ weighted by $z^n/H(z)$, each added
+term $d\in B$ contributes $z^d\Pr(T\le R_*-d)\ge(1023/1024)^2$.
+Each displaced term contributes at most one in absolute value. The
+weighted sum is strictly positive since $1023^2|B|>1024^2\,2^{20}$.
+This proves the asserted bound.
+
+At cutoff $N\ge R$ start with the deficit rule $A$. For every squarefree rough
+monic $g$ of degree $N-R$, consider all $cgh$ in the ball, where $c\in\mathbb F_q^\times$
+and $h$ is monic smooth. On each such class replace the rule by $d\in D$.
+Every nonzero polynomial has a unique scalar and a unique rough and smooth
+part, so the classes are disjoint. For each $g$ the change is exactly
+$(q-1)\Delta$ polynomials, since a term of deficit $d$ has $\deg h=R-d$.
+
+To verify avoidance, any newly created progression would contain an added
+polynomial $f=cgh$. Its deficit belongs to $B$ and is less than $M/2$.
+If $f$ is first or middle, the next term has degree at most $N$, so
+$\deg r\le N-\deg f<M$. If $f$ is last, then $r^2$ divides $f$.
+Every irreducible outside $\mathcal P$ occurs in $f$ with exponent at
+most one, by squarefreeness of $g$. Consequently all nonconstant factors
+of $r$ belong to $\mathcal P$ in every case. All three terms have the
+same monic rough part $g$. Their deficits would be three distinct members
+of $D$ in arithmetic progression, a contradiction. This argument uses the
+condition $r\in\mathbb F_q[x]$ of Conjecture 6.3.
+
+\subsection*{Positive density and passage to one infinite set}
+If $G_n$ counts squarefree rough monic polynomials of degree $n$, then
+\[
+ \frac{G_n}{q^n}\longrightarrow
+ c_q=(1-q^{-1})\prod_{P\in\mathcal P}(1+q^{-\deg P})^{-1}>0 .
+\]
+Indeed their generating function is
+$(1-qz^2)(1-qz)^{-1}\prod_{P\in\mathcal P}(1+z^{\deg P})^{-1}$.
+This follows from the Euler product $\prod_P(1-z^{\deg P})^{-1}=(1-qz)^{-1}$
+and $1+y=(1-y^2)/(1-y)$. Removing the pole at $1/q$ leaves a rational
+function analytic on $|z|<1$, giving the displayed limit by coefficient
+comparison. If $E_N$ is the resulting finite set, division by the ball size gives
+\[
+ \frac{|E_N|}{q^{N+1}}
+ =(1-q^{-1})\sum_{\substack{d\in A\\d\le N}} q^{-d}
+     + \frac{(q-1)\Delta G_{N-R}}{q^{N+1}}
+ \longrightarrow m_q+\underbrace{(q-1)\Delta q^{-R-1}c_q}_{\displaystyle\delta_q>0}.
+\]
+This establishes a fixed positive margin for each $q$. In particular the gap is at least $(q-1)q^{-R_*-1}c_q$, which involves only explicitly specified finite products and integers.
+
+Choose integer cutoffs $N_j$ increasing sufficiently fast that
+$N_j-j>2N_{j-1}$ and $N_j-2j>N_{j-1}$, with $N_1\ge R+2$.
+Take from $E_{N_j}$ only polynomials with degrees between $N_j-j$ and
+$N_j$ inclusive, and form the union of these blocks.
+A triple meeting an earlier block and the latest block in two earlier
+terms would have final degree at most $2N_{j-1}$. With two latest terms,
+its first degree would be at least $N_j-2j$. Both are impossible.
+Deleting the degrees below $N_j-j$ loses at most $q^{N_j-j}$ polynomials at
+that cutoff. The normalized loss is at most $q^{-j-1}$, which tends to zero.
+The union has upper density at least $m_q+\delta_q$, as claimed.
+
+The proof gives a positive gap with a very large cutoff; it leaves the true
+supremum undetermined. The small digit computation in \texttt{check\_sphere.py}
+independently verifies the cardinality and the range used in the replacement.

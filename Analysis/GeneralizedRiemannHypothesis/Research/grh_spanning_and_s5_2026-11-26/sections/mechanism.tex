@@ -1,0 +1,79 @@
+\section{The mechanism that could transfer}
+
+The proof is not merely an analytic manipulation of Dirichlet
+$L$-functions. Its main comparison is between upper and lower bounds for
+the same arithmetic size. The public guide and the exact Lean statements
+identify three inputs \cite{guide,mainineq}:
+
+\begin{enumerate}
+\item \textbf{Short forms.} Theta derivatives have local divisibility that
+records smoothed prime sums. After a controlled normalization, suitable
+integral source forms map to short target vectors with bounded index.
+\item \textbf{Enough forms.} Near-isometry and a second-moment estimate
+show that few translates of the source map span almost all of the target.
+This is where the quantitative improvement below applies.
+\item \textbf{Long integral forms.} Determinants of chains of lifts,
+regular families of twists, and bounds on denominators provide a lower
+bound on the size of sufficiently many integral target forms.
+\end{enumerate}
+
+The common leading contribution cancels when these bounds are combined.
+The conclusion of \src{New/Reduction/MainInequality.lean}
+{\texttt{New.star\_inequality}} is
+\[
+ m\,\mathrm{totalRemainder}\le f\,a(\log b)^5.
+\]
+Here $m$ is the number of successive lifts, $f$ is the number of infinite
+places, $a$ is a derivative order, and $b$ is a much larger auxiliary
+weight. The source chooses $\sqrt{x}\le m\le2\sqrt{x}$ and several widely
+separated scales. The main inequality and a prime number theorem at a
+second cutoff imply a one-sided estimate for
+\[
+ R_{d,q}(x)=
+ \sum_{\substack{n\le x\\n\equiv1\pmod q}}
+ \Lambda(n)(1-\chi_d(n))\left(\frac1n-\frac1x\right)
+ -\frac{\log x}{\varphi(q)}-c_{d,q}.
+\]
+For the specified auxiliary primes $d$ and moduli $q$, this estimate is
+$R_{d,q}(x)\le x^{-1/2+\eps}$ eventually, for every $\eps>0$
+\cite{onesided}.
+
+\subsection{Why the last analytic step is not the main missing extension}
+
+The transform of this remainder has residues given by differences of
+zero multiplicities of Dirichlet functions and their quadratic twists.
+The source chooses an auxiliary twist that is zero-free in a prescribed
+rectangle. This leaves the relevant residues with the sign needed for
+Landau's one-sided argument. The declaration
+\src{New/Reduction/Zeros/Criterion.lean}
+{\texttt{New.LFunction\_ne\_zero\_of\_primeRemainder\_le}}
+makes the quantifiers over the twists and the eventual prime-sum bound
+explicit \cite{criterion}.
+
+For another family, a finite-group identity can identify which prime
+statistic ought to detect its zeros. It does not prove the corresponding
+prime-sum estimate. Nor does it automatically eliminate real poles or
+cancellation by auxiliary twists. This distinction is central to the
+research assessment: numerous previous reports have already constructed
+the detectors, while the required integral realization remains missing.
+
+\subsection{Where a quantitative improvement has leverage}
+
+In a prospective extension, a smaller target span causes two costs.
+It can enlarge error terms after division by the selected rank, and it
+can increase the auxiliary completion needed to compare partial and full
+determinants. Reducing both the missing rank and the number of translates
+therefore gives more room for new denominator and ramification losses.
+
+This is a benefit to a future construction, not a proof that such a
+construction exists. In particular, improving $b^{-2}$ to $b^{-4}$ in the
+rank loss does not replace the square-root scale $m\asymp\sqrt{x}$, prove
+an exponent beyond $1/2$ for the prime error, or control the spacing or
+multiplicity of zeros on the critical line.
+
+There is also a simple reason to keep the rank information explicit.
+Two positive forms can have the same full determinant and arbitrarily
+different determinants on a fixed line: the diagonal matrices
+$\operatorname{diag}(M,M^{-1})$ and $I_2$ have determinant ratio one,
+but ratio $M$ on the first coordinate line. A full determinant identity
+alone therefore cannot repair an uncontrolled missing subspace.

@@ -1,0 +1,105 @@
+\section{A simultaneous weighted prime race}\label{sec:weightedrace}
+
+Chebyshev's original exponential smoothing asks whether
+\[
+   \sum_{p>2}(-1)^{(p-1)/2} e^{-p/x}\;\longrightarrow\;-\infty .
+\]
+Hardy--Littlewood and Landau identified this assertion with the zero
+location for the nonprincipal character modulo four. The repository's theorem supplies
+that input. For the precise equivalence and its history see M.~Suzuki,
+\emph{On variants of Chebyshev's conjecture}, \S1.2, equations (16)--(17),
+\href{https://doi.org/10.1007/s11139-025-01238-9}{doi:10.1007/s11139-025-01238-9}.
+With a different smoothing we can go beyond this single race and
+measure the lead in every nonsquare class. The following deduction keeps track of
+possible zeros at the center.
+
+\paragraph{Theorem.}
+Fix a modulus $q$, a quotient $G$ of $(\mathbb Z/q\mathbb Z)^\times$,
+and write $h=|G|$, $G^2=\{a^2:a\in G\}$, $G[2]=\{a:a^2=1\}$.
+For $g\in G$ put
+\[
+ S_g(x)=\sum_{\substack{p\le x,\;p\nmid q\\ {[p]}=g}}
+            \frac{\log p}{\sqrt p}\log\frac{x}{p}.
+\]
+For every nonprincipal $\chi\in\widehat G$ let
+$m_\chi=\operatorname{ord}_{s=1/2} L(s,\chi)$, using the character
+pulled back to modulus $q$. Then, simultaneously for all $g$,
+\[
+ S_g(x)-S_1(x)=B_g(\log x)^2+O_q(\log x),
+\]
+where
+\[
+ B_g=\frac{|G[2]|}{4h}\,\mathbf 1_{g\notin G^2}
+    +\frac1{2h}\sum_{\chi\ne1}
+       (1-\operatorname{Re}\chi(g))m_\chi .
+\]
+In particular, every nonsquare coset eventually leads the identity coset,
+by at least $\bigl(|G[2]|/(4h)+o(1)\bigr)(\log x)^2$.
+If every element of $G$ has order dividing two, all $g\ne1$ lead by
+at least $(1/4+o(1))(\log x)^2$. For a multiquadratic extension of
+$\mathbb Q$, the identity class describes primes that split completely,
+and the other cosets specify patterns of quadratic splitting at unramified primes.
+
+\paragraph{Proof.}
+For a nonprincipal character let $u=\log x$. Suzuki's explicit formulas
+(62) and (64), in the proof of Theorem~8 of the cited paper, give
+\[
+ A_\chi(x)=\sum_{n\le x}\frac{\Lambda(n)\chi(n)}{\sqrt n}\log(x/n)
+      =-\frac{m_\chi}{2}u^2+O_q(u).
+\]
+Indeed the central zero gives the quadratic term. The remaining nontrivial
+zeros $1/2+i\gamma$ contribute a bounded series, since
+$|x^{i\gamma}|=1$ by Dirichlet GRH and
+$\sum_{\gamma\ne0}|\gamma|^{-2}<\infty$ for each fixed character,
+with multiplicities. All other terms are $O_q(u)$.
+Passing from a primitive character to a character it induces costs
+$O_q(u)$ in $A_\chi$, by summing the geometric tails at the finitely many
+removed primes. The extra Euler factors do not vanish at $s=1/2$.
+
+The terms $n=p^k$, $k\ge3$, contribute $O(u)$ because
+$\sum_p (\log p)p^{-3/2}/(1-p^{-1/2})$ converges. The terms $n=p^2$ equal
+\[
+ 2\int_1^{\sqrt x}
+        \left(\sum_{p\le t}\frac{\chi^2(p)\log p}{p}\right)\frac{dt}{t}
+ =\mathbf 1_{\chi^2=1}\frac{u^2}{4}+O_q(u).
+\]
+For principal $\chi^2$ the inner sum is $\log t+O_q(1)$ by Mertens'
+estimate. For nonprincipal $\chi^2$ it is $O_q(1)$ by partial summation
+of the prime number theorem in progressions at fixed modulus, in its
+classical form with error $O_q(t\exp(-c_q\sqrt{\log t}))$.
+Subtracting the prime powers thus gives a prime-only sum with quadratic
+coefficient $-m_\chi/2-\mathbf 1_{\chi^2=1}/4$.
+
+Character orthogonality expresses $S_g-S_1$ as the sum of those
+prime-only sums with coefficients $(\overline{\chi(g)}-1)/h$. The principal
+character cancels. Conjugate characters have equal central orders, so the
+final coefficient may be written using real parts. Characters satisfying
+$\chi^2=1$ are the dual of $G/G^2$. Their sum at $g$ equals
+$|G/G^2|$ for $g\in G^2$ and zero otherwise. Since
+$|G/G^2|=|G[2]|$, this gives the stated coefficient. Each central-zero
+term is nonnegative. The group is finite, so the errors can be taken
+simultaneously for all classes.\hfill$\square$
+
+\paragraph{Example modulo eight.}
+For each $g=3,5,7$,
+\[
+  S_g(x)-S_1(x)=\tfrac14(\log x)^2+O(\log x).
+\]
+Here all three central orders are zero, as one can see without a
+numerical calculation. On the odd classes $1,3,5,7$ the three respective
+sign patterns are $+,-,+,-$, $+,+,-,-$, and $+,-,-,+$.
+The Dirichlet series at $s=1/2$ converges by periodicity and zero mean.
+Each consecutive block of four odd summands has positive sum for all
+three patterns. For the last pattern this uses
+$f(a)-f(a+2)>f(a+4)-f(a+6)$ with $a=8k+1$ and
+$f(t)=t^{-1/2}$, which follows from strict convexity. Thus every central
+value is positive. The example gives three strict eventual inequalities
+with a common leading coefficient. The theorem concerns the specified
+weighted sums; an unweighted two-way prime race can change sign.
+
+\paragraph{Provenance.}
+Suzuki's Theorems~3 and~4 already give modulo-four conclusions and his
+Theorem~9 gives the individual real-character prime sum for a nonzero
+central value. The quotient formula above combines his explicit formula
+with the square map on $G$; it is presented as a deduction without a claim
+of priority.

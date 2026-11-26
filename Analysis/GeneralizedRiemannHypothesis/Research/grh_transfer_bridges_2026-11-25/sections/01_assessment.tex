@@ -1,0 +1,54 @@
+\section{Assessment and what is added here}
+
+There are useful transfers beyond the usual consequences of RH and Dirichlet GRH. Their present strength varies substantially. Some of the incoming work already proves concrete statements using additional local arithmetic; some extracts reusable lemmas; and some gives a logically exact criterion for an open problem while leaving its difficult arithmetic estimate unproved. These categories must remain separate.
+
+The most substantial completed result that we re-examined is the incoming classification of rational equations with at most five nonzero terms for singular moduli. The proof combines local root counts, complex conjugate separation, and finite tests that remain valid for unbounded exponents. Its certificate suites reproduced successfully. This is more than substituting GRH into a familiar corollary: the strongest five-term classification in that archive is independent of GRH.\cite{prior_sparse}
+
+This report adds the following.
+
+\begin{enumerate}
+\item \textbf{An exact arithmetic compatibility test.} A local torsion tuple extends with the same global exponent and specified triviality conditions precisely when it annihilates a particular intersection subgroup. The quotient class group explains the possible increase in order. The CM version also retains the root-of-unity relation which disappears only at suitable odd primes.
+\item \textbf{A complete small conductor calculation.} For $\Q(\sqrt{-23})$, the minimum conductor norm of a nontrivial finite $3$-power anticyclotomic character, trivial on decomposition groups above $3$ and ramified only at split pairs, is $22801$. Exactly two characters attain it. The example distinguishes a local character problem from the more restrictive character problem actually used in the Lean source.
+\item \textbf{A stronger unbounded-exponent certificate.} In a finite free $\Z_{(p)}$-algebra, a scalar congruence to depth $s$ permits a confluent test whenever each residue block has fewer than $p^s$ exponents. This includes $p=2$. We prove the threshold is sharp in this generality and obtain exact support seven for the families in Section~\ref{sec:confluent}.
+\item \textbf{A quantitative alternative to almost-full spanning.} The determinant argument only charges missing dimensions by their excess completion cost. A cheaper completion could compensate for a much larger rank deficit. This identifies a distinct arithmetic lemma worth seeking for a new target.
+\end{enumerate}
+
+The finite-group and class-field arguments use established mathematics. We claim a useful synthesis and explicitly verified instances, not priority for the underlying theory. The strengthened confluent argument is derived here from the incoming proof; a literature search is not a proof of global novelty.
+
+\subsection{The current incoming corpus matters}
+
+The pinned directory contains 41 ZIP archives. Earlier summaries that stop at the unresolved discriminant $-131$, or describe all transfers as unfinished nonabelian criteria, are outdated relative to this snapshot. In particular, \code{grh_sparse_singular_moduli.zip} closes the unbounded-exponent $-131$ case and the four remaining sextic discriminants in the global five-term problem.\cite{prior_sparse}
+
+For an algebraic number $\alpha$, define
+\[
+ s(\alpha)=\min_{\substack{0\ne P\in\Q[X]\\P(\alpha)=0}}
+             \#\supp(P).
+\]
+For a singular modulus of discriminant $\Delta$ this depends only on $\Delta$, and is denoted $s(\Delta)$. The incoming theorem states
+\begin{equation}\label{eq:prior-classification}
+ s(\Delta)\le5\quad\Longleftrightarrow\quad h(\Delta)\le4,
+\end{equation}
+with $s(\Delta)=5$ at class number four and $s(\Delta)=6$ at class number five. The exceptional singular modulus $0$ has support one and is consistent with the displayed equivalence.
+
+Our audit reran the complete current CM suite and its older companion. It reproduced the exact polynomial checks, the 25 cubic, 84 quartic and 29 quintic order censuses, both implementations of the last quintic sieve, the global reduction through 36,608 candidates, and the unbounded-exponent tests for $-87,-348,-432,-675$. We also read the local and global reductions. These are paper proofs and executable finite certificates, not Lean formalizations. The supporting classical class-number and CM theorems are cited in the original reports; we did not reprove those external inputs.
+
+Other archives contain claims about progression-free densities, prime races, class groups, CM forms, and arithmetic classifications. We inspected their inventory and selected source sections to avoid duplicate work. We do not certify every mathematical claim in all 41 archives. This report's independent replay claim is limited to the two identified CM packages.
+
+\subsection{Answers to the research question}
+
+\begin{center}
+\small
+\begin{tabular}{p{.24\linewidth}p{.34\linewidth}p{.32\linewidth}}
+\toprule
+Direction & Present concrete achievement & What remains\\
+\midrule
+Sparse CM equations & Previous global five-term theorem; new deeper local certificates and powered sextic families & Six terms for all degree-six singular moduli, then a uniform larger threshold\\
+Auxiliary characters & Exact local/global obstruction, order bound, parameter bound, minimal example & Compatible Selmer witnesses and quantitative special Frobenius selection\\
+Nonabelian zero theorems & Reusable analytic and covolume interfaces; earlier explicit splitting-statistic criteria & Actual arithmetic lattices, gains, completion and denominator estimates\\
+$K$-theory / Vandiver & Source odd-cocycle bounds and earlier finite candidate calculations & Comparison with conventional cohomology and complete obstruction coverage\\
+BSD & A clear eligibility test for attempted substitutions & New input overcoming the conjugate-dual and scalar-inertia barriers\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The strongest recommendation is to pursue the next support threshold for sparse CM equations while formalizing the new local certificate. The nonabelian zero problem remains the larger conceptual opportunity, but it should advance through an actual arithmetic construction rather than another equivalent prime-sum criterion.

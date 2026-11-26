@@ -1,0 +1,72 @@
+\section{Two density questions of McNew over the integers}
+Nathan McNew asked whether $\alpha<\overline\alpha$ and whether $\beta<\overline\beta$ in Questions 7.1 and 7.3 of \emph{On sets of integers which contain no three terms in geometric progression}, Math. Comp. 84 (2015), 2893--2910 (\href{https://www.nathanmcnew.com/GPFsets.pdf}{author's manuscript, section 7}). Here $\alpha$ is the supremum of natural densities of subsets of the positive integers avoiding three-term geometric progressions with rational ratio $r>1$. The barred quantity permits upper density. The pair $\beta,\overline\beta$ uses integer ratios $r>1$. The comparison below answers both questions. The proof uses unique factorization and a comparison of two optimizations over the same factors. It is independent of RH and GRH.
+
+\begin{theorem}\label{th:integer-gap}
+For both ratio conventions, the supremum of upper densities exceeds the supremum of natural densities by more than $0.000404$.
+\end{theorem}
+
+\paragraph{Two optimizations.}
+Fix one of the ratio conventions and an integer $Y\ge 12$. Call an admissible set one containing no forbidden progression. Write $S$ for the positive integers composed solely of primes $p\le Y$, including $1$. Every positive integer has a unique expression $gh$ with $h\in S$ and $g$ divisible only by primes $p>Y$. Put
+\[
+ c=\prod_{p\le Y}(1-p^{-1}),\quad v=\prod_{p>Y}(1-p^{-2}),\quad
+ B=c\sup_{A\subset S\ {\rm admissible}}\sum_{h\in A}\frac1h,\qquad
+ U=c\int_1^\infty J(t)\frac{dt}{t^2},
+\]
+where $J(t)$ is the maximum size of an admissible subset of $S\cap[1,t]$. Writing $H(t)=\#(S\cap[1,t])$, Tonelli gives $c\int_1^\infty H(t)t^{-2}dt=c\sum_{h\in S}1/h=1$, hence $U\le1$. McNew's Theorem 4.2 uses finite smooth factors to study upper density. We need the additional comparison with one fixed admissible choice across all cutoffs.
+
+\paragraph{Upper bound for natural density.}
+Suppose $E$ is admissible and has natural density $d$. Partial summation gives $\sum_{n\le X,\ n\in E}1/n=(d+o(1))\log X$. For each rough $g$ the fixed fiber $A_g=\{h\in S:gh\in E\}$ is admissible. Consequently
+\[
+ \sum_{n\le X,\ n\in E}\frac1n\le\frac{B}{c}
+           \sum_{g\le X,\ g\ {\rm rough}}\frac1g=(B+o(1))\log X.
+\]
+The last estimate follows by periodicity of the rough condition modulo $\prod_{p\le Y}p$ and partial summation. Thus $d\le B$.
+
+\paragraph{Lower bound for upper density.}
+The squarefree rough integers have density $cv$. To see this, first exclude the small primes and the squares of primes through a fixed bound by the Chinese remainder theorem, then use the upper density bound $\sum_{p>K}p^{-2}$ for the omitted squares, obtained by summing $\lfloor X/p^2\rfloor$. In any progression composed only of integers with squarefree rough parts, all valuations at primes $p>Y$ form arithmetic progressions in $\{0,1\}$. Their equality forces a common rough part. Thus it is sufficient to impose admissibility independently on each such fiber.
+
+Choose integers $X_j$ with $X_j/X_{j-1}\to\infty$, starting at $X_0=0$. For each squarefree rough $g$ in $(X_{j-1},X_j]$ permanently use a maximizing subset of $S\cap[1,X_j/g]$. Their union over all $g,j$, after multiplying each subset by its $g$, is admissible. At $X=X_j$, fix $K>1$. For all sufficiently large $j$, the newly assigned rough parts in $(X/K,X]$ alone give, after division by $X$, a contribution tending to
+\[
+ cv\int_1^K J(t)\frac{dt}{t^2}.
+\]
+Indeed, $J$ is a step function with finitely many jumps on $[1,K]$. On each constant interval $(a,b)$ the corresponding rough parts in $(X/b,X/a)$ have normalized count tending to $cv(1/a-1/b)$; endpoints contribute $o(1)$. Let $K\to\infty$. The upper density of the constructed set is at least $vU$.
+
+\paragraph{The incompatible choices through 12.}
+An admissible subset maximizing its cardinality at every integer cutoff $k\le12$ would have to agree with the increasing greedy construction through $12$. Inductively, whenever greedy takes $k$, adding it to the agreed prefix improves the count, hence every simultaneous maximizer must take it. Whenever greedy rejects $k$, taking it would violate admissibility. All integers through $12$ belong to $S$. Under both conventions the greedy prefix is
+\[
+ \{1,2,3,5,6,7,8,10,11\}.
+\]
+The following admissible set has ten elements:
+\[
+ \{1,2,5,6,7,8,9,10,11,12\}.
+\]
+Indeed the complete list of rational-ratio progressions through $12$ is
+$(1,2,4)$, $(1,3,9)$, $(2,4,8)$, $(3,6,12)$ and $(4,6,9)$. The first four have integer ratios. To enumerate them, use the form $(ab^2,abc,ac^2)$ with $1\le b<c$, $\gcd(b,c)=1$, and $ac^2\le12$.
+
+For each admissible $A\subset S$ its prefix count therefore falls short of $J(k)$ by at least one at some $k\le12$. The loss persists throughout $[k,k+1)$ and contributes at least $1/(12\cdot13)$ to the corresponding integral. Since $\int_1^\infty |A\cap[1,t]|t^{-2}dt=\sum_{h\in A}1/h$, this proves $U-B\ge c/156$. With $u$ and $b$ denoting the extremal upper and natural densities,
+\[
+ u-b\ge vU-B\ge \frac{c}{156}-(1-v)
+       \ge \frac{1}{156}\prod_{p\le Y}(1-p^{-1}) - \sum_{p>Y}p^{-2}.
+\]
+In particular Mertens' product theorem and $\sum_{n>Y}n^{-2}\le1/Y$ already give strict positivity for sufficiently large $Y$.
+
+\paragraph{Explicit bound.}
+Taking $Y=2000$, enumerate primes through $100000$ by Eratosthenes' sieve and bound the residual sum by $1/100000$. Directed fixed-point integer arithmetic in \texttt{check\_integer\_gap.py} verifies
+\[
+ \frac{1}{156}\prod_{p\le2000}(1-p^{-1})-
+ \sum_{2000<p\le100000}p^{-2}-\frac{1}{100000}
+ >\frac{404}{10^6}.
+\]
+The checker independently enumerates the prefix optimizers under both conventions. This proves Theorem~\ref{th:integer-gap}. The argument leaves McNew's Conjecture 7.2, on the exact value of $\alpha$, undecided.
+
+\paragraph{A stronger numerical separation for integer ratios.}
+For this convention the absolute lower bound $\overline\beta>0.818410$ of McNew's Theorem 4.4 allows a separate calculation. Use smooth primes $2,3,5,7$ in the upper bound for natural density, with $c=8/35$. There are $265$ such smooth numbers through $5000$. The maximum reciprocal sum among their subsets avoiding integer-ratio progressions is
+\[
+ M=\frac{1619153731921}{497871360000}.
+\]
+Assigning the full remaining smooth mass to the untested tail gives
+\[
+ \beta\le 1-c\left(\sum_{\substack{h\le5000\\ h\ \mathrm{smooth}}}\frac1h-M\right)
+ =\frac{5245322990569}{7001316000000}<0.749192.
+\]
+It follows that $\overline\beta-\beta>0.069218$. The exhaustive calculation uses the common denominator of all $265$ reciprocal weights. In ascending order branch on including or excluding the least undecided integer. Whenever the first two terms of a forbidden progression have been selected, remove its third term from the remaining candidates. The selected and remaining weights together bound the optimum on that branch. The checker uses integer arithmetic for all pruning decisions.

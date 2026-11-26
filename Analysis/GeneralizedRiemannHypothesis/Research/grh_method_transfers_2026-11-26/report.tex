@@ -1,0 +1,159 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1.02in,top=0.91in,bottom=0.93in]{geometry}
+\usepackage{lmodern}\pdfmapfile{+lm.map}
+\usepackage{amsmath,amssymb,amsthm,booktabs,array,microtype,xcolor}
+\usepackage[colorlinks=true,linkcolor=teal,urlcolor=teal,citecolor=teal]{hyperref}
+\usepackage{fancyhdr}
+\definecolor{deepblue}{HTML}{123E53}
+\pagestyle{fancy}\fancyhf{}\renewcommand{\headrulewidth}{0.3pt}
+\lhead{\small\color{deepblue}Methods from a formal proof of Dirichlet GRH}
+\rhead{\small Research note}\cfoot{\small\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{1.1em}
+\setlength{\parindent}{1.15em}
+\setlength{\parskip}{2pt}
+\setcounter{tocdepth}{1}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\src}[2]{\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/#1}{#2}}
+\newcommand{\repo}[2]{\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/#1}{#2}}
+\newcommand{\incoming}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/5cc267af75a635199ac5d93a7d49cbce521daefc/docs/incoming/#1}{#2}}
+\hypersetup{pdftitle={Beyond Dirichlet GRH: zero multiplicities, cyclotomic annihilators, and a prime-power race},pdfauthor={Research analysis prepared for Vladimir Reshetnikov}}
+\begin{document}
+\thispagestyle{plain}
+\noindent{\small\sffamily\color{deepblue}RESEARCH NOTE\hfill 26 NOVEMBER 2026}\par
+\vspace{0.5cm}
+\noindent{\huge\bfseries Beyond Dirichlet GRH}\par\vspace{4pt}
+\noindent{\Large Zero multiplicities, cyclotomic annihilators,\\[2pt]
+and a prime-power race}\par\vspace{0.32cm}
+\noindent Prepared for Vladimir Reshetnikov\par
+\vspace{0.25cm}\hrule\vspace{0.25cm}
+\noindent\textbf{Abstract.}
+For Galois extensions with group $S_n$, $3\le n\le12$, explicit positive
+character identities prove the holomorphy away from $1$ of
+$\zeta_E^{\,n-1}\zeta_F/(\zeta_L\zeta_K)$, where $E$ is the fixed field
+of a transposition and $F$ the quadratic subfield. This resolves the cases $3\le n\le12$
+of the earlier ProveIt question on the optimal cost of detecting zeros.
+Inside the upstream cyclotomic argument we determine the exact gcd of a
+family of Stickelberger witnesses. At $(N,e)=(5,1)$ the least individual
+witness is $8400$, whereas their gcd is $1200$. For Suzuki's unsmoothed
+weighted prime sum we prove that its error is negative with lower logarithmic
+density exceeding $99.992057\%$, using finite resonance checks on zeta zeros
+and no global linear-independence hypothesis. A combinatorial appendix
+verifies finite higher-rank cases of Kova\v cevi\'c's anticode conjecture
+with all equality cases, and determines the minimum order of an abelian group admitting a five-element
+$B_3$ set.
+\tableofcontents
+\clearpage
+\section{Where the Lean proof enters}
+\label{sec:source}
+The readable edition's \src{Statements.lean}{statement file} imports Mathlib.
+Its \src{Main.lean}{main file} exports five results: Mathlib's RH,
+the equivalent explicit zeta-zero statement, nonvanishing to the right
+of $1/2$ for Dirichlet characters away from the principal pole, the
+open-strip zeros-on-the-line statement for all such characters, and its
+primitive specialization. All positive conductors or moduli are allowed.
+The \repo{grh/README.md}{edition README} reports the three axioms
+\texttt{propext}, \texttt{Classical.choice}, and \texttt{Quot.sound}, and
+reports independent proof-term checks. We inspected the source at
+\texttt{72fead102f66}. The upstream build and independent kernel replays
+are the maintainers' checks. The new arguments here are mathematical proofs
+with accompanying computations, outside that Lean build.
+
+\paragraph{From heights to zero multiplicities.}
+The geometric part compares upper and lower bounds for the covolume of
+one lattice of automorphic forms. Chains of theta lifts, local
+divisibility of derivatives and a second-moment spanning argument supply
+the short forms; the determinant estimate for integral forms supplies
+the opposing bound. Canceling a common main term leaves a one-sided
+estimate for a smoothed von Mangoldt sum. A chain of length $m$ with
+$\sqrt x\le m\le2\sqrt x$ gives the decisive scale. In the analytic
+step a zero becomes a pole of a transform with residue proportional to
+its multiplicity. A one-sided bound and positivity at real poles exclude
+zeros in the desired half-plane. See the
+\repo{grh/GUIDE.md}{reading guide},
+\src{New/Reduction/MainInequality.lean}{main inequality},
+\src{New/Reduction/OneSidedBound.lean}{prime bound},
+and \src{New/Reduction/Zeros/Criterion.lean}{zero criterion}.
+
+\paragraph{What transfers in each argument.}
+The reflection result uses zero multiplicities as local data, then finds
+positive combinations of one-dimensional subgroup characters that retain
+them. The cyclic character of the quadratic subfield is exactly where
+Dirichlet GRH enters its off-line corollary. The cyclotomic calculation
+uses a different part of the formalization, isolating the two quantifiers
+in the finite-level integer used in the Kolyvagin argument. The prime-race
+estimate uses the zeta instance of the final theorem, Suzuki's explicit
+formula, and verified moments. The appendix takes inspiration from the
+bounded-coefficient modular encodings in the proof's Behrend construction;
+its upper bounds come from an independent lattice argument.
+
+\paragraph{Comparison set.}
+We inspected the 46 ZIP entries in the
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/5cc267af75a635199ac5d93a7d49cbce521daefc/docs/incoming}{incoming snapshot at \texttt{5cc267af75a6}}.
+Two specific baselines matter. The
+\incoming{grh_reflection_transfer_2026-11-25.zip}{reflection report}
+asks for the optimal factor $n-1$. The
+\incoming{grh_cm_four_terms_and_prime_bias.zip}{prime-bias report}
+already proves that both signs have positive lower logarithmic frequency
+and bounds the rare sign by $0.00323$. Earlier discussions of Vandiver
+identify a parity and comparison problem. Sharpening an annihilator of the
+specified odd cocycles is meaningful independently of that problem.
+We use published antecedents and this pinned comparison set in stating
+the advances; global priority has not been established.
+\clearpage
+\input{reflection}
+\clearpage
+\input{cyclotomic}
+\clearpage
+\input{suzuki}
+\clearpage
+\section{Further research questions}
+\paragraph{Nonabelian prime sums.}
+For $L/\mathbb Q$ with group $S_n$ and $E=L^{\langle t\rangle}$, let
+$r(p)$ be the number of fixed cosets of $\mathrm{Frob}_p$ on $S_n/\langle t\rangle$.
+At unramified primes this equals $n!/2$ for the identity, $(n-2)!$ for
+a transposition, and zero otherwise. Define
+\[
+ \theta_r(x)=\sum_{p\le x\ {\rm unramified}} r(p)\log p,\qquad
+ R_r(x)=-\int_x^\infty (\theta_r(u)-u)\,\frac{du}{u^2}.
+\]
+The earlier reflection criterion would turn an upper bound
+$R_r(x)\ll_{L,\eta}x^{-1/2+\eta}$ for every $\eta>0$ into RH for
+$\zeta_L$ under Dirichlet GRH. Indeed the centered prime-power variant
+of the transform has residue
+$\operatorname{ord}_\rho\zeta_E/[\rho(1-\rho)]$, and dropping the higher
+prime powers and ramified primes costs $O_L(x^{-1/2}\log x)$ after
+centering. The source's geometric inequality has a rational congruence
+condition and a quadratic splitting character as input.
+Producing the corresponding geometric inequality with this nonabelian
+Frobenius weight remains the substantive step. The sharp constants solve
+the multiplicity problem for the groups treated here.
+
+\paragraph{Finite groups.}
+For $n\ge13$, which $S_n$ admit a positive monomial decomposition of the character
+inequality in Section~\ref{sec:reflection} with coefficient $n-1$?
+A family of identities uniform in $n$ would settle the earlier
+optimization question in full. At a putative zero the standard character
+already prevents improving the coefficient by character positivity alone.
+
+\paragraph{Exceptional coefficient primes.}
+Determine the gcd of \emph{all} positive integers satisfying the two Lean
+conditions for general $N,e$. Theorem~\ref{th:gcd} evaluates it for a
+specified certificate family, and the modulus-five theorem identifies an
+instance where it equals the global gcd. An intrinsic answer could exploit
+the Voronoi congruence without demanding that $2B_\chi$ divide $X$.
+A separate question is whether the surviving primes actually support any
+cocycles.
+
+\paragraph{The boundary value in Suzuki's question.}
+An atom-free limiting distribution at the particular threshold $c$
+would give an ordinary logarithmic density. A finite list of ruled-out
+resonances controls specified moments; it leaves possible relations with
+arbitrarily high ordinates. A quantitative small-interval estimate at $c$
+surviving the infinite-tail limit would address the missing point.
+\clearpage
+\appendix
+\input{lattice}
+\end{document}

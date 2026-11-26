@@ -1,0 +1,159 @@
+\section{The mathematical mechanism}\label{sec:mechanism}
+
+\subsection{The error term actually controlled}
+
+Fix a positive modulus \(q\), and a suitable prime \(d\equiv7\pmod8\) coprime to \(q\). Write
+\(\chi_d(n)=(n/d)\) for the quadratic character. The principal statistic is
+\begin{equation}\label{eq:R}
+R_{d,q}(x)=
+\sum_{\substack{n\le x\\n\equiv1\;(\mathrm{mod}\ q)}}
+\Lambda(n)(1-\chi_d(n))
+\left(\frac1n-\frac1x\right)
+-\frac{\log x}{\varphi(q)}-c_{d,q}.
+\end{equation}
+Here \(\Lambda(p^r)=\log p\), and \(\Lambda(n)=0\) otherwise; \(c_{d,q}\) is the normalizing constant for which the remainder tends to zero. The prime sum has nonnegative terms. Its weights select a quadratic splitting condition and a rational congruence condition. The smoothing factor makes the transform and its zero residues particularly manageable.
+
+The endpoint of the arithmetic argument is an \emph{upper} bound:
+\begin{equation}\label{eq:one-sided}
+R_{d,q}(x)\le x^{-1/2+\varepsilon}
+\quad\text{for all sufficiently large \(x\), for each \(\varepsilon>0\).}
+\end{equation}
+It is not first proved as an absolute-value estimate. The passage from this one-sided statement to a zero-free half-plane is an essential part of the proof.
+
+For the arithmetic construction, \(q_0\) is a multiple of \(18480\), and \(d\) lies in a specified class modulo \(q_0\). This restriction is internal: the final theorem raises an arbitrary modulus to a suitable multiple and then uses change-of-level identities. It does not restrict the final GRH statement to a subset of moduli.
+
+\subsection{Three estimates for a common object}
+
+The source constructs finite-dimensional spaces of automorphic forms and maps formed from chains of theta lifts. Its auxiliary field is of the special form
+\[
+E=\Q(\sqrt{-d},\zeta_{q_1}).
+\]
+This is a CM field, abelian over \(\Q\). The proof uses both its archimedean embeddings and arithmetic at finite primes. Replacing this field by a general extension is not a change of notation.
+
+The structure of the comparison can be stated without reproducing the entire construction. Let \(D_{\rm tar}\) be the target dimension, and \(n\) the size of a linearly independent family selected from images of integral source forms. The two quantitative invariants are:
+
+\begin{itemize}
+\item \(V\), an upper bound on the logarithm of a Gram determinant, or squared covolume, of the lifted family;
+\item \(\delta\), a logarithmic index bound measuring the loss needed to make the family integral at all relevant finite places.
+\end{itemize}
+
+Three substantial inputs control these invariants.
+
+\begin{enumerate}
+\item \textbf{Short forms.} There are enough integral source vectors with small archimedean norms, and their images have controlled denominators.
+\item \textbf{Almost spanning.} A controlled number of translates of the images span a subspace of dimension at least
+\[
+\left(1-\frac4{b^2}\right)D_{\rm tar}.
+\]
+\item \textbf{Long integral forms.} A product-formula and determinant-height argument gives a lower bound for \(V+2\delta\). This uses twists chosen separately at finite primes, and a quantitative comparison between twisted and untwisted determinants.
+\end{enumerate}
+
+The relevant source interfaces are \src{New/Reduction/ShortAndEnough.lean},
+\src{New/Determinant/Twist/LongForms.lean}, and
+\src{New/Reduction/Lattices/TwistedLattice.lean}. The full arithmetic construction proves the hypotheses of these interfaces; none should be assumed automatically in a new setting.
+
+\subsection{Cancellation of the main amount}
+
+Suppressing error terms for a moment, the two bounds have the shape
+\begin{equation}\label{eq:schematic}
+\mathcal M\ \le\ \frac{V+2\delta}{D_{\rm tar}}\
+\le\ \mathcal M-\frac{n}{D_{\rm tar}}m\,\mathcal R.
+\end{equation}
+The same main amount \(\mathcal M\) occurs on both sides. Its cancellation leaves a bound on the desired remainder \(\mathcal R\), amplified by the number \(m\) of lifts.
+
+The implemented theorem \code{New.star_inequality} is
+\begin{equation}\label{eq:star}
+m\,\mathcal R\le fa(\log b)^5,
+\end{equation}
+where \(f\) is the number of infinite places of the auxiliary field and \(a=xb\). It is proved in \src{New/Reduction/MainInequality.lean}. This short comparison is supported by the much larger preceding construction.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[
+  box/.style={draw=ink,rounded corners=2pt,fill=light,align=center,text width=3.55cm,minimum height=1.15cm,font=\small},
+  wide/.style={box,text width=8.0cm},
+  arr/.style={-{Latex[length=2mm]},thick,draw=accent}
+]
+\node[box] (short) {Integral forms\\norm and index bounds};
+\node[box,right=0.45cm of short] (span) {Second moments\\almost full spanning};
+\node[box,right=0.45cm of span] (long) {Twisted determinants\\height lower bound};
+\node[wide,below=0.9cm of span] (compare) {Compare the same corrected covolume\\cancel the main amount};
+\node[wide,below=0.6cm of compare] (prime) {\(m\mathcal R\le fa(\log b)^5\)\\normalize with \(m\asymp\sqrt{x}\)};
+\node[wide,below=0.6cm of prime] (analytic) {One-sided prime error + auxiliary twist selection\\Landau's lemma excludes zeros};
+\draw[arr] (short.south) -- (compare.north west);
+\draw[arr] (span.south) -- (compare.north);
+\draw[arr] (long.south) -- (compare.north east);
+\draw[arr] (compare) -- (prime);
+\draw[arr] (prime) -- (analytic);
+\end{tikzpicture}
+\caption{The reusable logical structure. Each upper box represents a large theorem with arithmetic hypotheses, not an available black box for every \(L\)-function.}
+\end{figure}
+
+The constants also have to match accurately. The source identifies cancellations involving period normalizations, the expected value of the weighted prime sum, the archimedean sizes of the lifts, and the level. Matching only leading orders would not suffice if a residual main term exceeded the final error.
+
+\subsection{Why the square root appears}
+
+The normalization of \eqref{eq:star} gives the source inequality
+\begin{align}\label{eq:normalized}
+R_{d,q_0}(x)\le {}&
+\frac{\varphi(q_0)(\log b)^6}{m}
++|R_{d,q_0}(x_1)|\\
+&+(\log b)|R_{d,1}(x_1)|.\nonumber
+\end{align}
+The parameters are arranged so that
+\[
+\sqrt{x}\le m\le2\sqrt{x},
+\qquad
+\log b\le2x^\varepsilon,
+\qquad
+\log x_1\ge x^{\varepsilon/12}.
+\]
+The two terms at \(x_1\) are controlled by ordinary prime-number-theorem estimates for fixed characters. At that enormous scale they are smaller than the required power of \(x\). No GRH input is used to prove those large-scale error bounds.
+
+At integer \(x\), the source obtains, for \(0<\varepsilon<1/100\),
+\[
+R_{d,q_0}(x)\le
+(64\varphi(q_0)+3)x^{-1/2+6\varepsilon}.
+\]
+Changing the small parameter, absorbing constants, and comparing a real \(x\) with its integer part gives \eqref{eq:one-sided}. These steps are explicit in \src{New/Reduction/OneSidedBound.lean}.
+
+This is a scale argument rather than a practical numerical algorithm. The enormous auxiliary weights, levels, and dimensions are compatible with an asymptotic theorem, but the construction is not presented as a competitive method for computing prime counts.
+
+\subsection{How a one-sided bound excludes zeros}
+
+Put \(E(v)=R_{d,q}(e^v)\). Its transform
+\[
+\mathcal T(s)=\int_0^\infty E(v)e^{(1-s)v}\,dv
+\]
+has a meromorphic continuation in \(\Rea s>0\). Write \(L^\circ(s,\chi)\) for the entire version of a Dirichlet \(L\)-function, with its principal pole removed. Away from the separately treated points, its residue is
+\begin{equation}\label{eq:residue}
+\operatorname*{Res}_{s=\rho}\mathcal T(s)
+=
+\frac{
+\sum_{\chi\bmod q}\ord_\rho L^\circ(s,\chi)
+-
+\sum_{\chi\bmod q}\ord_\rho L^\circ(s,\chi\chi_d)}
+{\varphi(q)\rho(1-\rho)}.
+\end{equation}
+
+One cannot simply declare the numerator positive: it is a difference. If an untwisted and a twisted function vanish at the same point, cancellation is possible.
+
+For a hypothetical zero \(\rho\) with \(\Rea\rho>\beta>1/2\), the source first chooses \(d\) such that every twisted function is zero-free in
+\[
+\Rea s\ge\beta,\qquad |\Ima s|\le|\Ima\rho|.
+\]
+A zero-density estimate for quadratic twists provides this choice. For that \(d\), the second sum in \eqref{eq:residue} vanishes throughout the relevant box. The remaining multiplicities are nonnegative integers. At real \(s\in(\beta,1)\) the denominator \(s(1-s)\) is positive, and above \(1\) the entire factors have no zeros.
+
+The abstract lemma \code{New.IsPolar.landau}, in \src{Lib/Analytic/Landau.lean}, says that an eventual upper bound
+\[
+E(v)\le e^{(\beta-1)v}
+\]
+and nonnegative real residues rule out every pole with real part greater than \(\beta\). One way to see the mechanism is to consider
+\[
+K e^{\beta v}-E(v)e^v\ge0
+\]
+with a large enough constant \(K\), and apply Landau's theorem to the Laplace transform of this positive density. A positive measure cannot have an analytic Laplace transform through its finite real abscissa of convergence; the sign of a possible real pole yields the contradiction.
+
+Consequently the residue at the proposed \(\rho\) is zero. Its numerator is a sum of nonnegative integers containing the multiplicity of the proposed zero, which is impossible. This gives nonvanishing on the right; the functional equation gives the critical-line statement.
+
+The transfer lesson is precise. If the new statistic has \emph{mixed} zero multiplicities as in \eqref{eq:residue}, a noncancellation mechanism is required. If it is built instead from a full product with only positive multiplicities, that auxiliary analytic step may disappear. The cubic-field reduction in Section~\ref{sec:principal-target} exploits the second possibility.

@@ -1,0 +1,305 @@
+\section{Exact torsion selection over local abelian fields}
+\label{sec:quadratic-tower}
+A local ingredient of the Lean proof specializes integral polynomials at
+characters of prime-power order. The incoming report
+\emph{Sharp torsion specialization, random symplectic blocks, and the reach
+of one-sided Frobenius tests} computed an exact fourth-root table and asked for
+higher-order formulas. We obtain the entire tower for each quadratic
+extension of $\mathbb Q_2$. The proof also gives a descent principle valid
+at every prime. These are local results and their proofs do not require RH.
+
+Normalize $v(2)=1$ here. Write $N_h=2^{h-1}$ and $r_h=1/N_h$;
+the test points on shell $h$ are the $z=\zeta-1$ of exact order
+$2^h$ for $\zeta$. Fix a nonempty finite set $S$ of shell indices and
+$\rho\ge\max_{h\in S}r_h$. A packet consists of nonzero
+$g_i\in\mathcal O_K[T]$ and witnesses $x_i\in\mathbb C_2$ with
+$v(x_i)\ge\rho$ and finite $t_i=v(g_i(x_i))$. Its cost is $\sum_i t_i$.
+It blocks $S$ at tolerance $\delta\ge0$ when, at every test point,
+$\sum_i\max(0,v(g_i(z))-t_i)>\delta$.
+Let $C_K(S,\delta)$ be the least blocking cost.
+
+\paragraph{Quadratic tower theorem.}
+Let $K=\mathbb Q_2(\sqrt D)$ for a representative in the table below.
+One has $C_K(S,\delta)=\sum_{h\in S}c_{D,h}(\delta)$, with
+$c_{D,1}(\delta)=1$ for all $D,\delta$. On the other shells the cost is
+\[
+ c_{D,h}(\delta)=
+ \begin{cases}1/2&0\le\delta<t_{D,h},\\1&\delta\ge t_{D,h}.
+ \end{cases}
+\qquad
+\begin{array}{c|cc}
+D&t_{D,2}&t_{D,h}\ (h\ge3)\\\hline
+5&0&0\\
+-1,\ 3&1/2&1/2\\
+2,\ -2,\ 10,\ -10&1/4&1
+\end{array}
+\]
+In particular a budget $B$ guarantees a common point with loss at most
+$\delta$ exactly when $B<C_K(S,\delta)$. At equality a packet with every
+witness equal to zero attains the obstruction. The fourth-root column is
+the previous report's result. The stabilized column covers all higher shells.
+
+\paragraph{Reduction to a monic polynomial on one shell.}
+For general $p$ normalize $v(p)=1$, and write $r=1/\varphi(p^h)$ on
+shell $h$. The Gauss valuation of $g=b\prod(T-\alpha)$ at weight $u$
+is $G_u(g)=v(b)+\sum_\alpha\min(u,v(\alpha))$. For $u=r\le\rho$ and
+$v(x_i)\ge\rho$ one has $t_i\ge G_\rho(g_i)\ge G_r(g_i)$.
+Only roots with $v(\alpha)=r$ can raise $v(g_i(z))$ above $G_r(g_i)$.
+Collect all such roots, with multiplicity, into a monic $P_h$ of degree
+$m_h$. Their multiset is Galois-stable, so $P_h\in\mathcal O_K[T]$.
+It follows that the loss on this shell is at most $v(P_h(z))-m_hr$.
+Also $\sum_h m_hr_h\le\sum_i(G_\rho(g_i)-G_0(g_i))\le\sum_i t_i$.
+Conversely any such single-shell polynomials blocking their own shells,
+used separately with witnesses zero, give the sum of their costs.
+Thus the minimum on one shell is the first $mr$ for which a monic
+$P\in\mathcal O_K[T]$ of degree $m$ has
+\[
+                      v(P(z))>mr+\delta\quad\text{at every test point}.
+\]
+Indeed, removing all roots of valuation different from $r$ preserves this
+inequality with the remaining degree, since each removed root contributes
+at most $r$ to the evaluation. A first successful polynomial therefore
+has all its roots on the radius, and $mr=v(P(0))\in v(K^\times)$.
+The shifted cyclotomic polynomial always succeeds at cost one.
+This reduction and the budget additivity are from the earlier report.
+
+\paragraph{Tame descent of the entire degree test.}
+Let $L/K$ be any finite tamely ramified extension of local fields of residue
+characteristic $p$. Every successful monic degree-$m$ test polynomial over
+$L$ gives one of the same degree over $K$ on any finite Galois-stable set of
+test points with a common threshold. Choose $u\in\mathcal O_L$ with
+$\operatorname{Tr}_{L/K}u=1$. Such a $u$ exists because the trace for
+the maximal unramified subextension surjects integrally (reduce the trace
+of its integers to the trace of finite fields), and the remaining total
+ramification degree is a unit. Explicitly, divide a trace-one element
+of the unramified subextension by that degree. Take the trace
+coefficientwise of $uP$. The result is integral and monic. Each conjugate of
+$P$ satisfies the strict inequality at every point by stability of the set.
+The ultrametric inequality gives the same strict inequality for the trace.
+Extension of scalars gives the reverse implication. In particular every
+prime-power shell cost at every tolerance is invariant under tame base
+change. The same argument works in several variables for a common
+evaluation threshold and an imposed monic coefficient.
+
+\paragraph{Quadratic reduction.}
+The unramified field $U=\mathbb Q_2(\sqrt5)$ identifies each of
+$\mathbb Q_2(\sqrt{-1})$, $\mathbb Q_2(\sqrt2)$ and $\mathbb Q_2(\sqrt{-2})$
+with its unramified quadratic twist after adjoining $U$. For the first
+pair, $3/(-5)$ is a square since it is $1$ modulo $8$ as a $2$-adic unit.
+Tame descent equates costs within the three pairs in the table.
+For $U$ the cost equals that over $\mathbb Q_2$, where $mr\in\mathbb Z$
+forces it to be at least one. For any ramified quadratic field and $h\ge2$,
+$mr\in\tfrac12\mathbb Z$, so the only candidate below one is $m=N_h/2$.
+For $h=1$ the positive integral degree itself is the cost.
+
+\paragraph{Extremizers and lower bounds on their losses.}
+Set $X=1+T$. Over $\mathbb Q_2(i)$ take $X-i$ at $h=2$.
+Its minimum evaluation valuation at the primitive fourth roots is one.
+Its cost is $1/2$, so its minimum excess is $1/2$.
+Over $\mathbb Q_2(\sqrt{\pm2})$, choose the linear center
+$a=1+\sqrt{\pm2}$ on that shell. Since $v(a^2+1)=3/2$ and
+$v(i-(-i))=1$, both $v(a-i)$ and $v(a+i)$ equal $3/4$.
+No center in this quadratic field can improve the minimum: the difference
+from $a$ of any other center has valuation in $\tfrac12\mathbb Z$ or is
+zero, so neither distance can increase past $3/4$.
+Over $\mathbb Q_2(i)$ the mutual distance of the two targets bounds the
+minimum by one. This proves the fourth-root column.
+
+For $h=3$, over $\mathbb Q_2(\sqrt2)$ and
+$\mathbb Q_2(\sqrt{-2})$ respectively use
+\[
+                     X^2-\sqrt2 X+1,\qquad X^2-\sqrt{-2} X-1 .
+\]
+Choose the signs of the square roots compatibly with a primitive $\xi$ of
+order eight. The two pairs of roots are $\{\xi,\xi^7\}$ and
+$\{\xi,\xi^3\}$ respectively. At each omitted primitive root the two
+distances have valuations $1$ and $1/2$. Hence the minimum evaluation
+valuation is $3/2$, and the excess over cost $1/2$ is exactly one.
+Any successful construction at level $s$ lifts to every $h\ge s$ by
+replacing $X$ by $X^{2^{h-s}}$. The primitive points map surjectively,
+the degree scales by $2^{h-s}$, and its product with $r_h$ stays fixed.
+Every root of these lifted polynomials in the $T$ coordinate is on its
+designated radius, since the base roots used in the lifts for
+$s=2$ over $\mathbb Q_2(i)$ and $s=3$ over $\mathbb Q_2(\sqrt{\pm2})$
+come from primitive roots of unity. This supplies all strict lower sides
+of the thresholds in the table.
+
+\paragraph{Upper bounds at every higher level.}
+The following short orbit argument specializes the earlier report's
+cyclotomic-coefficient descent. Write $F_s=\mathbb Q_2(\zeta_{2^s})$
+and $h\ge s$. Suppose an eligible polynomial of degree $m=N_h/2$ over
+a subfield of $F_s$ has all its roots $\alpha$ on the test radius.
+Group roots into orbits over $F_s$, retaining multiplicities. An orbit of
+degree $d$ costs $d/N_h$ in valuation, which lies in
+$N_s^{-1}\mathbb Z$ by the norm. Give this orbit
+$dN_s/N_h$ marks. Assign its marks to a unit class $b$ modulo $2^s$ by
+choosing a nearest test point $\xi_h^b-1$ for one root. Each conjugate
+has a nearest point with the same exponent class modulo $2^s$, since
+automorphisms fixing $F_s$ act by exponents congruent to $1$ modulo $2^s$.
+
+There are $N_s/2$ marks in total. For an unmarked class $a$, put
+$k=v_2(a-b)<s$. At any lift of $a$ the orbit contributes at most
+$(2^k-1)/N_s$ in excess per mark: the nearest-point choice bounds each
+root distance valuation by $v(\xi_h^a-\xi_h^{b'})=2^k/N_h$,
+where $b'$ is its own nearest exponent. Subtract the baseline $1/N_h$
+per root. At $s=2$ there is one mark, and the other class has $k=1$,
+giving excess at most $1/2$. At $s=3$ there are two marks. If their
+classes agree modulo four, choose the opposite class modulo four;
+both $k$'s equal one. Otherwise choose an unmarked lift of either class
+modulo four, giving $k$'s two and one. The excess is therefore at most
+$(3+1)/4=1$. Since $\mathbb Q_2(\sqrt{\pm2})\subset F_3$,
+these bounds apply to both claimed stabilized thresholds. At equality the
+strict blocking inequality fails, completing the proof.
+
+\paragraph{Example.}
+For $K=\mathbb Q_2(\sqrt{10})$ and $\delta=3/4$, the fourth-root
+shell costs one and every higher shell costs $1/2$. The shell set
+$\{2,3,4,5\}$ costs $5/2$ exactly. Over $\mathbb Q_2(\sqrt3)$ the
+same four shells instead cost four. At $\delta=1$ every shell costs
+one in every quadratic field. The file \texttt{eighth\_roots.py}
+independently recovers the first stabilized column by finite arithmetic.
+
+\subsection*{Abelian coefficient fields}
+Tame descent, together with the cyclotomic calculation in
+\emph{Torsion specialization and sparse prime sums} (the incoming
+archive \texttt{grh-torsion-and-prime-sampling.zip}), gives a general
+positive-tolerance formula. For any prime put $N_j=(p-1)p^{j-1}$ and
+\[
+ S_j(L)=\frac1{N_j}\sum_{i=1}^{j-1}N_i
+          \left\lfloor L/N_i\right\rfloor\quad(0\le L<N_j),
+ \qquad S_j(N_j)=+\infty .
+\]
+Let $m_j(\delta)$ be the first $L\in\{0,\ldots,N_j\}$ with
+$S_j(L)>\delta$. The cited cyclotomic descent theorem gives the cost over
+$F_s=\mathbb Q_p(\mu_{p^s})$ on shell $h$ as
+$m_j(\delta)/N_j$, where $j=\min(h,s)$. More precisely, when $h\ge s$
+and the degree spent on that shell has normalized cost $L/N_s$, the
+minimal excess somewhere on the shell is at most $S_s(L)$. The bound
+comes from selecting successively a least-occupied unit residue class
+and then a least-occupied lift; the number of marks in its class
+modulo $p^i$ is at most $\lfloor L/N_i\rfloor$. The orbit construction
+in the previous proof gives the same compression of roots to marks at
+level $s$. Balanced markings attain the bound.
+
+\paragraph{All odd primes.}
+For odd $p$, every finite abelian $K/\mathbb Q_p$, every eligible finite
+$S$ and every real $\delta\ge0$, write $a=v_p(e(K/\mathbb Q_p))$.
+Then
+\[
+ C_K(S,\delta)=\sum_{h\in S}
+   \frac{m_{\min(h,a+1)}(\delta)}{N_{\min(h,a+1)}} .
+\]
+In particular the entire tolerance profile depends only on the wild part
+of the ramification index.
+By the local Kronecker--Weber theorem take $K\subset F_n U$ with
+$U/\mathbb Q_p$ finite unramified and $n\ge a+1$.
+The groups of the two linearly disjoint factors identify
+$\operatorname{Gal}(F_n U/U)$ with $(\mathbb Z/p^n)^\times$, which
+is cyclic. Moreover $K\cap U$ is the maximal unramified subfield of $K$,
+so $[KU:U]=e(K/\mathbb Q_p)$. This degree divides $(p-1)p^a$.
+Uniqueness of each intermediate degree in a cyclic extension gives
+$KU\subset F_{a+1}U$. The extension $F_{a+1}U/KU$ has degree prime to
+$p$, and $KU/K$ and $F_{a+1}U/F_{a+1}$ are unramified. Tame descent
+therefore identifies all the costs with those for $F_{a+1}$.
+For the field-theoretic input see the proof of local Kronecker--Weber in
+A. Sutherland, \href{https://math.mit.edu/classes/18.785/2017fa/LectureNotes20.pdf}
+{\emph{Number Theory I}, Lecture 20}.
+
+\paragraph{All abelian dyadic fields on high shells.}
+By the same compositum argument, for $p=2$ there is a subfield
+$A\subset F_s$ with $KU=AU$ after an unramified base change. Choose
+$s\ge1$ minimal with $A\subset F_s$. When $A=F_s$ the preceding
+cyclotomic formula applies on every shell. In the remaining case $s\ge3$,
+and for every $h\ge s$ the exact cost is
+\[
+ \frac1{N_s}\min\{L\in\{0,2,4,\ldots,N_s\}: S_s(L)>\delta\}.
+\]
+Indeed $H=\operatorname{Gal}(F_s/A)$ avoids the nonidentity kernel of
+reduction from level $s$ to $s-1$. The unit group modulo $2^s$
+is $C_2\times C_{2^{s-2}}$. Every element of order at least four has a
+power equal to $1+2^{s-1}$. Of the four elements of order dividing two,
+a subgroup avoiding $1+2^{s-1}$ has order at most two. Hence $H$ has
+order two, generated by $c=-1$ or $c=-1+2^{s-1}$ modulo $2^s$.
+The possible costs $L/N_s$ have $L$ even, by
+$e(A/\mathbb Q_2)=N_s/2$ and the constant term of a shell polynomial.
+The cyclotomic bound over $F_s$ gives the stated lower bound for the cost.
+
+Conversely for even $L\le N_s$ select the $L/2$ exponents
+$1+4i$ ($0\le i<L/2$) and their images under multiplication by $c$.
+These are distinct: $c\equiv3\pmod4$.
+The resulting marks are $H$-stable and each unit class modulo $2^j$
+contains at least $\lfloor L/N_j\rfloor$ marks. For $j\ge2$, the first
+half cycles through all classes congruent to one modulo four with period
+$2^{j-2}$; the second half cycles through the complementary classes with
+the same period. At level one every mark lies in the only class.
+The monic polynomial with roots $\xi_s^b-1$ at the selected marks
+is therefore defined over $A$. An unmarked point of exponent $u$ has
+excess given by summing $(2^{v_2(u-b)}-1)/N_s$ over the marks.
+The lower occupancy bounds give excess at least $S_s(L)$; at marked
+points it is infinite. Pullback by $X\mapsto X^{2^{h-s}}$ in the
+$X=1+T$ variable realizes the same cost at all higher levels.
+Tame descent transfers this conclusion from $A$ to $K$.
+The remaining lower shells also admit a formula, as follows.
+
+\paragraph{Dyadic shells below the coefficient conductor.}
+Continue with $A$ of index two, and let $2\le h<s$. Define the
+following extremal loss profile on $0\le m\le N_h$:
+\[
+ E_h(m)=
+ \begin{cases}
+ S_h(m),&m\text{ even},\\
+ S_h(m-1)+r_h-r_s,&m\text{ odd}.
+ \end{cases}
+\]
+Then the exact cost on shell $h$ is $m/N_h$ for the first $m$ with
+$E_h(m)>\delta$. Shell one always costs one. Together with the high-shell
+formula and the odd-prime theorem this evaluates every shell for every
+finite abelian coefficient field over $\mathbb Q_p$.
+
+For even $m$ the unrestricted upper bound is $S_h(m)$. At level $h$,
+$c$ acts on exponents by negation. The construction with $m/2$ marks
+in the class one modulo four and their negatives therefore realizes
+the bound over $A$. For odd degree the obstruction is the best
+approximation to a primitive target by an element of odd degree over $A$.
+Fix $t=\xi_s-1$ and $z=\xi_h-1$, using primitive roots at those levels.
+In the quadratic extension $F_s/A$ write $z=u+bt$, $u,b\in A$. One has
+\[
+ v(z-c(z))=2r_h,\qquad v(t-c(t))=2r_s,\qquad
+ v(z-u)=v(bt)=2r_h-r_s=: \lambda .
+\]
+Indeed $v_2(c-1)=1$, and $c(z)$, $c(t)$ denote the Galois images.
+The difference of any two distinct test points on shell $h$ has valuation
+at least $2r_h$. Thus every test point has distance valuation $\lambda$
+from $u$. Since $h<s$ gives $\lambda>r_h$, this single center is
+integral, of valuation $r_h$, and attains excess $r_h-r_s$ everywhere.
+
+Moreover $\lambda$ is an odd integral multiple of $r_s$. If $[A(\alpha):A]$
+is odd, the ramification index $e'$ of that extension is odd. Its value
+group $(2r_s/e')\mathbb Z$ does not contain $\lambda$.
+Consequently $v(\alpha-u)\ne\lambda$, and the ultrametric inequality
+bounds $v(\alpha-z')\le\lambda$ at every test point $z'$.
+A monic polynomial over $A$ of odd degree has an irreducible factor of
+odd degree. Take one of its roots $\alpha$ and apply the unrestricted
+bound $S_h(m-1)$ to the remaining roots. This gives the claimed upper
+bound for its minimum excess. Conversely multiply the extremizing
+even-degree polynomial by $T-u$. Its minimum excess gains exactly
+$r_h-r_s$. The constructed polynomials have every root on the designated
+radius and hence attain their costs with witness zero.
+Tame descent gives the same profile of feasible monic degree tests
+after adjoining $U$ and over the original field $K$.
+
+\paragraph{Checks and a sharp order bound.}
+Two supplied scripts check the dyadic constructions.
+The first validates 1,036 balanced configurations and exhausts the stable
+subsets for levels through five. The second independently solves linear
+congruences over the dyadic integers. At conductors three through six it
+checks 84 degree, shell and involution choices, verifying each optimum is
+attained and the next valuation step is impossible. It represents
+$\mathcal O_{F_s}$ in the basis of powers of $t=\xi_s-1$; powers of
+the uniformizer $t\,c(t)$ give an integral basis of $A$.
+As an odd-prime example, if $p=3$, $v_3(e(K))=1$ and $K/\mathbb Q_3$
+is abelian, every shell $h\ge2$ costs $2/3$ at tolerance $1/3$.
+Indeed $N_2=6$ and $S_2(L)=\lfloor L/2\rfloor/3$ for $L<6$,
+so the strict threshold first occurs at $L=4$. Four consecutive shells
+therefore guarantee a successful specialization for a packet of budget
+at most two; three can all fail at exactly that budget.

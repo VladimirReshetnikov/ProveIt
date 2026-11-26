@@ -1,0 +1,324 @@
+\section{Realizing the actual auxiliary character condition}
+\label{sec:source_twists}
+
+The previous bridges report identified an obstruction to extending local
+torsion values to global characters and computed the minimum conductor
+$151^2$ for a cubic anticyclotomic character over
+$K=\mathbb Q(\sqrt{-23})$ that is trivial above $3$.
+\cite{prior-bridges}
+There is a further distinction in the source.  Its predicate
+\texttt{IsFromU1} asks for a character of the form
+\[
+                 \psi=\xi/\xi^c,
+\]
+where the precursor $\xi$ is ramified on only one side of each conjugate
+pair and is itself trivial on the prescribed local components.
+Triviality of $\psi$ alone does not imply this stronger assertion.
+The source explicitly describes both the precursor and its triviality on
+the whole decomposition groups, rather than only their inertia subgroups.
+\cite{sourceCMSplit,sourceAuxPrimes}
+
+This section makes that distinction effective in the discriminant-$-23$
+benchmark.  It gives exact conductor minima for five small valuation
+budgets and an existence construction for every positive budget.
+These are character-theoretic results; the Selmer and determinant
+requirements are additional conditions.
+
+\subsection{A precise optimization problem}
+
+Let $c$ be complex conjugation and let $S$ consist of the two primes of
+$K$ above $3$.  Choose a finite set $Q$ of primes of prime norm, disjoint
+from $S$, with $Q\cap cQ=\varnothing$.  Thus each rational prime in the
+support splits in $K$, and $Q$ contains one of its two primes.
+We consider nontrivial continuous finite-order characters
+\[
+  \xi:G_K\longrightarrow\mu_{3^\infty},\qquad
+  \psi=\xi/\xi^c,
+\]
+where $\xi$ is tamely ramified only on $Q$ and is trivial on the
+decomposition groups at both members of $S$.  Delete any primes of $Q$
+where $\xi$ is unramified, so that $Q$ is the actual support.
+Write
+\[
+  \mathcal T(\psi)=
+  \sum_{\mathfrak v\mid\mathfrak f(\psi)}
+       v_3\bigl(1-\psi(\tau_{\mathfrak v})\bigr),
+       \qquad v_3(3)=1,
+\]
+with $\tau_{\mathfrak v}$ a tame inertia generator.  This quantity is
+independent of those choices.  If the local order at pair $i$ is
+$3^{n_i}$, then
+\begin{equation}\label{eq:source_twist_cost}
+ \mathcal T(\psi)=\sum_i3^{1-n_i},\qquad
+ \operatorname N\mathfrak f(\psi)=\left(\prod_iq_i\right)^2.
+\end{equation}
+Indeed, each primitive $3^{n_i}$th root contributes
+$1/(2\cdot3^{n_i-1})$ to the valuation, and the pair contributes twice
+that number.  The valuation formula follows from
+$\Phi_{3^{n_i}}(1)=3$ and equality of the valuations of its conjugate
+factors.  Tameness makes each nontrivial conductor exponent one.
+
+\begin{theorem}[Exact conductor minima with the precursor condition]
+\label{thm:source_twist_minimum}
+For $1\le N\le5$, impose the budget
+$\mathcal T(\psi)\le3^{1-N}$.  Among all the characters just specified,
+including characters supported on several split pairs, the exact minimum
+of $\operatorname N\mathfrak f(\psi)$ and the number of output
+characters attaining it are as follows.
+\begin{center}
+\begin{tabular}{rcrrr}
+\hline
+$N$ & Budget & $q_{\min}$ & Minimum conductor norm & Number\\
+\hline
+1 & $1$    & 151       & 22801             & 2\\
+2 & $1/3$  & 6481      & 42003361          & 24\\
+3 & $1/9$  & 6481      & 42003361          & 18\\
+4 & $1/27$ & 11767033  & 138463065623089   & 54\\
+5 & $1/81$ & 102906613 & 10589770999131769 & 162\\
+\hline
+\end{tabular}
+\end{center}
+Every minimum is attained on one conjugate pair, with conductor ideal
+$(q_{\min})$ for $\psi$.  For budget $1/3$ the minimum includes six
+characters with local order $9$ and eighteen with local order $27$.
+\end{theorem}
+
+\subsection{The exact ray-group reduction}
+
+Put
+\[
+ \theta=(1+\sqrt{-23})/2,\qquad
+ \beta=1+2\theta=2+\sqrt{-23},\qquad
+ \mathfrak s=(3,\theta-1).
+\]
+The three reduced primitive forms of discriminant $-23$ are
+$(1,1,6),(2,1,3),(2,-1,3)$; the reduced-form bound
+$a\le\sqrt{23/3}<3$ makes the list exhaustive.  Thus
+$\operatorname{Cl}(K)\simeq C_3$.
+The norm form $u^2+uv+6v^2$ does not represent $3$, so
+$\mathfrak s$ is nonprincipal and generates the class group.
+Since $\operatorname N\beta=27$ and $\beta$ is a unit at the other
+prime over $3$,
+\begin{equation}\label{eq:source_twist_class_relations}
+       \mathfrak s^3=(\beta),\qquad
+       \mathfrak s\,c\mathfrak s=(3).
+\end{equation}
+The $S$-units are exactly $\{\pm3^a\beta^b:a,b\in\mathbb Z\}$:
+their valuation vectors $(u,v)$ satisfy $u-v\equiv0\pmod3$, and
+$(1,1),(3,0)$ generate precisely that lattice.
+
+Let
+\[
+ R_Q=\prod_{\mathfrak q\in Q}
+       (\mathcal O_K/\mathfrak q)^\times[3^\infty].
+\]
+The ordinary ray exact sequence has kernel $R_Q$ on the $3$-primary
+part, because the units of $K$ are $\{\pm1\}$.  Its quotient is $C_3$.
+A lift $b$ of $[\mathfrak s]$ satisfies $3b=r_\beta$, and the class
+of $c\mathfrak s$ is $r_3-b$, where $r_u$ denotes the local residue
+tuple of $u$, projected to $R_Q$.  A consistent inversion convention
+for principal ideals changes signs but not the subgroups below.
+Consequently, imposing triviality on \emph{both} decomposition groups
+above $3$ gives the exact quotient
+\begin{equation}\label{eq:source_twist_quotient}
+ \frac{\operatorname{Cl}_Q(K)[3^\infty]}
+ {\langle[\mathfrak s],[c\mathfrak s]\rangle}
+       \simeq R_Q/\langle r_3,r_\beta\rangle.
+\end{equation}
+The characters of this quotient are exactly the allowed precursors
+$\xi$.  This is also the ray class sequence with the $S$-units
+quotiented out; the classical class-field correspondence identifies it
+with the stated Galois-character conditions.\cite{milneCFT}
+
+For a single split rational prime $q$, put $h=v_3(q-1)$ and choose a
+root $r$ of $r^2=-23$ in $\mathbb F_q$.  The local group is cyclic
+of order $3^h$.  A precursor with local order at least $3^N$ exists
+if and only if
+\begin{equation}\label{eq:source_twist_residue_tests}
+ \begin{split}
+  &q\equiv1\pmod{3^N},\qquad \left(\frac{-23}{q}\right)=1,\\
+  &3^{(q-1)/3^N}\equiv1\pmod q,
+       \qquad(2+r)^{(q-1)/3^N}\equiv1\pmod q.
+ \end{split}
+\end{equation}
+These tests do not depend on which square root is chosen: the other
+value of $\beta$ is $27/\beta$, and the test on $3$ already controls
+$27$.
+
+\subsection{Proof and exact verification of the minima}
+
+The verifier \texttt{check\_source\_twists.py} lists every prime in
+the progression $1\bmod3^N$ up to the candidate bound using an
+Eratosthenes sieve of that progression, then applies
+\eqref{eq:source_twist_residue_tests}.  It uses no external packages,
+probable-prime tests, numerical approximations, or class-group oracle.
+Its exact search finds the displayed first primes.  The exponents of
+the cyclic quotients in \eqref{eq:source_twist_quotient} at those primes
+are respectively $1,3,3,4,5$.
+
+Here is why this finite search also proves the minimum over arbitrary
+supports.  If there are at least two pairs and the budget is
+$3^{1-N}$, each $n_i$ must be at least $N+1$: a single term with
+$n_i\le N$ would already exhaust or exceed the budget, leaving no
+room for another positive term.  Hence every support prime is split
+and is $1\bmod3^{N+1}$.  The first two such primes are
+\[
+\begin{array}{c|rrrrr}
+N&1&2&3&4&5\\ \hline
+q_1&73&163&163&487&42283\\
+q_2&127&271&487&3889&52489.
+\end{array}
+\]
+For $N=1,2,3,5$, their product exceeds the corresponding
+single-support minimum $q_{\min}$, which excludes every multipair
+support.
+
+For $N=4$, three pairs cost at least $487^3>11767033$ before the
+conductor is squared.  Since $3889^2>11767033$, every potentially
+cheaper two-pair support must be $(487,q)$, with
+\[
+                q\in\{3889,4861,8263,19441,19927\}.
+\]
+All these primes have $v_3(q-1)=5$.  Thus both local characters
+would have to have exact order $3^5$.  Choose generators of their
+local cyclic $3$-groups and reduce the coordinate vectors of
+$(r_3,r_\beta)$ modulo $3$.  One exact choice gives
+\[
+\begin{array}{c|rrrrrr}
+q&487&3889&4861&8263&19441&19927\\ \hline
+\log(3)\bmod3&1&0&2&1&0&0\\
+\log(\beta)\bmod3&1&2&0&0&1&2.
+\end{array}
+\]
+The column for $487$ is independent of every other column, even
+after replacing the second row in that other column by its negative.
+The sign change covers the other choice of the prime above $q$,
+since $\log(\bar\beta)=3\log(3)-\log(\beta)$.
+Thus neither orientation admits nonzero local character coefficients
+modulo $3$ satisfying both relations.  This excludes all five pairs.
+
+Finally, at a cyclic quotient $C_{3^k}$, the number of characters
+with local order at least $3^N$ is
+$\sum_{j=N}^{k}\varphi(3^j)$, which gives the final column of the
+table.  The map $\xi\mapsto\xi/\xi^c$ is injective for a fixed
+half-support: its kernel would be unramified everywhere, while
+triviality at $\mathfrak s$ kills every unramified character because
+$[\mathfrak s]$ generates the class group.  Choosing the other half
+does not add new outputs, since it replaces a precursor by the inverse
+of its conjugate.  This completes the proof of
+Theorem~\ref{thm:source_twist_minimum}.
+
+\subsection{Why the stronger condition changes the answer}
+
+For comparison, if only the anticyclotomic output $\psi$ is required
+to be trivial above $3$, the one-pair quotient is
+\[
+ C_{3^h}/\langle r_{\beta/\bar\beta}\rangle.
+\]
+The corresponding exact minimal support primes at budgets
+$1,1/3,1/9,1/27,1/81,1/243$ are
+\[
+                  151,\ 541,\ 6481,\ 94447,\ 238627,\ 1573183.
+\]
+The same verifier checks their minima, including smaller multipair
+supports.  These are \emph{not} substitutes for the stronger table.
+For example, at $q=541$, choose $r=40$, so $\beta=42$.  Then
+\[
+ \left(\frac{2+r}{2-r}\right)^{60}=1\pmod{541},\qquad
+             3^{60}=352\pmod{541},\qquad
+            42^{60}=129\pmod{541}.
+\]
+The weaker character exists at budget $1/3$, but the precursor
+condition fails.  Enforcing the actual precursor condition raises
+the minimum conductor norm from $292681$ to $42003361$.
+
+\subsection{Arbitrarily small budgets and chains of powers}
+
+\begin{theorem}[A governing field for the precursor condition]
+\label{thm:source_twist_all_budgets}
+For each $N\ge1$, set $k=3^N$ and
+\[
+ L_N=K\bigl(\zeta_k,3^{1/k},\beta^{1/k}\bigr).
+\]
+This is a finite Galois extension of $\mathbb Q$, of degree at most
+$4\cdot3^{3N-1}$.  Every rational prime splitting completely in
+$L_N$ supplies a precursor $\xi$ as above, with local order $3^N$
+on one chosen prime above $q$.  Its output $\psi=\xi/\xi^c$ has
+conductor $(q)$ and $\mathcal T(\psi)=3^{1-N}$.
+
+More generally, given an integer $m\ge1$ and $\varepsilon>0$, choose
+$N>\lfloor\log_3m\rfloor$ such that
+\[
+             3^{1-N+\lfloor\log_3m\rfloor}\le\varepsilon.
+\]
+Then a character exists for which the first $m$ positive powers all
+have conductor $(q)$ and satisfy
+$\mathcal T(\psi^j)\le\varepsilon$ for $1\le j\le m$.
+The support can avoid any prescribed finite set of rational primes.
+\end{theorem}
+
+\begin{proof}
+The field contains all conjugates of the displayed radicals.
+In particular, $c\beta=27/\beta$, so a $k$th root of $c\beta$ is
+$(3^{1/k})^3/\beta^{1/k}$, and the other roots differ by elements
+of $\mu_k$.  Thus $L_N/\mathbb Q$ is Galois.  Adjoining the two
+radicals to $K(\zeta_k)$ gives
+\[
+       [L_N:\mathbb Q]\le2\varphi(k)k^2
+                           =4\cdot3^{3N-1}.
+\]
+Complete splitting makes $q$ split in $K$, gives $q=1\bmod k$,
+and makes $3$ and $\beta$ $k$th powers in the residue field.
+The tests \eqref{eq:source_twist_residue_tests} therefore hold.
+The quotient in \eqref{eq:source_twist_quotient} has a character
+with exact local order $k$, giving the claimed precursor.
+Chebotarev's theorem gives infinitely many completely split primes,
+so any finite set may be excluded.  This use is unconditional and
+qualitative.\cite{milneCFT}
+
+For $1\le j\le m<3^N$, the inertia value of $\psi^j$ has order
+$3^{N-v_3(j)}$.  Hence
+\[
+        \mathcal T(\psi^j)=3^{1-N+v_3(j)}
+            \le3^{1-N+\lfloor\log_3m\rfloor}.
+\]
+No such power loses ramification, proving the last assertions.
+\end{proof}
+
+For $0<\varepsilon\le1$, choosing $N$ minimally in this theorem
+also gives the explicit degree estimate
+\[
+            [L_N:\mathbb Q]<972\,(m/\varepsilon)^3.
+\]
+This bounds the degree of the field governing the prime-selection
+problem.  It does not bound the least completely split prime or the
+conductor.  In particular, a least-prime estimate for rational
+arithmetic progressions cannot be applied to $L_N$ merely from
+Dirichlet GRH.
+
+\subsection{What has and has not been transferred}
+
+The upstream proof already uses roots of $S$-units and Chebotarev to
+produce auxiliary characters.\cite{sourceAuxPrimes}
+The contribution here is the explicit quotient
+$R_Q/\langle3,\beta\rangle$, the exact conductor optimization,
+the distinction between the output and precursor conditions, and
+the degree estimate for this fixed quadratic benchmark.
+The five-budget precursor optimization and its exact certificates
+extend the reviewed incoming packages, which already contain the
+order-three conductor-$151^2$ example. No literature-priority claim
+is made.
+
+These characters satisfy the local precursor, tame-ramification,
+decomposition-group, and small-valuation requirements isolated here.
+They do not establish the simultaneous Selmer length estimates,
+special-value bounds, or prescribed Frobenius neighborhoods needed
+for regular twists in the determinant argument.  Also,
+$K=\mathbb Q(\sqrt{-23})$ is a benchmark base field, not the full
+cyclotomic CM field of the upstream admissible data; a base extension
+requires recomputing its units and local conditions.  No nonabelian
+Riemann hypothesis follows from this section alone.
+
+The arithmetic proof is human-readable and the finite part is replayed
+with exact integer code.  This section is not a completed Lean
+formalization.

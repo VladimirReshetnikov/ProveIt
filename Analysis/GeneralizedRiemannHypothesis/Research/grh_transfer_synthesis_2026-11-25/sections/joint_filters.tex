@@ -1,0 +1,135 @@
+\section{Joint one-sided averages without hidden poles}
+\label{sec:joint-filters}
+
+The previous mean-transfer report proves that one-sided positive-part control can exclude poles without a pointwise error estimate. It also shows that a positive averaging kernel may hide a pole if its Mellin multiplier vanishes there. This section gives an exact repair using several averages. The point is to test their common zeros, not to assume that positive coefficients alone prevent cancellation.\cite{priorMean}
+
+\subsection{The reused Landau principle}
+
+\begin{lemma}[Positive-part Mellin principle]\label{lem:positive-mellin}
+Let $\beta>0$. Let $R:[1,\infty)\to\R$ be locally integrable and of at most polynomial growth. Suppose
+\[
+ F(s)=\int_1^\infty R(x)x^{-s}\,dx
+\]
+initially defined far to the right, extends meromorphically to $\Re s>\beta$. Assume every real pole in this region is at most simple and has nonnegative residue. If
+\begin{equation}\label{eq:positive-mellin-input}
+ \int_1^\infty\pos{R(x)}x^{-\sigma}\,dx<\infty
+ \quad\text{for every real }\sigma>\beta,
+\end{equation}
+then $F$ is holomorphic on $\Re s>\beta$ and
+$\int_1^\infty|R(x)|x^{-\sigma}\,dx<\infty$ there.
+\end{lemma}
+
+\begin{proof}
+The transform $H$ of the positive part is holomorphic on the half-plane in question. Initially $G=H-F$ is the Mellin transform of the nonnegative negative part of $R$. Let $a$ be its abscissa of convergence. Polynomial growth gives $a<\infty$. If $a>\beta$, the meromorphic continuation $H-F$ has residue $-\operatorname{Res}_aF\le0$ at $a$. But $G(\sigma)\ge0$ for $\sigma>a$, so the residue, if there is a simple pole, is also nonnegative. It is therefore zero, and the possible singularity is removable. This contradicts Landau's theorem that a nonnegative Mellin transform is singular at its finite abscissa. Hence $a\le\beta$. Both positive and negative parts now have absolutely convergent transforms on the asserted half-plane.
+\end{proof}
+
+This is the earlier report's lemma, included to make the new argument self-contained. The source's
+\src{Lib/Analytic/Landau}{IsPolar.landau}
+uses a fixed exponential majorant instead. Simplicity is needed at real poles; arbitrary finite orders at nonreal poles cause no problem in this proof.
+
+\subsection{An exact criterion for a family of filters}
+
+Fix $h>1$. For a nonzero polynomial $P(z)=\sum_{k=0}^d p_kz^k$ with real coefficients $p_k\ge0$, define
+\[
+ T_PR(x)=\sum_{k=0}^d p_kR(h^kx),\qquad z(s)=h^{s-1}.
+\]
+Changing variables in each integral gives
+\begin{equation}\label{eq:filter-transform}
+ \mathcal M(T_PR)(s)=P(z(s))F(s)-E_P(s),
+ \quad
+ E_P(s)=\sum_k p_kh^{k(s-1)}\int_1^{h^k}R(u)u^{-s}\,du.
+\end{equation}
+The correction $E_P$ is entire, since its integrals are over compact intervals. At a real point $s$, $P(h^{s-1})>0$.
+
+\begin{theorem}[Joint detection]\label{thm:joint-detection}
+Assume the analytic hypotheses of Lemma~\ref{lem:positive-mellin} for $R$. Let $P_1,\ldots,P_r$ be nonzero polynomials with nonnegative real coefficients. Suppose their Mellin multipliers have no common zero in $\Re s>\beta$. If, for each $j$,
+\begin{equation}\label{eq:joint-input}
+ \int_1^\infty\pos{T_{P_j}R(x)}x^{-\sigma}\,dx<\infty
+ \qquad(\sigma>\beta),
+\end{equation}
+then $F$ is holomorphic on $\Re s>\beta$.
+
+Conversely, absence of a common multiplier zero is necessary for this implication to hold for every $R$ satisfying those analytic hypotheses.
+\end{theorem}
+
+\begin{proof}
+The transform in \eqref{eq:filter-transform} inherits at most simple real poles with nonnegative residues, because its real multiplier is positive. Apply Lemma~\ref{lem:positive-mellin} to each filtered function. Thus every $P_j(z(s))F(s)$ is holomorphic. At any point of the half-plane, at least one multiplier is nonzero; division by that multiplier in a neighborhood shows that $F$ is holomorphic there.
+
+For necessity, let $\rho=a+i\tau$ be a common zero with $a>\beta$. It cannot be real, since the multipliers are positive at real points. The real function
+\[
+ R(x)=\Re x^{\rho-1}=x^{a-1}\cos(\tau\log x)
+\]
+has a meromorphic Mellin transform with simple poles at $\rho,\overline\rho$ and no real poles. Yet
+$T_{P_j}R(x)=\Re(P_j(h^{\rho-1})x^{\rho-1})=0$ for every $j$. All hypotheses \eqref{eq:joint-input} hold, while $F$ is not holomorphic in the desired region.
+\end{proof}
+
+The necessity statement concerns a universal implication over this analytic class. It does not assert that an arbitrary common zero is realized by the zeros of a particular number-theoretic $L$-function.
+
+\subsection{Two filters with integer weights}
+
+Take $h=2$ and
+\[
+ P(z)=5+6z,\qquad Q(z)=25+30z+36z^2.
+\]
+The exact identity
+\begin{equation}\label{eq:filter-bezout}
+ Q(z)-6zP(z)=25
+\end{equation}
+proves that there is no common zero anywhere. Thus the following two statistics suffice jointly:
+\begin{align*}
+ A_R(x)&=5R(x)+6R(2x),\\
+ B_R(x)&=25R(x)+30R(2x)+36R(4x).
+\end{align*}
+There is also an exact identity at the function level,
+\begin{equation}\label{eq:filter-reconstruction}
+ 25R(x)=B_R(x)-6A_R(2x).
+\end{equation}
+Once the Landau lemma gives absolute weighted integrability of both filtered functions, \eqref{eq:filter-reconstruction} gives it for $R$ as well. One cannot obtain a pointwise upper bound on $R$ by subtracting two pointwise upper bounds; the analytic lemma is doing substantive work here.
+
+\begin{corollary}[Concrete square-root mean interface]\label{cor:joint-half}
+Under the analytic hypotheses with $\beta=1/2$, suppose that for every $\varepsilon>0$ and all sufficiently large dyadic $X$,
+\[
+ \int_X^{2X}\pos{A_R(x)}\,dx\ll_\varepsilon X^{1/2+\varepsilon},
+ \qquad
+ \int_X^{2X}\pos{B_R(x)}\,dx\ll_\varepsilon X^{1/2+\varepsilon}.
+\]
+Then $F$ is holomorphic on $\Re s>1/2$ and is represented there by an absolutely convergent Mellin integral. It is also sufficient to replace each displayed bound by a positive-part square moment $\ll_\varepsilon X^\varepsilon$.
+\end{corollary}
+
+\begin{proof}
+Sum the dyadic bounds against $X^{-\sigma}$, choosing $\varepsilon<\sigma-1/2$. The square-moment version follows by Cauchy--Schwarz. Apply Theorem~\ref{thm:joint-detection}, Lemma~\ref{lem:positive-mellin}, and \eqref{eq:filter-reconstruction}.
+\end{proof}
+
+Both filters individually have zeros on the vertical line
+\[
+ \Re s=a:=1+\frac{\log(5/6)}{\log2}\approx0.7369656.
+\]
+For $P$, the imaginary parts are $(2k+1)\pi/\log2$. For $Q$, they are $(2k\pm2/3)\pi/\log2$. Thus each filter can conceal poles to the right of $1/2$, but their zero sets are disjoint. The identity \eqref{eq:filter-bezout}, rather than a numerical root search, certifies the repair.
+
+\subsection{Positivity of the original coefficients does not repair one filter}
+
+The single-filter counterexample can itself be realized in the positive-ramp class of the next section. Let $0<a<1$, $\tau\ne0$, $z=a-1+i\tau$, and
+$R(x)=\epsilon\Re x^z$. For $A_0>0$ choose $\epsilon>0$ so small that
+\[
+ \epsilon|z(z+1)|\le A_0/2,
+ \qquad \epsilon|\Re z|\le A_0/2.
+\]
+The positive measure
+\[
+ \mu=(A_0+\epsilon\Re z)\delta_1+
+ \left[A_0+\epsilon\Re\bigl(z(z+1)x^z\bigr)\right]dx
+\]
+has a bounded positive density and positive atom. Its mass below $x$ is
+$A_0x+\epsilon\Re(zx^{z+1})$. Differentiating the ramp sum and matching its value at $x=1$ gives
+\[
+ S_\mu(x)-A_0\log x+\epsilon=R(x).
+\]
+At $a=1+\log_2(5/6)$ and $\tau=\pi/\log2$, the first filter annihilates $R$ exactly, although its Mellin transform has off-line poles.
+
+Discretizing the density onto the integer at the left endpoint of each unit interval, and correcting the limiting constant, changes the remainder to $R(x)-D(x)$ with $0\le D(x)\ll1/x$. The argument is the explicit floor-discretization calculation in Section~\ref{sec:mean-pointwise}. The first filtered remainder is then nonpositive everywhere, and the off-line poles persist because the added Mellin transform is holomorphic for $\Re s>0$. Thus even positive bounded real coefficients supported at integer indices, together with the relevant continuation and residue hypotheses, do not make this individual positive filter sufficient.
+
+\subsection{How this could enter an arithmetic construction}
+
+Integral direct sums and repeated copies naturally produce integer-weighted sums of logarithmic covolumes and index costs. The coefficients $5,6$ and $25,30,36$ were chosen to allow an exact algebraic certificate with that kind of arithmetic aggregation. A successful construction could therefore aim at the two filtered mean inequalities without separately estimating every scale.
+
+This is an interface, not an arithmetic proof: the present source has not been shown to supply those inequalities for a new $L$-function. The pair is useful when a construction produces filters with individual multiplier zeros; if a single available multiplier is already zero-free in the required region, it remains sufficient on its own.

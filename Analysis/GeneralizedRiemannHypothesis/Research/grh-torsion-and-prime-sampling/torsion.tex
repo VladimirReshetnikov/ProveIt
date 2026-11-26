@@ -1,0 +1,18 @@
+\documentclass[11pt]{article}
+\newcommand{\shorttitle}{Simultaneous torsion specialization}
+\input{paper-style}
+\hypersetup{pdftitle={The exact cost of obstructing simultaneous torsion specialization}}
+\begin{document}
+\paperheading{ARITHMETIC OF ROOTS OF UNITY}{How far must we search for a simultaneous $p$-adic twist?}{An exact answer to the packet-size question in the ProveIt quantitative-twists report}
+\noindent
+A step in the Lean proof of Dirichlet GRH chooses roots of unity where several integral polynomials keep small valuations. A previous analysis asked whether one can bound the required order exponent by a polynomial in the total valuation budget and inverse tolerance, uniformly over the number of polynomials, when one bounds the \emph{sum of the positive valuation increases}. We determine the exact worst-case answer in one variable. With an unrestricted coefficient field and fixed positive tolerance $\delta$, the least guaranteed exponent has logarithm $B/\delta+O(1)$ as the budget $B$ grows. Balanced sets of roots of unity give examples that attain the optimum. For a fixed coefficient field of absolute ramification index $e$, the same problem admits a linear bound and even permits zero loss. For a cyclotomic coefficient field we also determine the exact answer at every tolerance. The proofs are independent of RH.
+\section{The step in the Lean proof}
+The five public theorems at commit \texttt{72fead102f66} concern the Riemann zeta function and Dirichlet $L$-functions. They include zero-freeness for real part greater than $1/2$, subject to the exclusion for the principal character at $s=1$, and the critical-line statement throughout the open strip. The readable and compact editions have independent machine-check records for those statements. We used the pinned sources and Andrew Sutherland's verification record. We did not run a new Lean build.\footnote{\href{https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207}{Upstream sources} and \href{https://math.mit.edu/~drew/shortgrh/}{independent verification record}. Exact source paths and prior-work references are in \texttt{sources.md}.}
+\par
+In the readable edition, short integral forms and an index bound, a supply of independent translates, and a lower bound on the corrected covolume of integral forms enter \texttt{star\_inequality}. Comparing the upper and lower bounds leaves a one-sided estimate on a smoothed prime sum. The construction on the lower-bound side chooses anticyclotomic characters so that several Selmer and special-value quantities are small at once. The local input in \texttt{RootsOfUnity.lean} selects specializations of polynomials by bounding how much valuation can be concentrated on a given shell of torsion points. Its order bound is chosen before the polynomials are supplied. This quantifier is the origin of the extremal problem here.
+\par
+The earlier quantitative-twists report gave a polynomial upper bound for a \emph{fixed} finite number of constraints. Another incoming report gave a bound independent of their number by exploiting a divergent harmonic sum. The question concerns the price of uniformity. Section~\ref{sec:torsion-minimax} answers it for every finite search range. Section~\ref{sec:limit} gives the transition as the tolerance approaches zero. Section~\ref{sec:field} applies the result to a fixed coefficient field and extends zero-loss selection to several variables.
+\input{sections/torsion}
+\input{sections/limits}
+\input{sections/field}
+\end{document}

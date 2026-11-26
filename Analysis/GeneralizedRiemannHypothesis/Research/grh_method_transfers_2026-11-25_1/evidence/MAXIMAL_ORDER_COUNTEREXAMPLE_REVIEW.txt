@@ -1,0 +1,50 @@
+INDEPENDENT CHECK OF THE MAXIMAL-ORDER CHARACTER COUNTEREXAMPLE
+=============================================================
+
+Let p be prime, m>=2, N=p^m, and let zeta be a primitive N-th root of unity in
+C_p. Normalize v(p)=1. Let G=C_N with generator g and identity 0, and work in
+the integral group algebra O_{C_p}[G]. Define
+
+  nu = product_{a=1}^{p-1} ([g] - zeta^a[0]).
+
+The augmentation is product_{a=1}^{p-1}(1-zeta^a). Since every a in this range
+is prime to p, each factor has valuation
+
+  r_m=1/phi(p^m)=1/(p^{m-1}(p-1)).
+
+Therefore the augmentation has finite valuation
+
+  t=(p-1)r_m=p^{1-m}<1.
+
+Every character of exact order N is determined by chi(g)=zeta^u with p not
+dividing u. Its evaluation on nu is
+
+  product_{a=1}^{p-1}(zeta^u-zeta^a).
+
+There is exactly one a_0 in {1,...,p-1} with u=a_0 modulo p. For each of the
+other p-2 factors, u-a is prime to p and its valuation is r_m. If
+u=a_0 modulo N, the evaluation is zero and its valuation is infinity.
+Otherwise j=v_p(u-a_0) satisfies 1<=j<=m-1. Since zeta^(u-a_0) has exact order
+p^(m-j), the remaining factor has valuation p^j*r_m. Thus every finite
+primitive-character evaluation has the exact valuation
+
+  (p-2+p^j)r_m >= (2p-2)r_m = 2t.
+
+This includes p=2: then there are no other factors, and the same formula and
+inequality hold. Equality is attained for u=a_0+p (mod N), so the lower bound
+2t is sharp among finite values.
+
+Conclusion: for any 0<epsilon<t, no character of maximal/exact order p^m has
+evaluation valuation at most t+epsilon, although augmentation valuation t is
+strictly below 1. A statement selecting a character of order dividing p^m is
+different: the trivial character has valuation exactly t.
+
+Quantifier caveat: t=p^{1-m} shrinks as m increases. This family refutes an
+unqualified maximal-order replacement at each finite level and arbitrarily
+small allowed losses. It does not refute a theorem with a fixed positive
+epsilon for all sufficiently large m, nor does it itself give a counterexample
+with one fixed measure and fixed positive augmentation valuation as m varies.
+
+This review is an exact symbolic valuation argument, not a floating-point
+calculation. It presupposes only the standard cyclotomic valuation formula
+v(1-zeta_{p^h})=1/phi(p^h).

@@ -1,0 +1,112 @@
+\section{How much of each formal branch must one observe?}
+Let $K$ be a finite extension of $\QQ_p$, $\OO$ its integers, $\pi$ a uniformizer, $v(\pi)=1$, and $q$ the residue-field size. Fix a Lubin--Tate formal $\OO$-module for $\pi$. Write $[b](X)$ for multiplication by $b\in\OO$. Choose $d\ge1$ distinct directions $B\subset\OO$. At precision $r\ge1$ work over $A_r=\OO/\pi^r$, and put $u_b=[b](X)\bmod\pi^r$. The observation at $b$ consists of the coefficients of $H(X,u_b)$ at degrees $0,\ldots,n_b-1$. The desired output is the list of all coefficients of $H\in A_r[[X,Y]]$ of total degree $<d$.
+
+Berger and Sprang proved existence of a finite common cutoff over the residue field \cite[Lemma 4.2]{bs}. The incoming manuscript \cite{oldbranches} gave a sharp residue-field formula, an implicit exact criterion over $A_r$, and an upper bound there. Its third further question asks which configurations attain the latter bound. We solve that question and determine the optimal common cutoff at every $r$.
+
+\subsection{The extremal coefficient}
+For a fixed branch $b$, write $h_c=v(b-c)$ for $c\ne b$. Put
+\[
+ \omega=\sum_{c\ne b}q^{h_c},\qquad
+ m_j=\#\{c\ne b:h_c\ge j\},\qquad H_*=\max_{c\ne b}h_c.
+\]
+Use $H_*=0$ if the list is empty. For $H_*\ge1$ write $D=(q-1)q^{H_*-1}$ and $M=m_{H_*}$. Let $t_b(r)$ be the least nonnegative $t$ such that $X^t/\Delta_b$ is integral as a power series over $A_r$, where $\Delta_b=\prod_{c\ne b}(u_b-u_c)$. Here the inverse is taken in $A_r((X))$.
+
+\begin{theorem}[Sharpness and cancellation]\label{thm:branches}
+Observations recover the jet if and only if $n_b\ge1+t_b(r)$ for every $b$. If $H_*=0$ then $t_b(r)=d-1$. Otherwise
+\[
+ t_b(r)\le\omega+(r-1)D,\qquad
+ t_b(r)=\omega+(r-1)D
+ \ \Longleftrightarrow\
+ p\nmid {M+r-2\choose r-1}.
+\]
+The older bound $\omega+(r-1)(q^{H_*}-1)$ is exact for $r=1$ or $H_*=0$. At $r>1$ and $H_*>0$ it is exact precisely when $H_*=1$ and $(M-1)+(r-1)$ has no carry in base $p$.
+\end{theorem}
+
+\begin{proof}
+We first recall the interpolation argument in \cite{oldbranches}, including its necessity direction. Let $P_b(Y)=\prod_{c\ne b}(Y-u_c)$ and $P(Y)=\prod_c(Y-u_c)$. Every $u_c$ has zero constant term. The remainder $R$ on division of $H$ by $P$ in $Y$ has the same total-degree $<d$ jet, since $P\in(X,Y)^d$. Formal division is valid over the complete ring $A_r[[X]]$; the coefficients below the leading coefficient of $P$ belong to $(X)$. Over the Laurent ring, the differences $u_b-u_c$ are units, as also follows from the factorization below. Hence
+\[
+ R=\sum_b H(X,u_b)\,P_b(Y)/\Delta_b .
+\]
+If the observations vanish and $n_b\ge1+t_b$, each quotient $H(X,u_b)/\Delta_b$ lies in $XA_r[[X]]$, so $R\in(X,Y)^d$. Conversely $(X^{t_b}/\Delta_b)P_b(Y)$ vanishes on all other branches and equals $X^{t_b}$ at $b$. Its coefficient of $Y^{d-1}$ has nonzero constant term by minimality of $t_b$ (if $t_b=0$, the empty product case is immediate). Thus one fewer observed coefficient at $b$ can lose information even with exact data on every other branch.
+
+Choose the Lubin--Tate coordinate $f(X)=[\pi](X)=\pi X+X^q$ \cite{lt}. An integral invertible change of parameter substitutes a series $X$ times a unit for $X$, and transforms differences by additional units. It preserves this threshold and the total-degree jet filtration. In the canonical coordinate,
+\[
+ [b](X)-[c](X)=[b-c](X)\cdot U(X)
+              = f^{\circ h_c}(X)\cdot V(X)
+ \quad (U,V\in\OO[[X]]^\times).
+\]
+The first unit comes from the formal group law $F(S,T)-S=T(1+\cdots)$; the second uses that $[(b-c)/\pi^{h_c}]$ has invertible linear coefficient. Write
+\[
+ g_j(X)=\pi+\big(f^{\circ(j-1)}(X)\big)^{q-1},\qquad
+ e_j=(q-1)q^{j-1}.
+\]
+The identity $f^{\circ j}=f^{\circ(j-1)}g_j$ implies that $\Delta_b$ is associated to the distinguished monic polynomial
+\begin{equation}
+        P^{(b)}(X)=X^{d-1}\prod_{j=1}^{H_*}g_j(X)^{m_j},
+        \qquad \deg P^{(b)}=d-1+\sum_j e_jm_j=\omega .
+        \label{eq:denom}
+\end{equation}
+Every $g_j$ is Eisenstein of degree $e_j$, has constant $\pi$, and is congruent to $X^{e_j}$ modulo $\pi$. Put $g_j=X^{e_j}(1+\pi U_j)$, where $U_j\in X^{-1}\OO[X^{-1}]$ and the term at $X^{-e_j}$ has coefficient $1$. Over $A_r((X))$ the reciprocal of \eqref{eq:denom} is
+\begin{equation}
+ X^{-\omega}\prod_j\sum_{k=0}^{r-1}
+       (-\pi)^k {m_j+k-1\choose k} U_j^k .
+ \label{eq:inverse}
+\end{equation}
+Zero multiplicities can be omitted. A term of total index $k$ has extra pole order at most $kD$, and all terms with $k\ge r$ vanish. When $D>0$, the sole contribution to exponent $-\omega-(r-1)D$ chooses index $r-1$ at level $H_*$ and the extreme monomial in every copy of $U_{H_*}$. Its coefficient is $(-\pi)^{r-1}{M+r-2\choose r-1}$. It survives precisely when the binomial is a unit. Multiplication by an integral power-series unit preserves the least exponent even over $A_r$. Kummer's carry criterion gives the last assertion since $D=q^{H_*}-1$ exactly at $H_*=1$. With $H_*=0$, \eqref{eq:denom} is $X^{d-1}$.
+\end{proof}
+
+\paragraph{Exact second precision and frequency of equality.}
+Let $\nu_j=\#\{c\ne b:h_c=j\}$. At $r=2$ the answer, including every cancellation, is particularly simple:
+\[
+ t_b(2)=\omega+\max\big(\{0\}\cup\{e_j:j\ge1,\ p\nmid\nu_j\}\big).
+\]
+Indeed, $f^{\circ j}\equiv X^{q^j}+\pi X^{q^{j-1}}\bmod\pi^2$. This follows by induction since $\pi q\in\pi^2\OO$. The reciprocal of the product of the iterates is therefore $X^{-\omega}(1-\pi\sum_{j\ge1}\nu_jX^{-e_j})$ modulo $\pi^2$. At arbitrary $r$ the upper endpoint in Theorem~\ref{thm:branches} is attained with a predictable frequency. If the digits of $M-1$ are $a_0,\ldots,a_{L-1}$ in base $p$, then the proportion of qualifying $r$ in every block of $p^L$ consecutive precisions is $\prod_{i=0}^{L-1}(p-a_i)/p^L$, by independent digit choices in $r-1$.
+
+\paragraph{Two cancellation patterns.}
+For $K=\QQ_3$, two directions that differ by $9$ have $\omega=9$ and $D=6$. Their common cutoff is $10+6(r-1)$ at every $r$; the old coefficient of $r-1$ was $8$. For $K=\QQ_2$, take the branch $0$ among $B=\{0,2,6\}$. The depth list is $(1,1)$ and the denominator is associated to $X^2(2+X)^2$. The reciprocal terms have coefficients $(-2)^k(k+1)$. Hence $t_0(r)=4+r-1$ for odd $r$ and $4+r-2$ for even $r$. At precisions one and two the same five coefficients suffice at this branch.
+
+\paragraph{Relation to an established exact formula.}
+For $K=\QQ_p$, $\pi=p$, and two directions with contact depth $h\ge1$, our formula gives
+$t=p^h+(r-1)(p-1)p^{h-1}$. In the multiplicative coordinate the denominator is associated to $(1+X)^{p^h}-1$. The least exponent annihilating $X$ in the quotient is the nilpotency index of a cyclic group-ring augmentation generator. This special case also follows from the Weisman--Wilson results as presented by Clark and Schauz \cite[Theorem 4.7]{cs}. More than two branches give products of division factors with multiplicities and allow the cancellation in Theorem~\ref{thm:branches}.
+
+\subsection{Optimal directions and the cost of increasing precision}
+For any monic distinguished polynomial $Q$ write $\tau_r(Q)$ for the least $n$ such that $X^n=0$ in $A_r[X]/Q$. Division by $Q$ yields the same remainder in the polynomial ring and the formal power-series ring. In particular $t_b(r)=\tau_r(P^{(b)})$. This yields a terminating exact algorithm in the cancellation cases: start with $1$, multiply by $X$, and reduce modulo $Q$ and $\pi^r$ until the remainder is zero. For $Q=1$ take $\tau_r(1)=0$.
+
+\begin{theorem}[All precisions and every residue ball]\label{thm:opt}
+Suppose $d$ directions may be chosen in a prescribed coset of $\pi^a\OO$, $a\ge0$. The smallest possible common cutoff is
+\begin{equation}
+       1+\tau_r\!\left(X^{d-1}\prod_{j\ge1}g_j^{\,u_j}\right),
+ \qquad
+ u_j=\begin{cases}
+    d-1&j\le a,\\[2pt]
+    \left\lfloor(d-1)/q^{j-a}\right\rfloor&j>a .
+ \end{cases} \label{eq:minimax}
+\end{equation}
+The same set of directions is optimal simultaneously at every precision.
+\end{theorem}
+\begin{proof}
+The quantity $\tau_r$ increases weakly under divisibility. In a coset containing $d$ directions, successively follow a most populous child in the tree of residue balls. Its size after $h$ splits is at least $\lceil d/q^h\rceil$. A branch $b$ on this nested path therefore has $m_j(b)\ge u_j$ for all $j$; eventually its ball is a singleton. Equation \eqref{eq:denom} gives the lower bound. To attain it, take the base-$q$ expansions of $0,\ldots,d-1$ and replace digits by a fixed list of residue representatives used as $\pi$-adic digits. Scale by $\pi^a$ and translate to the chosen ball. After $h$ splits every residue class contains at most $\lceil d/q^h\rceil$ directions. Hence $m_j(b)\le u_j$ for every $b,j$. Divisibility gives the matching upper bound.
+\end{proof}
+For example, for eight directions over $\QQ_2$ the optimal unrestricted cutoff is $2r+11$. If all eight directions must be even, the optimum is $4r+21$. Indeed the profiles in \eqref{eq:minimax} are $(3,1)$ and $(7,3,1)$; in both the deepest level has multiplicity one.
+
+\begin{proposition}[Growth with $r$]\label{prop:period}
+For any fixed branch with $H_*>0$, the function $t_b(r)-Dr$ is bounded and eventually periodic; in particular $\lim_{r\to\infty}t_b(r)/r=D$.
+\end{proposition}
+\begin{proof}
+Write $P=P^{(b)}$, $n=\deg P$, $\Lambda=\OO[X]/P$ and $x=X\bmod P$. The condition $t=t_b(r)$ implies $x^t\in\pi^r\Lambda$. Evaluation at a root of $g_{H_*}$ of valuation $1/D$ gives $t\ge Dr$. Theorem~\ref{thm:branches} gives $t\le Dr+\omega-D$.
+
+On $\Lambda\otimes K$, multiplication by $S=x^D/\pi$ has integral characteristic polynomial: its eigenvalues are $\alpha^D/\pi$ for the roots $\alpha$ of $P$, with multiplicities. Each root is zero or has valuation $1/e_j\ge1/D$. The coefficients of the characteristic polynomial of $S$ therefore belong to $\OO$. By Cayley--Hamilton $\Lambda'=\sum_{i=0}^{n-1} S^i\Lambda$ is an $S$-stable lattice, also stable under $x$. It contains $\Lambda$ and $\pi^{n-1}\Lambda'\subseteq\Lambda$. For $0\le j\le\omega-D$, the test $x^{Dr+j}\in\pi^r\Lambda$ is equivalent to $x^j S^r\in\Lambda$. Membership depends only on the class of $S^r$ in the finite module $\Lambda'/\pi^{n-1}\Lambda'$. The orbit of $1$ under $S$ in this module is eventually periodic. So is the smallest $j$ passing the test.
+\end{proof}
+
+\paragraph{A quantitative consequence for integer-valued polynomials.}
+Berger and Sprang use the case $r=1$ to multiply coefficient polynomials \cite[Theorem 4.6]{bs}. Their notation is $c_{f,j}(t)=[X^j]f([t](X))$, with $f$ in the kernel of the Lubin--Tate trace operator $\psi$. The following gives an explicit row cutoff at any residue precision. Set $d=i+\ell+1$, choose $B\subset\pi\OO$ of size $d$ by Theorem~\ref{thm:opt}, and define $h_b(X)=f(X)g([b](X))$. By \cite[Lemma 4.5]{bs}, $h_b\in\ker\psi$ if $f\in\ker\psi$ and $g\in\OO[[X]]$. Define constants in $A_r$ by
+\[
+       \mu_{bj}=[X^{i-j}Y^\ell]\,P_b(Y)/\Delta_b .
+\]
+For every $t\in\OO$ the following congruence of integer-valued functions holds:
+\begin{equation}
+ c_{f,i}(t)c_{g,\ell}(t)\equiv
+ \sum_{b\in B}\sum_{j=0}^{t_b(r)}\mu_{bj}\,c_{h_b,j}(t)\pmod{\pi^r}.
+ \label{eq:products}
+\end{equation}
+Apply interpolation to $f([t](X))g([t](Y))$. The branch values are $h_b([t](X))$ since the endomorphisms commute. Moreover $[Y^\ell]P_b\in X^{d-1-\ell}A_r[[X]]$, which gives the displayed cutoff. Equation \eqref{eq:products} supplies explicit weights and an optimal common precision for the full jet used by this procedure. A single prescribed product can require fewer coefficients.

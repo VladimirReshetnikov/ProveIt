@@ -1,0 +1,75 @@
+\section{An explicit conductor bound and its limits}\label{sec:conductor}
+
+The source's torsion and prime-selection arguments control the number and character-theoretic properties of auxiliary primes. They do not give a norm bound for primes satisfying every required Frobenius and Selmer condition. One can nevertheless give a completely explicit bound for the simpler, unrestricted realization problem.
+
+\begin{theorem}[Bounded conductor for an abelian CM base]\label{thm:bounded-conductor}
+Let $E/\Q$ be an abelian CM extension contained in $\Q(\zeta_f)$. Let $p$ be odd, $N\ge1$, and $t\ge1$. Write
+\[
+ |\mu(E)[p^\infty]|=p^{w_0},\qquad
+ p^a\Cl(E)[p^\infty]^{-}=0.
+\]
+Let $S$ be a finite set of rational primes to avoid. Set
+\[
+ M=\operatorname{lcm}\left(f,p^{N+w_0},\prod_{q\in S}q\right).
+\]
+Choose a prime $\ell>t$ not dividing $M$, and put
+\[
+ Q=M\ell,\qquad P=(\varphi(Q)\log Q)^2.
+\]
+Assuming Dirichlet GRH, there exist $t$ distinct rational primes $q_j\le P$, splitting completely in $E$ and avoiding $S\cup\{p\}$, with the following property. Choose one conjugate pair above each $q_j$. Every tuple of local characters of order dividing $p^N$ on those pairs extends to an anticyclotomic character $\chi$ with
+\[
+ \ord(\chi)\mid p^{N+a},\qquad
+ \N\mathfrak f(\chi)\le P^{2t}.
+\]
+If all the selected local characters have exact order $p^N$, then their conductor is exactly the selected modulus, and its first $m$ powers have that same conductor whenever $m<p^N$.
+\end{theorem}
+
+\begin{proof}
+Choose $t$ distinct nonzero residues modulo $\ell$. For each, the Chinese remainder theorem gives a reduced residue class modulo $Q$ which is $1$ modulo $M$ and has the chosen value modulo $\ell$. The least-prime bound of Lamzouri, Li and Soundararajan gives a prime in each class at most $P$, since $Q>3$.\cite{lls} They are distinct because the residues modulo $\ell$ are distinct. Their congruence modulo $f$ ensures complete splitting in $E$; their congruence modulo the other factors ensures avoidance and
+\[
+                       v_p(q_j-1)\ge N+w_0.
+\]
+
+For the corresponding local $p$-group $R$, every coordinate of the root-unit image $W$ has order at most $p^{w_0}$. In a cyclic factor of order $p^{h_j}$, with $h_j\ge N+w_0$, such elements lie in $p^{h_j-w_0}R_j\subseteq p^NR_j$. Therefore
+\[
+                              W\subseteq p^NR.
+\]
+Every local character into $\mu_{p^N}$ automatically annihilates $W$. Apply Theorems~\ref{thm:extension} and \ref{thm:ray} with $D=0$. The conductor and power assertions follow from \eqref{eq:conductor}.
+\end{proof}
+
+This strengthens a construction which simply excludes primes dividing the roots of unity of $E$: deeper local residue groups absorb that unit relation. Among supports with $h_j\ge N$, the extra depth $h_j\ge N+w_0$ is also necessary for \emph{every independent} local $\mu_{p^N}$ tuple to kill the unit image. Reduction away from $p$ injects $\mu(E)[p^\infty]$ into each residue field, so the projection of $W$ is exactly the order-$p^{w_0}$ subgroup; it lies in $p^NR_j$ precisely at the displayed depth. A tuple supported on one coordinate detects any failure.
+
+The construction also supplies arbitrarily many independent local coordinates using distinct rational primes, without an exponentially growing recursive exclusion modulus. It is a synthesis of a known explicit prime bound with the arithmetic extension theorem, not a new least-prime theorem.
+
+There is an elementary lower restriction. A tame inertia character of order $p^N$ requires $p^N\mid q_j-1$, hence $q_j\ge p^N+1$. A nontrivial conjugate pair therefore has conductor norm at least $(p^N+1)^2$. No conductor bound independent of the requested local order can hold.
+
+\subsection{The part of the small-valuation condition this supplies}
+
+Normalize $v_p(p)=1$. At a primitive $p^N$th root,
+\[
+ v_p(1-\zeta_{p^N})=\frac{1}{(p-1)p^{N-1}}.
+\]
+For $1\le j\le m<p^N$,
+\[
+ v_p(1-\zeta_{p^N}^{\,j})
+     =\frac{p^{v_p(j)}}{(p-1)p^{N-1}}.
+\]
+Thus a tuple of $t$ conjugate pairs whose local values all have exact order $p^N$ satisfies the uniform tame bound
+\[
+ \sum_{\mathfrak v\mid\mathfrak m}
+ v_p(1-\chi(\tau_{\mathfrak v})^j)
+ \le
+ \frac{2t\,p^{\lfloor\log_p m\rfloor}}{(p-1)p^{N-1}},
+ \qquad 1\le j\le m.
+\]
+Here $\tau_{\mathfrak v}$ is a tame generator, and primitivity makes this valuation independent of its choice. Choosing $N$ large makes this particular cost small, with the conductor bound from Theorem~\ref{thm:bounded-conductor}. This recovers one useful quantitative component of the source's twisting problem.
+
+\subsection{The condition this construction does not supply}
+
+Theorem~\ref{thm:bounded-conductor} sets $D=0$. It does not impose splitting at the primes above $p$. The obstruction in Section~\ref{sec:example} shows that this omission can be decisive even at tiny discriminant. Nor do the congruences on $q_j$ enforce the Frobenius neighborhoods governing the source's tied Selmer relations. Those can involve nonabelian extensions.
+
+One may quotient by the required subgroup $D$ and apply the exact criterion, or use Proposition~\ref{prop:grid} to exhibit a surviving family. Either route still needs a proof that the determinant or special-value witness does not vanish on that family. Selecting a prime in a rational progression alone does not prove this.
+
+Prescribed tame ramification through relations among Frobenius elements is a developed subject, including the Gras--Munnier criterion and its modern proofs.\cite{hmr} Effective Chebotarev results can be considered once the governing field, degree and discriminant are actually bounded.\cite{thorner} They cannot be replaced silently by the Dirichlet endpoint of the present Lean proof.
+
+For a nonabelian base field, even finding small completely split primes requires additional analysis. For $p=2$, the minus idempotent used here is unavailable; the unit and conjugation analysis must be replaced. Neither extension is claimed in this report.

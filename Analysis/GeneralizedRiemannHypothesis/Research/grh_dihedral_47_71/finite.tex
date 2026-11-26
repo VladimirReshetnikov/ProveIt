@@ -1,0 +1,95 @@
+\section{How many shifted Jensen tests detect a polynomial perturbation?}
+\label{sec:finite-jensen}
+The incoming manuscript \href{https://github.com/VladimirReshetnikov/ProveIt/blob/5cc267af75a635199ac5d93a7d49cbce521daefc/docs/incoming/grh_transfers_density_gaps_and_zero_tests.zip}{\emph{Geometric progressions and nonabelian zero tests}} (files \texttt{jensen.tex} and \texttt{gaussian.tex})
+constructs cubic counterexamples to a general kernel criterion while studying
+the conductor-$23$ Artin factor. Its Gaussian argument uses every shift of a
+cubic Jensen polynomial. For polynomial perturbations there is an exact finite
+answer. This calculation determines what evidence from small perturbations
+can establish. It does not assume any Riemann hypothesis.
+
+For a real polynomial $V$ bounded below on $[0,\infty)$, consider the even kernel
+$K_\epsilon(u)=\exp[-u^2-\epsilon V(u^2)]$, $\epsilon>0$.
+Define the coefficients $\gamma_n$ by
+\[
+ \int_{\mathbb R} e^{zu}K_\epsilon(u)\,du
+ =\sum_{n\ge0}\gamma_n z^{2n}/n!,\qquad
+ J^{d,n}(X)=\sum_{j=0}^d \binom{d}{j}\gamma_{n+j}X^j .
+\]
+Call shift $n$ persistent when $J^{3,n}$ is real-rooted along some sequence
+$\epsilon\downarrow0$. Each shift may use its own sequence.
+
+\paragraph{Theorem.}
+Fix $r\ge3$. For potentials of degree at most $r$, persistence at any
+$r-2$ distinct nonnegative integer shifts forces $\deg V\le2$.
+In this case all $J^{d,n}$ have negative real roots for every $\epsilon>0$,
+$d\ge1$ and $n\ge0$. The test count is sharp. For any set $S$ of $r-3$
+nonnegative integers there is a strictly convex increasing polynomial of degree
+$r$ whose persistent shifts are precisely $S$. At each fixed shift, the predicted
+outcome holds for all sufficiently small positive $\epsilon$.
+
+\paragraph{Proof.}
+Set $p=n+1/2$ and let $X_n$ have the gamma distribution of shape $p$
+and rate one. The substitution $x=u^2$ and the gamma duplication
+formula give $c_n=4^n\gamma_n/\sqrt\pi=\mathbb E e^{-\epsilon V(X_n)}$.
+A cubic built from the $c_n$ differs from the original only by positive
+rescalings of variable and value. Write $m(n)=\mathbb EV(X_n)$ and
+$\Delta m(n)=m(n+1)-m(n)$. The Taylor estimate
+$c_n=1-\epsilon m(n)+O_n(\epsilon^2)$ follows by integrating the
+pointwise second-order remainder, bounded by a constant times
+$\epsilon^2 V^2$ for $0<\epsilon<1$ using the lower bound on $V$.
+For the translated cubic $P(W)=\sum_{j=0}^3\binom{3}{j}c_{n+j}(W-1)^j$
+the coefficients of $1,W,W^2,W^3$ are, respectively,
+\[
+ \epsilon\Delta^3m(n)+O_n(\epsilon^2),\quad
+ -3\epsilon\Delta^2m(n+1)+O_n(\epsilon^2),\quad
+ O_n(\epsilon),\quad 1+O_n(\epsilon).
+\]
+Thus, if $\Delta^3m(n)\ne0$, its discriminant equals
+$-27\epsilon^2(\Delta^3m(n))^2+O_n(\epsilon^3)$.
+If $\Delta^3m(n)=0$, it equals
+$108\epsilon^3(\Delta^2m(n+1))^3+O_n(\epsilon^4)$.
+The transform $V\mapsto m$ takes $x^k$ to the monic polynomial
+$(n+1/2)(n+3/2)\cdots(n+k-1/2)$, so is a degree-preserving
+linear isomorphism. Hence $r-2$ persistent shifts force the polynomial
+$\Delta^3m$, of degree at most $r-3$, to vanish identically.
+
+For the converse take $V(x)=ax^2+bx+c$. For $a>0$, P\'olya's quartic
+Fourier integral theorem with arbitrary quadratic coefficient gives only real
+zeros for $\int e^{itu}K_\epsilon(u)\,du$.
+See N.~G.~de Bruijn, \emph{The roots of trigonometric integrals},
+Duke Math.~J.~17 (1950), 197--226,
+\href{https://repository.tudelft.nl/file/File_524a4d3c-0858-4c55-b425-8c8ce1fb89da}{p.~197, (1.3)}.
+The function $G(w)=\int\cosh(\sqrt w\,u)K_\epsilon(u)\,du$ then
+has negative real zeros only. The bound
+$|\sqrt w||u|\le (\epsilon a/2)u^4+C|w|^{2/3}$ gives order
+at most $2/3$ for $G$. Its genus-zero product places it in the
+Laguerre--P\'olya class. For $a=0$, boundedness below gives $b\ge0$
+and $G$ is a positive multiple of an exponential with positive slope,
+also in that class. Every derivative of $G$ is in the class, so Jensen's
+theorem gives real roots for every $J^{d,n}$. Positivity of all the
+coefficients puts these roots on the negative real axis.
+
+Finally take $m$ with $\Delta^3m(n)=\prod_{s\in S}(n-s)$, solving by
+triangularity of finite differences. Its leading coefficient and that of
+the corresponding $V$ are positive. Adding $A x^2$ to $V$ adds $2A$ to
+$\Delta^2m(n+1)$ and preserves $\Delta^3m$. Choose $A$ large enough for
+$\Delta^2m(s+1)>0$ at each $s\in S$ and $V''>0$ throughout $[0,\infty)$.
+The latter is possible since $V''$ has positive leading coefficient.
+A further linear adjustment makes $V'(0)>0$. The two discriminant expansions
+give all claims. The small-$\epsilon$ thresholds can depend on the shift.
+\hfill$\square$
+
+\paragraph{An exact example.}
+Take $r=4$ and $V(x)=x^4-14x^3+100x^2+x$. Since
+$V''(x)=12(x-7/2)^2+53$, the potential increases from zero and is strictly
+convex. Its moment polynomial has $\Delta^3m(n)=24n$ and
+$\Delta^2m(1)=95$. Shift zero therefore persists, and each other fixed
+shift fails for sufficiently small $\epsilon$. At $\epsilon=10^{-12}$
+the checker \texttt{check\_finite.py} bounds the discriminants of the
+rescaled cubics using the pointwise inequalities
+$1-y\le e^{-y}\le1-y+y^2/2$ for $y\ge0$. Its rational bounds are
+\[
+ 92{,}590{,}000<\operatorname{disc}(P_0)/\epsilon^3<92{,}600{,}000,
+ \qquad
+ -15{,}553<\operatorname{disc}(P_1)/\epsilon^2<-15{,}551 .
+\]

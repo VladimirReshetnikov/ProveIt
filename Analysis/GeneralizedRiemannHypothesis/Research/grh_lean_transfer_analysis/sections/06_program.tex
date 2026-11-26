@@ -1,0 +1,66 @@
+\section{A research program with explicit decision points}\label{sec:program}
+
+\subsection{What deserves priority}
+
+The most useful next question is not whether theta functions can be attached to the cubic example; that is already classical. It is whether their arithmetic geometry can produce the \emph{particular normalized upper bound} in \eqref{eq:missing}. That distinction separates a plausible extension from a new proof.
+
+\begin{longtable}{@{}P{0.19\textwidth}P{0.35\textwidth}P{0.38\textwidth}@{}}
+\toprule
+Priority & Concrete task & What a successful result would establish\\
+\midrule
+\endhead
+Immediate & Compile the supplied product and real-nonvanishing interfaces; formalize selected known factorizations. & New formal corollaries of the exported theorem, with little new analytic mathematics.\\
+\addlinespace
+First research target & Construct an ideal-class-sensitive determinant for \(K=\Q(\sqrt{-23})\), targeting \(\mathcal R_H\). & A sharply defined arithmetic obstacle to RH for a genuinely nonabelian extension of \(\Q\).\\
+\addlinespace
+Useful parallel work & Package the comparison lemma and sparse-parameter criterion as reusable Lean interfaces. & Lower coupling between the geometric construction, parameter estimates, and the analytic conclusion.\\
+\addlinespace
+Later extension & Treat class-group or finite-order Hecke characters over a fixed CM base; then consider variable conductors or relative constructions. & A possible route to larger families, conditional on new arithmetic estimates and exact normalizations.\\
+\bottomrule
+\end{longtable}
+
+These are ordered by mathematical dependency, not by a prediction of how many weeks they require. The source's successful construction over \(\Q\) provides evidence of a method, but no complexity estimate or theorem guarantees that the next case will work.
+
+\subsection{Four arithmetic gates for the cubic example}
+
+\textbf{Gate 1: the correct finite-place statistic.}
+Specify a family of integral theta or determinant data indexed by ideal classes of \(K\). At every finite prime, compute the determinant valuation and show that the global sum isolates
+\[
+3\sum_{[\mathfrak a]=1}\Lambda_K(\mathfrak a)
+\left(\frac1{\Nm\mathfrak a}-\frac1x\right),
+\]
+with a quantified error. Detecting only principal \emph{prime} ideals is insufficient: the cube of a nonprincipal prime ideal must also contribute. The calculation must handle the prime \(23\) and all other local correction terms explicitly.
+
+\textbf{Gate 2: enough integral vectors.}
+Construct enough short forms to control almost all of the relevant ambient space, with a rank defect and completion cost that satisfy the comparison lemma in Section~\ref{sec:lemmas}. A supply of isolated theta identities does not meet this requirement. The specific \(1-O(b^{-2})\) spanning fraction in the source has a quantitative role; if the analogue deteriorates, its cost must be carried through the normalization.
+
+\textbf{Gate 3: the main term and the constant.}
+Derive the archimedean determinant term, including its exact constant. It must reproduce the subtraction of \(\log x-(1+\gamma_H)\). An uncontrolled additive constant is fatal: the desired error tends to zero for \(0<\varepsilon<1/2\). A formula for a related theta value, or a bound with an unspecified \(O(1)\), is not enough.
+
+The challenge can also be seen from
+\[
+\gamma_H=\gamma_K+
+2\frac{L_K'(1,\psi)}{L_K(1,\psi)}.
+\]
+Here \(\gamma_K\) is the corresponding Euler--Kronecker constant of \(K\). This identity follows by logarithmically differentiating \eqref{eq:galois} at \(1\); it does not supply the new determinant or period identity needed to evaluate its contribution geometrically. The extra class-character logarithmic derivative is precisely the sort of term that an attempted extension must account for, rather than absorb into an error.
+
+\textbf{Gate 4: retain the exponent after every loss.}
+Record the construction's scale \(m\), dimension, local denominators, rank defect, and height errors. After dividing by \(m\), the result must be \(x^{-1/2+o(1)}\). The exponent certificate in Section~\ref{sec:lemmas} makes the tradeoff explicit. If a construction only reaches \(x^{-1/3+o(1)}\), its resulting zero-free region would be valuable, but it would not prove RH.
+
+Only after these four gates should one invoke the analytic reduction already proved in Section~\ref{sec:principal-target}. Its role is to make the arithmetic goal exact and checkable.
+
+\subsection{Where the existing formal structure helps}
+
+The repository's split into a general library and a problem-specific construction is useful for extension work. The general Landau theorem, elementary estimates, determinant inequalities, and portions of the modular/theta infrastructure can be examined as candidate dependencies. In contrast, the exact choice of CM fields, congruence data, integral bases, local divisibility, and height normalization must be checked against the new arithmetic input.
+
+A practical interface would expose the following data: an ambient dimension \(D\); an integral lattice and covolume \(V\); \(n\) sufficiently short independent vectors; a normalization scale \(m\); the remainder \(\mathcal R\); and three nonnegative loss terms. A proof can then connect those inputs through Proposition~\ref{prop:certificate}, without repeatedly unfolding the whole construction. A second interface can package the Mellin transform, pole residues, and one-sided estimate for the analytic endpoint.
+
+This is also where the large-subset observation helps. If a variant still needs zero-avoiding quadratic twists, it may suffice to construct good arithmetic objects for a sufficiently large subset of auxiliary primes. There is no reason to insist on every admissible parameter before comparing the surviving set with the quantitative bad-twist bound.
+
+\subsection{Limits of extrapolation}
+
+The proposed cubic target is supported by exact class field identities and a complete analytic reduction. Its arithmetic extension is conjectural. The same level of specificity has not been established here for general automorphic \(L\)-functions, elliptic curves, BSD, or prime-tuple problems.
+
+There is also a structural difference between fixing a number field and proving a uniform theorem while its discriminant and conductor vary. Constants hidden in an estimate for the field of discriminant \(-23\) may grow too rapidly for the uniform applications needed in other conjectures. A successful fixed-field proof should therefore be treated as a first result, not as automatic access to all quantitative Chebotarev or Artin primitive-root applications.
+
+\statusbox{\textbf{Assessment.} The immediate corollaries are rigorous once the exported Dirichlet theorem is accepted. The reusable analytic and comparison statements are concrete. A route beyond those corollaries exists at the level of a precise research target, but the decisive new arithmetic bound remains open in this analysis.}

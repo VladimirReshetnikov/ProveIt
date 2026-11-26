@@ -1,0 +1,202 @@
+\section{Sharp zero multiplicities for symmetric Galois groups}
+\label{sec:reflection}
+
+An incoming report considers the splitting field of a polynomial with
+symmetric Galois group. It asks whether the order of an off-line zero
+can be recovered with the optimal loss from one much smaller set of
+Frobenius classes. Its symmetric-group estimate is
+$2(n-H_n)$, where $H_n=\sum_{j=1}^n1/j$.
+It gives $n-1$ as the best possible lower bound for a proof from local
+character positivity. The following result attains that bound for
+every $3\le n\le 12$ and also controls zeros on the critical line. The precise
+antecedent is \emph{Reflection detectors for nonabelian Riemann
+hypotheses}, the symmetric-group corollary and the question in its final section,
+in the \href{https://github.com/VladimirReshetnikov/ProveIt/blob/5cc267af75a635199ac5d93a7d49cbce521daefc/docs/incoming/grh_reflection_transfer_2026-11-25.zip}{pinned reflection report}.
+
+\paragraph{Theorem.}
+Let $L/K$ be a finite Galois extension of number fields with group
+$G=S_n$, $3\le n\le 12$. Fix a transposition $t$, set
+$E=L^{\langle t\rangle}$ and $F=L^{A_n}$, and let $\varepsilon$
+be the sign character. Then the meromorphic function
+\[
+ \mathcal Q(s)=\frac{\zeta_E(s)^{\,n-1}L(s,\varepsilon,L/K)}
+                         {\zeta_L(s)}
+ =\frac{\zeta_E(s)^{\,n-1}\zeta_F(s)}{\zeta_L(s)\zeta_K(s)}
+\]
+is holomorphic on $\mathbb C\setminus\{1\}$, with a pole of exact order
+$n-2$ at~1. In particular, for $K=\mathbb Q$ and $1/2<\Re\rho<1$,
+Dirichlet GRH gives
+\[
+ \operatorname{ord}_\rho\zeta_L\le (n-1)\operatorname{ord}_\rho\zeta_E .
+\]
+For example, the constants are $4$ and $5$ for $S_5$ and $S_6$. Each constant $n-1$ is optimal among deductions
+using positivity against all characters induced from one-dimensional
+subgroup characters and vanishing of the two global linear coefficients.
+
+\paragraph{Arithmetic input.}
+For $s\ne1$ let $\Theta=\sum_\chi (\operatorname{ord}_{s}L(\cdot,\chi,L/K))\chi$,
+the sum over irreducible characters of $G$.
+Brauer induction gives meromorphy, so this virtual character exists.
+For every $H\le G$ and every linear character $\eta$ of $H$, Artin
+induction formalism and Hecke holomorphy away from 1 give
+$\langle\Theta|_H,\eta\rangle\ge0$. The same holds for
+$\Psi=\varepsilon\Theta$ since $\varepsilon|_H\eta$ is linear.
+The regular and permutation characters give
+\[
+ m:=\Psi(1)=\operatorname{ord}_s\zeta_L,\qquad
+ a:=\tfrac12(m-\Psi(t))=\operatorname{ord}_s\zeta_E,\qquad
+ b:=\langle\Psi,1\rangle=\operatorname{ord}_s L(\cdot,\varepsilon,L/K).
+\]
+These are the classical Heilbronn-character identities.
+See H.~Heilbronn, \href{https://doi.org/10.4153/CJM-1973-090-3}{\emph{On real
+zeros of Dedekind $\zeta$-functions}}, Canad. J. Math. 25 (1973), 870--873,
+and R.~Foote, H.~Ginsberg and V.~K.~Murty,
+\href{https://doi.org/10.1090/BULL/1492}{\emph{Heilbronn characters}}.
+
+\paragraph{Finite proof.}
+For a conjugacy type $T$, let $V_T$ be the value of $\Psi$ on $T$
+and $c_T$ the size of the class. Write $\delta_T$ for its coordinate
+unit vector. Given a subgroup $H$ and a surjection $e:H\to\mathbb Z/d$,
+put
+\[
+ B_{H,e}(T)=\sum_{h\in H\cap T}\frac1{\varphi(d)}
+       \sum_{u\in(\mathbb Z/d)^\times}
+                   \exp(2\pi i u e(h)/d).
+\]
+The row $B_{H,e}$ is real and $B_{H,e}\cdot V\ge0$ by the preceding
+local positivity. The sum over $u$ includes the complex conjugate of
+each character. We claim the following exact vector identity in each certified degree. The table gives the positive weights for the two smallest nonsolvable groups.
+\[
+ \frac{n-3}{n-1}\delta_{1}-\delta_t+
+             \frac{2}{(n-1)n!}(c_T)_T
+       =\sum_{(H,e)} w_{H,e} B_{H,e}.                         \tag{R}
+\]
+Pairing with $V$ gives $2(a+(b-m)/(n-1))\ge0$, i.e.
+$m\le(n-1)a+b$ at every $s\ne1$. This proves the holomorphy.
+At $s=1$, each Dedekind zeta has a simple pole with nonzero residue,
+which gives the stated exact order.
+
+The notation $g_j$ in the following table means that the displayed
+permutation maps to $j\bmod d$. Each row generates its indicated
+subgroup and character. For example, the first row contains the identity,
+two transpositions with character value $-1$, and one double
+transposition with value $+1$.
+
+\begin{center}\small
+\begin{tabular}{r r r l}
+\hline
+$n$ & $w_{H,e}$ & $d$ & Generators with their images\\ \hline
+5 & $3/8$&2 & $(45)_1,\ (23)_1$\\
+5 & $1/16$&2 & $(45)_1,\ ((24)(35))_1$\\
+5 & $1/24$&2 & $(45)_1,\ ((12)(34))_1$\\
+5 & $1/40$&2 & $((23)(45))_1,\ ((12)(34))_1$\\ \hline
+6 & $7/30$&2 & $(56)_1,\ ((23)(45))_1$\\
+6 & $1/10$&3 & $(456)_2,\ ((12)(34)(56))_0$\\
+6 & $1/45$&6 & $(456)_4,\ ((14)(25)(36))_3$\\
+6 & $1/50$&2 & $((34)(56))_1,\ ((23)(45))_1$\\
+6 & $1/5$&2 & $(56)_1,\ (34)_1,\ (12)_1$\\
+6 & $1/40$&2 & $(56)_0,\ (34)_1,\ ((13)(24))_1$\\ \hline
+\end{tabular}
+\end{center}
+
+For $S_5$ one can check (R) directly. In the type order
+$1,2,3,22,4,32,5$ (fixed points suppressed), the four rows are
+\[
+\begin{pmatrix}
+1&-2&0&1&0&0&0\\
+1&-2&0&-1&2&0&0\\
+1&-2&2&-3&0&2&0\\
+1&0&0&-5&0&0&4
+\end{pmatrix}.
+\]
+The class sizes are $(1,10,20,15,30,20,24)$.
+To reproduce the checks for every degree, start with the identity
+permutation at image zero and multiply by each generator, adding its
+image modulo $d$, until the list stops growing. Each occurrence of an
+already listed permutation has the same image. Sum the real cyclotomic
+traces in each conjugacy class and check (R) entry by entry. The
+accompanying \texttt{check\_reflection.py} performs these operations in
+exact rational arithmetic, using the completely specified inputs in
+\texttt{certificates.json}. The optimality witness is the usual standard
+character $\Psi(g)=\#\operatorname{Fix}(g)-1$. For every $n\ge3$ it is
+orthogonal to both linear characters, it satisfies every subgroup
+positivity inequality, and it has $(m,a,b)=(n-1,1,0)$. This witnesses
+sharpness of the group-theoretic certificate. Existence of an actual
+off-line zero realizing equality is a separate question.
+
+For $n=3$ the positive row is the sign character itself, weighted
+by $1/6$ and aggregated by type. The accompanying data for each
+remaining degree contain a list of generators and a cyclic character
+on each subgroup in (R), as in the table. The number of columns in
+(R) is the number of partitions of $n$, and its class sizes follow
+from $c_T=n!/\prod_{j} j^{m_j}m_j!$ for a type with $m_j$ cycles
+of length $j$. The checker enumerates the generated subgroup, with two class-count
+shortcuts for large rows. A full $S_k$ is recognized by a $k$-cycle
+and an adjacent transposition; its row uses the class-size formula and
+the indicated sign power. An additional generator exchanging two
+disjoint equal blocks gives $(S_k\times S_k)\rtimes C_2$. In the
+base subgroup the cycle types concatenate. In the exchange coset the
+cycles have twice the lengths of the cycles of the product of the
+two component permutations, and there are $k!$ pairs with each
+given product. The linear character is the product of its values on
+the two components, times its value on the exchange in that coset.
+The checker matches the supplied generators and their character values
+before applying either identity. No numerical optimization enters its
+acceptance test.
+
+\begin{center}\small
+\begin{tabular}{c|rrrrrrrrrr}
+$n$&3&4&5&6&7&8&9&10&11&12\\
+conjugacy classes&3&5&7&11&15&22&30&42&56&77\\
+positive subgroup rows&1&3&4&6&10&18&26&38&48&71
+\end{tabular}
+\end{center}
+
+\paragraph{The character behind the calculation.}
+Write $\sigma$ for the nontrivial character of $\langle t\rangle$.
+The character whose pairing with $\Psi$ is
+$(n-1)a-m+b$ equals
+\[
+ U_n=(n-1)\operatorname{Ind}_{\langle t\rangle}^{S_n}\sigma
+                   -\operatorname{Reg}_{S_n}+1.
+\]
+It is a genuine character for every $n$. Indeed, take the Cayley graph
+of $S_n$ for the $n-1$ adjacent transpositions, with left multiplication
+on vertices. Its vertex module is regular and its oriented edge module
+has one summand $\operatorname{Ind}\sigma$ for each generator, because
+the edge stabilizer reverses the edge. The graph is connected, so the
+cellular chain sequence gives $U_n=H_1$ at the level of characters.
+A proof that $U_n$ belongs to the positive rational cone of characters
+induced from linear subgroup characters for all $n$ would give the
+multiplicity theorem in all degrees. Genuine character status alone
+gives no such decomposition. Formula (R) supplies it in the stated
+degrees by Frobenius reciprocity.
+
+There is an obstruction to deducing the required decomposition from graph
+homology in general. Let $A_5$ fix two vertices and permute five parallel
+edges in its natural action. Its first homology is the irreducible
+four-dimensional augmentation representation $U$ (the action is doubly
+transitive). If $U$ were a positive rational sum of monomial characters,
+each summand would be a multiple $kU$. Frobenius reciprocity gives
+$1\le k\le4$, so the inducing subgroup would have index $4k$.
+Indices $8$ and $16$ do not divide $60$, and an index-four subgroup would
+give a nontrivial map of the simple group $A_5$ into $S_4$. In the
+remaining case the subgroup has order five and $k=3$. The restriction of
+$U$ to this subgroup is its regular representation minus its trivial
+character, so every linear character occurs at most once. This rules
+out $k=3$. Hence the general-degree problem needs more about the
+adjacent-transposition graph than connectedness and a group action.
+
+\paragraph{What the improvement detects.}
+For the $S_5$ splitting field of $X^5-X-1$ in the prior report, an
+off-line zero of multiplicity $m$ would have multiplicity at least
+$\lceil m/4\rceil$ in the degree-60 transposition fixed field.
+The former constant was $163/30$. For $S_6$ the corresponding degree
+is $360$ and the former constant was $71/10$.
+Artin--Hecke formalism gives the new meromorphic quotient over
+every base field, independently of GRH. Over $\mathbb Q$, the Lean
+Dirichlet result removes its only possible linear-character correction
+to the right of the critical line. In the previous report's proposed
+one-sided prime estimate, this identifies exactly how much multiplicity
+the selected Frobenius classes must retain. An estimate for their prime
+sum is still required to deduce RH for the full splitting field.

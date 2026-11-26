@@ -1,0 +1,121 @@
+\section{When local torsion data become global twists}\label{sec:characters}
+
+A torsion-avoidance lemma chooses roots of unity satisfying polynomial inequalities. A global twisting theorem needs those roots to be values of an arithmetic character. There are three separate quantities: the orders of the local inertia values, the order of the global character, and its conductor. The following elementary theorem identifies their first compatibility obstruction.
+
+\subsection{The finite-group theorem}
+
+\begin{theorem}[Exact extension criterion]\label{thm:extension}
+Let $N\ge1$, and let
+\[
+ 0\longrightarrow A\longrightarrow B\longrightarrow C\longrightarrow0
+\]
+be an exact sequence of finite abelian $p$-groups, with $p^aC=0$. Let $D$ be a subgroup of $B$, and let $\lambda:A\to\mu_{p^N}$ be a character.
+\begin{enumerate}
+\item An extension $\chi:B\to\mu_{p^{N+a}}$ trivial on $D$ exists if and only if
+\begin{equation}\label{eq:compat-raised}
+              \lambda(A\cap D)=1.
+\end{equation}
+\item An extension $\chi:B\to\mu_{p^N}$ trivial on $D$ exists if and only if
+\begin{equation}\label{eq:compat-exact}
+              \lambda\bigl(A\cap(D+p^NB)\bigr)=1.
+\end{equation}
+\end{enumerate}
+Here $\lambda(H)=1$ means that $\lambda$ is trivial on every element of $H$.
+\end{theorem}
+
+\begin{proof}
+A character from a subgroup of a finite abelian $p$-group extends to $\mu_{p^\infty}$. An elementary construction adjoins one generator $b$ at a time: if the least positive integer $r$ with $rb$ in the old subgroup is $r=p^j$, choose an $r$th root of the already assigned value at $rb$. This gives a well-defined extension and terminates.
+
+Condition~\eqref{eq:compat-raised} is necessary for an extension killing $D$. If it holds, $\lambda$ descends to $\bar A=(A+D)/D\subseteq B/D$. Extend it into $\mu_{p^\infty}$. The quotient $(B/D)/\bar A$ is a quotient of $C$, hence is killed by $p^a$. For each $\bar b\in B/D$,
+\[
+ \chi(\bar b)^{p^{N+a}}
+ =\lambda(p^a\bar b)^{p^N}=1.
+\]
+Thus the extension takes values in the required finite group.
+
+For the second assertion, a character of exponent dividing $p^N$ kills $p^NB$ as well as $D$, giving necessity. Conversely, under \eqref{eq:compat-exact}, $\lambda$ descends to the image of $A$ in $B/(D+p^NB)$. Extend it as above. This quotient is killed by $p^N$, so its character values automatically lie in $\mu_{p^N}$.
+\end{proof}
+
+The permitted increase in order is bounded by the exponent of the quotient, not by its cardinality. When $D=0$, the proportion of local $\mu_{p^N}$-valued characters that extend with that same exponent is exactly
+\begin{equation}\label{eq:proportion}
+ \frac{1}{[A\cap p^NB:p^NA]}.
+\end{equation}
+Indeed, all such local characters form the dual of $A/p^NA$, while the extendible characters form the dual of $A/(A\cap p^NB)$. This is a useful correction to any argument that samples the unrestricted local torsion grid and then assumes that the same sampling measure applies to global characters.
+
+\subsection{The arithmetic exact sequence}
+
+Let $E$ be a CM field, with complex conjugation $c$. Fix an odd prime $p$ and a squarefree modulus
+\[
+ \mathfrak m=\prod_{j=1}^t\mathfrak v_jc(\mathfrak v_j),
+\]
+where all the primes are distinct, $\mathfrak v_j\ne c(\mathfrak v_j)$, and none lies above $p$. Put $q_j=\N\mathfrak v_j$. For a finite abelian $p$-group with $c$-action, the minus part is the image of the idempotent $(1-c)/2$.
+
+\begin{theorem}[CM ray realization]\label{thm:ray}
+Set
+\[
+ R=\prod_{j=1}^t\F_{q_j}^{\times}[p^\infty],\qquad
+ B=\Cl_{\mathfrak m}(E)[p^\infty]^{-},\qquad
+ C=\Cl(E)[p^\infty]^{-}.
+\]
+Let $W$ be the image of $\mu(E)[p^\infty]$ in the minus local residue group $R$. Then $W$ is cyclic, and there is an exact sequence
+\begin{equation}\label{eq:ray}
+ 0\longrightarrow R/W\longrightarrow B\longrightarrow C\longrightarrow0.
+\end{equation}
+Consequently Theorem~\ref{thm:extension} applies with $A=R/W$. A proposed local tuple must first annihilate $W$. Prescribed splitting conditions are imposed by the appropriate subgroup $D$ of ray classes.
+\end{theorem}
+
+\begin{proof}
+Start with the usual ray class exact sequence
+\[
+ \mathcal O_E^\times\longrightarrow
+ (\mathcal O_E/\mathfrak m)^\times\longrightarrow
+ \Cl_{\mathfrak m}(E)\longrightarrow\Cl(E)\longrightarrow0.
+\]
+The Chinese remainder theorem identifies each conjugate residue pair with two copies of $\F_{q_j}^\times$, exchanged by $c$. Its minus $p$-part consists of $(u,u^{-1})$ and is one copy of $\F_{q_j}^\times[p^\infty]$. Primary decomposition and the minus idempotent are exact direct-summand operations on the finite groups.
+
+The minus part of the unit image needs care. For any unit $u$, the quotient $u/c(u)$ is an algebraic integer unit all of whose conjugates have absolute value one. Kronecker's theorem makes it a root of unity. On the $p$-part, taking its square root is an automorphism, since $p$ is odd. Thus the minus unit image is contained in the image of $\mu(E)[p^\infty]$. The reverse inclusion holds because every such root is a unit and $c$ acts on it by inversion. The unit image is therefore exactly $W$, proving \eqref{eq:ray}.
+\end{proof}
+
+This proof uses the standard ideal-theoretic class-field correspondence to interpret characters of $B$ as finite anticyclotomic Hecke characters. The foundational exact sequence is classical; the point here is to retain all its terms when transferring the torsion-selection argument.\cite{milne}
+
+If $p\nmid|\mu(E)|$, then $W=0$ and the local variables are unrestricted before the class and splitting conditions are imposed. If $p\nmid h_E$, then additionally $C=0$, so the unrestricted minus local tuple determines a unique $p$-primary ray character. Neither simplification can be assumed in general. In particular, the upstream field contains a primitive root of order $5040$; its $p=3,5,7$ cases require the $W$ term.
+
+\subsection{Conductor and powers}
+
+An extension supplied by Theorem~\ref{thm:ray} has conductor dividing $\mathfrak m$. At each prime of this squarefree modulus, a nontrivial local residue character has conductor exponent one. Therefore, if all prescribed local characters are nontrivial,
+\begin{equation}\label{eq:conductor}
+ \mathfrak f(\chi)=\mathfrak m,\qquad
+ \N\mathfrak f(\chi)=\prod_{j=1}^t q_j^2.
+\end{equation}
+Increasing the allowed global order does not force an increase in this conductor.
+
+If the local character at pair $j$ has exact order $p^{n_j}$, the first $M$ positive powers of $\chi$ all retain the full conductor if and only if $p^{n_j}>M$ for every $j$. This assertion concerns local orders, even when the global order is larger.
+
+These conclusions still do not construct a small Selmer twist. They solve the character-extension part of that construction. Tied cocycle relations, nonvanishing polynomial witnesses, and valuation budgets are additional inputs.
+
+\subsection{How many independent parameters survive?}
+
+\begin{proposition}[A fixed-exponent parameter bound]\label{prop:grid}
+Suppose $N\ge1$ and $R=\prod_{j=1}^t C_{p^{h_j}}$ with $h_j\ge N$. Let $C$ require $r$ generators, let $W$ require $w$ generators, and let the required-triviality subgroup $D\subseteq B$ have a chosen generating set of size $s$. Then the image of
+\[
+ \Hom(B/D,\mu_{p^N})\longrightarrow\Hom(R,\mu_{p^N})
+\]
+contains a free $\Z/p^N\Z$-submodule of rank at least
+\[
+                     \max(0,t-w-r-s).
+\]
+For the CM unit subgroup, $w$ is zero or one.
+\end{proposition}
+
+\begin{proof}
+Choose invariant-factor generators $c_i$ of $C$, of orders $p^{a_i}$, and lifts $b_i$ in $B$. Write each relation $p^{a_i}b_i$ as an element of $R/W$, and choose a representative in $R$. Assign the value zero to every $b_i$, writing characters additively in $\Z/p^N\Z$. Assigning values to the $t$ local generators then gives a character precisely when the unit relations and these $r$ relations are respected. Requiring the chosen $s$ elements of $D$ to vanish adds at most $s$ further linear equations. Thus the kernel of a matrix with at most $w+r+s$ rows over $\Z/p^N\Z$ maps into the restriction image. Smith normal form leaves at least the asserted number of free columns.
+\end{proof}
+
+The bound $t-r$ in the case $W=D=0$ is sharp. For $a\ge1$, take
+\[
+ B=C_{p^{N+a}}^r\times C_{p^N}^{\,t-r},\qquad
+ A=p^aC_{p^{N+a}}^r\times C_{p^N}^{\,t-r}.
+\]
+The first $r$ restriction coordinates lie in $p^a(\Z/p^N\Z)$ and have smaller exponent; the last $t-r$ give all free coordinates of exponent $p^N$.
+
+The proposition does not say that every original inertia coordinate can vary independently, or even that every one is nonzero somewhere on the displayed submodule. A polynomial which is nonzero on the full local parameter space may vanish identically on the compatible subgroup. Applying the upstream torsion-avoidance result after this restriction requires a fresh witness estimate. This is one of the precise remaining bridges.

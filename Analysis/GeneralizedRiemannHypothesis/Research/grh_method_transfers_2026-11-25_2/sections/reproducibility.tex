@@ -1,0 +1,150 @@
+\section{Source map and reproducibility}
+
+\subsection{Pinned inputs}
+
+\begin{longtable}{@{}P{0.23\linewidth}P{0.70\linewidth}@{}}
+\toprule
+Input & Revision or immutable reference\\
+\midrule
+\endhead
+Requested Lean source &
+\code{72fead102f663d5c7a407964a13dc0cf9d977207}\\[4pt]
+ProveIt incoming reports &
+\code{b65aa6229415bdb66d9ce52decc4e997793cd07d}\\[4pt]
+Original source mirror &
+\code{7cbf7a0c32fca1badf05931879a37c3f8a2b03b4}\\[4pt]
+Pintar numerical release &
+\code{5c876949ccba300dbf580f7b3bbfd0e511856faf} (tag \code{v1.0})\\[4pt]
+Pintar coverage text &
+\code{f00206f900a6cb3ae7ebf8cf3ce0d51dffb8cc03}\\[4pt]
+Mok--Zheng &
+Hexagon \code{2611.00998v1}, submitted 24 November 2026\\
+\bottomrule
+\end{longtable}
+
+The selected source excerpts retain their upstream Apache 2.0 license,
+notice, and attribution files. The original large development was
+not downloaded or rebuilt in full. The prior archives are not copied
+into this ZIP; their exact URLs and hashes are in the manifest.
+
+\subsection{Mathematical source anchors}
+
+The following paths are relative to \path{grh/src/} at the requested
+source revision.
+
+\begin{longtable}{@{}P{0.53\linewidth}P{0.40\linewidth}@{}}
+\toprule
+Path & Role\\
+\midrule
+\endhead
+\path{Statements.lean}; \path{Main.lean} &
+Mathlib-based final statements and five exported theorems.\\[4pt]
+\path{New/Reduction/ShortAndEnough.lean} &
+Short vectors, index bounds, and spanning.\\[4pt]
+\path{New/Determinant/Twist/LongForms.lean} &
+Lower covolume/index estimate.\\[4pt]
+\path{New/Reduction/MainInequality.lean} &
+Cancellation and the amplified remainder inequality.\\[4pt]
+\path{New/Reduction/OneSidedBound.lean} &
+Normalization, parameter choice, and the half-power bound.\\[4pt]
+\path{New/Reduction/Zeros/PrimeError.lean} &
+Prime remainder and polar transform.\\[4pt]
+\path{New/Reduction/Zeros/Criterion.lean} &
+Zero-avoiding twist and Landau endgame.\\[4pt]
+\path{Lib/Analytic/Landau.lean} &
+Positive-measure abscissa argument.\\[4pt]
+\path{Lib/Cyclotomic/OddSha.lean} &
+Uniform bound for the specified odd-cocycle model.\\[4pt]
+\path{New/Congruences/FirstOrder/DenominatorBound.lean} &
+Projection denominator bound; explains the absence of
+Vandiver's even classes from that estimate.\\
+\bottomrule
+\end{longtable}
+
+\subsection{Archive contents}
+
+\begin{longtable}{@{}P{0.45\linewidth}P{0.48\linewidth}@{}}
+\toprule
+File or directory & Purpose\\
+\midrule
+\endhead
+\path{report.tex}; \path{report.pdf}; \path{sections/} &
+Complete report source and compiled document.\\[4pt]
+\path{code/verify_ktheory_prefilter.py} &
+Two rational Bernoulli constructions, B\'ezout certificates,
+and optional orbit-count dimensions.\\[4pt]
+\path{code/verify_ktheory_small.py} &
+Fresh 18-neighbor reconstruction at $e=6,8$.\\[4pt]
+\path{code/check_mean_transfer.py} &
+Exact symbolic transform and loss identities.\\[4pt]
+\path{code/mean_models.py} &
+Exact synthetic bump examples and the exported figure.\\[4pt]
+\path{code/audit_source.py} &
+Pinned-source inventory, source hashes, and local-import check.\\[4pt]
+\path{checks/}; \path{evidence/} &
+Computed results, prior-archive manifest, source inventory,
+and precise verification scope.\\[4pt]
+\path{source_excerpt/} &
+Selected upstream source, license, notice and attribution.\\[4pt]
+\path{README.md}; \path{reproduce.py}; \path{code/build_pdf.py}; \path{SHA256SUMS} &
+Instructions, a local rerun driver, and final artifact hashes.\\
+\bottomrule
+\end{longtable}
+
+\subsection{Commands and what they establish}
+
+From the unpacked archive:
+
+\begin{verbatim}
+python3 reproduce.py
+python3 code/verify_ktheory_prefilter.py --ranks \
+  --output checks/prefilter_results.json
+python3 code/verify_ktheory_small.py \
+  --output checks/small_reconstruction_results.json
+python3 code/build_pdf.py
+\end{verbatim}
+
+The exact K-theory arithmetic scripts use only Python's standard
+library. Symbolic identities require SymPy. Drawing the figure
+requires NumPy and Matplotlib. The report uses standard LaTeX
+packages. The build helper uses pdfLaTeX with TeX Live, or Tectonic
+as a fallback. A complete TeX Live installation can directly use
+\code{latexmk -pdf report.tex}. The rerun driver does not fetch remote
+repositories.
+
+The Bernoulli program performs all 84 rational-value comparisons
+by two formulas, all 14 gcd/B\'ezout certificates, and eight
+dimension/trace triples including comparison cases at degrees
+$104$ and $120$. The small-operator script checks exact arithmetic
+over $\Q(\sqrt{-3})$, unitarity, distinct local cosets, six
+incidence pairs, the two matrices, and their determinant factors.
+
+Symbolic algebra checks establish the displayed rational identities;
+they do not replace the analytic proof of Landau's theorem.
+The static source inventory checks the two source trees and identical
+statement files. It is not a kernel replay, a proof of soundness,
+or a validation of every mathematical definition in an imported
+library. The final PDF was compiled and visually inspected.
+
+\subsection{A formalization route}
+
+A useful future Lean contribution would first isolate the positive-part
+Mellin theorem independently of automorphic forms:
+
+\begin{enumerate}
+\item Define the two nonnegative measures associated to $R_+$ and
+$R_-$ under $x=e^v$.
+\item Prove holomorphy of the positive-part transform from weighted
+integrability, using domination on closed sub-half-planes.
+\item Reuse the source's abscissa lemma to rule out a convergence
+boundary for the negative-part transform.
+\item Formalize the moving-box transform with its finite correction
+and prove the multiplier has no zero for positive real part.
+\item Specialize to an independently defined Dedekind prime-power
+remainder after its polar transform has been proved.
+\end{enumerate}
+
+This report supplies complete mathematical proofs and exact auxiliary
+checks, but no newly compiled Lean theorem for these analytic results.
+The source and library assumptions must be included in any future
+formalization claim.

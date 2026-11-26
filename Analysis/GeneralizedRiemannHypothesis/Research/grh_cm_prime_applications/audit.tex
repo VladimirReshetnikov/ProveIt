@@ -1,0 +1,141 @@
+\section{A one-sided test on sparse twists and sparse scales}
+\label{sec:sparse}
+A separate consequence uses the proof's zero-detection argument before its
+final GRH theorem. The published Lean criterion takes an eventual inequality
+for every auxiliary prime in one residue class and every sufficiently large
+real scale. Both sets of inputs can be thinned. The conclusion below is a
+reduction proved here on paper. Sandi Setiawan already gives the fourth-power
+mesh and a chord interpolation argument for the ordinary zeta prime sum
+(\emph{The Primacohedron Trace Formulation of the Riemann Hypothesis},
+22 November 2026, Theorems 3.2 and 4.1,
+\href{https://www.academia.edu/181628231}{author's manuscript}).
+Here the additional reduction selects a thin family of quadratic twists
+using the repository's quantitative zero-density bound. We make no claim
+of priority for the combined criterion.
+
+Fix an integer $Q>0$ divisible by $8$ and a reduced residue class
+$a\pmod Q$ with $a\equiv7\pmod8$. For primes $d\equiv a\pmod Q$, put
+\[
+ w_d(n)=\mathbf1_{n\equiv1\bmod Q}\,\Lambda(n)
+       \bigl(1-(n/d)\bigr),\qquad
+ R_d(x)=\sum_{1\le n\le x} w_d(n)(1/n-1/x)
+       -\frac{\log x}{\varphi(Q)}-c_{d,Q}.
+\]
+Here $(n/d)$ is the Legendre symbol and $c_{d,Q}$ is the unique constant
+for which $R_d(x)\to0$. The repository gives its explicit logarithmic
+derivative formula in \texttt{New.logDerivMean} and identifies it in
+\texttt{New.primeRemainder}. All $w_d(n)$ are nonnegative.
+
+\begin{theorem}[Sparse one-sided zero detection]
+Fix $1/2<\beta<1$. Let $S$ be a set of the above primes and
+$S(X)=\#\{d\in S:d\le X\}$. Suppose
+\[
+ \limsup_{X\to\infty}\frac{\log(1+S(X))}{\log X}
+ \ \ge\ 1-\frac{\beta-1/2}{18}.
+ \tag{S}
+\]
+For each $d\in S$, suppose there is an increasing unbounded sequence
+$x_j\ge1$, allowed to depend on $d$, with
+\[
+ x_{j+1}-x_j=O_d(x_j^{(1+\beta)/2}),\qquad
+ R_d(x_j)\le C_d x_j^{\beta-1}\quad(j\text{ sufficiently large}),
+ \tag{E}
+\]
+where $C_d>0$. For every Dirichlet character $\psi\bmod Q$,
+$L(s,\psi)$ is nonzero in $\Re s>\beta$, with the principal pole excepted.
+\end{theorem}
+
+\begin{proof}
+First recover all intervening scales. Write $t=1/x$. On any compact interval
+$[u,v]\subset(0,\infty)$ the function
+\[
+ F(t)=\sum_{n\ge1}w_d(n)\,(1/n-t)_+
+\]
+is a finite sum of convex functions, hence lies below its chord. We have
+$R_d(1/t)=F(t)+(\log t)/\varphi(Q)-c_{d,Q}$. Write $I f$ for the affine
+interpolant from $u,v$. Since $t\mapsto\log t+t^2/(2u^2)$ is convex on
+$[u,v]$,
+\[
+ 0\le\log t-I(\log)(t)
+ \le\frac{(t-u)(v-t)}{2u^2}
+ \le\frac{(v-u)^2}{8u^2}.
+\]
+Take $u=1/x_{j+1}, v=1/x_j$. The ratio $(v-u)/u$ equals
+$(x_{j+1}-x_j)/x_j$, so the interpolation loss is
+$O_d(x_j^{\beta-1})$. Moreover $x_{j+1}/x_j\to1$. Applying (E) at
+the endpoints gives $R_d(x)\le K_d x^{\beta-1}$ throughout the tail for
+some $K_d>0$.
+
+Suppose $L(\rho,\psi)=0$ with $\sigma=\Re\rho>\beta$. At $\rho=1$
+the classical Dirichlet nonvanishing theorem applies to nonprincipal
+characters. The ordinary zero-free region $\Re s\ge1$ therefore leaves
+$\sigma<1$. Choose $\gamma$ with $\beta<\gamma<\sigma$ and
+set $H=|\Im\rho|$. Call an admissible prime $d$ bad if at least one
+$L(s,\xi(\cdot/d))$, $\xi\bmod Q$, has a zero in
+$\Re s\ge\gamma$, $|\Im s|\le H$. The upstream lemma
+\texttt{New.zero\_density\_quadTwist}, with
+$\delta=(\gamma-1/2)/9$, gives
+\[
+ \#\{d\le X:d\text{ bad}\}
+   = O_{Q,a,\gamma,H}(X^{1-(\gamma-1/2)/18}).
+\]
+This exponent is strictly smaller than the right side of (S).
+Thus some $d\in S$ lies outside the bad set. Fix this $d$.
+The real-variable estimate already proved implies
+$R_d(x)\le x^{\gamma-1}$ eventually, since $K_d x^{\beta-\gamma}\to0$.
+
+For clarity, here is where one good twist suffices. The meromorphic
+transform of $v\mapsto R_d(e^v)$ in \texttt{New.isPolar\_primeRemainder}
+has residue at $s\ne1$ equal to
+\[
+ \frac{m(s)-m_d(s)}{\varphi(Q)s(1-s)},
+\]
+where $m$ and $m_d$ sum the zero multiplicities of the pole-removed
+untwisted and twisted functions over all $\xi\bmod Q$. The transform is
+regular at $1$. In the box, $m_d=0$. On its real segment
+$\gamma<s<1$ the residues are nonnegative; for real $s\ge1$ they
+vanish. The exponential upper bound $R_d(e^v)\le e^{(\gamma-1)v}$
+and these real signs are precisely the hypotheses of the repository's
+one-sided Landau lemma, \texttt{IsPolar.landau}. It forces the residue
+at $\rho$ to vanish. Then $m(\rho)=0$, contrary to the stipulated zero of
+$L(s,\psi)$. This is the fixed-$d$ part of the proof of
+\texttt{New.LFunction\_ne\_zero\_of\_primeRemainder\_le}.
+\end{proof}
+
+\paragraph{What a counterexample would force.}
+If a zero of real part $\sigma>\beta$ existed, let $T_\beta(X)$ count
+admissible primes $d\le X$ for which
+$\limsup_{j\to\infty}j^{4(1-\beta)}R_d(j^4)<+\infty$.
+As $j^4$ meets (E)'s gap restriction, the proof actually gives
+\[
+ T_\beta(X)=O_{Q,a,\rho,\gamma}
+ \bigl(X^{1-(\gamma-1/2)/18}\bigr)
+ \qquad(\beta<\gamma<\sigma).
+\]
+Indeed, every such $d$ would have to be bad in that single box.
+Thus the discrepancy at fourth powers would have arbitrarily large
+positive normalized excursions for every admitted prime outside
+an exceptional set of power-saving size.
+
+\paragraph{An explicit sampling schedule.}
+Enumerate the primes in the prescribed class as $p_1<p_2<\cdots$.
+Choose $d_k=p_{\lfloor k\log^2(k+2)\rfloor}$ for all sufficiently large
+$k$. The prime number theorem in progressions gives
+$d_k\sim\varphi(Q)k\log^3 k$. Their reciprocals have a convergent sum,
+and their counting exponent in (S) is $1$. Take $x_j=j^4$.
+The gap is $O(x_j^{3/4})$. If for every selected $d_k$ and every
+$\varepsilon>0$ the sampled values satisfy
+\[
+ R_{d_k}(j^4)\le C_{k,\varepsilon}\,j^{-2+4\varepsilon}
+ \quad\text{for all sufficiently large }j,
+\]
+apply the theorem with $\beta=1/2+\varepsilon$ for arbitrarily small
+positive $\varepsilon$. This excludes all zeros to the right of $1/2$
+modulo $Q$ apart from the principal pole. For arbitrary original modulus
+$q$, take $Q=18480q$, $a=Q/2-1$; this class meets the conditions because
+$Q$ is divisible by $16$ and $\gcd(Q/2-1,Q)=1$. Changing the level adds
+finite Euler factors, so the nonvanishing descends to $q$. For these
+parameters the upstream one-sided estimate already implies the sampled
+inequalities. Their interest is the weaker input an alternative proof
+would have to establish. Bounds for finitely many twists or finitely many
+scales do not give the required asymptotic estimates.

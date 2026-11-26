@@ -1,0 +1,104 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=26mm,headheight=14pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{xcolor,graphicx,enumitem,fancyhdr,listings}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=teal!60!black,citecolor=teal!60!black,urlcolor=blue!50!black]{hyperref}
+\definecolor{ink}{HTML}{163348}
+\definecolor{accent}{HTML}{007F82}
+\definecolor{light}{HTML}{EEF5F5}
+\hypersetup{pdftitle={Beyond Dirichlet GRH: sharp torsion selection and tensor detectors},
+ pdfauthor={Research report prepared for Vladimir Reshetnikov},
+ pdfsubject={Source analysis, exact torsion minimax, and nonabelian transfer criteria}}
+\setlength{\parskip}{5pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=4pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{ink}{Beyond Dirichlet GRH}}
+\fancyhead[R]{\small 25 November 2026}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Cp}{\mathbf C_p}
+\newcommand{\Qp}{\mathbf Q_p}
+\newcommand{\Zp}{\mathbf Z_p}
+\newcommand{\Ocal}{\mathcal O}
+\newcommand{\Gcal}{\mathcal G}
+\newcommand{\Reg}{\operatorname{Reg}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Ind}{\operatorname{Ind}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\Gal}{\operatorname{Gal}}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\Rea}{\operatorname{Re}}
+\newcommand{\Frob}{\operatorname{Frob}}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\src}[2]{\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/#1}{#2}}
+\newcommand{\prior}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/274841c1cb137aafbb60ab5f519c51fd42eee98e/docs/incoming/#1}{#2}}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,
+ frame=single,rulecolor=\color{light},backgroundcolor=\color{light},
+ keepspaces=true,showstringspaces=false}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{14mm}
+{\color{accent}\large RESEARCH REPORT\par}
+\vspace{7mm}
+{\color{ink}\Huge\bfseries Beyond Dirichlet GRH\par}
+\vspace{5mm}
+{\color{ink}\LARGE Sharp torsion selection and tensor detectors\par}
+\vspace{9mm}
+{\large A continuation of the ProveIt transfer program\par}
+\vspace{3mm}
+Prepared for Vladimir Reshetnikov\\
+25 November 2026
+\vspace{12mm}
+
+\textbf{Main result.} The exact number of consecutive cyclotomic shells needed for a fixed aggregate valuation budget is determined. The previous sufficient quadratic endpoint is replaced by the uniformly optimal endpoint
+\[
+\boxed{\quad H=h_0+\floor{B p^{h_0-1}}.\quad}
+\]
+The bound is independent of polynomial degree, coefficient field, number of variables, and finite packet size. It controls an aggregate valuation at a fixed Gauss radius.
+
+\textbf{Second result.} An explicit fourth tensor power of the three-dimensional icosahedral representation gives an Artin product holomorphic away from \(1\) whose zeros detect every zero of the degree-60 splitting-field zeta function. Exact character identities prove the claim without assuming the Artin holomorphy conjecture. The tensor exponent and one order-comparison constant are sharp under the stated character constraints.
+
+\textbf{Assessment.} These are useful transfers of the source's local and analytic ideas. This report does not prove a new named global conjecture. The missing arithmetic square-root estimate for a nonabelian prime sum is displayed explicitly.
+
+\vfill
+{\small Source: \texttt{lsernau/grh-lean}, commit \texttt{72fead102f66}.\\
+Prior corpus: all 31 incoming ZIP archives at ProveIt commit \texttt{274841c1cb13}.\\
+Verification: complete mathematical proofs, independent mathematical review, exact finite calculations, and source inspection. No new Lean kernel replay was performed.}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\begin{abstract}
+The reusable content of \texttt{grh-lean} is broader than the familiar consequences of RH and Dirichlet GRH: it includes determinant cancellation, a one-sided pole-exclusion argument, and bounded-order torsion specialization. We inspect the frozen source and compare all 31 preceding incoming archives. Our principal new result within this inspected program is an exact minimax theorem. For \(r_h=((p-1)p^{h-1})^{-1}\), \(\rho\ge r_{h_0}\), and \(N\) consecutive primitive torsion shells, the least possible Gauss-valuation variation of a polynomial that defeats every fixed-radius comparison is \(Np^{1-h_0}\). A balanced root construction attains the minimum. Consequently \(h_0+\lfloor Bp^{h_0-1}\rfloor\) is the optimal universal upper exponent. The theorem extends to bounded multivariate power series and aggregate determinant packets, and its metric proof extends to Lubin--Tate torsion.
+
+A complementary calculation constructs a fourth-tensor icosahedral detector. A positive monomial-character certificate gives \(d/4\le e\le3d\), where \(d\) is the order of the splitting-field zeta function and \(e\) the order of the detector. A feasible character proves the factor \(4\) and the fourth tensor exponent cannot be improved using the same constraints. We distinguish this tensor optimization from a smaller-degree detector already present in the prior corpus. Finally, we formulate the exact one-sided prime-sum estimate that would yield a genuinely nonabelian RH extension and explain why the present work does not establish that estimate, BSD, Vandiver, or a Selmer-vanishing theorem.
+\end{abstract}
+\tableofcontents
+\newpage
+\input{sections/assessment}
+\input{sections/source}
+\input{sections/torsion}
+\input{sections/applications}
+\input{sections/artin}
+\input{sections/targets}
+\input{sections/verification}
+\input{sections/references}
+\end{document}
+

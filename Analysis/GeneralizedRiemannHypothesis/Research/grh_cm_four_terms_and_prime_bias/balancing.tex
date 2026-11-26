@@ -1,0 +1,269 @@
+\section{Balancing all prime-power races in a single multiplicative interval}
+\label{sec:balancing}
+Fix a positive integer $q$, put $G=(\mathbb Z/q\mathbb Z)^\times$ and
+$d=|G|$, and let $\chi$ run over the characters of $G$. Write $\chi^*$
+for its primitive character and $m_\chi$ for the order of vanishing of
+$L(s,\chi^*)$ at $1/2$. For $a\in G$ define
+\begin{align}
+ \psi(x;q,a)&=\sum_{n\leq x,\ n\equiv a\pmod q}\Lambda(n),&
+ b_a&=\frac{2}{d}\sum_\chi\overline{\chi(a)}m_\chi,\nonumber\\
+ D_a(x)&=\frac{\psi(x;q,a)-x/d}{\sqrt x}+b_a,&
+ D(x)&=(D_a(x))_{a\in G}.\label{eq:racevec}
+\end{align}
+The constants $b_a$ are real by conjugation. They incorporate possible
+central zeros, so even characters with unknown central nonvanishing
+are included. Using the von Mangoldt weight counts prime powers as well as primes.
+
+\paragraph{Fixed-interval balancing theorem.}
+Assume the upstream Dirichlet GRH. There exist $C_q>1$ and $r_q>0$
+such that, for every sufficiently large real $X$,
+\[
+ \{y\in\mathbb R^d:\|y\|_2\leq r_q\}
+ \ \subseteq\ \operatorname{conv}\{D(n): n\in\mathbb Z,\ X\leq n\leq C_qX\}.
+ \tag{B}\label{eq:ballrace}
+\]
+Consequently every such $y$, including zero, is exactly a convex
+combination of at most $d+1$ integer samples from that interval, with
+the same sample points and weights for every residue class. Every
+unit linear combination of the $d$ coordinates attains values at least
+$r_q$ and at most $-r_q$ in the interval. The theorem gives existence
+with constants depending on the fixed modulus. It requires neither
+simplicity of zeros nor rational independence of their ordinates.
+
+\subsection{A local averaging argument from the Lean proof}
+
+The compact proofs of \texttt{IsPolar.eventually\_moment\_le} and
+\texttt{IsPolar.exists\_window\_sub\_mul\_le} use high Laplace moments to
+find a one-sided small value on $[t,t^2]$ in log coordinates.
+They are in
+\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh-compact/src/New/Endgame/OneSidedCriterion.lean}{\texttt{New/Endgame/OneSidedCriterion.lean}}.
+The following vector version explains how a common choice of positive
+weights replaces a separate choice of a point for each direction.
+
+\paragraph{Laplace averaging lemma.}
+Let $E:[0,\infty)\to\mathbb R^d$ be measurable, with
+$\|E(v)\|\leq M e^{Av}$, $A\geq0$. Suppose its coordinate Laplace
+transforms $F(z)=\int_0^\infty E(v)e^{-zv}\,dv$, initially defined
+for $\Re z>A$, extend holomorphically to $\Re z>0$ and a neighborhood of
+$0$. For every $h>0$ there is $\delta>0$ such that, for all large $T$,
+a probability density supported on $[T,(1+h)T]$ has $E$-average of
+norm $O(e^{-\delta T})$. The same estimate holds for a convex
+combination of at most $d+1$ values in the interval.
+
+\paragraph{Proof.}
+Take $c=1+h/2$. Choose $\lambda>A$ sufficiently large as specified
+below, set $k=\lfloor\lambda cT\rfloor$, and let $V$ have density
+$\lambda^{k+1}v^ke^{-\lambda v}/k!$ on $v>0$. The disk
+$|z-\lambda|\leq\lambda$ meets the imaginary axis only at $0$.
+Compactness gives $R>\lambda$ with $F$ holomorphic on a neighborhood
+of the closed concentric disk of radius $R$. Cauchy's estimate yields
+\[
+ \|\mathbb E E(V)\|
+ =\lambda^{k+1}\|F^{(k)}(\lambda)\|/k!
+ \ll\lambda(\lambda/R)^k.
+\]
+For the tails, exponential tilting gives
+\[
+ \mathbb E[e^{AV};\ V\notin I]
+ =\left(\frac{\lambda}{\lambda-A}\right)^{k+1}
+      \Pr(W\notin I),\qquad I=[T,(1+h)T],
+\]
+where $W$ has the same shape $k+1$ and rate $\lambda-A$. Its mean
+divided by $T$ tends to $c\lambda/(\lambda-A)$.
+For all sufficiently large $\lambda$ this limit stays a fixed
+positive distance from both endpoints $1,1+h$. The Chernoff bound for
+a gamma variable at $u$ times its mean is
+$\exp[-(k+1)(u-1-\log u)]$ for the corresponding tail. This follows
+by optimizing its moment generating function.
+The two endpoint ratios stay bounded away from $1$, so the probability
+is at most $2e^{-\kappa_h(k+1)}$ with $\kappa_h>0$ independent of all
+sufficiently large $\lambda,T$. Choose $\lambda$ large enough that
+$\log(\lambda/(\lambda-A))<\kappa_h/2$. Truncating the density to $I$
+thus changes its vector integral by $O(e^{-\delta T})$, and its mass
+is $1-O(e^{-\delta T})$, after decreasing $\delta$ if necessary.
+The normalized integral belongs to the closed convex hull. Approximate
+it to $e^{-\delta T}$ by a finite convex combination and apply
+Carath\'eodory's theorem.\hfill$\square$
+
+For the character coordinate of \eqref{eq:racevec}, write
+$\psi(x,\chi)=\sum_{n\le x}\chi(n)\Lambda(n)$,
+$e_\chi=1$ for the principal character and $0$ otherwise, and
+$s=z+1/2$. The Laplace transform of
+$e^{-v/2}(\psi(e^v,\chi)-e_\chi e^v)+2m_\chi$ is
+\[
+ -\frac{1}{s}\frac{L'}{L}(s,\chi)-\frac{e_\chi}{s-1}
+                +\frac{2m_\chi}{z}.
+\]
+The pole at $s=1$ cancels for the principal character. The residue
+at $z=0$ before adding the final term is $-2m_\chi$. Finite Euler
+factors removed from primitive $L$-functions have zeros only on
+$\Re s=0$. Dirichlet GRH therefore gives the continuation required
+by the lemma. Fourier inversion gives all the coordinates in
+\eqref{eq:racevec}. The lemma already gives exponentially accurate
+balance in each log-window $[T,(1+h)T]$.
+For exact balance in a log-window of fixed length we use the
+individual nonzero frequencies.
+
+\subsection{Simultaneous distinction of the zeros}
+
+\paragraph{Multiplicity rank theorem.}
+For each fixed $q$ there is $K_q$ such that if $T$ is sufficiently
+large and $K_q\log T\leq H\leq T$, the vectors
+\[
+ M(\rho)=\big(\operatorname{ord}_\rho L(s,\chi^*)\big)_{\chi\bmod q}
+ \quad (0<\Re\rho<1,\ T<\Im\rho<T+H)
+\]
+span $\mathbb R^d$. Distinct zeros index the vectors; a zero absent
+from one $L$-function contributes a zero entry. This assertion about
+complex zeros holds unconditionally. Under Dirichlet GRH the same
+vectors are indexed by distinct positive ordinates.
+
+\paragraph{Proof.}
+Choose a prime $p_a>2$ in each class $a\in G$ by Dirichlet's theorem.
+Banks's short-interval Landau formula gives
+\[
+ A_{a\chi}:=\sum_{T<\Im\rho<T+H}p_a^\rho M(\rho)_\chi
+  =-\frac{H\log p_a}{2\pi}\chi(a)+O_q(\log T).
+\]
+Here the sum is over the union of distinct nontrivial zeros. At these
+primes $\chi^*(p_a)=\chi(a)$. The implied constant can be fixed for
+the finite list of characters and chosen primes. The row-scaled
+character table multiplying $H$ is invertible. Choose $K_q$ so its
+smallest singular value times $H$ exceeds the operator norm of the
+error matrix. Then $A$ is invertible. Its rows belong to the complex
+span of the real vectors $M(\rho)$, proving their full real rank.
+The input is Theorem 1.2 of W.~Banks,
+\href{https://arxiv.org/abs/2302.07073}{\emph{Comparing zeros of distinct
+Dirichlet $L$-functions}}. The conductor-one case is the classical
+Landau formula in the same paper.\hfill$\square$
+
+This yields a nonsingular integer $d$-by-$d$ multiplicity matrix in
+every such height window, including when different characters share zeros.
+In particular one can choose $\gg_q T/\log T$ pairwise disjoint
+bases with ordinates in $[T,2T]$, by dividing it into intervals of
+length $2K_q\log(2T)$. Under Dirichlet GRH these are bases of
+multiplicity vectors attached to distinct heights. 
+Banks also obtains bounds uniform in the conductor for a pair of
+characters. The rank argument here keeps $q$ fixed. The entries of the
+matrix record multiplicities. Its nonsingularity places no condition
+on rational linear relations among the heights themselves.
+
+\subsection{Isolating oscillations with positive weights}
+
+For a nonzero ordinate $\gamma$ in the union of the spectra put
+$\rho_\gamma=1/2+i\gamma$ and
+\[
+ c_{\gamma,a}=-\frac{1}{d\rho_\gamma}
+               \sum_\chi \overline{\chi(a)} M(\rho_\gamma)_\chi,
+ \qquad c_\gamma=(c_{\gamma,a})_{a\in G}.
+\]
+The finite Fourier transform and the rank theorem show that the
+vectors $c_\gamma$ for positive $\gamma$ span $\mathbb C^d$.
+Thus the real and imaginary parts of finitely many of them span $\mathbb R^d$.
+
+On $v>1$, the explicit formula, as an identity of distributions, reads
+\[
+ D(e^v)=\sum_{\gamma\ne0}c_\gamma e^{i\gamma v}
+          +O_q((1+v)e^{-v/2}).\tag{E}\label{eq:explicitvec}
+\]
+To see the error term, first use a primitive character. The main pole
+gives $e_\chi e^v$, each nontrivial zero contributes $-e^{\rho v}/\rho$
+with multiplicity, and the central contribution is canceled by
+\eqref{eq:racevec}. The pole of the Perron kernel at zero and a possible
+trivial zero there contribute $O_q(1+v)$ before normalization.
+The other trivial-zero terms form a geometrically decreasing series
+for $v>1$. Replacing a primitive character by the one modulo $q$
+changes $\psi$ by $O_q(v+1)$, since only powers of primes dividing $q$
+are affected. The choice at a jump is immaterial to integration.
+A primary reference for the boundary-value formula and its convergence
+for smooth averages is Kaczorowski and Ramar\'e, Theorem 1(d),(e),
+\href{https://doi.org/10.4064/aa106-3-6}{\emph{Almost periodicity of some
+error terms in prime number theory}}.
+
+Take a smooth probability density $w$, positive on $(0,1)$ and supported
+on $[0,1]$, and let $w_n$ be its $n$-fold convolution, supported on
+$[0,n]$. Put $\widehat w(t)=\int w(u)e^{itu}\,du$. For each nonzero
+real $t$, $|\widehat w(t)|<1$, and $\widehat w$ decreases rapidly.
+For a fixed $\omega$, integration of (E) shows
+\begin{align*}
+ &\int_0^n w_n(u) D(e^{V+u})e^{-i\omega(V+u)}\,du \\
+ &\qquad=\sum_{\gamma\ne0}
+      c_\gamma e^{i(\gamma-\omega)V}\widehat w(\gamma-\omega)^n
+       + O_q((1+V)e^{-V/2})\qquad(V\ge 2).
+\end{align*}
+The error is uniform in $n$ since $(1+v)e^{-v/2}$ decreases for $v\ge2$.
+The sum converges absolutely for $n\ge1$ by rapid decay and the
+classical $O_q(U\log(2U))$ zero count up to height $U$. The union of
+the spectra is locally finite. Hence for each fixed $\omega$ the
+supremum of $|\widehat w(\gamma-\omega)|$ over $\gamma\ne\omega$ is
+strictly below $1$. All off-frequency terms tend uniformly in $V$ to
+zero as $n\to\infty$. At $\omega=0$ the sum therefore tends to zero.
+At a selected $\omega=\gamma$ it tends to $c_\gamma$.
+For the arithmetic remainder take first a sufficiently large fixed
+$n$, then $V$ sufficiently large.
+
+Average $D(e^v)$ against the nonnegative densities proportional to
+$w_n(v-V)(1\pm\cos(\gamma v))$ and
+$w_n(v-V)(1\pm\sin(\gamma v))$. Their masses tend uniformly to $1$
+because $|\widehat w(\gamma)|<1$. The averages approach, to any
+prescribed accuracy, the vertices $\pm\Re c_\gamma$ and
+$\pm\Im c_\gamma$ for the selected finite set of positive ordinates.
+Here the opposite signs for sine merely interchange the two vertices.
+The convex hull of these ideal vertices contains a ball about the
+origin because their real span has full dimension. Concretely, if its
+inradius is $r>0$, approximating every vertex within $r/4$ preserves
+a ball of radius $3r/4$, by the support-function characterization of
+convex inclusion.
+
+Finally replace $D(e^v)$ in the averages by $D(\lfloor e^v\rfloor)$.
+Between consecutive integers the numerator's arithmetic sum is
+constant, and $\psi(x;q,a)\leq x\log(2x)$. The mean value theorem
+bounds the change by $O_q((1+v)e^{-v/2})$, uniformly for large $v$.
+The averages now belong to the convex hull of a \emph{finite} set of
+integer samples. Set $V=\log(2X)$, so those integers lie in
+$[X,2e^nX]$. Taking $C_q=2e^n$ and $r_q=r/2$ proves
+\eqref{eq:ballrace}. Carath\'eodory's theorem gives the sample bound.
+\hfill$\square$
+
+\paragraph{Relation to the open prime race problem.}
+A ball in the convex hull allows thresholds to be mixed. A prescribed
+ranking of raw prime counts asks for all of its inequalities to hold
+at one threshold. Even a circle has a convex hull containing points
+that the circle never visits. For results on the single-threshold
+problem under hypotheses on the zero ordinates, see G.~Martin and
+N.~Ng, \href{https://doi.org/10.1090/tran/7996}{\emph{Inclusive prime
+number races}}. The conditional almost-periodicity theory of Kaczorowski and Ramar\'e
+(Theorem 1(e)) gives a second perspective. Their corrected vector has
+Stepanov almost-periodic coordinates, zero mean after removing the
+central terms, and the nonzero Fourier coefficients displayed in (E),
+up to an overall sign. The rank theorem makes every nonzero real
+projection nonconstant. Positive and negative values of a nonzero
+mean-zero projection then recur on sets of positive measure in
+intervals of bounded log-length: an interval on which it exceeds a
+positive level on a positive-measure subset can be repeated using
+relatively dense Stepanov almost-periods; the same applies to its
+negative. The positive compact averages above give a direct proof
+uniform across directions. This classical theory and Banks's
+explicit formula account for the analytic inputs. We have not
+established priority for the rank or convex-hull formulations.
+
+\paragraph{An exact finite example.}
+Take $q=4$. Its two central orders vanish. The nonprincipal central
+value is a positive alternating series. For the principal character,
+$\zeta(1/2)=\eta(1/2)/(1-\sqrt2)$ and the alternating eta series is
+positive. The three integers $293,283,228$ lie in $[200,400]$.
+For $v(n)=(\psi(n;4,1)-n/2,\psi(n;4,3)-n/2)$ the certified lower
+bounds for the cyclic determinants are
+\[
+ \det(v(293),v(283))\ge5.625,\quad
+ \det(v(283),v(228))\ge41.693,\quad
+ \det(v(228),v(293))\ge14.050.
+\]
+All three are positive. The identity
+$\det(v_2,v_3)v_1+\det(v_3,v_1)v_2+\det(v_1,v_2)v_3=0$
+therefore gives strictly positive balancing weights. On replacing
+$v(n)$ by $D(n)=v(n)/\sqrt n$, multiply the associated weight by
+$\sqrt n$ and renormalize. The file
+\texttt{checks/prime\_race\_triangle.py} verifies the three bounds using
+integer sieving and rational upper and lower estimates for logarithms.
+This example is independent of GRH.

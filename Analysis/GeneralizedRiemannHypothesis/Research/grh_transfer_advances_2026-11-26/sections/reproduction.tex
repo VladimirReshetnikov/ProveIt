@@ -1,0 +1,57 @@
+\Needspace{24\baselineskip}
+\section{Reproduction and formalization boundaries}
+\label{sec:reproduction}
+
+The decisive computations can be rerun without network access.
+Python's standard library suffices for the new graph proofs, the modular
+coefficient-window checks, the main coefficient-module calculation, and the
+congruence examples. The independent integer Hermite-normal-form check
+uses SymPy. Plot regeneration uses Matplotlib.
+The PDF source compiles with ordinary pdfLaTeX.
+
+\begin{center}
+\begin{tabularx}{\linewidth}{@{}p{0.38\linewidth}X@{}}
+\toprule
+\textbf{Location} & \textbf{Contents}\\
+\midrule
+\code{report.tex}, \code{sections/} & Complete manuscript, including proofs.\\
+\code{checks/graphs/} & Six-case exact verifier and its output.\\
+\code{checks/graphs/n50/} & Two independent exact verifiers, full survivors,
+integer characteristic polynomial, and certified root interval.\\
+\code{checks/local/} & General coefficient-window checks; corrected
+coefficient-depth algorithm; independent HNF checks and tables.\\
+\code{checks/congruence/} & Smith-factor examples and brute modular checks.\\
+\code{checks/predecessors/} & Inspected predecessor programs and replay logs
+for the graph and density results.\\
+\code{provenance/} & Pinned revisions, 46-archive inventory, source hashes,
+verification scope, and commands.\\
+\code{sources/} & Selected unmodified upstream files with notices, and
+the relevant predecessor evidence sections.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The main certificate commands are listed in \code{README.txt}.
+They generate the same mathematical data regardless of decimal plotting
+precision. A \code{null} coefficient-depth entry in a JSON table means
+only that the specified finite cutoff was exceeded.
+
+The new graph proof can be formalized by defining the signed graph,
+proving the switching classification and compression inequality,
+checking the finite positive-definiteness certificates, and then proving
+the trigonometric or polynomial description of the winning spectrum.
+The finite lists could be verified in Lean by a small exact arithmetic
+checker; the present Python computation is not that formal proof.
+
+The local-series proof requires coefficient recurrences, the valuation
+of binomial coefficients in the initial \(p\)-adic digit window, and the
+unique term of lowest valuation. It does not depend on the complete
+upstream GRH development. The coefficient-depth computations need an
+additional verified theorem that the finite row list spans the truncated
+trace-kernel coefficient module, followed by a verified lattice
+elimination algorithm.
+
+The source inspection, exact computations, and written arguments support
+the specific claims made above. They do not constitute a blanket
+verification of the 46 earlier archives or of every intended use of
+the source's custom foundational interfaces.

@@ -1,0 +1,183 @@
+\section{A completed comparison with standard Galois cohomology}
+\label{sec:odd-sha-comparison}
+
+The repository bounds an explicitly defined module of cocycles, but its
+documentation does not identify that module with a standard
+Tate--Shafarevich group. For odd coefficient primes and positive Tate
+exponents, the following argument supplies such a comparison. Its ingredients
+are standard cohomology; the contribution here is to apply them to the exact
+definitions and quantifiers of this source. We make no claim that this
+comparison theorem is new to the literature.
+
+Fix a CM number field $E\subseteq\mathbb Q(\mu_N)$, an odd prime $\ell$, the
+ring of integers $\mathcal O$ of a finite extension $F/\mathbb Q_\ell$, and
+an integer $e>0$. Put
+\[
+ A_n=(\mathcal O/\ell^n\mathcal O)(-e),\qquad
+ A=(F/\mathcal O)(-e).
+\]
+Thus $g$ acts by $\chi_\ell(g)^{-e}$, where $\chi_\ell$ is the cyclotomic
+character. Let $c$ be complex conjugation, which normalizes $G_E$. At each
+finite place $v$ choose a decomposition group $D_v$ and inertia group $I_v$;
+for $v\mid\ell$ write $K_v=D_v\cap\ker\chi_\ell$.
+
+Let $S_n$ be the $\mathcal O$-module of continuous cocycles $z:G_E\to A_n$
+such that
+\[
+ z|_{I_v}=0\quad(v\nmid\ell),\qquad
+ z|_{K_v}=0\quad(v\mid\ell),\qquad
+ z(cgc)=-z(g)\quad(g\in G_E).
+\]
+After suppressing its one-point coordinate index, this is exactly
+\texttt{New.Selmer.shaOdd} for $e>0$ in
+\path{Lib/GaloisRep/Main/SelmerModules.lean}~\cite{oddsha}. Define
+\[
+ \Sha^1(E,A)=\ker\!\left(
+ H^1(G_E,A)\longrightarrow\prod_v H^1(D_v,A)\right),
+\]
+with continuous cohomology and all places in the product. Infinite places
+give no condition because $E$ is totally imaginary. The source tests all
+closure places. Choosing one decomposition group at each place is
+equivalent here: the tested inertia groups and cyclotomic kernels act
+trivially on the coefficients, so the cocycle formula makes pointwise
+vanishing on them invariant under conjugation.
+
+\begin{theorem}[Exact comparison for the odd cocycle module]
+\label{thm:odd-sha-comparison}
+There is a canonical $\mathcal O$-linear isomorphism
+\[
+ \varinjlim_n S_n\ \simeq\
+ \Sha^1\bigl(E,(F/\mathcal O)(-e)\bigr)^{c=(-1)^{e+1}}.
+\]
+The transition on coefficients is multiplication by $\ell$, identified with
+the inclusions
+$\ell^{-n}\mathcal O/\mathcal O\subseteq
+ \ell^{-(n+1)}\mathcal O/\mathcal O$.
+\end{theorem}
+
+\begin{proof}
+Set $(Tz)(g)=z(cgc)$. Since $\chi_\ell(cgc)=\chi_\ell(g)$, the involution
+$T$ preserves cocycles. Every coboundary
+\[
+ (\delta a)(g)=\bigl(\chi_\ell(g)^{-e}-1\bigr)a
+\]
+is fixed by $T$. As $2$ is invertible, an odd coboundary is zero, and every
+$T$-odd cohomology class has a unique odd representative, namely
+$(z-Tz)/2$. The local conditions are preserved by $T$ because conjugation
+permutes places and preserves the cyclotomic kernel.
+
+For $v\mid\ell$, the image
+$\Gamma_v=\chi_\ell(D_v)$ is an open subgroup of
+$\mathbb Z_\ell^\times$. Its pro-$\ell$ subgroup $\Gamma_v^0\simeq
+\mathbb Z_\ell$ has index prime to $\ell$. If $u$ is a topological
+generator of $\Gamma_v^0$, then $u^{-e}-1\ne0$. Procyclic
+cohomology and divisibility of $F/\mathcal O$ give
+\[
+ H^1(\Gamma_v^0,A)=A/(u^{-e}-1)A=0.
+\]
+Inflation--restriction through the finite prime-to-$\ell$ quotient yields
+$H^1(\Gamma_v,A)=0$. A second inflation--restriction sequence, for
+$1\to K_v\to D_v\to\Gamma_v\to1$, shows that
+$H^1(D_v,A)\to H^1(K_v,A)$ is injective. Since $K_v$ acts trivially, all
+coboundaries restrict to zero on it. Therefore the condition $z|_{K_v}=0$
+is equivalent to local triviality of $[z]$ at $v$.
+
+For $v\nmid\ell$, inertia acts trivially on $A$, while Frobenius acts by
+$(Nv)^{-e}$. An unramified local class belongs to
+\[
+ H^1(D_v/I_v,A)=A/\bigl((Nv)^{-e}-1\bigr)A=0.
+\]
+The scalar is nonzero and $A$ is divisible. Conversely, a locally trivial
+class has representatives zero on $I_v$, because coboundaries vanish there.
+Thus the source's local conditions with coefficients in $A$ describe the
+full local kernel $\Sha^1(E,A)$.
+
+Finally, every continuous cocycle from compact $G_E$ to discrete $A$ has
+finite image, hence takes values in
+$\ell^{-n}\mathcal O/\mathcal O$ for some $n$. This identifies the direct
+limit of the odd cocycle modules with the $T=-1$ part of that local kernel.
+The natural action on cochains includes the coefficient action:
+\[
+ (c\cdot z)(g)=c\bigl(z(c^{-1}gc)\bigr)=(-1)^e(Tz)(g).
+\]
+Its eigenvalue is consequently $(-1)^{e+1}$, as claimed.
+\end{proof}
+
+The passage to divisible coefficients is essential. We have not identified
+each finite $S_n$ with an ordinary finite-coefficient $\Sha^1$ group:
+multiplication by the relevant nonzero local scalar need not be
+surjective on $\mathcal O/\ell^n$. The argument also explicitly excludes
+$\ell=2$, where division by two is unavailable, and $e=0$, where the
+local scalar vanishes and the source uses a different local condition.
+
+\begin{corollary}[A uniform standard cohomological bound]
+\label{cor:odd-sha-bound}
+Fix $E\subseteq\mathbb Q(\mu_N)$ as above and a nonnegative integer $t$. The source
+theorem \texttt{New.exists\_length\_shaOdd\_le}~\cite{oddsha} supplies an integer
+\[
+ 1\le X\le 2^{\,4(N+t+3)^{27}}h_E
+\]
+such that, for every odd prime $\ell$, every coefficient ring $\mathcal O$
+allowed by that theorem, and every $0<e<t$,
+\[
+ \operatorname{length}_{\mathcal O}
+ \Sha^1\bigl(E,(F/\mathcal O)(-e)\bigr)^{c=(-1)^{e+1}}
+ \le v_{\mathcal O}(X).
+\]
+Here $v_{\mathcal O}$ is normalized at a uniformizer. In particular this
+group is finite, is annihilated by $X$, and vanishes if $\ell\nmid X$.
+Its order is at most $q^{v_{\mathcal O}(X)}$, where $q$ is the size of the
+residue field of $\mathcal O$.
+\end{corollary}
+
+\begin{proof}
+The source bound holds for every finite level $S_n$. Their transition maps
+are injective on actual cocycles, so their lengths form a nondecreasing
+sequence of integers bounded by $v_{\mathcal O}(X)$. The maximum is attained;
+after that, every inclusion has quotient of length zero and is an
+isomorphism. The direct limit therefore has the same finite bound. A module
+of length $r$ over a discrete valuation ring is annihilated by the $r$th
+power of its maximal ideal, proving the annihilator assertion and the
+cardinality bound.
+\end{proof}
+
+The source's coefficient-ring hypothesis includes enough roots of unity of
+order the exponent of $(\mathbb Z/N\mathbb Z)^\times$. It has not been
+silently dropped. The argument proves eventual stabilization of the
+finite-level cocycles but gives no effective bound on the stabilization
+index from the length bound alone. The comparison above is a human-readable
+proof; it has not been compiled as an additional Lean theorem.
+
+\begin{corollary}[Integral odd cocycles vanish]
+Under the same assumptions, a continuous cocycle $z:G_E\to\mathcal O(-e)$
+with the same local and oddness conditions is zero.
+\end{corollary}
+\begin{proof}
+Each reduction modulo $\ell^n$ lies in $S_n$ and is killed by $X$. Hence
+$Xz(g)\in\bigcap_n\ell^n\mathcal O=0$ for every $g$. Since $X\ne0$ and
+$\mathcal O$ is torsion-free, $z(g)=0$.
+\end{proof}
+
+\subsection{The exact limitation for Vandiver and \texorpdfstring{$K$}{K}-groups}
+
+Alp\"oge's announcement tentatively suggests further $K$-group vanishing
+and cyclicity consequences~\cite{alponge}. This comparison repairs a
+definitional gap, but does not prove Vandiver's
+conjecture. First, the bound allows nonzero groups at primes dividing $X$.
+Second, $E,N,t$ are fixed before $\ell$ varies: a statement about almost all
+coefficient primes for a fixed field does not control the diagonal choice
+$E=\mathbb Q(\mu_\ell)$. Third, the parity is decisive. A class descended
+from $\mathbb Q$ is fixed by the natural action of complex conjugation.
+For even $e$, the source's odd cocycles instead correspond to the natural
+minus eigenspace. At odd $\ell$ these eigenspaces intersect trivially.
+
+The usual cohomological obstruction related to $K_{4m}(\mathbb Z)$ uses
+$H^2(\mathbb Z[1/\ell],\mathbb Z_\ell(2m+1))$; its dual coefficient has
+Tate exponent $-2m$. Thus the odd-cocycle bound by itself addresses the
+opposite parity from this Vandiver obstruction. The repository's separate
+even-class machinery would need additional analysis and arithmetic input.
+No $K$-group vanishing or cyclicity claim is deduced here. The general
+class-group and cohomological parity relationship is explicit in
+Kurihara's 1992 paper, \emph{Some remarks on conjectures about cyclotomic
+fields and $K$-groups of $\mathbb Z$}, especially its introduction and
+Sections~1 and~3~\cite{kurihara}.

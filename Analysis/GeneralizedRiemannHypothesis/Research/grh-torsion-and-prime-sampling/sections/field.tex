@@ -1,0 +1,33 @@
+\section{Zero loss over a fixed coefficient field}\label{sec:field}
+\input{sections/ramification_intro}
+
+\input{sections/cyclotomic}
+
+\subsection*{Several variables}
+The fixed-field result does not require witnesses in the coefficient field. Let $K/\mathbf Q_p$ be finite of absolute ramification index $e$ and take a finite family $F_i\in\mathcal O_K[T_1,\dots,T_s]\setminus\{0\}$. Write
+\[
+ A_i=\min_{\mathbf a}\{v([T^{\mathbf a}]F_i)+\rho|\mathbf a|\},
+ \qquad \sum_i A_i\le B .
+\]
+Then there is a single tuple $z_j=\zeta_j-1$, each of order exponent $h_j\ge h_0$ for $\zeta_j$, such that
+\[
+                 v(F_i(z_1,\ldots,z_s))\le A_i\quad\text{for every }i.
+\]
+This gives zero positive excess relative to all witnesses of coordinate valuations at least $\rho$. Explicit exponents $h_j\le M_j$ are available before the polynomials are given:
+\[
+ M_1=h_0+\lfloor eB\rfloor,\qquad
+ M_{j+1}=h_0+\lfloor e N_{M_j}B\rfloor.
+\]
+
+\begin{proof}
+At a given step expand a partially specialized polynomial as
+$\sum_{\nu} g_{i,\nu}(T)Y^\nu$, where $Y$ denotes all later variables. Its multivariate Gauss valuation $A_i'$ is $\min_\nu(G_\rho(g_{i,\nu})+\rho|\nu|)$. Choose one nonzero coefficient polynomial $g_i$ attaining that minimum. Then $\sum_i G_\rho(g_i)\le\sum_i A_i'\le B$, initially by hypothesis. Apply the one-variable fixed-field result with these Gauss baselines, which the root-budget proof also permits. At a common point $z$ one has $v(g_i(z))\le G_\rho(g_i)$ for every $i$. The new Gauss valuation after specialization is at most $v(g_i(z))+\rho|\nu|\le A_i'$. This also ensures every new polynomial is nonzero and integral. Iterate over all coordinates.
+
+The coefficient field after $j$ steps is contained in $K(\mu_{p^{M_j}})$, as the stated bounds are nondecreasing and the cyclotomic levels are nested. Its absolute ramification index is at most $e[K(\mu_{p^{M_j}}):K]\le eN_{M_j}$. The one-variable count of root-bearing shells gives the recurrence. At the final coordinate the Gauss valuation of the resulting constant is its valuation.
+\end{proof}
+
+\paragraph{What this gives for arithmetic twist families.}
+This bound can be used whenever the coefficient field is controlled \emph{before} choosing the order cutoff. The worst-case packets in Theorem~\ref{thm:exact-obstruction} live in finite cyclotomic fields whose ramification grows with the largest forbidden shell. An application to a particular Selmer or special-value family therefore turns on its coefficient fields, or on structural restrictions on its interpolation polynomials. The extremal packets are explicit integral polynomials; their occurrence as Selmer determinants would be an additional arithmetic theorem.
+
+\paragraph{Further research questions.}
+Determine the optimum at fixed packet cardinality between the single-polynomial and unrestricted regimes. Determine the exact obstruction cost over a finite extension that is not cyclotomic. In several variables, is the iterated growth of the displayed fixed-field bound necessary, or can one use the common Galois action on the coordinates to reduce the search? The independent analytic applications in \texttt{prime-sampling.pdf} pursue zero location and simplicity by a different part of the same Lean proof.

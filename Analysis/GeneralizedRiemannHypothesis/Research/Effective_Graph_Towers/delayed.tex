@@ -1,0 +1,98 @@
+\section{The first stable level can be prescribed}
+
+Fix a prime $p\equiv3\pmod4$ and an integer $k\ge1$. On
+$(\mathbb Z/p^n\mathbb Z)^2$ take one step in each of the directions
+$p^k e_1$ and $e_2$, and $p$ copies of the step $e_1$. Each step from a
+vertex contributes one undirected edge. Parallel edges count separately
+and loops contribute zero to the Laplacian. These connected towers
+all have the same number $p+2$ of base loops for fixed $p$.
+Let $T_n$ be the $p$-adic valuation of the spanning-tree count.
+
+\begin{theorem}
+Put $s=\min(k,n)$ and $C=2(p+1)/(p-1)$. At every level $n\ge1$,
+\[
+ T_n=2s p^n+C(p^n-p^s)+(p^s-1)+2s-2n .
+\]
+The eventual polynomial is
+\[
+ P_k(X,Y)=(2k+C)X-2Y+(1-C)p^k+2k-1.
+\]
+It gives $T_n=P_k(p^n,n)$ from level $k$ onward. For $k\ge2$ it fails
+at level $k-1$, so $k$ is the exact first stable level.
+\end{theorem}
+
+\begin{proof}
+Write $A(U)=2-U-U^{-1}=-(U-1)^2/U$.
+For a pair $(U,V)$ of $p$-power roots of unity of joint conductor $p^j>1$,
+let $e_j=(p-1)p^{j-1}$. In a common primitive coordinate $\zeta$ of order
+$p^j$, write $U=\zeta^a$, $V=\zeta^b$, with $a,b$ not both divisible
+by $p$. The reduction of
+$(A(U)+A(V))/(\zeta-1)^2$ modulo $\zeta-1$ is $-(a^2+b^2)$. Since
+$-1$ is a nonsquare modulo $p$, this is nonzero. Consequently
+\[
+ v_p(A(U)+A(V))=2/e_j\le1 .
+\]
+The eigenvalue at a character $(X,Y)$ is
+$A(X^{p^k})+A(Y)+pA(X)$. The final term has valuation strictly above one,
+with the convention $v_p(0)=+\infty$. Thus whenever
+$(X^{p^k},Y)\ne(1,1)$, the joint conductor of this image alone determines
+the valuation.
+
+The map $(X,Y)\mapsto(X^{p^k},Y)$ has fibers of size $p^s$ and image
+isomorphic to $C_{p^{n-s}}\times C_{p^n}$, where $C_m$ denotes a cyclic
+group of order $m$. For $1\le j\le n-s$ its exact conductor-$p^j$ shell
+has $p^{2j}-p^{2j-2}$ elements. Their aggregate valuation is therefore
+$2(p+1)p^{j-1}$. For $n-s<j\le n$ there are $p^{n-s}e_j$ elements in
+the shell, contributing $2p^{n-s}$. Summing these shell contributions
+and multiplying by $p^s$ gives $C(p^n-p^s)+2s p^n$.
+On the kernel with the trivial character removed, the eigenvalue is
+$pA(X)$ for each nontrivial $p^s$-th root $X$. There are $p^s-1$ such
+roots, and
+$\prod_{X\ne1}(1-X)=p^s$ gives $\sum_{X\ne1}v_p(A(X))=2s$.
+The matrix-tree denominator contributes $-2n$. This proves the formula.
+
+For $n\le k$ it reads $T_n=(2n+1)p^n-1$, and for $n\ge k$ it equals
+$P_k(p^n,n)$. In particular the discrepancy one level before $k$ is
+\[
+ T_{k-1}-P_k(p^{k-1},k-1)=(p+1)p^{k-1}-2>0 .
+\]
+Distinct polynomials in $p^n,n$ cannot agree on an infinite tail:
+the term of highest degree in $p^n$ dominates all lower exponential
+orders, even with polynomial factors in $n$. This establishes the
+claimed onset for the unique eventual polynomial.
+\end{proof}
+
+The growing onset is visible directly in the formal specializations.
+For primitive $(a,b)\in\mathbb Z_p^2$, substitute $X=(1+z)^a$ and
+$Y=(1+z)^b$ in the Laplacian polynomial and reduce modulo $p$.
+The first nonzero degree is
+\[
+ 2p^{\min(k+v_p(a),v_p(b))}.
+\]
+Indeed the two summands that survive reduction have these respective
+initial orders, and in an equal-order tie the same anisotropic sum of
+squares prevents cancellation. The maximum is exactly $2p^k$, attained
+at $(1,0)$. Thus even within this family with no identically zero
+primitive specialization, neither the maximal degree required to see a
+unit nor the onset admits a bound in terms of $p$, dimension and base
+edge count alone. Replacing $p^k e_1$ by the zero step gives the law
+$(2n+1)p^n-1$ at every level, despite agreement of the voltage data
+modulo $p^k$.
+
+For $p=3$ and $k=3$ the stable law is $10\cdot3^n-2n-76$ and the first
+five values are $8,44,188,726,2344$. The script
+\texttt{verify\_delayed\_tower.py} checks the eigenvalues by exact
+cyclotomic reduction. It independently constructs integer Laplacian
+cofactors for its examples with at most 81 vertices.
+
+\paragraph{A version with distinct steps.}
+For $p\ge7$ in the same congruence class, replace the $p$ copies of
+$e_1$ by $(1+i p^k)e_1$ for $0\le i<p$. Every valuation stays the same.
+Indeed, writing $Z=X^{p^k}$, the replacement contributes
+$2p-X\Phi_p(Z)-X^{-1}\Phi_p(Z^{-1})$. At $Z=1$ this is $pA(X)$.
+If $Z$ has order $p$ the two cyclotomic factors vanish. If its order is
+larger, each has valuation $(p-1)v_p(Z-1)$ by
+$\Phi_p(Z)=(Z^p-1)/(Z-1)$. Hence for $Z\ne1$ the new contribution has
+valuation strictly greater than $2v_p(Z-1)$, which in turn is at least
+$v_p(A(Z)+A(Y))$. For $n>k$ all steps are nonzero and distinct up to
+sign, so the graphs at those levels are simple.

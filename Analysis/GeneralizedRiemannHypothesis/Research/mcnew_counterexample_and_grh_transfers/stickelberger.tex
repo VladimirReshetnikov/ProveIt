@@ -1,0 +1,207 @@
+\section{The exact gcd of the cyclotomic annihilator witnesses}
+\label{sec:exact-stickelberger}
+
+The 26 November ProveIt manuscript asks for the gcd of all positive integers
+satisfying both clauses of the Lean predicate
+\texttt{New.OddPart.IsStickelbergerBound}. Its theorem determines the gcd
+for a family constructed by clearing denominators before applying Voronoi's
+congruence. Clearing those denominators later makes the full problem tractable.
+This section gives the exact gcd at every modulus and weight, a finite
+decision procedure for the least individual witness, and arithmetic consequences
+for the cocycles in the repository.
+The earlier question and its local auxiliary-prime calculation are in
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/a1d43d8a32add57d596273e04648bc96a0a9bc0d/docs/incoming/grh_method_transfers_2026-11-26.zip}{the prior manuscript, section on the cyclotomic annihilator}.
+
+\subsection{The predicate and its exact character denominator}
+
+Fix integers $N,e\ge1$. A Dirichlet character $\chi$ modulo $N$ is relevant
+when $\chi(-1)=(-1)^{e+1}$. Characters take their usual value zero on
+nonunits. For $N=1$ the unique character takes value one on every integer.
+Let $O_\chi=\mathbb Z[\chi((\mathbb Z/N\mathbb Z)^\times)]$.
+With $B_j(x)$ the Bernoulli polynomial set
+\begin{align*}
+ K&=(e+2)!(e+1)N,&
+ b(a)&=(e+2)!N^{e+1}B_{e+1}(a/N),\\
+ B_\chi&=\sum_{a=0}^{N-1} b(a)\chi(a),&
+ F(c)&=(c^e-1)(c^{e+1}-1)\quad(c\ge2).
+\end{align*}
+Upstream shows $b(a)\in\mathbb Z$ and $B_\chi=-K L(-e,\chi)\ne0$ for
+relevant $\chi$, including imprimitive characters with their actual Euler factors.
+For $m\ge1$ and $c\equiv1\pmod N$ put
+\[
+ S_{m,c,\chi}=\sum_{a=0}^{Nm-1}
+   \left\lfloor\frac{ca}{Nm}\right\rfloor a^e\chi(a).
+\]
+A positive integer $X$ satisfies the predicate when both conditions hold.
+First, for every prime $p$, some $c\ge2$ congruent to $1$ mod $N$ has
+$p\nmid c$ and $F(c)\mid X$. Second, for each $c\ge0$ congruent to $1$
+mod $N$ and each relevant character in a characteristic-zero integral domain
+$O$, there is a single $w\in O$ such that
+\[
+  (c^{e+1}-1)X\equiv 2w S_{m,c,\chi}\pmod{mO}
+  \qquad\text{for every }m\ge1\text{ with }(m,c)=1.             \tag{1}
+\]
+The upstream Voronoi congruence, in the character ring, reads
+\[
+ Kc^e S_{m,c,\chi}\equiv (c^{e+1}-1)B_\chi\pmod{mO_\chi}.    \tag{2}
+\]
+The interface is stated in lines 136--151, the special-value identities
+in lines 153--203, and (2) in lines 245--256 of
+\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/Lib/Cyclotomic/Voronoi.lean}{\texttt{Voronoi.lean}}.
+
+\paragraph{Theorem 1.}
+The second clause holds precisely when
+\[
+       \frac{KX}{2B_\chi}=-\frac{X}{2L(-e,\chi)}\in O_\chi
+       \quad\text{for each relevant complex character }\chi.       \tag{3}
+\]
+In particular, it places exactly the condition $Q\mid X$ on a positive
+integer $X$, where $Q$ is the least positive integer clearing the
+denominators of $(2L(-e,\chi))^{-1}$ in all the $O_\chi$. Set $Q=1$ if
+there are no relevant characters.
+
+\paragraph{Proof of necessity.}
+Apply the second clause to the character in $O_\chi$ itself. Fix $c>1$,
+multiply (1) by $Kc^e$, and use (2). Then
+$(c^{e+1}-1)(Kc^eX-2wB_\chi)$ belongs to $mO_\chi$ for all $m$ coprime
+to $c$. The intersection of these ideals is zero, since $O_\chi$ is a
+finite free abelian group and we may take powers of a single prime outside
+$c$. Hence $w=c^e KX/(2B_\chi)$. Use $c=1+N$ and $c=1+2N$.
+Their $e$th powers are coprime, so B\'ezout's identity gives (3).
+
+\paragraph{Proof of sufficiency.}
+Write $R=Nm$. For $k\ge1$ coprime to $c$, partition the terms of $S_{km,c,\chi}$
+as $a+jR$, $0\le a<R$, $0\le j<k$. Modulo $m$ the polynomial and character
+factors are unchanged. The floor factors satisfy
+\[
+ \sum_{j=0}^{k-1}\left\lfloor\frac{ca/R+cj}{k}\right\rfloor
+  =\left\lfloor\frac{ca}{R}\right\rfloor+\frac{(c-1)(k-1)}{2}.
+\]
+Indeed the residues of $cj+\lfloor ca/R\rfloor$ modulo $k$ run once
+through $0,\ldots,k-1$. Let $A_m=\sum_{a=0}^{R-1}a^e\chi(a)$.
+The involution $a\mapsto -a\bmod R$ negates its summands modulo $m$,
+using the parity of $\chi$; the zero summand causes no exception since
+$e\ge1$. Thus $2A_m\equiv0\pmod m$, even when $m$ is even.
+The floor identity, whose correction is an integer, gives
+\[
+                2S_{km,c,\chi}\equiv2S_{m,c,\chi}\pmod m.          \tag{4}
+\]
+Take $w=c^eKX/(2B_\chi)\in O_\chi$ and denote the left side of (1) minus
+its right side by $E_m$. For any $m$ prime to $c>0$ put
+$k=\prod_{p\mid m}p^{v_p(K)}$. Then $(km,c)=1$. At the enlarged modulus
+$km$, (2) and $2w B_\chi=Kc^eX$ give $Kc^e E_{km}\in kmO_\chi$.
+Cancel $k$ in the integral domain and invert $(K/k)c^e$ modulo $m$.
+It follows that $E_{km}\in mO_\chi$. Equation (4) now gives
+$E_m\in mO_\chi$. For $c=0$, possible only at $N=1$, the sole modulus
+coprime to $c$ is $m=1$. The argument proves the result in all target
+domains $O$ by passage along the character-ring embedding. Indeed, the finite
+nonzero image in $\operatorname{Frac}(O)^\times$ is cyclic of order $d$, and
+the image of $\mathbb Z[\zeta_d]$ under a choice of primitive generator is
+the character subring. Choosing the corresponding complex character
+transports every congruence. This finishes the proof.
+
+\subsection{All witnesses and the least witness}
+
+Let $D$ be the least positive integer divisible by every $2B_\chi$
+in the corresponding $O_\chi$, as in the earlier report. By definition
+$D\mid KX$ is equivalent to (3), so
+\[
+                           Q=D/\gcd(D,K).
+\]
+For each prime $p$ let $m_p$ be the minimum of $v_p(F(c))$ over
+$c\ge2$, $c\equiv1\pmod N$, $p\nmid c$. The first-clause computation of
+the earlier report gives, for odd $p$,
+\[
+ m_p=\begin{cases}
+  2v_p(N)+v_p(e(e+1)),&p\mid N,\\
+  \displaystyle\sum_{j\in\{e,e+1\}:\;p-1\mid j}(1+v_p(j)),&p\nmid N.
+ \end{cases}
+\]
+At $p=2$ it is $v_2(e(e+1))+2v_2(N)$ for $4\mid N$ and
+$v_2(e(e+1))+3$ otherwise. For odd $p\mid N$, the lifting-the-exponent
+formula gives the minimum when $v_p(c-1)=v_p(N)$.
+For odd $p\nmid N$, choose a primitive root modulo $p^2$ in the permitted
+progression; Fermat's theorem and lifting give the lower bound.
+For odd $c$, the total at two is
+$2v_2(c-1)+v_2(c+1)-1+v_2(e(e+1))$. When $4\nmid N$, take
+$c\equiv3\pmod8$ to attain the minimum. Write $M=\prod_p p^{m_p}$,
+a finite product.
+
+\paragraph{Theorem 2.}
+The gcd of \emph{all} positive witnesses of the upstream predicate is
+\[
+              G(N,e)=\operatorname{lcm}(Q,M).                     \tag{5}
+\]
+Moreover, a specified $X>0$ is a witness precisely when $Q\mid X$
+and the finite set $\{c\ge2:c\equiv1\pmod N,\ F(c)\mid X\}$ has
+gcd one (with empty gcd zero).
+
+\paragraph{Proof.}
+The first clause says precisely that the eligible $c$ have no common
+prime divisor and are nonempty. It implies $M\mid X$; Theorem~1 gives
+$Q\mid X$. Conversely, for coprime $a,b\ge2$ in the progression,
+$X(a,b)=\operatorname{lcm}(Q,F(a),F(b))$ is a witness.
+For each prime $p$ choose a minimizer $a$ for $m_p$. By the Chinese
+remainder theorem choose $b>1$ congruent to $a$ modulo $p^{m_p+1}$, to
+$1$ modulo $N$, and to $1$ modulo every prime divisor of $a$. These
+congruences are compatible since $p\nmid a$ and $a\equiv1\pmod N$.
+Hence $(a,b)=1$ and $v_p(F(b))=m_p$. The $p$-valuation of $X(a,b)$
+is $\max(v_p(Q),m_p)$, as required. Finitely many witnesses suffice to
+realize the gcd: start with any witness and choose the corresponding
+minimizer for each of its prime divisors.
+
+The least witness is a different invariant. Start with the explicit upper
+bound $U=X(1+N,1+2N)$ and list all $c$ in the progression with $F(c)\le U$.
+For each subset $T$ of the list with $\gcd(T)=1$ compute
+$\operatorname{lcm}(Q,\{F(c):c\in T\})$. The smallest value is the least
+witness, by the finite characterization just proved. The accompanying
+code merges equal pairs of partial gcd and partial lcm during this search.
+
+\subsection{Numerical examples and the arithmetic consequence}
+
+\begin{center}
+\small
+\begin{tabular}{r r r r r r}
+\hline
+$N$ & $e$ & $Q$ & $M$ & previous $\operatorname{lcm}(D,M)$ & exact $G$\\
+\hline
+1&11&691&131040&286858091520&90548640\\
+3&9&9841&14256&3928212288000&140293296\\
+5&1&4&1200&1200&1200\\
+5&2&4&1200&7200&1200\\
+7&2&32&2352&112896&4704\\
+8&2&6&384&3456&384\\
+12&2&20&864&17280&4320\\
+15&1&16&3600&14400&3600\\
+\hline
+\end{tabular}
+\end{center}
+
+For $N=1,e=11$ the special value is $\zeta(-11)=691/32760$, giving
+$Q=691$ immediately. The prime $11$ divides the previous bound and is
+absent from $G$. At $(N,e)=(3,9)$ only the principal character is relevant:
+$L(-9,\chi_0)=(1-3^9)\zeta(-9)=9841/66$. Here both $5$ and $7$
+are removed. At $(8,2)$ the least individual witness is $48\,746\,880$,
+and its eligible auxiliaries are $9,25$. The pair $9,17$ would instead
+give $643\,668\,480$. These minima and the table can be reproduced from
+the exact polynomial and integer operations of
+\texttt{check\_stickelberger.py}. Its output also gives finite lists of
+witnesses realizing each gcd, and tests (1) directly on 1,217
+character, auxiliary and modulus choices across eleven examples.
+
+Fix a valid $X$. The source proves that $4X^2$ kills the cocycles in $\mathsf{component}(\ell,e,\psi,\nu)$. These are locally constant cocycles with quotient coefficients for the inverse of $\mathrm{cyc}^e\psi$, subject to the stated inertia and local vanishing conditions, with $\mathrm{cyc}^e\psi$ odd. Taking integer linear
+combinations over a finite family realizing $G$ proves that $4G^2$
+kills it. Thus at $(N,e)=(3,9)$ all of these cocycles vanish at each level
+for coefficient prime $5$ or $7$: multiplication by $4G^2$ is a unit
+on a module with coefficients modulo the corresponding prime power.
+The same reasoning improves the source's finite-level CM descent
+annihilator to $16\varphi(N)G^2$ under its own hypotheses. Optimality
+in (5) concerns the stated predicate. A module can have a smaller
+annihilator, and a surviving prime may still have zero component.
+Classical higher Stickelberger theory treats related Galois-cohomological
+annihilators; the question solved here comes from the specific Lean
+congruence and its preceding analysis.
+See
+\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/Lib/Cyclotomic/Kolyvagin/ReciprocityComponentBounds.lean\#L670-L680}{the component annihilation lemma},
+\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/Lib/Cyclotomic/OddSha.lean\#L529-L545}{the CM descent lemma},
+and \href{https://doi.org/10.1016/j.crma.2003.09.019}{Banaszak, \emph{Higher analogues of Stickelberger's theorem}}.

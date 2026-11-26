@@ -1,0 +1,47 @@
+LEAN FORMALIZATION PLAN -- NOT A COMPLETED LEAN DEVELOPMENT
+
+The session had no Lean/Lake executable. No new theorem is represented as
+compiled. No sorry-based placeholder proof is shipped.
+
+1. Finite weighted witness
+   B : Finset Nat, cardinality 74, maximum 480.
+   Predicate: for x<z in B, either x+z is odd or (x+z)/2 is not in B.
+   Certificate: compare the two integer sums at common denominator128^1093.
+   Tail certificate:100000*128*127^2187 <128^2187.
+
+2. Generating functions and replacement
+   Separate an abstract nonnegative formal power-series coefficient lemma
+   from unique factorization in Polynomial(F_q).
+   Prove confinement: any new polynomial-ratio progression containing a
+   modified squarefree-rough factor stays in the same rough-factor class.
+   Prove the rational generating function for squarefree rough polynomials.
+   Prove degree-block gluing as an independent ordered-degree lemma.
+
+3. Concentration refinement
+   For a finite Euler product, define the tilted law of total smooth degree.
+   Compute exact mean and variance as finite sums of geometric moments.
+   Prove the signed-tail truncation inequality before applying Chebyshev.
+   Then certify ceilings U_q, V_q and integer square root.
+
+4. Positive-type compression moments
+   Extract the coefficient bound from:
+   grh-compact/src/New/Heights/OneDeterminant.lean:card_mul_sum_det_le.
+   Independent lemmas:
+   - Gram realization of a positive semidefinite group kernel;
+   - finite additive-character orthogonality;
+   - full-column/full-row rank factorization W=C D;
+   - independent frame and rank-k matrix counts;
+   - exact zero-frequency contribution U_j;
+   - nonnegative moment-to-tail inequality.
+   Do not hide dual-action/inverse-transpose or injectivity assumptions.
+
+5. Conductor-23 analytic bridge
+   Define the class-character L-series over Q(sqrt(-23)).
+   Prove the principal class prime-power selector identity.
+   Prove the Mellin identity with c=a0-1/3 and check the residue sign.
+   Apply a Landau nonnegative-transform theorem.
+   Keep the eventual one-sided arithmetic inequality as a named hypothesis.
+   Supplying it requires a separate new short/enough/long construction.
+
+The architecture above is a work plan. The full human proofs and the exact
+scope of every conditional claim are in report.pdf.

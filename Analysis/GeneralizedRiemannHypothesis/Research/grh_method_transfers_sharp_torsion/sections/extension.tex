@@ -1,0 +1,215 @@
+\section{One-sided tests for class-group Hecke functions}
+Let $K$ be an imaginary quadratic field, $C$ its ideal class group,
+$h=|C|$, and $B\le C$. The characters trivial on $B$ form $B^\perp$.
+Suppose that their Hecke functions $L_K(s,\eta)$ have no zeros in
+$\Re s>1/2$. We call these the known factors. For $B=C^2$, all such
+characters have order at most two. Kronecker's genus factorization expresses
+their $L$-functions as products of two Dirichlet $L$-functions, including
+$\zeta_K=\zeta L(\cdot,\chi_K)$ for the trivial character. Thus the
+Dirichlet theorem in the repository supplies precisely this hypothesis.
+Hecke's continuation, nonvanishing at $1$ for nontrivial characters and the
+functional equation apply to the other characters as well.
+
+For a real inversion-invariant weight $w:C\to[0,1]$, put
+\[
+ a_\chi={1\over h}\sum_{c\in C} w(c)\overline{\chi(c)},\qquad
+ \Theta_w(x)=\sum_{\substack{p\le x\\p\ \mathrm{split\ in}\ K}}
+     w([\mathfrak p])\log p,\qquad \delta=a_1/2 .
+\]
+Either prime ideal above $p$ gives the same weight, and each rational prime
+is counted once. The coefficients $a_\chi$ are real.
+Let $S$ be a nonempty inversion-invariant subset of
+$\widehat C\setminus B^\perp$. Require $a_\chi<0$ on $S$ and
+$a_\chi=0$ off $S\cup B^\perp$.
+
+\paragraph{Criterion.}
+The following three statements are equivalent, with fixed field and weight.
+\begin{enumerate}
+\item Each $L_K(s,\chi)$ with $\chi\in S$ satisfies RH.
+\item For each $0<\epsilon<1/2$ and all sufficiently large $x$,
+$\Theta_w(x)-\delta x\le M_\epsilon x^{1/2+\epsilon}$ for some $M_\epsilon$.
+\item For every such $\epsilon$ and all sufficiently large $x$,
+\[
+ R_w(x)=\sum_{\substack{p\le x\\p\ \mathrm{split\ in}\ K}}
+ w([\mathfrak p])\log p\,(p^{-1}-x^{-1})
+       -\delta\log x-c_w \ \ge -M_\epsilon x^{-1/2+\epsilon}.
+\]
+\end{enumerate}
+Here $P_w(s)=\sum_{p\ \mathrm{split}}w([\mathfrak p])\log(p)p^{-s}$ and
+$c_w=\lim_{s\to1}(P_w(s)-\delta/(s-1))-\delta$.
+
+\paragraph{Proof.}
+Comparing Euler factors for $\Re s>1$ gives
+\[
+ P_w(s)=-\frac12\sum_\chi a_\chi\frac{L'_K}{L_K}(s,\chi)+H(s)
+\]
+with $H$ holomorphic on $\Re s>1/2$.
+The two degree-one primes above a split prime contribute equally in the
+weighted sum. Inert primes have norm $p^2$, the terms for powers of exponent
+at least two converge absolutely and locally uniformly in that half-plane,
+and ramified primes contribute finitely many locally holomorphic series.
+The pole at $1$ has residue $\delta$. At a zero $\rho$, $1/2<\Re\rho<1$,
+of the tested functions the residue of $P_w$ is exactly
+\[
+ d_\rho=\frac12\sum_{\chi\in S}(-a_\chi)\operatorname{ord}_\rho L_K(s,\chi)>0.
+\]
+An untested function vanishing at the same point does not affect this
+formula. In particular no assertion about independence or simplicity of
+zeros is needed.
+
+Write $E(x)=\Theta_w(x)-\delta x$ and use the transform
+$\mathcal M F(s)=\int_1^\infty F(x)x^{-s-1}\,dx$. Termwise integration
+in $\Re s>1$ gives
+\begin{align*}
+ \mathcal M E(s)&=P_w(s)/s-\delta/(s-1),\\
+ \mathcal M(xR_w)(s)&=P_w(s)/(s(s-1))-\delta/(s-1)^2-c_w/(s-1).
+\end{align*}
+Both expressions are regular at $1$. Take $a=1/2+\epsilon$. Under the
+second assertion, $M_\epsilon x^a-E(x)$ is eventually nonnegative.
+Under the third, $M_\epsilon x^a+xR_w(x)$ is eventually nonnegative.
+In each case the transform is meromorphic in $\Re s>a$, and every pole
+on the real axis there would have a strictly negative residue, respectively
+$-d_\rho/\rho$ and $d_\rho/(\rho(\rho-1))$.
+Landau's theorem for the Mellin integral of an eventually nonnegative
+function forces a singularity at any finite real abscissa of convergence.
+This follows by expanding at a real point just to its right: positivity
+of the moments and monotone convergence would extend the integral leftward
+if the real abscissa were regular. A modification on a bounded interval
+makes the integrand nonnegative without changing the poles.
+A pole of negative residue at the abscissa is impossible since the
+nonnegative integral would tend to minus infinity from the right. Thus the
+abscissa is at most $a$ and the integral is holomorphic on $\Re s>a$.
+Either proposed bound rules out all tested zeros there. Vary $a$ and use the
+functional equation, with $S$ closed under inversion.
+
+Conversely, the fixed-character prime ideal explicit formula under RH gives
+\[\sum_{N\mathfrak p^k\le x}\chi(\mathfrak p)^k\log N\mathfrak p
+=\mathbf1_{\chi=1}x+O_{K,\chi}(\sqrt{x}\log^2(2x))\] for each factor
+with $a_\chi\ne0$. In the truncated explicit formula one takes height of
+order $x$; zeros on the critical line contribute at most $\sqrt{x}$ times
+$O_{K,\chi}(\log^2(2x))$ by the standard unit-height zero count.
+Removing prime powers, inert primes and ramified primes costs
+$O_K(\sqrt{x}\log^2(2x))$. Fourier inversion gives this same two-sided
+error for $\Theta_w$. Finally the smoothed prime sum equals
+$\int_1^x\Theta_w(t)t^{-2}\,dt$. The two-sided error makes
+$\int_1^\infty E(t)t^{-2}\,dt$ converge and bounds its tail by
+$O_{K,w}(x^{-1/2}\log^2(2x))$. Evaluation of $\mathcal ME$ at $1$
+identifies the integral with $c_w$. This gives the third assertion.
+\hfill$\square$
+
+\paragraph{Principal genus.}
+For $w=\mathbf1_{B\setminus\{1\}}$, orthogonality gives
+$a_\eta=(|B|-1)/h$ for $\eta\in B^\perp$ and $a_\chi=-1/h$ otherwise.
+The test therefore detects every remaining factor; its prime density is
+$(|B|-1)/(2h)$. In a ring class field the analogous event is exactly
+splitting completely in the fixed field of $B$ and failing to split
+completely in the full field. This aggregate case specializes the earlier
+ProveIt report's normal-subgroup criterion. Selecting a single pair of
+factors requires a different weight.
+
+\section{Isolating one dihedral factor}
+Fix a character $\chi$ outside $B^\perp$ of order $n>2$.
+Over an imaginary quadratic field $L_K(s,\chi)=L_K(s,\chi^{-1})$:
+conjugation of ideals preserves norms and inverts their classes.
+We seek a single bounded weight with $a_\chi=a_{\chi^{-1}}=-t<0$
+and zero coefficients on every other unknown character. The preceding
+criterion then tests just this Hecke function even if other untested
+functions have off-line zeros.
+
+\paragraph{Sharp coefficient and support.}
+Put $v(c)=\Re\chi(c)$. For each coset $Q$ of $B$ let
+$M_Q=\max_{c\in Q} v(c)$, $m_Q=\min_{c\in Q}v(c)$ and
+$D=\max_Q(M_Q-m_Q)$. Then $D>0$. The largest possible $t$ is
+$1/(2D)$, achieved by
+\[
+ w_\chi(c)=\frac{M_{cB}-v(c)}D .
+\]
+This choice also attains the smallest support by inclusion.
+Indeed Fourier inversion gives $w(c)=u(cB)-2t v(c)$, where $u$ is a real,
+inversion-invariant function on the quotient. The bounds $0\le w\le1$
+hold precisely when $2tM_Q\le u(Q)\le1+2t m_Q$ for every $Q$.
+Since $\chi|_B$ is nontrivial, $v$ is nonconstant on $B$. Taking
+$u(Q)=2tM_Q$ makes the weight vanish at every coset maximum. All other
+points have strictly positive weight for every feasible $u$ and every
+$t>0$. The asserted sharpness follows.
+
+\paragraph{Closed form for the principal genus.}
+For $B=C^2$ the values of $t_{\max}$ are
+\[
+\begin{array}{c|ccc}
+ n & n\ \text{odd} & 4\mid n & n\equiv2\pmod4\\ \hline
+ t_{\max}&[2(1+\cos(\pi/n))]^{-1}&1/4&
+                 [2(1+\cos(2\pi/n))]^{-1}.
+\end{array}
+\]
+For odd $n$, the image of $B$ is all $n$th roots, with extreme real parts
+$1,-\cos(\pi/n)$. For even $n$ each coset maps onto the even or odd
+powers of a primitive $n$th root. The even powers include $\pm1$ when
+$4\mid n$. For $n\equiv2\pmod4$ they form an odd regular polygon, and
+the odd powers are its negative, giving the last entry.
+
+\paragraph{Minimum coefficient field.}
+For an exact test of one inverse pair, the smallest possible real number
+field containing all weights is $F_n=\mathbb Q(\zeta_n+\zeta_n^{-1})$.
+Indeed the optimal weight above already lies in $F_n$. Conversely let
+$E$ be any number field containing all weights. Every automorphism of
+$\overline{\mathbb Q}$ fixing $E$ induces a power map on $\mu_n$.
+It permutes the nonzero Fourier coefficients belonging to primitive
+powers of $\chi$. All these powers are nontrivial on $B$, since raising
+a root of unity to a power coprime to $n$ preserves its order. Hence the
+image of $\chi$ must be $\chi$ or $\chi^{-1}$. Consequently every
+such automorphism fixes $\zeta_n+\zeta_n^{-1}$, so $F_n\subseteq E$.
+
+\paragraph{When can the counted primes have weight one?}
+For $B=C^2$, a rational-valued weight isolating this single pair exists
+exactly for $n=3,4,6$. In all three cases a zero-one weight suffices.
+To see necessity, an automorphism taking $\zeta_n$ to $\zeta_n^j$ sends
+$a_\chi$ to $a_{\chi^j}$ for every $j$ coprime to $n$. A rational weight
+therefore has nonzero coefficients throughout that orbit. Every member
+still has order $n>2$ and thus lies outside the known characters. An
+isolated pair forces $\varphi(n)\le2$, giving the listed orders. For
+sufficiency write $\chi(c)=\exp(2\pi i j/n)$. Take the indicators of the
+following exponents:
+\[
+ n=3:\ \{1,2\},\qquad n=4:\ \{2\},\qquad
+ n=6:\ \{2,3,4\}.
+\]
+These are the weights $w_\chi$ above, as direct evaluation shows.
+The classification concerns exact vanishing of the extraneous Fourier
+coefficients. It allows no inference about unknown coincidences of zeros.
+
+\paragraph{A pair that requires irrational weights.}
+For $C=\mathbb Z/8\mathbb Z$ and $\chi(j)=\exp(2\pi i j/8)$, in order
+$j=0,\ldots,7$ the optimal weight is
+\[
+ (0,0,1/2,\sqrt2/2,1,\sqrt2/2,1/2,0).
+\]
+Its negative coefficient on each of $\chi,\chi^{-1}$ equals $-1/4$,
+and its rational-prime mean is $(2+\sqrt2)/16$. The primitive character
+$\chi^3$ gives a second pair with no contribution to this test. Replacing
+$j$ by $3j$ gives its own test. A rational weight could detect both pairs
+together, but cannot distinguish them with this exact Fourier criterion.
+
+A maximal-order realization is $K=\mathbb Q(\sqrt{-95})$.
+The eight reduced primitive forms of discriminant $-95$ are
+\[
+ [1,1,24],\quad[2,\pm1,12],\quad[3,\pm1,8],\quad
+ [4,\pm1,6],\quad[5,5,6].
+\]
+The list follows from $|b|\le a\le c$ and $a\le\sqrt{95/3}$, taking
+$b\ge0$ when a boundary equality holds. Let $g=[2,1,12]$. The root
+$b=1$ of $b^2\equiv-95$ modulo $4\cdot 2^k$ for $k=1,2,3$ gives
+$g^2=[4,1,6]$ and $g^3=[8,1,3]=[3,-1,8]$ by ordinary form composition.
+The square $[4,1,6]$ is distinct from its reduced inverse $[4,-1,6]$,
+so $g$ has order eight. The only nonprincipal ambiguous class
+$[5,5,6]$ is $g^4$. Thus the three distinct rational-prime representation
+tests required by the displayed weight have forms and coefficients
+\[
+ \begin{array}{c|ccc}
+ Q(x,y)&4x^2+xy+6y^2&3x^2+xy+8y^2&5x^2+5xy+6y^2\\\hline
+ w&1/2&\sqrt2/2&1 .
+ \end{array}
+\]
+Omit $p\mid95$. For prime inputs the three sets are disjoint: a split
+prime determines exactly one unordered pair of inverse classes. Replacing
+the middle form by $2x^2+xy+12y^2$ switches to the other faithful pair.

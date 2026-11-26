@@ -1,0 +1,89 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=0.92in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem,graphicx}
+\usepackage{xcolor,fancyhdr,xurl}
+\usepackage[colorlinks=true,linkcolor=ink,citecolor=teal,urlcolor=teal]{hyperref}
+\definecolor{ink}{HTML}{17324D}
+\definecolor{teal}{HTML}{087E8B}
+\definecolor{muted}{HTML}{526577}
+\definecolor{pale}{HTML}{EDF5F7}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{muted}Methods beyond Dirichlet GRH}
+\fancyhead[R]{\small\color{muted}Research analysis}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{0.45em}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\setlist[itemize]{leftmargin=1.5em,itemsep=0.2em,topsep=0.3em}
+\setlist[enumerate]{leftmargin=1.7em,itemsep=0.3em,topsep=0.3em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Sha}{\mathop{\mathrm{Sha}}\nolimits}
+\newcommand{\num}{\operatorname{num}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\length}{\operatorname{length}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\upstream}{\url{https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207}}
+\newcommand{\notebox}[1]{\begin{center}\fcolorbox{teal}{pale}{\parbox{0.92\linewidth}{#1}}\end{center}}
+\hypersetup{pdftitle={Beyond Dirichlet GRH: averaged zero detection and exact K-theory transfer tests},pdfauthor={Research analysis prepared with ChatGPT}}
+\begin{document}
+\begin{titlepage}
+\vspace*{0.7in}
+{\large\color{teal}\bfseries RESEARCH REPORT\par}
+\vspace{0.3in}
+{\Huge\color{ink}\bfseries Beyond Dirichlet GRH\par}
+\vspace{0.2in}
+{\LARGE Averaged zero detection and exact\\[4pt]
+K-theory transfer tests\par}
+\vspace{0.4in}
+{\large An analysis of \code{lsernau/grh-lean}\\
+and eleven earlier ProveIt reports\par}
+\vspace{0.4in}
+{\large Prepared for Vladimir Reshetnikov\\
+25 November 2026, Pacific date\par}
+\vfill
+\notebox{\textbf{Principal conclusion.} The internal arithmetic machinery has
+credible applications beyond ordinary RH and Dirichlet-GRH consequences.
+This report proves two general averaged analytic criteria, gives an exact
+arithmetic preparation for the next K-theory degrees, and independently
+reconstructs two small Hecke calculations. It proves neither a new
+nonabelian RH instance nor a new K-group vanishing theorem.}
+\vspace{0.25in}
+{\small\color{muted}
+Upstream revision: \code{72fead102f663d5c7a407964a13dc0cf9d977207}.\\
+ProveIt revision: \code{b65aa6229415bdb66d9ce52decc4e997793cd07d}.\\
+All new theorem proofs, exact arithmetic scripts, outputs, source hashes,
+and selected source excerpts accompany this report.}
+\end{titlepage}
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+\input{sections/assessment}
+\input{sections/mechanism}
+\input{sections/mean_transfer}
+\input{sections/mean_additions}
+\input{sections/ktheory}
+\input{sections/program}
+\appendix
+\input{sections/reproducibility}
+\input{sections/references}
+\end{document}

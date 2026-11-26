@@ -1,0 +1,172 @@
+\section{The exact cost of blocking a torsion search}
+\label{sec:threshold}
+In the Lean proof, \texttt{exists\_rootOfUnity\_eval\_le\_gaussVal\_add}
+compares a polynomial at a primitive $p$-power root minus one with its Gauss
+valuation at that root's radius, with an additive tolerance. It selects a
+shell using a harmonic-sum bound and controls contributions from polynomial
+roots at that radius. The later simultaneous selection theorem controls
+individual polynomials near their respective witness values; the Selmer
+argument uses the construction to choose twists. We take up the fixed-radius
+variant in the incoming reports.
+\ghsource{grh/src/New/Congruences/Selmer/RootsOfUnity.lean\#L292-L305}{Single polynomial};
+\ghsource{grh/src/New/Congruences/Selmer/RootsOfUnity.lean\#L474-L486}{simultaneous selection};
+\ghsource{grh/src/New/Congruences/Selmer/GeneralTheorem.lean\#L318-L344}{Selmer application}.
+
+One prior report asks for the threshold on a prescribed interval of torsion
+orders over a ramified base, including intervals which cannot be
+specified by a valuation cutoff. It also asks for the sharp joint dependence
+on degree, tolerance and order interval. We answer both questions for
+a single polynomial with unrestricted integral coefficients. The input can
+in fact be any finite set of points in the open unit disc.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/d31039a48d963692e5a5176f47b6603fc9e9d9cf/docs/incoming/grh_method_transfers_sharp_torsion.zip}{Prior report, section on formal height and final questions}.
+
+Normalize $v(p)=1$ on $\mathbb C_p$, put $v(0)=+\infty$, and fix a
+nonempty finite $S\subset\{z:v(z)>0\}$, a real $\rho>0$ and a tolerance
+$\delta\ge0$. The coefficient ring is $\mathcal O_{\mathbb C_p}$.
+For a nonzero integral polynomial define its Gauss valuation by
+\[
+ A(g)=G_\rho(g)=\min_i(v(a_i)+i\rho),\qquad g(T)=\sum_i a_iT^i.
+\]
+A polynomial \emph{blocks} $S$ when $v(g(z))>A(g)+\delta$ for every $z\in S$.
+A point attaining equality is a successful test point.
+We compute the smallest possible $A(g)$ of a blocker and its least possible degree.
+
+Partition $S$ by the positive weights $w(z)=\min(\rho,v(z))$ and process
+the distinct weights $w$ in decreasing order. Denote the part at $w$ by
+$S_w$. On each part take a greedy sequence $z_0,\ldots,z_{l-1}$, $l=|S_w|$:
+start at any point, and at step $m<l$ minimize the following quantity over
+the unused points $x$:
+\[
+ E_w(m)=\min_x\sum_{i<m}\bigl(v(x-z_i)-w\bigr),\qquad E_w(l)=+\infty.
+\]
+In particular $E_w(0)=0$. Given the previously computed integers $m_u$, put
+\begin{equation}\label{eq:rec}
+ t_w=\delta+\sum_{u>w}m_u(u-w),\qquad
+ m_w=\min\{m:E_w(m)>t_w\}.
+\end{equation}
+The computation uses only the distances in each part and its weight.
+
+\begin{theorem}\label{th:exact}
+The least blocking degree $d_*$ and least blocking budget $B_*$ are
+\[
+ d_*=\sum_w m_w,\qquad B_*=\sum_w w m_w.
+\]
+One monic polynomial attains both: take the first $m_w$ greedy points of each
+part as its roots. Consequently a polynomial with $\deg g\le d$ and
+$G_\rho(g)\le B$ is guaranteed a successful test point precisely when
+$d<d_*$ or $B<B_*$. With no degree restriction the budget threshold alone
+also applies to integral formal power series.
+\end{theorem}
+
+\begin{proof}
+First consider one part $U=S_w$. Write $P_m=\prod_{i<m}(T-z_i)$ and
+$b_m=mw+E_w(m)$ for $0\le m<|U|$. Greedy choice says
+$\min_U v(P_m)=v(P_m(z_m))=b_m$. Among all monic polynomials of degree
+$m$, this is the largest possible minimum. Indeed write a competing
+monic $Q=\sum_{i=0}^m c_i P_i$, with $c_m=1$. If $v(Q(x))>b_m$ for all
+$x\in U$, evaluating successively at $z_0,\ldots,z_m$ forces
+$v(c_i)+b_i>b_m$ for every $i$. All earlier terms exceed the threshold
+everywhere on $U$ and later terms vanish at $z_i$. At $i=m$ we have a
+contradiction. Thus tie choices give the same value $E_w(m)$.
+At $m=|U|$ the root polynomial vanishes on the whole part.
+This is the finite-set argument for Bhargava's $P$-orderings.
+\href{https://doi.org/10.1006/jnth.1998.2220}{Bhargava on fixed divisors};
+\href{https://arxiv.org/abs/1611.02142}{Amini on tree factorials}.
+
+To see why each part is charged its stated weight, factor a prospective
+blocker $g=b\prod_\alpha(T-\alpha)$ in $\mathbb C_p$. Multiplicativity
+of the Gauss valuation gives
+\[
+ G_\rho(g)-G_0(g)=\sum_\alpha
+ [\min(\rho,v(\alpha))-\min(0,v(\alpha))],\qquad G_0(g)\ge0.
+\]
+The contribution of this root to $v(g(z))-G_\rho(g)$ is
+$v(z-\alpha)-\min(\rho,v(\alpha))$. Roots with $v(\alpha)\le0$
+contribute zero. For any remaining root put $u=\min(\rho,v(\alpha))$.
+If there is no part at $u$, the root contributes at most zero at every
+test point and can be discarded. If the part exists, its contribution
+at every other part of weight $w$ is $\min(u,w)-u$. Within $S_u$ it
+comes from the monic product of all roots at weight $u$, followed by
+subtraction of $u$ for each root. This reasoning includes the part at
+$u=\rho$, which can contain several actual radii or the origin.
+
+Let $M_u$ be the count of retained roots of weight $u$. At each point
+of $S_w$ blocking requires the monic product of its $M_w$ roots to have
+excess over $M_ww$ strictly greater than
+$\delta+\sum_{u>w}M_u(u-w)$. Discarded terms could only have lowered
+the excess. By the one-part extremum and induction from the largest
+weight down, $M_w\ge m_w$ at every part (the claim is automatic for
+$M_w\ge |S_w|$). All retained roots cost their weight in
+$G_\rho(g)-G_0(g)$, proving both lower bounds. For the stated monic
+polynomial the cross-part effects are exactly the charges in
+\eqref{eq:rec}, the one-part minima are attained, and $G_0=0$.
+This proves sharpness including both boundary equalities.
+
+For an integral formal series with $G_\rho=A<\infty$, truncate at degree
+$D$ with $(D+1)\min_{z\in S}w(z)>A+\delta$. The discarded tail
+has valuation above $A+\delta$ at each point and leaves the Gauss
+valuation unchanged. The attaining polynomial supplies the reverse direction.
+\end{proof}
+
+Updating one running sum per unused point evaluates the greedy sequences
+in $O(\sum_w |S_w|^2)$ valuation additions/comparisons given the distances.
+The polynomial may require a finite extension of the base field when the
+test points are algebraic. Prescribing the field of its coefficients adds
+Galois constraints and can change the answer.
+For cyclotomic shells of one valuation, earlier reports
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/d31039a48d963692e5a5176f47b6603fc9e9d9cf/docs/incoming/grh_sharp_torsion_and_symplectic_blocks.zip}{already computed a shell recursion}
+in terms of the regular cyclotomic tree. Theorem~\ref{th:exact} uses
+the actual metric on each selected part, with arbitrary clipping at $\rho$.
+
+\subsection{Obtaining the metric from torsion counts}
+Let $F$ be a one-dimensional commutative formal group of finite
+reduction height over the integers of a finite extension of $\mathbb Q_p$.
+For an interval $h_0\le h\le H$, take $G=F[p^H]$ in the open unit disc and
+$D=F[p^{h_0-1}]$. The target is exactly $S=G\setminus D$.
+The group law gives $v(x-y)=v(x\mathbin{\ominus_F}y)$: formal subtraction
+is divisible by $X-Y$ with unit quotient. Hence $V_r=\{x\in G:v(x)\ge r\}$
+is a subgroup and its cosets give the balls at level $r$.
+
+For each distinct torsion valuation, the counts $|V_r|$ and
+$|D\cap V_r|$ come from the slopes, with multiplicities, of the
+Weierstrass polynomials of $[p^H]$ and $[p^{h_0-1}]$, including the origin
+in each subgroup. At the last level use $V_\infty=\{0\}$.
+At adjacent levels $r<t$, a coset of $V_r$ has $|V_r|/|V_t|$ children.
+If it meets $D$, exactly $|D\cap V_r|/|D\cap V_t|$ children meet $D$,
+by translation from a point of intersection. If it misses $D$, all its
+children miss $D$. Also distinguish the unique path containing the origin.
+This constructs the finite tree up to permutations of equivalent children.
+Delete the $D$ leaves. The last common ball of two surviving leaves gives
+the valuation of their difference. The analogous comparison with the
+marked origin gives each weight. Theorem~\ref{th:exact} now solves the
+prescribed order interval using integer populations and rational slopes;
+there is no need to solve individually for the torsion coordinates.
+For a fixed lower endpoint the first guaranteed upper endpoint, whenever
+it exists, is the first $H$ whose computed threshold passes either strict test.
+For computation, the input consists of the indicated Newton polygons or
+a formal group specified effectively enough to compute them.
+\href{https://arxiv.org/abs/math/0604252}{Fargues on ramification filtrations};
+\href{https://arxiv.org/abs/0910.3323}{Rabinoff on canonical subgroups}.
+
+For each fixed $B$, increasing $H$ eventually guarantees success even at tolerance zero.
+Choose $0<t\le\rho$ smaller than all nonzero valuations in $D$,
+with this last condition vacuous for $D=\{0\}$. All torsion points
+of valuation $>t$ form a finite subgroup $N$. Indeed,
+$[p](X)=pX+O(X^2)$ with integral coefficients raises any valuation
+$v>t$ by at least $\min(1,t)$ until the point is killed. A nonzero
+point of valuation $>1$ cannot be torsion since from then on the
+linear term always uniquely dominates. Thus $N$ is killed by a
+bounded power of $p$, and $D\subseteq N\subseteq G$ for large $H$.
+Take one representative $x$ of each nonzero coset in $G/N$. With
+$c=\sum_{0\ne z\in N}v(z)$ the sum of their valuations is
+$C=(H-c)/|N|$: the sum over all nonzero torsion points in $G$ is
+$H$, by the derivative $p^H$ at zero and Weierstrass preparation.
+The product polynomial $P$ of the representative linear factors
+has $G_t(P)=C$ and $v(P'(x))=C-v(x)$, by translation in $G/N$.
+All Lagrange polynomials on these nodes have $G_t=0$. If $G_t(g)<C$,
+monic division by $P$ leaves an integral remainder with Gauss value
+$G_t(g)$, and interpolation gives some node with
+$v(g(x))\le G_t(g)\le G_\rho(g)$. Taking $C>B$ proves termination and
+explains why the preceding finite algorithm determines the optimal
+endpoint as well as testing each prescribed window. This argument uses
+the valuation-cutoff interpolation from the prior formal-height report.

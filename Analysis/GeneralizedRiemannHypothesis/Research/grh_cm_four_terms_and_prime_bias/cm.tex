@@ -1,0 +1,111 @@
+\section{Four-term equations for singular moduli}
+For an imaginary quadratic order of discriminant $\Delta=-D$, let $h=h(\Delta)$ denote its proper ideal class number, and let $s(\Delta)$ be the minimum number of nonzero coefficients of a nonzero rational polynomial vanishing at a singular modulus of that discriminant. These moduli are the $h$ distinct conjugates of a single algebraic integer. Thus $s$ is independent of the chosen conjugate and $s\le h+1$. A sparse multiple of the minimal polynomial can have arbitrarily large degree a priori.
+
+\begin{theorem}\label{th:four}
+For every imaginary quadratic order of class number at least four,
+$s(\Delta)\ge5$. In particular, $s(\Delta)=5$ in degree four.
+Equivalently, a singular modulus admits a rational annihilator of support at most four exactly when its degree is at most three. The same conclusions hold for polynomial coefficients in $K=\mathbb Q(\sqrt\Delta)$.
+\end{theorem}
+
+This answers the first further research question in the incoming report \emph{Sparse CM equations, prime-generating constants, and additive representations}, whose remaining list comprised 50 discriminants of class number four and 29 of class number five. We give an independent reduction to finite calculations, so the conclusion requires neither the earlier large computation nor its GRH cutoff. The equality over $K$ follows from the main theorem of complex multiplication: $[K(j):K]=[\mathbb Q(j):\mathbb Q]=h$. The powers of $j$ satisfying any specified linear dependence over $K$ therefore also satisfy one over $\mathbb Q$ on a subset of the same support.
+
+\subsection{A determinant test inside a \texorpdfstring{$p$}{p}-adic disk}
+Normalize $v=v_p$ by $v(p)=1$, and work in $\mathbb C_p$. An open disk around a nonzero center $c$ is measured in relative coordinates $v(z/c-1)$. The following proof makes the thresholds required at 2 and 3 explicit. General $p$-adic root bounds for sparse polynomials were developed by Lenstra and by Avenda\~no and Krick \cite{lenstra,avk}. Our application uses their setting of a single residue disk.
+
+\begin{lemma}\label{lem:disk}
+Let $k\ge2$ and choose $r\ge 1/(p-1)$ such that for all $0\le j<k$, $d\ge1$,
+\[
+             v_p((j+d)!/j!)\le dr.
+\]
+If $k$ distinct numbers $z_i$ all satisfy $v(z_i/c-1)>r$, then
+$\det(z_i^{n_j})\ne0$ for every choice of distinct nonnegative integers $n_j$.
+For $p\ge k$, $r=1/(p-k+1)$ is valid. For $k=4$ or $5$, one may use $r=2$ at $p=2$ and $r=1$ at $p=3$.
+\end{lemma}
+\begin{proof}
+After column scaling take $z_i/c=\exp(y_i)$, where the $p$-adic logarithms $y_i$ are distinct and have valuation greater than $r$. The logarithm and exponential are inverse isometries on this disk. Choose $r'>r$ below the least finite $v(y_i)$.
+Expand each exponential in the matrix $\exp(y_i n_j)$. The finite Cauchy--Binet formula followed by a limit gives terms indexed by $0\le b_0<\cdots<b_{k-1}$,
+\[
+ \frac{\det(y_i^{b_j})\det(n_i^{b_j})}{\prod_{j=0}^{k-1} b_j!}.
+\]
+The term with $b_j=j$ is nonzero. Divide by it. Each alternant divided by its ordinary Vandermonde is an integer polynomial, homogeneous of degree $m=\sum_j(b_j-j)$. Indeed each difference of two variables divides the alternant in $\mathbb Z[X_1,\ldots,X_k]$ and these nonassociate irreducibles have product the Vandermonde. At the $n_i$ the quotient is integral, and at the $y_i$ it has valuation at least $mr'$. The quotient of factorials costs at most $mr$ by hypothesis. All nonleading ratios thus have valuation at least $m(r'-r)>0$, tending to infinity with $m$. The leading unit survives the sum.
+
+For $p\ge k$ the factorial cost is zero when $j+d<p$. Otherwise, by Legendre's digit-sum formula, it is at most $(j+d-1)/(p-1)\le d/(p-j)$ for $j\ge1$ and $d\ge p-j$. The case $j=0$ follows directly from $v_p(d!)\le d/(p-1)$. This gives the advertised bound. For $j\le4$ and $d\ge3$ the same formula gives $(j+d-1)/(p-1)\le 2d$ at 2 and $\le d$ at 3. For $d=1,2$ check the factors $j+1,j+2\le6$ directly.
+\end{proof}
+
+To exclude polynomials with fewer than $k$ coefficients, append unused exponents to make $k$ columns. The assertion therefore controls all degrees and coefficients.
+
+\subsection{A one-prime proof of Riffaut's conjecture}
+\begin{proposition}\label{prop:three}
+A singular modulus of degree at least three satisfies no nonzero rational polynomial with at most three nonzero coefficients. This conclusion has a proof independent of GRH.
+\end{proposition}
+\begin{proof}
+The unconditional Theorems 1.3 and 1.4 of Bilu, Luca and Pizarro-Madariaga say that a trinomial discriminant must be fundamental and satisfy $D>10^{11}$. Their Corollary 5.2 gives $p>4\sqrt D/\log D$ for every split prime $p$ in its quadratic field \cite{blp}. Hence 7 is inert or ramified. A binomial is included in their definition by allowing a zero middle coefficient after normalization, and alternatively one can square the normalized binomial to obtain a trinomial. The roots in question are nonzero.
+
+Fix a prime above 7 in the Hilbert class field. By Deuring's reduction theorem all the conjugate $j$-values reduce to supersingular invariants \cite{eoy}. All are algebraic integers with potentially good reduction. The Hilbert class field is unramified over $K$, so its absolute ramification index at 7 is at most two. The only supersingular $j$ in characteristic 7 is $1728\equiv6$. Thus each conjugate has $v_7(j/6-1)\ge1/2$. Three distinct conjugates in this disk contradict Lemma~\ref{lem:disk} with $k=3$ and $r=1/5$.
+\end{proof}
+The conditional inference from Dirichlet GRH is the published Theorem 1.2 of \cite{blp}. The local last step above uses the same published restrictions on a hypothetical counterexample and needs no theorem about zeros.
+
+\subsection{Split primes, nonsplit primes and the conductor}
+Write $\Delta=f^2 d_K$ with $d_K$ fundamental. The ring class field of this order is unramified over $K$ away from $f$ \cite{cox}. At $p=7,13$ the supersingular invariant is unique and nonzero. To check the two values directly, in characteristic $p>3$ use the Hasse invariant of $y^2=x^3+Ax+B$, the coefficient of $x^{p-1}$ in $(x^3+Ax+B)^{(p-1)/2}$. In characteristic 7 it is $3B$, giving $j=6$. In characteristic 13 it is $20A^3+15B^2$, giving $B^2=3A^3$ and $j=1728\cdot4/(4+81)=5$ in $\mathbb F_{13}$. For a nonsingular curve in the latter case $A\ne0$. The vanishing criterion is the usual Hasse--Deuring criterion \cite{silverman}.
+
+If $p\nmid f$ and $p$ is nonsplit, all the $j$-values lie in a single relative disk of depth at least $1/2$ as above. For $k=4$, the strict thresholds are $1/4$ at 7 and $1/10$ at 13. Thus four conjugates suffice, for every $D$ in this case.
+
+For a split prime $p\nmid f$, the alternative certificate is archimedean. For a primitive reduced form $[a,b,c]$ of discriminant $-D$ write $j_a=j((-b+i\sqrt D)/(2a))$ for its associated conjugate (the choice of $b$ is understood). The classical cusp bound in \cite[\S2]{blp} gives
+\[
+       \left||j_a|-\exp(\pi\sqrt D/a)\right|\le2079.
+\]
+For $a<b$ two leading coefficients, the tests
+\[
+ D\ge16a^2,\qquad 9D(b-a)^2\ge16a^2 b^2                                    \tag{1}
+\]
+imply $|j_a|>16|j_b|$. Indeed the two exponentials $U,V$ satisfy
+$U\ge e^{4\pi}>34\cdot2079$ and $U/V\ge e^{4\pi/3}>32$, implying $U-2079>16(V+2079)$.
+If four nonzero conjugates have successive moduli increasing by factors at least 16, their generalized Vandermonde is invertible. For increasing moduli $r_j$ and exponents $n_j$, scale successive columns with factors in ratio $(r_jr_{j+1})^{-(n_{j+1}-n_j)/2}$. Moving away from the diagonal in a row now decreases the entry modulus by a factor at least four per step. The other entries sum to at most $2\sum_{m\ge1}4^{-m}=2/3$ times the diagonal. This yields strict diagonal dominance. This argument works for any number of rows.
+
+For $D\ge 4p^6$, the numbers $a=1,p,p^2,p^3$ are available as leading coefficients. At odd $p$ lift a nonzero root of $b^2\equiv -D\bmod p$ to the required power, choose the parity of $b$ for $4\mid b^2+D$, and take $|b|\le a$. Then $c=(b^2+D)/(4a)\ge a$ and the form is primitive. The principal form handles $a=1$. The consecutive pairs pass (1) at $4p^6$, hence thereafter, for both 7 and 13.
+
+It remains possible that $7\cdot13\mid f$. For every $t=1,7,13,91$ construct a form with $a=t^2$. Put $b=tv$ with $v\equiv D\bmod2$, and choose $v$ so that $v^2+D/t^2\not\equiv0\bmod p$ for every $p\mid t$. At most two residues are forbidden at each odd prime. The Chinese remainder theorem permits $|v|\le t$. Then $c=(v^2+D/t^2)/4$ is integral, $\gcd(a,b,c)=1$, and if $D\ge4\cdot91^4$ then $c\ge a$. The successive entries of $1,49,169,8281$ pass (1) at this last cutoff. Signs on the boundary of the reduced fundamental domain may be normalized without changing $a$ or the modulus.
+
+\subsection{The exhaustive check}
+Set $A=470596=4\cdot7^6$, $B=19307236=4\cdot13^6$, and $C=274299844=4\cdot91^4$. For odd $p$, $p\mid f$ is equivalent to $p^2\mid D$. The preceding argument leaves only $D\equiv0,3\bmod4$ in three disjoint ranges:
+\[
+ 3\le D<A,\qquad A\le D<B\ \text{with }49\mid D,\qquad
+ B\le D<C\ \text{with }8281\mid D.
+\]
+A Python verifier checks their 442,904 entries. It first applies nonsplit reduction at 7 or 13, and then seeks four reduced leading coefficients up to 151 passing (1). For the surviving 51 it enumerates every reduced primitive form. It completes the following disjoint count.
+\begin{center}
+\begin{tabular}{lr}\toprule
+Certificate or reason for discharge&Discriminants\\\midrule
+Nonsplit prime and four conjugates whenever $h\ge4$&288,279\\
+Four integer-tested leading coefficients&154,574\\
+Class number below four&11\\
+Complex determinant by interval arithmetic&28\\
+Class-polynomial disk by integer arithmetic&12\\\midrule
+Total&442,904\\\bottomrule
+\end{tabular}
+\end{center}
+For the complex test order four disjoint moduli $0<r_0<\cdots<r_3$. Divide a permutation term of the determinant by the diagonal term in absolute value. If $g_i=n_{i+1}-n_i$, the quotient is
+\[
+ \prod_{i=0}^2\left(\frac{\prod_{j:\sigma(j)>i}r_j}{\prod_{j>i}r_j}\right)^{g_i}.
+\]
+Each bracket is at most one by the ordering. It suffices to check that the sum of the 23 other terms with exponents $0,1,2,3$ is strictly smaller in absolute-term sum than the diagonal magnitude. The code uses upper endpoints for the off-diagonal products and lower endpoints for the diagonal.
+
+For the local test put $H(X)=\prod_j(X-j)$, the monic ring class polynomial of the discriminant in question (the product runs over its $j$-values).
+Write $H(p^u(a+Y))=\sum_i c_iY^i$ with $p\nmid a$. The number of roots with
+$v(Y)>r$ equals the \emph{smallest} index minimizing $v_p(c_i)+ir$, omitting zero coefficients. This follows by factoring over $\mathbb C_p$ and taking the initial polynomial at slope $-r$: a root of valuation $>r$ contributes a factor whose initial form is $Y$, one of valuation $<r$ a nonzero constant, and one on the boundary a linear factor with nonzero constant. Equivalently this is the Newton polygon theorem. Lemma~\ref{lem:disk} now applies with center $p^u a$.
+For example, at $\Delta=-131$ the ascending coefficients of $H(8+Y)$ have 17-adic valuations $(4,3,2,1,0,0)$. At $r=1/14$ the least minimizing index is 4. This one row rules out every choice of four exponents, despite the presence of a fifth conjugate outside the disk.
+
+The 12 local rows used by the independent proof are part of a larger reconciliation with the prior report. We checked every one of its 79 candidates directly. The disk certificates group as follows:
+\[
+\begin{array}{c|rrrrr}\text{prime}&2&3&7&13&17\\\hline
+\text{discriminants}&11&39&22&5&2\end{array}
+\]
+In 28 of the 29 listed degree-five cases the same test at $k=5$ yields $s=6$. The remaining case of that list is $\Delta=-131$, where this proof gives $5\le s\le6$.
+The data and checks are in \texttt{checks/disks.csv}, \texttt{local\_disks.py} and \texttt{global\_sieve.py} (the scripts are in \texttt{checks/}).
+
+The class-polynomial verifier recomputes all 79 tables, encompassing 345 distinct conjugates counted across discriminants. For each reduced form with $q=\exp(2\pi i\tau)$, it uses
+\[
+ j(\tau)=\frac{\big(1+240\sum_{n\ge1}\sigma_3(n)q^n\big)^3}
+                 {q\prod_{n\ge1}(1-q^n)^{24}}.
+\]
+All operations enclose real and imaginary parts using integers with common denominator $2^{1000}$. Reducedness gives $|q|<1/200$. After $N=170$ terms the Eisenstein error is bounded by $960(N+1)^3/200^{N+1}$, and the omitted product differs from 1 by at most $2/(199\cdot200^N)$. These bounds follow from $\sigma_3(n)\le2n^3$ and the geometric series. Multiplication of the linear factors encloses a unique integer for each coefficient, which identifies the exact class polynomial by CM integrality. The same bounds enclose the complex determinants. This completes the finite part of Theorem~\ref{th:four}.

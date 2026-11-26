@@ -1,0 +1,102 @@
+\section{An elliptic curve with overlapping torsion valuations}
+\label{sec:ramified-example}
+Let $K=\mathbb Q_2(\pi)$, with $\pi^4=2$, and let $v(2)=1$. Consider the elliptic curve
+\[
+                 E:\qquad y^2+\pi xy+y=x^3.
+\]
+Its discriminant $\pi^3-27$ is a unit. On the special fibre the negation map sends $(x,y)$ to $(x,y+1)$, so the only geometric point killed by $2$ is the identity. The reduction is supersingular. All geometric $2$-power torsion specializes to the identity and is represented in the formal group.
+
+\paragraph{The duplication series.}
+Put $t=-x/y$ and $u=-1/y$. The equation becomes $u(1-\pi t-u)=t^3$, so $u=t^3+O(t^4)$ in $\mathcal O_K[[t]]$. Differentiation and substitution into $dx/(2y+\pi x+1)$ give
+\[
+  \omega=\frac{dt}{1-\pi t-2u}
+      =\bigl(1+\pi t+\pi^2t^2+(\pi^3+2)t^3+O(t^4)\bigr)\,dt.
+\]
+In characteristic zero let $L(t)=\int_0^t\omega$ be the formal logarithm. Comparing coefficients through degree four in $L([2](t))=2L(t)$ gives
+\[
+                [2](t)=2t-\pi t^2-7t^4+O(t^5).
+\]
+The coefficient of $t^3$ vanishes; all coefficients of $[2]$ are integral since $E$ has an integral smooth formal group law. These coordinate and invariant-differential constructions are described by Silverman, \emph{The Arithmetic of Elliptic Curves}, second edition, Chapter IV, \S\S1--5, \href{https://doi.org/10.1007/978-0-387-09494-6}{DOI}. For the general theory of subgroups of torsion points closest to zero see Rabinoff, \emph{Higher-level canonical subgroups for $p$-divisible groups}, \href{https://arxiv.org/abs/0910.3323}{arXiv:0910.3323}.
+
+\paragraph{Valuations at every level.}
+The negative-slope part of the Newton polygon of $[2](T)$ has vertices $(1,1),(2,1/4),(4,0)$. The three nonzero points killed by $2$ have valuations $3/4$ once and $1/8$ twice. If $c$ denotes the coordinate of the point of valuation $3/4$, its four preimages are roots of $[2](T)-c$, whose negative-slope vertices are $(0,3/4),(2,1/4),(4,0)$. Two preimages have valuation $1/4$ and two have valuation $1/8$. For a nonzero target of valuation $0<y\le 1/2$, the relevant part of the polygon is a single segment from $(0,y)$ to $(4,0)$, possibly containing the point at abscissa $2$. All four preimages have valuation $y/4$. Terms of degree beyond four are integral and do not affect these slopes. Equivalently one can apply Weierstrass preparation after passing to a finite extension containing the parent. The prepared polynomial has degree four, and the remaining unit has constant absolute value one on the open unit disk. The group is in characteristic zero, so preimages are simple.
+
+It follows that for every $n\ge2$ the valuations of the points of exact order $2^n$, and their multiplicities, are given by
+\[
+\begin{array}{c|ccc}
+v(t) & 4^{2-n}/4 & 4^{2-n}/8 & 4^{2-n}/32 \\
+\hline
+\text{multiplicity} & 2\cdot4^{n-2}&2\cdot4^{n-2}&8\cdot4^{n-2}.
+\end{array}
+\]
+The level $n=2$ follows by lifting the three nonzero points killed by $2$. Induction uses the single-segment calculation, since every valuation on these levels is at most $1/4$. Exact orders double under taking preimages of a point of positive $2$-power order. Levels one and two share the valuation $1/8$. For every $n\ge2$ the last valuation at level $n$ equals the middle valuation at level $n+1$.
+
+\paragraph{The tree for exact order four.}
+Let $H=E[4]$, $B=E[2]$, $S=H\setminus B$, and $H_r=\{P\in H:v(t(P))\ge r\}$, with $v(t(O))=+\infty$. Formal subtraction is $(X-Y)$ times an integral power series with constant coefficient one, since it vanishes at $X=Y$ and its linear part is $X-Y$. Thus the ordinary coordinate differences have the same valuation as the formal differences, and the balls in $H$ are cosets of $H_r$. At the successive thresholds,
+\[
+\begin{array}{c|rrrrr}
+r & 1/32 & 1/8 & 1/4 & 3/4 & +\infty\\
+\hline
+|H_r|       &16&8&4&2&1\\
+|B\cap H_r| &4&4&2&2&1 .
+\end{array}
+\]
+Inside the root the two cosets of $H_{1/8}$ contain respectively four and eight members of $S$. In the coset containing $O$, each of the two cosets of $H_{1/4}$ contains two members of $S$, which form one coset of $H_{3/4}$. In the other coset of $H_{1/8}$ all eight points survive. There its two cosets of $H_{1/4}$ each split into two pairs modulo $H_{3/4}$. Each surviving pair splits into two singleton leaves. Consequently the four-point and eight-point branches have different internal structures, even though they are children of the same root.
+
+\subsection{Five roots suffice at every exact order from four on}
+Fix $n\ge2$, put $s=4^{2-n}$, and test all points of exact order $2^n$
+at tolerance zero and $\rho\ge s/4$. Then the exact answer is
+\[
+               \boxed{\ d_*=5,\qquad B_*=15s/32.\ }
+\]
+In particular at order four a budget strictly below $15/32$ ensures a
+successful specialization, whereas a quintic of budget exactly $15/32$
+blocks every point.
+
+Choose a compatible torsion basis $A_n,B_n$: at level one take the point
+of valuation $3/4$ and either point of valuation $1/8$. Lift the first
+to valuation $1/4$ at level two and continue by arbitrary preimages.
+The basis property follows by reducing a relation repeatedly modulo two,
+or by mapping to the two independent basis points of $E[2]$.
+Odd multiples preserve valuation by the unit linear coefficient of
+odd multiplication in the formal group. On these two cyclic directions
+the valuations at exact order $2^j$ are respectively
+\[
+ a_1=3/4,\quad a_j=4^{1-j}\ (j\ge2),\qquad
+ b_j=1/(8\cdot4^{j-1})\ (j\ge1).
+\]
+The two lists are disjoint. Hence the valuation of $a A_n+b B_n$
+is the smaller of the two component valuations, with $+\infty$ for
+a zero component. This also computes every pairwise distance by
+subtraction of the two coefficient vectors modulo $2^n$.
+
+The inner two parts consist, respectively, of $a$ odd and
+$b\equiv0,2\pmod4$. Within either part, differences have $a$ even
+and $b$ a multiple of four, hence valuation at least $s/2$
+(or $+\infty$). One mark therefore exceeds threshold zero on the
+part of weight $s/4$ and threshold $s/8$ on the part of weight $s/8$.
+The outer part is $b$ odd, of weight $s/32$. It splits by $b\bmod4$ into
+two branches at mutual distance valuation $s/8$. Each splits by
+$a\bmod2$, with cross valuation $s/4$. The greedy sequence has
+$E(1)=3s/32$, then $E(2)=10s/32$, attained by placing one mark in
+each $b$-branch and evaluating at the opposite $a$ parity in a marked
+branch. A third mark adds at least $3s/32$ everywhere it matters.
+The required excess after the first two parts is precisely $10s/32$.
+Its strict inequality therefore costs three outer marks. The total is
+$s/4+s/8+3s/32$ as asserted.
+
+\begin{center}
+\begin{tabular}{@{}crr@{}}\toprule
+Tolerance at exact order four, $\rho=1$ & Minimum degree & Minimum Gauss valuation\\
+\midrule
+$0$ &5&$15/32$\\
+$1/32$ &5&$15/32$\\
+$1/8$ &6&$1/2$\\
+$1/2$ &9&$29/32$\\
+$1$ &12&$1$\\
+\bottomrule\end{tabular}
+\end{center}
+The exact-arithmetic checker evaluates \eqref{eq:rec} in the basis above
+and independently enumerates all multisets of marks up to the single-part
+size on the order-four test cases. It also verifies the attained
+inequality at every test point.

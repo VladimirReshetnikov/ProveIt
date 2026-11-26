@@ -1,0 +1,81 @@
+\section{Answer, scope, and relation to the earlier reports}
+
+The source contains methods worth transferring beyond familiar consequences of RH and Dirichlet GRH. The most promising transfer identified here is to a specific nonabelian number field, rather than to another equivalent analytic criterion. The present work proves new arithmetic inputs relative to the inspected ProveIt reports, corrects an unnecessarily pessimistic assessment of the different in their chosen example, and isolates the quantitative statements still needed. It does not claim to resolve a further named open conjecture.
+
+\subsection{What has been accomplished in this report}
+
+\begin{enumerate}
+\item \textbf{An exact optimal frame.} For the real $S_3$ splitting field of $X^3-4X+1$, the earlier frame bound $48\cdot229^2=2{,}517{,}168$ is replaced by the optimal positive integer bound $229$. There are seven displayed vectors, one used twice. The improvement factor is $10{,}992$. Optimality concerns the bound, not the number of vectors.
+\item \textbf{A structural obstruction.} Every ordinary integral tight frame in this field has bound divisible by $229$. Thus a new basis or more integral vectors cannot produce coprime bounds in the unchanged ring of integers.
+\item \textbf{A favorable unramified extension.} The splitting field is an unramified cyclic cubic extension of $\Q(\sqrt{229})$. Once $229$ is included in the cyclotomic modulus, adjoining the nonabelian field preserves the source's different and root discriminant. The old fractional Weil lattice extends and remains Hermitian self-dual. An internal upstream theorem already supplies compatible Weil data.
+\item \textbf{Qualitative frames at all large bounds.} For a self-dual projective Hermitian lattice over an imaginary quadratic ring containing an element of trace one, every sufficiently large integer is a frame bound. The frame can contain any prescribed finite set, with any prescribed lower multiplicity. This removes the need to assume that the lattice is free.
+\item \textbf{A weaker sufficient cocycle target.} In the source scaling, the odd-cocycle contribution is negligible if $\log X\le b$; the source's stronger polynomial bound on $\log X$ is not essential for this one error term. This is a conditional budget calculation, not a new bound on the cocycles themselves.
+\end{enumerate}
+
+These assertions are proved below. The abstract ingredients have classical antecedents in trace duality, Hermitian forms, and sums of squares. No worldwide priority claim is made. The exact certificates and their application to the selected transfer were not found in the inspected earlier reports. The distinction between a new contribution to this research archive and a new theorem in the literature is maintained throughout.\cite{Milne,BCIL,priorSynthesis}
+
+\subsection{What the repository actually exports}
+
+The source's five public endpoints are Mathlib's \texttt{RiemannHypothesis} and four statements about zeros of the Riemann zeta function and Dirichlet $L$-functions. The character statements cover all positive moduli and all Dirichlet characters, including imprimitive ones. They do not quantify over arbitrary number fields, Hecke characters, Artin representations, or automorphic representations. The statements file imports only Mathlib.\cite{source}
+
+The inspected source is pinned to commit
+\begin{center}\texttt{72fead102f663d5c7a407964a13dc0cf9d977207}.\end{center}
+It specifies Lean v4.35.0 and Mathlib commit
+\texttt{56a005855ea17e0b0958f73ec801ae140b0a1679}.
+The repository reports successful machine checks and dependence only on
+\texttt{propext}, \texttt{Classical.choice}, and \texttt{Quot.sound}.
+Public verification reports give additional supporting evidence. This investigation takes those results as the starting point while distinguishing source inspection from a fresh kernel verification.\cite{source,Sutherland,Sonoda}
+
+A static scan of both source trees found no code occurrences of \texttt{sorry}, \texttt{axiom}, \texttt{admit}, \texttt{unsafe}, \texttt{native\_decide}, \texttt{implemented\_by}, or \texttt{run\_tac}. The readable tree has 803 source files and the compact tree 794; all are reachable from their respective \texttt{Main} module in the local import scan. The comparator's \texttt{Challenge.lean} placeholders are outside those source import closures. A static scan is supplementary evidence and cannot establish successful elaboration, semantics, or kernel acceptance.
+
+\subsection{What was already done in ProveIt}
+
+The inspected ProveIt commit is
+\begin{center}\texttt{28ad287a8d13c0f864ebb51c7c053ad06aa6e585}.\end{center}
+Its incoming directory contains 32 GRH research archives. The latest synthesis, the five reports outside that synthesis's inventory, and principal sections of three additional predecessors were read directly. The other 23 packages were assessed through the synthesis's claim matrix, not independently re-audited. The package contains the full inventory and inspection record.\cite{priorSynthesis,priorStructural,priorSampling,priorZeroData,priorExact,priorSparse}
+
+\begin{longtable}{@{}L{.25\textwidth}L{.41\textwidth}L{.27\textwidth}@{}}
+\toprule
+Earlier work & Established or reported contribution & Status in this report\\
+\midrule\endhead
+Transfer synthesis & Explicit discriminant-229 frame; nonabelian local partner; joint Mellin filters; sharp positive-ramp moment conversion & The frame/global-lattice portion is extended here.\\[5pt]
+Exponent-six archive & Completion of the residual interval for 432 imaginary quadratic fields, and 1,236 orders & Earlier result; no rediscovery or fresh full replay claimed here.\\[5pt]
+Structural transfers & Exact congruence-module length formula; symmetric mirror image; obstruction to a direct BSD substitution & Reused as a warning against conflating the source modules with standard Selmer ranks.\\[5pt]
+Torsion and sampling & Torsion specialization bounds, sparse zero-simplicity and multiplicity criteria & Analytic or specialization interfaces already available; no new prime-side estimate supplied.\\[5pt]
+Sparse CM/symmetric powers & Sparse singular-modulus results and optimized nonnegative test polynomials & No new classification claimed in the present work.\\
+\bottomrule
+\end{longtable}
+
+The main reason to concentrate on a global arithmetic input is that the archive already has numerous detectors, averaged criteria, and finite-group constructions. Another correct zero-detection criterion would leave essentially the same central problem unresolved.
+
+\section{The source mechanism and the transfer interface}
+
+The proof's arithmetic heart compares the same index-corrected covolume from two sides. In schematic notation, with target dimension $d_T$, a family of $n$ independent images, covolume bound $V$, and index cost $\delta$,
+\[
+ H-\text{error}\ \le\ \frac{V+2\delta}{d_T}
+ \ \le\ H-\frac{n}{d_T}m\,\mathrm{rem}+\text{error}.
+\]
+The main height $H$ cancels. The source obtains $n\ge d_T/2$ and proves
+\begin{equation}\label{eq:star}
+ m\,\mathrm{rem}\le f a(\log b)^5.
+\end{equation}
+Here $m$ is the number of lifts, $f$ the number of CM embeddings, and $a=xb$ the main derivative order. The precise comparison is
+\src{New/Reduction/MainInequality}{star_inequality}. It depends on short integral source forms, enough independent target images, and a lower bound on the length of integral target forms.\cite{mainInequality}
+
+The resulting weighted prime remainder has the form
+\begin{equation}\label{eq:sourceR}
+ R_{q,d}(x)=\sum_{\substack{n\le x\\n\equiv1\pmod q}}
+ \Lambda(n)(1-\chi_K(n))\left(\frac1n-\frac1x\right)
+ -\frac{\log x}{\varphi(q)}-c_{q,d},
+\end{equation}
+where $K=\Q(\sqrt{-d})$ and $c_{q,d}$ makes the remainder tend to zero. The source establishes the eventual upper bound $R_{q,d}(x)\le x^{-1/2+\varepsilon}$. A Landau argument excludes poles of its transformed remainder to the right of $1/2$. The auxiliary quadratic twist is chosen so that its zeros do not cancel the zeros being detected.\cite{oneSided,criterion,Landau}
+
+This separation identifies what must be transported. The final analytic lemma is general and is explicitly classed as known Landau theory by the source. The difficult transfer is to construct integral objects whose valuations encode the new prime statistic, preserve the normalized height comparison, and control rank and denominators in the required range. A character-table identity alone does not perform that construction.
+
+The earlier discriminant-229 example is well chosen because it allows nonabelian Frobenius information inside the local theta formal group. Its embedding group is a fiber product, not a direct product:
+\[
+ \Gal(F\Q(\zeta_q)/\Q)
+ =\{(g,u)\in S_3\times(\Z/q\Z)^\times:
+ \operatorname{sgn}(g)=\chi_{229}(u)\},\qquad229\mid q.
+\]
+This has order $3\varphi(q)$. The earlier report constructs the corresponding splitting selector and inert-prime partner congruence. The results below address the arithmetic lattice in which those local identities must live.\cite{priorSynthesis}

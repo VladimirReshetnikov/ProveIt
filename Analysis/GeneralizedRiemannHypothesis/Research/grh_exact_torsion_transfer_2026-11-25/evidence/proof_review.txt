@@ -1,0 +1,120 @@
+# Independent referee report: exact torsion specialization
+
+Review date: 25 November 2026.
+
+## Verdict
+
+The scalar zero-tolerance theorem is correct under the stated assumptions, as are the multivariable, bounded-integral-series, and aggregate finite-product extensions. I independently rederived the recurrence and checked the possible failure points listed below. This is a mathematical review, not machine formalization or a worldwide novelty certification.
+
+I found no zero-tolerance counterpart in the 26 inspected predecessor archives. The newest predecessor allows positive tolerances and a shell bound depending on them. It handles several individual constraints and good-root density, which this exact aggregate theorem does not subsume.
+
+## Statement reviewed
+
+Let p be prime, rho>0, and g a nonzero polynomial with coefficients in O_Cp. Write v(p)=1 and
+
+A=G_rho(g)=min_j(v(a_j)+j rho)<=B, B>=0.
+
+Choose an integer h0>=1 with a=r_h0=1/((p-1)p^(h0-1))<=rho. Set
+
+H=h0+ceil(p^h0 B(h0+B+2)).
+
+Then there are h0<=h<=H and a primitive p^h-th root zeta with
+
+v(g(zeta-1))<=G_rho(g).
+
+The same H works for a single nonzero integral polynomial or bounded integral formal series in any finite number of variables, selecting each coordinate independently from shells h0,...,H. For finitely many such functions with separate interior witnesses and sum of witness valuations <=B, it gives exact control of the SUM of evaluated valuations by that sum of witness valuations. It does not give every individual bound.
+
+## Independent proof check
+
+1. Factor g over Cp. For roots alpha with multiplicity, the Gauss formula is
+
+   G_r(g)=v(leading coefficient)+sum_alpha min(r,v(alpha)).
+
+   Roots with negative valuation and roots equal to zero cause no problem. Integrality gives G_0(g)>=0. For w_h=r_h times the number of roots of valuation r_h, one has sum_{h>=h0} w_h<=G_rho(g)-G_0(g)<=A<=B.
+
+2. If no root has valuation r_h, every factor evaluates at its Gauss valuation on shell h, so v(g(zeta-1))=G_rh(g)<=A for every primitive root. In particular, if shell h0 completely fails, it contains at least one root and w_h0>=a. This discrete seed is the essential fact missing from a formal delta-to-zero limit.
+
+3. Put W_h=sum_{k=h0}^h w_k and z_h=sum_{k=h0}^h p^(k-h)w_k. Earlier-shell roots give
+
+   A-G_rh(g)>=Q_h:=W_(h-1)-z_(h-1)/p.
+
+   All omitted root contributions are nonnegative, including roots not on torsion shells.
+
+4. Choose cap C=B+1. Since the true slack A-G_rh(g) lies in [0,B], capping each nonnegative same-shell root excess at C preserves strict failure. Capped nearest-root averaging gives average excess <=w_h(h+C). Therefore if every point on shell h fails, then
+
+   w_h(h+B+1)>Q_h.
+
+   This remains valid if some evaluations vanish (valuation infinity), because the cap is finite. It is valid at p=2,h=1; the averaging bound is merely loose there.
+
+5. Exact state updates are
+
+   z_h=z_(h-1)/p+w_h,
+   Q_(h+1)=Q_h+c z_h, c=1-1/p.
+
+   At the first subsequent shell h1=h0+1, Q_h1=c w_h0>=c a and z_h0>=a.
+
+6. The minimal equality recurrence uses u_h=Q_h/(h+B+1), starting Q_h1=c a, z_h0=a. Its state transition has nonnegative coefficients in Q_h,z_(h-1), so it is dominated coordinatewise by every all-failing actual sequence. This is an important monotonicity check: a recurrence expressed only in W,z with a subtraction would not justify comparison without this reformulation.
+
+7. For t=h+B+1, define d_h=u_h-c z_(h-1). Direct substitution gives
+
+   d_(h+1)=t d_h/[p(t+1)],
+   u_(h+1)-u_h=-d_h/[p(t+1)].
+
+   Initially d_h1=c a(1/(h0+B+2)-1)<0. Hence all d_h remain negative, u_h increases, and
+
+   u_h>=c a/(h0+B+2).
+
+8. Thus all-failure through H would force at least H-h0 subsequent contributions each greater than or equal to this last bound, plus the positive initial contribution a. Since c a=p^(-h0), the displayed H makes the subsequent sum alone >=B, contradicting W_H<=B. If B=0, first-shell failure already contradicts w_h0>=a>0, so the theorem also covers that endpoint.
+
+## Multivariable check
+
+Write P(X_1,...,X_d)=sum_beta P_beta(X_1) X_rest^beta. Select beta attaining
+
+G_rho(P)=G_rho(P_beta)+rho|beta|.
+
+The selected scalar polynomial has Gauss valuation <=B. Choose X_1 on the same universal grid so its value is <=G_rho(P_beta). After this specialization, the remaining polynomial is integral, nonzero, and has weighted Gauss valuation <=G_rho(P)<=B. Induct. There is no epsilon accumulation, so the same H works in every coordinate independently of d. This argument does not claim that one common scalar torsion point substituted in every variable suffices; the coordinates may be different.
+
+For finite products, multiplicativity of weighted Gauss valuations gives
+
+v(product_i F_i(z)) <= G_rho(product_i F_i)=sum_i G_rho(F_i)<=sum_i v(F_i(x_i)).
+
+All factors are nonzero at the selected point because the total valuation is finite. The individual terms may move in opposite directions.
+
+## Series truncation check
+
+For an integral formal series in finitely many variables and rho>0, the weighted Gauss minimum is attained: terms of total degree n have valuation at least n rho. Let r_H be the smallest target-coordinate valuation. Truncate beyond total degree D with (D+1)r_H>B. Then:
+
+- the tail has Gauss valuation >(B) at rho;
+- the truncation has the same Gauss valuation as the full series;
+- at every target grid point, the tail value has valuation >B;
+- the polynomial theorem gives a truncated value <=B, so the full series has exactly the same valuation by the ultrametric inequality.
+
+All evaluations converge in Cp because every target coordinate has positive valuation. No uniform discreteness of coefficient valuations is assumed. Polynomial coefficients in Cp are allowed because Cp is algebraically closed; using Qpbar instead is also sufficient for the polynomial case.
+
+## A necessary limitation: exact individual constraints are impossible
+
+For p=2 fix h0 and any finite H>=h0. For every h=h0,...,H choose a primitive 2^h-th root xi_h and set
+
+F_h(T)=T-(xi_h-1), rho=r_h0, witness x_h=0.
+
+Then G_rho(F_h)=v(F_h(0))=r_h and
+
+sum_{h=h0}^H r_h < 2 r_h0,
+
+independently of H. But every primitive 2^h-th root zeta satisfies
+
+v(F_h(zeta-1))=v(zeta-xi_h)>r_h.
+
+For h>=2, write zeta=xi_h^a with a odd: a-1 is even, so the nonzero difference has valuation at least r_(h-1)=2r_h; when a=1 the valuation is infinity. For h=1 the only primitive root is xi_1, so again the value is zero. Thus every shell in the grid violates one of the assigned individual bounds.
+
+Consequently no upper shell bound depending only on p,rho,total budget can enforce ALL exact individual inequalities for arbitrary finite packets. The theorem's aggregate form is essential, not merely a limitation of this proof. The counterexample uses degree-one polynomials and witnesses zero.
+
+## Exact sanity checks
+
+`checks/referee_exact_shell.py` uses Python Fractions only. Results in `checks/referee_exact_shell_results.json`:
+
+- 1,440 recurrence checks across p=2,3,5,7; h0=1,2,3,5; budgets including zero and fractions;
+- 800 products of linear factors with torsion roots, checked by exact root-of-unity distance valuations, including constant polynomials and additional integral factors with nonintegral roots;
+- all 255 primitive roots in dyadic shells 1 through 8 checked for the individual-bound obstruction.
+
+All checks passed. These finite checks support debugging; the argument above is the proof.

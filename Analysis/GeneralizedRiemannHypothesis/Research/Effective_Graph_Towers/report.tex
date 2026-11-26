@@ -1,0 +1,66 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1.02in,top=.91in,bottom=.91in,headheight=14pt]{geometry}
+\usepackage[T1]{fontenc}\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,booktabs,array,xcolor,fancyhdr,hyperref}
+\definecolor{ink}{HTML}{153950}\definecolor{accent}{HTML}{116C70}
+\hypersetup{colorlinks=true,urlcolor=accent,linkcolor=accent,citecolor=accent,pdftitle={When does the spanning-tree formula start?}}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small\color{ink}Integral voltage towers}\fancyhead[R]{\small\color{ink}Torsion specializations}\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{.3pt}
+\newtheorem{theorem}{Theorem}\newtheorem{lemma}[theorem]{Lemma}\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newcommand{\Z}{\mathbb Z}\newcommand{\Q}{\mathbb Q}\newcommand{\F}{\mathbb F}
+\newcommand{\leanfile}[2]{\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/#1}{#2}}
+\setlength{\parskip}{3pt}\setlength{\parindent}{1.15em}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{1}\raggedbottom
+\begin{document}
+\thispagestyle{plain}
+\noindent{\sffamily\small\color{accent} RESEARCH NOTE \hfill 26 NOVEMBER 2026}\par
+\vspace{.15in}
+\noindent{\LARGE\bfseries\color{ink} When does the spanning-tree formula start?}\par
+\vspace{3pt}
+\noindent{\large Effective Iwasawa polynomials from cyclotomic valuations}\par
+\vspace{.16in}
+\noindent\textbf{Abstract.}
+A tower of connected graphs with deck groups $(\Z/p^n\Z)^d$ has a spanning-tree valuation eventually given by a polynomial in $p^n$ and $n$. We give an algorithm that takes integral voltage vectors, returns the polynomial, and certifies the last exceptional level. This answers the first research question in the ProveIt graph-tower report~\cite{incoming}. The construction combines the cyclotomic valuation calculation used in the Lean proof of Dirichlet GRH with a finite-state computation of binomial coefficients. It applies in every rank. Five loops suffice at $p=3$ to prescribe any positive starting level. A second family shows that even the leading coefficient cannot be computed uniformly from digit-oracle voltages. An application to Grover walks gives an all-level determinant formula on the ternary square torus.
+
+\section{The problem and its scope}
+A voltage is a vector attached to an oriented edge of a base graph. It gives the displacement between the copies of its endpoints in a covering graph. For a bouquet (one vertex and $m$ loops), give the loops steps $s_1,\ldots,s_m\in\Z^d$. At level $n$, the vertices are $G_n=(\Z/p^n\Z)^d$. For every $x$ and every listed step put one undirected edge between $x$ and $x+s_i$. Repetitions count. Assume the steps span $\F_p^d$ after reduction. They then generate every $G_n$. Write $\kappa_n$ for the number of spanning trees and $T_n=v_p(\kappa_n)$, normalized by $v_p(p)=1$. We include $n=0$, so $T_0=0$ for a bouquet.
+
+\begin{theorem}[Effective polynomial and first valid level]\label{thm:main}
+Given a prime $p$ and a finite list of integer steps as above, one can compute the unique rational polynomial $P(X,Y)$ of total degree at most $d$, of degree at most one in $Y$, and the least $N\ge0$ such that $T_n=P(p^n,n)$ for every $n\ge N$. The algorithm also returns the exact rational generating function of all $T_n$ and the finite polynomial of exceptions. If levels start at one, the least start is $\max(1,N)$.
+\end{theorem}
+DuBose and Vallières prove existence in their Theorem 6.2 and compute finite examples in their \S7~\cite{DV}. A prior ProveIt report proves their five candidate formulas and asks for a terminating procedure for arbitrary rank-two integral steps~\cite{incoming}. Theorem~\ref{thm:main} answers that algorithmic question. The same construction handles connected multi-vertex base graphs and rational voltages with denominator prime to $p$.
+
+\section{What comes from the Lean proof}
+The repository at commit \texttt{72fead102f66} states RH for the Riemann zeta function and GRH for Dirichlet $L$-functions. Its public statements use Mathlib's zeta function and Dirichlet characters, including imprimitive characters. The repository reports a Lean 4.35.0 build and proof-export checks, with \texttt{propext}, \texttt{Classical.choice}, and \texttt{Quot.sound} as the public theorems' axioms. We inspected the declarations and proof text. The upstream build and export checks were not repeated here. \cite{repo}
+
+In the main argument, short integral forms and a spanning estimate give an upper bound for a corrected covolume. A lower bound from twisted determinants controls the same quantity. Subtracting common terms leaves an inequality for a weighted prime sum. A one-sided estimate and a choice of quadratic twist then exclude zeros. A transfer to a new family of $L$-functions would need a corresponding prime statistic, an estimate of the requisite strength, and control of cancellations among residues. The source establishes these inputs for its Dirichlet-character setup. See \leanfile{New/Reduction/MainInequality.lean}{the main inequality}, \leanfile{New/Reduction/OneSidedBound.lean}{the one-sided estimate}, and \leanfile{New/Reduction/Zeros/Criterion.lean}{the zero criterion}.
+
+Another part of the proof works directly with polynomials at roots of unity. In \leanfile{New/Congruences/Selmer/RootsOfUnity.lean}{the Selmer specialization file}, the lemma \texttt{ellVal\_sub\_one\_eq\_rootRadius} identifies the exact valuation of $\zeta-1$. The final specialization theorem selects a bounded-order torsion point with controlled losses for a finite collection of polynomials. In \leanfile{Lib/PadicHodge/TateSen.lean}{the Tate--Sen file}, powers of the uniformizer $\zeta-1$ with exponent below $\varphi(p^h)$ have distinct valuation classes modulo $\Z$. The earlier graph report uses these classical local facts to evaluate individual conductor shells. We ask how to evaluate \emph{all conductors at once}. Our addition is a finite representation of the first surviving coefficient and a proof that its output gives the entire generating function. Neither RH nor an estimate for primes enters the graph argument.
+
+\input{core}
+\input{checks}
+\input{delayed}
+\input{leading}
+\input{spectral}
+\section{Further research questions}
+\begin{enumerate}
+\item For fixed $p,d$ and fixed number of voltage vectors, what is the largest possible onset for vectors of bit length at most $b$? The five-loop examples give growth at least linear in $b$ at $p=3$. The finite-state bound in the proof is much larger. Even the correct order for two-dimensional bouquets is worth determining.
+\item Can one compute the smallest rational linear representation directly from the exponent vectors, without constructing all reachable digit states? The five DuBose--Vallières examples have far fewer poles than registers. A structural description of the canceled factors could yield a practical improvement for Laplacians with many terms.
+\item Which exact input representations beyond rational voltages support a terminating algorithm? Simultaneously replacing all vectors by their images under a specified deck-group automorphism preserves every graph. More general algebraic $p$-adic inputs would need additional control of carries or an alternative way of recognizing coincident exponents. The digit-oracle obstruction explains why an input model matters here.
+\end{enumerate}
+
+\begin{thebibliography}{9}\small
+\bibitem{repo} L. Sernau and collaborators, \emph{GRH for Dirichlet $L$-functions, in Lean 4}, based on work of L. Alpöge with Claude.
+\href{https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207/grh}{Readable edition and verification notes};
+\leanfile{Statements.lean}{statements};
+\leanfile{Main.lean}{five public theorems}. Lean 4.35.0, Mathlib \texttt{56a00585}.
+\bibitem{incoming} \emph{Cyclotomic valuations in graph towers and progression-free sets over finite rings}, prior ProveIt packet
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/1667e16cee9d4a68961e201e7288b8ecdac895c6/docs/incoming/grh_method_transfers_graph_towers_and_finite_rings.zip}{graph towers and finite rings}. See the graph chapter and \texttt{endmatter.tex}, first research question. Git blob \texttt{8a901afb0086eb6574bb0d07a9081b3fba3d9907}.
+\bibitem{DV} S. DuBose and D. Vallières, \emph{On $\Z_\ell^d$-towers of graphs}, Algebraic Combinatorics \textbf{6} (2023), 1331--1346. \href{https://doi.org/10.5802/alco.304}{Theorem 6.2 and Section 7}.
+\bibitem{monsky} P. Monsky, \emph{On $p$-adic power series}, Math. Ann. \textbf{255} (1981), 217--227, Theorem 5.6. See also S. Tateno and J. Ueki, \emph{The Iwasawa invariants of $\Z_p^d$-covers of links}, J. Lond. Math. Soc. \textbf{111} (2025), e70183, \href{https://doi.org/10.1112/jlms.70183}{Proposition 3.9}.
+\bibitem{AHS} J. Akahori, T. Hayashi and R. Suzuki, \emph{Iwasawa-type spectral resultant growth laws for Grover walks on graph towers}, Ann. Math. Québec (2026). \href{https://doi.org/10.1007/s40316-026-00290-1}{Theorem 3.3, Corollary 4.6, Theorem 6.2 and Remark 6.5}.
+\bibitem{speyer} D. E. Speyer, \emph{Answer on rational-angle solutions to a cosine product equation}, MathOverflow (2023). \href{https://mathoverflow.net/questions/458827}{Dyadic argument and the equivalent sum equation}.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,42 @@
+{
+  "status": "passed",
+  "checks": [
+    {
+      "script": "check_frames.py",
+      "exit_code": 0,
+      "output": {
+        "status": "passed",
+        "cubic_bound": 229,
+        "cubic_vectors": 6,
+        "S3_bound": 229,
+        "S3_vectors": 8,
+        "certificate": "/workspace/scratch/ab625a072e08/output/grh_transfer_2026-11-25/certificates/frame_certificates.json"
+      }
+    },
+    {
+      "script": "check_algebra.py",
+      "exit_code": 0,
+      "output": {
+        "status": "passed",
+        "reserve_bound": 16,
+        "threshold": 592,
+        "bounds_checked": 49,
+        "certificate": "/workspace/scratch/ab625a072e08/output/grh_transfer_2026-11-25/certificates/algebra_certificates.json"
+      }
+    },
+    {
+      "script": "check_source_manifest.py",
+      "exit_code": 0,
+      "output": {
+        "status": "passed",
+        "commit": "72fead102f663d5c7a407964a13dc0cf9d977207",
+        "verified_files": 20
+      }
+    }
+  ],
+  "not_performed": [
+    "upstream Lean build",
+    "kernel replay",
+    "new nonabelian GRH proof"
+  ]
+}

@@ -1,0 +1,151 @@
+\section{The least possible mean for a positive symmetric-power test}\label{sec:weights}
+Write $t=2\cos\theta$ and
+\[
+ C_j(t)=U_j(t/2)=\frac{\sin((j+1)\theta)}{\sin\theta},
+ \qquad d\mu(t)=\frac{\sqrt{4-t^2}}{2\pi}\,dt,\quad -2\le t\le2.
+\]
+At the endpoints use the continuous values. The $C_j$ are monic and
+orthonormal for the Sato--Tate probability measure $\mu$. We use
+$C_{-1}=0$, $C_0=1$, and $tC_j=C_{j+1}+C_{j-1}$.
+Thus the coefficient of $C_0$ is the Haar mean $\int P\,d\mu$,
+and the coefficient of $C_j$ is the multiplicity weight assigned to
+the $j$th symmetric power. Since $C_j$ has parity $j$, the two
+highest character coefficients of a polynomial are also its two
+highest ordinary coefficients. The character product identity is
+\[
+ C_i C_j = \sum_{h=0}^{\min(i,j)} C_{i+j-2h}.
+\]
+
+\subsection{A quadrature certificate}
+Fix $k\ge1$, let $u=(k+1)/k$, and define $Q_a=C_k+aC_{k-1}$
+for $0\le a\le u$. Write its zeros as $z_1<\cdots<z_k$.
+They are all interior to $[-2,2]$ except that $z_1=-2$ when
+$a=u$. To see this for $k\ge2$, evaluate $Q_a$ at the zeros of
+$C_{k-1}$, where $Q_a=C_k$ has alternating signs by the sine formula.
+The values $Q_a(2)=k+1+ak$ and $(-1)^k Q_a(-2)=k+1-ak$ supply
+the two outer roots, counting $-2$ when equality holds. The degree
+gives simplicity. For $k=1$ the zero is $-a$.
+
+For the cardinal interpolation polynomials $\ell_i$ at the $z_i$,
+put $\lambda_i=\int \ell_i\,d\mu$. For $\deg V\le2k-2$ division
+by $Q_a$ gives a quotient of degree at most $k-2$, orthogonal to
+$Q_a$, and a remainder equal to $\sum_i V(z_i)\ell_i$. Therefore
+\[
+ \int V\,d\mu=\sum_i\lambda_i V(z_i),
+ \qquad \lambda_i=\int\ell_i^2\,d\mu>0.
+\]
+The second identity follows by taking $V=\ell_i^2$.
+This elementary form of quasi-Gaussian quadrature is what makes the
+optimization certify its own lower bound.
+
+\subsection{Odd degree}
+\begin{proposition}\label{prop:oddfront}
+Among monic polynomials of degree $2k-1$ nonnegative on $[-2,2]$,
+the least mean is $(k+1)/k$. The unique minimizer is
+\[
+ R_k(t)=\frac{Q_u(t)^2}{t+2}.
+\]
+Every character coefficient of $R_k$ is strictly positive.
+\end{proposition}
+\begin{proof}
+Since $Q_u(-2)=0$, $R_k$ is a monic polynomial, nonnegative everywhere
+on the interval, with a simple endpoint zero and $k-1$ double
+interior zeros. If $P$ is a competitor, $P-R_k$ has degree at most
+$2k-2$, so the rule at $a=u$ gives
+$\int(P-R_k)\,d\mu=\sum_i\lambda_i P(z_i)\ge0$.
+Equality forces the endpoint zero and every interior double zero.
+Together with monicity they determine $R_k$. Writing $[C_j]R_k$ for
+its character coefficients, their values are
+\begin{align*}
+ [C_{2j}]R_k&=\frac{k(k+1)-j(j+1)}{k^2}
+                  &&(0\le j\le k-1),\\
+ [C_{2j-1}]R_k&=\frac{j^2}{k^2}
+                  &&(1\le j\le k).
+\end{align*}
+For a direct check multiply these coefficients by $t+2$: the coefficient
+at $j$ becomes $2r_j+r_{j-1}+r_{j+1}$, with missing terms set to zero.
+This is $1+u^2$ at even $j<2k$, $2u$ at odd $j<2k$, and $1$
+at $2k$, the coefficients of $Q_u^2$ by the product identity.
+In particular $r_0=u$ and every displayed coefficient is positive.
+\end{proof}
+
+\subsection{Even degree with specified weight on the preceding power}
+For even degree, minimizing the mean with only the top coefficient
+specified yields $C_k^2$, which omits every odd symmetric power.
+Prescribing the coefficient $b$ of $C_{2k-1}$ quantifies the cost of
+including the preceding power. The other coefficients are free in the
+minimization.
+
+\begin{theorem}\label{thm:evenfront}
+Let $P$ be monic of degree $2k$, nonnegative on $[-2,2]$, with
+$[C_{2k-1}]P=b\ge0$. The least possible mean is
+\[
+ M_k(b)=
+ \begin{cases}
+  1+b^2/4,&0\le b\le 2u,\\
+  1-u^2+ub,&b\ge 2u .
+ \end{cases}
+\]
+The unique minimizing polynomial is
+\[
+ P_{k,b}=
+ \begin{cases}
+  Q_{b/2}^2,&0\le b\le2u,\\
+  Q_u^2+(b-2u)R_k,&b\ge2u .
+ \end{cases}
+\]
+For $b>0$ every character coefficient of $P_{k,b}$ is strictly
+positive. Thus imposing this additional requirement preserves the
+minimum and its attainment.
+\end{theorem}
+\begin{proof}
+For $0\le a\le u$, subtract $Q_a^2+(b-2a)C_{k-1}Q_a$ from
+$P$ to cancel the two highest terms. Applying the quadrature rule to
+the difference and using orthonormality gives the exact identity
+\[
+ \int P\,d\mu=1-a^2+ab+\sum_{i=1}^{k}\lambda_i P(z_i).
+\]
+Maximizing the quadratic lower bound over $[0,u]$ selects
+$a=\min(b/2,u)$ and gives $M_k(b)$. In the first range $Q_a^2$
+attains equality. For $b\ge2u$ the displayed sum of $Q_u^2$ and
+$(b-2u)R_k$ is nonnegative, has the prescribed top two coefficients,
+and vanishes at all quadrature nodes, so also attains equality.
+In the interior-node case equality forces $k$ double zeros and hence
+the monic square. At $a=u$ equality forces divisibility by $R_k$.
+The remaining monic linear factor is uniquely specified by the
+coefficient $b$. This includes the common boundary $b=2u$.
+
+The product identity gives $[C_{2k}]Q_a^2=1$, all lower even
+coefficients $1+a^2$, and all odd coefficients $2a$.
+Proposition~\ref{prop:oddfront} supplies the additional coefficients
+in the second range.
+\end{proof}
+
+\noindent
+For $0<b\le2u$ the same $M_k(b)$ is the sharp minimum when
+\emph{every} odd coefficient is required to be at least $b$.
+Indeed a competitor has top odd coefficient $b'\ge b$ and
+$M_k(b')\ge M_k(b)$, while $Q_{b/2}^2$ has all odd coefficients
+exactly $b$. For $b>2u$ Theorem~\ref{thm:evenfront} prescribes the
+top odd coefficient, and its remaining odd coefficients are given by
+the formulas above. Without a prescribed positive lower bound on any
+odd coefficient, the infimum among strictly positive character
+coefficients is $1$, approached as $b\downarrow0$. The unique
+unconstrained minimizer $C_k^2$ shows this infimum is unattained
+under strict positivity.
+
+\paragraph{Relation to the sine-polynomial literature.}
+Multiplication by $\sin\theta$ sends $P(2\cos\theta)=\sum c_j C_j(2\cos\theta)$
+to the sine polynomial $\sum c_j\sin((j+1)\theta)$ nonnegative on
+$[0,\pi]$. Hence a result about the top coefficient after normalization
+by the first sine coefficient is directly relevant here. Rogosinski
+and Szeg\H{o} introduced this extremal setting~\cite{rs}.
+Dimitrov and Merlo~\cite{dm}, Theorems~1 and~2, give the individual
+top-coefficient extremizers, including the odd-degree minimum above
+and the even-degree example $C_k^2$. Their next-to-top coefficient
+extremizer for odd sine degree is the mean-normalized case $b=2$ of
+Theorem~\ref{thm:evenfront}. The joint formula fixes both highest
+coefficients and describes the transition at $2+2/k$. Royster and Suffridge also determined the low-degree coefficient region for
+typically real cubics, which under the same sine substitution covers
+$k=1$ here.\cite{roysuff} We give the joint formula in all degrees and
+make no assertion of bibliographic priority.

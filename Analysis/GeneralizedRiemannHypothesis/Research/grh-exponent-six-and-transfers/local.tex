@@ -1,0 +1,66 @@
+\section{The discriminant and conductor of the reflected fields}
+\label{sec:local}
+The first incoming report ends its degree-five classification by asking for the ramification at five. The two possible exponents already appear in the reflection theorem of Cohen, Rubinstein-Salzedo and Thorne. To decide which exponent occurs for a given CM field, we compute the local power class of the generator used in that report. This also gives the conductor in the Galois closure and distinguishes the fields over the two quadratic bases with class number 25.
+\href{https://doi.org/10.1112/S0010437X15007411}{Cohen, Rubinstein-Salzedo and Thorne (2015)}.
+\href{https://thornef.github.io/countDLgen-final.pdf}{Cohen and Thorne, Theorem~9.7}.
+
+\input{reflection-family}
+
+\subsection{A local test with two possible answers}
+For the calculation assume $D=-q$ is an odd prime discriminant and $q\ne\ell$. Use the notation $E,B,n,\alpha,\beta$ above and set
+\[
+ K=\mathbb Q(\beta+n/\beta),\qquad C=M^{\langle c\rangle},\qquad F=B^{\langle c\rangle}.
+\]
+Here $C$ is the normal closure of $K$ and $C/F$ is cyclic of degree $\ell$. For clarity, the conductor below is the relative Artin conductor of any nontrivial character of $C/F$. Let $v\mid\ell$ in $E$, $U=E_v$, let $f=[U:\mathbb Q_\ell]$, and let $u$ be the unit obtained from $\alpha$ by dividing by $\ell^{v(\alpha)}$, with $v(\ell)=1$. Since $\ell\mid v(\alpha)$, this operation preserves the local radical class. Then
+\[
+ \begin{array}{c|c|c}
+  \text{local test in }\mathcal O_U/\ell^2&
+  |\operatorname{disc}(K)| & \text{conductor of } C/F\\ \hline
+  u^{\ell^f-1}=1 & q^{(\ell-1)/2}\ell^{\ell-2} & (1) \\
+  u^{\ell^f-1}\ne1 & q^{(\ell-1)/2}\ell^{\ell} & \lambda^2
+ \end{array}
+\]
+Here $\lambda$ is the unique prime over $\ell$ in $F$. If $\ell$ splits in $E$, the two choices of $v$ give the same answer since $\alpha\bar\alpha=n^\ell$.
+
+\paragraph{The local algebra at $\ell$.}
+Since $K E=E(\beta)$, extension of scalars gives
+\[
+ (K\otimes_{\mathbb Q}\mathbb Q_\ell)\otimes_{\mathbb Q_\ell}U
+       \simeq U[X]/(X^\ell-u).
+\]
+Here $KE=E(\beta)$ follows also from $[E(\beta):E]=\ell$ and $\beta^2-(\beta+n/\beta)\beta+n=0$. The unramified extension $U/\mathbb Q_\ell$ commutes with formation of the maximal order of an \'etale algebra: on each local factor its base change is a product of rings of integers of unramified extensions. Hence the discriminant valuation can be read after this scalar extension.
+
+Decompose a unit into a Teichm\"uller root of unity of order dividing $\ell^f-1$ and a principal unit. The $\ell$th power map is an automorphism on the former group. On the latter the logarithm identifies $1+\ell\mathcal O_U$ with $\ell\mathcal O_U$, and taking an $\ell$th power has image $1+\ell^2\mathcal O_U$. This proves the displayed residue test. In the power case the algebra is $U\times U(\zeta_\ell)$ with a tame, totally ramified factor of degree $\ell-1$. Its discriminant exponent is $\ell-2$.
+
+In the other case take $z$ to be any lift of the unique residue root of $X^\ell-\bar u$. Then $v(z^\ell-u)=1$, since a solution modulo $\ell^2$ would pass the power test. The shifted polynomial $(X+z)^\ell-u$ is Eisenstein. Its root is a uniformizer and generates the integer ring; evaluating the derivative at the root of the original polynomial gives $\ell$ times a unit. Its norm has valuation $\ell$. This proves the wild exponent.
+
+\paragraph{The remaining primes and the conductor.}
+For a finite prime of $B$ away from $\ell$, the valuation of $\alpha$ is a multiple of $\ell$. After removing a local $\ell$th power one adjoins a root of a unit polynomial $X^\ell-v_0$ with unit discriminant, hence an unramified extension. Consequently ramification away from $\ell$ can occur only at $q$. There inertia has order two in $M/\mathbb Q$, fixes $\zeta_\ell$, and acts on the $\ell$ real roots by $j\mapsto h-j$ for some $h$. It has one fixed point and $(\ell-1)/2$ transpositions, so tame inertia contributes $(\ell-1)/2$ to the discriminant exponent in $K$. This inertia also injects into $\operatorname{Gal}(F/\mathbb Q)$, so $C/F$ is unramified there.
+
+At $\ell$, inertia acts on $F$ through the full cyclotomic group, since $E$ is unramified there and the cyclotomic group acts faithfully on $F$. Thus $F/\mathbb Q$ is totally tamely ramified at $\ell$. In the power case adjoining $U$ to the local splitting field leaves it inside $U(\zeta_\ell)$, of absolute degree at most $2(\ell-1)$. Its local degree over $F_\lambda$ divides $\ell$, so $\lambda$ splits completely in $C/F$.
+
+In the wild case, over $U$ the splitting field contains the degree-$\ell$ totally ramified radical extension and the degree-$(\ell-1)$ totally ramified cyclotomic extension. Indeed the normal closure of $K$ after this base change is the splitting field of the isomorphic radical algebra. The ramification index is divisible by both degrees. Its upper bound $\ell(\ell-1)$ shows that the entire affine group is inertia already over $\mathbb Q_\ell$. Use $K$ locally in the discriminant tower. The extension $C/K$ is tame of degree $\ell-1$, so
+\[
+ v_\ell(d_{C/\mathbb Q})=(\ell-1)\ell+(\ell-2)=\ell^2-2.
+\]
+Using $F$ instead gives $v_\lambda(d_{C/F})=\ell^2-2-\ell(\ell-2)=2(\ell-1)$, as all residue degrees are one. The conductor--discriminant formula for the cyclic group of prime order gives conductor exponent two for each of its $\ell-1$ nontrivial characters. This proves the conductor assertion.
+
+\subsection{All 26 coefficient fields from the incoming quintic classification}
+For the following 25 rows the given $p$ is a split rational prime, $4p^5=a^2+qb^2$, and $p\nmid a$. Set $\alpha=(a+b\sqrt{-q})/2$. Its ideal is the fifth power of one of the primes above $p$. As $p<q/4$, a generator of norm $p$ cannot exist. The associated field has defining polynomial
+\[
+ P_{p,a}(X)= X^5-5pX^3+5p^2X-a.
+\]
+This follows by expanding $(\beta+p/\beta)^5$ and using $\beta^5+\bar\beta^5=a$. The table gives $v_5=v_5(\operatorname{disc}K)$; the full discriminant is $q^2 5^{v_5}$. Each half of the table reads downward.
+\input{quintic-table}
+\noindent The remaining CM coefficient field is $\mathbb Q(\zeta_{11})^+$, with discriminant $11^4$, by the conductor--discriminant formula for its four nontrivial characters. Thus six of the 25 noncyclotomic fields are tame at five. The absolute CM discriminants of these six are $347,443,739,1051,1123,1723$.
+
+\paragraph{Worked computation.}
+For $q=347$ one may take $p=3$, $a=25$, $b=1$. Modulo 25 we have $(2\sqrt{-347})^5=(25+\sqrt{-347})/2$, since $32\cdot347^2\equiv13\pmod{25}$. This gives field discriminant $5^3\cdot347^2=15\,051\,125$ and index five. For $q=47$, $p=2$, $a=9$, $b=1$, the field discriminant is $5^5\cdot47^2=6\,903\,125$ and the displayed polynomial generates the full integer ring. In fact the polynomial discriminant is $5^5(4p^5-a^2)^2=5^5q^2 b^4$, by a resultant with $P'_{p,a}$ (or the critical values $\pm2p^{5/2}$ of the Dickson polynomial). Thus the power-basis index is $5b^2$ in the tame case and $b^2$ in the wild case.
+
+\subsection{Twelve fields from two rank-two class groups}
+Over each of $D=-12451$ and $D=-37363$ the six lines of $\mathbb F_5^2$ give six nonisomorphic reflected quintics. Exactly one line in each group is tame. These twelve fields extend the reflection computation; the weight-two CM classification in the incoming report uses the preceding 25 rows and the cyclotomic exception. All five wild fields over any one rank-two base have exactly the same discriminant.
+\input{rank-two-table}
+
+Here a projective label certifies that its row represents a distinct line. For each base choose two triples $(s,r,z)$ where $s\equiv1\pmod5$ is prime, $r^2\equiv D\pmod s$ and $z$ has order five. Reducing $\alpha$ by $\sqrt D\mapsto r$ and raising to $(s-1)/5$ gives $z^e$, with $e\in\mathbb F_5$. The two exponents form the label $[e_1:e_2]$. All table generators are units at the probe primes. A relation between their classes modulo fifth powers would remain a relation between the labels because the residual fifth-power characters are multiplicative. The six nonproportional labels prove exhaustion by the known rank. The triples are $(181,20,59),(211,93,107)$ for the first base and $(151,38,59),(241,76,87)$ for the second.
+
+The checker enumerates all 625 potential roots modulo 25 in the quadratic ring. When $p=5$ the quadratic algebra at five splits; one component of $\alpha$ is a unit, the other has valuation five. Modulo 25 the latter component is zero. The unit component decides the test, and its reciprocal times $5^5$ gives the other local class. A separate computation of maximal orders using SymPy's Round Two algorithm verifies every polynomial's field discriminant and order index, including all twelve rows above.

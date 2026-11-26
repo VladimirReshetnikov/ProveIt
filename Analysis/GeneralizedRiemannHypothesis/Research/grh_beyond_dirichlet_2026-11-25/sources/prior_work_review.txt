@@ -1,0 +1,137 @@
+PRIOR-WORK REVIEW AND SCOPE
+
+Pinned repository: VladimirReshetnikov/ProveIt
+Commit: 7af2d6e471b198372a2825f502c44c0de8ef4415
+Commit timestamp: 2026-11-26 06:18:19 UTC (25 November Pacific)
+Directory: docs/incoming
+
+All 39 ZIP archives in the pinned directory were retrieved. Their byte lengths
+and Git blob SHA-1 values were recomputed and compared with a fresh GitHub
+contents listing requested at the exact commit. Every comparison passed.
+sources/prior_archives.csv gives a pinned URL, Git blob, byte size and independent
+SHA256 for every archive. data/prior_archives_verification.json records the checks.
+
+The source inventory is complete; the mathematical review is selective. Text
+extraction found 234 TeX members, including bundled earlier sections. Listing an
+archive below does not certify all of its proofs. The incoming README identifies
+these as external manuscript packages, not independently checked results merely
+because they appear in this directory.
+
+1. THE INHERITED POLYNOMIAL-DENSITY COUNTEREXAMPLE
+
+Archive: grh-methods-polynomial-density.zip
+Relevant members: grh-methods/counterexample.tex, polynomials.tex,
+small_pattern.tex, tilted.tex, supremum.tex; check_sphere.py,
+check_small_pattern.py, check_tilted.py, check_polynomial_fibers.py.
+
+The main counterexample to Asada et al. Conjecture 6.3 was independently reviewed
+in detail. The paper argument is valid for nonconstant polynomial ratios and
+upper density. It is inherited work, not newly discovered in this report. The
+classical carry-free Behrend sphere argument is the connection to the internal
+Lean lemma exists_three_term_free. The counterexample needs neither RH nor GRH.
+
+The present report improves its explicit smooth-degree cutoff using the variance
+of a sum of geometric random variables. This new quantitative refinement was
+independently checked, including the exact q=2 integer. See density_review.txt and
+the three data/prior_density_*.json files. No worldwide priority or new Lean
+formalization is claimed.
+
+2. A PRIOR POSITIVE-TYPE COMPRESSION TRANSFER
+
+Archive: grh_sharp_torsion_and_symplectic_blocks.zip
+Relevant member: grh_sharp_transfers/symplectic.tex.
+
+This report already applies the Fourier estimate from
+New/Spanning/SecondMoment/PositiveType.lean to ordered j-frames and to the full law
+of a rectangular compression. Its general estimate is
+
+  dTV(M,U) <= (1/2) sqrt(sum_j R_j(a,b) q^(nj) alpha_j beta_j),
+
+where alpha_j and beta_j control pointwise j-frame stabilizer masses. It also
+derives a uniform Sp_n compression regime when n-a-b tends to infinity and exact
+fixed-deficit isotropic rank/total-variation limits. A new compression result must
+be compared with this work. An exponential-nullity moment using only single-vector
+stabilizer masses/profile is a different, potentially useful extraction; a first
+general positive-type transfer claim would be inaccurate.
+
+3. K-THEORY PREPARATION IS ALREADY ADVANCED
+
+Archive: grh_method_transfers_2026-11-25 (2).zip
+Relevant member: grh_method_transfers/sections/ktheory.tex.
+
+This manuscript computes exact Bernoulli-unit screening for even e=54,...,80.
+At e=62 and 64, corresponding to proposed K124 and K128 calculations, the two-field
+numerator-product gcd is 4, with denominator primes only 3 and 7. It computes
+negative comparison-space dimensions 550 and 605 in the Eisenstein setting,
+1240 and 1360 in the Gaussian setting, and reconstructs two small Hecke operators.
+It does not supply the large new K124/K128 Hecke certificates.
+
+Archive: grh_exact_torsion_transfer_2026-11-25.zip
+Relevant member: grh_exact_torsion_transfer/sections/targets.tex.
+
+This report preserves the original strict-Selmer interface
+UpperTheory.V.Z.J.OneCharU_s and its caller SmallClassNumbers/CorGKOf.lean, from
+the much larger original development. The shortened repository does not export
+that interface. Pointwise Frobenius witnesses can depend on the probe: products
+across witness branches must precede gcds across probes. Spectral coverage, local
+admissibility and the nonzero-difference hypotheses remain essential.
+
+Archive: grh_beyond_dirichlet_grh_2026-11-25.zip
+Relevant member: grh_beyond_transfer/sections/odd_sha.tex.
+
+This manuscript already gives a paper-level comparison of the shortened odd
+cocycle model with the c=(-1)^(e+1) part of the ordinary local H1 kernel, for odd
+coefficient primes and positive Tate exponent after passing to divisible
+coefficients. It derives finite length, an annihilator, stabilization and integral
+odd-cocycle vanishing. The even Tate exponents needed in the direct K_(4m)(Z)
+route occupy the opposite conjugation parity. Exceptional coefficient primes and
+fixed-field versus varying-cyclotomic-field quantifiers are further obstructions.
+No new K-group vanishing is certified by this prior-work review.
+
+4. GLOBAL AND LOCAL NONABELIAN INPUTS ALREADY EXAMINED
+
+Archive: grh_transfer_synthesis_2026-11-25.zip
+Relevant member: grh_transfer_synthesis/sections/nonabelian_frame.tex.
+
+This report constructs an explicit trace frame for the real S3 splitting field
+of X^3-4X+1, handles its quadratic intersection with the cyclotomic field, and
+proves a local Frobenius selector. It does not construct compatible global Weil
+data, prescribed coprime frame bounds, quantitative level primes, the required
+noncyclotomic odd-cocycle bound, crystalline losses, or quantitative spanning.
+Thus it is a concrete local arithmetic advance, not a proof of nonabelian RH.
+
+Archive: grh_fixed_field_transfer_2026-11-25.zip
+Relevant member: grh_fixed_field_transfer_2026-11-25/sections/06_global.tex.
+
+This manuscript already records that integral_forms_long needs
+n >= (1-4/b^2)D, with completion cost 2*x1^2*b^2+b for a missing basis vector.
+Its determinant comparison gives
+
+  n*m*R <= n*U + 2*I + V + r*(K-A),   D=n+r.
+
+A half-rank supply or a generic determinant-sandwich identity alone therefore
+does not meet the source's quantitative global requirements.
+
+5. OTHER STRANDS: INVENTORY, NOT A FRESH CERTIFICATION
+
+grh_method_transfers_research.zip develops arbitrary finite ultrametric torsion
+sets via P-orderings, an explicit ramified supersingular elliptic example, eventual
+geometric budget scaling, finite-ring density bounds, sparse Li criteria and
+Li-coefficient rigidity. The fixed-field and sharp-transfer reports substantially
+develop exact torsion obstructions and coefficient-field restrictions.
+
+The nonabelian detector corpus already treats S3/S4, A5/A6, commutator-Sylow and
+cyclic-generator filters, reflection fields, PSL2(F7), PSL2(2^r), Kummer blocks,
+symmetric powers and Gaussian Hecke characters. Their genuinely new arithmetic
+prime estimates are generally explicitly left unproved. The arithmetic corpus
+also reports quadratic class-group classifications, heavenly/isogeny bounds,
+CM coefficient fields, sparse singular-modulus equations and additive prime
+representations. Many use the exported Dirichlet GRH theorem plus external
+results, rather than an internal proof mechanism. They are not recertified here.
+
+6. SOURCE LINK CONVENTION
+
+All archive URLs in prior_archives.csv use the exact pinned commit. The final
+comparison does not depend on a mutable main-branch listing. Individual archive
+member paths above refer to the verified ZIP contents; only small relevant
+evidence and independently generated checks are included in this deliverable.

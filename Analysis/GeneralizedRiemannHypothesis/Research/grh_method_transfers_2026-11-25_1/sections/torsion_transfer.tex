@@ -1,0 +1,425 @@
+\section{An arithmetic transfer: one torsion point for many analytic constraints}
+\label{sec:torsion-transfer}
+
+The most portable arithmetic ingredient we found is not the final RH
+statement. It is a selection theorem buried in
+\texttt{New/Congruences/Selmer/RootsOfUnity.lean}. Its root-counting argument
+controls the divisibility of many polynomials at the same tuple of roots of
+unity, with an order bound independent of their degrees. This section
+extracts a slightly stronger budget from that argument and proves its
+extension to bounded power series and infinite families. These are derived
+results of this analysis; no claim of literature priority is made.
+
+Fix a prime $p$. Write $v$ for the valuation on $\C_p$, normalized by
+$v(p)=1$, and set $v(0)=+\infty$. Its ring of integers is
+$\mathcal O_{\C_p}=\{z:v(z)\ge0\}$. For a finite real number $t$, define
+$(a-t)_+=\max(a-t,0)$, with $(+\infty-t)_+=+\infty$.
+For nonnegative numbers indexed by an arbitrary set, a sum means the
+supremum of its finite partial sums. In particular, no countability
+assumption is implicit in the statements below.
+
+\subsection{The finite polynomial mechanism and its quantitative budget}
+
+The source theorem
+\texttt{New.Selmer.exists\_rootsOfUnity\_ellVal\_eval\_le\_add}
+selects one tuple for a finite family of integral polynomials. Its
+intermediate lemmas retain more information than its final statement.
+We give the argument, including that information, so the analytic
+extension has a precise mathematical starting point.
+
+For an integral polynomial $g(T)=\sum_k a_kT^k$ and $r>0$, put
+\[
+ v_r(g)=\min_k\{v(a_k)+kr\}.
+\]
+This is the Gauss valuation of radius $p^{-r}$. It is additive on
+products, and $v(g(y))\ge v_r(g)$ when $v(y)\ge r$.
+Set
+\[
+ r_h=\frac1{\varphi(p^h)}\qquad(h\ge1).
+\]
+Every primitive $p^h$-th root of unity satisfies $v(\zeta-1)=r_h$.
+
+\begin{lemma}[One coordinate, with an explicit choice of orders]
+\label{lem:one-coordinate-torsion}
+Let $\rho>0$, $0<\delta<1$, and $C\ge0$. Suppose that $H$ satisfies
+\[
+ C<\delta\sum_{\substack{1\le h\le H\\r_h\le\rho}}\frac1{h+1}.
+\]
+If $g\in\overline{\Z}_p[T]$ and $v_\rho(g)\le C$, there are an
+admissible $h\le H$ and a primitive $p^h$-th root of unity $\zeta$ such
+that
+\[
+ v(g(\zeta-1))\le v_{r_h}(g)+\delta.
+\]
+Here $\overline{\Z}_p$ denotes the integral elements of
+$\overline{\Q}_p$.
+\end{lemma}
+
+\begin{proof}
+For each admissible $h$, let $R_h$ be the multiset of roots of $g$ having
+valuation $r_h$. Factorization over $\overline{\Q}_p$ and multiplicativity
+of the Gauss valuation give
+\[
+ \sum_{\substack{1\le h\le H\\r_h\le\rho}}\#R_h\,r_h
+ \le v_\rho(g)\le C.
+\]
+Indeed, a root $\alpha$ of positive valuation contributes
+$\min(v(\alpha),\rho)$ to $v_\rho(g)-v_0(g)$, and it belongs to at most
+one of the $R_h$. The remaining term $v_0(g)$ is nonnegative.
+Consequently some admissible $h$ has
+$\#R_h\,r_h\le\delta/(h+1)$.
+
+If $\alpha\in R_h$, then $1+\alpha$ is a unit. For this $\alpha$,
+\[
+ \sum_{\zeta\text{ primitive of order }p^h}
+      \min\{v(\zeta-1-\alpha),1\}\le h+1.
+\]
+To see this, use the polynomial
+$q(Y)=(Y+1+\alpha)^{p^h}-1$. Its coefficient of $Y$ has valuation $h$,
+so $v_1(q)\le h+1$. The numbers $\zeta-1-\alpha$ in the displayed sum
+are among its roots; the root-factorization formula for $v_1(q)$ gives
+the inequality. Sum over $R_h$ and average over the
+$\varphi(p^h)=1/r_h$ primitive roots. Some $\zeta$ then satisfies
+\[
+ \sum_{\alpha\in R_h}\min\{v(\zeta-1-\alpha),1\}
+ \le\#R_h\,r_h(h+1)\le\delta<1.
+\]
+No summand can equal $1$, so the minima can be removed and none of the
+differences vanishes. Roots at other valuations contribute exactly their
+Gauss-valuation terms. Hence
+\[
+ v(g(\zeta-1))
+ =v_{r_h}(g)+\sum_{\alpha\in R_h}
+       \bigl(v(\zeta-1-\alpha)-r_h\bigr)
+ \le v_{r_h}(g)+\delta.
+\]
+This is the source's root-counting and averaging argument.
+\end{proof}
+
+Fix an upper bound $s_0\ge1$ on the number of variables, a positive
+rational $\rho$, a total valuation budget $B\ge0$, and an allowed loss
+$\epsilon>0$. Define
+\begin{equation}
+\label{eq:torsion-parameters}
+ h_* = \min\{h\ge1:r_h\le\rho\},\qquad
+ \delta=\frac{\min(\epsilon,1)}{s_0+2}.
+\end{equation}
+Choose $H$ so that
+\begin{equation}
+\label{eq:harmonic-budget}
+ B+1<\delta\sum_{h=h_*}^{H}\frac1{h+1}.
+\end{equation}
+A completely explicit sufficient choice is
+\begin{equation}
+\label{eq:explicit-torsion-height}
+ H=\left\lceil(h_*+1)
+             \exp\!\left(\frac{B+1}{\delta}\right)\right\rceil.
+\end{equation}
+The integral comparison
+$\sum_{h=h_*}^{H}(h+1)^{-1}\ge
+\log((H+2)/(h_*+1))$ proves the strict inequality in
+\eqref{eq:harmonic-budget}. This is a sufficient bound extracted from
+the proof, not an asserted optimal bound. The maximum order $p^H$ can
+be roughly double exponential in $1/\epsilon$; the result is primarily
+a structural existence theorem.
+
+\begin{proposition}[Finite polynomial selection with positive-excess control]
+\label{prop:polynomial-excess}
+With these parameters and $1\le s\le s_0$, let $P_i$ be a finite
+family in $\overline{\Z}_p[T_1,\ldots,T_s]$. Suppose that algebraic
+witness points $x_i$ satisfy
+\[
+ v(x_{ij})\ge\rho,\qquad
+ t_i=v(P_i(x_i))<\infty,\qquad\sum_i t_i\le B.
+\]
+There is one tuple $\zeta=(\zeta_1,\ldots,\zeta_s)$ such that
+\[
+ \zeta_j^{p^H}=1,\qquad r_H\le v(\zeta_j-1)\le\rho,
+ \qquad
+ \sum_i\bigl(v(P_i(\zeta-1))-t_i\bigr)_+\le\epsilon.
+\]
+In particular all the selected values are nonzero.
+\end{proposition}
+
+\begin{proof}
+Replace the coordinates one at a time, using the same replacement for
+all polynomials. At a given step, free the coordinate being replaced
+in each polynomial and freeze its other coordinates at its own current
+point. This gives integral one-variable polynomials $g_i$. If $c_i$
+are the current value valuations, their sum is at most $B+1$: after
+$k\le s_0$ steps the total increase will be at most $k\delta\le1$.
+The coordinate about to be replaced still has valuation at least
+$\rho$, so
+\[
+ v_\rho\left(\prod_i g_i\right)
+ =\sum_i v_\rho(g_i)\le\sum_i c_i\le B+1.
+\]
+Apply Lemma~\ref{lem:one-coordinate-torsion} to the product and let
+$a_i=v(g_i(\zeta-1))$, $b_i=v_{r_h}(g_i)$. Its conclusion is
+\[
+ a_i\ge b_i,\qquad c_i\ge b_i,\qquad
+ \sum_i a_i\le\sum_i b_i+\delta.
+\]
+The inequality $c_i\ge b_i$ uses $r_h\le\rho$. All these quantities
+are finite. Therefore
+\[
+ \sum_i(a_i-c_i)_+
+ \le\sum_i(a_i-b_i)\le\delta.
+\]
+In particular the total valuation grows by at most $\delta$, justifying
+the inductive bound used above. The positive part of a sum of changes
+is at most the sum of their positive parts. After all $s$ coordinates,
+the total positive excess is at most $s\delta\le\epsilon$.
+
+Every selected coordinate is a primitive root of an order $p^h$ with
+$h_*\le h\le H$. This gives both stated radius bounds and the common
+order bound. The estimates in the source's
+\texttt{exists\_ellVal\_eval\_update\_le\_add} prove precisely the
+three inequalities above; its final wrapper keeps the individual
+conclusion and discards the stronger aggregate information.
+\end{proof}
+
+\subsection{Completion and infinitely many simultaneous constraints}
+
+\begin{theorem}[Uniform torsion selection for bounded power series]
+\label{thm:analytic-torsion-selector}
+Keep the parameters in \eqref{eq:torsion-parameters}--
+\eqref{eq:harmonic-budget}. Let $I$ be any index set, and let
+\[
+ F_i\in\mathcal O_{\C_p}[[T_1,\ldots,T_s]],\qquad
+ x_i\in\C_p^s,\qquad 1\le s\le s_0.
+\]
+Assume
+\[
+ v(x_{ij})\ge\rho,\qquad
+ t_i=v(F_i(x_i))<\infty,\qquad
+ \sup_{J\subset I,\,J\text{ finite}}\sum_{i\in J}t_i\le B.
+\]
+Then a single tuple of roots of unity satisfies
+\[
+ \zeta_j^{p^H}=1,\qquad r_H\le v(\zeta_j-1)\le\rho,
+ \qquad
+ \boxed{\sup_{J\subset I,\,J\text{ finite}}
+ \sum_{i\in J}\bigl(v(F_i(\zeta-1))-t_i\bigr)_+\le\epsilon.}
+\]
+Consequently every $F_i(\zeta-1)$ is nonzero and
+\[
+ v(F_i(\zeta-1))\le t_i+\epsilon,\qquad
+ \sup_{J\text{ finite}}\sum_{i\in J}v(F_i(\zeta-1))\le B+\epsilon.
+\]
+The bound $H$ is independent of the cardinality of $I$, the complexity
+of the series, and the coefficient fields of the series and witnesses.
+\end{theorem}
+
+\begin{proof}
+Let $G_H$ be the finite set of tuples satisfying the two order and radius
+conditions. It is nonempty because $H\ge h_*$. A coordinate has
+$p^H-p^{h_*-1}$ possible values, so
+\[
+ |G_H|=(p^H-p^{h_*-1})^s.
+\]
+
+First fix a finite $J\subset I$. Choose
+$M>B+\epsilon+\rho+1$ and a nonnegative integer $N$ with
+$(N+1)r_H>M$. Truncate each $F_i$, $i\in J$, at total degree $N$,
+obtaining $P_i$. At each witness and every point of $G_H-1$, all
+coordinates have valuation at least $r_H$. Thus every omitted
+monomial has valuation at least $(N+1)r_H$. There are only finitely
+many monomials of each total degree; their valuations tend uniformly
+to infinity as the degree grows. Completeness of $\C_p$ and its
+nonarchimedean inequality therefore show that the series converge
+there and
+\begin{equation}
+\label{eq:uniform-torsion-tail}
+ v(F_i(y)-P_i(y))\ge(N+1)r_H>M
+\end{equation}
+at every relevant point $y$.
+
+There are now finitely many polynomial coefficients and witness
+coordinates. By density of $\overline{\Q}_p$ in $\C_p$, approximate
+every coefficient of the $P_i$ by an integral algebraic number, with
+error valuation greater than $M$, and call the resulting polynomials
+$Q_i$. Approximate each witness coordinate similarly by $x'_{ij}$.
+As $M>\rho$, the new witnesses still satisfy $v(x'_{ij})\ge\rho$.
+
+Integral polynomials are $1$-Lipschitz for the maximum norm on the unit
+polydisc. Indeed, telescope the difference of two products of integral
+coordinates and then sum the monomials. Thus replacing these witness
+coordinates changes polynomial values by valuation greater than $M$.
+Replacing coefficients has the same precision everywhere on the
+unit polydisc. Together with \eqref{eq:uniform-torsion-tail} this gives
+\[
+ v(Q_i(x'_i)-F_i(x_i))>M,
+ \qquad v(Q_i(x'_i))=t_i,
+\]
+because $t_i\le B<M$.
+
+Apply Proposition~\ref{prop:polynomial-excess} to the $Q_i$, $i\in J$.
+It gives $\zeta\in G_H$ with positive-excess budget at most $\epsilon$.
+Each selected polynomial value has valuation at most
+$t_i+\epsilon\le B+\epsilon<M$. Its difference from
+$F_i(\zeta-1)$ has valuation greater than $M$, by coefficient
+approximation and the uniform tail bound. The ultrametric inequality
+then gives the exact equality
+\[
+ v(F_i(\zeta-1))=v(Q_i(\zeta-1)).
+\]
+The desired budget follows for this finite $J$, without consuming any
+additional error allowance.
+
+For an arbitrary $I$, let $S_J\subset G_H$ consist of the tuples
+satisfying the excess bound for the finite set $J$. Every $S_J$ is
+nonempty. For finitely many sets $J_1,\ldots,J_k$,
+\[
+ S_{J_1\cup\cdots\cup J_k}\subseteq
+ S_{J_1}\cap\cdots\cap S_{J_k},
+\]
+since all excess summands are nonnegative. The family $(S_J)$ has the
+finite intersection property inside a finite set; its total
+intersection is therefore nonempty. A tuple in that intersection
+proves the theorem. Each singleton constraint rules out an infinite
+valuation, and summing $v(F_i(\zeta-1))\le
+t_i+(v(F_i(\zeta-1))-t_i)_+$ gives the final aggregate bound.
+\end{proof}
+
+\begin{remark}[What the completion step adds]
+Over one fixed finite extension $K/\Q_p$, with ramification index $e$,
+a series in $\mathcal O_K[[T]]$ whose constant term is not a unit has
+valuation at every witness of depth $\rho$ at least
+$\min(\rho,1/e)$. The total budget then permits only finitely many
+such series; a unit constant term is nonzero throughout the open unit
+polydisc. Thus allowing $\mathcal O_{\C_p}$ coefficients, or algebraic
+coefficient fields with unbounded ramification, makes the
+infinite-family conclusion materially stronger. The finite-family
+analytic result already applies over a fixed $K$.
+\end{remark}
+
+\subsection{Matrices, cokernels, and the precise arithmetic application}
+
+\begin{corollary}[Simultaneous inverse and denominator control]
+\label{cor:torsion-matrices}
+Let $A_i(T)$ be square matrices, of possibly different finite sizes,
+with entries in $\mathcal O_{\C_p}[[T_1,\ldots,T_s]]$. Suppose the
+witness values
+$t_i=v(\det A_i(x_i))$ obey the hypotheses of
+Theorem~\ref{thm:analytic-torsion-selector}. Then a single tuple in
+$G_H$ makes all the matrices invertible and satisfies
+\[
+ \|A_i(\zeta-1)^{-1}\|_{\max}\le p^{t_i+\epsilon}.
+\]
+The same positive-excess and total budgets hold for their determinant
+valuations.
+\end{corollary}
+
+\begin{proof}
+Apply the theorem to $F_i=\det A_i$. Adjugate entries are integral at
+the selected point, and
+$A_i^{-1}=\operatorname{adj}(A_i)/\det A_i$.
+\end{proof}
+
+If the coefficients belong to a fixed $\mathcal O_K$, the evaluations
+belong to the finite extension $L=K(\mu_{p^H})$. Smith normal form
+over the discrete valuation ring $\mathcal O_L$ gives the exact identity
+\[
+ v(\pi_L)\,\operatorname{length}_{\mathcal O_L}
+      \operatorname{coker}A_i(\zeta-1)
+ =v(\det A_i(\zeta-1)).
+\]
+Thus the theorem controls normalized lengths, not merely
+nonvanishing. For a rectangular presentation with $r$ rows, choose an
+$r\times r$ minor that is nonzero at the witness and apply the theorem
+to that minor. Its cokernel surjects onto the cokernel of the full
+presentation, so its determinant valuation bounds the latter's
+normalized length above.
+
+This supplies a concrete transfer problem: construct integral analytic
+presentation matrices for a family of Selmer modules or
+projection-denominator modules, and prove the nonzero-witness budget.
+Once those arithmetic inputs are supplied, one finite-order character
+specialization can control many modules at once. The theorem does not
+construct such a presentation or establish the budget for an arbitrary
+elliptic curve.
+
+\subsection{Boundaries that prevent false conjecture proofs}
+
+\paragraph{Arbitrary analytic functions are too general.}
+The function
+\[
+ \log(1+T)=\sum_{n\ge1}(-1)^{n+1}\frac{T^n}{n}
+\]
+converges for $v(T)>0$. It has a nonzero value at $T=p^2$, of
+valuation $2$, but vanishes at every $T=\zeta-1$ with $\zeta$ of
+$p$-power order. Its coefficient valuations $-v_p(n)$ are unbounded
+below. No fixed denominator makes this an integral bounded series.
+The coefficient hypothesis is therefore essential.
+
+\paragraph{Infinitely many separate bounds do not give a total budget.}
+For $h\ge1$, take
+\[
+ F_h(T)=\Phi_{p^h}(1+T)\in\Z_p[T],\qquad x_h=p^2.
+\]
+The identity
+$\Phi_{p^h}(u)=(u^{p^h}-1)/(u^{p^{h-1}}-1)$ and the elementary
+lifting-the-exponent calculation for $u=1+p^2$ show that
+$v(F_h(p^2))=1$ for every $h$, including $p=2$.
+Nevertheless each nontrivial $p$-power root annihilates one $F_h$.
+A separate bound $t_h\le1$ cannot replace the finite total budget.
+
+\paragraph{The order may vary inside the finite grid.}
+A single polynomial $\Phi_{p^h}(1+T)$ rules out every root of exact
+order $p^h$, while having a finite witness valuation. Thus the result
+does not allow an arbitrary prescribed exact order or conductor.
+Likewise the product over $1\le h\le H$ vanishes at every nontrivial
+$p$-power root of order at most $p^H$ and has witness valuation $H$.
+Dependence on the valuation budget cannot be discarded. No density
+statement about successful characters is proved.
+
+\paragraph{Small normalized length does not automatically mean zero.}
+The character and its coefficient field change as $\epsilon$ changes.
+In a ramified field the smallest positive normalized length is
+$v(\pi_L)=1/e_L$, and $e_L$ may grow rapidly with $H$. Consequently
+producing, for every $\epsilon>0$, a different specialization of
+normalized length at most $\epsilon$ does not by itself produce a
+zero Selmer module. One must also control the coefficient field or
+prove a suitable uniform discreteness statement. This prevents a
+spurious deduction of Selmer vanishing from arbitrarily small losses.
+
+\subsection{A structural obstruction for the unmodified elliptic Tate module}
+
+The source's general twisting theorem also has a restriction that
+cannot be ignored. The structure \texttt{New.Selmer.SelmerDatum} in
+\texttt{SelmerData.lean} requires an inertia element $\gamma_*$ at a
+place away from $p$ that acts by a scalar $\eta$, with
+$\eta^2-1$ a unit. This hypothesis is incompatible with an unmodified
+rank-two elliptic Tate module.
+
+\begin{proposition}[Scalar-inertia obstruction]
+\label{prop:scalar-inertia-obstruction}
+Let $\rho$ be a rank-two representation over a nonzero integral
+domain. If $\det\rho$ is trivial on inertia away from $p$, then no
+element of that inertia can act as $\eta I_2$ with $\eta^2-1$ a unit.
+\end{proposition}
+
+\begin{proof}
+Taking determinants gives $1=\det(\eta I_2)=\eta^2$.
+Hence $\eta^2-1=0$, which is not a unit.
+\end{proof}
+
+For an elliptic curve, the Weil pairing identifies
+$\bigwedge^2T_pE$ with $\Z_p(1)$. The determinant is therefore the
+cyclotomic character, which is unramified at places of residue
+characteristic different from $p$. The proposition applies, as it
+also does to its Tate twists and dual. A preliminary finite-order
+character twist can change the determinant; relating the resulting
+local conditions and Selmer groups back to the desired arithmetic
+problem is additional work.
+
+The most promising connection is therefore to determinant and
+specialization methods in $p$-adic families, including the missing
+cases of refined Kurihara and Iwasawa statements. Existing work already
+proves simultaneous nonvanishing for many finite families. The
+specific added tool here is a uniform finite grid and a controlled
+total valuation loss for bounded analytic data. It does not establish
+an Iwasawa determinant identity, create a nonzero Euler-system class
+from no initial witness, remove a functional-equation forced zero, or
+prove a positive proportion of nonvanishing twists.

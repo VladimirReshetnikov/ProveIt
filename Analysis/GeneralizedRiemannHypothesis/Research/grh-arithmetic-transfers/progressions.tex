@@ -1,0 +1,133 @@
+\section{Primes in geometric intervals}
+Barthel and M\"uller ask whether every interval $[q^t,q^{t+1})$ meets every
+reduced residue class modulo $q$, for integers $q\ge2$ and $t\ge1$.
+Their Lemmas 5--6 cover all $q\le45000$ (with Bertrand's postulate for $q=2$).
+Their Remark 7 obtains all $t\ge3$ on Dirichlet GRH, and $t=2$ for
+$q\ge17386763$. The following closes the entire intervening range. The
+finite computation also extends their $t=1$ verification.
+\hfill\href{https://doi.org/10.1080/00029890.2022.2116250}{[Barthel--M\"uller, 2022]}
+
+\paragraph{Theorem.} For every $q\ge2$, every $a$ coprime to $q$, and
+every integer $t\ge2$, some prime $p\equiv a\pmod q$ satisfies
+$q^t<p<q^{t+1}$. The same conclusion holds for $t=1$ whenever $q\le50000$.
+
+\paragraph{Proof.}
+Dudek, Greni\'e and Molteni, Theorem 1.1 and Table 1, prove under Dirichlet
+GRH that there is such a prime within distance
+\[
+ H(x)=q\sqrt x\bigl(0.6265\log x+\log q+14\bigr)
+\]
+of $x$ if $q\ge3$ and $x\ge(18q\log q)^2$. We have enlarged both their
+radius and their threshold using $\varphi(q)\le q$. Their explicit formula
+applies to primitive Dirichlet functions and restores the factors at primes
+dividing the modulus. This is precisely the zero hypothesis exported by the
+Lean repository.\hfill\href{https://doi.org/10.1142/S1793042119500441}{[Dudek--Greni\'e--Molteni, 2019]}
+
+For $q\ge50000$ write $L=\log q$ and $x_2=(18qL)^2$.
+The quotient $q/(378L^2+252L)$ is increasing for $L>2$ by
+differentiation. At $q=50000$, $10<L<11$, giving
+$378L^2+252L<48510<50000$. Thus $x_2<q^3$ and
+\[
+ \frac{H(x_2)}{q^2}<18L(3L+14),\qquad
+ q^2<x_2-H(x_2)<x_2+H(x_2)<q^3.
+\]
+Indeed the upper endpoint divided by $q^2$ is at most $378L^2+252L$,
+and the lower one exceeds $270L^2-252L>1$. For $t\ge2$ set
+$x_t=q^{t-2}x_2$. The function $H(x)/x$ decreases for $x\ge x_2$,
+again by differentiation. Therefore the interval of radius $H(x_t)$
+about $x_t$ is contained in the dilation by $q^{t-2}$ of the interval
+just proved to lie inside $(q^2,q^3)$. This proves every $t\ge2$ in the
+large-modulus range.
+
+For $45001\le q\le50000$ the included exact sieve verifies $t=1,2$
+in every reduced class. The following numbers are maxima of the
+\emph{first} prime witnesses when the search starts at the indicated
+left endpoint. The endpoints were chosen to let every modulus share a
+single sieve.
+\begin{center}
+\begin{tabular}{rrrr}
+$t$ & Search starts at & Classes checked & Largest witness\\ \hline
+1 & $50001$ & $144390310$ & $9819037$\\
+2 & $2500000001$ & $144390310$ & $2515292327$
+\end{tabular}
+\end{center}
+For each row the program sieves $25000000$ consecutive integers by all
+primes through the square root of the last integer. It verifies that the
+segment lies inside the appropriate geometric interval for each $q$,
+then traverses each reduced progression until it finds a prime. This
+uses only integer arithmetic. For these moduli $t\ge3$ follows from
+Barthel--M\"uller's Remark 7. Their small-modulus results complete the proof.
+Neither endpoint can be a prime in the indicated class for $q\ge2$.
+
+\section{An exact obstruction to Pomerance's divisibility conjecture}
+For a prime $p\ge3$, put
+\[
+ B(p)=\prod_{r<p,\ r\ {\rm prime}}r(r-1),\qquad
+ D(p)=\frac{p-1}{\gcd(p-1,B(p))}.
+\]
+Pomerance conjectured $D(p)=1$ for every $p$. He observed that if the
+least prime $P(q)\equiv1\pmod q$ satisfies $q^2\mid P(q)-1$ for a
+prime $q$, then $p=P(q)$ violates the conjecture. The converse also
+holds when we use the repository's Dirichlet GRH. The proof gives the
+exact size of every possible divisibility defect.
+\hfill\href{https://math.dartmouth.edu/~carlp/PDF/carmichaelconjecture.pdf}{[Pomerance, 1974]}
+
+\paragraph{Theorem.} Either $D(p)=1$, or $D(p)$ equals a single
+prime $q$ for which $p=P(q)$ and $v_q(p-1)=2$. In particular the
+conjecture is equivalent to the assertion that
+$q^2\nmid P(q)-1$ for every prime $q$.
+
+\paragraph{Proof.}
+Fix a prime $q\mid p-1$ and put $e=v_q(p-1)$. The factor $q$ itself
+occurs in $B(p)$. If $q\le50000$, the geometric-interval theorem for
+$t=1,\ldots,e-1$ supplies $e-1$ distinct primes $r<p$ with
+$q\mid r-1$. This handles all $e$, also when the list is empty.
+
+Suppose $q>50000$. Above the class $1\pmod q$ there are two reduced
+classes modulo $3q$, by the Chinese remainder theorem. The explicit
+least-prime theorem of Lamzouri, Li and Soundararajan (Corollary 1.2)
+gives a prime in each such class at most
+$[2(q-1)\log(3q)]^2<q^3$. The final inequality follows from
+$4\log^2(3q)<q$, valid at $50000$ and thereafter by monotonicity of
+$q/\log^2(3q)$. These primes are distinct. When $e\ge3$, use these two
+primes first and then one prime from each of the $e-3$ intervals
+$[q^j,q^{j+1})$, $j=3,\ldots,e-1$, always in class $1\pmod q$.
+They all lie below $q^e\le p-1$. Together with the factor $q$ they give
+$v_q(B(p))\ge e$.\hfill\href{https://arxiv.org/pdf/1309.3595}{[Lamzouri--Li--Soundararajan, Cor.~1.2]}
+
+The only possible shortage is $e=2$. It occurs precisely when there
+is no earlier prime $r\equiv1\pmod q$, i.e., when $p=P(q)$, and the
+shortage is then exactly one. If $q<s$ were two deficient primes at
+$p$, we would have
+$q^2s^2\le p-1<p=P(q)\le[(q-1)\log q]^2$ by the same
+least-prime theorem. This forces $s<\log q<q$, a contradiction.
+
+\paragraph{Frequency and a finite exclusion.}
+Every exceptional $p\le X$ has a distinct associated $q$, because $p$
+is determined by $q$. Both $p$ and $q$ are odd and $q^2\mid p-1$,
+so $2q^2\le p-1$. Thus there are at most
+$\pi(\sqrt{(X-1)/2})$ exceptions, in particular
+$O(\sqrt X/\log X)$. The relative density of exceptions among primes
+is zero. An independent finite check in the archive finds $P(q)<q^2$
+for all $664579$ prime moduli $q\le10^7$. It sieves the moduli and
+tests candidates $kq+1$ in increasing order by exact trial division.
+The largest least prime encountered is $1753933943$, and the largest
+multiplier $k$ is $234$, first attained at $q=4722079$. In fact the finite bound
+\[
+ p\le 2\cdot10^{14}+1\qquad\Longrightarrow\qquad D(p)=1
+\]
+can be certified independently of GRH. For every prime $q\le10^7$ and every
+$e\ge2$ with $q^e\le2\cdot10^{14}$, the same program verifies that the
+$(e-1)$st prime in $1\bmod q$ lies below $q^e$. This checks $671350$
+prime powers. If $q$ is odd and $q^2\mid p-1$, then $2q^2\le p-1$,
+so these ranges include all relevant $q,e$ for the asserted bound, also
+for $q=2$. The factor $q$ and the $e-1$ earlier primes supply $q^e$
+in $B(p)$. A counterexample would require $q>10^7$ and
+$p=1+2kq^2\le[(q-1)\log q]^2$ for some positive integer $k$,
+with every smaller candidate prime in $1\pmod q$ absent.
+
+The universally quantified $t=1$ question, the existence of such a $q$,
+and Carmichael's conjecture about multiplicities of totients all remain
+unresolved by these arguments. Pomerance's divisibility assertion would
+rule out one specific proposed construction of a totient with a single
+preimage. It would not by itself settle the multiplicity conjecture.

@@ -1,0 +1,76 @@
+{
+  "date": "2026-11-26",
+  "repository": "https://github.com/VladimirReshetnikov/ProveIt",
+  "commit": "5cc267af75a635199ac5d93a7d49cbce521daefc",
+  "commit_date": "2026-11-26T11:57:48-08:00",
+  "archive_count": 46,
+  "files": [
+    {
+      "path": "full/grh_transfers_cycle_signings_and_lubin_tate/grh_transfers/report.tex",
+      "sha256": "f0caf2c2e01ebe7cc668351bdb163723929403711fa275d6a9660290b010ee70"
+    },
+    {
+      "path": "full/grh_transfers_cycle_signings_and_lubin_tate/grh_transfers/verify_graph.py",
+      "sha256": "c3bf4043acd245b7d3a23a71057de1ffebba5d464fbc0bdcca5af8dcb3a656fb"
+    },
+    {
+      "path": "full/grh_transfers_cycle_signings_and_lubin_tate/grh_transfers/verify_by_permutations.py",
+      "sha256": "029e02bc7a06e3514855aed26fadeb96b7df2e0b87104f4150b588014d193596"
+    },
+    {
+      "path": "full/grh_transfers_density_gaps_and_zero_tests/grh_transfers/integers.tex",
+      "sha256": "05e8264864d943a264a4af8f5f6ae18de9f0dbea5969ffa35f228b5c91a1cde9"
+    },
+    {
+      "path": "full/grh_transfers_density_gaps_and_zero_tests/grh_transfers/integer_more.tex",
+      "sha256": "514fe611c5d3d768a781231b248bb257e582cdccc4b3c2e819b77b45a855efd6"
+    },
+    {
+      "path": "full/grh_transfers_density_gaps_and_zero_tests/grh_transfers/checks/check_integer_gap.py",
+      "sha256": "48e58464b77d66ae0921dcf1a0ff36d94bd3d421dad5d68bddca26cbc3d605ef"
+    },
+    {
+      "path": "full/grh_transfers_density_gaps_and_zero_tests/grh_transfers/checks/check_integer_prefix.py",
+      "sha256": "9583b1c9b5417eea378f0ef83760121eb1a318a5c7c4ce14dd1eb0efd176bee9"
+    },
+    {
+      "path": "cycle_replay.log",
+      "sha256": "a447506f5eee8323d5a91b9db6ce06353a612382edf189a657c2e688311cfd85"
+    },
+    {
+      "path": "cycle_permutation_replay.log",
+      "sha256": "c3695613586c53af691c66993521aff788819f88ba053bff2d4271eeac53837e"
+    },
+    {
+      "path": "density_gap_replay.log",
+      "sha256": "a42a5917599b28a5133348451aefd1c6ffc2d5bc268b5fad5e71e1fdc71eea05"
+    },
+    {
+      "path": "density_prefix_replay.log",
+      "sha256": "e27e59c2f6cdfec169f9fc2dd7cda5d39838b9a0984d15b15ca7b8d8de836d71"
+    }
+  ],
+  "replays": [
+    {
+      "command": "python3 verify_graph.py",
+      "exit_code": 0,
+      "log": "cycle_replay.log"
+    },
+    {
+      "command": "python3 verify_by_permutations.py",
+      "exit_code": 0,
+      "log": "cycle_permutation_replay.log"
+    },
+    {
+      "command": "python3 check_integer_gap.py",
+      "exit_code": 0,
+      "log": "density_gap_replay.log"
+    },
+    {
+      "command": "python3 check_integer_prefix.py",
+      "exit_code": 0,
+      "log": "density_prefix_replay.log"
+    }
+  ],
+  "scope": "Mathematical proof audit plus exact integer/rational certificate replay. No new Lean formalization or full incoming-corpus theorem certification."
+}
