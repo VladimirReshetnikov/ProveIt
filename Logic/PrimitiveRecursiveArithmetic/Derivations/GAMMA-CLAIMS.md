@@ -3077,3 +3077,6 @@ The original finite recurrence exponent and actual terminal power are matched to
 
 The actual Barnes prefactor has the named derivative given by the original prefactor times its named exponent slope. On a certified disk the independent-clock first-order error is quadratic in the step, with precisely the original named Stirling and Euler constants.
 [GaussianBarnesCanonicalPrefactorExponentDerivative](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefactorExponentDerivative.lean), [GaussianBarnesCanonicalPrefactorExponentEstimate](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefactorExponentEstimate.lean), [GaussianBarnesCanonicalPrefactorDerivative](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefactorDerivative.lean)
+
+Equivalent Gaussian fractions on one certified disk give equivalent actual cofinal tail exponential names and therefore equivalent actual tail derivative names at independent precisions.
+[GaussianBarnesCanonicalTailDerivativeFractionProperness](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalTailDerivativeFractionProperness.lean)
