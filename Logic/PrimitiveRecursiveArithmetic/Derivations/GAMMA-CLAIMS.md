@@ -2885,3 +2885,6 @@ The actual cubic logarithm agrees with the original local logarithm after cancel
 
 An exact Gaussian integer numerator test identifies the original factor base zeros at the corresponding negative integers and supplies a rational lower bound on each nonzero base.
 [GaussianBarnesCanonicalBase](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalBase.lean)
+
+The ordinary named real-order hypotheses control a common late dyadic chart. The original named cap $4A(A+1)/x$ and its size guard have independent rates to the actual finite rational chart values.
+[GaussianNamedFrozenScalarOrder](Lean/IPRADerivations/Analysis/GaussianNamedFrozenScalarOrder.lean), [GaussianGammaDigammaTwoShiftNamedWindow](Lean/IPRADerivations/Analysis/GaussianGammaDigammaTwoShiftNamedWindow.lean), [GaussianGammaDigammaTwoShiftNamedChart](Lean/IPRADerivations/Analysis/GaussianGammaDigammaTwoShiftNamedChart.lean), [GaussianGammaDigammaTwoShiftNamedSize](Lean/IPRADerivations/Analysis/GaussianGammaDigammaTwoShiftNamedSize.lean), [GaussianGammaDigammaTwoShiftNamedCap](Lean/IPRADerivations/Analysis/GaussianGammaDigammaTwoShiftNamedCap.lean)
