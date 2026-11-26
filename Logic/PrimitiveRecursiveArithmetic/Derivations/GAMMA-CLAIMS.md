@@ -3050,3 +3050,6 @@ The exact product split applies to the original quotient by a literal rational G
 
 The actual terminal logarithm, harmonic difference and Stirling remainder give a uniform bound `(R²+M+1)/K+(17M+18)2⁻ᵖ` at cutoff K under the certified disk and coefficient bounds.
 [GaussianBarnesCanonicalTerminalRemainder](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalTerminalRemainder.lean), [GaussianBarnesCanonicalHarmonicRemainder](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHarmonicRemainder.lean), [GaussianBarnesCanonicalCombinedRemainder](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalCombinedRemainder.lean)
+
+The literal finite rational correction has an exact linear term and a quadratic remainder bounded by `N H²/B²` for a native Gaussian step of size at most `H/B`.
+[GaussianBarnesCanonicalHeadCorrectionDerivative](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadCorrectionDerivative.lean)
