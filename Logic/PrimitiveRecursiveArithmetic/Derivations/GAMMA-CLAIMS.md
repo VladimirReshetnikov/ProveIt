@@ -2894,3 +2894,6 @@ The original normalized quotient on regular real names with a certified positive
 
 A nonzero rational base gives an explicit lower bound on the original positive power times the actual exponential at every sufficiently late sample.
 [GaussianBarnesCanonicalFactorApartness](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalFactorApartness.lean)
+
+The actual finite cubic logarithmic sum exponentiates to the actual literal finite factor product. The internal finite fold includes the empty interval.
+[GaussianNamedFiniteExponentialFold](Lean/IPRADerivations/Analysis/GaussianNamedFiniteExponentialFold.lean), [GaussianBarnesCanonicalFiniteLogRows](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalFiniteLogRows.lean), [GaussianBarnesCanonicalFiniteLogProduct](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalFiniteLogProduct.lean)
