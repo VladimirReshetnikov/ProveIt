@@ -2969,3 +2969,6 @@ The exact original named Barnes outputs agree for equivalent input names with se
 
 The genuine exponential factors at their actual multiplication clock satisfy a rational lower bound depending only on the disk radius. This gives uniform apartness at a computed observation.
 [GaussianBarnesCanonicalPrefactorUniformApartness](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefactorUniformApartness.lean)
+
+An explicit lower modulus depends only on the disk radius and chosen negative integer. It applies to the exact local coefficient program at every sufficiently late observation across the whole admitted rational neighborhood.
+[GaussianBarnesCanonicalDeflatedValueUniformApartness](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDeflatedValueUniformApartness.lean)
