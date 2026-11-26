@@ -70,18 +70,8 @@ theorem regular (z R B A p : PTm n) (hz : Γ ⊢[PRAAx] S z R B A) :
 
 theorem data_congr (a a' W W' E E' L T x : PTm n)
     (ha : Γ ⊢[PRAAx] a ≐ a') (hW : Γ ⊢[PRAAx] W ≐ W') (hE : Γ ⊢[PRAAx] E ≐ E') :
-    Γ ⊢[PRAAx] data a W E L T x ≐ data a' W' E' L T x := by
-  have e := Prf.eqCongr (Γ := Γ) (Ax := PRAAx)
-    (data (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6)
-    (σ := ![a,W,E,L,T,x]) (σ' := ![a',W',E',L,T,x]) (fun i => by
-      fin_cases i
-      · exact ha
-      · exact hW
-      · exact hE
-      · exact .eqRefl _
-      · exact .eqRefl _
-      · exact .eqRefl _)
-  simpa only [GaussianCompactRiemannName.subst_data,Syn.subst_var,Matrix.cons_val] using e
+    Γ ⊢[PRAAx] data a W E L T x ≐ data a' W' E' L T x :=
+  GaussianCompactRiemannName.data_congr ha hW hE (.eqRefl L) (.eqRefl T) (.eqRefl x)
 
 theorem panel_split_input (F : PR 3) (a C D E L T x : PTm n)
     (h : Γ ⊢[PRAAx] GaussianCompactRiemannName.input F a (C+D) E L T x)

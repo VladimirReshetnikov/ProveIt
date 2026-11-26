@@ -196,6 +196,26 @@ theorem name_additivity (F : PR 3) (a C1 C2 E L T x : PTm n)
   simpa only [GaussianCompactRiemannName.subst_data,GaussianNameArithmetic.subst_addData,PTm.subst_add,
     addedSample,PTm.subst_num,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero,Syn.shift] using converted
 
+/-- Split a compact name while retaining the same offset in both subintervals. -/
+theorem name_additivity_with_offset (F : PR 3) (b a C1 C2 E L T x : PTm n)
+    (hb : Γ ⊢[PRAAx] le one b) (hE : Γ ⊢[PRAAx] le one E)
+    (h1 : Γ ⊢[PRAAx] le one C1) (h2 : Γ ⊢[PRAAx] le one C2)
+    (horizon : Γ ⊢[PRAAx] le (a+(C1+C2)) (E*T))
+    (modulus : Γ ⊢[PRAAx] sampledModulus F (b+a) (C1+C2) E L x) : Γ ⊢[PRAAx]
+    crossEquivalent (GaussianCompactRiemannName.nameF F)
+      (GaussianNameArithmetic.addF (GaussianCompactRiemannName.nameF F) (GaussianCompactRiemannName.nameF F))
+      (GaussianCompactRiemannName.data (b+a) (C1+C2) E L T x)
+      (GaussianNameArithmetic.addData (GaussianCompactRiemannName.data (b+a) C1 E L T x)
+        (GaussianCompactRiemannName.data (b+(a+C1)) C2 E L T x)) := by
+  have h : Γ ⊢[PRAAx] input F (b+a) C1 C2 E L T x :=
+    .andI (le_trans hb (le_add_right b a)) (.andI hE (.andI h1 (.andI h2
+      (.andI (le_trans (le_add_left (C1+C2) a) horizon) modulus))))
+  have right := GaussianCompactRiemannName.data_congr (Γ := Γ) (add_assoc b a C1)
+    (.eqRefl C2) (.eqRefl E) (.eqRefl L) (.eqRefl T) (.eqRefl x)
+  exact GaussianNameEquivalence.cross_data_congr _ _ _ _ _ _ (.eqRefl _)
+    (GaussianNameArithmetic.add_data_congr (.eqRefl _) right)
+    (name_additivity F (b+a) C1 C2 E L T x h)
+
 theorem observations (F : PR 3) (p q a C1 C2 E L T x : PTm n)
     (h : Γ ⊢[PRAAx] input F a C1 C2 E L T x) : Γ ⊢[PRAAx]
     distanceBounded (sample F p a (C1+C2) E L T x) (addedSample F q a C1 C2 E L T x)

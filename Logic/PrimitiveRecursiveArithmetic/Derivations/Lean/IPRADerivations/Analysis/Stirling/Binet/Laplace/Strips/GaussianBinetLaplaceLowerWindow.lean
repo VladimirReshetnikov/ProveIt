@@ -2,7 +2,6 @@ import IPRADerivations.Analysis.Stirling.Binet.Laplace.Strips.GaussianBinetLapla
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianCompactScalarMajorant
 import IPRADerivations.Analysis.Names.GaussianCompactNamedAdditivity
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedSmallAddendRate
-import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaCompactCutoffAlignment
 
 /-!
 # Width bound for the original first Binet compact strip
@@ -27,7 +26,6 @@ open GaussianNamedSmallAddendRate (tailSamples)
 open GaussianNamedInverseRate (independentRate)
 open GaussianNameArithmetic (addF addData)
 open GaussianNameEquivalence (crossEquivalent cross_trans)
-open GaussianGammaCompactCutoffAlignment (cross_data_congr)
 open GaussianRationalHorner (positive_product qzero)
 open GaussianRationalMetric (bounded)
 open GaussianRationalRiemannRefinement (leftSum termsDistance constantBody constant_entry)
@@ -108,33 +106,20 @@ theorem left_gap_rate (X Y D sign R T N A C₁ C₂ E : PTm n)
     (h₁ : Γ ⊢[PRAAx] le one C₁) (h₂ : Γ ⊢[PRAAx] le one C₂) :
     Γ ⊢[PRAAx] independentRate LaplaceName LaplaceName
       (panelData X Y D sign R T N (A+C₁) C₂ E) (panelData X Y D sign R T N A (C₁+C₂) E) C₁ (E*two) := by
-  let a := E+A
   let L := meshGain R T
   let x := fixedData X Y D sign R T N
   let l := panelData X Y D sign R T N A C₁ E
   let r := panelData X Y D sign R T N (A+C₁) C₂ E
   let u := panelData X Y D sign R T N A (C₁+C₂) E
-  let rr := GaussianCompactRiemannName.data (a+C₁) C₂ E L T x
   have he := h.andE₂.andE₁
   have hi := h.andE₂.andE₂
   have hl : Γ ⊢[PRAAx] source X Y D sign R T A C₁ E :=
     .andI h.andE₁ (.andI he (le_trans (le_congr (.eqRefl _) (by ipra_ring) (le_add_right (A+C₁) C₂)) hi))
   have hr : Γ ⊢[PRAAx] source X Y D sign R T (A+C₁) C₂ E :=
     .andI h.andE₁ (.andI he (le_congr (by ipra_ring) (.eqRefl _) hi))
-  have input : Γ ⊢[PRAAx] GaussianCompactNamedAdditivity.input LaplaceEvaluator a C₁ C₂ E L T x :=
-    .andI (le_trans he (le_add_right E A)) (.andI he (.andI h₁ (.andI h₂
-      (.andI (le_trans (le_add_left (C₁+C₂) A) hi)
-        (GaussianBinetLaplaceStrip.sampled_modulus .cofinal X Y D sign R T N A (C₁+C₂) E h)))))
-  have ea : Γ ⊢[PRAAx] a+C₁ ≐ E+(A+C₁) := by dsimp only [a]; ipra_ring
-  have ep : Γ ⊢[PRAAx] rr ≐ r := by
-    simpa only [rr,r,GaussianBinetLaplaceStrip.data,GaussianCompactRiemannName.subst_data,Syn.inst_zero,Syn.subst_inst_shift,Syn.subst_var] using
-      Prf.eqCongr1 (GaussianCompactRiemannName.data (var 0) (Syn.shift C₂) (Syn.shift E) (Syn.shift L) (Syn.shift T) (Syn.shift x)) ea
-  have addInputs : Γ ⊢[PRAAx] addData l rr ≐ addData l r := by
-    simpa only [GaussianNameArithmetic.subst_addData,Syn.inst_zero,Syn.subst_inst_shift,Syn.subst_var] using
-      Prf.eqCongr1 (addData (Syn.shift l) (var 0)) ep
   have sum : Γ ⊢[PRAAx] crossEquivalent LaplaceName (addF LaplaceName LaplaceName) u (addData l r) :=
-    cross_data_congr LaplaceName (addF LaplaceName LaplaceName) _ _ _ _ (.eqRefl _) addInputs
-      (GaussianCompactNamedAdditivity.name_additivity LaplaceEvaluator a C₁ C₂ E L T x input)
+    GaussianCompactNamedAdditivity.name_additivity_with_offset LaplaceEvaluator E A C₁ C₂ E L T x
+      he he h₁ h₂ hi (GaussianBinetLaplaceStrip.sampled_modulus .cofinal X Y D sign R T N A (C₁+C₂) E h)
   have regL := GaussianBinetLaplaceStrip.regular .cofinal X Y D sign R T N A C₁ E hl
   have regR := GaussianBinetLaplaceStrip.regular .cofinal X Y D sign R T N (A+C₁) C₂ E hr
   have regU := GaussianBinetLaplaceStrip.regular .cofinal X Y D sign R T N A (C₁+C₂) E h

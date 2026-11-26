@@ -390,6 +390,13 @@ def input (F : PR 3) (a C E L T x : PTm n) : Fm PTm n :=
 ipra_subst data
 ipra_subst input
 
+/-- Equal encoded fields give equal compact-name data. -/
+theorem data_congr {a a' C C' E E' L L' T T' x x' : PTm n}
+    (ha : Γ ⊢[PRAAx] a ≐ a') (hC : Γ ⊢[PRAAx] C ≐ C') (hE : Γ ⊢[PRAAx] E ≐ E')
+    (hL : Γ ⊢[PRAAx] L ≐ L') (hT : Γ ⊢[PRAAx] T ≐ T') (hx : Γ ⊢[PRAAx] x ≐ x') :
+    Γ ⊢[PRAAx] data a C E L T x ≐ data a' C' E' L' T' x' :=
+  congrPairT ha (congrPairT hC (congrPairT hE (congrPairT hL (congrPairT hT hx))))
+
 theorem name_at (F : PR 3) (p a C E L T x : PTm n) : Γ ⊢[PRAAx]
     ap2 (nameF F) p (data a C E L T x) ≐ sample F p a C E L T x := by
   convert packed_observation_at (Γ := Γ)

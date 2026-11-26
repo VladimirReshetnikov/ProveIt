@@ -2,7 +2,6 @@ import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceSharp
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.Strips.GaussianBinetLaplaceStripHorizon
 import IPRADerivations.Analysis.Names.GaussianCompactNamedAdditivity
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedSmallAddendRate
-import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaCompactCutoffAlignment
 
 /-!
 # Compact additivity and exhaustion rate for the actual Binet integral
@@ -22,9 +21,8 @@ open_ipra
 open GaussianBinetLaplaceStrip (Kernel nameF data source evaluatorF fixedData subst_data subst_source)
 open GaussianBinetLaplaceIntegrand (meshGain)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open GaussianGammaCompactCutoffAlignment (cross_data_congr)
 open GaussianNameArithmetic (addF addData)
-open GaussianNameEquivalence (crossEquivalent)
+open GaussianNameEquivalence (cross_data_congr crossEquivalent)
 open GaussianNamedInverseRate (independentRate)
 open GaussianNamedSmallAddendRate (tailSamples)
 open GaussianRationalHorner (positive_product)
@@ -38,26 +36,11 @@ theorem additivity (K : Kernel) (X Y D sign R T N A C₁ C₂ E : PTm n)
       (data X Y D sign R T N A (C₁+C₂) E)
       (addData (data X Y D sign R T N A C₁ E) (data X Y D sign R T N (A+C₁) C₂ E)) := by
   let F := evaluatorF K
-  let a := E+A
   let L := meshGain R T
   let x := fixedData X Y D sign R T N
-  let d₁ := data X Y D sign R T N A C₁ E
-  let d₂ := GaussianCompactRiemannName.data (a+C₁) C₂ E L T x
-  let d₂' := data X Y D sign R T N (A+C₁) C₂ E
-  have hi : Γ ⊢[PRAAx] GaussianCompactNamedAdditivity.input F a C₁ C₂ E L T x :=
-    .andI (le_trans h.andE₂.andE₁ (le_add_right E A)) (.andI h.andE₂.andE₁
-      (.andI h₁ (.andI h₂ (.andI (le_trans (le_add_left (C₁+C₂) A) h.andE₂.andE₂)
-        (GaussianBinetLaplaceStrip.sampled_modulus K X Y D sign R T N A (C₁+C₂) E h)))))
-  have ea : Γ ⊢[PRAAx] a+C₁ ≐ E+(A+C₁) := by dsimp only [a]; ipra_ring
-  have e : Γ ⊢[PRAAx] d₂ ≐ d₂' := by
-    simpa only [d₂,d₂',data,GaussianCompactRiemannName.subst_data,Syn.inst_zero,Syn.subst_inst_shift,Syn.subst_var] using
-      Prf.eqCongr1 (GaussianCompactRiemannName.data (var 0) (Syn.shift C₂) (Syn.shift E)
-        (Syn.shift L) (Syn.shift T) (Syn.shift x)) ea
-  have es : Γ ⊢[PRAAx] addData d₁ d₂ ≐ addData d₁ d₂' := by
-    simpa only [GaussianNameArithmetic.subst_addData,Syn.inst_zero,Syn.subst_inst_shift,Syn.subst_var] using
-      Prf.eqCongr1 (addData (Syn.shift d₁) (var 0)) e
-  exact cross_data_congr (nameF K) (addF (nameF K) (nameF K)) _ _ _ _ (.eqRefl _) es
-    (GaussianCompactNamedAdditivity.name_additivity F a C₁ C₂ E L T x hi)
+  have he := h.andE₂.andE₁
+  exact GaussianCompactNamedAdditivity.name_additivity_with_offset F E A C₁ C₂ E L T x
+    he he h₁ h₂ h.andE₂.andE₂ (GaussianBinetLaplaceStrip.sampled_modulus K X Y D sign R T N A (C₁+C₂) E h)
 
 private theorem tail_samples (X Y D sign R T N L C E : PTm n)
     (h : Γ ⊢[PRAAx] source X Y D sign R T (D*L*E) C E)
@@ -113,14 +96,12 @@ theorem prefix_rate (X Y D sign R T N L C E : PTm n)
   have split := additivity .cofinal X Y D sign R T N zero w C E h hw hC
   let a := data X Y D sign R T N w C E
   let b := data X Y D sign R T N (zero+w) C E
-  have ea : Γ ⊢[PRAAx] b ≐ a := by
-    simpa only [a,b,subst_data,Syn.inst_zero,Syn.subst_inst_shift,Syn.subst_var] using
-      Prf.eqCongr1 (data (Syn.shift X) (Syn.shift Y) (Syn.shift D) (Syn.shift sign)
-        (Syn.shift R) (Syn.shift T) (Syn.shift N) (var 0) (Syn.shift C) (Syn.shift E)) (zero_add w)
+  have ea : Γ ⊢[PRAAx] b ≐ a :=
+    GaussianCompactRiemannName.data_congr (congrAdd (.eqRefl E) (zero_add w))
+      (.eqRefl _) (.eqRefl _) (.eqRefl _) (.eqRefl _) (.eqRefl _)
   let c := data X Y D sign R T N zero w E
-  have es : Γ ⊢[PRAAx] addData c b ≐ addData c a := by
-    simpa only [GaussianNameArithmetic.subst_addData,Syn.inst_zero,Syn.subst_inst_shift,Syn.subst_var] using
-      Prf.eqCongr1 (addData (Syn.shift c) (var 0)) ea
+  have es : Γ ⊢[PRAAx] addData c b ≐ addData c a :=
+    GaussianNameArithmetic.add_data_congr (.eqRefl c) ea
   exact GaussianNamedSmallAddendRate.independent_rate Cn Cn Cn _ _ _ D (num 12*X*unit L)
     den hx0 hy0 hz0 (cross_data_congr Cn (addF Cn Cn) _ _ _ _ (.eqRefl _) es split) tail
 

@@ -2,7 +2,6 @@ import IPRADerivations.Analysis.Stirling.Binet.Bose.CompactIntegrand.GaussianBin
 import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactIntervalRescaling
 import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactMeshIndependence
 import IPRADerivations.Analysis.Names.GaussianCompactNamedAdditivity
-import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaCompactCutoffAlignment
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedSmallAddendRate
 
 /-!
@@ -22,9 +21,8 @@ open_ipra
 open GaussianBinetArctangentQuadrature (fixedData)
 open GaussianBinetBoseCompact (nameF data subst_data evaluatorF gain source subst_source compact_input sampled_modulus)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open GaussianGammaCompactCutoffAlignment (cross_data_congr)
 open GaussianNameArithmetic (addF addData)
-open GaussianNameEquivalence (crossEquivalent cross_trans)
+open GaussianNameEquivalence (cross_data_congr crossEquivalent cross_trans)
 open GaussianNamedInverseRate (independentRate)
 open GaussianNamedSmallAddendRate (tailSamples)
 open GaussianRationalHorner (positive_product)
@@ -75,10 +73,9 @@ theorem rescale (X Y D sign T S A C E k : PTm n)
     simpa only [property,GaussianCompactRiemannName.subst_input,Syn.inst_zero,Syn.subst_inst_shift,Syn.subst_var] using
       Prf.eqSubst1 property ea initial
   have eg : Γ ⊢[PRAAx] GaussianCompactRiemannName.data (k*a) (k*C) (k*E) M S x ≐
-      data X Y D sign S (k*A) (k*C) (k*E) := by
-    simpa only [data,GaussianCompactRiemannName.subst_data,Syn.inst_zero,Syn.subst_inst_shift,Syn.subst_var] using
-      Prf.eqCongr1 (GaussianCompactRiemannName.data (var 0) (Syn.shift (k*C)) (Syn.shift (k*E))
-        (Syn.shift M) (Syn.shift S) (Syn.shift x)) ea.eqSymm
+      data X Y D sign S (k*A) (k*C) (k*E) :=
+    GaussianCompactRiemannName.data_congr ea.eqSymm
+      (.eqRefl _) (.eqRefl _) (.eqRefl _) (.eqRefl _) (.eqRefl _)
   exact cross_data_congr nameF nameF _ _ _ _ (.eqRefl _) eg
     (cross_trans _ _ _ _ _ _ (GaussianCompactIntervalRescaling.name_rescaling F k a C E L T x hi)
       (GaussianCompactMeshIndependence.name_independence F (k*a) (k*C) (k*E) L T M S x (.andI mid target')))
@@ -90,25 +87,10 @@ theorem additivity (X Y D sign T A C₁ C₂ E : PTm n)
       (addData (data X Y D sign T A C₁ E) (data X Y D sign T (A+C₁) C₂ E)) := by
   let F := evaluatorF
   let x := fixedData X Y D sign
-  let a := E+A
   let L := gain D E T
-  let first := data X Y D sign T A C₁ E
-  let second := GaussianCompactRiemannName.data (a+C₁) C₂ E L T x
-  let rest := data X Y D sign T (A+C₁) C₂ E
   have he := h.andE₂.andE₂.andE₁
-  have hi : Γ ⊢[PRAAx] GaussianCompactNamedAdditivity.input F a C₁ C₂ E L T x :=
-    .andI (le_trans he (le_add_right E A)) (.andI he (.andI h₁ (.andI h₂
-      (.andI (le_trans (le_add_left (C₁+C₂) A) h.andE₂.andE₂.andE₂)
-        (sampled_modulus X Y D sign T A (C₁+C₂) E h)))))
-  have ea : Γ ⊢[PRAAx] a+C₁ ≐ E+(A+C₁) := by dsimp only [a]; ipra_ring
-  have ep : Γ ⊢[PRAAx] second ≐ rest := by
-    simpa only [second,rest,data,GaussianCompactRiemannName.subst_data,Syn.inst_zero,Syn.subst_inst_shift,Syn.subst_var] using
-      Prf.eqCongr1 (GaussianCompactRiemannName.data (var 0) (Syn.shift C₂) (Syn.shift E) (Syn.shift L) (Syn.shift T) (Syn.shift x)) ea
-  have ep' : Γ ⊢[PRAAx] addData first second ≐ addData first rest := by
-    simpa only [GaussianNameArithmetic.subst_addData,Syn.inst_zero,Syn.subst_inst_shift,Syn.subst_var] using
-      Prf.eqCongr1 (addData (Syn.shift first) (var 0)) ep
-  exact cross_data_congr nameF (addF nameF nameF) _ _ _ _ (.eqRefl _) ep'
-    (GaussianCompactNamedAdditivity.name_additivity F a C₁ C₂ E L T x hi)
+  exact GaussianCompactNamedAdditivity.name_additivity_with_offset F E A C₁ C₂ E L T x
+    he he h₁ h₂ h.andE₂.andE₂.andE₂ (sampled_modulus X Y D sign T A (C₁+C₂) E h)
 
 theorem width_samples (X Y D sign T A C E : PTm n)
     (h : Γ ⊢[PRAAx] source X D sign T A C E) : Γ ⊢[PRAAx]

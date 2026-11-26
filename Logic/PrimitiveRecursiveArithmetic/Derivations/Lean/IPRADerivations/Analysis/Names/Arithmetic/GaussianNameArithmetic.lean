@@ -56,6 +56,10 @@ ipra_subst addData
 ipra_subst multiplyData
 ipra_subst input
 
+theorem add_data_congr {x x' y y' : PTm n} (hx : Γ ⊢[PRAAx] x ≐ x') (hy : Γ ⊢[PRAAx] y ≐ y') :
+    Γ ⊢[PRAAx] addData x y ≐ addData x' y' :=
+  congrPairT (.eqRefl two) (congrPairT hx hy)
+
 theorem add_raw_at (f g : PR 2) (s x y : PTm n) : Γ ⊢[PRAAx]
     ap2 (addRawF f g) s (data x y) ≐ addRaw f g s x y := by
   have e := toPR_eq (Γ := Γ)
