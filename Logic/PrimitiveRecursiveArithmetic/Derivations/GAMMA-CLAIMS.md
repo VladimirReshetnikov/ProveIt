@@ -2966,3 +2966,6 @@ The original factor at the conjugate rational input is the conjugate of the orig
 
 The exact original named Barnes outputs agree for equivalent input names with separately certified radii. The proof compares a common pair of actual late rational inputs and eliminates independent dyadic error terms.
 [GaussianBarnesCanonicalNamedFrozen](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNamedFrozen.lean)
+
+The genuine exponential factors at their actual multiplication clock satisfy a rational lower bound depending only on the disk radius. This gives uniform apartness at a computed observation.
+[GaussianBarnesCanonicalPrefactorUniformApartness](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefactorUniformApartness.lean)
