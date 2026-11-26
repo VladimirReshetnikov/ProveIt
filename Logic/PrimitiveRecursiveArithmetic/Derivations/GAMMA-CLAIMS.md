@@ -2870,3 +2870,6 @@ The signed exponent is unchanged by translating the base and both shifted argume
 
 The actual rounded cubic rows split at a fixed head boundary. The corrected Barnes endpoint and a proved row precision budget give a regular primitive-recursive Gaussian name on each rational disk, including the empty tail at radius zero.
 [GaussianBarnesCanonicalLogRoundedTail](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalLogRoundedTail.lean), [GaussianBarnesCanonicalLogSchedule](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalLogSchedule.lean), [GaussianBarnesCanonicalLogCofinal](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalLogCofinal.lean)
+
+The two original exponential factors use the named Stirling constant and Euler–Mascheroni constant. Their literal product is regular and agrees at independent clocks with the exponential of the combined exponent.
+[GaussianBarnesCanonicalPrefactor](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefactor.lean)
