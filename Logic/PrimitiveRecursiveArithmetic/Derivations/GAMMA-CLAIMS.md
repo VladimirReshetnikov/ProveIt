@@ -3314,3 +3314,6 @@ The named Barnes evaluator has an explicit upper threshold for every positive ra
 
 At every positive rational input the actual cofinal Euler log-Gamma sampler and certified reciprocal of the canonical Barnes sampler give one regular hyperfactorial name. The original product of that name with the canonical Barnes value equals the original exponentiated Gamma expression in iPRA.
 [GaussianBarnesCanonicalHyperfactorial](Lean/IPRADerivations/Analysis/Barnes/FunctionalEquations/GaussianBarnesCanonicalHyperfactorial.lean)
+
+The analytic hyperfactorial at one is the unit name. On positive rational charts the exponent agrees with its successor expansion using the original logarithmic Gamma recurrence. The original numerator at the successor is the product of the preceding numerator, the exponentiated log-Gamma name, and the original exp of z log z.
+[GaussianBarnesCanonicalHyperfactorialNormalization](Lean/IPRADerivations/Analysis/Barnes/FunctionalEquations/GaussianBarnesCanonicalHyperfactorialNormalization.lean), [GaussianBarnesCanonicalHyperfactorialExponentStep](Lean/IPRADerivations/Analysis/Barnes/FunctionalEquations/GaussianBarnesCanonicalHyperfactorialExponentStep.lean), [GaussianBarnesCanonicalHyperfactorialPowerStep](Lean/IPRADerivations/Analysis/Barnes/FunctionalEquations/GaussianBarnesCanonicalHyperfactorialPowerStep.lean)
