@@ -2987,3 +2987,6 @@ Exact original factor conjugation folds through each finite segment, preserving 
 
 The actual relative quadratic term and direct exponent correction cancel to the literal first-derivative expression times the input increment plus the original controlled quadratic remainder. Transfer to derivative observations of the named row and its cofinal limit remains open.
 [GaussianBarnesCanonicalDerivativeAlgebra](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDerivativeAlgebra.lean)
+
+The actual prefactor preserves conjugation through its real constants and original exponentials. The exact Gaussian rational isometry also preserves independent observation rates for any original pair of conjugated names.
+[GaussianBarnesCanonicalPrefactorConjugation](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefactorConjugation.lean), [GaussianNamedRateConjugation](Lean/IPRADerivations/Analysis/GaussianNamedRateConjugation.lean)
