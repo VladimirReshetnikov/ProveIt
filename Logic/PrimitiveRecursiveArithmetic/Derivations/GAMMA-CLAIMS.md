@@ -3191,3 +3191,6 @@ The original cofinal logarithmic increment admits the literal corrected finite T
 
 The original value equals the literal finite base-power product times the named exponential of the actual prefactor exponent, finite correction and cofinal log. On a shifted rational chart the kept product is its exact centered displacement polynomial. Both identities hold at zeros of the head.
 [GaussianBarnesCanonicalSingleExponential](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalSingleExponential.lean)
+
+The original shifted value is the exact centered kept polynomial times the exponential of the central exponent times the exponential of its actual named increment. Any independent-clock rate for the last factor lifts to the original shifted Barnes evaluator with a gain independent of the displacement.
+[GaussianBarnesCanonicalCenteredExponentialShift](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalCenteredExponentialShift.lean), [GaussianBarnesCanonicalCenteredProductRate](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalCenteredProductRate.lean)
