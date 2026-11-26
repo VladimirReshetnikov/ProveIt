@@ -81,6 +81,22 @@ theorem q_absurd {a qi qj W : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (h
   ipra_le 2 * 𝔞 a * 𝔞 qi + 𝔞 (pred a) + 𝔞 a * (2 * sl hlt * (𝔞 qi + 1) + sl hlt * sl hlt) with
     -x - y + z
 
+/-- The end of both sign cases: `a ∣ N₁`, `a ∣ N₂`, Brahmagupta's identity `N₁² = D N₂² + a²` and a relation
+`a (q_j² − q_i²) = c N₂` (which excludes `N₂ = 0` when `q_i < q_j`) give `x = N₁/a`, `y = N₂/a` with
+`x² = D y² + 1`, `y ≥ 1`, `x ≤ N₁` and `y ≤ N₂`. -/
+theorem collision_end {D a qi qj c N₁ N₂ U₁ U₂ : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a))
+    (hlt : Γ ⊢[PRAAx] lt qi qj) (d1 : Γ ⊢[PRAAx] dvd a N₁) (d2 : Γ ⊢[PRAAx] dvd a N₂)
+    (hB : Γ ⊢[PRAAx] N₁ * N₁ ≐ D * (N₂ * N₂) + a * a) (b1 : Γ ⊢[PRAAx] le N₁ U₁) (b2 : Γ ⊢[PRAAx] le N₂ U₂)
+    (W : Γ ⊢[PRAAx] a * (qj * qj) ≐ a * (qi * qi) + c * N₂) :
+    Γ ⊢[PRAAx] (quo N₁ a * quo N₁ a ≐ D * (quo N₂ a * quo N₂ a) + one) ⋏
+      (le one (quo N₂ a) ⋏ (le (quo N₁ a) U₁ ⋏ le (quo N₂ a) U₂)) := by
+  have f1 := eq_of_dvd' ha d1
+  have f2 := eq_of_dvd' ha d2
+  have hN2 : Γ ⊢[PRAAx] N₂ ≐ succ (pred N₂) := .orE (zero_or_succ N₂) (.botE _ (lt_zero_absurd _
+    (q_absurd ha.wk hlt.wk W.wk ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (mul_zero _))))) Prf.hyp0
+  exact .andI (norm_one ha f1 f2 hB) (.andI (y_pos f2 hN2)
+    (.andI (le_trans (le_of_mul ha f1) b1) (le_trans (le_of_mul ha f2) b2)))
+
 /-! ## Positive common norm -/
 
 /-- `N₁ = p_i p_j − D q_i q_j`. -/
@@ -128,29 +144,14 @@ theorem collision_pos {D a pi pj qi qj : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (
       (k₂ := a * (quo pi a * quo qj a) + rem pi a * quo qj a + rem qi a * quo pi a) (by
       ipra_lc -e2 + 𝔞 qj * Pi + (𝔞 a * 𝔞 (quo pi a) + 𝔞 (rem pi a)) * (Qj - T) - 𝔞 qi * (Pj - R) -
         (𝔞 a * 𝔞 (quo pj a) + 𝔞 (rem pi a)) * Qi)
-  have f1 := eq_of_dvd' ha d1
-  have f2 := eq_of_dvd' ha d2
   have hB : Γ ⊢[PRAAx] N1p D pi pj qi qj * N1p D pi pj qi qj ≐
       D * (N2p pi pj qi qj * N2p pi pj qi qj) + a * a := by
     ipra_lc (𝔞 pi * 𝔞 pi - 𝔞 D * 𝔞 qi * 𝔞 qi - 𝔞 a) * xj + 𝔞 a * xi + 𝔞 a * xj -
       2 * (𝔞 pi * 𝔞 pj - 𝔞 D * (𝔞 qi * 𝔞 qj)) * e1 +
       (𝔞 pi * 𝔞 pj - 𝔞 D * (𝔞 qi * 𝔞 qj) - 𝔞 (N1p D pi pj qi qj)) * e1 + 2 * 𝔞 D * (𝔞 pi * 𝔞 qj - 𝔞 pj * 𝔞 qi) * e2 -
       𝔞 D * (𝔞 pi * 𝔞 qj - 𝔞 pj * 𝔞 qi - 𝔞 (N2p pi pj qi qj)) * e2
-  have hN2 : Γ ⊢[PRAAx] N2p pi pj qi qj ≐ succ (pred (N2p pi pj qi qj)) := by
-    refine .orE (zero_or_succ (N2p pi pj qi qj)) ?_ Prf.hyp0
-    have hz : ((N2p pi pj qi qj ≐ zero) :: Γ) ⊢[PRAAx] N2p pi pj qi qj ≐ zero := Prf.hyp0
-    have W : ((N2p pi pj qi qj ≐ zero) :: Γ) ⊢[PRAAx] a * (qj * qj) ≐ a * (qi * qi) +
-        (pi * qj + pj * qi) * N2p pi pj qi qj := by
-      have e2' := natEq (E2.wk (ψ := N2p pi pj qi qj ≐ zero))
-      have xi' := natEq (hi.wk (ψ := N2p pi pj qi qj ≐ zero))
-      have xj' := natEq (hj.wk (ψ := N2p pi pj qi qj ≐ zero))
-      apply deriveNat; ipra_simps
-      linear_combination (𝔞 pi * 𝔞 qj + 𝔞 pj * 𝔞 qi) * e2' - 𝔞 qj * 𝔞 qj * xi' + 𝔞 qi * 𝔞 qi * xj'
-    have W0 : ((N2p pi pj qi qj ≐ zero) :: Γ) ⊢[PRAAx] (pi * qj + pj * qi) * N2p pi pj qi qj ≐ zero :=
-      (congrMul (.eqRefl _) hz).eqTrans (mul_zero _)
-    exact .botE _ (lt_zero_absurd _ (q_absurd ha.wk hlt.wk W W0))
-  exact .andI (norm_one ha f1 f2 hB) (.andI (y_pos f2 hN2)
-    (.andI (le_trans (le_of_mul ha f1) (monus_le' _ _)) (le_trans (le_of_mul ha f2) (monus_le' _ _))))
+  exact collision_end ha hlt d1 d2 hB (monus_le' _ _) (monus_le' _ _) (c := pi * qj + pj * qi) (by
+    ipra_lc (𝔞 pi * 𝔞 qj + 𝔞 pj * 𝔞 qi) * e2 - 𝔞 qj * 𝔞 qj * xi + 𝔞 qi * 𝔞 qi * xj)
 
 /-! ## Negative common norm -/
 
@@ -199,28 +200,13 @@ theorem collision_neg {D a pi pj qi qj : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (
       (k₂ := a * (quo pj a * quo qi a) + rem pi a * quo qi a + rem qi a * quo pj a) (by
       ipra_lc -e2 -
         (𝔞 qj * Pi + (𝔞 a * 𝔞 (quo pi a) + 𝔞 (rem pi a)) * (Qj - T) - 𝔞 qi * (Pj - R) - (𝔞 a * 𝔞 (quo pj a) + 𝔞 (rem pi a)) * Qi))
-  have f1 := eq_of_dvd' ha d1
-  have f2 := eq_of_dvd' ha d2
   have hB : Γ ⊢[PRAAx] N1n D pi pj qi qj * N1n D pi pj qi qj ≐
       D * (N2n pi pj qi qj * N2n pi pj qi qj) + a * a := by
     ipra_lc (𝔞 D * 𝔞 qi * 𝔞 qi - 𝔞 pi * 𝔞 pi - 𝔞 a) * xj + 𝔞 a * xi + 𝔞 a * xj +
       2 * (𝔞 pi * 𝔞 pj - 𝔞 D * (𝔞 qi * 𝔞 qj)) * e1 +
       (𝔞 D * (𝔞 qi * 𝔞 qj) - 𝔞 pi * 𝔞 pj - 𝔞 (N1n D pi pj qi qj)) * e1 - 2 * 𝔞 D * (𝔞 pi * 𝔞 qj - 𝔞 pj * 𝔞 qi) * e2 -
       𝔞 D * (𝔞 pj * 𝔞 qi - 𝔞 pi * 𝔞 qj - 𝔞 (N2n pi pj qi qj)) * e2
-  have hN2 : Γ ⊢[PRAAx] N2n pi pj qi qj ≐ succ (pred (N2n pi pj qi qj)) := by
-    refine .orE (zero_or_succ (N2n pi pj qi qj)) ?_ Prf.hyp0
-    have hz : ((N2n pi pj qi qj ≐ zero) :: Γ) ⊢[PRAAx] N2n pi pj qi qj ≐ zero := Prf.hyp0
-    have W : ((N2n pi pj qi qj ≐ zero) :: Γ) ⊢[PRAAx] a * (qj * qj) ≐ a * (qi * qi) +
-        (pi * qj + pj * qi) * N2n pi pj qi qj := by
-      have e2' := natEq (E2.wk (ψ := N2n pi pj qi qj ≐ zero))
-      have xi' := natEq (hi.wk (ψ := N2n pi pj qi qj ≐ zero))
-      have xj' := natEq (hj.wk (ψ := N2n pi pj qi qj ≐ zero))
-      apply deriveNat; ipra_simps
-      linear_combination (𝔞 pi * 𝔞 qj + 𝔞 pj * 𝔞 qi) * e2' - 𝔞 qj * 𝔞 qj * xi' + 𝔞 qi * 𝔞 qi * xj'
-    have W0 : ((N2n pi pj qi qj ≐ zero) :: Γ) ⊢[PRAAx] (pi * qj + pj * qi) * N2n pi pj qi qj ≐ zero :=
-      (congrMul (.eqRefl _) hz).eqTrans (mul_zero _)
-    exact .botE _ (lt_zero_absurd _ (q_absurd ha.wk hlt.wk W W0))
-  exact .andI (norm_one ha f1 f2 hB) (.andI (y_pos f2 hN2)
-    (.andI (le_trans (le_of_mul ha f1) (monus_le' _ _)) (le_trans (le_of_mul ha f2) (monus_le' _ _))))
+  exact collision_end ha hlt d1 d2 hB (monus_le' _ _) (monus_le' _ _) (c := pi * qj + pj * qi) (by
+    ipra_lc (𝔞 pi * 𝔞 qj + 𝔞 pj * 𝔞 qi) * e2 - 𝔞 qj * 𝔞 qj * xi + 𝔞 qi * 𝔞 qi * xj)
 
 end LeanProofs.IPRA.DiophantineNumberTheory.PellCollision
