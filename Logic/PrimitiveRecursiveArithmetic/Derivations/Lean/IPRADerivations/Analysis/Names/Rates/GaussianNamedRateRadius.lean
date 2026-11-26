@@ -10,11 +10,31 @@ namespace LeanProofs.IPRA.Analysis.GaussianNamedRateRadius
 open_ipra
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator denominator_positive rate_at)
 open GaussianCoefficientNameBounds (unit unit_positive)
+open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_radius_mono)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
+
+private theorem succ_clock_budget (p q : PTm n) : Γ ⊢[PRAAx] le
+    (rateNumerator one (unit (succ p)) (succ p) (succ q)*(unit p*unit q))
+    ((unit p+unit q)*rateDenominator (unit (succ p)) (succ p) (succ q)) := by
+  have dp : Γ ⊢[PRAAx] unit (succ p) ≐ unit p*two := pw_succ two p
+  have dq : Γ ⊢[PRAAx] unit (succ q) ≐ unit q*two := pw_succ two q
+  have rd := congrMul (congrMul dp dp) dq
+  have rn := congrAdd (congrMul (congrMul (.eqRefl one) dp) dq) (congrMul dp (congrAdd dp dq))
+  exact le_congr (congrMul rn (.eqRefl _)).eqSymm (congrMul (.eqRefl _) rd).eqSymm
+    (le_of_eq_add (d := two*two*unit p*unit p*unit p*unit q) (by ipra_ring))
+
+/-- One leading error at the successor of the first clock leaves room for
+both observation errors at the earlier requested precisions. -/
+theorem distance_at_succ_clocks (a b p q : PTm n)
+    (h : Γ ⊢[PRAAx] distanceBounded a b (rateNumerator one (unit (succ p)) (succ p) (succ q))
+      (rateDenominator (unit (succ p)) (succ p) (succ q))) :
+    Γ ⊢[PRAAx] distanceBounded a b (unit p+unit q) (unit p*unit q) :=
+  distance_radius_mono _ _ _ _ _ _ (denominator_positive _ _ _ (unit_positive (succ p)))
+    (positive_product _ _ (unit_positive p) (unit_positive q)) (succ_clock_budget p q) h
 
 theorem observation_at (F G : PR 2) (p q x y A B C D : PTm n)
     (hB : Γ ⊢[PRAAx] le one B) (hD : Γ ⊢[PRAAx] le one D) (h : Γ ⊢[PRAAx] le (A*D) (C*B))

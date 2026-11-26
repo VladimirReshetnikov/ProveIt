@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.Names.RightHalfPlane.GaussianNamedRightHalfPlaneLift
 import IPRADerivations.Foundations.FiniteQueryDemand
+import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
 
 /-!
 # Extend a uniformly continuous rational name to the right half-plane
@@ -24,7 +25,7 @@ open GaussianNamedRightHalfPlane (threshold)
 open GaussianNamedRightHalfPlaneLift (source data late_certificate subst_source subst_data)
 open GaussianNamedRightHalfPlaneSigned (certificate point point_distance)
 open GaussianNameEquivalence (crossEquivalent cross_at cross_refl cross_symm)
-open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator rate_at denominator_positive)
+open GaussianNamedInverseRate (independentRate rate_at)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
@@ -120,16 +121,6 @@ theorem late_rate (map : RationalMap) (f g : PR 2) (s r t x y M R : PTm n)
   exact map.variation _ _ R (two*M) s left right
     (distance_radius_mono _ _ _ _ _ _ den (unit_positive m) (input_budget r t m hd he') points)
 
-private theorem output_budget (p q : PTm n) : Γ ⊢[PRAAx] le
-    (rateNumerator one (unit (succ p)) (succ p) (succ q)*(unit p*unit q))
-    ((unit p+unit q)*rateDenominator (unit (succ p)) (succ p) (succ q)) := by
-  have dp : Γ ⊢[PRAAx] unit (succ p) ≐ unit p*two := pw_succ two p
-  have dq : Γ ⊢[PRAAx] unit (succ q) ≐ unit q*two := pw_succ two q
-  have rd := congrMul (congrMul dp dp) dq
-  have rn := congrAdd (congrMul (congrMul (.eqRefl one) dp) dq) (congrMul dp (congrAdd dp dq))
-  exact le_congr (congrMul rn (.eqRefl _)).eqSymm (congrMul (.eqRefl _) rd).eqSymm
-    (le_of_eq_add (d := two*two*unit p*unit p*unit p*unit q) (by ipra_ring))
-
 private theorem observations_of_le (map : RationalMap) (f g : PR 2) (p q r t x y M R : PTm n)
     (hf : Γ ⊢[PRAAx] source f x M R) (hg : Γ ⊢[PRAAx] source g y M R)
     (he : Γ ⊢[PRAAx] crossEquivalent f g x y)
@@ -143,8 +134,7 @@ private theorem observations_of_le (map : RationalMap) (f g : PR 2) (p q r t x y
     (le_trans (clock_margin map p M R) hr) (le_trans (clock_margin map q M R) ht)
     (le_trans (clock_demand map p M R (succ p) (le_refl _)) hr)
     (le_trans (clock_demand map q M R (succ p) hs) ht)
-  exact distance_radius_mono _ _ _ _ _ _ (denominator_positive _ _ _ (unit_positive (succ p)))
-    (positive_product _ _ (unit_positive p) (unit_positive q)) (output_budget p q)
+  exact GaussianNamedRateRadius.distance_at_succ_clocks _ _ p q
     (rate_at _ _ _ _ _ _ (succ p) (succ q) rate)
 
 theorem late_observations (map : RationalMap) (f g : PR 2) (p q r t x y M R : PTm n)

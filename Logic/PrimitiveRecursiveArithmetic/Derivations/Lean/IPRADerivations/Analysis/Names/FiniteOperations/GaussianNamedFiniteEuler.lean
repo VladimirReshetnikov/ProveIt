@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.Beta.Endpoints.GaussianBetaAllDegreeMixedInverseContinuity
 import IPRADerivations.Analysis.Gamma.Names.GaussianNamedGamma
+import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
 
 /-!
 # Actual finite Euler reciprocal on a fixed regular complex name
@@ -90,16 +91,6 @@ theorem clock_demand (f : PR 2) (p x A N s : PTm n) (hs : Γ ⊢[PRAAx] le s (su
   have next := le_congr (succ_eq_add_one _).eqSymm (succ_eq_add_one _).eqSymm (add_le_add_right one maximum)
   exact le_trans next (le_add_left _ _)
 
-private theorem output_budget (p q : PTm n) : Γ ⊢[PRAAx] le
-    (rateNumerator one (unit (succ p)) (succ p) (succ q)*(unit p*unit q))
-    ((unit p+unit q)*rateDenominator (unit (succ p)) (succ p) (succ q)) := by
-  have dp : Γ ⊢[PRAAx] unit (succ p) ≐ unit p*two := pw_succ two p
-  have dq : Γ ⊢[PRAAx] unit (succ q) ≐ unit q*two := pw_succ two q
-  have rd := congrMul (congrMul dp dp) dq
-  have rn := congrAdd (congrMul (congrMul (.eqRefl one) dp) dq) (congrMul dp (congrAdd dp dq))
-  exact le_congr (congrMul rn (.eqRefl _)).eqSymm (congrMul (.eqRefl _) rd).eqSymm
-    (le_of_eq_add (d := two*two*unit p*unit p*unit p*unit q) (by ipra_ring))
-
 private theorem observations_of_le (f : PR 2) (p q x A N : PTm n)
     (h : Γ ⊢[PRAAx] source f x A N) (hpq : Γ ⊢[PRAAx] le p q) : Γ ⊢[PRAAx]
     distanceBounded (sample f p x A N) (sample f q x A N) (unit p+unit q) (unit p*unit q) := by
@@ -116,8 +107,7 @@ private theorem observations_of_le (f : PR 2) (p q x A N : PTm n)
   have right := actual_late_source f x A t h.andE₁ (clock_margin f q x A N)
   have obs := encoded_observations (succ p) (succ q) s (numerator f r x) (numerator f t x) R
     (denominator f r x) (denominator f t x) (two*A) N (.andI left h.andE₂) (.andI right h.andE₂) hd
-  exact distance_radius_mono _ _ _ _ _ _ (denominator_positive _ _ _ (unit_positive s))
-    (positive_product _ _ (unit_positive p) (unit_positive q)) (output_budget p q) obs
+  exact GaussianNamedRateRadius.distance_at_succ_clocks _ _ p q obs
 
 theorem sample_observations (f : PR 2) (p q x A N : PTm n) (h : Γ ⊢[PRAAx] source f x A N) : Γ ⊢[PRAAx]
     distanceBounded (sample f p x A N) (sample f q x A N) (unit p+unit q) (unit p*unit q) := by
