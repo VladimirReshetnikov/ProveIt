@@ -2822,3 +2822,6 @@ A primitive-recursive maximum of the input demands selects actual late signed sa
 
 The literal [1,2] panel supplies the explicit lower bound 2/(104·3^(2S)) at every internal order under the certified real upper radius S. The named proof gives strict order and a computed original sample with at least half that lower bound.
 [GaussianBinetLaplaceMomentNamedPositive](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentNamedPositive.lean)
+
+Both actual difference quotients converge to the negative successor moment on a common fixed positive margin. The leading constants depend on the internal order and the physical margin and work for every denominator encoding of the base.
+[GaussianBinetLaplaceMomentForwardMargin](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentForwardMargin.lean), [GaussianBinetLaplaceMomentTwoSidedMargin](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentTwoSidedMargin.lean)
