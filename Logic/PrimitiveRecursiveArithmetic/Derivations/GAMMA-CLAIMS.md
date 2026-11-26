@@ -3422,3 +3422,6 @@ Three certified derivative bounds and the actual third-derivative lower cut on a
 
 Certified mixed-precision meshes force the actual Barnes candidate to equal f(1) times the original Barnes function at every positive rational chart. Separately, the original candidate recurrence proves all four actual translated fine-grid wrap distances, with independent analytic and observation clocks.
 [GaussianBarnesVignerasMesh](Lean/IPRADerivations/Analysis/Barnes/Vigneras/GaussianBarnesVignerasMesh.lean), [GaussianBarnesVignerasMeshConstancy](Lean/IPRADerivations/Analysis/Barnes/Vigneras/GaussianBarnesVignerasMeshConstancy.lean), [GaussianBarnesVignerasCertifiedMesh](Lean/IPRADerivations/Analysis/Barnes/Vigneras/GaussianBarnesVignerasCertifiedMesh.lean), [GaussianBarnesVignerasRefinementWrap](Lean/IPRADerivations/Analysis/Barnes/Vigneras/GaussianBarnesVignerasRefinementWrap.lean)
+
+Every actual retained derivative row and its entire finite prefix agree with the original digamma series multiplied by the signed ratio (A−B)/B.
+[GaussianBarnesCanonicalFirstLogarithmDigammaPrefix](Lean/IPRADerivations/Analysis/Barnes/FunctionalEquations/Asymptotics/GaussianBarnesCanonicalFirstLogarithmDigammaPrefix.lean)
