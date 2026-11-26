@@ -2934,7 +2934,7 @@ Explicit disk and index bounds give an independent-clock Lipschitz rate for the 
 The original finite product at each common segment has an explicit independent-clock Lipschitz bound. The proof retains different rational encodings and each product normalization, including empty segments.
 [GaussianBarnesCanonicalHeadLipschitz](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadLipschitz.lean)
 
-The actual rational first-derivative expression has radius $2R^2/k^2$ and its exact finite tail has radius $2R^2/N$. This establishes the rational tail estimate used by a future differentiation proof.
+The actual rational first-derivative expression has radius $2R^2/k^2$ and its exact finite tail has radius $2R^2/N$. The cofinal derivative quotient proof uses this bound to keep the rational slope error uniform in the truncation.
 [GaussianBarnesCanonicalDerivativeRow](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDerivativeRow.lean), [GaussianReciprocalSquareInterval](Lean/IPRADerivations/Analysis/GaussianReciprocalSquareInterval.lean), [GaussianBarnesCanonicalDerivativeTail](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDerivativeTail.lean)
 
 The original factor equals the exact rational power $(z+m)^m$ times its actual regular exponential multiplier, with a certified positive lower bound.
@@ -3119,3 +3119,6 @@ Given a checked primitive-recursive disk modulus, the genuine lifted sampler eva
 
 The original full rational derivative has a primitive-recursive uniform disk modulus. It gives the actual derivative sampler on regular Gaussian names, with regularity, properness across separately certified radii, explicit late readback, and the original quotient rate on exact rational configurations.
 [GaussianBarnesCanonicalValueDerivativeContinuity](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalValueDerivativeContinuity.lean), [GaussianBarnesCanonicalNamedValueDerivative](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNamedValueDerivative.lean)
+
+For $F(z)=G(1+z)$, the actual entire reciprocal Gamma name gives the cleared recurrence $F(z+1) / \Gamma(z+1)=F(z)$ on every admitted Gaussian rational, including poles. Multiplying by the original Gamma name on the certified pole-free domain gives the ordinary recurrence.
+[GaussianBarnesCanonicalFiniteGaussRate](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalFiniteGaussRate.lean), [GaussianBarnesCanonicalFunctionalEquation](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalFunctionalEquation.lean), [GaussianBarnesCanonicalPoleFreeRecurrence](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPoleFreeRecurrence.lean)
