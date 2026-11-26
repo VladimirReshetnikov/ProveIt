@@ -3017,3 +3017,6 @@ The literal shifted finite head times the plain product equals the original head
 
 The literal finite products and cofinal rate give an explicit common-disk input demand for the actual exponential tail sampler.
 [GaussianBarnesCanonicalTailContinuity](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalTailContinuity.lean)
+
+The two retained finite ranges of the actual head give an explicit common-disk Lipschitz bound for the original skipped product.
+[GaussianBarnesCanonicalDeflatedHeadLipschitz](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDeflatedHeadLipschitz.lean)
