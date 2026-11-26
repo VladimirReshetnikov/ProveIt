@@ -2843,3 +2843,6 @@ At a certified positive real name, both actual normalized difference quotients a
 
 A shared late signed input sample compares the Gamma chart provider with the repository’s original named Gamma on the actual input. The adapter admits the original argument directly and proves agreement at independent output clocks.
 [GaussianGammaZetaNamedGammaAlignment](Lean/IPRADerivations/Analysis/GaussianGammaZetaNamedGammaAlignment.lean)
+
+Both original samplers are evaluated on actual late signed samples with the same certified input demand. Closed iPRA name equality extends their rational identity to every regular input name on the certified half-plane.
+[GaussianGammaZetaMellinParameterRate](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinParameterRate.lean), [GaussianGammaZetaNamedHalfPlane](Lean/IPRADerivations/Analysis/GaussianGammaZetaNamedHalfPlane.lean)
