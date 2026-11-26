@@ -20,13 +20,13 @@ open_ipra
 open LeanProofs.IPRA.Foundations.FiniteQueryDemand (finiteMaximum finiteMaximum_at)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
-open GaussianExponentialReference (unit_monotone)
 open GaussianNamedRightHalfPlane (threshold)
 open GaussianNamedRightHalfPlaneLift (source data late_certificate subst_source subst_data)
 open GaussianNamedRightHalfPlaneSigned (certificate point point_distance)
 open GaussianNameEquivalence (crossEquivalent cross_at cross_refl cross_symm)
 open GaussianNamedInverseRate (independentRate rate_at)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
+open GaussianNamedRateRadius (distance_at_later_clocks)
+open GaussianRationalDistanceOrder (distance_congr distance_symmetric)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 
@@ -93,15 +93,6 @@ theorem clock_demand (map : RationalMap) (p M R s : PTm n) (h : Γ ⊢[PRAAx] le
     (add_le_add_right one maximum)
   exact le_trans next (le_add_left _ _)
 
-private theorem input_budget (r t m : PTm n)
-    (hr : Γ ⊢[PRAAx] le (succ m) r) (ht : Γ ⊢[PRAAx] le (succ m) t) :
-    Γ ⊢[PRAAx] le ((unit r+unit t)*unit m) (one*(unit r*unit t)) := by
-  have double : Γ ⊢[PRAAx] unit (succ m) ≐ two*unit m := (pw_succ two m).eqTrans (mul_comm _ _)
-  have left := mul_le_mul_right (unit t) (le_congr double (.eqRefl _) (unit_monotone hr))
-  have right := mul_le_mul_right (unit r) (le_congr double (.eqRefl _) (unit_monotone ht))
-  exact RationalValueBounds.positive_cancel RationalAlgebra.two_positive
-    (le_congr (by ipra_ring) (by ipra_ring) (add_le_add₂ left right))
-
 theorem late_rate (map : RationalMap) (f g : PR 2) (s r t x y M R : PTm n)
     (hf : Γ ⊢[PRAAx] source f x M R) (hg : Γ ⊢[PRAAx] source g y M R)
     (he : Γ ⊢[PRAAx] crossEquivalent f g x y)
@@ -119,7 +110,7 @@ theorem late_rate (map : RationalMap) (f g : PR 2) (s r t x y M R : PTm n)
   have points := point_distance _ _ _ _ left.andE₁.andE₁.andE₁.andE₁ right.andE₁.andE₁.andE₁.andE₁ den
     (cross_at f g x y r t he)
   exact map.variation _ _ R (two*M) s left right
-    (distance_radius_mono _ _ _ _ _ _ den (unit_positive m) (input_budget r t m hd he') points)
+    (distance_at_later_clocks r t m hd he' points)
 
 private theorem observations_of_le (map : RationalMap) (f g : PR 2) (p q r t x y M R : PTm n)
     (hf : Γ ⊢[PRAAx] source f x M R) (hg : Γ ⊢[PRAAx] source g y M R)

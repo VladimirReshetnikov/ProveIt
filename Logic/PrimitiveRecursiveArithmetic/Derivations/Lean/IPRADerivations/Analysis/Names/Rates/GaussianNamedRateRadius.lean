@@ -36,6 +36,24 @@ theorem distance_at_succ_clocks (a b p q : PTm n)
   distance_radius_mono _ _ _ _ _ _ (denominator_positive _ _ _ (unit_positive (succ p)))
     (positive_product _ _ (unit_positive p) (unit_positive q)) (succ_clock_budget p q) h
 
+/-- Two observations at least one bit later than the requested precision
+fit a single dyadic allowance at that precision. -/
+theorem distance_at_later_clocks {a b : PTm n} (r t m : PTm n)
+    (hr : Γ ⊢[PRAAx] le (succ m) r) (ht : Γ ⊢[PRAAx] le (succ m) t)
+    (h : Γ ⊢[PRAAx] distanceBounded a b (unit r+unit t) (unit r*unit t)) :
+    Γ ⊢[PRAAx] distanceBounded a b one (unit m) := by
+  have double : Γ ⊢[PRAAx] unit (succ m) ≐ two*unit m := (pw_succ two m).eqTrans (mul_comm _ _)
+  have rGrow : Γ ⊢[PRAAx] le (unit (succ m)) (unit r) :=
+    GaussianFactorBudget.power_monotone_length two (succ m) r (le_succ_self one) hr
+  have tGrow : Γ ⊢[PRAAx] le (unit (succ m)) (unit t) :=
+    GaussianFactorBudget.power_monotone_length two (succ m) t (le_succ_self one) ht
+  have left := mul_le_mul_right (unit t) (le_congr double (.eqRefl _) rGrow)
+  have right := mul_le_mul_right (unit r) (le_congr double (.eqRefl _) tGrow)
+  apply distance_radius_mono _ _ _ _ _ _
+    (positive_product _ _ (unit_positive r) (unit_positive t)) (unit_positive m) ?_ h
+  exact RationalValueBounds.positive_cancel RationalAlgebra.two_positive
+    (le_congr (by ipra_ring) (by ipra_ring) (add_le_add₂ left right))
+
 /-- At the successor of the first observation clock, both the leading error
 and the first observation allowance fit the earlier unit if the leading
 budget is paid by the denominator. -/

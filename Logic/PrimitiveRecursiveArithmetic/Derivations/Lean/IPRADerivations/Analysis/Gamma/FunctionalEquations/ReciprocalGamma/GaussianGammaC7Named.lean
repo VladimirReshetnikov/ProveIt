@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Names.GaussianBarnesCanonicalNamedDemand
 import IPRADerivations.Analysis.Gamma.Names.Input.GaussianGammaHalfPlaneInputContinuity
+import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
 
 /-!
 # The original entire reciprocal Gamma evaluator on regular Gaussian names
@@ -18,10 +19,10 @@ open_ipra
 open LeanProofs.IPRA.Foundations.FiniteQueryDemand (finiteMaximum finiteMaximum_at)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
-open GaussianExponentialReference (unit_monotone)
 open GaussianNameEquivalence (crossEquivalent cross_at cross_refl cross_symm)
-open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator rate_at denominator_positive)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
+open GaussianNamedInverseRate (independentRate rate_at)
+open GaussianNamedRateRadius (distance_at_later_clocks distance_at_succ_clocks)
+open GaussianRationalDistanceOrder (distance_congr distance_symmetric)
 open GaussianRationalHorner (ofGaussian positive_product)
 open GaussianRationalL1 (rawGaussian rawDen raw_den_positive raw_represents)
 open GaussianRationalMetric (distanceBounded bounded_iff)
@@ -96,14 +97,6 @@ theorem clock_demand (p R s : PTm n) (hs : Γ ⊢[PRAAx] le s (succ p)) :
     by simpa [demandBody,inst2] using finiteMaximum_at (demandBody) (x := R) inside
   exact le_congr (succ_eq_add_one _).eqSymm (succ_eq_add_one _).eqSymm (add_le_add_right one top)
 
-private theorem input_budget (k l a : PTm n) (hk : Γ ⊢[PRAAx] le (succ a) k) (hl : Γ ⊢[PRAAx] le (succ a) l) :
-    Γ ⊢[PRAAx] le ((unit k+unit l)*unit a) (one*(unit k*unit l)) := by
-  have double : Γ ⊢[PRAAx] unit (succ a) ≐ two*unit a := (pw_succ two a).eqTrans (mul_comm _ _)
-  have left := mul_le_mul_right (unit l) (le_congr double (.eqRefl _) (unit_monotone hk))
-  have right := mul_le_mul_right (unit k) (le_congr double (.eqRefl _) (unit_monotone hl))
-  exact RationalValueBounds.positive_cancel RationalAlgebra.two_positive
-    (le_congr (by ipra_ring) (by ipra_ring) (add_le_add₂ left right))
-
 theorem late_rate (f g : PR 2) (s k l x y R : PTm n)
     (hf : Γ ⊢[PRAAx] source f x R) (hg : Γ ⊢[PRAAx] source g y R)
     (he : Γ ⊢[PRAAx] crossEquivalent f g x y)
@@ -115,22 +108,12 @@ theorem late_rate (f g : PR 2) (s k l x y R : PTm n)
   let r := ap2 g l y
   have den := positive_product _ _ (unit_positive (Γ := Γ) k) (unit_positive l)
   have recoded := GaussianFastValueCut.recode_distance_bound q r _ _ den (cross_at f g x y k l he)
-  have fine := distance_radius_mono _ _ _ _ one (unit a) den (unit_positive a) (input_budget k l a hk hl) recoded
+  have fine := distance_at_later_clocks k l a hk hl recoded
   have budget : Γ ⊢[PRAAx] unit a ≐ unit (modulus s R) := by
     ipra_congr (unit (var 0) : PTm 1) with [modulus_at s R]
   exact GaussianGammaHalfPlaneInputContinuity.original_C7_mixed_rate s (rawGaussian q) (rawGaussian r) R
     (rawDen q) (rawDen r) (native_source f k x R hf) (native_source g l y R hg)
     (distance_congr (.eqRefl _) (.eqRefl _) (.eqRefl _) budget fine)
-
-private theorem output_budget (p q : PTm n) : Γ ⊢[PRAAx] le
-    (rateNumerator one (unit (succ p)) (succ p) (succ q)*(unit p*unit q))
-    ((unit p+unit q)*rateDenominator (unit (succ p)) (succ p) (succ q)) := by
-  have dp : Γ ⊢[PRAAx] unit (succ p) ≐ unit p*two := pw_succ two p
-  have dq : Γ ⊢[PRAAx] unit (succ q) ≐ unit q*two := pw_succ two q
-  have rd := congrMul (congrMul dp dp) dq
-  have rn := congrAdd (congrMul (congrMul (.eqRefl one) dp) dq) (congrMul dp (congrAdd dp dq))
-  exact le_congr (congrMul rn (.eqRefl _)).eqSymm (congrMul (.eqRefl _) rd).eqSymm
-    (le_of_eq_add (d := two*two*unit p*unit p*unit p*unit q) (by ipra_ring))
 
 private theorem observations_of_le (f g : PR 2) (p q k l x y R : PTm n)
     (hf : Γ ⊢[PRAAx] source f x R) (hg : Γ ⊢[PRAAx] source g y R)
@@ -144,9 +127,7 @@ private theorem observations_of_le (f g : PR 2) (p q k l x y R : PTm n)
   have rate := late_rate f g (succ p) k l x y R hf hg he
     (le_trans (clock_demand p R (succ p) (le_refl _)) hk)
     (le_trans (clock_demand q R (succ p) hs) hl)
-  exact distance_radius_mono _ _ _ _ _ _ (denominator_positive _ _ _ (unit_positive (succ p)))
-    (positive_product _ _ (unit_positive p) (unit_positive q)) (output_budget p q)
-    (rate_at _ _ _ _ _ _ (succ p) (succ q) rate)
+  exact distance_at_succ_clocks _ _ p q (rate_at _ _ _ _ _ _ (succ p) (succ q) rate)
 
 theorem late_observations (f g : PR 2) (p q k l x y R : PTm n)
     (hf : Γ ⊢[PRAAx] source f x R) (hg : Γ ⊢[PRAAx] source g y R)

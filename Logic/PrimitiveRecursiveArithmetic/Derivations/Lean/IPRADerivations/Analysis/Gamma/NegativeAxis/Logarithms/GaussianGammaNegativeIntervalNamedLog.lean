@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.Gamma.NegativeAxis.Logarithms.GaussianGammaNegativeIntervalNamedLogVariation
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.GaussianNamedEulerUnitTime
 import IPRADerivations.Foundations.FiniteQueryDemand
+import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
 
 /-!
 # The original negative log-Gamma at a named offset
@@ -21,14 +22,14 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaNegativeIntervalNamedLogVariation (modulus rational_rate)
 open GaussianNameEquivalence (crossEquivalent cross_at cross_symm cross_refl)
-open GaussianNamedInverseRate (rateNumerator rateDenominator denominator_positive rate_at)
+open GaussianNamedInverseRate (rateNumerator rateDenominator rate_at)
 open GaussianPositiveRationalLogarithm (fraction)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
+open GaussianNamedRateRadius (distance_at_later_clocks distance_at_succ_clocks)
+open GaussianRationalDistanceOrder (distance_congr distance_symmetric)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianSignedNameExponentialOrder (realSamples real_sample_at)
 open GaussianUnitIntervalInputDecoding (numerator denominator fraction_recode)
-open GaussianExponentialReference (unit_monotone)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "L" => GaussianGammaNegativeIntervalLogAbsolute.nameF
@@ -85,15 +86,6 @@ theorem encoded_regular (f : PR 2) (k x E N : PTm n) (h : Γ ⊢[PRAAx] source f
     Γ ⊢[PRAAx] pointCN L (encodedData f k x N) :=
   GaussianGammaNegativeIntervalLogAbsolute.name_regular _ _ N (GaussianNamedEulerUnitTime.encoded_source f k x E h).andE₁
 
-private theorem input_budget (r t m : PTm n)
-    (hr : Γ ⊢[PRAAx] le (succ m) r) (ht : Γ ⊢[PRAAx] le (succ m) t) :
-    Γ ⊢[PRAAx] le ((unit r+unit t)*unit m) (one*(unit r*unit t)) := by
-  have double : Γ ⊢[PRAAx] unit (succ m) ≐ two*unit m := (pw_succ two m).eqTrans (mul_comm _ _)
-  have left := mul_le_mul_right (unit t) (le_congr double (.eqRefl _) (unit_monotone hr))
-  have right := mul_le_mul_right (unit r) (le_congr double (.eqRefl _) (unit_monotone ht))
-  exact RationalValueBounds.positive_cancel RationalAlgebra.two_positive
-    (le_congr (by ipra_ring) (by ipra_ring) (add_le_add₂ left right))
-
 theorem encoded_rate (f g : PR 2) (r t s x y E N : PTm n)
     (hf : Γ ⊢[PRAAx] source f x E) (hg : Γ ⊢[PRAAx] source g y E)
     (he : Γ ⊢[PRAAx] crossEquivalent f g x y)
@@ -108,19 +100,9 @@ theorem encoded_rate (f g : PR 2) (r t s x y E N : PTm n)
   have den := positive_product _ _ (unit_positive (Γ := Γ) r) (unit_positive t)
   have decoded := distance_congr (fraction_recode u E hu).eqSymm (fraction_recode v E hv).eqSymm
     (.eqRefl _) (.eqRefl _) (GaussianFastValueCut.recode_distance_bound _ _ _ _ den (cross_at f g x y r t he))
-  have near := distance_radius_mono _ _ _ _ _ _ den (unit_positive m) (input_budget r t m hr ht) decoded
+  have near := distance_at_later_clocks r t m hr ht decoded
   exact rational_rate s _ _ _ _ E N
     (GaussianNamedEulerUnitTime.encoded_source f r x E hf) (GaussianNamedEulerUnitTime.encoded_source g t y E hg) near
-
-private theorem output_budget (p q : PTm n) : Γ ⊢[PRAAx] le
-    (rateNumerator one (unit (succ p)) (succ p) (succ q)*(unit p*unit q))
-    ((unit p+unit q)*rateDenominator (unit (succ p)) (succ p) (succ q)) := by
-  have dp : Γ ⊢[PRAAx] unit (succ p) ≐ unit p*two := pw_succ two p
-  have dq : Γ ⊢[PRAAx] unit (succ q) ≐ unit q*two := pw_succ two q
-  have rd := congrMul (congrMul dp dp) dq
-  have rn := congrAdd (congrMul (congrMul (.eqRefl one) dp) dq) (congrMul dp (congrAdd dp dq))
-  exact le_congr (congrMul rn (.eqRefl _)).eqSymm (congrMul (.eqRefl _) rd).eqSymm
-    (le_of_eq_add (d := two*two*unit p*unit p*unit p*unit q) (by ipra_ring))
 
 private theorem observations_of_le (f g : PR 2) (p q x y E N : PTm n)
     (hf : Γ ⊢[PRAAx] source f x E) (hg : Γ ⊢[PRAAx] source g y E)
@@ -134,8 +116,7 @@ private theorem observations_of_le (f g : PR 2) (p q x y E N : PTm n)
   have rate := encoded_rate f g r t s x y E N hf hg he
     (clock_demand p E N s (le_refl _)) (clock_demand q E N s hs)
   have obs := rate_at L L (encodedData f r x N) (encodedData g t y N) one (unit s) (succ p) (succ q) rate
-  exact distance_radius_mono _ _ _ _ _ _ (denominator_positive _ _ _ (unit_positive s))
-    (positive_product _ _ (unit_positive p) (unit_positive q)) (output_budget p q) obs
+  exact distance_at_succ_clocks _ _ p q obs
 
 theorem original_observations (f g : PR 2) (p q x y E N : PTm n)
     (hf : Γ ⊢[PRAAx] source f x E) (hg : Γ ⊢[PRAAx] source g y E)

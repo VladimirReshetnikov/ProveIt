@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Names.PoleFree.GaussianGammaNamedPoleFreeModulus
 import IPRADerivations.Foundations.FiniteQueryDemand
+import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
 
 /-!
 # Original Gamma on regular complex names with a uniform pole certificate
@@ -22,11 +23,11 @@ open GaussianGammaHalfPlaneInputContinuity (modulus subst_modulus)
 open GaussianGammaReciprocalInverse (gammaF gammaData gamma_regular)
 open GaussianRationalL1 (rawGaussian rawDen)
 open GaussianNameEquivalence (crossEquivalent cross_at cross_symm cross_refl)
-open GaussianNamedInverseRate (rateNumerator rateDenominator denominator_positive rate_at)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
+open GaussianNamedInverseRate (rateNumerator rateDenominator rate_at)
+open GaussianNamedRateRadius (distance_at_later_clocks distance_at_succ_clocks)
+open GaussianRationalDistanceOrder (distance_congr distance_symmetric)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
-open GaussianExponentialReference (unit_monotone)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -89,15 +90,6 @@ theorem encoded_regular (f : PR 2) (k x R E : PTm n) (h : Γ ⊢[PRAAx] source f
     Γ ⊢[PRAAx] pointCN gammaF (encodedData f k x R E) :=
   gamma_regular _ R _ one E (source_at f k x R E h)
 
-private theorem input_budget (r t m : PTm n)
-    (hr : Γ ⊢[PRAAx] le (succ m) r) (ht : Γ ⊢[PRAAx] le (succ m) t) :
-    Γ ⊢[PRAAx] le ((unit r+unit t)*unit m) (one*(unit r*unit t)) := by
-  have double : Γ ⊢[PRAAx] unit (succ m) ≐ two*unit m := (pw_succ two m).eqTrans (mul_comm _ _)
-  have left := mul_le_mul_right (unit t) (le_congr double (.eqRefl _) (unit_monotone hr))
-  have right := mul_le_mul_right (unit r) (le_congr double (.eqRefl _) (unit_monotone ht))
-  exact RationalValueBounds.positive_cancel RationalAlgebra.two_positive
-    (le_congr (by ipra_ring) (by ipra_ring) (add_le_add₂ left right))
-
 theorem encoded_rate (f g : PR 2) (r t s x y R E : PTm n)
     (hf : Γ ⊢[PRAAx] source f x R E) (hg : Γ ⊢[PRAAx] source g y R E)
     (he : Γ ⊢[PRAAx] crossEquivalent f g x y)
@@ -109,19 +101,9 @@ theorem encoded_rate (f g : PR 2) (r t s x y R E : PTm n)
   let m := modulus s R E
   have den := positive_product _ _ (unit_positive (Γ := Γ) r) (unit_positive t)
   have actual := GaussianFastValueCut.recode_distance_bound u v _ _ den (cross_at f g x y r t he)
-  have near := distance_radius_mono _ _ _ _ _ _ den (unit_positive m) (input_budget r t m hr ht) actual
+  have near := distance_at_later_clocks r t m hr ht actual
   exact GaussianGammaNamedPoleFreeModulus.original_rate s (rawGaussian u) (rawGaussian v) R (rawDen u) (rawDen v) E
     (source_at f r x R E hf) (source_at g t y R E hg) near
-
-private theorem output_budget (p q : PTm n) : Γ ⊢[PRAAx] le
-    (rateNumerator one (unit (succ p)) (succ p) (succ q)*(unit p*unit q))
-    ((unit p+unit q)*rateDenominator (unit (succ p)) (succ p) (succ q)) := by
-  have dp : Γ ⊢[PRAAx] unit (succ p) ≐ unit p*two := pw_succ two p
-  have dq : Γ ⊢[PRAAx] unit (succ q) ≐ unit q*two := pw_succ two q
-  have rd := congrMul (congrMul dp dp) dq
-  have rn := congrAdd (congrMul (congrMul (.eqRefl one) dp) dq) (congrMul dp (congrAdd dp dq))
-  exact le_congr (congrMul rn (.eqRefl _)).eqSymm (congrMul (.eqRefl _) rd).eqSymm
-    (le_of_eq_add (d := two*two*unit p*unit p*unit p*unit q) (by ipra_ring))
 
 private theorem observations_of_le (f g : PR 2) (p q x y R E : PTm n)
     (hf : Γ ⊢[PRAAx] source f x R E) (hg : Γ ⊢[PRAAx] source g y R E)
@@ -135,8 +117,7 @@ private theorem observations_of_le (f g : PR 2) (p q x y R E : PTm n)
   have rate := encoded_rate f g r t s x y R E hf hg he
     (clock_demand p R E s (le_refl _)) (clock_demand q R E s hs)
   have obs := rate_at gammaF gammaF (encodedData f r x R E) (encodedData g t y R E) one (unit s) (succ p) (succ q) rate
-  exact distance_radius_mono _ _ _ _ _ _ (denominator_positive _ _ _ (unit_positive s))
-    (positive_product _ _ (unit_positive p) (unit_positive q)) (output_budget p q) obs
+  exact distance_at_succ_clocks _ _ p q obs
 
 theorem original_observations (f g : PR 2) (p q x y R E : PTm n)
     (hf : Γ ⊢[PRAAx] source f x R E) (hg : Γ ⊢[PRAAx] source g y R E)
