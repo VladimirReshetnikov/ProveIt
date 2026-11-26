@@ -59,7 +59,7 @@ def clearedError (q S : PTm n) : ZT n :=
 @[simp] theorem subst_realPoint {m : ℕ} (σ : Fin n → PTm m) (a : ZT n) (S : PTm n) :
     Syn.subst σ (realPoint a S) = realPoint (a.subst σ) (Syn.subst σ S) := by simp [realPoint]
 
-private theorem signed_band_of_absolute (a : ZT n) (E : PTm n)
+theorem band_of_absolute (a : ZT n) (E : PTm n)
     (h : Γ ⊢[PRAAx] le (zabs a) E) : Γ ⊢[PRAAx] band a E := by
   have hn : Γ ⊢[PRAAx] zle (ZT.ofNat (zabs a)) (ZT.ofNat E) :=
     le_congr (add_zero _).eqSymm (add_zero _).eqSymm h
@@ -79,7 +79,7 @@ theorem rounding_error (q S : PTm n) :
   exact le_congr (zabs_congr e).eqSymm (.eqRefl _) (remainder_bound a D S (raw_den_positive q))
 
 theorem rounding_band (q S : PTm n) : Γ ⊢[PRAAx] band (clearedError q S) (rawDen q) :=
-  signed_band_of_absolute _ _ (rounding_error q S)
+  band_of_absolute _ _ (rounding_error q S)
 
 private theorem real_abs_square (a : PTm n) :
     Γ ⊢[PRAAx] le (zabs (re a)*zabs (re a)) (normSq a) := by
@@ -87,6 +87,13 @@ private theorem real_abs_square (a : PTm n) :
   apply deriveNat
   rw [Q.mk_add,map_add,normSq_eval,zabs_sq,zabs_sq]
   simp only [pow_two]
+
+theorem scaled_real_absolute (a S E K : PTm n)
+    (h : Γ ⊢[PRAAx] le ((S*S)*normSq a) ((E*E)*(K*K))) :
+    Γ ⊢[PRAAx] le (S*zabs (re a)) (K*E) := by
+  apply nat_sqrt_mono
+  exact le_congr (by ipra_ring) (by ipra_ring)
+    (le_trans (le_mul_mono (le_refl (S*S)) (real_abs_square a)) h)
 
 private theorem original_coordinate_error (q : PTm n) (a : ZT n) (S E : PTm n)
     (hS : Γ ⊢[PRAAx] le one S) (h : Γ ⊢[PRAAx] distanceBounded q (realPoint a S) E S) :
@@ -101,13 +108,12 @@ private theorem original_coordinate_error (q : PTm n) (a : ZT n) (S E : PTm n)
   have hy := represents_congr (.eqRefl _) (GaussianRootAlgebra.equal_refl _) (mul_comm S D) hy0
   have raw : Γ ⊢[PRAAx] le ((S*S)*normSq d) ((E*E)*((D*S)*(D*S))) :=
     (bounded_difference_iff _ _ _ _ _ _ _ (positive_product D S hD hS) hS hq hy).iffMp h
-  have square : Γ ⊢[PRAAx] le ((S*zabs (re d))*(S*zabs (re d))) ((S*(D*E))*(S*(D*E))) :=
-    le_congr (by ipra_ring) (by ipra_ring)
-      (le_trans (le_mul_mono (le_refl (S*S)) (real_abs_square d)) raw)
-  have small := RationalValueBounds.positive_cancel hS (nat_sqrt_mono square)
+  have scaled : Γ ⊢[PRAAx] le (S*zabs (re d)) (S*(D*E)) :=
+    le_congr (.eqRefl _) (by ipra_ring) (scaled_real_absolute d S E (D*S) raw)
+  have small := RationalValueBounds.positive_cancel hS scaled
   have eq : ZT.toZ Γ (re d) = ZT.toZ Γ (ZT.ofNat S*re Q-ZT.ofNat D*a) := by
     simp only [d,y,re_sub,re_scale,eval_re_code,ZT.toZ_sub,ZT.toZ_mul,ZT.toZ_ofNat]
-  exact signed_band_of_absolute _ _
+  exact band_of_absolute _ _
     (le_congr (zabs_congr eq) (.eqRefl _) small)
 
 /-- An actual observation incurs at most one additional lattice unit. -/
