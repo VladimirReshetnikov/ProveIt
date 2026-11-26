@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.WeightedIntegrals.GaussianBinetWeightedExponentialGrid
 import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianSignedNameExponentialOrder
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedAddRate
+import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedAddRate
 
 /-!
 # Uniform variation of the original weighted Binet rows

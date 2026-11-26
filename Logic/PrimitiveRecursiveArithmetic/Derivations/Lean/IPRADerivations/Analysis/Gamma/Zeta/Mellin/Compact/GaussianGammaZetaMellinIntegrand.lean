@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerIntegrandName
 import IPRADerivations.Analysis.Exponential.Estimates.GaussianExponentialAffineLower
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedDifference
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteProductApartness
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedFiniteProductApartness
 
 /-!
 # The original Gamma–zeta Mellin integrand at positive rational times

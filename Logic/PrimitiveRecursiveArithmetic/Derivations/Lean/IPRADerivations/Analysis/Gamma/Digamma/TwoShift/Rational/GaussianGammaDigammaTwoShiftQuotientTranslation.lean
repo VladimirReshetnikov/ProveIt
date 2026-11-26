@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.Rational.GaussianGammaDigammaTwoShiftLogGammaTranslation
 import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.GaussianGammaDigammaTwoShiftBinding
 import IPRADerivations.Analysis.Euler.PowerScaling.GaussianEulerNamedPowerScalingPowerFrozen
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedAddRate
+import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedAddRate
 
 /-!
 # Common rational translation of the original normalized Gamma ratio

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.UnitShift.GaussianBarnesCanonicalShiftChart
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalSquareCancellation
+import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRationalSquareCancellation
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalRoundedPower
 
 /-!

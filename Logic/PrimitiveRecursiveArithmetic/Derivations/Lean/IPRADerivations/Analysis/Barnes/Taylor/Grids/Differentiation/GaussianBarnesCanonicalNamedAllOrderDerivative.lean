@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Names.GaussianBarnesCanonicalNamedFactorialTaylorIncrementEndpoints
-import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.GaussianBarnesCanonicalNamedIncrementDerivative
+import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.NamedValues.GaussianBarnesCanonicalNamedIncrementDerivative
 import IPRADerivations.Analysis.Barnes.Taylor.Grids.Differentiation.GaussianBarnesCanonicalFiniteTaylorAllOrderDerivative
 
 /-!

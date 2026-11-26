@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.Glaisher.GaussianBarnesGlaisherLogarithm
-import IPRADerivations.Analysis.RationalArithmetic.GaussianIntegerFractionPowers
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianIntegerFractionPowers
 
 /-!
 # Exact cancellation in the Glaisher increment

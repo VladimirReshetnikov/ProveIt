@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedMultiplyRate
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedMultiplyRate
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateComposition
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
 

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Inequalities.RationalNonnegativeFloor
+import IPRADerivations.Analysis.Inequalities.NonnegativeArithmetic.RationalNonnegativeFloor
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.GaussianEulerUnitSubstitutionTiltedNodes
 import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalUpperRepresentation
 

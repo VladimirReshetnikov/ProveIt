@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Logarithm.Robin.GaussianRobinLogarithmParity
 import IPRADerivations.Analysis.Logarithm.Local.GaussianLocalLogarithmName
-import IPRADerivations.Analysis.Names.GaussianNameRingLaws
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameRingLaws
 import IPRADerivations.Analysis.Polynomials.RootFinding.BalancedRadius.GaussianBalancedRadiusArithmetic
 
 /-!

@@ -4,7 +4,7 @@ fixed cofinal derivative names. Both named observations are independent
 of the step-size bound and the precision used to prove the rate.
 -/
 import IPRADerivations.Analysis.Barnes.Taylor.RelativeExpansions.GaussianBarnesCanonicalRelativeLogTaylor
-import IPRADerivations.Analysis.Barnes.Taylor.RelativeExpansions.GaussianBarnesCanonicalTailQuadraticName
+import IPRADerivations.Analysis.Barnes.Taylor.RelativeExpansions.SecondDerivative.GaussianBarnesCanonicalTailQuadraticName
 
 set_option autoImplicit false
 set_option maxHeartbeats 550000

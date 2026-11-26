@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.Convexity.GaussianGammaNativeStrictLogConvexity
 import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingMultiplicativeBoundsStrictOrder
 import IPRADerivations.Analysis.Gamma.Convexity.GaussianGammaStrongLogConvexityAlgebra
-import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.GaussianEulerPowerChartTimeOrder
+import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.Endpoints.GaussianEulerPowerChartTimeOrder
 
 /-!
 # The strict log-Gamma chord for a fractional step

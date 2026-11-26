@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Polynomials.Translation.GaussianTranslationCoefficientValues
 import IPRADerivations.Analysis.Polynomials.Representation.GaussianRationalPolynomialDegree
 import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianRationalMonicCompanion
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalNaturalScale
+import IPRADerivations.Analysis.RationalArithmetic.Scaling.GaussianRationalNaturalScale
 import IPRADerivations.Analysis.RationalArithmetic.Representations.GaussianRationalValueEquality
 
 /-!

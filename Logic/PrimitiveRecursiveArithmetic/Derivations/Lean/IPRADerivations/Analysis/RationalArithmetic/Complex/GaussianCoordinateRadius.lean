@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Representations.GaussianRationalValueEquality
-import IPRADerivations.Analysis.RationalArithmetic.RationalValueBounds
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.RationalValueBounds
 import IPRADerivations.Analysis.RationalArithmetic.Directions.GaussianRationalDirectionNormalizer
 
 /-!

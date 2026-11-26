@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Names.GaussianBarnesCanonicalNamedFrozen
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedIncrementChart
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedBoundedSumObservation
+import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedBoundedSumObservation
 import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedIncrementQuotientFrozenRate
 
 /-!

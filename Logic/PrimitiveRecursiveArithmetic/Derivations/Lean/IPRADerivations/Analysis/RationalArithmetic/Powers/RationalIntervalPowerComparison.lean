@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.Intervals.RationalNestedIntervals
 import IPRADerivations.Analysis.Optimization.Convexity.RationalMultiplicativeConvexity
-import IPRADerivations.Analysis.Inequalities.RationalNonnegativePowerOrder
+import IPRADerivations.Analysis.Inequalities.NonnegativeArithmetic.RationalNonnegativePowerOrder
 
 /-!
 # Cofinal midpoint order reflects the actual powered endpoints

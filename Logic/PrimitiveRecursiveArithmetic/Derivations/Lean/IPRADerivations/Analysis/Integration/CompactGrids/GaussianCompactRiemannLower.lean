@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalRepresentedUpper
 import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactRiemannName
-import IPRADerivations.Analysis.RationalArithmetic.RationalGaussianRealPart
-import IPRADerivations.Analysis.RationalArithmetic.GaussianPositiveRealArithmetic
+import IPRADerivations.Analysis.RationalArithmetic.Embeddings.RationalGaussianRealPart
+import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianPositiveRealArithmetic
 
 /-!
 # Lower estimate of the real part of an actual affine-grid quadrature

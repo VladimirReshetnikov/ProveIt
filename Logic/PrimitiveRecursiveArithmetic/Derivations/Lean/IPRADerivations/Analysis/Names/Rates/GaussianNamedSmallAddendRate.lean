@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Names.GaussianNameRingLaws
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameRingLaws
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedLipschitzRate
 
 /-!

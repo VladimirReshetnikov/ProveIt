@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Trigonometry.Sinc.GaussianScalarSincTaylorBounds
 import IPRADerivations.Analysis.Trigonometry.GaussianNamedSineTaylor
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalLowerBounds
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GaussianRationalLowerBounds
 
 /-!
 # Cofinal sinc samples from the original named sine

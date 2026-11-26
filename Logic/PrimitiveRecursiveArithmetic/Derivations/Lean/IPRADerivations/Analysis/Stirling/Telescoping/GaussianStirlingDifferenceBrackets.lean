@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Expansions.GaussianStirlingOddReadback
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedBoundedProductObservation
-import IPRADerivations.Analysis.RationalArithmetic.RationalGaussianRealPart
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedBoundedProductObservation
+import IPRADerivations.Analysis.RationalArithmetic.Embeddings.RationalGaussianRealPart
 
 /-!
 # The original Stirling difference lies in its finite odd-series interval

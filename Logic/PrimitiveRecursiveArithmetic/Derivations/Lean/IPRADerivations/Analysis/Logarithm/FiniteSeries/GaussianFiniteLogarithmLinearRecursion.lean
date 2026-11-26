@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianRationalCoefficientRecursion
-import IPRADerivations.Analysis.RationalArithmetic.GaussianIntegerFractionPowers
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianIntegerFractionPowers
 
 /-!
 # The concrete polynomial 1+X has the original logarithmic recursion

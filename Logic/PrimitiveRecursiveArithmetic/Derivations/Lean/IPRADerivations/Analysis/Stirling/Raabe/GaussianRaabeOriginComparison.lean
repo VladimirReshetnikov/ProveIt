@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Stirling.Raabe.GaussianRaabeOriginSchedule
 import IPRADerivations.Analysis.Stirling.Raabe.GaussianRaabeAtOne
 import IPRADerivations.Analysis.Stirling.Raabe.GaussianRaabePositiveComparison
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalInverseQuadraticAlgebra
+import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRationalInverseQuadraticAlgebra
 
 /-!
 # Cofinal quadrature for the Raabe endpoint

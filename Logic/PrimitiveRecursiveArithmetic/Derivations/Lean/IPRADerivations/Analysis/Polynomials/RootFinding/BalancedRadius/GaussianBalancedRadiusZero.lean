@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.BalancedRadius.GaussianBalancedRadiusSyntax
-import IPRADerivations.Analysis.Inequalities.RationalNonnegativePowers
+import IPRADerivations.Analysis.Inequalities.NonnegativeArithmetic.RationalNonnegativePowers
 
 /-!
 # Genuine zero-radius branch of the balanced radius certificate

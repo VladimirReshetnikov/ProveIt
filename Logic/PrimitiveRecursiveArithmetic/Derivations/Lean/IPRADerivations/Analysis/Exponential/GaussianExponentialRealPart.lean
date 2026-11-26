@@ -1,7 +1,7 @@
-import IPRADerivations.Analysis.Names.GaussianNameConjugation
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameConjugation
 import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaFoldedApproximantBalance
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalNaturalScale
-import IPRADerivations.Analysis.RationalArithmetic.GaussianPositiveRealArithmetic
+import IPRADerivations.Analysis.RationalArithmetic.Scaling.GaussianRationalNaturalScale
+import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianPositiveRealArithmetic
 
 /-!
 # The actual exponential and its real-part square identity

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Names.PoleFree.GaussianGammaNamedPoleFreeModulus
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalNaturalScale
+import IPRADerivations.Analysis.RationalArithmetic.Scaling.GaussianRationalNaturalScale
 
 /-!
 # Raw representation invariance of the pole-free Gamma source

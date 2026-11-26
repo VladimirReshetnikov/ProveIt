@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.RationalHalfNinthProductLower
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.RationalHalfNinthProductLower
 import IPRADerivations.Analysis.RationalArithmetic.Powers.RationalReciprocalPowerTail
 
 /-!

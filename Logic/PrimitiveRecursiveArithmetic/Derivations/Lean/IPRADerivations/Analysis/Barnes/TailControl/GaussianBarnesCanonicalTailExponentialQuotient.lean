@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.GaussianBarnesCanonicalTailExponentialDerivative
+import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.TailFactors.GaussianBarnesCanonicalTailExponentialDerivative
 import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.GaussianBarnesCanonicalLogDerivativeQuotient
 
 /-! The actual divided difference of the original Barnes tail exponential

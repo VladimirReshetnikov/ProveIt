@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Convergence.Gaussia
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Convergence.GaussianLogGammaEulerResidualRadius
 import IPRADerivations.Analysis.Logarithm.RightHalfPlane.GaussianRightHalfPlaneLogarithmRescale
 import IPRADerivations.Analysis.Polynomials.RootFinding.FundamentalTheorem.GaussianGeneralFTATelescope
-import IPRADerivations.Analysis.Names.GaussianNameRingLaws
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameRingLaws
 
 /-!
 # Terminal logarithm error in the finite Euler unit shift

@@ -1,8 +1,8 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerHead
 import IPRADerivations.Analysis.Logarithm.RightHalfPlane.GaussianRightHalfPlaneLogarithmRescale
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteSumFamilySplit
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteSumFamilyCongruence
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteSumFamilyAdd
+import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedFiniteSumFamilySplit
+import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedFiniteSumFamilyCongruence
+import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedFiniteSumFamilyAdd
 
 /-!
 # Normalize the original finite Euler denominator logarithms

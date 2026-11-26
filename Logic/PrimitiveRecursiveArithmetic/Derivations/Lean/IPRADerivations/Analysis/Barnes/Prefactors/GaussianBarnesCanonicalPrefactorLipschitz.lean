@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.Growth.GaussianBarnesCanonicalDiskBound
 import IPRADerivations.Analysis.Barnes.Prefactors.GaussianBarnesCanonicalPrefactorInverse
 import IPRADerivations.Analysis.Euler.PowerScaling.GaussianEulerNamedPowerScalingPowerFrozen
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedAddRate
+import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedAddRate
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
 
 /-!

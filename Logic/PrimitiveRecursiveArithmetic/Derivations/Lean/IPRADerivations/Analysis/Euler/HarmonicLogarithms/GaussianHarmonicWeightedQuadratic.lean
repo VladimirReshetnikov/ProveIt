@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.HarmonicLogarithms.GaussianHarmonicQuadraticTangent
-import IPRADerivations.Analysis.RationalArithmetic.RationalValueBounds
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.RationalValueBounds
 import IPRADerivations.Analysis.Gamma.EulerProducts.Convexity.GaussianGammaEulerRationalHeadConvexity
 
 /-!

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Logarithms.FiniteRows.GaussianBarnesCanonicalLogRow
 import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalFiniteProperness
-import IPRADerivations.Analysis.RationalArithmetic.GaussianIntegerFractionPowers
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianIntegerFractionPowers
 
 /-!
 # Equivalent rational presentations of the original Barnes log rows

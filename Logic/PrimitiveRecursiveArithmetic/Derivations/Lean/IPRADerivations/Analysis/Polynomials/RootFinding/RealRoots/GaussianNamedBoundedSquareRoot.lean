@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Inequalities.GaussianRationalNonnegativeFractions
-import IPRADerivations.Analysis.Names.GaussianNameRingLaws
+import IPRADerivations.Analysis.Inequalities.NonnegativeArithmetic.GaussianRationalNonnegativeFractions
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameRingLaws
 
 /-!
 # Independent dyadic square-root sampling of a named radicand

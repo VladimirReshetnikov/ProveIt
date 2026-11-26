@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Names.GaussianNamedHalf
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNamedHalf
 import IPRADerivations.Analysis.Polynomials.RootFinding.RealRoots.GaussianNamedBoundedSquareRoot
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianNamedGammaHalfShift
 

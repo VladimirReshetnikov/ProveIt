@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Zeta.GaussianGammaZetaParameterRates
 import IPRADerivations.Analysis.Gamma.Zeta.Dirichlet.GaussianGammaZetaDirichletCofinal
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteSumFamilyRate
+import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedFiniteSumFamilyRate
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateComposition
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
 

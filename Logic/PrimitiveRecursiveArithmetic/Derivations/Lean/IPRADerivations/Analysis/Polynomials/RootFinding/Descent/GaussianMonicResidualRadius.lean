@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalReciprocal
+import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRationalReciprocal
 import IPRADerivations.Analysis.Names.Rates.GaussianRadiusBudget
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalSyntheticBounds
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GaussianRationalSyntheticBounds
 import IPRADerivations.Analysis.Polynomials.Horner.GaussianReciprocalHorner
 
 /-!

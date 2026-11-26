@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.Derivatives.GaussianGammaUnitEulerDifference
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalLowerBounds
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GaussianRationalLowerBounds
 import IPRADerivations.Analysis.Stirling.GaussianStirlingNames
 
 /-!

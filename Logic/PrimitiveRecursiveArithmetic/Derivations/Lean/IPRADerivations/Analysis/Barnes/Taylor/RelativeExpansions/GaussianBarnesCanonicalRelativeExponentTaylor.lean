@@ -3,8 +3,8 @@ Exact quadratic expansion of the original Barnes prefactor and the kept
 finite correction exponent. Both are polynomial in the native step.
 -/
 import IPRADerivations.Analysis.Barnes.Taylor.RelativeExpansions.GaussianBarnesCanonicalRelativeLogIncrement
-import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.GaussianBarnesCanonicalHeadCorrectionDerivative
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalSquareCancellation
+import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.FiniteFactors.GaussianBarnesCanonicalHeadCorrectionDerivative
+import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRationalSquareCancellation
 
 set_option autoImplicit false
 set_option maxHeartbeats 500000

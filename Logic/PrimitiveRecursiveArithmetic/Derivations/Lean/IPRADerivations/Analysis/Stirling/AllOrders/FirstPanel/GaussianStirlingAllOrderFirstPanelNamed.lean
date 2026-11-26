@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.AllOrders.FirstPanel.GaussianStirlingAllOrderFirstPanelReadback
 import IPRADerivations.Analysis.Euler.HarmonicLogarithms.GaussianHarmonicLogarithmName
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedBoundedProductObservation
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedBoundedProductObservation
 
 /-!
 # The first periodic panel approaches the original named Stirling difference

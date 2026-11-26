@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Names.GoldenRatio.GaussianNamedSqrtFive
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedDiagonalRate
-import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.GaussianEulerPositivePowerChartCorrectedImage
+import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.ImageGrids.GaussianEulerPositivePowerChartCorrectedImage
 
 /-!
 # The named positive solution of x²=x+1

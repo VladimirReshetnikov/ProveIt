@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Exponential.GaussianExponentialAddition
 import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialRadiusIndependence
 import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalTailExponential
-import IPRADerivations.Analysis.Names.GaussianNameRingLaws
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameRingLaws
 import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.GaussianMonicResidualRadius
 
 /-!

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.AllOrders.PanelParts.GaussianStirlingAllOrderDiscreteParts
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalSumLinearity
-import IPRADerivations.Analysis.RationalArithmetic.RationalGaussianRealPart
+import IPRADerivations.Analysis.RationalArithmetic.Embeddings.RationalGaussianRealPart
 import IPRADerivations.Analysis.Integration.GaussianRationalRiemannRefinement
 
 /-!

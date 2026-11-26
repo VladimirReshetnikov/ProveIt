@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.GaussianBarnesCanonicalDerivativeRow
+import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.Cofinal.GaussianBarnesCanonicalDerivativeRow
 import IPRADerivations.Analysis.Logarithm.Local.GaussianLocalLogarithmMultiplicativeIncrement
 import IPRADerivations.Analysis.Geometry.Distances.GaussianRelativeNormTriangle
 

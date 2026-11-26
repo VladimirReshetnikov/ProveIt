@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Telescoping.GaussianStirlingDifferenceBrackets
 import IPRADerivations.Analysis.Stirling.Telescoping.GaussianStirlingNamedTelescopeBounds
-import IPRADerivations.Analysis.Inequalities.GaussianRationalNonnegativeFractions
+import IPRADerivations.Analysis.Inequalities.NonnegativeArithmetic.GaussianRationalNonnegativeFractions
 
 /-!
 # The sharp bounds on the original named Stirling difference

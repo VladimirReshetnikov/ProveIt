@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.FiniteOperations.PeriodicGrids.GaussianSignedObservationGrid
-import IPRADerivations.Analysis.RationalArithmetic.RationalValueBounds
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.RationalValueBounds
 
 /-!
 # One-sided real order survives signed observation rounding

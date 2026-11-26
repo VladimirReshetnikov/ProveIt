@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.CriticalPoints.PositiveMinimum.GaussianGammaMinimumGlobalComparison
-import IPRADerivations.Analysis.RationalArithmetic.RationalUpperAddition
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.RationalUpperAddition
 
 /-!
 # Transfer a fixed positive margin in a frozen rational Gamma comparison

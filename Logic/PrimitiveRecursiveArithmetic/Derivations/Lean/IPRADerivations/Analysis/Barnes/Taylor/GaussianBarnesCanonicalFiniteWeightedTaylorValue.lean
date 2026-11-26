@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Barnes.Taylor.CenteredCharts.GaussianBarnesCanon
 import IPRADerivations.Analysis.Barnes.Taylor.CenteredCharts.GaussianBarnesCanonicalFiniteCentralExponentialBound
 import IPRADerivations.Analysis.Barnes.Taylor.TaylorBalls.GaussianBarnesCanonicalWeightedTaylorBall
 import IPRADerivations.Analysis.Euler.PowerScaling.GaussianEulerNamedPowerScalingPowerFrozen
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedAddRate
+import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedAddRate
 
 /-!
 # Weighted Taylor comparison for the literal finite Barnes product

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.ExponentialSubstitution.GaussianEulerExponentialSubstitutionIntegrand
-import IPRADerivations.Analysis.Names.GaussianNameRingLaws
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameRingLaws
 
 /-!
 # The actual named-input kernel exp((z/B)u-exp(u))

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Zeta.Dirichlet.GaussianGammaZetaDirichletPowerOrder
-import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.GaussianEulerPowerChartTimeOrder
+import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.Endpoints.GaussianEulerPowerChartTimeOrder
 import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianSquaredNormUpper
 
 /-!

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.GaussianGammaInverseConjugation
-import IPRADerivations.Analysis.RationalArithmetic.RationalGaussianRealPart
+import IPRADerivations.Analysis.RationalArithmetic.Embeddings.RationalGaussianRealPart
 import IPRADerivations.Core.CertificateTactics
 
 /-!

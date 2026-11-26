@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Series.ReciprocalSquares.GaussianReciprocalSquareInterval
-import IPRADerivations.Analysis.Names.GaussianNameArithmetic
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameArithmetic
 
 /-!
 # Finite reciprocal-square distances with a common observation error

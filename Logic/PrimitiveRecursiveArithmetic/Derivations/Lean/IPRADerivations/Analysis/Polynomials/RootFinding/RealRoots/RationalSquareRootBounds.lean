@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Inequalities.RationalNonnegativePowers
+import IPRADerivations.Analysis.Inequalities.NonnegativeArithmetic.RationalNonnegativePowers
 
 /-!
 # Actual rational square-root brackets from integer square root

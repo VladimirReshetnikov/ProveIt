@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerNormalizedHead
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteSumFamilyRange
+import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedFiniteSumFamilyRange
 import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalRatioBinding
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedStrictOrderDifference
 

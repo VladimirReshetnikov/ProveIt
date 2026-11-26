@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Gamma.Zeta.Dirichlet.GaussianGammaZetaDirichletO
 import IPRADerivations.Analysis.Gamma.Zeta.GaussianGammaZetaNamedChart
 import IPRADerivations.Analysis.Gamma.Zeta.GaussianGammaZetaNamedInput
 import IPRADerivations.Analysis.Names.RightHalfPlane.GaussianNamedRightHalfPlaneDemandComparison
-import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.GaussianEulerPowerChartTimeOrder
+import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.Endpoints.GaussianEulerPowerChartTimeOrder
 import IPRADerivations.Analysis.Names.RightHalfPlane.GaussianNamedRightHalfPlaneConstant
 
 /-!

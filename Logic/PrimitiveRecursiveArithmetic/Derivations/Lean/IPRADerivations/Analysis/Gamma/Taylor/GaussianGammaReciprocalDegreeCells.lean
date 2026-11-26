@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaFiniteDegreeRearrangement
 import IPRADerivations.Analysis.RationalArithmetic.Powers.RationalReciprocalPowerTail
-import IPRADerivations.Analysis.RationalArithmetic.RationalGaussianRealPart
-import IPRADerivations.Analysis.RationalArithmetic.GaussianIntegerFractionPowers
+import IPRADerivations.Analysis.RationalArithmetic.Embeddings.RationalGaussianRealPart
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianIntegerFractionPowers
 import IPRADerivations.AnalyticNumberTheory.LocalFactor
 
 /-!

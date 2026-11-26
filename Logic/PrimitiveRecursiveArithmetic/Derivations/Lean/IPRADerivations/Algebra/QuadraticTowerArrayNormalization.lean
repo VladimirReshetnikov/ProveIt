@@ -1,6 +1,6 @@
 import IPRADerivations.Algebra.QuadraticTowerMultiplicationTable
 import IPRADerivations.Foundations.SequenceEquality
-import IPRADerivations.Analysis.RationalArithmetic.RationalGaussianEmbedding
+import IPRADerivations.Analysis.RationalArithmetic.Embeddings.RationalGaussianEmbedding
 
 /-!
 # Actual normalization of numerical quadratic-tower arrays

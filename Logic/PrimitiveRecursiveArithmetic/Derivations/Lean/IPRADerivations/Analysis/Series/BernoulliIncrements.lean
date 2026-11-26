@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Series.BernoulliBounds
-import IPRADerivations.Analysis.RationalArithmetic.PowerIncrement
+import IPRADerivations.Analysis.RationalArithmetic.Powers.PowerIncrement
 
 /-!
 # Increment bounds for integer polynomials on `[0, 1]`, and the Bernoulli bounds on `ΔP_j`

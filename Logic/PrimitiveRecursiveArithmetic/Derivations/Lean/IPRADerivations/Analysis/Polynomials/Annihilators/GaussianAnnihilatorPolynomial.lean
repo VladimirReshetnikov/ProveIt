@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Inequalities.GaussianWeightedMonomialBasis
+import IPRADerivations.Analysis.Inequalities.WeightedComparison.GaussianWeightedMonomialBasis
 import IPRADerivations.Analysis.Polynomials.Representation.GaussianPolynomialWeightedDegree
 import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianRationalMonicReconstruction
 

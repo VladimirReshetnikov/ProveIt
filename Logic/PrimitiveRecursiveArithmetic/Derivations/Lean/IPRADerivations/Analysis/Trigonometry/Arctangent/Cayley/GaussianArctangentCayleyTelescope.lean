@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Trigonometry.Arctangent.Cayley.GaussianArctangentCayleyExponentialStep
 import IPRADerivations.Analysis.Trigonometry.Arctangent.PartialSums.GaussianArctangentExponentialPrefix
-import IPRADerivations.Analysis.Names.GaussianNameConjugation
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameConjugation
 import IPRADerivations.Analysis.Series.GaussianRationalParameterTelescope
 
 /-!

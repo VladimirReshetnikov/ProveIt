@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.FiniteHeads.GaussianGammaEulerHeadShift
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalNaturalScale
+import IPRADerivations.Analysis.RationalArithmetic.Scaling.GaussianRationalNaturalScale
 
 /-!
 # The unnormalized Euler denominator

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.NegativeAxis.Derivatives.GaussianGammaNegativeIntervalInverseStepQuotient
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedAddRate
+import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedAddRate
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
 
 /-!

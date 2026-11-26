@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetKernelCofinal
 import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetKernelImaginaryRatioPrefix
 import IPRADerivations.Analysis.Trigonometry.Hyperbolic.GaussianSineProductImaginaryCothExpansion
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedAddRate
+import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedAddRate
 
 /-!
 # Cofinal rate for the kernel at a frozen imaginary ratio

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Names.GaussianNameConjugation
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameConjugation
 import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaFiniteConjugation
 import IPRADerivations.Analysis.Gamma.EulerProducts.Weierstrass.GaussianGammaWeierstrassLimit
 import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialRadiusIndependence

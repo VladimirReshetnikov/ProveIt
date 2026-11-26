@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Powers.RationalReciprocalPowerTail
-import IPRADerivations.Analysis.Inequalities.RationalNonnegativePowers
+import IPRADerivations.Analysis.Inequalities.NonnegativeArithmetic.RationalNonnegativePowers
 
 /-!
 # Two-sided finite brackets for the inverse-square integral

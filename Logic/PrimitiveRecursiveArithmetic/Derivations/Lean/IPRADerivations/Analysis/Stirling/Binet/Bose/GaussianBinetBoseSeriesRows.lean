@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.Bose.GaussianBinetBoseSeries
-import IPRADerivations.Analysis.Stirling.Binet.Bose.GaussianBinetBoseIntegerScale
+import IPRADerivations.Analysis.Stirling.Binet.Bose.CompactIntegrand.GaussianBinetBoseIntegerScale
 import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialInverseSamples
 
 /-!

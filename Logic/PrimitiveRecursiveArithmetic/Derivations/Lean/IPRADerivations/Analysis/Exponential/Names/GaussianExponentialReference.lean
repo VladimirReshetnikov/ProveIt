@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Exponential.GaussianRadiusExponentialName
 import IPRADerivations.Analysis.Exponential.FiniteSeries.GaussianScalarExponentialProductTail
-import IPRADerivations.Analysis.Names.GaussianNameArithmetic
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameArithmetic
 import IPRADerivations.Analysis.Names.GaussianNameEquivalence
 
 /-!

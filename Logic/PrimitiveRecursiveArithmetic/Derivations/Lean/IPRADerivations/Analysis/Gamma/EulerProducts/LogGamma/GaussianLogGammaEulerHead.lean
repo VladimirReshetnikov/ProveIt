@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Logarithm.RightHalfPlane.GaussianRightHalfPlaneLogarithm
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteSumFamily
+import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedFiniteSumFamily
 
 /-!
 # Finite Euler heads of canonical log-Gamma

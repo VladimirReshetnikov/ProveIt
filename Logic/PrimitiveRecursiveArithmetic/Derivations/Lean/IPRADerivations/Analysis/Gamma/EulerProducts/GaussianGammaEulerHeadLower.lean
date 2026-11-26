@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerHead
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalLowerBounds
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GaussianRationalLowerBounds
 
 /-!
 # The exact pole-separation lower bound of the original Euler polynomial

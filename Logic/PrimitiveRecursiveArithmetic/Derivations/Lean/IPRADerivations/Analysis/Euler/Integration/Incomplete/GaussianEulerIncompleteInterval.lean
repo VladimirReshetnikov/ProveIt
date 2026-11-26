@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.Integration.Incomplete.GaussianEulerIncompleteFixedCutoff
 import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactAlignment
-import IPRADerivations.Analysis.Names.GaussianNameRingLaws
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameRingLaws
 
 /-!
 # An original positive compact interval between two upper incomplete names

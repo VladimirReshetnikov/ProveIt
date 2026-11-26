@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.GaussianBarnesCanonicalValueDerivative
+import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.NamedValues.GaussianBarnesCanonicalValueDerivative
 
 /-!
 # A common input precision for the original Barnes derivative quotient

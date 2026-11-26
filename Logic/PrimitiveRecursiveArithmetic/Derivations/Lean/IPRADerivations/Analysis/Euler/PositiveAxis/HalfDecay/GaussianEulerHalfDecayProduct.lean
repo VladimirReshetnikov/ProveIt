@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayAddition
 import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayOrder
-import IPRADerivations.Analysis.Names.GaussianNameRingLaws
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameRingLaws
 import IPRADerivations.Analysis.Optimization.Convexity.RationalConvexClockRescale
 
 /-!

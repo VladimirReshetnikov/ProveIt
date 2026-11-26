@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Taylor.CenteredCharts.GaussianBarnesCanonicalCenteredExponentialShift
-import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.GaussianBarnesCanonicalHeadPolynomialDerivative
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedMultiplyRate
+import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.FiniteFactors.GaussianBarnesCanonicalHeadPolynomialDerivative
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedMultiplyRate
 
 /-!
 # Transport an exponential increment estimate to the original Barnes value

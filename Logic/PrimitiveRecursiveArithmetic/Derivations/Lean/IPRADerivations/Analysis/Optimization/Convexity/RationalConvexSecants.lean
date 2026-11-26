@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Optimization.Convexity.RationalConvexSecantWeights
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalSyntheticBounds
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GaussianRationalSyntheticBounds
 
 /-!
 # The secant estimate on the original rational samples

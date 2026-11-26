@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Deflation.GaussianBarnesCanonicalDeflatedValue
 import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalHeadLipschitz
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedBoundedProductObservation
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedBoundedProductObservation
 
 /-!
 # Disk Lipschitz bounds for the original deflated Barnes head

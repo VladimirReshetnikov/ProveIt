@@ -1,9 +1,9 @@
 import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetKernelFrozenHyperbolic
 import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetKernelSinhOddLower
 import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianPositiveExponentialSeparation
-import IPRADerivations.Analysis.RationalArithmetic.GaussianScalarColumnSelection
+import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarColumnSelection
 import IPRADerivations.Analysis.Trigonometry.SineProducts.Bounds.GaussianSineReflectionLower
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteProductApartness
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedFiniteProductApartness
 
 /-!
 # Apartness of the original positive-time hyperbolic sine name

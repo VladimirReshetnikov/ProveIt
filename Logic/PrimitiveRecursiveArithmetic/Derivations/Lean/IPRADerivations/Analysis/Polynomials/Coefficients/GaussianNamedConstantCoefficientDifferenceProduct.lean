@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedDifferenceQuotient
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalInverseQuadraticAlgebra
+import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRationalInverseQuadraticAlgebra
 
 /-!
 # Product rule for constant-coefficient named differences

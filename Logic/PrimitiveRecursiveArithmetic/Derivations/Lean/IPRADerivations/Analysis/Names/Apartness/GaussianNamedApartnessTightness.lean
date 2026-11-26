@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Names.GaussianNameReciprocal
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameReciprocal
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedDifference
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianNamedGammaHalfShift
 

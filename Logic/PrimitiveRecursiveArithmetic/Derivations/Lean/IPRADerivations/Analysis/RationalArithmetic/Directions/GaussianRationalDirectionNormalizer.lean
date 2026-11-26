@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.GaussianIntegerCircleProjection
+import IPRADerivations.Analysis.RationalArithmetic.Complex.Circle.GaussianIntegerCircleProjection
 import IPRADerivations.Analysis.Polynomials.RootFinding.RealRoots.RationalSquareRootBounds
 import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalProductWitness
 import IPRADerivations.Foundations.DemandClosure

@@ -4,7 +4,7 @@ The lower margin for the original base power is one over M.
 -/
 import IPRADerivations.Analysis.Barnes.Taylor.CenteredCharts.GaussianBarnesCanonicalHeadRelativeLog
 import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalHeadPolynomialQuotient
-import IPRADerivations.Analysis.Names.GaussianNameReciprocal
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameReciprocal
 
 set_option autoImplicit false
 set_option maxHeartbeats 500000

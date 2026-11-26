@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.Glaisher.GaussianBarnesGlaisherQuartic
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteSumFamilySplit
+import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedFiniteSumFamilySplit
 
 /-!
 # Original finite Glaisher logarithm approximants

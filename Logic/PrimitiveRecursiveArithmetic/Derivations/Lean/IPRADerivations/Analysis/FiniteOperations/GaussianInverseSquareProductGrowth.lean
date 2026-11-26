@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.FiniteOperations.GaussianInverseSquareProductTail
-import IPRADerivations.Analysis.RationalArithmetic.PowerIncrement
+import IPRADerivations.Analysis.RationalArithmetic.Powers.PowerIncrement
 import IPRADerivations.AnalyticNumberTheory.LocalFactor
 
 /-!

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Elimination.Superelliptic.RationalSuperellipticNormDegree
-import IPRADerivations.Analysis.Inequalities.RationalWeightedMonomialEvaluation
+import IPRADerivations.Analysis.Inequalities.WeightedComparison.RationalWeightedMonomialEvaluation
 import IPRADerivations.Analysis.RationalArithmetic.Spans.GaussianRationalOriginalSpanRank
 
 /-!

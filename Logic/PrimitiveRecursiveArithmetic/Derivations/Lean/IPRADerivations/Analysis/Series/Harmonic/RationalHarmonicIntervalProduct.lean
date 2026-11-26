@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Series.Harmonic.RationalHarmonicInterval
 import IPRADerivations.Analysis.Names.RationalGaussianNameEmbedding
-import IPRADerivations.Analysis.Names.GaussianNameArithmetic
-import IPRADerivations.Analysis.RationalArithmetic.RationalGaussianRealPart
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameArithmetic
+import IPRADerivations.Analysis.RationalArithmetic.Embeddings.RationalGaussianRealPart
 
 /-!
 # Genuine finite harmonic rectangles for a product of positive fractions

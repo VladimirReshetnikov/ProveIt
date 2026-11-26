@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentSlope
 import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentNamedChord
-import IPRADerivations.Analysis.RationalArithmetic.RationalUpperAddition
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.RationalUpperAddition
 
 /-!
 # Slope of the actual partial arctangent names

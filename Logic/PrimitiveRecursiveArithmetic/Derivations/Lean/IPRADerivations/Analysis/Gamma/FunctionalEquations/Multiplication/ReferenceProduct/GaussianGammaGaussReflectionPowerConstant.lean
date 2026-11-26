@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.ReferenceProduct.GaussianGammaGaussReflectionCancellation
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteProductFamily
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedFiniteProductFamily
 
 /-!
 # Literal powers of two for the squared Gauss normalization

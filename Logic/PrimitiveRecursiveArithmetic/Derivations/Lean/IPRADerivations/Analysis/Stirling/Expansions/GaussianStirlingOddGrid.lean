@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.GammaMeshRobinLogBridge
-import IPRADerivations.Analysis.RationalArithmetic.PowerIncrement
+import IPRADerivations.Analysis.RationalArithmetic.Powers.PowerIncrement
 
 /-!
 # Finite odd-logarithm sums on a harmonic grid

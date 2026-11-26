@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.RationalGaussianRealPart
+import IPRADerivations.Analysis.RationalArithmetic.Embeddings.RationalGaussianRealPart
 import IPRADerivations.Analysis.Polynomials.Representation.RationalPolynomialGaussianEmbedding
 import IPRADerivations.Analysis.RationalArithmetic.Spans.GaussianRationalRowSpan
 import IPRADerivations.Analysis.Polynomials.Elimination.Superelliptic.GaussianSuperellipticSubspaceFromSpan

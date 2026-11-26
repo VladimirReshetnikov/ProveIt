@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Inequalities.PowerGap
-import IPRADerivations.Analysis.Inequalities.RationalNonnegativePowers
+import IPRADerivations.Analysis.Inequalities.NonnegativeArithmetic.RationalNonnegativePowers
 
 /-!
 # A right-endpoint power panel for the lower Euler tail

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarDeterminantLastRowGrouping
 import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarDeterminantLastRowProduct
-import IPRADerivations.Analysis.RationalArithmetic.GaussianScalarColumnSelection
+import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarColumnSelection
 import IPRADerivations.Foundations.RuntimePermutationInsertionParity
 
 /-!

@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.CriticalPoints.PositiveMinimum.GaussianGammaMinimumFreezeRational
 import IPRADerivations.Analysis.Gamma.Digamma.CriticalPoints.GaussianGammaDigammaLocationInput
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedDifference
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalLowerBounds
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GaussianRationalLowerBounds
 
 /-!
 # A finite named apartness certificate gives separation of the frozen inputs

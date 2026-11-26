@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.AllOrders.Truncation.GaussianStirlingAllOrderTruncationCoefficients
 import IPRADerivations.Analysis.Polynomials.Translation.GaussianInverseBinomialRows
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalInverseQuadraticAlgebra
+import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRationalInverseQuadraticAlgebra
 
 /-!
 # Exact observation algebra for logarithmic truncation

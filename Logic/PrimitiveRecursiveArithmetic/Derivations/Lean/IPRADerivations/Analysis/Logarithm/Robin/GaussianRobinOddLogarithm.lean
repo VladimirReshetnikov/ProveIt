@@ -1,5 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.RobinLogName
-import IPRADerivations.Analysis.RationalArithmetic.RationalGaussianEmbedding
+import IPRADerivations.Analysis.RationalArithmetic.Embeddings.RationalGaussianEmbedding
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalFiniteSum
 import IPRADerivations.Analysis.RationalArithmetic.Grids.RationalCubeMidpoint
 

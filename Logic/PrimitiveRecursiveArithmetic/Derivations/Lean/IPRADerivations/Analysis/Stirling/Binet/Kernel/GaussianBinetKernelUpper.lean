@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetKernelZero
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRealOrderTransport
-import IPRADerivations.Analysis.RationalArithmetic.RationalGaussianRealPart
+import IPRADerivations.Analysis.RationalArithmetic.Embeddings.RationalGaussianRealPart
 
 /-!
 # Sharp upper bound for the actual Binet kernel

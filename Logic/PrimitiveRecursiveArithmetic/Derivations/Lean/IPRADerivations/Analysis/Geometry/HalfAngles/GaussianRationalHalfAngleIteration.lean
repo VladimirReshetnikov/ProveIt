@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Geometry.HalfAngles.GaussianRationalHalfAngle
 import IPRADerivations.Analysis.Polynomials.RootFinding.BalancedRadius.GaussianBalancedRadiusArithmetic
-import IPRADerivations.Analysis.Inequalities.RationalNonnegativePowers
+import IPRADerivations.Analysis.Inequalities.NonnegativeArithmetic.RationalNonnegativePowers
 
 /-!
 # Actual repeated rational half-angles

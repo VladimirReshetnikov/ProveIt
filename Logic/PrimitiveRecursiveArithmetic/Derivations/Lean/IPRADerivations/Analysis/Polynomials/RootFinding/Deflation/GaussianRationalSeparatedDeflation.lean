@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianRationalFiniteRoots
-import IPRADerivations.Analysis.Names.GaussianNameReciprocal
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameReciprocal
 
 /-!
 # Residual propagation under separated synthetic deflation

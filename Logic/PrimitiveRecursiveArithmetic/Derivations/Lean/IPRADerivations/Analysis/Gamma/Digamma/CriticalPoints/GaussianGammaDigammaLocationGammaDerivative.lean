@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Digamma.CriticalPoints.GaussianGammaDigammaPositiveStationary
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalLowerBounds
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GaussianRationalLowerBounds
 
 /-!
 # An explicit admissible increment at the positive Gamma critical point

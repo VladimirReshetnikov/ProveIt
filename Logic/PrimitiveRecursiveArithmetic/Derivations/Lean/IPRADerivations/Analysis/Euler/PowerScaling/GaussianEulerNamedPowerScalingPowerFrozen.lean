@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Euler.PowerScaling.GaussianEulerNamedPowerScalin
 import IPRADerivations.Analysis.Euler.PowerScaling.GaussianEulerNamedPowerScalingParameterFrozen
 import IPRADerivations.Analysis.Euler.PowerScaling.GaussianEulerPowerScalingFrozenIntegrand
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedMultiplyRate
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedMultiplyRate
 
 /-!
 # The named inverse scale power at frozen parameters

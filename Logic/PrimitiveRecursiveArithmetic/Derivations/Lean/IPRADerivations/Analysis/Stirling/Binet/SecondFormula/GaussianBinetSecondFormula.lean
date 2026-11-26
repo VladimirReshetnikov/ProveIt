@@ -1,10 +1,10 @@
 import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.GaussianBinetSecondFormulaReduction
-import IPRADerivations.Analysis.Stirling.Binet.Bose.GaussianBinetBoseLateSchedule
-import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.GaussianBinetSecondDecayRetiming
-import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.GaussianBinetSecondFrequencySchedule
+import IPRADerivations.Analysis.Stirling.Binet.Bose.ImproperNames.GaussianBinetBoseLateSchedule
+import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.Decay.GaussianBinetSecondDecayRetiming
+import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.WeightedSine.GaussianBinetSecondFrequencySchedule
 import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.GaussianBinetSecondErrorBudget
 import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.SineKernels.GaussianBinetSineKernelPrefix
-import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.GaussianBinetFrozenKernelLaplace
+import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.FrozenKernels.GaussianBinetFrozenKernelLaplace
 
 /-!
 # Binet's second formula for the original improper Bose integral

@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Series.ReciprocalSquares.GaussianReciprocalSquareInterval
 import IPRADerivations.Analysis.Names.Scaling.GaussianNamedNaturalScale
 import IPRADerivations.Analysis.Beta.Endpoints.GaussianBetaUpperEndpointInverse
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalInverseQuadraticAlgebra
+import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRationalInverseQuadraticAlgebra
 
 /-!
 # Exact inverse-square telescope with a fixed additional denominator

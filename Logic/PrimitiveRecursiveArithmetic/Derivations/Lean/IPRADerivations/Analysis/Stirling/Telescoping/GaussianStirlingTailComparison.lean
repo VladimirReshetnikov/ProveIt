@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.GaussianStirlingFiniteBounds
-import IPRADerivations.Analysis.RationalArithmetic.RationalUpperAddition
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.RationalUpperAddition
 
 /-!
 # The exact analytic tail and the finite Stirling bounds

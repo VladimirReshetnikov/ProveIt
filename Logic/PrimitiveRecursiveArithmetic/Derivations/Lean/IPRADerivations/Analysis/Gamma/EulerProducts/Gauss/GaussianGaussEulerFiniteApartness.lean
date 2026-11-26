@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.GaussianGaussMultiplicationFixedProducts
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteProductApartness
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteProductFamily
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedFiniteProductApartness
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedFiniteProductFamily
 
 /-!
 # Apartness of the original finite Gauss denominators

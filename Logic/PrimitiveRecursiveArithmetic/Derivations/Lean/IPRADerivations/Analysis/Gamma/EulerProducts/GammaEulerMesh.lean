@@ -1,6 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.MeshChange
 import IPRADerivations.Analysis.Optimization.CubeInfimum.RationalCubeInfimumIntervals
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalSyntheticBounds
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GaussianRationalSyntheticBounds
 
 /-!
 # Exact Euler-constant mesh approximants

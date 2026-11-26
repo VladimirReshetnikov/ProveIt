@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaHigherCoefficientName
-import IPRADerivations.Analysis.Names.GaussianNameConjugation
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameConjugation
 
 /-!
 # Original coefficient names at an admissible common radius

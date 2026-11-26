@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Polynomials.Determinants.GaussianPolynomialDeterminantTerms
 import IPRADerivations.Analysis.Polynomials.Elimination.Vandermonde.GaussianRationalFiberVandermonde
 import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianRationalMonicReconstruction
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalReciprocal
+import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRationalReciprocal
 
 /-!
 # Actual numerical powers of stored Gaussian-rational polynomials

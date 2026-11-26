@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.GaussianGammaGaussShiftedProduct
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.ReciprocalGamma.GaussianGammaAdjacentCutoff
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteProductAppend
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedFiniteProductAppend
 
 /-!
 # Explicit two- and three-factor Gauss products

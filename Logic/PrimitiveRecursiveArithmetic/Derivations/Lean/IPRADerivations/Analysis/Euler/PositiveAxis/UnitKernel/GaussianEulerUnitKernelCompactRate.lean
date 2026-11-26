@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.GaussianEulerUnitLogarithmicRate
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.GaussianEulerUnitSubstitutionKernel
 import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerExponentCompactBounds
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedMultiplyRate
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedMultiplyRate
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedDifferenceRate
 import IPRADerivations.Analysis.Exponential.Estimates.GaussianRadiusExponentialLipschitzRate
 

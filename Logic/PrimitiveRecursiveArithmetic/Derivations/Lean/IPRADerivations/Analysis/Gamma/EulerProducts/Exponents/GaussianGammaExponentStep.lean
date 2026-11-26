@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.ReciprocalGamma.GaussianGammaCutoffName
 import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalTailShift
 import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaHarmonicIncrement
-import IPRADerivations.Analysis.Names.GaussianNameRingLaws
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameRingLaws
 
 /-!
 # The actual one-step change of the original C7 exponent

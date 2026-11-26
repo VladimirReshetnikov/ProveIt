@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.GaussianDescentClock
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianFactorBudget
-import IPRADerivations.Analysis.Inequalities.RationalNonnegativePowers
+import IPRADerivations.Analysis.Inequalities.NonnegativeArithmetic.RationalNonnegativePowers
 
 /-!
 # The actual rational descent rate is monotone in the numerical degree

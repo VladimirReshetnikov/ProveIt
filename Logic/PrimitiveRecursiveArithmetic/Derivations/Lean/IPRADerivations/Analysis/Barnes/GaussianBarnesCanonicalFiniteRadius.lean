@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalValue
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteProductFamilyCongruence
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedFiniteProductFamilyCongruence
 import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialRadiusIndependence
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.ReciprocalGamma.GaussianGammaAdjacentCutoff
 

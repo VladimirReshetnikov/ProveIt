@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.RationalGaussianEmbedding
+import IPRADerivations.Analysis.RationalArithmetic.Embeddings.RationalGaussianEmbedding
 
 /-!
 # Actual rational coefficient lists and Horner evaluation in the real axis

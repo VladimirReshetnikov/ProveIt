@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalHeadApartness
 import IPRADerivations.Analysis.Gamma.Poles.GaussianGammaLocalPoleGuards
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedProductApartness
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedProductApartness
 
 /-!
 # Apartness of the original Barnes head with one factor removed

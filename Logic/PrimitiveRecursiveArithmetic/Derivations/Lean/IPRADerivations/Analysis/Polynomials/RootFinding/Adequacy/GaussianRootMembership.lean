@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.GaussianRootMembershipHit
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalSlackRemoval
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GaussianRationalSlackRemoval
 
 /-!
 # Exact represented root-support membership and the sampled root equation

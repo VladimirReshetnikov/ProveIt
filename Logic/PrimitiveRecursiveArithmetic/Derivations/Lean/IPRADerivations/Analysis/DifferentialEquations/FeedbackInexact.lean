@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Inequalities.WeightedFeedback
+import IPRADerivations.Analysis.Inequalities.Contraction.WeightedFeedback
 
 /-!
 # Inexact iteration budgets and the finite Neumann producer

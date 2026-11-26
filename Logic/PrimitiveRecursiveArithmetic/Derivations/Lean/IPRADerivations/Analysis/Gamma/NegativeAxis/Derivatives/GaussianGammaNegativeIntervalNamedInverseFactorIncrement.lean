@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.NegativeAxis.Values.GaussianGammaNegativeIntervalNamedInverseFactor
 import IPRADerivations.Analysis.Gamma.NegativeAxis.Derivatives.GaussianGammaNegativeIntervalNamedInverseIncrementInput
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedMultiplyRate
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedMultiplyRate
 
 /-!
 # Variation of the named inverse shift factor along an actual increment

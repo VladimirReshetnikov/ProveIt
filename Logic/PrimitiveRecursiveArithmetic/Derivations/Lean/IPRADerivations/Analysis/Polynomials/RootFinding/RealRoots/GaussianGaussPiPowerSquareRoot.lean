@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.ReferenceProduct.GaussianGammaGaussIndependentSquareRoot
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.Normalization.GaussianGaussMultiplicationHalfPower
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedProductSquare
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedProductSquare
 
 /-!
 # Independent sampling of the positive Gauss half-power of doubled π

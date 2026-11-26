@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.Zeta.Mellin.Compact.GaussianGammaZetaMellinGeometric
 import IPRADerivations.Analysis.Euler.Integration.Incomplete.GaussianEulerIncompleteFactorialDenominator
 import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialInverseSamples
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedProductObservationBound
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedProductObservationBound
 
 /-!
 # Original Euler decay rows of the Gamma–zeta geometric prefix

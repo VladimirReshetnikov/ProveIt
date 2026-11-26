@@ -1,6 +1,6 @@
 import IPRADerivations.Core.SumLemmas
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Analysis.RationalArithmetic.PowerSums
+import IPRADerivations.Analysis.RationalArithmetic.Powers.PowerSums
 import IPRADerivations.Core.Header
 
 /-!

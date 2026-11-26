@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Elimination.Bivariate.GaussianBivariatePowerExpansion
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalBlockSums
-import IPRADerivations.Analysis.Inequalities.GaussianWeightedMonomialBasis
+import IPRADerivations.Analysis.Inequalities.WeightedComparison.GaussianWeightedMonomialBasis
 
 /-!
 # The original bivariate power sum on one numerical interval

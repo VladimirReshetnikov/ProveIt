@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentQuarterExponential
 import IPRADerivations.Analysis.Exponential.GaussianExponentialAddition
-import IPRADerivations.Analysis.Names.GaussianNameConjugation
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameConjugation
 
 /-!
 # The exact period of the named Gaussian exponential

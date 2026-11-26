@@ -1,8 +1,8 @@
 import IPRADerivations.Analysis.Trigonometry.Cyclic.GaussianCyclicSinePositiveRows
 import IPRADerivations.Analysis.Trigonometry.Cyclic.GaussianCyclicSineSupplement
 import IPRADerivations.Analysis.Trigonometry.Cyclic.GaussianCyclicSineProductSquare
-import IPRADerivations.Analysis.Inequalities.GaussianRationalNonnegativeProducts
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalSquareCancellation
+import IPRADerivations.Analysis.Inequalities.NonnegativeArithmetic.GaussianRationalNonnegativeProducts
+import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRationalSquareCancellation
 
 /-!
 # Positive cancellation in the actual cyclic sine product

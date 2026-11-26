@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.GaussianScalarDifferenceEmbedding
+import IPRADerivations.Analysis.RationalArithmetic.Embeddings.GaussianScalarDifferenceEmbedding
 import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactRiemannName
 import IPRADerivations.Analysis.Optimization.CubeInfimum.RationalCubeInfimumIntervals
 

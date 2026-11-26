@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Trigonometry.GaussianNamedSineTaylor
-import IPRADerivations.Analysis.Names.GaussianNameConjugation
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameConjugation
 
 /-!
 # Imaginary rotation and natural scaling of Gaussian names

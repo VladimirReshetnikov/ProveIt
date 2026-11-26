@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Names.GaussianNameArithmetic
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameArithmetic
 
 /-!
 # One actual weighted panel row with independently observed kernels

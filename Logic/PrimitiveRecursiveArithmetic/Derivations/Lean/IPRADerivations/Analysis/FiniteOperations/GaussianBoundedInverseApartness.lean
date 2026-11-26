@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalLowerBounds
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GaussianRationalLowerBounds
 import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialSmallPerturbation
 
 /-!

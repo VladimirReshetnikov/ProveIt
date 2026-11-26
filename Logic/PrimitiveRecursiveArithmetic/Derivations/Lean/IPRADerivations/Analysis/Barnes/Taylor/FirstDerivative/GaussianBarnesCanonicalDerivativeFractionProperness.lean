@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.GaussianBarnesCanonicalDerivativeCofinal
+import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.Cofinal.GaussianBarnesCanonicalDerivativeCofinal
 import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalFiniteProperness
-import IPRADerivations.Analysis.Names.GaussianNameConjugation
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameConjugation
 
 /-!
 # Fraction encodings of the original cofinal Barnes logarithmic derivative

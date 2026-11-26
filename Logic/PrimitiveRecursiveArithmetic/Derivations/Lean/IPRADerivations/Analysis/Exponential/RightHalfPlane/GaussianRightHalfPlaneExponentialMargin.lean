@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Trigonometry.GaussianRightHalfPlaneArgumentCosine
 import IPRADerivations.Analysis.Logarithm.RightHalfPlane.GaussianRightHalfPlaneRadialLogarithm
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalSquareCancellation
+import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRationalSquareCancellation
 
 /-!
 # A margin for selecting the small-chart exponential

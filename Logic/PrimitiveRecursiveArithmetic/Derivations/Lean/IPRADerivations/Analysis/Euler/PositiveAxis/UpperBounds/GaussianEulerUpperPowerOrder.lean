@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UpperBounds.GaussianEulerUpperPowerCoefficients
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianBoundedConstantProductName
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianBoundedConstantProductName
 
 /-!
 # Same-clock signed-real exponential comparison above time one

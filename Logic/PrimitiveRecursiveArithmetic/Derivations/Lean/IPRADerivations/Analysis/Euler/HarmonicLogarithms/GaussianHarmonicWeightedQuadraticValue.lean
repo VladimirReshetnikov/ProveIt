@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Euler.HarmonicLogarithms.GaussianHarmonicWeightedQuadratic
 import IPRADerivations.Analysis.Series.Harmonic.RationalHarmonicInterval
 import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalRepresentedUpper
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalNaturalScale
+import IPRADerivations.Analysis.RationalArithmetic.Scaling.GaussianRationalNaturalScale
 import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianPositiveRationalLogarithmProperness
 
 /-!

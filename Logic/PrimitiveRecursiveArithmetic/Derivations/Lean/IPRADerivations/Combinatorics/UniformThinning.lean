@@ -1,5 +1,5 @@
 import IPRADerivations.Foundations.BoundedReflection
-import IPRADerivations.Analysis.RationalArithmetic.PowerSums
+import IPRADerivations.Analysis.RationalArithmetic.Powers.PowerSums
 
 /-!
 # Finite thinning, uniformly in the number of classes

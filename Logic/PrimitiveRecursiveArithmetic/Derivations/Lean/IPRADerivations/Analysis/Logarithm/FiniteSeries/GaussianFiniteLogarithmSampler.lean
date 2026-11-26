@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Logarithm.FiniteSeries.GaussianFiniteLogarithmPolynomial
-import IPRADerivations.Analysis.RationalArithmetic.GaussianIntegerFractionPowers
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianIntegerFractionPowers
 import IPRADerivations.Analysis.Logarithm.ComplexLogarithmName
 
 /-!

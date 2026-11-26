@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.GaussianRootSchedule
 import IPRADerivations.Analysis.Geometry.Distances.GaussianEuclideanDistanceName
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalSlackRemoval
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GaussianRationalSlackRemoval
 import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianReconstructionRoots
 
 /-!

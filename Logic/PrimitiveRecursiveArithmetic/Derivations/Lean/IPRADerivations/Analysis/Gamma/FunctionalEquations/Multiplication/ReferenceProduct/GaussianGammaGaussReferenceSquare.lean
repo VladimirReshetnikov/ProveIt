@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.ReferenceProduct.GaussianGammaGaussReferenceSquareAlgebra
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.ReferenceProduct.GaussianGammaGaussReflectionPowerConstant
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteProductFamilyAlgebra
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedFiniteProductFamilyAlgebra
 
 /-!
 # Closed squared Gauss reference normalization

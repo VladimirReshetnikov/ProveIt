@@ -1,5 +1,5 @@
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Analysis.RationalArithmetic.PowerSums
+import IPRADerivations.Analysis.RationalArithmetic.Powers.PowerSums
 
 /-!
 # The power-gap bound

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.CriticalPoints.PositiveMinimum.GaussianGammaMinimumChord
 import IPRADerivations.Analysis.Names.Scaling.GaussianNamedNaturalScaleOrder
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalInverseQuadraticAlgebra
+import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRationalInverseQuadraticAlgebra
 import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingGlobalBounds
 
 /-!

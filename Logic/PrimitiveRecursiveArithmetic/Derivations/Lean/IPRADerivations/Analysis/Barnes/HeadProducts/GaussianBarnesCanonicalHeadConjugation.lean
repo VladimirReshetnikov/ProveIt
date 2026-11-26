@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalHead
 import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalFactorConjugation
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteProductConjugation
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteProductFamilyCongruence
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedFiniteProductConjugation
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedFiniteProductFamilyCongruence
 
 /-!
 # Conjugation of the original finite Barnes head and segments

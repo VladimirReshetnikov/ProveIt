@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalTailFiniteSplit
 import IPRADerivations.Analysis.Gamma.EulerProducts.GammaLocalFactorName
-import IPRADerivations.Analysis.Names.GaussianNameArithmetic
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameArithmetic
 
 /-!
 # Metric transport for the original canonical Gamma tail observations

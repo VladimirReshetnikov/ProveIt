@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Trigonometry.SineProducts.Roots.GaussianSineSquaredTrace
-import IPRADerivations.Analysis.Names.GaussianNameReciprocal
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalInverseQuadraticAlgebra
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameReciprocal
+import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRationalInverseQuadraticAlgebra
 
 /-!
 # Sine polynomial residual from an odd power difference

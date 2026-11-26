@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalPrefixTaylor
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianGammaRepeatedShift
 import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaFiniteValueProperness
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalInverseQuadraticAlgebra
+import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRationalInverseQuadraticAlgebra
 
 /-!
 # Actual shifted P observations versus deflated original full polynomials

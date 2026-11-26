@@ -1,8 +1,8 @@
 import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalSingleExponential
-import IPRADerivations.Analysis.Barnes.Taylor.RelativeExpansions.GaussianBarnesCanonicalCorrectedMercatorCofinal
-import IPRADerivations.Analysis.Barnes.Taylor.RelativeExpansions.GaussianBarnesCanonicalCorrectedMercatorPrefix
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedSumDifference
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedAddRate
+import IPRADerivations.Analysis.Barnes.Taylor.RelativeExpansions.CorrectedMercator.GaussianBarnesCanonicalCorrectedMercatorCofinal
+import IPRADerivations.Analysis.Barnes.Taylor.RelativeExpansions.CorrectedMercator.GaussianBarnesCanonicalCorrectedMercatorPrefix
+import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedSumDifference
+import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedAddRate
 
 /-!
 # Taylor estimates for the exponent of the original Barnes factorization

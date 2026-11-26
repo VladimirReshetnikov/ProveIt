@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Digamma.Derivative.GaussianGammaDigammaStep
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalInverseQuadraticAlgebra
+import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRationalInverseQuadraticAlgebra
 
 /-!
 # Exact product rule for the native Gamma divided differences

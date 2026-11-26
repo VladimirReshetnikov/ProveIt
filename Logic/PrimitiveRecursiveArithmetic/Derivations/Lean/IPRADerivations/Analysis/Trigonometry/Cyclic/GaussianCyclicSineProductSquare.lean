@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Trigonometry.Cyclic.GaussianCyclicChordSquare
 import IPRADerivations.Analysis.Trigonometry.Cyclic.GaussianCyclicRootProduct
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteProductMap
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedFiniteProductMap
 
 /-!
 # Squared sine product from the literal cyclic root reconstruction

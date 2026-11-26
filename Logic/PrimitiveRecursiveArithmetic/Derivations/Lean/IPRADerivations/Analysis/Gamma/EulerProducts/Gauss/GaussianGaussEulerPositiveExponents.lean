@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.FiniteHeads.GaussianGammaEulerFullHeadInverse
 import IPRADerivations.Analysis.Gamma.EulerProducts.Gauss.GaussianGaussEulerPowerRatio
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedBoundedProductObservation
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedBoundedProductObservation
 
 /-!
 # Positive Euler exponents in the Gauss multiplication identity

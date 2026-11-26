@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianPositiveExponentialProduct
 import IPRADerivations.Analysis.Exponential.Estimates.GaussianRationalExponentialTail
 import IPRADerivations.Analysis.Polynomials.RootFinding.DominantTerms.GaussianDominantPairAlgebra
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalLowerBounds
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GaussianRationalLowerBounds
 
 /-!
 # A selected term bounds the original positive exponential sum below

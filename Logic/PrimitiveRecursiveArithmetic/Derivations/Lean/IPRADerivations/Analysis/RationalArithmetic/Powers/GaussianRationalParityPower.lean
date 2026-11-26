@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianRationalEulerCoefficients
 import IPRADerivations.Analysis.LinearAlgebra.Matrices.GaussianRationalMatrixFiniteSums
-import IPRADerivations.Analysis.RationalArithmetic.GaussianIntegerFractionPowers
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianIntegerFractionPowers
 
 /-!
 # The original logarithm parity points in actual rational powers

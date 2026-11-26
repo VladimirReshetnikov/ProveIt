@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Taylor.Grids.EvenGrids.GaussianBarnesCanonicalFirstTaylorEvenReadback
 import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.GaussianBarnesCanonicalTaylorDerivativeChart
-import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.GaussianBarnesCanonicalValueDerivativeProperness
+import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.NamedValues.GaussianBarnesCanonicalValueDerivativeProperness
 
 /-!
 # The cofinal degree-one Barnes Taylor name is the original derivative

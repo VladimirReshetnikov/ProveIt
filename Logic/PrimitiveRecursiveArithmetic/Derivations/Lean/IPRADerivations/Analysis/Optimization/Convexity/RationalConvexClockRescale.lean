@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Optimization.Convexity.RationalConvexEndpointBudget
-import IPRADerivations.Analysis.Inequalities.RationalNonnegativePowers
+import IPRADerivations.Analysis.Inequalities.NonnegativeArithmetic.RationalNonnegativePowers
 
 /-!
 # The two-endpoint clock is independent of a common denominator

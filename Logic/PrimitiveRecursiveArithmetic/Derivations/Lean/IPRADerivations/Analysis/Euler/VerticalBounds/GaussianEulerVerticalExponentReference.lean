@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalNativeProjection
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianBoundedConstantProductName
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianBoundedConstantProductName
 import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.GaussianEulerRealIntegrandNonnegative
 
 /-!

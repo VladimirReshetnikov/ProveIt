@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.AllOrders.FirstPanel.GaussianStirlingAllOrderFirstPanelSum
-import IPRADerivations.Analysis.RationalArithmetic.RationalHalfNinthProductLower
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.RationalHalfNinthProductLower
 
 /-!
 # Scaled inverse-square error in the first centered panel

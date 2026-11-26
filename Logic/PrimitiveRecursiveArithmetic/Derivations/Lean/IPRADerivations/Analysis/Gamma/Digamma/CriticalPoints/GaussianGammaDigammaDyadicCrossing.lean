@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Digamma.GaussianGammaDigammaNative
-import IPRADerivations.Analysis.RationalArithmetic.GaussianPositiveRealArithmetic
+import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianPositiveRealArithmetic
 
 /-!
 # Adjacent opposite signs on a digamma grid

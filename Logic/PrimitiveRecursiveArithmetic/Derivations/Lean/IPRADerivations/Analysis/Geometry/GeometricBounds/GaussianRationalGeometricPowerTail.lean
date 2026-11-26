@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalReciprocal
+import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRationalReciprocal
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianCoefficientNameBounds
 
 /-!

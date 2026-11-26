@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.GaussianEulerRealIntegrandNonnegative
 import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayLowerEnvelope
-import IPRADerivations.Analysis.RationalArithmetic.RationalHalfNinthProductLower
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.RationalHalfNinthProductLower
 
 /-!
 # The original real Euler integrand is at least one eighteenth on [1,2]

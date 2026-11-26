@@ -1,10 +1,10 @@
 import IPRADerivations.Analysis.Exponential.GaussianExponentialAddition
 import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialRadiusIndependence
-import IPRADerivations.Analysis.Names.GaussianNameConjugation
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameConjugation
 import IPRADerivations.Analysis.Exponential.Names.GaussianNamedExponentialLinearRate
 import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedDifferenceQuotientProperness
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedDifferenceRate
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedMultiplyRate
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedMultiplyRate
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
 
 /-!

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.Deflation.GaussianRationalDeflation
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalReciprocal
+import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRationalReciprocal
 
 /-!
 # Actual reciprocal-Horner tails for runtime monic polynomials

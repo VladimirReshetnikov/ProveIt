@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Gamma.Zeta.Mellin.GaussianGammaZetaMellinIdentit
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.GaussianEulerUnitNormalization
 import IPRADerivations.Analysis.Gamma.EulerProducts.Factorials.GaussianGammaFactorialValues
 import IPRADerivations.Analysis.Gamma.GaussianGammaInputProperness
-import IPRADerivations.Analysis.Names.GaussianNameConjugation
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameConjugation
 
 /-!
 # The original Gamma–zeta Mellin identity at two

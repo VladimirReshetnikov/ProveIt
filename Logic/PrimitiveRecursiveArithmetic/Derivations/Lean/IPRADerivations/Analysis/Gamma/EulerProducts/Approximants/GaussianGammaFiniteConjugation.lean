@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalConjugation
+import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRationalConjugation
 import IPRADerivations.Analysis.Gamma.EulerProducts.Weierstrass.GaussianGammaWeierstrassFactors
 import IPRADerivations.Analysis.Polynomials.Translation.GaussianInverseBinomialRows
 

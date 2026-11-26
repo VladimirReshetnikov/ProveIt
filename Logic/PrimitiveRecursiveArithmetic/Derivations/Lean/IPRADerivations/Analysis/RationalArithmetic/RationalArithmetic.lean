@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalNormalForm
 import IPRADerivations.Analysis.Optimization.RationalArgmin
-import IPRADerivations.Analysis.RationalArithmetic.RationalValueBounds
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.RationalValueBounds
 
 /-!
 # Actual canonical rational arithmetic and signed interval endpoints

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianSignedNameExponentialOrder
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerDifference
-import IPRADerivations.Analysis.Names.GaussianNameArithmetic
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameArithmetic
 
 /-!
 # The original Barnes canonical factor

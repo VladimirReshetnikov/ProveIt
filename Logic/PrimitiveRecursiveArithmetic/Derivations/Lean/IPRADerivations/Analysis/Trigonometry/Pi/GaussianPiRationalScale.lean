@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Trigonometry.Arctangent.Cayley.GaussianArctangentCayleyValues
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianBoundedConstantProductName
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianBoundedConstantProductName
 import IPRADerivations.Analysis.Gamma.HalfInteger.GaussianGammaHalfPiName
 import IPRADerivations.Analysis.Exponential.Names.GaussianNamedExponentialLinearRate
 import IPRADerivations.Analysis.Trigonometry.Hyperbolic.GaussianSineProductImaginaryScaling

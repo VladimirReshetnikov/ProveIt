@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Logarithms.PositiveAxis.ThirdDerivative.GaussianBarnesCanonicalThirdDerivativeAlgebra
-import IPRADerivations.Analysis.Barnes.Taylor.RelativeExpansions.GaussianBarnesCanonicalHigherRows
-import IPRADerivations.Analysis.RationalArithmetic.GaussianScalarColumnSelection
+import IPRADerivations.Analysis.Barnes.Taylor.RelativeExpansions.HigherOrders.GaussianBarnesCanonicalHigherRows
+import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarColumnSelection
 
 /-!
 # The original second logarithmic row differentiates to the original cubic row

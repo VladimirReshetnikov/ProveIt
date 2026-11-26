@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Integration.Partitions.GaussianPartitionedFiniteSumDistance
-import IPRADerivations.Analysis.Names.GaussianNameArithmetic
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameArithmetic
 
 /-!
 # Partitioned Gaussian sum error weighted by the actual total cut count

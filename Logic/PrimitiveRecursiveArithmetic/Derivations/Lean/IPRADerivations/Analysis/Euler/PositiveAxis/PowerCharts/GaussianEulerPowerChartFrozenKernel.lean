@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.GaussianEulerPowerChartNamedLogarithm
+import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.Logarithms.GaussianEulerPowerChartNamedLogarithm
 import IPRADerivations.Analysis.Euler.ExponentialSubstitution.GaussianEulerExponentialNamedKernelRate
 
 /-!

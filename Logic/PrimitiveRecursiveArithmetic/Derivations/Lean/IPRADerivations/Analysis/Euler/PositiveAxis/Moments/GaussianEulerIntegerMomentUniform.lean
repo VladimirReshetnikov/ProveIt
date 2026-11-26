@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.Moments.GaussianEulerIntegerMomentIntegrand
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianBoundedConstantProductName
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianBoundedConstantProductName
 
 /-!
 # Actual moment rows with one uniform compact observation clock

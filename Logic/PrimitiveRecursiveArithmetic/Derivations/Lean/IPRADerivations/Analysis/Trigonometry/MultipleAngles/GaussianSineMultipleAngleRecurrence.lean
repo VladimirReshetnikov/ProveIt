@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Names.Order.GaussianFastValueCut
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianRationalCoefficientScaling
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalInverseQuadraticAlgebra
+import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRationalInverseQuadraticAlgebra
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalSumAlgebra
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalRoundedPower
 

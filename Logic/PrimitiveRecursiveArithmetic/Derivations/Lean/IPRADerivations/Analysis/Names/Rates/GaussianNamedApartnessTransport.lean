@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Trigonometry.SineProducts.Bounds.GaussianSineReflectionLower
-import IPRADerivations.Analysis.Names.GaussianNameReciprocal
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameReciprocal
 
 /-!
 # Transport of finite named apartness certificates

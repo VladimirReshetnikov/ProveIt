@@ -3,7 +3,7 @@ import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Derivatives.Gaussia
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerPositiveAxis
 import IPRADerivations.Analysis.Gamma.Digamma.GaussianGammaDigammaSeries
 import IPRADerivations.Analysis.Beta.EulerProducts.GaussianEulerBetaProductPascal
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedAddRate
+import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedAddRate
 
 /-!
 # The two digamma series on the positive rational axis

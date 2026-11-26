@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.ReferenceProduct.GaussianGammaGaussReflectionDomain
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerIntegralPositiveLower
 import IPRADerivations.Analysis.Names.RightHalfPlane.GaussianNamedPositiveLateLogSource
-import IPRADerivations.Analysis.Inequalities.GaussianRationalNonnegativeProducts
+import IPRADerivations.Analysis.Inequalities.NonnegativeArithmetic.GaussianRationalNonnegativeProducts
 import IPRADerivations.Analysis.Gamma.GaussianGammaRealValues
 
 /-!

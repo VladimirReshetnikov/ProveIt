@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.RationalGaussianEmbedding
+import IPRADerivations.Analysis.RationalArithmetic.Embeddings.RationalGaussianEmbedding
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalFiniteSum
 
 /-! A finite sum of Gaussian rational rows with zero imaginary part is real. -/

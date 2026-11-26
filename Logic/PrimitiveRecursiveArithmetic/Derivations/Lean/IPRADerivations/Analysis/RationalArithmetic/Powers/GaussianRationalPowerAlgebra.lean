@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalSumAlgebra
 import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalProductWitness
-import IPRADerivations.Analysis.Inequalities.RationalNonnegativePowers
+import IPRADerivations.Analysis.Inequalities.NonnegativeArithmetic.RationalNonnegativePowers
 
 /-!
 # Actual rational Gaussian power algebra at internal exponents

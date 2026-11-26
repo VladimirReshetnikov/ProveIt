@@ -1,9 +1,9 @@
 import IPRADerivations.Analysis.Barnes.Logarithms.PositiveAxis.ThirdDerivative.GaussianBarnesCanonicalThirdDerivativePositiveMargin
 import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalFactorApartness
 import IPRADerivations.Analysis.Barnes.Taylor.CenteredCharts.GaussianBarnesCanonicalHeadRelativeLogMargin
-import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.GaussianBarnesCanonicalDerivativeTailBinding
+import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.Cofinal.GaussianBarnesCanonicalDerivativeTailBinding
 import IPRADerivations.Analysis.Barnes.Taylor.RelativeExpansions.GaussianBarnesCanonicalRelativeLogIncrement
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteProductApartness
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedFiniteProductApartness
 
 /-! The positive real margin bounds the original retained powers from below, giving a
 denominator-independent step threshold for the original relative logarithm. -/

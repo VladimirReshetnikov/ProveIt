@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalSquareCancellation
+import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRationalSquareCancellation
 import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentExponentialPeriod
 
 /-!

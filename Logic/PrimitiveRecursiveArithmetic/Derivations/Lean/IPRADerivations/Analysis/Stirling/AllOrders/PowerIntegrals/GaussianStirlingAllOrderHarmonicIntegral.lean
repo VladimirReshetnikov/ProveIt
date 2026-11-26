@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.Powers.RationalReciprocalPowerTail
 import IPRADerivations.Analysis.Series.Harmonic.RationalHarmonicInterval
-import IPRADerivations.Analysis.Inequalities.RationalNonnegativePowers
+import IPRADerivations.Analysis.Inequalities.NonnegativeArithmetic.RationalNonnegativePowers
 
 /-!
 # Exact harmonic interval on an arbitrary rational grid

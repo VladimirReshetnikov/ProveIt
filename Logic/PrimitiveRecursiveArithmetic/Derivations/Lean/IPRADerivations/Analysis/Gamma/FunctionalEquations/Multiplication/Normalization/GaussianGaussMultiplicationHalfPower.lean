@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.PowerEs
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianNamedGammaHalfShift
 import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalRealSamples
 import IPRADerivations.Analysis.Exponential.GaussianExponentialRealPart
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedBoundedProductObservation
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedBoundedProductObservation
 
 /-!
 # The real half-power in the Gauss multiplication formula

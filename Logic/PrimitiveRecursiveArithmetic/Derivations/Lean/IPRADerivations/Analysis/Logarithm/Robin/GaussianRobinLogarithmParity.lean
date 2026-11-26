@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Logarithm.Robin.GaussianRobinOddLogarithm
 import IPRADerivations.Analysis.Logarithm.FiniteSeries.GaussianFiniteLogarithmPolynomial
-import IPRADerivations.Analysis.RationalArithmetic.GaussianIntegerFractionPowers
-import IPRADerivations.Analysis.Names.GaussianNameArithmetic
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianIntegerFractionPowers
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameArithmetic
 
 /-!
 # Finite logarithm parity at the original Robin cutoff

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianFactorErrorStep
-import IPRADerivations.Analysis.Inequalities.GaussianWeightedErrorBudget
+import IPRADerivations.Analysis.Inequalities.WeightedComparison.GaussianWeightedErrorBudget
 
 /-!
 # Actual uniform rational approximate factorization

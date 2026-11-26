@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Series.Harmonic.RationalHarmonicIntervalProduct
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalNaturalScale
+import IPRADerivations.Analysis.RationalArithmetic.Scaling.GaussianRationalNaturalScale
 
 /-!
 # Actual finite harmonic logarithms of numerical rational powers

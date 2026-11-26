@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Optimization.Convexity.RationalConvexSecants
-import IPRADerivations.Analysis.Inequalities.RationalNonnegativePowers
+import IPRADerivations.Analysis.Inequalities.NonnegativeArithmetic.RationalNonnegativePowers
 import IPRADerivations.Analysis.Optimization.WeightedAMGM
 
 /-!

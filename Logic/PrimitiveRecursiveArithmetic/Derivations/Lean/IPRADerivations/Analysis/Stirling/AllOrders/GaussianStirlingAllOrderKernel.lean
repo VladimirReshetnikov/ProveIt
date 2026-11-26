@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.AllOrders.Bernoulli.GaussianStirlingAllOrderBernoulliEnvelope
 import IPRADerivations.Analysis.Stirling.AllOrders.PairedPanels.GaussianStirlingAllOrderPairedWeight
-import IPRADerivations.Analysis.Inequalities.RationalNonnegativePowerOrder
+import IPRADerivations.Analysis.Inequalities.NonnegativeArithmetic.RationalNonnegativePowerOrder
 import IPRADerivations.Analysis.RationalArithmetic.Powers.RationalReciprocalPowerTail
 
 /-!

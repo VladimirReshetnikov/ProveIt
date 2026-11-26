@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerIntegrandName
 import IPRADerivations.Analysis.Exponential.IntegerPowers.GaussianNaturalExponentialDyadicBound
 import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianPositiveRationalExponentialDecay
-import IPRADerivations.Analysis.Names.GaussianNameConjugation
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameConjugation
 
 /-!
 # Bounds on the original decay factor of the Euler integrand

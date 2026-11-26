@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.GaussianBarnesCanonicalHeadCorrectionDerivative
+import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.FiniteFactors.GaussianBarnesCanonicalHeadCorrectionDerivative
 import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalHead
 import IPRADerivations.Analysis.Series.Harmonic.RationalHarmonicDyadicUpper
 

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRightHalfPlaneArgumentAxis
-import IPRADerivations.Analysis.Names.GaussianNamedHalf
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNamedHalf
 
 /-!
 # Exponentiation in the two right half-plane argument charts

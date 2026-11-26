@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.FiniteOperations.PeriodicGrids.GaussianSignedObservationGrid
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalNaturalScale
+import IPRADerivations.Analysis.RationalArithmetic.Scaling.GaussianRationalNaturalScale
 import IPRADerivations.Analysis.FiniteOperations.PeriodicGrids.SignedDiscreteDerivativeOperators
 
 /-!

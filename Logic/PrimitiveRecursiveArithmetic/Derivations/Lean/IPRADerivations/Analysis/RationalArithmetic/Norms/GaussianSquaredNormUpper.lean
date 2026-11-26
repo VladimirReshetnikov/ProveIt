@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Names.GaussianLinearDistanceName
 import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalL1
-import IPRADerivations.Analysis.Inequalities.RationalNonnegativePowers
+import IPRADerivations.Analysis.Inequalities.NonnegativeArithmetic.RationalNonnegativePowers
 
 /-!
 # Taking the norm bound from an actual squared comparison

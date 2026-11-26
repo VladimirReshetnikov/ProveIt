@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.ReferenceProduct.GaussianGammaGaussReferencePrefix
 import IPRADerivations.Analysis.Gamma.HalfInteger.GaussianGammaHalfSqrtPi
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteProductAppend
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedFiniteProductAppend
 import IPRADerivations.Analysis.Gamma.EulerProducts.Factorials.GaussianGammaFactorialValues
 
 /-!

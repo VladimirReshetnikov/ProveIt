@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Trigonometry.GaussianNamedSineTaylor
-import IPRADerivations.Analysis.Names.GaussianNameRingLaws
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameRingLaws
 
 /-!
 # The original imaginary sine input as multiplication by (i)

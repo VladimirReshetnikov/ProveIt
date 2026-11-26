@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Names.PoleFree.GaussianGammaNamedPoleFreeNegativeChartDerivative
 import IPRADerivations.Analysis.Gamma.CriticalPoints.PositiveMinimum.GaussianGammaPositiveNamedCritical
-import IPRADerivations.Analysis.Names.GaussianNameBranch
+import IPRADerivations.Analysis.Names.Branches.GaussianNameBranch
 import IPRADerivations.Foundations.IntervalPacking
 
 /-!

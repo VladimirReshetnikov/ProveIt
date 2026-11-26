@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.Names.GaussianNameArithmetic
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalConjugation
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalNaturalScale
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameArithmetic
+import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRationalConjugation
+import IPRADerivations.Analysis.RationalArithmetic.Scaling.GaussianRationalNaturalScale
 
 /-!
 # Gaussian rational norm-square values

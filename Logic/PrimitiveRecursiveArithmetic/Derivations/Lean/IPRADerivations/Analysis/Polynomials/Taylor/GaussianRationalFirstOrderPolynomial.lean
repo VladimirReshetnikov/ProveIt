@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalDerivativeSum
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalDerivativeSum
 import IPRADerivations.Analysis.Polynomials.Division.GaussianRationalSyntheticCoefficientValues
 import IPRADerivations.Analysis.Names.Order.GaussianFastValueCut
 import IPRADerivations.Analysis.Beta.EulerProducts.GaussianEulerBetaPolynomialPrimitive

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.TailControl.GaussianBarnesCanonicalTailExponential
 import IPRADerivations.Analysis.Trigonometry.Cyclic.GaussianCyclicExponentialSamples
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteProductApartness
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedFiniteProductApartness
 
 /-!
 # Apartness of the original cofinal Barnes tail

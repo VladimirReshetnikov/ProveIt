@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.Rectangles.GaussianBinetLaplaceWeightedGridReadback
 import IPRADerivations.Analysis.Stirling.Binet.WeightedIntegrals.GaussianBinetWeightedExponentialBound
 import IPRADerivations.Analysis.Stirling.Binet.ExponentialIntegrals.GaussianBinetExponentialIntegralGrid
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedProductObservationBound
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedProductObservationBound
 
 /-!
 # Uniform comparison with a literal weighted rectangle row

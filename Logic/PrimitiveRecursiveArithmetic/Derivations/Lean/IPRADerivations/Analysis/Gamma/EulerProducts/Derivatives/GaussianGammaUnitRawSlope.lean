@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.Taylor.GaussianGammaUnitShiftedTaylorBound
 import IPRADerivations.Analysis.Gamma.EulerProducts.Derivatives.GaussianGammaUnitInverseSamples
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalInverseQuadraticAlgebra
+import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRationalInverseQuadraticAlgebra
 
 /-!
 # The original rational Gamma slope at one

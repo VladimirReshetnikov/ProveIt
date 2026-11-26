@@ -3,7 +3,7 @@ import IPRADerivations.Analysis.Gamma.CriticalPoints.NegativeIntervals.GaussianG
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.GaussianEulerUnitCompactTimeBounds
 import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianPositiveRationalLogarithmVariation
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
-import IPRADerivations.Analysis.Inequalities.GaussianRationalNonnegativeFractions
+import IPRADerivations.Analysis.Inequalities.NonnegativeArithmetic.GaussianRationalNonnegativeFractions
 
 /-!
 # Uniform rational variation of the shifted negative-interval digamma

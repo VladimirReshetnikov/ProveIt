@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Barnes.Taylor.RelativeExpansions.GaussianBarnesCanonicalSecondDerivativeStep
+import IPRADerivations.Analysis.Barnes.Taylor.RelativeExpansions.SecondDerivative.GaussianBarnesCanonicalSecondDerivativeStep
 
 /-!
 # Exact reciprocal-square expansion for the next Barnes logarithmic derivative

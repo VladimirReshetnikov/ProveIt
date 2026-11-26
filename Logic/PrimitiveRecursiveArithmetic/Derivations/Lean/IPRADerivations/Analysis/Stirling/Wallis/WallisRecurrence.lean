@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Wallis.WallisGrid
-import IPRADerivations.Analysis.RationalArithmetic.PowerIncrement
+import IPRADerivations.Analysis.RationalArithmetic.Powers.PowerIncrement
 
 /-!
 # The finite Wallis recurrence

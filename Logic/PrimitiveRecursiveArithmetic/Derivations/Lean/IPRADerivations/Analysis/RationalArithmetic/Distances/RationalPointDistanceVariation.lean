@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.Distances.RationalPointDistance
 import IPRADerivations.Analysis.RationalArithmetic.Intervals.RationalHausdorffConcat
-import IPRADerivations.Analysis.RationalArithmetic.RationalValueBounds
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.RationalValueBounds
 
 /-!
 # Point-to-list distance variation at original rational coordinates

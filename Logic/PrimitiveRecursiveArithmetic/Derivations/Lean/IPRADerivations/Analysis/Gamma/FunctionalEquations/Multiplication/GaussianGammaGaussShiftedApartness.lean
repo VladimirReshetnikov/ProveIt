@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.GaussianGammaGaussShiftedProduct
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteProductApartness
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedFiniteProductApartness
 import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaC9Bound
 
 /-!

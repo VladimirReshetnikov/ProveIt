@@ -3,7 +3,7 @@ import IPRADerivations.Analysis.Barnes.Logarithms.PositiveAxis.SecondDerivative.
 import IPRADerivations.Analysis.Barnes.Logarithms.PositiveAxis.ThirdDerivative.GaussianBarnesCanonicalThirdDerivativePositiveMargin
 import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayFactorBounds
 import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalWendelBoundary
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedSumDifference
+import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedSumDifference
 
 /-!
 # Exact affine increment of the original Barnes prefactor derivative

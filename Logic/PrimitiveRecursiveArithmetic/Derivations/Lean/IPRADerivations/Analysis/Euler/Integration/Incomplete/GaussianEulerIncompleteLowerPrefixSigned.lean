@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.Names.GaussianNameRingLaws
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameRingLaws
 import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianNamedPositiveExponentialOrder
-import IPRADerivations.Analysis.RationalArithmetic.RationalUpperAddition
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.RationalUpperAddition
 
 /-!
 # Signed comparison for an original compact Euler prefix

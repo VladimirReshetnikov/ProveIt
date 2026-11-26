@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Beta.Tails.GaussianBetaZeroUpperDifferenceGrid
-import IPRADerivations.Analysis.Inequalities.GaussianWeightedHalfDecayEndpoint
+import IPRADerivations.Analysis.Inequalities.WeightedComparison.GaussianWeightedHalfDecayEndpoint
 import IPRADerivations.Analysis.Beta.Partitions.GaussianBetaSharpPartition
 
 /-!

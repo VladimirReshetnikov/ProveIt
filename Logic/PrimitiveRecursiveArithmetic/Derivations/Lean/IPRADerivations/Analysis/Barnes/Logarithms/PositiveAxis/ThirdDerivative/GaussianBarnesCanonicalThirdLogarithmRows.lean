@@ -1,9 +1,9 @@
 import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalBase
-import IPRADerivations.Analysis.Barnes.Taylor.RelativeExpansions.GaussianBarnesCanonicalHigherRows
+import IPRADerivations.Analysis.Barnes.Taylor.RelativeExpansions.HigherOrders.GaussianBarnesCanonicalHigherRows
 import IPRADerivations.Analysis.Beta.EulerProducts.GaussianEulerBetaProductPascal
 import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianPositiveExponentialTermBound
 import IPRADerivations.Analysis.RationalArithmetic.Directions.GaussianRationalTravelScaling
-import IPRADerivations.Analysis.RationalArithmetic.GaussianScalarColumnSelection
+import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarColumnSelection
 
 /-!
 # Positive-axis cubic rows of the original Barnes logarithm

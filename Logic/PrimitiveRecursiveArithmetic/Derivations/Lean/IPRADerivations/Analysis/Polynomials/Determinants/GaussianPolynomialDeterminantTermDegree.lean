@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Polynomials.Determinants.GaussianPolynomialDeter
 import IPRADerivations.Analysis.Polynomials.Products.GaussianRationalPolynomialProductDegree
 import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalFiniteProduct
 import IPRADerivations.Analysis.RationalArithmetic.Fibers.GaussianRationalCurveFibers
-import IPRADerivations.Analysis.RationalArithmetic.GaussianScalarColumnSelection
+import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarColumnSelection
 import IPRADerivations.Foundations.BoundedSyntaxInduction
 
 /-!

@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactPowerVariation
 import IPRADerivations.Analysis.Euler.Integration.Parameters.GaussianEulerIntegrandParameterContinuity
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedAddRate
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedMultiplyRate
+import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedAddRate
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedMultiplyRate
 
 /-!
 # Parameter continuity of the original Euler power

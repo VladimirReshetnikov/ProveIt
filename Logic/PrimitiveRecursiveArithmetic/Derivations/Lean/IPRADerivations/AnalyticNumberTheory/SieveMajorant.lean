@@ -1,6 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.SieveRough
 import IPRADerivations.AnalyticNumberTheory.SieveExpansion
-import IPRADerivations.Analysis.RationalArithmetic.PowerSums
+import IPRADerivations.Analysis.RationalArithmetic.Powers.PowerSums
 import IPRADerivations.Core.CertificateTactics
 import IPRADerivations.Core.Header
 

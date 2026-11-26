@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Taylor.RelativeExpansions.GaussianBarnesCanonicalRelativeTaylor
 import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalCubicName
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalInverseQuadraticAlgebra
+import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRationalInverseQuadraticAlgebra
 
 /-!
 # Exact first-order cancellation for a Barnes logarithm row

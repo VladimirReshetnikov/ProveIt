@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.Gauss.GaussianGaussEulerNamedHeadGrouping
 import IPRADerivations.Analysis.Gamma.EulerProducts.Gauss.GaussianGaussEulerFactorFamilies
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.GaussianGaussMultiplicationFixedProducts
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteProductFamilyAlgebra
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedFiniteProductFamilyAlgebra
 
 /-!
 # The fixed Gauss Euler products factor into the literal heads and exponentials

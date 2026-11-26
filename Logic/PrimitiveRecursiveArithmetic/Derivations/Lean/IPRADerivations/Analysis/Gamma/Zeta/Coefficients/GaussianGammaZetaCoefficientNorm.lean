@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Zeta.Coefficients.GaussianGammaZetaCoefficientPolynomial
 import IPRADerivations.Analysis.Exponential.Polynomials.GaussianFiniteExponentialWeightedNorm
-import IPRADerivations.Analysis.RationalArithmetic.GaussianPositiveRealArithmetic
+import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianPositiveRealArithmetic
 
 /-!
 # Exact absolute majorants for the original sampled Gamma coefficients

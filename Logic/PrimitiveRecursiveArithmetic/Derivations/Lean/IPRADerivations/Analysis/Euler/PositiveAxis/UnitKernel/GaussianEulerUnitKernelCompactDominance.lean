@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitKernel.GaussianEulerUnitKernelVerticalPointwise
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitKernel.GaussianEulerUnitKernelCompactName
-import IPRADerivations.Analysis.Inequalities.GaussianCompactPositiveRadiusObservations
+import IPRADerivations.Analysis.Inequalities.PositiveRadius.GaussianCompactPositiveRadiusObservations
 
 /-!
 # Source-only vertical domination of the actual compact unit kernel

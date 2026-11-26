@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.PowerSums
+import IPRADerivations.Analysis.RationalArithmetic.Powers.PowerSums
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalSumConstants
 import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalRepresentedUpper
 

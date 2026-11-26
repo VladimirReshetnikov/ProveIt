@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Digamma.Comparison.GaussianGammaDigammaConvexChords
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalNaturalScaleOrder
+import IPRADerivations.Analysis.RationalArithmetic.Scaling.GaussianRationalNaturalScaleOrder
 
 /-!
 # Equal-step convex comparison of the original log Gamma names

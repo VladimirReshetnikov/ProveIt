@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianRationalNormClearing
-import IPRADerivations.Analysis.Inequalities.RationalNonnegativePowers
+import IPRADerivations.Analysis.Inequalities.NonnegativeArithmetic.RationalNonnegativePowers
 import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalProductWitness
 
 /-!

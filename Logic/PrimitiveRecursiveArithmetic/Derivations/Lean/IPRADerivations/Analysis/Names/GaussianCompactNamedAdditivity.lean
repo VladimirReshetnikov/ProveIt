@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactRiemannAdditivity
-import IPRADerivations.Analysis.Names.GaussianNameRingLaws
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameRingLaws
 
 /-!
 # Actual compact names are additive across an original rational split

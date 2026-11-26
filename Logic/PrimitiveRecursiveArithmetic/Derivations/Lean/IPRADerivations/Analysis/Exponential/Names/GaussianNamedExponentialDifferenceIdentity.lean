@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Exponential.GaussianExponentialInverse
 import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaFoldedApproximantBalance
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedDifference
-import IPRADerivations.Analysis.Names.GaussianNameConjugation
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameConjugation
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.ReciprocalGamma.GaussianGammaAdjacentCutoff
 
 /-!

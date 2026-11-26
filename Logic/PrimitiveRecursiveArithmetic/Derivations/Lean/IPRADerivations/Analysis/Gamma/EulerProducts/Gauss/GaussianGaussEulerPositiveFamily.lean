@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.Gauss.GaussianGaussEulerFactorFamilies
 import IPRADerivations.Analysis.Gamma.EulerProducts.Gauss.GaussianGaussEulerPositiveOffset
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteProductFamilyAlgebra
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedFiniteProductFamilyAlgebra
 
 /-!
 # The positive exponential product in the exact Gauss identity

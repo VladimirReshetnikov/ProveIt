@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Inequalities.RationalNonnegativePowerOrder
+import IPRADerivations.Analysis.Inequalities.NonnegativeArithmetic.RationalNonnegativePowerOrder
 
 /-!
 # A finite geometric-tail potential

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalSumSegments
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalNaturalScale
+import IPRADerivations.Analysis.RationalArithmetic.Scaling.GaussianRationalNaturalScale
 
 /-!
 # Actual finite Gaussian-rational sums

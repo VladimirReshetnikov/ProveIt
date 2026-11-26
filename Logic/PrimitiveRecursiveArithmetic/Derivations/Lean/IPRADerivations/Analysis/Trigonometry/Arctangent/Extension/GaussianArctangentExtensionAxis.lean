@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Trigonometry.Arctangent.Extension.GaussianArctangentNamedExtension
-import IPRADerivations.Analysis.RationalArithmetic.RationalGaussianEmbedding
+import IPRADerivations.Analysis.RationalArithmetic.Embeddings.RationalGaussianEmbedding
 
 /-!
 # Exact imaginary axis of the original arctangent extension

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Poles.GaussianGammaLocalPoleFormula
 import IPRADerivations.Analysis.Gamma.Poles.GaussianGammaPoleReciprocalFactor
-import IPRADerivations.Analysis.Names.GaussianNameConjugation
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameConjugation
 
 /-!
 # Literal division in the original Gamma-pole difference quotient

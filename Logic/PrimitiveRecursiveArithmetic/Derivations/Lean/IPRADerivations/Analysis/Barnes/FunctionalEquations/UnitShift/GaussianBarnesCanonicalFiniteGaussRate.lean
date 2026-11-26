@@ -2,8 +2,8 @@ import IPRADerivations.Analysis.Barnes.FunctionalEquations.UnitShift.GaussianBar
 import IPRADerivations.Analysis.Barnes.Logarithms.CofinalTails.GaussianBarnesCanonicalCombinedRemainderRate
 import IPRADerivations.Analysis.Barnes.TailControl.GaussianBarnesCanonicalUniformCutoff
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerInverseConvergence
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedMultiplyRate
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedAddRate
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedMultiplyRate
+import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedAddRate
 
 /-!
 # Uniform rates for the two sides of the original finite Barnes identity

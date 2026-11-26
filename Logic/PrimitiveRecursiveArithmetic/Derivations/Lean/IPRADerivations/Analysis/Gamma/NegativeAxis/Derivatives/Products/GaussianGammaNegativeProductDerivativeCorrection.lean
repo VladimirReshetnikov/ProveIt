@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.NegativeAxis.Derivatives.Products.GaussianGammaNegativeProductDerivative
 import IPRADerivations.Analysis.Gamma.CriticalPoints.NegativeIntervals.GaussianGammaNegativeCriticalCorrection
 import IPRADerivations.Analysis.Gamma.Digamma.Series.GaussianGammaDigammaSeriesTerms
-import IPRADerivations.Analysis.RationalArithmetic.GaussianScalarColumnSelection
+import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarColumnSelection
 import IPRADerivations.Analysis.Exponential.Estimates.GaussianRationalExponentialTangent
 
 /-!

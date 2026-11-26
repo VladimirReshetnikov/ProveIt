@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.GaussianEule
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.GaussianEulerUnitSubstitutionFloorWidths
 import IPRADerivations.Analysis.Integration.Partitions.GaussianPartitionedFiniteSumTotalDistance
 import IPRADerivations.Analysis.Integration.Partitions.GaussianPartitionedFiniteSumWeightReplacement
-import IPRADerivations.Analysis.RationalArithmetic.GaussianScalarDifferenceEmbedding
+import IPRADerivations.Analysis.RationalArithmetic.Embeddings.GaussianScalarDifferenceEmbedding
 
 /-!
 # The finite original decay-image density versus a separate unit lattice

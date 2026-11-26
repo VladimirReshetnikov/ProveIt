@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalSumMajorant
 import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactRiemannName
 import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayOrder
-import IPRADerivations.Analysis.RationalArithmetic.RationalGaussianRealPart
+import IPRADerivations.Analysis.RationalArithmetic.Embeddings.RationalGaussianRealPart
 
 /-!
 # Scalar majorants on an actual compact quadrature grid

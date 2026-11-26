@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Exponential.RightHalfPlane.GaussianRightHalfPlaneExponentialMargin
-import IPRADerivations.Analysis.Names.GaussianNamedSquareBranch
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedProductSquare
+import IPRADerivations.Analysis.Names.Branches.GaussianNamedSquareBranch
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedProductSquare
 
 /-!
 # Recover the encoded input from the small-chart exponential

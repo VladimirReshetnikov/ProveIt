@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.DominantTerms.GaussianDominantDirectionData
 import IPRADerivations.Analysis.Polynomials.RootFinding.DominantTerms.GaussianDominantPairAlgebra
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalThreeTermBudget
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GaussianRationalThreeTermBudget
 import IPRADerivations.Analysis.Polynomials.RootFinding.DominantTerms.GaussianRationalDominantDecomposition
 
 /-!

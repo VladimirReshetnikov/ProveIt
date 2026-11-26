@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarDeterminantExpansion
-import IPRADerivations.Analysis.RationalArithmetic.GaussianScalarColumnSelection
+import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarColumnSelection
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalBlockSums
 
 /-!

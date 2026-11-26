@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.GaussianBarnesCanonicalDerivativeTailBinding
+import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.Cofinal.GaussianBarnesCanonicalDerivativeTailBinding
 import IPRADerivations.Analysis.Barnes.TailControl.GaussianBarnesCanonicalTailExponential
 import IPRADerivations.Analysis.Geometry.DiskNames.GaussianExactDiskShrinking
 import IPRADerivations.Analysis.Exponential.Names.GaussianNamedExponentialLinearRate

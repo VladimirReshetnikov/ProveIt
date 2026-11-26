@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.Directions.GaussianRationalDirectionNormalizer
 import IPRADerivations.Analysis.RationalArithmetic.Directions.GaussianRationalPhaseCertificate
-import IPRADerivations.Analysis.Inequalities.RationalNonnegativePowers
+import IPRADerivations.Analysis.Inequalities.NonnegativeArithmetic.RationalNonnegativePowers
 import IPRADerivations.Analysis.Polynomials.RootFinding.DominantTerms.GaussianDominantScalarOrder
 
 /-!

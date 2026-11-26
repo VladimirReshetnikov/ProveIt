@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Translation.GaussianTranslationCoefficientBound
-import IPRADerivations.Analysis.Inequalities.RationalNonnegativePowerOrder
+import IPRADerivations.Analysis.Inequalities.NonnegativeArithmetic.RationalNonnegativePowerOrder
 
 /-!
 # Clearing actual residual budgets in the travel estimate

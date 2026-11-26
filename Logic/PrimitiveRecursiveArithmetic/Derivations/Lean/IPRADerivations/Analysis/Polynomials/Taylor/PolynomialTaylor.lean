@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Evaluation.PolynomialLipschitz
-import IPRADerivations.Analysis.RationalArithmetic.PowerIncrement
+import IPRADerivations.Analysis.RationalArithmetic.Powers.PowerIncrement
 
 /-!
 # The second-order Taylor estimate of a polynomial

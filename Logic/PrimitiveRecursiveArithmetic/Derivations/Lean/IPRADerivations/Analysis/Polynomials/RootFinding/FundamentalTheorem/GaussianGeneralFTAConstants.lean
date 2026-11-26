@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.GaussianRootSchedule
 import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalL1
-import IPRADerivations.Analysis.Inequalities.RationalNonnegativePowerOrder
+import IPRADerivations.Analysis.Inequalities.NonnegativeArithmetic.RationalNonnegativePowerOrder
 import IPRADerivations.Foundations.DemandClosure
 
 /-!

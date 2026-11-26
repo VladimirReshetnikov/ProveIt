@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedIncrementDifferenceQuotient
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedMultiplyRate
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedMultiplyRate
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedDifferenceRate
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
 

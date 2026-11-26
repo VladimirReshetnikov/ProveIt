@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Trigonometry.Arctangent.Cayley.GaussianArctangentCayleySquareGap
 import IPRADerivations.Analysis.Trigonometry.SineProducts.Roots.GaussianSineSquaredTrace
-import IPRADerivations.Analysis.Names.GaussianNameReciprocal
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameReciprocal
 
 /-!
 # Separation for complements of sampled squared sines

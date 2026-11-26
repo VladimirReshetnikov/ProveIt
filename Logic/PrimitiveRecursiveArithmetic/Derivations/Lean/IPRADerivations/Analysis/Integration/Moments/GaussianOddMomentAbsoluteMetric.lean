@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.GaussianGammaRealValues
-import IPRADerivations.Analysis.RationalArithmetic.GaussianPositiveRealArithmetic
+import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianPositiveRealArithmetic
 
 /-!
 # Absolute values of the original real Gaussian observations

@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.IntegerValues.GaussianBarnesCanonicalIntegerStirlingGamma
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.Glaisher.GaussianBarnesGlaisherLimitName
 import IPRADerivations.Analysis.Names.Rates.GaussianBoundedConstantRationalRate
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedSumDifference
+import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedSumDifference
 
 /-!
 # The original integer Barnes logarithm and the leading asymptotic

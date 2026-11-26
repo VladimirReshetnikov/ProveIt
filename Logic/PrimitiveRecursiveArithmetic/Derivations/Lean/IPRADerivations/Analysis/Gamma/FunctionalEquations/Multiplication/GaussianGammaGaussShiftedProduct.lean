@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.GaussianGammaGaussDomain
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteProductName
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedFiniteProductName
 
 /-!
 # A regular name for the shifted Gamma product

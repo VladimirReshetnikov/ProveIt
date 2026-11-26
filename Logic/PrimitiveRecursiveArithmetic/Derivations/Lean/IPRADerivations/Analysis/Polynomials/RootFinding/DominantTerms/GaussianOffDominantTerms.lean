@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.DominantTerms.GaussianDominantScoreWeights
 import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalProductWitness
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalReciprocal
+import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRationalReciprocal
 
 /-!
 # Actual off-dominant Gaussian terms at every point in the selected disk

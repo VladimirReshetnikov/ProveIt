@@ -1,8 +1,8 @@
 import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentOriginalExponential
 import IPRADerivations.Analysis.Trigonometry.Arctangent.PartialSums.GaussianArctangentPartialExponential
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianBoundedConstantProductName
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianBoundedConstantProductName
 import IPRADerivations.Analysis.Exponential.GaussianExponentialInverse
-import IPRADerivations.Analysis.Names.GaussianNameBranch
+import IPRADerivations.Analysis.Names.Branches.GaussianNameBranch
 
 /-!
 # The argument on the certified rational right half-plane

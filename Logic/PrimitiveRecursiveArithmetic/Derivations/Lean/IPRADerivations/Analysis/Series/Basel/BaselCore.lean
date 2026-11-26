@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Series.Basel.BaselAverages
-import IPRADerivations.Analysis.RationalArithmetic.PowerSums
+import IPRADerivations.Analysis.RationalArithmetic.Powers.PowerSums
 
 /-!
 # The crucial finite comparison of the Basel packet

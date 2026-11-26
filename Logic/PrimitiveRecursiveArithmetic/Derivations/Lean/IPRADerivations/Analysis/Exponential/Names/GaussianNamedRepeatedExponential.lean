@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedRepeatedProduct
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedRepeatedProduct
 import IPRADerivations.Analysis.Exponential.IntegerPowers.GaussianBoundedIntegerExponentialSample
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedDiagonalRate
 

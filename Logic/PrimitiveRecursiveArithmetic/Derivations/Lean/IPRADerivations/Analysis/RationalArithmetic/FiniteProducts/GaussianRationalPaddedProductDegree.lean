@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalLinearCancellation
+import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRationalLinearCancellation
 
 /-!
 # Degree of an actual padded factorization

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.Binet.Bose.GaussianBinetBoseImproperName
+import IPRADerivations.Analysis.Stirling.Binet.Bose.ImproperNames.GaussianBinetBoseImproperName
 import IPRADerivations.Analysis.Stirling.Binet.GaussianBinetFirstFormula
 import IPRADerivations.Analysis.Names.Scaling.GaussianNaturalScaleProductName
 

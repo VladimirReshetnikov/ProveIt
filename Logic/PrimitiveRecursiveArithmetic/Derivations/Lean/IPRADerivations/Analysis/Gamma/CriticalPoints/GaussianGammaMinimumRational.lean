@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Gamma.CriticalPoints.PositiveMinimum.GaussianGam
 import IPRADerivations.Analysis.Gamma.CriticalPoints.PositiveMinimum.GaussianGammaMinimumLogProperness
 import IPRADerivations.Analysis.Gamma.CriticalPoints.PositiveMinimum.GaussianGammaMinimumChordStationary
 import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalWendelBoundary
-import IPRADerivations.Analysis.Inequalities.GaussianRationalNonnegativeFractions
+import IPRADerivations.Analysis.Inequalities.NonnegativeArithmetic.GaussianRationalNonnegativeFractions
 
 /-!
 # The strong rational comparison at the selected dyadic base

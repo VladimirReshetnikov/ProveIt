@@ -1,5 +1,5 @@
 import IPRADerivations.Combinatorics.BinomialIdentities
-import IPRADerivations.Analysis.RationalArithmetic.PowerSums
+import IPRADerivations.Analysis.RationalArithmetic.Powers.PowerSums
 
 /-!
 # Catalan numbers

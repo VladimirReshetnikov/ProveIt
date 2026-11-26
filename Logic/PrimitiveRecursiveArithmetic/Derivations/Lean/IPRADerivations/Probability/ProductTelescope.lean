@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.PowerSums
+import IPRADerivations.Analysis.RationalArithmetic.Powers.PowerSums
 import IPRADerivations.Core.OrderCertificates
 
 /-!

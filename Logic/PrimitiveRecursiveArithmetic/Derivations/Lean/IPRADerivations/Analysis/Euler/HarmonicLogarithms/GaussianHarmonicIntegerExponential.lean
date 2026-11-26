@@ -3,7 +3,7 @@ import IPRADerivations.Analysis.Euler.HarmonicLogarithms.GaussianHarmonicLogarit
 import IPRADerivations.Analysis.Names.Scaling.GaussianNaturalScaleProductName
 import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayFactorBounds
 import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerExponentCompactBounds
-import IPRADerivations.Analysis.Inequalities.RationalNonnegativePowers
+import IPRADerivations.Analysis.Inequalities.NonnegativeArithmetic.RationalNonnegativePowers
 
 /-!
 # Numerical integer powers of the actual positive-time logarithm

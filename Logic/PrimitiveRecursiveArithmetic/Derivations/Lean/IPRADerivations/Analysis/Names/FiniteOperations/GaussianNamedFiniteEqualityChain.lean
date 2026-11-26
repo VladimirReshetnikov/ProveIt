@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Names.GaussianNameRingLaws
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameRingLaws
 
 /-!
 # Finite iteration of exact equality of Gaussian names

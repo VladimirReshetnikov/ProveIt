@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Stirling.Telescoping.GaussianStirlingTelescopeNa
 import IPRADerivations.Analysis.Stirling.Telescoping.GaussianStirlingRationalTelescopers
 import IPRADerivations.Analysis.Names.RationalGaussianNameEmbedding
 import IPRADerivations.Analysis.Gamma.HalfInteger.GaussianGammaHalfSqrtBrackets
-import IPRADerivations.Analysis.RationalArithmetic.RationalGaussianRealPart
+import IPRADerivations.Analysis.RationalArithmetic.Embeddings.RationalGaussianRealPart
 
 /-!
 # Integer Stirling tail distances from finite named order

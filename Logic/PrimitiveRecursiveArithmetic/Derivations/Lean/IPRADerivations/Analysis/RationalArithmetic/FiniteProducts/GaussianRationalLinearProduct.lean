@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianCoefficientL1
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalSyntheticBounds
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GaussianRationalSyntheticBounds
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalSumLinearity
 
 /-!

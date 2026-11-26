@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Inequalities.RationalNonnegativePowerOrder
+import IPRADerivations.Analysis.Inequalities.NonnegativeArithmetic.RationalNonnegativePowerOrder
 
 /-!
 # Exact rational power budget for a shrinking step

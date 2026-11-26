@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.GaussianMonicGridApproximateRoot
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalDerivativeSum
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalDerivativeSum
 
 /-!
 # The literal source derivative mesh in the actual bounded grid root search

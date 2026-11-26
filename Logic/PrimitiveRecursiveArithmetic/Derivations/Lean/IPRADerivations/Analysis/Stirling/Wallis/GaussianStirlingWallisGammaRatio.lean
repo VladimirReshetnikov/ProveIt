@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Stirling.Wallis.GaussianStirlingWallisFactor
 import IPRADerivations.Analysis.Stirling.GaussianStirlingGammaLogarithm
 import IPRADerivations.Analysis.Gamma.HalfInteger.GaussianGammaHalfIntegerValues
 import IPRADerivations.Analysis.Gamma.HalfInteger.GaussianGammaHalfSquareLimit
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedProductSquare
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedProductSquare
 
 /-!
 # Original Gamma names in the Stirling half-step Wallis ratio

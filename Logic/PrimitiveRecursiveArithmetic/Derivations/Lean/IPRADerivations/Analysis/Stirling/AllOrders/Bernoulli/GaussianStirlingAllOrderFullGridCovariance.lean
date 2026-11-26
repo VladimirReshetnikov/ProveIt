@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Stirling.AllOrders.Bernoulli.GaussianStirlingAllOrderHalfGridMean
 import IPRADerivations.Analysis.Stirling.AllOrders.PairedPanels.GaussianStirlingAllOrderPairedBernoulliFold
 import IPRADerivations.Analysis.Stirling.AllOrders.PairedPanels.GaussianStirlingAllOrderPairedPanel
-import IPRADerivations.Analysis.RationalArithmetic.RationalHalfNinthProductLower
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.RationalHalfNinthProductLower
 
 /-!
 # Strict covariance on the original full left Bernoulli panel

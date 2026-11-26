@@ -5,7 +5,7 @@ the constant-polynomial case. The cubic bound uses the original coefficient
 mass and is uniform over both evaluation points.
 -/
 import IPRADerivations.Analysis.Polynomials.Taylor.GaussianRationalUniformFirstOrderPolynomial
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalInverseQuadraticAlgebra
+import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRationalInverseQuadraticAlgebra
 import IPRADerivations.Foundations.DisjointSums
 
 set_option autoImplicit false

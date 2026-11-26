@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarDeterminant
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalTupleExpansion
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalTupleExpansion
 import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalProductAlgebra
 
 /-!

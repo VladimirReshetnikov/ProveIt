@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalTailName
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerNonzero
-import IPRADerivations.Analysis.Names.GaussianNameRingLaws
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameRingLaws
 
 /-!
 # The actual canonical Gamma tail exponential tends to one

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.ExponentialSubstitution.GaussianEulerExponentialSubstitutionNamedKernel
 import IPRADerivations.Analysis.Exponential.Estimates.GaussianRadiusExponentialLipschitzRate
-import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedMultiplyRate
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedMultiplyRate
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedDifferenceRate
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerHead

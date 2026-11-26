@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.AllOrders.Logarithms.GaussianStirlingAllOrderLogTruncation
 import IPRADerivations.Analysis.Stirling.Expansions.GaussianStirlingOddCoefficients
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalNaturalScale
+import IPRADerivations.Analysis.RationalArithmetic.Scaling.GaussianRationalNaturalScale
 
 /-!
 # Cancellation of the literal sign and denominator

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalThreeTermBudget
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GaussianRationalThreeTermBudget
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerAlgebra
 
 /-!

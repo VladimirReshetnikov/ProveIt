@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Raabe.GaussianRaabeLogPrimitiveCell
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalInverseQuadraticAlgebra
+import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRationalInverseQuadraticAlgebra
 
 /-!
 # The elementary Stirling term on a far unit interval

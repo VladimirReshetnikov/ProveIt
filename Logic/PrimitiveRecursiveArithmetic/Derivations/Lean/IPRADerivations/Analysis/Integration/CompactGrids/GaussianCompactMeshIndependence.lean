@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactRiemannName
-import IPRADerivations.Analysis.Names.GaussianNameRingLaws
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameRingLaws
 
 /-!
 # Actual compact quadrature names are independent of legitimate budgets

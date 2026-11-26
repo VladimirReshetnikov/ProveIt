@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Trigonometry.SineProducts.Scaling.GaussianSineProductScaledArguments
 import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentSlope
 import IPRADerivations.Analysis.Gamma.Names.PositiveAxis.GaussianNamedGammaFirstCrossing
-import IPRADerivations.Analysis.Names.GaussianNameConjugation
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameConjugation
 
 /-!
 # Apartness and cancellation of the encoded scaled π argument

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.RealRoots.GaussianRationalFourthRootBranch
 import IPRADerivations.Analysis.Exponential.Names.GaussianNamedExponentialLocalUniqueness
-import IPRADerivations.Analysis.Names.GaussianNamedHalf
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNamedHalf
 
 /-!
 # Complex exponential uniqueness for late differences of radius three

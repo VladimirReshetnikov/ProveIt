@@ -1,5 +1,5 @@
 import IPRADerivations.Combinatorics.Bell
-import IPRADerivations.Analysis.RationalArithmetic.PowerSums
+import IPRADerivations.Analysis.RationalArithmetic.Powers.PowerSums
 
 /-!
 # Positivity and the bounds `2^{n−1} ≤ B_n ≤ n^n`

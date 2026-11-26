@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayQuadrature
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalSlackRemoval
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GaussianRationalSlackRemoval
 import IPRADerivations.Analysis.Polynomials.RootFinding.Characteristic.GaussianCharacteristicEntryNorm
 
 /-!

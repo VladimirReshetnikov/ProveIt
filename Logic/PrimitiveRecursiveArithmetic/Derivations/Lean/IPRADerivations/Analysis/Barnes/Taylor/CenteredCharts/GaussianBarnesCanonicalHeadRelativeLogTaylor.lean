@@ -8,7 +8,7 @@ import IPRADerivations.Analysis.Barnes.Taylor.CenteredCharts.GaussianBarnesCanon
 import IPRADerivations.Analysis.Logarithm.Local.GaussianLocalLogarithmQuadraticRate
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateComposition
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalSquareCancellation
+import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRationalSquareCancellation
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianPolynomialCoefficientDifferences
 
 set_option autoImplicit false

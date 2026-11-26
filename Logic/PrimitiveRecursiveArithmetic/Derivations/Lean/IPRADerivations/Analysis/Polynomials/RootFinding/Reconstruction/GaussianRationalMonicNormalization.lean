@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianRationalCoefficientScaling
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalReciprocal
+import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRationalReciprocal
 
 /-!
 # Computed monic normalization at a nonzero original leading coefficient
