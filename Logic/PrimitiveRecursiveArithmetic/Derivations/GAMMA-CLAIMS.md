@@ -2855,3 +2855,6 @@ A common actual late signed sample compares the original normalized product with
 
 The original finite and cofinal Dirichlet sums agree across equal rational encodings and independently certified charts. The original named Dirichlet and Mellin values are proper for equivalent input names with independently chosen margin certificates.
 [GaussianGammaZetaDirichletOverlap](Lean/IPRADerivations/Analysis/GaussianGammaZetaDirichletOverlap.lean), [GaussianGammaZetaDirichletPresentation](Lean/IPRADerivations/Analysis/GaussianGammaZetaDirichletPresentation.lean), [GaussianGammaZetaNamedDirichletOverlap](Lean/IPRADerivations/Analysis/GaussianGammaZetaNamedDirichletOverlap.lean), [GaussianGammaZetaNamedMellinOverlap](Lean/IPRADerivations/Analysis/GaussianGammaZetaNamedMellinOverlap.lean)
+
+The checked shifts repair sample windows that meet the named boundary, including the relative-error threshold. A cofinal named order comparison removes errors that can be made arbitrarily small while retaining independent observation precisions.
+[GaussianNamedCofinalOrder](Lean/IPRADerivations/Analysis/GaussianNamedCofinalOrder.lean), [GaussianGammaDigammaTwoShiftWindowBuffer](Lean/IPRADerivations/Analysis/GaussianGammaDigammaTwoShiftWindowBuffer.lean)
