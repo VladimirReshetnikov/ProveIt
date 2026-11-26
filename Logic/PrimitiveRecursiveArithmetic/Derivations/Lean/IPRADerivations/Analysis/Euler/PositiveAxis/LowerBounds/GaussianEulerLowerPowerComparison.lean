@@ -19,13 +19,12 @@ namespace LeanProofs.IPRA.Analysis.GaussianEulerLowerPowerComparison
 open_ipra
 open GaussianEulerLowerPowerOrder (source inputF expF leftData rightData radius leftExpData rightExpData)
 open GaussianEulerLowerPowerCoefficients (amplification)
-open GaussianEulerUpperPowerCoefficients (realMultiplier)
-open GaussianEulerIntegrandName (powerExponentF powerExponentData powerRadius powerF powerData)
-open GaussianEulerUpperPowerCompatibility (doubleF doubleData doubleRadius oldLogQuery squareF squareData)
-open GaussianNameEquivalence (crossEquivalent cross_trans)
+open GaussianEulerIntegrandName (powerF powerData)
+open GaussianEulerUpperPowerCompatibility (doubleF doubleData squareF squareData
+  double_sample_error_of_bound double_input_cross_of_bound original_power_square_of_input)
+open GaussianNameEquivalence (crossEquivalent)
 open GaussianRationalMetric (distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr)
-open GaussianCoefficientNameBounds (unit unit_positive)
+open GaussianCoefficientNameBounds (unit)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -34,46 +33,20 @@ theorem old_source (z R B A a b : PTm n) (h : Γ ⊢[PRAAx] source z R B A a b) 
 
 theorem double_sample_error (p z R B A a b : PTm n) (h : Γ ⊢[PRAAx] source z R B A a b) : Γ ⊢[PRAAx]
     distanceBounded (ap2 doubleF p (doubleData z B a b)) (ap2 inputF p (leftData z R B a b))
-      (two*amplification R) (unit p) := by
-  let s := oldLogQuery p z B a b
-  let t := GaussianBoundedConstantProductName.clock p (amplification R)
-  let c := realMultiplier z B
-  have sl : Γ ⊢[PRAAx] le p s := le_trans (le_add_right p (GaussianFastValueCut.normalizer two)) (le_add_right _ _)
-  have tl : Γ ⊢[PRAAx] le p t := le_add_right _ _
-  have dist := GaussianEulerUpperPowerCompatibility.later_cross GaussianPositiveRationalLogarithm.logF GaussianHarmonicLogarithmName.nameF
-    (GaussianPositiveRationalLogarithm.data a b) (GaussianHarmonicLogarithmName.data a b) p s t sl tl
-    (GaussianHarmonicLogarithmName.cross_original a b h.andE₂.andE₁)
-  have prod := GaussianNameArithmetic.product_distance c c _ _ zero two (unit p)
-    (GaussianPositiveRationalLogarithm.radius a b) (amplification R) (unit_positive p)
-    (GaussianRationalPowerDifference.distance_refl_zero c _ (unit_positive p)) dist
-    (GaussianPositiveRationalLogarithm.sample_bound s a b h.andE₂.andE₁)
+      (two*amplification R) (unit p) :=
+  double_sample_error_of_bound p z B a b (amplification R) h.andE₂.andE₁
     (GaussianEulerLowerPowerCoefficients.real_multiplier_bound z R B A h.andE₁)
-  exact distance_congr (GaussianEulerUpperPowerCompatibility.double_sample p z B a b).eqSymm
-    (GaussianBoundedConstantProductName.sample_at GaussianHarmonicLogarithmName.nameF p (amplification R) c
-      (GaussianHarmonicLogarithmName.data a b)).eqSymm (by ipra_ring) (.eqRefl _) prod
 
 theorem double_input_cross (z R B A a b : PTm n) (h : Γ ⊢[PRAAx] source z R B A a b) : Γ ⊢[PRAAx]
-    crossEquivalent doubleF inputF (doubleData z B a b) (leftData z R B a b) := by
-  apply GaussianNameRingLaws.equivalent_of_envelope _ _ _ _ (two*amplification R)
-    (GaussianExponentialRealPart.double_real_regular _ _ (GaussianEulerIntegrandName.power_exponent_regular z B a b (old_source z R B A a b h)))
-    (GaussianEulerLowerPowerOrder.product_input _ _ _ _ h.andE₂
-      (GaussianEulerLowerPowerCoefficients.real_multiplier_bound z R B A h.andE₁)).andE₁
-  refine .allI ?_
-  have hs : Γ.map Fm.shift ⊢[PRAAx] source (Syn.shift z) (Syn.shift R) (Syn.shift B) (Syn.shift A) (Syn.shift a) (Syn.shift b) :=
-    by simpa [Fm.shift,Syn.shift] using h.shift
-  simpa [GaussianValueNormalizerExtensionality.rawDiagonal,Syn.shift,doubleF,doubleData,leftData,two] using
-    double_sample_error (var 0) (Syn.shift z) (Syn.shift R) (Syn.shift B) (Syn.shift A) (Syn.shift a) (Syn.shift b) hs
+    crossEquivalent doubleF inputF (doubleData z B a b) (leftData z R B a b) :=
+  double_input_cross_of_bound z B a b (amplification R) (old_source z R B A a b h)
+    (GaussianEulerLowerPowerCoefficients.real_multiplier_bound z R B A h.andE₁)
 
 theorem original_power_square (z R B A a b : PTm n) (h : Γ ⊢[PRAAx] source z R B A a b) : Γ ⊢[PRAAx]
     crossEquivalent squareF expF (squareData z B a b) (leftExpData z R B a b) := by
-  have old := GaussianEulerIntegrandName.power_input z B a b (old_source z R B A a b h)
-  have first := GaussianExponentialRealPart.exponential_norm_square powerExponentF (powerRadius z B a b) (powerExponentData z B a b) old
-  have second := GaussianExponentialRadiusIndependence.independent_radii_proper doubleF inputF (doubleRadius z B a b) (radius R b)
-    (doubleData z B a b) (leftData z R B a b) (GaussianExponentialRealPart.double_real_input _ _ _ old)
-    (GaussianEulerLowerPowerOrder.product_input _ _ _ _ h.andE₂
-      (GaussianEulerLowerPowerCoefficients.real_multiplier_bound z R B A h.andE₁))
-    (double_input_cross z R B A a b h)
-  exact cross_trans _ _ _ _ _ _ first second
+  have hM := GaussianEulerLowerPowerCoefficients.real_multiplier_bound z R B A h.andE₁
+  exact original_power_square_of_input z B a b (amplification R) (radius R b) (old_source z R B A a b h) hM
+    (GaussianEulerLowerPowerOrder.product_input _ _ _ _ h.andE₂ hM)
 
 /-- Actual original squared modulus has the sharp reference with the
 literal coefficient (1/A-1), retaining independent observation errors. -/
