@@ -3143,3 +3143,6 @@ The actual named divided difference converges to the actual named derivative for
 
 The original first-derivative row increments by the actual rational second derivative times the step, with exact resolvent remainder and uniform bound `8H²/(B²k²)`. The second-derivative row has radius `12R/k²` and its original finite sums obey the inverse-square telescope.
 [GaussianBarnesCanonicalSecondDerivativeRow](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalSecondDerivativeRow.lean), [GaussianBarnesCanonicalSecondDerivativeTail](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalSecondDerivativeTail.lean), [GaussianBarnesCanonicalSecondDerivativeStep](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalSecondDerivativeStep.lean)
+
+When a regular input name represents an exact Gaussian rational, the original named reciprocal Gamma value agrees with the original rational C7 evaluator at independent observation precisions. The proof applies at poles.
+[GaussianGammaC7NamedRationalBinding](Lean/IPRADerivations/Analysis/GaussianGammaC7NamedRationalBinding.lean)
