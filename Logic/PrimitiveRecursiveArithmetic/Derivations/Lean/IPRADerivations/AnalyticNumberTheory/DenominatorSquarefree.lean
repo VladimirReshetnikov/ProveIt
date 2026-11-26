@@ -36,7 +36,7 @@ open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi totBody inst2_tot)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val isP isP_01 prime_of_isP isP_of_prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.ValuationAdd (val_mono)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (f_zero subst_dvd)
+open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (subst_dvd)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two congrSg congrEqb' zero_mul_l sq sqB inst2_sq om muP
   muN)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (shift_pos)
@@ -52,14 +52,12 @@ open LeanProofs.IPRA.AnalyticNumberTheory.EulerDomination (le_zero_of)
 open LeanProofs.IPRA.AnalyticNumberTheory.TotientTermStep (gt gt_zero gt_ndvd gt_dvd)
 open LeanProofs.IPRA.AnalyticNumberTheory.TotientSumStep (Gs GtB Gt_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.DenominatorRange (P3 P3_z)
-open LeanProofs.IPRA.AnalyticNumberTheory.DenominatorModulus (Aq Aq_pos Aq_succ Aq_zero)
+open LeanProofs.IPRA.AnalyticNumberTheory.DenominatorModulus (Aq Aq_pos Aq_zero AqAppendsPrime Aq_step_cases)
 open LeanProofs.IPRA.AnalyticNumberTheory.DenominatorSmooth (sum_le2 Hq Hq_le_G)
-open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gcd_dvd' eq_one_of_dvd_one gcd_comm_one coprime_mul
   coprime_dvd_left)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep (congrGcd)
 open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
-open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases eq_of_eqb)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -72,28 +70,11 @@ alias mul_one_r := Common.mul_one_right
 
 theorem cop_step {y q : PTm n} (hq : Γ ⊢[PRAAx] q ≐ succ (pred q))
     (ih : Γ ⊢[PRAAx] gcd q (Aq y q) ≐ one) : Γ ⊢[PRAAx] gcd q (Aq (succ y) q) ≐ one := by
-  have es := Aq_succ (Γ := Γ) y q
-  refine .orE (isP_01 (succ y)) ?_ ?_
-  · have e : ((isP (succ y) ≐ zero) :: Γ) ⊢[PRAAx] Aq (succ y) q ≐ Aq y q :=
-      es.wk.eqTrans ((congrMul (.eqRefl _) (f_zero Prf.hyp0)).eqTrans (mul_one_r _))
-    exact (congrGcd (.eqRefl _) e).eqTrans ih.wk
-  · let C : List (Fm PTm n) := (isP (succ y) ≐ one) :: Γ
-    have hI : C ⊢[PRAAx] isP (succ y) ≐ one := Prf.hyp0
-    refine .orE (eqb_cases (gcd (succ y) q) one) ?_ ?_
-    · let D : List (Fm PTm n) := (eqb (gcd (succ y) q) one ≐ zero) :: C
-      have b0 : D ⊢[PRAAx] eqb (gcd (succ y) q) one ≐ zero := Prf.hyp0
-      have ex : D ⊢[PRAAx] pw (succ y) (isP (succ y) * eqb (gcd (succ y) q) one) ≐ one :=
-        (congrPw (.eqRefl _) ((congrMul (.eqRefl _) b0).eqTrans (mul_zero _))).eqTrans (pw_zero _)
-      have e : D ⊢[PRAAx] Aq (succ y) q ≐ Aq y q :=
-        es.wk.wk.eqTrans ((congrMul (.eqRefl _) ex).eqTrans (mul_one_r _))
-      exact (congrGcd (.eqRefl _) e).eqTrans ih.wk.wk
-    · let D : List (Fm PTm n) := (eqb (gcd (succ y) q) one ≐ one) :: C
-      have b1 : D ⊢[PRAAx] eqb (gcd (succ y) q) one ≐ one := Prf.hyp0
-      have ex : D ⊢[PRAAx] pw (succ y) (isP (succ y) * eqb (gcd (succ y) q) one) ≐ succ y :=
-        (congrPw (.eqRefl _) ((congrMul hI.wk b1).eqTrans (one_mul one))).eqTrans (pw_one _)
-      have e : D ⊢[PRAAx] Aq (succ y) q ≐ Aq y q * succ y := es.wk.wk.eqTrans (congrMul (.eqRefl _) ex)
-      have g1 : D ⊢[PRAAx] gcd q (succ y) ≐ one := gcd_comm_one hq.wk.wk (eq_of_eqb b1)
-      exact (congrGcd (.eqRefl _) e).eqTrans (coprime_mul hq.wk.wk ih.wk.wk g1)
+  refine .orE (Aq_step_cases y q) ?_ ?_
+  · exact (congrGcd (.eqRefl _) Prf.hyp0).eqTrans ih.wk
+  · have h : AqAppendsPrime y q :: Γ ⊢[PRAAx] AqAppendsPrime y q := Prf.hyp0
+    have g1 := gcd_comm_one hq.wk h.andE₂.andE₂
+    exact (congrGcd (.eqRefl _) h.andE₁).eqTrans (coprime_mul hq.wk ih.wk g1)
 
 /-- Variables: `0 = y`, `1 = q`. -/
 abbrev copF : Fm PTm 2 :=

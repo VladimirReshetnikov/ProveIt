@@ -52,7 +52,7 @@ open LeanProofs.IPRA.AnalyticNumberTheory.TotientSumStep (Gs GtB Gt_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.DenominatorRange (VaB Cz P3 Va_at le_of_Cz range_step S_zero)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_self')
-open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases)
+open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases eq_of_eqb)
 open LeanProofs.IPRA.Probability.ProductReplacement (prod_succ')
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
@@ -73,6 +73,28 @@ theorem Aq_succ (y q : PTm n) :
   have e := prod_succ' (Γ := Γ) (PE totBody) (succ y) q
   rw [fac_at] at e
   exact e
+
+/-- A growing prefix step records the new prime and its gcd certificate. -/
+abbrev AqAppendsPrime (y q : PTm n) : Fm PTm n :=
+  (Aq (succ y) q ≐ Aq y q * succ y) ⋏ prime (succ y) ⋏ (gcd (succ y) q ≐ one)
+
+/-- The modulus either stays unchanged or appends the next prime coprime to `q`. -/
+theorem Aq_step_cases (y q : PTm n) : Γ ⊢[PRAAx] (Aq (succ y) q ≐ Aq y q) ⋎ AqAppendsPrime y q := by
+  have next := Aq_succ (Γ := Γ) y q
+  refine .orE (isP_01 (succ y)) ?_ ?_
+  · exact .orI₁ (next.wk.eqTrans ((congrMul (.eqRefl _) (f_zero Prf.hyp0)).eqTrans (Common.mul_one_right _)))
+  · let Δ := (isP (succ y) ≐ one) :: Γ
+    let bit := eqb (gcd (succ y) q) one
+    have accepted : Δ ⊢[PRAAx] isP (succ y) ≐ one := Prf.hyp0
+    have factor := next.wk.eqTrans (congrMul (.eqRefl _) (f_one accepted))
+    refine .orE (eqb_cases (gcd (succ y) q) one) ?_ ?_
+    · have h : (bit ≐ zero) :: Δ ⊢[PRAAx] bit ≐ zero := Prf.hyp0
+      have excluded := (congrPw (.eqRefl (succ y)) h).eqTrans (pw_zero (succ y))
+      exact .orI₁ (factor.wk.eqTrans ((congrMul (.eqRefl _) excluded).eqTrans (Common.mul_one_right _)))
+    · have h : (bit ≐ one) :: Δ ⊢[PRAAx] bit ≐ one := Prf.hyp0
+      have included := (congrPw (.eqRefl (succ y)) h).eqTrans (pw_one (succ y))
+      exact .orI₂ (.andI (factor.wk.eqTrans (congrMul (.eqRefl _) included))
+        (.andI (prime_of_isP accepted.wk) (eq_of_eqb h)))
 
 theorem Aq_zero (q : PTm n) : Γ ⊢[PRAAx] Aq zero q ≐ one := by
   have e := prod_succ' (Γ := Γ) (PE totBody) zero q
@@ -128,28 +150,11 @@ alias mul_one_r := Common.mul_one_right
 
 theorem out_step {y q L z : PTm n} (ih : Γ ⊢[PRAAx] Cz (Aq y q) L z ≐ zero) :
     Γ ⊢[PRAAx] Cz (Aq (succ y) q) L z ≐ zero := by
-  have es := Aq_succ (Γ := Γ) y q
-  refine .orE (isP_01 (succ y)) ?_ ?_
-  · have e : ((isP (succ y) ≐ zero) :: Γ) ⊢[PRAAx] Aq (succ y) q ≐ Aq y q :=
-      es.wk.eqTrans ((congrMul (.eqRefl _) (f_zero Prf.hyp0)).eqTrans (mul_one_r _))
-    exact (Cz_congr e).eqTrans ih.wk
-  · let C : List (Fm PTm n) := (isP (succ y) ≐ one) :: Γ
-    have hI : C ⊢[PRAAx] isP (succ y) ≐ one := Prf.hyp0
-    refine .orE (eqb_cases (gcd (succ y) q) one) ?_ ?_
-    · let D : List (Fm PTm n) := (eqb (gcd (succ y) q) one ≐ zero) :: C
-      have b0 : D ⊢[PRAAx] eqb (gcd (succ y) q) one ≐ zero := Prf.hyp0
-      have ex : D ⊢[PRAAx] pw (succ y) (isP (succ y) * eqb (gcd (succ y) q) one) ≐ one :=
-        (congrPw (.eqRefl _) ((congrMul (.eqRefl _) b0).eqTrans (mul_zero _))).eqTrans (pw_zero _)
-      have e : D ⊢[PRAAx] Aq (succ y) q ≐ Aq y q :=
-        es.wk.wk.eqTrans ((congrMul (.eqRefl _) ex).eqTrans (mul_one_r _))
-      exact (Cz_congr e).eqTrans ih.wk.wk
-    · let D : List (Fm PTm n) := (eqb (gcd (succ y) q) one ≐ one) :: C
-      have b1 : D ⊢[PRAAx] eqb (gcd (succ y) q) one ≐ one := Prf.hyp0
-      have ex : D ⊢[PRAAx] pw (succ y) (isP (succ y) * eqb (gcd (succ y) q) one) ≐ succ y :=
-        (congrPw (.eqRefl _) ((congrMul hI.wk b1).eqTrans (one_mul one))).eqTrans (pw_one _)
-      have e : D ⊢[PRAAx] Aq (succ y) q ≐ Aq y q * succ y := es.wk.wk.eqTrans (congrMul (.eqRefl _) ex)
-      have hp : D ⊢[PRAAx] prime (succ y) := prime_of_isP hI.wk
-      exact (Cz_congr e).eqTrans (range_step hp (cop_next hp) ih.wk.wk)
+  refine .orE (Aq_step_cases y q) ?_ ?_
+  · exact (Cz_congr Prf.hyp0).eqTrans ih.wk
+  · have h : AqAppendsPrime y q :: Γ ⊢[PRAAx] AqAppendsPrime y q := Prf.hyp0
+    have hp := h.andE₂.andE₁
+    exact (Cz_congr h.andE₁).eqTrans (range_step hp (cop_next hp) ih.wk)
 
 /-- Variables: `0 = y`, `1 = q`, `2 = L`, `3 = z`. -/
 abbrev outF : Fm PTm 4 :=
