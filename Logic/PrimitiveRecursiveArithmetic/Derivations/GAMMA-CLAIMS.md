@@ -3164,3 +3164,6 @@ The literal finite Mercator polynomials have a geometric remainder at every inte
 
 At every internally encoded order r at least three, the literal retained rational coefficient sums define a regular name with independent-clock finite-prefix error bounded by 2^r divided by the retained boundary. The proof splits the literal finite sums and applies the same inverse-square telescope at every encoded order.
 [GaussianBarnesCanonicalHigherTail](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHigherTail.lean), [GaussianBarnesCanonicalHigherCofinal](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHigherCofinal.lean), [GaussianBarnesCanonicalHigherCofinalRate](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHigherCofinalRate.lean)
+
+At every encoded order at least three, the original relative logarithm term multiplied by the Barnes row index equals the factorial-normalized coefficient times the literal displacement raised to that degree. The proof uses the checked inverse of the original base and the actual parity and radius powers.
+[GaussianBarnesCanonicalHigherRelative](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHigherRelative.lean)
