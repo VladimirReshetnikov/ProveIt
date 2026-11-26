@@ -3068,3 +3068,6 @@ The actual named prefactor exponent difference is exactly `S−1/2−(1+γ)*(z+1
 
 Equal Gaussian fractions on a fixed certified disk give identical cofinal logarithmic-derivative observations at a common precision. The original named Barnes quotient agrees with the native rational quotient under exact rational endpoint and step equivalences, including independently chosen endpoint disks.
 [GaussianBarnesCanonicalDerivativeFractionProperness](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDerivativeFractionProperness.lean), [GaussianBarnesCanonicalNamedQuotientBinding](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNamedQuotientBinding.lean)
+
+The actual dynamic-radius finite exponential has the named derivative equal to that exponential times the exact finite correction slope. The independent first-order bound is quadratic in the native Gaussian step and its coefficients depend only on the disk and cutoff.
+[GaussianNamedExponentialTaylorTransport](Lean/IPRADerivations/Analysis/GaussianNamedExponentialTaylorTransport.lean), [GaussianBarnesCanonicalHeadCorrectionExponentialDerivative](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadCorrectionExponentialDerivative.lean)
