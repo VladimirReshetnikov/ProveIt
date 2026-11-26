@@ -3137,3 +3137,6 @@ An explicit mixed-denominator disk modulus gives a genuine named sampler for the
 
 The actual named base and shifted values both have an independent leading error of one dyadic unit at the requested precision in their comparison with the shared late rational chart. Changing the step denominator on this chart preserves the actual quotient datum exactly.
 [GaussianBarnesCanonicalNamedIncrementEndpoints](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNamedIncrementEndpoints.lean)
+
+The actual named divided difference converges to the actual named derivative for apart regular Gaussian increments with a certified dyadic sample bound. The requested step bound depends only on the disk and target precision. The apartness certificate determines only the later observation clock.
+[GaussianBarnesCanonicalNamedIncrementDerivative](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNamedIncrementDerivative.lean)
