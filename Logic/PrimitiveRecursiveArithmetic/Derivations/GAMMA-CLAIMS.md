@@ -3026,3 +3026,6 @@ Combining the actual prefactor, multiplier, skipped head and cofinal tail gives 
 
 The original cofinal log difference and original named product of the literal step with the cofinal rational derivative series have the independent rate `(3R+342)H²/(B² N₀)` plus two dyadic observation errors, with `N₀ = max(1,2R)`. The cutoff is shared only in the finite proof. The actual observations use independent clocks.
 [GaussianBarnesCanonicalDerivativeTailBinding](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDerivativeTailBinding.lean)
+
+In iPRA the actual Barnes prefactor shifts by the exponential of the literal named exponent difference, the original finite prefix obeys the cleared unit shift including zeros, and the accompanying polynomial is the original Gamma Euler head at the matching index times the exact factorial.
+[GaussianBarnesCanonicalPrefactorShift](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefactorShift.lean), [GaussianBarnesCanonicalPrefixShift](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefixShift.lean), [GaussianBarnesCanonicalGaussDenominator](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalGaussDenominator.lean)
