@@ -3290,3 +3290,6 @@ One finite rational square grid covers the admitted disk. The primitive-recursiv
 
 The exact finite harmonic numerator below a dyadic cutoff is at most one plus the dyadic index times the common unit. The literal Barnes head correction on a disk of radius R with N factors then has norm at most R squared times one plus this index, plus N times R.
 [RationalHarmonicDyadicUpper](Lean/IPRADerivations/Analysis/Series/RationalHarmonicDyadicUpper.lean), [GaussianBarnesCanonicalDyadicHeadCorrection](Lean/IPRADerivations/Analysis/Barnes/HeadProducts/GaussianBarnesCanonicalDyadicHeadCorrection.lean)
+
+Reading the actual stored coefficient, scaling by its factorial, and applying the original center scalar gives an independent-clock approximation to the cofinal derivative. A primitive-recursive clock on each retained order pays both schedule bounds.
+[GaussianBarnesCanonicalWeightedTaylorBallCoefficient](Lean/IPRADerivations/Analysis/Barnes/Taylor/Coefficients/GaussianBarnesCanonicalWeightedTaylorBallCoefficient.lean)
