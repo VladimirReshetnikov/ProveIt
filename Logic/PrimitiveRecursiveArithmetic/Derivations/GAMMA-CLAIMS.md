@@ -2963,3 +2963,6 @@ The three admitted Mercator names satisfy the exact addition and difference iden
 
 The original factor at the conjugate rational input is the conjugate of the original factor at the input. The proof covers all admissible positive indices and permits a zero factor.
 [GaussianBarnesCanonicalFactorConjugation](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalFactorConjugation.lean)
+
+The exact original named Barnes outputs agree for equivalent input names with separately certified radii. The proof compares a common pair of actual late rational inputs and eliminates independent dyadic error terms.
+[GaussianBarnesCanonicalNamedFrozen](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNamedFrozen.lean)
