@@ -15,11 +15,10 @@ set_option autoImplicit false
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicClientIntervalName
 
 open_ipra
-open GaussianEulerLogarithmicCompactName (evaluatorF fixedData wrapped_at original_variation)
+open GaussianEulerLogarithmicCompactName (evaluatorF fixedData wrapped_variation)
 open GaussianEulerLogarithmicMultiplier (lipschitz)
 open GaussianCompactRiemannName (inside sampledModulus localBody)
 open GaussianRationalMetric (distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr)
 open GaussianNamedInverseRate (independentRate)
 open GaussianRationalHorner (positive_product)
 
@@ -59,26 +58,7 @@ theorem local_modulus_at (j z R B a C G E T t u A D : PTm n)
       (fstT t) (sndT t) (fstT u) (sndT u) A D :=
     .andI h.andE₁ (.andI (domain_of_inside z R B a C G E T t h ht)
       (.andI (domain_of_inside z R B a C G E T u h hu) (.andI hD hd)))
-  have hs : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx]
-      GaussianEulerExponentCompactBounds.input (Syn.shift (Syn.shift z)) (Syn.shift (Syn.shift R))
-        (Syn.shift (Syn.shift B)) (Syn.shift (Syn.shift E)) (Syn.shift (Syn.shift T))
-        (fstT (Syn.shift (Syn.shift t))) (sndT (Syn.shift (Syn.shift t)))
-        (fstT (Syn.shift (Syn.shift u))) (sndT (Syn.shift (Syn.shift u)))
-        (Syn.shift (Syn.shift A)) (Syn.shift (Syn.shift D)) := by simpa [Fm.shift,Syn.shift] using input.shift.shift
-  refine .allI (.allI ?_)
-  simpa only [independentRate,GaussianCompactRiemannName.subst_nameData,
-    GaussianEulerLogarithmicCompactName.subst_fixedData,GaussianEulerLogarithmicMultiplier.subst_lipschitz,
-    PTm.subst_mul,Syn.shift] using
-    distance_congr (wrapped_at (var 1) (Syn.shift (Syn.shift t)) (Syn.shift (Syn.shift j)) (Syn.shift (Syn.shift R))
-      (Syn.shift (Syn.shift E)) (Syn.shift (Syn.shift T)) (Syn.shift (Syn.shift z)) (Syn.shift (Syn.shift B))).eqSymm
-      (wrapped_at (var 0) (Syn.shift (Syn.shift u)) (Syn.shift (Syn.shift j)) (Syn.shift (Syn.shift R))
-        (Syn.shift (Syn.shift E)) (Syn.shift (Syn.shift T)) (Syn.shift (Syn.shift z)) (Syn.shift (Syn.shift B))).eqSymm
-      (.eqRefl _) (.eqRefl _)
-      (original_variation (var 1) (var 0) (Syn.shift (Syn.shift j)) (Syn.shift (Syn.shift z)) (Syn.shift (Syn.shift R))
-        (Syn.shift (Syn.shift B)) (Syn.shift (Syn.shift E)) (Syn.shift (Syn.shift T))
-        (fstT (Syn.shift (Syn.shift t))) (sndT (Syn.shift (Syn.shift t)))
-        (fstT (Syn.shift (Syn.shift u))) (sndT (Syn.shift (Syn.shift u)))
-        (Syn.shift (Syn.shift A)) (Syn.shift (Syn.shift D)) hs)
+  exact wrapped_variation j z R B E T t u A D input
 
 theorem sampled_modulus (j z R B a C G E T : PTm n)
     (h : Γ ⊢[PRAAx] source z R B a C G E T) : Γ ⊢[PRAAx]

@@ -97,6 +97,28 @@ theorem wrapped_at (p t j R E T z B : PTm n) : Γ ⊢[PRAAx]
       (GaussianCompactRiemannName.nameData t (fixedData j R E T z B)) ≐ sample p j R E T z B (fstT t) (sndT t) :=
   (GaussianCompactRiemannName.evaluator_at evaluatorF p t _).eqTrans (raw_evaluator_at p t j R E T z B)
 
+/-- Read the original variation bound through the compact quadrature evaluator. -/
+theorem wrapped_variation (j z R B E T t u A D : PTm n)
+    (h : Γ ⊢[PRAAx] GaussianEulerExponentCompactBounds.input z R B E T
+      (fstT t) (sndT t) (fstT u) (sndT u) A D) : Γ ⊢[PRAAx]
+    independentRate (GaussianCompactRiemannName.evaluatorName evaluatorF)
+      (GaussianCompactRiemannName.evaluatorName evaluatorF)
+      (GaussianCompactRiemannName.nameData t (fixedData j R E T z B))
+      (GaussianCompactRiemannName.nameData u (fixedData j R E T z B)) (lipschitz j R E T*A) D := by
+  let shift (v : PTm n) := Syn.shift (Syn.shift v)
+  have hs : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx]
+      GaussianEulerExponentCompactBounds.input (shift z) (shift R) (shift B) (shift E) (shift T)
+        (fstT (shift t)) (sndT (shift t)) (fstT (shift u)) (sndT (shift u)) (shift A) (shift D) := by
+    simpa [shift,Fm.shift,Syn.shift] using h.shift.shift
+  refine .allI (.allI ?_)
+  have near := original_variation (var 1) (var 0) (shift j) (shift z) (shift R) (shift B) (shift E) (shift T)
+    (fstT (shift t)) (sndT (shift t)) (fstT (shift u)) (sndT (shift u)) (shift A) (shift D) hs
+  simpa only [independentRate,GaussianCompactRiemannName.subst_nameData,subst_fixedData,
+    GaussianEulerLogarithmicMultiplier.subst_lipschitz,PTm.subst_mul,Syn.shift,shift] using
+    GaussianCompactRiemannName.wrapped_distance_from_decoded
+      (raw_evaluator_at (var 1) (shift t) (shift j) (shift R) (shift E) (shift T) (shift z) (shift B))
+      (raw_evaluator_at (var 0) (shift u) (shift j) (shift R) (shift E) (shift T) (shift z) (shift B)) near
+
 theorem local_modulus_at (j z R B E T C t u A D : PTm n) (h : Γ ⊢[PRAAx] source z R B E T C)
     (hD : Γ ⊢[PRAAx] le one D) (ht : Γ ⊢[PRAAx] GaussianCompactRiemannName.inside one C E t)
     (hu : Γ ⊢[PRAAx] GaussianCompactRiemannName.inside one C E u)
@@ -107,22 +129,7 @@ theorem local_modulus_at (j z R B E T C t u A D : PTm n) (h : Γ ⊢[PRAAx] sour
   have input : Γ ⊢[PRAAx] GaussianEulerExponentCompactBounds.input z R B E T (fstT t) (sndT t) (fstT u) (sndT u) A D :=
     .andI h.andE₁ (.andI (GaussianEulerCompactModulus.domain_of_inside t C E T h.andE₁.andE₂.andE₁ h.andE₂ ht)
       (.andI (GaussianEulerCompactModulus.domain_of_inside u C E T h.andE₁.andE₂.andE₁ h.andE₂ hu) (.andI hD hd)))
-  have hs : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx]
-      GaussianEulerExponentCompactBounds.input (Syn.shift (Syn.shift z)) (Syn.shift (Syn.shift R)) (Syn.shift (Syn.shift B))
-        (Syn.shift (Syn.shift E)) (Syn.shift (Syn.shift T)) (fstT (Syn.shift (Syn.shift t))) (sndT (Syn.shift (Syn.shift t)))
-        (fstT (Syn.shift (Syn.shift u))) (sndT (Syn.shift (Syn.shift u))) (Syn.shift (Syn.shift A)) (Syn.shift (Syn.shift D)) :=
-    by simpa [Fm.shift,Syn.shift] using input.shift.shift
-  refine .allI (.allI ?_)
-  simpa only [independentRate,GaussianCompactRiemannName.subst_nameData,subst_fixedData,GaussianEulerLogarithmicMultiplier.subst_lipschitz,PTm.subst_mul,Syn.shift] using
-    distance_congr (wrapped_at (var 1) (Syn.shift (Syn.shift t)) (Syn.shift (Syn.shift j)) (Syn.shift (Syn.shift R))
-      (Syn.shift (Syn.shift E)) (Syn.shift (Syn.shift T)) (Syn.shift (Syn.shift z)) (Syn.shift (Syn.shift B))).eqSymm
-      (wrapped_at (var 0) (Syn.shift (Syn.shift u)) (Syn.shift (Syn.shift j)) (Syn.shift (Syn.shift R))
-        (Syn.shift (Syn.shift E)) (Syn.shift (Syn.shift T)) (Syn.shift (Syn.shift z)) (Syn.shift (Syn.shift B))).eqSymm
-      (.eqRefl _) (.eqRefl _)
-      (original_variation (var 1) (var 0) (Syn.shift (Syn.shift j)) (Syn.shift (Syn.shift z)) (Syn.shift (Syn.shift R))
-        (Syn.shift (Syn.shift B)) (Syn.shift (Syn.shift E)) (Syn.shift (Syn.shift T)) (fstT (Syn.shift (Syn.shift t)))
-        (sndT (Syn.shift (Syn.shift t))) (fstT (Syn.shift (Syn.shift u))) (sndT (Syn.shift (Syn.shift u)))
-        (Syn.shift (Syn.shift A)) (Syn.shift (Syn.shift D)) hs)
+  exact wrapped_variation j z R B E T t u A D input
 
 theorem sampled_modulus (j z R B E T C : PTm n) (h : Γ ⊢[PRAAx] source z R B E T C) : Γ ⊢[PRAAx]
     GaussianCompactRiemannName.sampledModulus evaluatorF one C E (lipschitz j R E T) (fixedData j R E T z B) := by
