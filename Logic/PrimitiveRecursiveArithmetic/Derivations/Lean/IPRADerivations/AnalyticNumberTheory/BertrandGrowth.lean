@@ -6,6 +6,7 @@ import IPRADerivations.DiophantineNumberTheory.AperyMultibound
 import IPRADerivations.DiophantineNumberTheory.ResidueFacts
 import IPRADerivations.Foundations.NumeralPrimes
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Bertrand's postulate: the integer inequality
@@ -88,13 +89,9 @@ theorem base_six : Γ ⊢[PRAAx] le (pw ((zero : PTm n) + num 39) (num 6)) (pw t
 private abbrev tenF : Fm PTm 1 := le (pw (var 0 + num 39) (num 6)) (pw two (var 0 + num 36))
 
 private theorem ten₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] tenF := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, PTm.subst_add, subst_ap2, Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ, subst_num]
-    exact base_six
-  · simp only [subst_le, PTm.subst_add, subst_ap2, Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ, subst_num]
-    have ih : [tenF] ⊢[PRAAx] le (pw (var 0 + num 39) (num 6)) (pw two (var 0 + num 36)) := Prf.hyp0
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2, subst_num]
+  · exact base_six
+  · have ih : [tenF] ⊢[PRAAx] le (pw (var 0 + num 39) (num 6)) (pw two (var 0 + num 36)) := Prf.hyp0
     exact le_trans (six_step (var 0))
       (le_congr (.eqRefl _) (two_step (var 0)).eqSymm (le_mul_mono (le_refl two) ih))
 

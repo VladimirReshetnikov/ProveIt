@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.SymmetryBound
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Partial summation against the harmonic logarithm (`pnt_ipra_constructive_2026-11-14`, `sb:error-equation`)
@@ -132,15 +133,9 @@ private abbrev abF : Fm PTm 3 :=
   (inst2 a zero (pairT (var 1) (var 2)) ≐ zero) ⟶ Ab a (var 0) (var 1) (var 2)
 
 private theorem ab₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] abF a := by
-  refine ind _ ⟨trivial, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_ap2, subst_pairT, subst_inst2, PTm.subst_add, PTm.subst_mul,
-      PTm.subst_monus, Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact .impI (ab_zero a _ _)
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_ap2, subst_pairT, subst_inst2, PTm.subst_add, PTm.subst_mul,
-      PTm.subst_monus, Syn.subst_var, Syn.repl_zero, repl_one, repl_two, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact .impI (ab_step a Prf.hyp0 (Prf.impE Prf.hyp1 Prf.hyp0))
+  ipra_ind (⟨trivial, trivial⟩) [subst_ap2, subst_pairT, subst_inst2]
+  · exact .impI (ab_zero a _ _)
+  · exact .impI (ab_step a Prf.hyp0 (Prf.impE Prf.hyp1 Prf.hyp0))
 
 /-- The finite partial summation for any `a` with `a(0) = 0`. -/
 theorem abel_gen (N K F : PTm n) (h0 : Γ ⊢[PRAAx] inst2 a zero (pairT K F) ≐ zero) : Γ ⊢[PRAAx] Ab a N K F := by

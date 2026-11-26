@@ -3,6 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.PrimorialUpper
 import IPRADerivations.Topology.CollisionScales
 import IPRADerivations.Core.CertificateTactics
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # The dyadic Chebyshev upper bound for the prime count
@@ -58,13 +59,9 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 abbrev pcLeF : Fm PTm 1 := le (pc (var 0)) (var 0)
 
 theorem pc_le_open : ([] : List (Fm PTm 1)) ⊢[PRAAx] pcLeF := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact le_congr pc_zero.eqSymm (.eqRefl _) (le_refl zero)
-  · simp only [subst_le, subst_ap2, Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    have ih : [pcLeF] ⊢[PRAAx] le (pc (var 0)) (var 0) := Prf.hyp0
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2]
+  · exact le_congr pc_zero.eqSymm (.eqRefl _) (le_refl zero)
+  · have ih : [pcLeF] ⊢[PRAAx] le (pc (var 0)) (var 0) := Prf.hyp0
     exact le_trans (pc_step_le (var 0)) (succ_le_succ ih)
 
 /-- `π(x) ≤ x`. -/

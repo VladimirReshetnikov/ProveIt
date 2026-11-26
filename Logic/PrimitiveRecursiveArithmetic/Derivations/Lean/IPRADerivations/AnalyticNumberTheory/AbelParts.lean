@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.AbsDiff
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Finite summation by parts with signed increments (`pnt_ipra_constructive_2026-11-14`, `sb:finite-abel`)
@@ -98,13 +99,9 @@ theorem parts_zero (y : PTm n) :
     𝔞 (ap2 (sumF a) (succ zero) y) * natEq (max_eq (Γ := Γ) (inst2 g zero y) (inst2 g (succ zero) y))
 
 private theorem parts₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] partsF a g := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_ap2, subst_inst2, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact parts_zero a g _
-  · simp only [Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_ap2, subst_inst2, Syn.subst_var, Syn.repl_zero,
-      repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact parts_step a g Prf.hyp0
+  ipra_ind [subst_ap2, subst_inst2]
+  · exact parts_zero a g _
+  · exact parts_step a g Prf.hyp0
 
 /-- Summation by parts: `Σ a g + Σ A (g' ∸ g) = A(N) g(N+1) + Σ A (g ∸ g')`. -/
 theorem abel_parts (N y : PTm n) :

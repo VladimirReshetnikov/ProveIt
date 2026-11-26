@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.ConvolutionAssoc
 import IPRADerivations.AnalyticNumberTheory.SummatoryPhi
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # The summatory function of a Dirichlet convolution (`pnt_ipra_constructive_2026-11-14`, towards `sb:symmetry`)
@@ -130,10 +131,8 @@ theorem cs_step (x y : PTm n)
   ipra_lc natEq l + natEq ih - natEq s - natEq r - natEq z
 
 private theorem cs₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] csF a b := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have l := sum_succ' (Γ := ([] : List (Fm PTm 1))) (cvF a b) zero (var 0)
+  ipra_ind [subst_ap2, subst_pairT]
+  · have l := sum_succ' (Γ := ([] : List (Fm PTm 1))) (cvF a b) zero (var 0)
     rw [inst2_cvF] at l
     have l0 := sum_zero (Γ := ([] : List (Fm PTm 1))) (cvF a b) (var 0)
     have c := sum_succ' (Γ := ([] : List (Fm PTm 1))) (cvB a b) zero (pairT zero (var 0))
@@ -145,9 +144,7 @@ private theorem cs₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] csF a b := by
     have rz : ([] : List (Fm PTm 1)) ⊢[PRAAx] inst2 (RB a b) zero (pairT zero (var 0)) ≐ zero :=
       (RB_at a b _ _ _).eqTrans (zero_mul_l (zero_mul_l sg_zero _) _)
     ipra_lc natEq l + natEq l0 + natEq c + natEq c0 + natEq cz - natEq r - natEq r0 - natEq rz
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact cs_step a b _ _ Prf.hyp0
+  · exact cs_step a b _ _ Prf.hyp0
 
 /-- The summatory function of a convolution:
 `Σ_{n≤x} (a * b)(n, y) = Σ_{1≤d≤x} a(d, y) B(⌊x/d⌋, y)` with `B(m, y) = Σ_{1≤k≤m} b(k, y)`. -/

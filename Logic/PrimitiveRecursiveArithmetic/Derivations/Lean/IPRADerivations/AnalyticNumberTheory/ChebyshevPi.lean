@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.PrimorialLower
 import IPRADerivations.AnalyticNumberTheory.PrimeRank
 import IPRADerivations.AnalyticNumberTheory.WeightedMangoldt
 import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # An integer Chebyshev lower bound for the prime count
@@ -194,13 +195,9 @@ theorem cb_succ_ge (k : PTm n) : Γ ⊢[PRAAx] le (two * cb k) (cb (succ k)) :=
 abbrev cbF : Fm PTm 1 := le (pw two (var 0)) (cb (var 0))
 
 theorem cb_lower_open : ([] : List (Fm PTm 1)) ⊢[PRAAx] cbF := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, PTm.subst_mul, PTm.subst_monus, subst_ap2, Syn.subst_var, Syn.inst_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact le_congr (pw_zero two).eqSymm cb_zero.eqSymm (le_refl one)
-  · simp only [subst_le, PTm.subst_mul, PTm.subst_monus, subst_ap2, Syn.subst_var, Syn.repl_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have ih : [cbF] ⊢[PRAAx] le (pw two (var 0)) (cb (var 0)) := Prf.hyp0
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2]
+  · exact le_congr (pw_zero two).eqSymm cb_zero.eqSymm (le_refl one)
+  · have ih : [cbF] ⊢[PRAAx] le (pw two (var 0)) (cb (var 0)) := Prf.hyp0
     have a : [cbF] ⊢[PRAAx] le (two * pw two (var 0)) (two * cb (var 0)) := le_mul_mono (le_refl two) ih
     have e : [cbF] ⊢[PRAAx] pw two (succ (var 0)) ≐ two * pw two (var 0) :=
       (pw_succ two (var 0)).eqTrans (mul_comm _ _)

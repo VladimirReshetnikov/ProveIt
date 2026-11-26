@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.ChineseRemainder
 import IPRADerivations.Probability.MedianCounts
 import IPRADerivations.Core.SumSplit
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Counting along residue classes: Brun's finite counting error
@@ -82,13 +83,9 @@ private abbrev blockF : Fm PTm 3 :=
       ap2 (sumF (gB f)) (succ (var 1)) (pairT (succ (var 1)) (var 2))
 
 private theorem block₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] blockF f := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, PTm.subst_add, subst_ap2, subst_pairT, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      inst_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact block_base f _ _
-  · simp only [Fm.subst_eq, PTm.subst_add, subst_ap2, subst_pairT, Syn.subst_var, Syn.repl_zero, repl_one,
-      repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact block_step f Prf.hyp0
+  ipra_ind [subst_ap2, subst_pairT]
+  · exact block_base f _ _
+  · exact block_step f Prf.hyp0
 
 /-- `A(M + D) = A(M) + ρ`. -/
 theorem block (M d' p : PTm n) :
@@ -115,13 +112,9 @@ private abbrev blocksF : Fm PTm 4 :=
       ap2 (sumF (gB f)) (var 1) (pairT (succ (var 2)) (var 3))
 
 private theorem blocks₀ : ([] : List (Fm PTm 4)) ⊢[PRAAx] blocksF f := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_ap2, subst_pairT, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, inst_two, inst_three, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact blocks_base f _ _ _
-  · simp only [Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_ap2, subst_pairT, Syn.subst_var, Syn.repl_zero,
-      repl_one, repl_two, repl_three, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact blocks_step f Prf.hyp0
+  ipra_ind [subst_ap2, subst_pairT]
+  · exact blocks_base f _ _ _
+  · exact blocks_step f Prf.hyp0
 
 /-- `A(D q + r) = q ρ + A(r)`. -/
 theorem blocks (q r d' p : PTm n) :

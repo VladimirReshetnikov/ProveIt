@@ -6,6 +6,7 @@ import IPRADerivations.Probability.SortingBound
 import IPRADerivations.Geometry.HypercubeSplit
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # The binomial bound `(1 + 1/a)^a ≤ 3`
@@ -55,14 +56,10 @@ alias pos_of_one_le := Common.pos_of_one_le
 private abbrev tfF : Fm PTm 1 := le (pw two (var 0)) (ap2 factF (succ (var 0)) zero)
 
 private theorem tf₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] tfF := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    refine le_congr (pw_zero _).eqSymm ?_ (le_refl one)
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2]
+  · refine le_congr (pw_zero _).eqSymm ?_ (le_refl one)
     exact ((fact_succ _ _).eqTrans ((congrMul (fact_zero _) (.eqRefl _)).eqTrans (by ipra_ring))).eqSymm
-  · simp only [subst_le, subst_ap2, Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    refine le_congr (pw_succ _ _).eqSymm (fact_succ _ _).eqSymm (le_mul_mono Prf.hyp0 ?_)
+  · refine le_congr (pw_succ _ _).eqSymm (fact_succ _ _).eqSymm (le_mul_mono Prf.hyp0 ?_)
     exact le_of_eq_add (d := var 0) (by ipra_ring)
 
 /-- `2^j ≤ (j + 1)!`. -/
@@ -83,14 +80,10 @@ private abbrev flF : Fm PTm 2 :=
   le (ap2 factF (var 1 + var 0) zero) (ap2 factF (var 1) zero * pw (var 1 + var 0) (var 0))
 
 private theorem fl₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] flF := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine le_congr (congrAp2 factF (add_zero _).eqSymm (.eqRefl _))
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2]
+  · refine le_congr (congrAp2 factF (add_zero _).eqSymm (.eqRefl _))
       ((congrMul (.eqRefl _) (pw_zero _)).eqTrans ((mul_comm _ _).eqTrans (one_mul _))).eqSymm (le_refl _)
-  · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact fl_step Prf.hyp0
+  · exact fl_step Prf.hyp0
 
 /-- `(m + k)! ≤ m! (m + k)^k`. -/
 theorem fact_le_falling (m k : PTm n) : Γ ⊢[PRAAx] le (fct (m + k)) (fct m * pw (m + k) k) := by
@@ -159,15 +152,11 @@ private abbrev geomF : Fm PTm 2 :=
     (two * pw (var 1) (var 1) * pw two (var 0))
 
 private theorem geom₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] geomF := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine le_of_eq_add (d := zero) ?_
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2, subst_pairT]
+  · refine le_of_eq_add (d := zero) ?_
     ipra_lc 2 * 𝔞 (pw (var 0) (var 0) : PTm 1) * natEq (pw_zero (Γ := ([] : List (Fm PTm 1))) two) -
       𝔞 (pw two zero : PTm 1) * natEq (sum_zero (Γ := ([] : List (Fm PTm 1))) (shiftBody bt) (pairT (var 0) (pairT one (var 0))))
-  · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
-      repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact geom_step Prf.hyp0
+  · exact geom_step Prf.hyp0
 
 /-- `2^K ∑_{j<K} t_{j+1} + 2 a^a ≤ 2 a^a 2^K`. -/
 theorem geom_dom (K a : PTm n) :

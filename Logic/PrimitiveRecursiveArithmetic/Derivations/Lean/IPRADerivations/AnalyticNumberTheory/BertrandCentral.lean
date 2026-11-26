@@ -2,6 +2,7 @@ import IPRADerivations.Combinatorics.Catalan
 import IPRADerivations.Combinatorics.CentralBinomial
 import IPRADerivations.DiophantineNumberTheory.ResidueFacts
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Bertrand's postulate: the odd central binomial coefficient
@@ -74,15 +75,11 @@ theorem four_zero : Γ ⊢[PRAAx] pw two (two * (zero : PTm n)) ≐ one := by
 private abbrev halfF : Fm PTm 1 := le (cb (succ (var 0))) (two * pw two (two * var 0))
 
 private theorem half₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] halfF := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, PTm.subst_mul, PTm.subst_monus, subst_ap2, Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    have p : ([] : List (Fm PTm 0)) ⊢[PRAAx] two * pw two (two * zero) ≐ two :=
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2]
+  · have p : ([] : List (Fm PTm 0)) ⊢[PRAAx] two * pw two (two * zero) ≐ two :=
       (congrMul (.eqRefl _) four_zero).eqTrans ((mul_comm _ _).eqTrans (one_mul _))
     exact le_congr cb_one.eqSymm p.eqSymm (le_refl two)
-  · simp only [subst_le, PTm.subst_mul, PTm.subst_monus, subst_ap2, Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    have ih : [halfF] ⊢[PRAAx] le (cb (succ (var 0))) (two * pw two (two * var 0)) := Prf.hyp0
+  · have ih : [halfF] ⊢[PRAAx] le (cb (succ (var 0))) (two * pw two (two * var 0)) := Prf.hyp0
     have E : [halfF] ⊢[PRAAx] (two * two) * (two * pw two (two * var 0)) ≐ two * pw two (two * succ (var 0)) := by
       ipra_lc -2 * natEq (four_step (Γ := [halfF]) (var 0))
     exact le_trans (cb_succ_le (succ (var 0))) (le_congr (.eqRefl _) E (le_mul_mono (le_refl (two * two)) ih))
