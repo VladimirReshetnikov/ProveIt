@@ -29,8 +29,8 @@ namespace LeanProofs.IPRA.Analysis.AggregateChain
 
 open_ipra
 open LeanProofs.IPRA.Analysis.AggregateEquality
-  (unit subst_unit unit_positive sample subst_sample nonempty subst_nonempty nonempty_at
-    regular subst_regular regular_at pointRadius_diagonal)
+  (unit subst_unit unit_positive sample subst_sample nonempty shift_nonempty nonempty_at
+    regular shift_regular regular_at pointRadius_diagonal)
 open LeanProofs.IPRA.Analysis.RationalHausdorff
 open LeanProofs.IPRA.Analysis.RationalHausdorffTriangle (coordinateRadius_triangle)
 open LeanProofs.IPRA.Analysis.RationalNearest (selected subst_selected selected_spec cover_selected_radius)
@@ -189,8 +189,7 @@ theorem index_in_range (S : PR 2) (r s i d x : PTm n)
       (length (sample S (Syn.shift s+var 0) (Syn.shift x)))) := by
     ipra_qfind (lt_QF _ _) [subst_lt, subst_index, Foundations.SequenceComposition.subst_length, subst_sample]
     · exact lt_congr (index_zero S _ _ _ _).eqSymm (congrFst (congrAp2 S (add_zero _) (.eqRefl _))).eqSymm hi
-    · have ne : Γ.map Fm.shift ⊢[PRAAx] nonempty S (Syn.shift x) := by
-        simpa only [Fm.shift, subst_nonempty, Syn.shift] using hS.shift
+    · have ne := shift_nonempty hS
       exact lt_congr (index_succ S _ _ _ _ _).eqSymm (.eqRefl _)
         (selected_spec _ _ _ _ (nonempty_at S _ _ ne).wk)
   simpa only [subst_lt, subst_index, Foundations.SequenceComposition.subst_length, subst_sample,
@@ -279,10 +278,8 @@ theorem coordinate_tail (S : PR 2) (r j s i d x k : PTm n)
         (point S (Syn.shift j+var 0) (Syn.shift s) (Syn.shift i) (Syn.shift d) (Syn.shift x))
         (Syn.shift k) (tailNumerator (var 0)) (tailDenominator (Syn.shift s) (Syn.shift j) (var 0))
       let Δ := IH :: Γ.map Fm.shift
-      have ne : Γ.map Fm.shift ⊢[PRAAx] nonempty S (Syn.shift x) := by
-        simpa only [Fm.shift, subst_nonempty, Syn.shift] using hS.shift
-      have reg : Γ.map Fm.shift ⊢[PRAAx] regular S (Syn.shift d) (Syn.shift x) := by
-        simpa only [Fm.shift, subst_regular, Syn.shift] using hR.shift
+      have ne := shift_nonempty hS
+      have reg := shift_regular hR
       have seed : Γ.map Fm.shift ⊢[PRAAx] lt (Syn.shift i) (length (sample S (Syn.shift s) (Syn.shift x))) := by
         simpa only [Fm.shift, subst_lt, Foundations.SequenceComposition.subst_length, subst_sample, Syn.shift] using hi.shift
       have coord : Γ.map Fm.shift ⊢[PRAAx] lt (Syn.shift k) (Syn.shift d) := by
@@ -310,10 +307,8 @@ theorem sharp_tail (S : PR 2) (r j s i d x : PTm n)
     Γ ⊢[PRAAx] pointRadius (point S j s i d x) (point S (j+r) s i d x) d
       (tailNumerator r) (tailDenominator s j r) := by
   refine .allI (.impI ?_)
-  have ne : Γ.map Fm.shift ⊢[PRAAx] nonempty S (Syn.shift x) := by
-    simpa only [Fm.shift, subst_nonempty, Syn.shift] using hS.shift
-  have reg : Γ.map Fm.shift ⊢[PRAAx] regular S (Syn.shift d) (Syn.shift x) := by
-    simpa only [Fm.shift, subst_regular, Syn.shift] using hR.shift
+  have ne := shift_nonempty hS
+  have reg := shift_regular hR
   have seed : Γ.map Fm.shift ⊢[PRAAx] lt (Syn.shift i) (length (sample S (Syn.shift s) (Syn.shift x))) := by
     simpa only [Fm.shift, subst_lt, Foundations.SequenceComposition.subst_length, subst_sample, Syn.shift] using hi.shift
   have result := coordinate_tail S (Syn.shift r) (Syn.shift j) (Syn.shift s) (Syn.shift i) (Syn.shift d) (Syn.shift x)
@@ -582,10 +577,8 @@ theorem name_regular_all (S : PR 2) (s i d x : PTm n)
     (hS : Γ ⊢[PRAAx] nonempty S x) (hR : Γ ⊢[PRAAx] regular S d x)
     (hi : Γ ⊢[PRAAx] lt i (length (sample S s x))) : Γ ⊢[PRAAx] nameRegular S s i d x := by
   refine .allI (.allI ?_)
-  have ne : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] nonempty S (Syn.shift (Syn.shift x)) := by
-    simpa only [Fm.shift, subst_nonempty, Syn.shift] using hS.shift.shift
-  have reg : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] regular S (Syn.shift (Syn.shift d)) (Syn.shift (Syn.shift x)) := by
-    simpa only [Fm.shift, subst_regular, Syn.shift] using hR.shift.shift
+  have ne := shift_nonempty (shift_nonempty hS)
+  have reg := shift_regular (shift_regular hR)
   have seed : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx]
       lt (Syn.shift (Syn.shift i)) (length (sample S (Syn.shift (Syn.shift s)) (Syn.shift (Syn.shift x)))) := by
     simpa only [Fm.shift, subst_lt, Foundations.SequenceComposition.subst_length, subst_sample, Syn.shift] using hi.shift.shift
@@ -595,10 +588,8 @@ theorem initial_bound_all (S : PR 2) (s i d x : PTm n)
     (hS : Γ ⊢[PRAAx] nonempty S x) (hR : Γ ⊢[PRAAx] regular S d x)
     (hi : Γ ⊢[PRAAx] lt i (length (sample S s x))) : Γ ⊢[PRAAx] initialBound S s i d x := by
   refine .allI ?_
-  have ne : Γ.map Fm.shift ⊢[PRAAx] nonempty S (Syn.shift x) := by
-    simpa only [Fm.shift, subst_nonempty, Syn.shift] using hS.shift
-  have reg : Γ.map Fm.shift ⊢[PRAAx] regular S (Syn.shift d) (Syn.shift x) := by
-    simpa only [Fm.shift, subst_regular, Syn.shift] using hR.shift
+  have ne := shift_nonempty hS
+  have reg := shift_regular hR
   have seed : Γ.map Fm.shift ⊢[PRAAx] lt (Syn.shift i) (length (sample S (Syn.shift s) (Syn.shift x))) := by
     simpa only [Fm.shift, subst_lt, Foundations.SequenceComposition.subst_length, subst_sample, Syn.shift] using hi.shift
   exact name_near_initial S (var 0) _ _ _ _ ne reg seed
@@ -607,10 +598,8 @@ theorem support_all (S : PR 2) (s i d x : PTm n)
     (hS : Γ ⊢[PRAAx] nonempty S x) (hR : Γ ⊢[PRAAx] regular S d x)
     (hi : Γ ⊢[PRAAx] lt i (length (sample S s x))) : Γ ⊢[PRAAx] supportAll S s i d x := by
   refine .allI ?_
-  have ne : Γ.map Fm.shift ⊢[PRAAx] nonempty S (Syn.shift x) := by
-    simpa only [Fm.shift, subst_nonempty, Syn.shift] using hS.shift
-  have reg : Γ.map Fm.shift ⊢[PRAAx] regular S (Syn.shift d) (Syn.shift x) := by
-    simpa only [Fm.shift, subst_regular, Syn.shift] using hR.shift
+  have ne := shift_nonempty hS
+  have reg := shift_regular hR
   have seed : Γ.map Fm.shift ⊢[PRAAx] lt (Syn.shift i) (length (sample S (Syn.shift s) (Syn.shift x))) := by
     simpa only [Fm.shift, subst_lt, Foundations.SequenceComposition.subst_length, subst_sample, Syn.shift] using hi.shift
   exact support_at S (var 0) _ _ _ _ ne reg seed

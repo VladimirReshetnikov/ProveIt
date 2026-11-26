@@ -94,20 +94,16 @@ theorem fixed_regular (S : PR 2) (z d x : PTm n)
     (hS : Γ ⊢[PRAAx] nonempty S x) (rS : Γ ⊢[PRAAx] regular S d x) :
     Γ ⊢[PRAAx] fixedRegular S z d x := by
   refine .allI (.allI ?_)
-  have hs : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] nonempty S (Syn.shift (Syn.shift x)) := by
-    simpa only [Fm.shift,subst_nonempty,Syn.shift] using hS.shift.shift
-  have rs : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] regular S (Syn.shift (Syn.shift d)) (Syn.shift (Syn.shift x)) := by
-    simpa only [Fm.shift,subst_regular,Syn.shift] using rS.shift.shift
+  have hs := shift_nonempty (shift_nonempty hS)
+  have rs := shift_regular (shift_regular rS)
   exact fixed_observation S _ _ _ _ _ hs rs
 
 theorem moving_regular (U S : PR 2) (d x : PTm n)
     (hS : Γ ⊢[PRAAx] nonempty S x) (rS : Γ ⊢[PRAAx] regular S d x)
     (rU : Γ ⊢[PRAAx] pointRegular U d x) : Γ ⊢[PRAAx] movingRegular U S d x := by
   refine .allI (.allI ?_)
-  have hs : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] nonempty S (Syn.shift (Syn.shift x)) := by
-    simpa only [Fm.shift,subst_nonempty,Syn.shift] using hS.shift.shift
-  have rs : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] regular S (Syn.shift (Syn.shift d)) (Syn.shift (Syn.shift x)) := by
-    simpa only [Fm.shift,subst_regular,Syn.shift] using rS.shift.shift
+  have hs := shift_nonempty (shift_nonempty hS)
+  have rs := shift_regular (shift_regular rS)
   have ru : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] pointRegular U (Syn.shift (Syn.shift d)) (Syn.shift (Syn.shift x)) := by
     simpa only [Fm.shift,subst_pointRegular,Syn.shift] using rU.shift.shift
   exact moving_regular_at U S _ _ _ _ hs rs ru
@@ -227,12 +223,9 @@ theorem fixed_names_equivalent (S T : PR 2) (z d x : PTm n)
     (hS : Γ ⊢[PRAAx] nonempty S x) (hT : Γ ⊢[PRAAx] nonempty T x)
     (hST : Γ ⊢[PRAAx] equivalent S T d x) : Γ ⊢[PRAAx] fixedEquivalent S T z d x := by
   refine .allI ?_
-  have hs : Γ.map Fm.shift ⊢[PRAAx] nonempty S (Syn.shift x) := by
-    simpa only [Fm.shift,subst_nonempty,Syn.shift] using hS.shift
-  have ht : Γ.map Fm.shift ⊢[PRAAx] nonempty T (Syn.shift x) := by
-    simpa only [Fm.shift,subst_nonempty,Syn.shift] using hT.shift
-  have he : Γ.map Fm.shift ⊢[PRAAx] equivalent S T (Syn.shift d) (Syn.shift x) := by
-    simpa only [Fm.shift,subst_equivalent,Syn.shift] using hST.shift
+  have hs := shift_nonempty hS
+  have ht := shift_nonempty hT
+  have he := shift_equivalent hST
   exact fixed_equivalent_at S T _ _ _ _ hs ht he
 
 theorem moving_names_equivalent (U V S T : PR 2) (d x : PTm n)
@@ -240,14 +233,11 @@ theorem moving_names_equivalent (U V S T : PR 2) (d x : PTm n)
     (hUV : Γ ⊢[PRAAx] pointEquivalent U V d x) (hST : Γ ⊢[PRAAx] equivalent S T d x) :
     Γ ⊢[PRAAx] movingEquivalent U V S T d x := by
   refine .allI ?_
-  have hs : Γ.map Fm.shift ⊢[PRAAx] nonempty S (Syn.shift x) := by
-    simpa only [Fm.shift,subst_nonempty,Syn.shift] using hS.shift
-  have ht : Γ.map Fm.shift ⊢[PRAAx] nonempty T (Syn.shift x) := by
-    simpa only [Fm.shift,subst_nonempty,Syn.shift] using hT.shift
+  have hs := shift_nonempty hS
+  have ht := shift_nonempty hT
   have hp : Γ.map Fm.shift ⊢[PRAAx] pointEquivalent U V (Syn.shift d) (Syn.shift x) := by
     simpa only [Fm.shift,subst_pointEquivalent,Syn.shift] using hUV.shift
-  have he : Γ.map Fm.shift ⊢[PRAAx] equivalent S T (Syn.shift d) (Syn.shift x) := by
-    simpa only [Fm.shift,subst_equivalent,Syn.shift] using hST.shift
+  have he := shift_equivalent hST
   exact moving_equivalent_at U V S T _ _ _ hs ht hp he
 
 def fixedDistanceF (S : PR 2) : PR 4 := PTm.toPR (fixedDistance S (var 0) (var 1) (var 2) (var 3))

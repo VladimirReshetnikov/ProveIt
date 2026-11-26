@@ -92,6 +92,21 @@ ipra_subst equivalent [Fm.subst_all, subst_originalClose, subst_sample, subst_un
     Syn.up_one, Syn.up_succ, Syn.subst_shift, Syn.shift_subst, two, one, ConciseIPRA.PTm.subst_succ,
     ConciseIPRA.PTm.subst_zero]
 
+/-- Carry the nonempty samples certificate under one new binder. -/
+theorem shift_nonempty {S : PR 2} {x : PTm n} (h : Γ ⊢[PRAAx] nonempty S x) :
+    Γ.map Fm.shift ⊢[PRAAx] nonempty S (Syn.shift x) := by
+  simpa only [Fm.shift, subst_nonempty, Syn.shift] using h.shift
+
+/-- Carry the aggregate's regularity under one new binder. -/
+theorem shift_regular {S : PR 2} {d x : PTm n} (h : Γ ⊢[PRAAx] regular S d x) :
+    Γ.map Fm.shift ⊢[PRAAx] regular S (Syn.shift d) (Syn.shift x) := by
+  simpa only [Fm.shift, subst_regular, Syn.shift] using h.shift
+
+/-- Carry aggregate equivalence under one new binder. -/
+theorem shift_equivalent {S T : PR 2} {d x : PTm n} (h : Γ ⊢[PRAAx] equivalent S T d x) :
+    Γ.map Fm.shift ⊢[PRAAx] equivalent S T (Syn.shift d) (Syn.shift x) := by
+  simpa only [Fm.shift, subst_equivalent, Syn.shift] using h.shift
+
 theorem nonempty_at (S : PR 2) (k x : PTm n) (h : Γ ⊢[PRAAx] nonempty S x) :
     Γ ⊢[PRAAx] le one (length (sample S k x)) := by
   simpa [nonempty] using Prf.allE k h
@@ -158,17 +173,13 @@ theorem equivalent_transitive (S T U : PR 2) (d x : PTm n)
     Γ ⊢[PRAAx] equivalent S U d x := by
   refine .allI ?_
   exact equivalent_transitive_at S T U (var 0) (Syn.shift d) (Syn.shift x)
-    (by simpa only [Fm.shift, subst_nonempty, subst_regular, subst_equivalent, Syn.shift] using hS.shift) (by simpa only [Fm.shift, subst_nonempty, subst_regular, subst_equivalent, Syn.shift] using hT.shift)
-    (by simpa only [Fm.shift, subst_nonempty, subst_regular, subst_equivalent, Syn.shift] using hU.shift) (by simpa only [Fm.shift, subst_nonempty, subst_regular, subst_equivalent, Syn.shift] using rS.shift)
-    (by simpa only [Fm.shift, subst_nonempty, subst_regular, subst_equivalent, Syn.shift] using rU.shift) (by simpa only [Fm.shift, subst_nonempty, subst_regular, subst_equivalent, Syn.shift] using hST.shift)
-    (by simpa only [Fm.shift, subst_nonempty, subst_regular, subst_equivalent, Syn.shift] using hTU.shift)
+    (shift_nonempty hS) (shift_nonempty hT) (shift_nonempty hU)
+    (shift_regular rS) (shift_regular rU) (shift_equivalent hST) (shift_equivalent hTU)
 
 theorem equivalent_symmetric (S T : PR 2) (d x : PTm n)
     (h : Γ ⊢[PRAAx] equivalent S T d x) : Γ ⊢[PRAAx] equivalent T S d x := by
   refine .allI ?_
-  have shifted : Γ.map Fm.shift ⊢[PRAAx] equivalent S T (Syn.shift d) (Syn.shift x) := by
-    simpa only [Fm.shift, subst_nonempty, subst_regular, subst_equivalent, Syn.shift] using h.shift
-  have current := equivalent_at S T (var 0) (Syn.shift d) (Syn.shift x) shifted
+  have current := equivalent_at S T (var 0) (Syn.shift d) (Syn.shift x) (shift_equivalent h)
   exact Prf.andI (Prf.andE₂ current) (Prf.andE₁ current)
 
 theorem pointRadius_diagonal (z d A B : PTm n) :
