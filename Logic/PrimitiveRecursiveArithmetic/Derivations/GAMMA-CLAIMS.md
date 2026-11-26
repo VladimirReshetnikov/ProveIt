@@ -3020,3 +3020,6 @@ The literal finite products and cofinal rate give an explicit common-disk input 
 
 The two retained finite ranges of the actual head give an explicit common-disk Lipschitz bound for the original skipped product.
 [GaussianBarnesCanonicalDeflatedHeadLipschitz](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDeflatedHeadLipschitz.lean)
+
+Combining the actual prefactor, multiplier, skipped head and cofinal tail gives an explicit uniform input demand for the exact deflated coefficient.
+[GaussianBarnesCanonicalDeflatedValueContinuity](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDeflatedValueContinuity.lean)
