@@ -2993,3 +2993,6 @@ The actual prefactor preserves conjugation through its real constants and origin
 
 The actual literal finite product commutes with conjugation. Comparing both cofinal values with that same finite cutoff and removing independent rational slack proves exact conjugation of the original value at Gaussian rational arguments.
 [GaussianBarnesCanonicalPrefixConjugation](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefixConjugation.lean), [GaussianBarnesCanonicalValueConjugation](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalValueConjugation.lean)
+
+The original named Barnes evaluator commutes with conjugation on regular Gaussian complex names with independent disk certificates. The proof uses one common late input observation, the rational conjugation identity, and exact removal of observation slack.
+[GaussianBarnesCanonicalNamedConjugation](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNamedConjugation.lean)
