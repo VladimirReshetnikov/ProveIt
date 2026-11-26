@@ -2873,3 +2873,6 @@ The actual rounded cubic rows split at a fixed head boundary. The corrected Barn
 
 The two original exponential factors use the named Stirling constant and Euler–Mascheroni constant. Their literal product is regular and agrees at independent clocks with the exponential of the combined exponent.
 [GaussianBarnesCanonicalPrefactor](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefactor.lean)
+
+The head evaluates each literal polynomial power times its original exponential, with a uniform disk cap. Arbitrary consecutive finite products are regular and split exactly, including possible zero factors. The original prefactor has a checked inverse and apartness certificate.
+[GaussianBarnesCanonicalPrefactorInverse](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefactorInverse.lean), [GaussianBarnesCanonicalFactor](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalFactor.lean), [GaussianBarnesCanonicalHead](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHead.lean), [GaussianBarnesCanonicalHeadSplit](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadSplit.lean)
