@@ -13,9 +13,8 @@ grid `T = R! G' = rG`, and in cell `g` the block of `KhinchinBlock.block_cover` 
 `rg + k`).
 
 * `vB_at`: `sg(v(k, ⟨g, x⟩)) = sg(⋃_g)(rg + k)` — the decoding of the packed parameters (`tmpl`, `Prf.eqCongr`);
-* `k2_round`: if every cell's block satisfies the conclusion of `block_cover` and the margins of `block_out`, and
-  the coarse bits are `w ≤ 1`, then `16384 R_{j+1} ≤ 16383 r R_j` (`R_{j+1} = Σ_g rs_g` fine, `R_j = Σ_g w_g`
-  coarse) — `KhinchinCellBridge.cell_bridge` at every cell inside `KhinchinRoundCounts.round_from_counts`.
+The round theorem itself (`16384 R_{j+1} ≤ 16383 r R_j` from the per-cell block conclusions) is
+`KhinchinK2RoundZ.k2_round_z`.
 -/
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinRoundWrapper

@@ -1,18 +1,24 @@
-import IPRADerivations.DiophantineNumberTheory.KhinchinK2Round
+import IPRADerivations.DiophantineNumberTheory.KhinchinRoundWrapper
 
 /-!
-# The (K2) round theorem with a carried parameter (`hurwitz_khinchin_ipra`)
+# The (K2) round theorem (`hurwitz_khinchin_ipra`)
 
 Packet: `diophantine-number-theory/hurwitz_khinchin_ipra`, `khinchin.tex`, §"Amplification by the finitely many
-residual gaps": "Freeze the old gap list at the beginning of the round: process each old gap once, aggregate the new
-intervals, and only then compute the next gap list."
+residual gaps": "For each gap of positive length, apply the block construction to its interior `J` and add its
+block union to `U_j` … If `R_j = |[0,1] ∖ U_j|`, (K11) gives `R_{j+1} ≤ (1 − 1/b₀) R_j`", `b₀ = 16384`, and "Freeze
+the old gap list at the beginning of the round: process each old gap once, aggregate the new intervals, and only
+then compute the next gap list."
 
-`KhinchinK2Round.k2_round` reads the coarse bits `w(g, x)` from the round parameters `x = px r B K₀ M R G' p` alone.
-Across rounds the bits are the frozen residual of the previous round, carried as a code `z`; so here the parameter
-is `⟨z, x⟩`, the bits are `w(g, ⟨z, x⟩)`, and the new coverage `vZ` ignores `z`:
+Across rounds the coarse bits are the frozen residual of the previous round, carried as a code `z`; so the round
+parameter is `⟨z, x⟩` with `x = px r B K₀ M R G' p`, the bits are `w(g, ⟨z, x⟩)`, and the new coverage `vZ` ignores
+`z`:
 
 * `vZ_at`: `sg(vZ(k, ⟨g, ⟨z, x⟩⟩)) = sg(⋃_g)(rg + k)` (`KhinchinRoundWrapper.vB_at` after dropping `z`);
-* `k2_round_z`: `16384 Σ_g rs_g ≤ 16383 r Σ_g w_g` under the hypotheses of `k2_round` — the same proof.
+* `k2_round_z`: on the coarse grid of `G = p + 1` cells with `r` fine cells each and `T = R! G' = rG`, `M ≥ 1`, if
+  every cell's block satisfies the conclusion of `KhinchinBlock.block_cover` and the margins of `block_out`, and the
+  coarse bits are `w_g ≤ 1`, then `16384 Σ_g rs_g ≤ 16383 r Σ_g w_g`, i.e. `R_{j+1} ≤ (1 − 1/16384) R_j` in the
+  fine unit. Per cell it applies `KhinchinCellBridge.cell_bridge`, identifies the cell sum with the round's coverage
+  body by `vZ_at` (`sum_congr_bounded`), and concludes with `KhinchinRoundCounts.round_from_counts`.
 -/
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinK2RoundZ
