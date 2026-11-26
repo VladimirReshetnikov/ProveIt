@@ -67,11 +67,11 @@ def nameF (F K : PR 2) : PR 2 := GaussianNamedIncrementDifferenceQuotient.nameF 
 def data (F K : PR 2) (x y R a : PTm n) : PTm n :=
   GaussianNamedIncrementDifferenceQuotient.data (B (addF F K)) (B F) K (bd (addData x y) (R+one)) (bd x (R+one)) y a
 
-private theorem step_at (K : PR 2) (y M k : PTm n) (h : Γ ⊢[PRAAx] stepSamples K y M) :
+theorem step_at (K : PR 2) (y M k : PTm n) (h : Γ ⊢[PRAAx] stepSamples K y M) :
     Γ ⊢[PRAAx] bounded (ap2 K k y) one M := by
   simpa [stepSamples,one] using h.allE k
 
-private theorem step_source (K : PR 2) (y M : PTm n) (hM : Γ ⊢[PRAAx] le one M)
+theorem step_source (K : PR 2) (y M : PTm n) (hM : Γ ⊢[PRAAx] le one M)
     (hK : Γ ⊢[PRAAx] GaussianEuclideanDistanceName.pointCN K y) (h : Γ ⊢[PRAAx] stepSamples K y M) :
     Γ ⊢[PRAAx] source K y one := by
   refine .andI hK (.allI ?_)
