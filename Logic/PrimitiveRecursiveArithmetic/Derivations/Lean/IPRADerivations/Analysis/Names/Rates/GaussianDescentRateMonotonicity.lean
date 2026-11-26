@@ -42,7 +42,7 @@ theorem descentD_monotone (d N : PTm n) (h : Γ ⊢[PRAAx] le d N) : Γ ⊢[PRAA
 
 theorem rate_denominator_monotone (d N : PTm n) (h : Γ ⊢[PRAAx] le d N) : Γ ⊢[PRAAx]
     le (rateDenominator d) (rateDenominator N) :=
-  le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right four (descentD_monotone d N h))
+  mul_le_mul_left four (descentD_monotone d N h)
 
 /-- The exact cross-product gap is b-a. No predecessor cancellation or
 strict input order is used, including the boundary a=1. -/

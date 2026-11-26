@@ -79,7 +79,7 @@ theorem sample_zero (f : PR 2) (R x C anchor p : PTm n)
   have ht := late_at f x C t hs (le_trans hc (le_trans late rt))
   have budget : Γ ⊢[PRAAx] le (num 32*U) V :=
     le_trans
-      (le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right (num 32) (unit_monotone hp)))
+      (mul_le_mul_left (num 32) (unit_monotone hp))
       (query_budget _ _)
   have out := cross_at _ _ _ _ r r he
   have valueError : Γ ⊢[PRAAx] distanceBounded (value f R r x) qone (V+V) (V*V) :=

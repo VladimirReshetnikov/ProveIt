@@ -67,7 +67,7 @@ theorem imageLaw_at (d e : PR 3) (f : PR 2) {L p : PTm n}
 
 private theorem mul_mono_left (L : PTm n) {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) :
     Γ ⊢[PRAAx] le (L * a) (L * b) :=
-  le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right L h)
+  mul_le_mul_left L h
 
 /-- Directed image distance is bounded using the actual source nearest index. -/
 theorem directed_image (d e : PR 3) (f : PR 2) (S T L p : PTm n)

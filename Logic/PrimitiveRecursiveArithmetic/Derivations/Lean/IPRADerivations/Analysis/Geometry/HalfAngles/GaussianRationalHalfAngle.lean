@@ -196,7 +196,7 @@ theorem contraction_cleared (q H : PTm n) (h : Γ ⊢[PRAAx] unit q) : Γ ⊢[PR
   have rootBound := RationalSquareRootBounds.root_lower (Γ := Γ) (minus q) (base q) H
   have scaledRoot : Γ ⊢[PRAAx] le ((base q+plus q)*(minusRoot q H*minusRoot q H))
       ((base q+plus q)*RationalSquareRootBounds.radicand (minus q) (base q) H) :=
-    le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right (base q+plus q) rootBound)
+    mul_le_mul_left (base q+plus q) rootBound
   have scaledProduct : Γ ⊢[PRAAx] le
       ((base q+plus q)*RationalSquareRootBounds.radicand (minus q) (base q) H)
       (minus q*(circleL q H*circleL q H)) :=

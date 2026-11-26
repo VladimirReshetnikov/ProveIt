@@ -113,7 +113,7 @@ theorem equal_of_rational_agreement (map other : RationalMap) (sameDemand : map.
   have same := agree (ap2 f k s) B (two*A) (late_certificate f s k A B hs (clock_margin map p A B))
   have obs := diagonal_at _ _ _ _ (succ p) (cross_to_diagonal _ _ _ _ same)
   have budget : Δ ⊢[PRAAx] le (two*unit p) (two*unit (succ p)) :=
-    le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right two (unit_monotone (le_succ_self p)))
+    mul_le_mul_left two (unit_monotone (le_succ_self p))
   have near := distance_radius_mono _ _ _ _ _ _ (unit_positive (succ p)) (unit_positive p) budget obs
   have readOther := (sample_at (Γ := Δ) other f p s A B).eqSymm
   simp only [sample,otherClock] at readOther

@@ -45,7 +45,7 @@ theorem unit_monotone {s t : PTm n} (h : Γ ⊢[PRAAx] le s t) : Γ ⊢[PRAAx] l
 theorem dyadic_weaken (a b A s t : PTm n) (hst : Γ ⊢[PRAAx] le s t)
     (h : Γ ⊢[PRAAx] distanceBounded a b A (unit t)) : Γ ⊢[PRAAx] distanceBounded a b A (unit s) :=
   distance_radius_mono _ _ _ _ _ _ (unit_positive t) (unit_positive s)
-    (le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right A (unit_monotone hst))) h
+    (mul_le_mul_left A (unit_monotone hst)) h
 
 theorem later_query (f : PR 2) (R x p j : PTm n) (h : Γ ⊢[PRAAx] input f R x)
     (hj : Γ ⊢[PRAAx] le (inputPrecision R p) j) : Γ ⊢[PRAAx]

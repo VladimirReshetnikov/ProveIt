@@ -194,7 +194,7 @@ theorem step_norm1_bound (q r A M : PTm n) (hM : Γ ⊢[PRAAx] le one M) (hr : �
   have rr : Γ ⊢[PRAAx] le (two*X) ((two*A*D)*(two*A*D)) :=
     le_of_eq_add (d := two*X) (by unfold X; ipra_ring)
   apply le_of_sq_le
-  exact le_trans l (le_trans (le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right two e)) rr)
+  exact le_trans l (le_trans (mul_le_mul_left two e) rr)
 
 theorem step_small (q r A M C : PTm n) (hM : Γ ⊢[PRAAx] le one M) (hr : Γ ⊢[PRAAx] bounded r A M)
     (hC : Γ ⊢[PRAAx] le (two*C*A) M) :

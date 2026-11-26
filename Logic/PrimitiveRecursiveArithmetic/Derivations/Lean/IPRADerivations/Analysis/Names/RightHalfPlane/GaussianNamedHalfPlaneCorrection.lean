@@ -142,7 +142,7 @@ theorem point_distance (f : PR 2) (r x : PTm n)
     (GaussianRationalHorner.ofGaussian_represents a E (denominator_positive f r x)) old).iffMpr
   have scaled : Γ ⊢[PRAAx] le ((U*U)*normSq (GaussianRootAlgebra.sub a (scale U z)))
       ((U*U)*((two*R*B)*(two*R*B))) :=
-    le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right (U*U) native)
+    mul_le_mul_left (U*U) native
   exact le_congr (.eqRefl _) (by dsimp only [E,correctedDenominator,B,U,R]; ipra_ring) scaled
 
 theorem corrected_original_source_closed (f : PR 2) : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3

@@ -60,7 +60,7 @@ theorem index_bracket (A B t : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRA
       have hi' : Γ ⊢[PRAAx] le (succ (B*q+r)) (B*succ q) := by ipra_le sl h
       exact lt_congr (Prf.andE₁ div).eqSymm (.eqRefl _) hi'
     exact lt_of_lt_of_le h1
-      (le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right B hi))
+      (mul_le_mul_left B hi)
 
 theorem index_greatest (A B t k : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hk : Γ ⊢[PRAAx] le (B*(k*k)) (scaled A t)) : Γ ⊢[PRAAx] le k (index A B t) := by

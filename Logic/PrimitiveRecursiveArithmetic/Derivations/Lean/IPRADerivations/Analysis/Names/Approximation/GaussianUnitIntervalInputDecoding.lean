@@ -101,7 +101,7 @@ theorem decoded_strict (q E : PTm n) (h : Γ ⊢[PRAAx] source q E) : Γ ⊢[PRA
   have hd := denominator_positive (Γ := Γ) q
   refine .orE (lt_or_le (numerator q) (denominator q)) Prf.hyp0 ?_
   have order : (le (denominator q) (numerator q))::Γ ⊢[PRAAx] le (E*denominator q) (E*numerator q) :=
-    le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right E Prf.hyp0)
+    mul_le_mul_left E Prf.hyp0
   have bad : (le (denominator q) (numerator q))::Γ ⊢[PRAAx] lt (E*denominator q) (E*denominator q) :=
     le_trans (le_congr (by ipra_ring) (.eqRefl _) (add_le_add₂ order hd.wk)) upperBound.wk
   exact le_lt_absurd _ (le_refl _) bad

@@ -70,7 +70,7 @@ private theorem pw_le_pw₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] pwLeF := by
       .impE Prf.hyp1 Prf.hyp0
     refine le_congr (pw_succ _ _).eqSymm (pw_succ _ _).eqSymm ?_
     refine le_trans (mul_le_mul_right (var 1) ih) ?_
-    exact le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right (pw (var 2) (var 0)) hab)
+    exact mul_le_mul_left (pw (var 2) (var 0)) hab
 
 theorem pw_le_pw {a b : PTm n} (m : PTm n) (h : Γ ⊢[PRAAx] le a b) :
     Γ ⊢[PRAAx] le (pw a m) (pw b m) := by

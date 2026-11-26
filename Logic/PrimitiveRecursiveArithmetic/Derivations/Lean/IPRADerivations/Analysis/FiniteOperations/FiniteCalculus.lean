@@ -122,7 +122,7 @@ theorem lin_sum (r c D : PTm n) :
 /-! ## The cell error -/
 
 theorem two_mul_le_two_mul {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) : Γ ⊢[PRAAx] le (two * a) (two * b) :=
-  le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right two h)
+  mul_le_mul_left two h
 
 /-- `2 ∑_{i<r} f(i) + D r ≤ 2 r f(0) + D r²` when `f(j + 1) ≤ f(j) + D` for `j < r`. -/
 theorem cell_upper (f : PTm 2) (x r D : PTm n)

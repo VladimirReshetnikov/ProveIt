@@ -96,7 +96,7 @@ theorem tail_ratio_bound (C K T j : PTm n) (hK : Γ ⊢[PRAAx] le one K)
   have second : Γ ⊢[PRAAx] le
       (two*(numerator C K j*denominator C K T*gap C K T*pw K j))
       (two*(denominator C K j*numerator C K T*pw K T*gap C K j)) :=
-    le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right two (tail_comparison C K T j hK hSmall hj))
+    mul_le_mul_left two (tail_comparison C K T j hK hSmall hj)
   have third : Γ ⊢[PRAAx] le
       (two*(denominator C K j*numerator C K T*pw K T*gap C K j))
       ((pw K T*pw K j)*(two*denominator C K j*numerator C K T)) :=
