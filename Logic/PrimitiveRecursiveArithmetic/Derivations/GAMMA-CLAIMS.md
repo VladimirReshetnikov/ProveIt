@@ -3416,3 +3416,6 @@ At every encoded integer N≥2, the original Barnes logarithm at N+1 differs fro
 
 The three original Gaussian fine-derivative comparisons, the actual third-jet coordinate lower cut and the actual wrap distances imply the dyadic projected quotient distance. The lattice budget and rounding are discharged inside the derivation.
 [GaussianDiscretePeriodicThirdFloor](Lean/IPRADerivations/Analysis/FiniteOperations/PeriodicGrids/GaussianDiscretePeriodicThirdFloor.lean), [GaussianDiscretePeriodicMetricCertificate](Lean/IPRADerivations/Analysis/FiniteOperations/PeriodicGrids/GaussianDiscretePeriodicMetricCertificate.lean)
+
+Three certified derivative bounds and the actual third-derivative lower cut on a single refinement window imply the endpoint estimate, when the original quotient samples satisfy the wrap comparisons.
+[GaussianDiscretePeriodicUniformCertificate](Lean/IPRADerivations/Analysis/FiniteOperations/PeriodicGrids/GaussianDiscretePeriodicUniformCertificate.lean)
