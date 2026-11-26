@@ -3005,3 +3005,6 @@ The difference of the original Barnes exponent corrections at consecutive argume
 
 The actual two named cubic logarithm observations differ from their literal linear term by the summable quadratic bound. The original rationals and both observation clocks are retained.
 [GaussianNamedConstantRateFromSlack](Lean/IPRADerivations/Analysis/GaussianNamedConstantRateFromSlack.lean), [GaussianBarnesCanonicalDerivativeBinding](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDerivativeBinding.lean)
+
+The named row difference is the literal linear term plus a named relative cubic and explicit quadratic correction. This remainder has the exact independent-clock bound against zero.
+[GaussianBarnesCanonicalNamedTaylorRemainder](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNamedTaylorRemainder.lean)
