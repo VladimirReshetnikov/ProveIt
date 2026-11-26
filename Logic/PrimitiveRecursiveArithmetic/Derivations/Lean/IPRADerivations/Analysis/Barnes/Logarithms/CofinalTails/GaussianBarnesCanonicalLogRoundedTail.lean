@@ -17,6 +17,7 @@ set_option maxHeartbeats 250000
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalLogRoundedTail
 
 open_ipra
+open GaussianRationalMatrixFiniteSums (split_indexed_rows)
 open GaussianBarnesCanonicalLogRow (roundedValue subst_roundedValue)
 open GaussianBarnesCanonicalLogTail (source row_source)
 open GaussianRationalFiniteSum (sum)
@@ -70,26 +71,14 @@ theorem body_at (p z R B N i : PTm n) :
 
 theorem split (p z R B N r s : PTm n) :
     Γ ⊢[PRAAx] value p z R B N (r+s) ≐ qadd (value p z R B N r) (value p z R B (N+r) s) := by
-  let x := data p z R B N
-  let y := data p z R B (N+r)
-  have tail : Γ ⊢[PRAAx] sum (offB body) s (pairT r x) ≐ sum body s y := by
-    refine GaussianRationalFiniteSum.sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
-    let sh (a : PTm n) := Syn.shift a
-    let Δ := lt (var 0) (sh s) :: Γ.map Fm.shift
-    let i : PTm (n+1) := var 0
-    have off := GaussianRationalFiniteProduct.offset_at (Γ := Δ) body (sh r) i (data (sh p) (sh z) (sh R) (sh B) (sh N))
-    have e : Δ ⊢[PRAAx] succ (sh N+(sh r+i)) ≐ succ ((sh N+sh r)+i) :=
-      congrSucc (add_assoc _ _ _).eqSymm
-    have a := body_at (Γ := Δ) (sh p) (sh z) (sh R) (sh B) (sh N) (sh r+i)
-    have b := body_at (Γ := Δ) (sh p) (sh z) (sh R) (sh B) (sh N+sh r) i
-    have c : Δ ⊢[PRAAx] roundedValue (sh p) (sh z) (sh R) (sh B) (succ (sh N+(sh r+i))) ≐
-        roundedValue (sh p) (sh z) (sh R) (sh B) (succ ((sh N+sh r)+i)) := by
-      ipra_congr (roundedValue (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) with
-        [.eqRefl _, .eqRefl _, .eqRefl _, .eqRefl _, e]
-    simpa only [GaussianRationalFiniteSum.termsEqual, Syn.shift, sh, i, Δ, subst_pairT, x, y, subst_data, PTm.subst_add] using
-      off.eqTrans (a.eqTrans (c.eqTrans b.eqSymm))
-  exact (GaussianRationalMatrixFiniteSums.sum_split body r s x).eqTrans
-    (GaussianRationalSyntheticDivision.qadd_congr (.eqRefl _) tail)
+  let sh {m : ℕ} (v : PTm m) := Syn.shift v
+  refine split_indexed_rows body (roundedValue (sh (sh p)) (sh (sh z)) (sh (sh R)) (sh (sh B)) (var 0))
+    (data p z R B N) (data p z R B (N+r)) N r s ?_ ?_
+  all_goals simp only [sh,subst_roundedValue,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
+  · simpa only [Syn.shift,sh,subst_data] using
+      (body_at (Γ := Γ.map Fm.shift) (sh p) (sh z) (sh R) (sh B) (sh N) (sh r+var 0))
+  · simpa only [Syn.shift,sh,subst_data,PTm.subst_add] using
+      (body_at (Γ := Γ.map Fm.shift) (sh p) (sh z) (sh R) (sh B) (sh N+sh r) (var 0))
 
 private theorem row_at_most (N i r : PTm n) (h : Γ ⊢[PRAAx] lt i r) :
     Γ ⊢[PRAAx] le (succ (N+i)) (N+r) :=

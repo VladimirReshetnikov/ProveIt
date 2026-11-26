@@ -23,11 +23,12 @@ namespace LeanProofs.IPRA.Analysis.GaussianRationalMatrixFiniteSums
 
 open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero qadd qmul canonical)
-open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qone qone_canonical qzero_canonical qadd_congr qmul_congr)
-open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qnegative qnegative_canonical qnegative_represents)
+open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qone qone_canonical qzero_canonical qadd_congr qmul_congr qsub_congr qadd_sub_cancel)
+open LeanProofs.IPRA.Analysis.GaussianRationalMetric (bounded distanceBounded qnegative qnegative_canonical qnegative_represents)
+open GaussianRationalReciprocal (bound_congr)
 open LeanProofs.IPRA.Analysis.GaussianTranslatedNonconstant (recode recode_canonical recode_eq recode_represents)
 open LeanProofs.IPRA.Analysis.GaussianInverseBinomialRows (negative_congr negative_product)
-open LeanProofs.IPRA.Analysis.GaussianRationalFiniteSum (sum sum_canonical sum_index_congr sum_congr_bounded)
+open LeanProofs.IPRA.Analysis.GaussianRationalFiniteSum (sum sum_canonical sum_index_congr sum_congr_bounded termsEqual)
 open LeanProofs.IPRA.Analysis.GaussianRationalSumSegments (partialSum entriesEqual prefix_entries_congr)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_decode subst_sequence)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
@@ -59,6 +60,35 @@ theorem sum_split (f : PTm 2) (A B x : PTm n) : Γ ⊢[PRAAx]
     (qadd_congr
       (GaussianRationalFiniteSum.generated_prefix_congr f (A+B) A x A (le_add_right _ _) (le_refl _))
       (prefix_entries_congr _ _ B B (segment_entries f A B x) (le_refl _)))
+
+/-- Split a finite sum when its two suffix addresses read the same row at the shifted index. -/
+theorem split_indexed_rows (t : PTm 2) (entry : PTm (n+2)) (x y N r s : PTm n)
+    (first :
+      let i := Syn.shift r+var 0
+      Γ.map Fm.shift ⊢[PRAAx] inst2 t i (Syn.shift x) ≐
+        Syn.subst (Syn.inst (succ (Syn.shift N+i))) entry)
+    (last :
+      Γ.map Fm.shift ⊢[PRAAx] inst2 t (var 0) (Syn.shift y) ≐
+        Syn.subst (Syn.inst (succ ((Syn.shift N+Syn.shift r)+var 0))) entry) :
+    Γ ⊢[PRAAx] sum t (r+s) x ≐ qadd (sum t r x) (sum t s y) := by
+  refine (GaussianRationalMatrixFiniteSums.sum_split t r s x).eqTrans (qadd_congr (.eqRefl _) ?_)
+  refine GaussianRationalFiniteSum.sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
+  let i : PTm (n+1) := var 0
+  let Δ := lt i (Syn.shift s) :: Γ.map Fm.shift
+  have off := GaussianRationalFiniteProduct.offset_at (Γ := Δ) t (Syn.shift r) i (Syn.shift x)
+  have same : Δ ⊢[PRAAx] succ (Syn.shift N+(Syn.shift r+i)) ≐ succ ((Syn.shift N+Syn.shift r)+i) :=
+    congrSucc (add_assoc _ _ _).eqSymm
+  simpa only [termsEqual,Syn.shift,subst_pairT,i,Δ] using
+    off.eqTrans (first.wk.eqTrans ((Prf.eqCongr1 entry same).eqTrans last.wk.eqSymm))
+
+/-- Read the distance between consecutive prefixes from a bound on the split suffix. -/
+theorem gap_of_split (t : PTm 2) (x y r s C D : PTm n)
+    (split : Γ ⊢[PRAAx] sum t (r+s) x ≐ qadd (sum t r x) (sum t s y))
+    (tail : Γ ⊢[PRAAx] bounded (sum t s y) C D) :
+    Γ ⊢[PRAAx] distanceBounded (sum t (r+s) x) (sum t r x) C D :=
+  bound_congr ((qsub_congr split (.eqRefl _)).eqTrans
+    (qadd_sub_cancel _ _ (GaussianRationalFiniteSum.sum_canonical t s y))).eqSymm
+    (.eqRefl _) (.eqRefl _) tail
 
 def zeroTerms (f : PTm 2) (N x : PTm n) : Fm PTm n := .all
   (lt (var 0) (Syn.shift N) ⟶ inst2 f (var 0) (Syn.shift x) ≐ qzero)

@@ -17,12 +17,12 @@ set_option maxHeartbeats 500000
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalDerivativeTail
 
 open_ipra
+open GaussianRationalMatrixFiniteSums (split_indexed_rows gap_of_split)
 open GaussianBarnesCanonicalLogTail (source row_source)
-open GaussianRationalFiniteSum (sum termsEqual)
+open GaussianRationalFiniteSum (sum)
 open GaussianRationalHorner (qadd)
-open GaussianRationalMetric (bounded distanceBounded qsub)
+open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr)
-open GaussianRationalSyntheticDivision (qadd_congr qsub_congr qadd_sub_cancel)
 open GaussianReciprocalSquareInterval (denominator rowsBounded)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -78,23 +78,14 @@ theorem tail_bound (z R B N r : PTm n) (h : Γ ⊢[PRAAx] source z R B N) :
 
 theorem split (z B N r s : PTm n) :
     Γ ⊢[PRAAx] value z B N (r+s) ≐ qadd (value z B N r) (value z B (N+r) s) := by
-  let x := data z B N
-  let y := data z B (N+r)
-  have tail : Γ ⊢[PRAAx] sum (offB body) s (pairT r x) ≐ sum body s y := by
-    refine GaussianRationalFiniteSum.sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
-    let sh (v : PTm n) := Syn.shift v
-    let Δ := lt (var 0) (sh s) :: Γ.map Fm.shift
-    let i : PTm (n+1) := var 0
-    have off := GaussianRationalFiniteProduct.offset_at (Γ := Δ) body (sh r) i (data (sh z) (sh B) (sh N))
-    have e : Δ ⊢[PRAAx] succ (sh N+(sh r+i)) ≐ succ ((sh N+sh r)+i) :=
-      congrSucc (add_assoc _ _ _).eqSymm
-    have a := body_at (Γ := Δ) (sh z) (sh B) (sh N) (sh r+i)
-    have b := body_at (Γ := Δ) (sh z) (sh B) (sh N+sh r) i
-    have c : Δ ⊢[PRAAx] row (sh z) (sh B) (succ (sh N+(sh r+i))) ≐ row (sh z) (sh B) (succ ((sh N+sh r)+i)) := by
-      ipra_congr (row (var 0) (var 1) (var 2) : PTm 3) with [.eqRefl _, .eqRefl _, e]
-    simpa only [termsEqual,Syn.shift,sh,i,Δ,subst_pairT,x,y,subst_data,PTm.subst_add] using
-      off.eqTrans (a.eqTrans (c.eqTrans b.eqSymm))
-  exact (GaussianRationalMatrixFiniteSums.sum_split body r s x).eqTrans (qadd_congr (.eqRefl _) tail)
+  let sh {m : ℕ} (v : PTm m) := Syn.shift v
+  refine split_indexed_rows body (row (sh (sh z)) (sh (sh B)) (var 0))
+    (data z B N) (data z B (N+r)) N r s ?_ ?_
+  all_goals simp only [sh,GaussianBarnesCanonicalDerivativeRow.subst_value,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
+  · simpa only [Syn.shift,sh,subst_data] using
+      (body_at (Γ := Γ.map Fm.shift) (sh z) (sh B) (sh N) (sh r+var 0))
+  · simpa only [Syn.shift,sh,subst_data,PTm.subst_add] using
+      (body_at (Γ := Γ.map Fm.shift) (sh z) (sh B) (sh N+sh r) (var 0))
 
 theorem late_source (z R B N r : PTm n) (h : Γ ⊢[PRAAx] source z R B N) :
     Γ ⊢[PRAAx] source z R B (N+r) :=
@@ -102,12 +93,9 @@ theorem late_source (z R B N r : PTm n) (h : Γ ⊢[PRAAx] source z R B N) :
     (.andI h.andE₂.andE₂.andE₁ (le_trans h.andE₂.andE₂.andE₂ (le_add_right _ _))))
 
 theorem finite_gap (z R B N r s : PTm n) (h : Γ ⊢[PRAAx] source z R B N) :
-    Γ ⊢[PRAAx] distanceBounded (value z B N (r+s)) (value z B N r) (C R) (N+r) := by
-  let v := value z B (N+r) s
-  have cancel : Γ ⊢[PRAAx] qsub (value z B N (r+s)) (value z B N r) ≐ v :=
-    (qsub_congr (split z B N r s) (.eqRefl (value z B N r))).eqTrans
-    (qadd_sub_cancel (value z B N r) v (GaussianRationalFiniteSum.sum_canonical body s (data z B (N+r))))
-  exact bound_congr cancel.eqSymm (.eqRefl _) (.eqRefl _) (tail_bound z R B (N+r) s (late_source z R B N r h))
+    Γ ⊢[PRAAx] distanceBounded (value z B N (r+s)) (value z B N r) (C R) (N+r) :=
+  gap_of_split body _ _ r s _ _ (split z B N r s)
+    (tail_bound z R B (N+r) s (late_source z R B N r h))
 
 theorem actual_Barnes_first_derivative_finite_tail_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 5
     (source (var 0) (var 1) (var 2) (var 3) ⟶
