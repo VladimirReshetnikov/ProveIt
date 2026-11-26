@@ -157,12 +157,10 @@ theorem local_rate (X Y D sign T A C E t u H Q : PTm n)
       (fd (s X) (s Y) (s D) (s sign) (tagNumerator (s u)) (sndT (s u))) (gain (s D) (s E) (s T)*s H) (s Q) :=
     by simpa [Δ,s,Fm.shift,Syn.shift,a,b,c,d] using rate.shift.shift
   refine .allI (.allI ?_)
-  have left := (GaussianCompactRiemannName.evaluator_at (Γ := Δ) evaluatorF (var 1) (s t) (fixedData (s X) (s Y) (s D) (s sign))).eqTrans
-    (evaluator_at (var 1) (s t) (s X) (s Y) (s D) (s sign))
-  have right := (GaussianCompactRiemannName.evaluator_at (Γ := Δ) evaluatorF (var 0) (s u) (fixedData (s X) (s Y) (s D) (s sign))).eqTrans
-    (evaluator_at (var 0) (s u) (s X) (s Y) (s D) (s sign))
   simpa only [independentRate,Δ,s,Syn.shift,GaussianCompactRiemannName.subst_nameData,subst_fixedData,subst_gain,PTm.subst_mul] using
-    GaussianRationalDistanceOrder.distance_congr left.eqSymm right.eqSymm (.eqRefl _) (.eqRefl _)
+    GaussianCompactRiemannName.wrapped_distance_from_decoded
+      (evaluator_at (var 1) (s t) (s X) (s Y) (s D) (s sign))
+      (evaluator_at (var 0) (s u) (s X) (s Y) (s D) (s sign))
       (GaussianNamedInverseRate.rate_at _ _ _ _ _ _ (var 1) (var 0) shifted)
 
 theorem sampled_modulus (X Y D sign T A C E : PTm n) (h : Γ ⊢[PRAAx] source X D sign T A C E) :

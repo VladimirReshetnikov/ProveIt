@@ -78,14 +78,11 @@ theorem original_local_cross (t z R B E T : PTm n)
     by simpa [Fm.shift,Syn.shift,lift,GaussianEulerIntegrandName.source] using h.shift.shift
   have old := original_sample_comparison (var 1) (var 0) (lift z) (lift R) (lift B) (lift E) (lift T)
     (fstT (lift t)) (sndT (lift t)) hs
-  have logAt := (GaussianCompactRiemannName.evaluator_at (Γ := (Γ.map Fm.shift).map Fm.shift) logEvaluator (var 1) (lift t)
-    (logClient zero (lift R) (lift E) (lift T) (lift z) (lift B))).eqTrans
-    (GaussianEulerLogarithmicCompactName.raw_evaluator_at (var 1) (lift t) zero (lift R) (lift E) (lift T) (lift z) (lift B))
-  have plainAt := (GaussianCompactRiemannName.evaluator_at (Γ := (Γ.map Fm.shift).map Fm.shift)
-    plainEvaluator (var 0) (lift t) (plainClient (lift z) (lift B))).eqTrans
-    (original_raw_plain_at (var 0) (lift t) (lift z) (lift B))
   refine .allI (.allI ?_)
-  simpa [crossEquivalent,Syn.shift,lift] using distance_congr logAt.eqSymm plainAt.eqSymm (.eqRefl _) (.eqRefl _) old
+  simpa [crossEquivalent, Syn.shift, lift] using
+    GaussianCompactRiemannName.wrapped_distance_from_decoded
+      (GaussianEulerLogarithmicCompactName.raw_evaluator_at (var 1) (lift t) zero (lift R) (lift E) (lift T) (lift z) (lift B))
+      (original_raw_plain_at (var 0) (lift t) (lift z) (lift B)) old
 
 theorem compact_order_zero (z R B a C E T : PTm n) (h : Γ ⊢[PRAAx] intervalSource z R B a C E T) : Γ ⊢[PRAAx]
     crossEquivalent GaussianEulerLogarithmicIntervalName.nameF GaussianEulerCompactAdditivity.nameF

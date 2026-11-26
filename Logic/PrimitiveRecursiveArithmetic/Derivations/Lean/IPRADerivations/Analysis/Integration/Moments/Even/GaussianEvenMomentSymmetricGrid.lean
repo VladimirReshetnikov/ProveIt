@@ -23,7 +23,6 @@ open GaussianPositiveRationalLogarithm (fraction)
 open GaussianMomentReflection (row)
 open GaussianRationalHorner (qadd)
 open GaussianRationalMetric (distanceBounded qnegative)
-open GaussianRationalDistanceOrder (distance_congr)
 open GaussianCompactRiemannName (evaluatorName nameData inside grid sampleBody sampleData quadrature)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianCoefficientNameBounds (unit)
@@ -123,12 +122,9 @@ theorem wrapped_observations (p q t N c d E T : PTm n)
     distanceBounded
       (ap2 (evaluatorName GaussianEulerQuadraticKernelCompactName.evaluatorF) p (nameData t (fixedData (argument N) two c d)))
       (ap2 (evaluatorName (evaluatorF false)) q (nameData t (momentData N c d))) (unit p+unit q) (unit p*unit q) := by
-  have left := (GaussianCompactRiemannName.evaluator_at (Γ := Γ) GaussianEulerQuadraticKernelCompactName.evaluatorF p t _).eqTrans
+  exact GaussianCompactRiemannName.wrapped_distance_from_decoded
     (GaussianEulerQuadraticKernelCompactName.evaluator_at p t (argument N) two c d)
-  have right := (GaussianCompactRiemannName.evaluator_at (Γ := Γ) (evaluatorF false) q t _).eqTrans
-    ((evaluator_at false q t N c d).eqTrans
-      (GaussianEvenMomentIntegrand.sample_at q N (fstT t) (sndT t) c d).eqSymm)
-  exact distance_congr left.eqSymm right.eqSymm (.eqRefl _) (.eqRefl _)
+    ((evaluator_at false q t N c d).eqTrans (GaussianEvenMomentIntegrand.sample_at q N (fstT t) (sndT t) c d).eqSymm)
     (GaussianEvenMomentIntegrand.original_observations p q N (fstT t) (sndT t) E T c d h)
 
 /-- Recover the pointwise moment input under the time and two precision binders. -/

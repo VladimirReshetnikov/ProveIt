@@ -51,6 +51,14 @@ theorem evaluator_at (F : PR 3) (p t x : PTm n) : Γ ⊢[PRAAx]
     simpa only [evaluatorName,ap2,subst_ap3,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using old
   exact e.eqTrans (congrAp3 F (.eqRefl _) (fst_pair _ _) (snd_pair _ _))
 
+/-- Transport a distance bound on decoded samples to the two wrapped evaluators. -/
+theorem wrapped_distance_from_decoded {F G : PR 3} {p q t u x y left right A D : PTm n}
+    (hl : Γ ⊢[PRAAx] ap3 F p t x ≐ left) (hr : Γ ⊢[PRAAx] ap3 G q u y ≐ right)
+    (h : Γ ⊢[PRAAx] distanceBounded left right A D) : Γ ⊢[PRAAx]
+    distanceBounded (ap2 (evaluatorName F) p (nameData t x)) (ap2 (evaluatorName G) q (nameData u y)) A D :=
+  distance_congr ((evaluator_at F p t x).eqTrans hl).eqSymm
+    ((evaluator_at G q u y).eqTrans hr).eqSymm (.eqRefl _) (.eqRefl _) h
+
 def localBody (F : PR 3) (a C E L x t u A D : PTm n) : Fm PTm n :=
   le one D ⟶ inside a C E t ⟶ inside a C E u ⟶ distanceBounded (value t) (value u) A D ⟶
     independentRate (evaluatorName F) (evaluatorName F) (nameData t x) (nameData u x) (L*A) D

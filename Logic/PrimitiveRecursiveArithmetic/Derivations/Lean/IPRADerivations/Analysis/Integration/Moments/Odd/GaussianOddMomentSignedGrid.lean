@@ -21,7 +21,6 @@ open GaussianOddSymmetricQuadrature (fixedData positiveF negativeF)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (qadd qzero)
 open GaussianRationalMetric (distanceBounded qnegative)
-open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr)
 open GaussianRationalFiniteSum (sum)
 open GaussianCompactRiemannName (evaluatorName nameData inside grid sampleBody sampleData quadrature)
@@ -107,11 +106,9 @@ theorem wrapped_observations (p q t N c d E T : PTm n)
       (ap2 (evaluatorName GaussianEulerQuadraticKernelCompactName.evaluatorF) p
         (nameData t (GaussianEulerPositiveScalingIntegrand.fixedData (argument N) one c d)))
       (ap2 (evaluatorName (evaluatorF false)) q (nameData t (fixedData N c d))) (unit p+unit q) (unit p*unit q) := by
-  have left := (GaussianCompactRiemannName.evaluator_at (Γ := Γ) GaussianEulerQuadraticKernelCompactName.evaluatorF p t _).eqTrans
+  exact GaussianCompactRiemannName.wrapped_distance_from_decoded
     (GaussianEulerQuadraticKernelCompactName.evaluator_at p t (argument N) one c d)
-  have right := (GaussianCompactRiemannName.evaluator_at (Γ := Γ) (evaluatorF false) q t _).eqTrans
     ((literal_positive_at q t N c d).eqTrans (GaussianOddMomentIntegrand.sample_at q N (fstT t) (sndT t) c d).eqSymm)
-  exact distance_congr left.eqSymm right.eqSymm (.eqRefl _) (.eqRefl _)
     (GaussianOddMomentIntegrand.original_observations p q N (fstT t) (sndT t) E T c d h)
 
 theorem local_agreement (N a C E T c d : PTm n) (h : Γ ⊢[PRAAx] source a C E T c d) : Γ ⊢[PRAAx]

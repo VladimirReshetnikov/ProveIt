@@ -133,10 +133,8 @@ private theorem local_rate (z R B N Q a C E T t u A D : PTm n)
     simpa [Fm.shift,Syn.shift,Δ,sh] using hd.shift.shift
   have raw := original_modulus_at (sh z) (sh R) (sh B) (sh N) (sh Q) (sh a) (sh C) (sh E) (sh T) (var 1) (var 0)
     (sh t) (sh u) (sh A) (sh D) h' hQ' hD' ht' hu' hd'
-  have left := GaussianCompactRiemannName.evaluator_at (Γ := Δ) evaluatorF (var 1) (sh t) (data (sh z) (sh B) (sh N) (sh Q))
-  have right := GaussianCompactRiemannName.evaluator_at (Γ := Δ) evaluatorF (var 0) (sh u) (data (sh z) (sh B) (sh N) (sh Q))
-  simpa only [independentRate,Δ,sh,Syn.shift,GaussianCompactRiemannName.subst_nameData,subst_data,subst_lipschitz,PTm.subst_mul]
-    using distance_congr left.eqSymm right.eqSymm (.eqRefl _) (.eqRefl _) raw
+  simpa only [independentRate,Δ,sh,Syn.shift,GaussianCompactRiemannName.subst_nameData,subst_data,subst_lipschitz,PTm.subst_mul] using
+    GaussianCompactRiemannName.wrapped_distance_from_decoded (.eqRefl _) (.eqRefl _) raw
 
 theorem original_sampled_modulus (z R B N Q a C E T : PTm n)
     (h : Γ ⊢[PRAAx] intervalSource z R B a C E T) (hQ : Γ ⊢[PRAAx] le N Q) : Γ ⊢[PRAAx]
