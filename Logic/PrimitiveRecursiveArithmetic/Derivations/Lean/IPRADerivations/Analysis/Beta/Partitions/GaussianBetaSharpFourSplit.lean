@@ -1,6 +1,8 @@
 import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactRiemannFourSplit
 import IPRADerivations.Analysis.Beta.Partitions.GaussianBetaSharpPartition
 import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactAdditivity
+import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaCompactQuadratureBoundary
+import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaEulerCompactQuadrature
 
 /-!
 # The actual original eta-to-top grid split at one, N/2 and N
@@ -19,12 +21,11 @@ open_ipra
 open GaussianBetaSharpPartition (lowWidth middleWidth supportTailWidth exteriorWidth halfPoint)
 open GaussianGammaIntegralCutoffs (etaDen top eta_den_positive)
 open GaussianGammaCompactQuadratureBoundary (width)
-open GaussianCompactRiemannName (quadrature sampledModulus)
+open GaussianCompactRiemannName (quadrature quadrature_congr sampledModulus)
 open GaussianRationalHorner (qadd)
 open GaussianRationalSyntheticDivision (qadd_congr)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr)
-open GaussianBetaIntegralThreeSplit (quadrature_congr)
 open GaussianCoefficientNameBounds (unit)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}

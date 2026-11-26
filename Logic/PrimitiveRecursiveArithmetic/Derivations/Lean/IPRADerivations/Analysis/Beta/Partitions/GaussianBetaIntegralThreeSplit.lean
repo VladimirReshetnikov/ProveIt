@@ -52,17 +52,7 @@ def encodedPieces (s z B k deep A R N K : PTm n) : PTm n :=
 def splitNumerator (k deep A R N : PTm n) : PTm n :=
   two*totalWidth k deep A R N+two*(lowerWidth k deep A+middleWidth k deep A R)+two*middleWidth k deep A R
 
-theorem quadrature_congr (F : PR 3) {p q M V a b C D E G x y : PTm n}
-    (hp : Γ ⊢[PRAAx] p ≐ q) (hM : Γ ⊢[PRAAx] M ≐ V) (ha : Γ ⊢[PRAAx] a ≐ b)
-    (hC : Γ ⊢[PRAAx] C ≐ D) (hE : Γ ⊢[PRAAx] E ≐ G) (hx : Γ ⊢[PRAAx] x ≐ y) :
-    Γ ⊢[PRAAx] quadrature F p M a C E x ≐ quadrature F q V b D G y := by
-  simpa only [GaussianCompactRiemannName.subst_quadrature,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-    Matrix.cons_val_two,Matrix.cons_val_three,Matrix.cons_val_four,Matrix.cons_val_succ,Matrix.head_cons,Matrix.tail_cons,
-    (show (![p,M,a,C,E,x] : Fin 6 → PTm n) 5 = x from rfl),
-    (show (![q,V,b,D,G,y] : Fin 6 → PTm n) 5 = y from rfl)] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (quadrature F (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6)
-      (σ := ![p,M,a,C,E,x]) (σ' := ![q,V,b,D,G,y])
-        (fun i => by fin_cases i; exact hp; exact hM; exact ha; exact hC; exact hE; exact hx)
+alias quadrature_congr := GaussianCompactRiemannName.quadrature_congr
 
 theorem full_beta_source (z R B k deep A N K : PTm n) (h : Γ ⊢[PRAAx] source z R B k deep A N K) : Γ ⊢[PRAAx]
     GaussianBetaKernelCompactModulus.compactSource z R B (denominator deep A R) N one (totalWidth k deep A R N) N := by

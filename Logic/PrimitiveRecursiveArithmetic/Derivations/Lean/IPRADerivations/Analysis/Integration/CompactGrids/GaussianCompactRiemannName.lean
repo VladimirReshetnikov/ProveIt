@@ -199,6 +199,12 @@ def quadrature (F : PR 3) (p N a C E x : PTm n) : PTm n :=
   GaussianRationalRiemannRefinement.leftSum (sampleBody F) N (sampleData p N a C E x) C E
 ipra_subst quadrature
 
+theorem quadrature_congr (F : PR 3) {p q M V a b C D E G x y : PTm n}
+    (hp : Γ ⊢[PRAAx] p ≐ q) (hM : Γ ⊢[PRAAx] M ≐ V) (ha : Γ ⊢[PRAAx] a ≐ b)
+    (hC : Γ ⊢[PRAAx] C ≐ D) (hE : Γ ⊢[PRAAx] E ≐ G) (hx : Γ ⊢[PRAAx] x ≐ y) :
+    Γ ⊢[PRAAx] quadrature F p M a C E x ≐ quadrature F q V b D G y := by
+  ipra_congr (quadrature F (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) with [hp, hM, ha, hC, hE, hx]
+
 
 theorem refinement_cell (F : PR 3) (i p q N R a C E L x : PTm n)
     (ha : Γ ⊢[PRAAx] le one a) (hE : Γ ⊢[PRAAx] le one E) (hN : Γ ⊢[PRAAx] le one N)
