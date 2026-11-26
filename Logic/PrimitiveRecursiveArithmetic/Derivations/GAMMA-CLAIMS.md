@@ -3377,3 +3377,6 @@ The original full logarithm difference quotient uses the named logarithms at bot
 
 The original Barnes cofinal cubic sampler has an explicit small bound at the far translated rational chart. Candidate third derivative nonnegativity then bounds the signed coefficient formed from its real observation minus that sampler. The actual four-node Gaussian Taylor observation bounds imply the cyclic third difference estimate.
 [GaussianSignedObservationOrder](Lean/IPRADerivations/Analysis/FiniteOperations/GaussianSignedObservationOrder.lean), [GaussianCyclicCubicTaylor](Lean/IPRADerivations/Analysis/FiniteOperations/GaussianCyclicCubicTaylor.lean), [GaussianBarnesVignerasCubicForce](Lean/IPRADerivations/Analysis/Barnes/Logarithms/GaussianBarnesVignerasCubicForce.lean)
+
+The cyclic signed-grid estimate uses the actual far-translated candidate derivative and canonical cubic samples. Given four certified Taylor observations at each residue, the checked precision schedule can be chosen independently of the mesh size and yields projected quotient distance at most 2⁻ᵖ. Deriving those Taylor comparisons from the coded C³ data is separate.
+[GaussianBarnesVignerasCyclicDerivative](Lean/IPRADerivations/Analysis/Barnes/Logarithms/GaussianBarnesVignerasCyclicDerivative.lean)
