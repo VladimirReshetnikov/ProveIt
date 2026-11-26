@@ -19,11 +19,11 @@ open_ipra
 open GaussianBarnesCanonicalThirdDerivativePositiveMargin (source step)
 open GaussianBarnesCanonicalPositiveFirstDerivativeRow (gain)
 open GaussianBarnesCanonicalThirdLogarithmRows (center)
-open GaussianRationalFiniteSum (sum termsEqual multiplyBody multiply_body_at sum_multiply)
-open GaussianRationalHorner (ofGaussian positive_product qadd qmul)
+open GaussianRationalFiniteSum (sum multiplyBody multiply_body_at sum_multiply)
+open GaussianRationalHorner (ofGaussian positive_product qmul)
 open GaussianRationalMetric (bounded distanceBounded qsub)
 open GaussianRationalQuadratureDifference (differenceBody difference_body_at finite_sum_difference)
-open GaussianRationalReciprocal (bound_congr bounded_sum)
+open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalSyntheticDivision (qsub_congr qmul_congr)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -117,40 +117,12 @@ theorem tail_error (A C B H K N r : PTm n) (h : Γ ⊢[PRAAx] source A C B H K)
     (GaussianScaledReciprocalSquareInterval.tail_bound errorBody N r (gain H K) (B*B) (errorData A C B N)
       hN (positive_product _ _ h.andE₁ h.andE₁) (rows_bounded A C B H K N h))
 
-private theorem shift_error_sum (A C B r : PTm n) :
-    Γ ⊢[PRAAx] sum (shiftBody errorBody) r (errorData A C B zero) ≐ sum errorBody r (errorData A C B one) := by
-  refine GaussianRationalFiniteSum.sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
-  let a := Syn.shift A
-  let c := Syn.shift C
-  let b := Syn.shift B
-  let i : PTm (n+1) := var 0
-  let Δ := lt i (Syn.shift r) :: Γ.map Fm.shift
-  have e : Δ ⊢[PRAAx] residual a c b (succ (zero+succ i)) ≐ residual a c b (succ (one+i)) := by
-    have idx : Δ ⊢[PRAAx] succ (zero+succ i) ≐ succ (one+i) := by ipra_ring
-    ipra_congr (residual (var 0) (var 1) (var 2) (var 3) : PTm 4) with [.eqRefl _, .eqRefl _, .eqRefl _, idx]
-  simpa only [termsEqual,Syn.shift,a,c,b,i,Δ,subst_errorData,inst2_shiftBody,one,
-    ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero] using
-    (error_body_at (Γ := Δ) a c b zero (succ i)).eqTrans (e.eqTrans (error_body_at a c b one i).eqSymm)
-
 theorem full_error (A C B H K r : PTm n) (h : Γ ⊢[PRAAx] source A C B H K) :
     Γ ⊢[PRAAx] distanceBounded (increment A C B zero (succ r)) (linear A C B zero (succ r))
-      (two*gain H K) (B*B) := by
-  let f := inst2 errorBody zero (errorData A C B zero)
-  let g := sum errorBody r (errorData A C B one)
-  let P := gain H K
-  let D := B*B
-  have hD : Γ ⊢[PRAAx] le one D := positive_product _ _ h.andE₁ h.andE₁
-  have first : Γ ⊢[PRAAx] bounded f P D :=
-    bound_congr (error_body_at A C B zero zero).eqSymm (.eqRefl _) (by dsimp only [D]; ipra_ring)
-      (error_at_index A C B H K (zero+zero) h)
-  have tail : Γ ⊢[PRAAx] bounded g P D :=
-    bound_congr (.eqRefl _) (.eqRefl _) (by dsimp only [D]; ipra_ring)
-      (GaussianScaledReciprocalSquareInterval.tail_bound errorBody one r P D (errorData A C B one)
-        (le_refl one) hD (rows_bounded A C B H K one h))
-  have combine := GaussianRationalPowerDifference.bounded_sum_same f g P P D hD first tail
-  have split := (GaussianRationalFiniteSum.sum_shift_first errorBody (Γ := Γ) r (errorData A C B zero)).eqTrans
-    (GaussianRationalSyntheticDivision.qadd_congr (.eqRefl _) (shift_error_sum A C B r))
-  exact bound_congr (split.eqSymm.eqTrans (exact_sum A C B zero (succ r))) (by ipra_ring) (.eqRefl _) combine
+      (two*gain H K) (B*B) :=
+  bound_congr (exact_sum A C B zero (succ r)) (.eqRefl _) (.eqRefl _)
+    (GaussianScaledReciprocalSquareInterval.full_prefix_bound errorBody r (gain H K) (B*B) (errorData A C B zero)
+      (positive_product _ _ h.andE₁ h.andE₁) (rows_bounded A C B H K zero h))
 
 theorem actual_Barnes_positive_axis_first_to_second_full_prefix_closed :
     ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 6

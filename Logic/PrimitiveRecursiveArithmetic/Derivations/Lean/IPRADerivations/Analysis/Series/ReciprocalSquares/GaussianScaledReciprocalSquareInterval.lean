@@ -19,11 +19,12 @@ namespace LeanProofs.IPRA.Analysis.GaussianScaledReciprocalSquareInterval
 open_ipra
 open ComplexLogarithmRemainder (oneCode normSq_one)
 open GaussianCoefficientNameBounds (bounded_radius_mono)
-open GaussianRationalFiniteSum (sum multiplyBody multiply_body_at sum_multiply sum_canonical)
+open GaussianRationalFiniteSum (sum multiplyBody multiply_body_at sum_multiply sum_canonical sum_shift_first)
 open GaussianRationalHorner (ofGaussian ofGaussian_represents positive_product qmul)
 open GaussianRationalMetric (bounded bounded_of_cleared)
 open GaussianRationalNaturalScale (naturalPoint)
 open GaussianRationalPowerAlgebra (qmul_commutative)
+open GaussianRationalPowerDifference (bounded_sum_same)
 open GaussianRationalReciprocal (bounded_product bound_congr)
 open GaussianReciprocalSquareInterval (rowsBounded)
 
@@ -85,6 +86,28 @@ theorem tail_bound (t : PTm 2) (N r C D x : PTm n) (hN : Γ ⊢[PRAAx] le one N)
     (qmul_commutative b a).eqTrans (GaussianBetaUpperEndpointInverse.natural_reciprocal_one D hD)
   have restore := GaussianRationalInverseQuadraticAlgebra.cancel_nested_product b a v (sum_canonical t r x) unit
   exact bound_congr restore (one_mul C) (.eqRefl _) prod
+
+/-- Include the first row of a reciprocal-square sum with a fixed common denominator. -/
+theorem full_prefix_bound (t : PTm 2) (r C D x : PTm n) (hD : Γ ⊢[PRAAx] le one D)
+    (h : Γ ⊢[PRAAx] rows t zero C D x) : Γ ⊢[PRAAx] bounded (sum t (succ r) x) (two*C) D := by
+  have shifted : Γ ⊢[PRAAx] rows (shiftBody t) one C D x := by
+    refine .allI ?_
+    let sh (v : PTm n) := Syn.shift v
+    let Δ := Γ.map Fm.shift
+    let i : PTm (n+1) := var 0
+    have hs : Δ ⊢[PRAAx] rows t zero (sh C) (sh D) (sh x) := by
+      simpa only [Δ,Fm.shift,subst_rows,Syn.shift,sh,ConciseIPRA.PTm.subst_zero] using h.shift
+    have idx : Δ ⊢[PRAAx] succ (zero+succ i) ≐ succ (one+i) := by ipra_ring
+    have b := row_at t zero (sh C) (sh D) (sh x) (succ i) hs
+    simpa only [rows,inst2_shiftBody,Syn.shift,sh,Δ,i,one,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero]
+      using bound_congr (.eqRefl _) (.eqRefl _) (congrMul (.eqRefl _) (congrMul idx idx)) b
+  have head : Γ ⊢[PRAAx] bounded (inst2 t zero x) C D :=
+    bound_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (row_at t zero C D x zero h)
+  have tail : Γ ⊢[PRAAx] bounded (sum (shiftBody t) r x) C D :=
+    bound_congr (.eqRefl _) (.eqRefl _) (by ipra_ring)
+      (tail_bound (shiftBody t) one r C D x (le_refl one) hD shifted)
+  exact bound_congr (sum_shift_first t r x).eqSymm (by ipra_ring) (.eqRefl _)
+    (bounded_sum_same _ _ C C D hD head tail)
 
 theorem actual_scaled_reciprocal_square_tail_closed (t : PTm 2) :
     ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 5
