@@ -2981,3 +2981,6 @@ The actual change of the original local logarithm has a certified relative Merca
 
 The relative-argument expansion has explicit summable quadratic and cubic error bounds on the original finite rational samples, with the original perturbation and factor index retained.
 [GaussianBarnesCanonicalRelativeTaylor](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalRelativeTaylor.lean)
+
+Exact original factor conjugation folds through each finite segment, preserving both original normalization clocks and allowing both empty segments and vanishing factors.
+[GaussianNamedFiniteProductConjugation](Lean/IPRADerivations/Analysis/GaussianNamedFiniteProductConjugation.lean), [GaussianBarnesCanonicalHeadConjugation](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadConjugation.lean)
