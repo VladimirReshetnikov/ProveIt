@@ -48,6 +48,15 @@ theorem from_representation (z r A D : PTm n)
   have order := RationalValueBounds.positive_cancel hE (le_congr (.eqRefl _) scaled (le_refl _))
   exact .andI hr (GaussianCoefficientNameBounds.bounded_radius_mono _ _ _ _ _ hD hE order h)
 
+/-- Reuse a scalar representation directly when the radius is its Gaussian embedding. -/
+theorem from_embedded_representation (z r A D : PTm n)
+    (hD : Γ ⊢[PRAAx] le one D) (rep : Γ ⊢[PRAAx] RationalArithmetic.represents r (ZT.ofNat A) D)
+    (h : Γ ⊢[PRAAx] bounded z A D) : Γ ⊢[PRAAx] boundBy z (RationalGaussianEmbedding.embed r) :=
+  from_representation _ _ _ _ hD
+    (GaussianPositiveRealArithmetic.positive_embed r (GaussianRationalL1.nonnegative_of_representation _ _ _ hD rep))
+    (GaussianRationalHorner.scalar_congr (fst_pair _ _).eqSymm (.eqRefl _) (.eqRefl _)
+      (RationalGaussianEmbedding.scalar_recode_represents r _ _ rep)) h
+
 /-- A scalar upper comparison enlarges the positive radius using the given
 rational representation of the new scalar. -/
 theorem enlarge_radius (z r b S T A B : PTm n) (h : Γ ⊢[PRAAx] boundBy z r)

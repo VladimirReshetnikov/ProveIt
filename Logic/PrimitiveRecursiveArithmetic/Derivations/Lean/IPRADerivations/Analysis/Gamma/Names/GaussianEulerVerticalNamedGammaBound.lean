@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalNamedReference
 import IPRADerivations.Analysis.Gamma.Integrals.GaussianEulerVerticalGammaBound
 import IPRADerivations.Analysis.Gamma.Names.PositiveAxis.GaussianNamedGammaPositiveLower
-import IPRADerivations.Analysis.Names.Arithmetic.RationalReciprocalPowerName
 
 /-!
 # Vertical domination at arbitrary regular named Gamma inputs
@@ -18,13 +17,14 @@ set_option autoImplicit false
 namespace LeanProofs.IPRA.Analysis.GaussianEulerVerticalNamedGammaBound
 
 open_ipra
+open GaussianEulerVerticalShiftedRadius (upper_zero_of_natural_lower two_query_represents upper_after_two_shifts)
 open GaussianNamedRightHalfPlane (source radius numerator denominator threshold)
 open GaussianGammaRealValues (axisF)
 open GaussianNamedGamma (nameF data)
 open GaussianEulerVerticalNamedRadius (commonRadius)
 open GaussianGammaHalfPlaneInputContinuity (modulus)
 open GaussianEulerVerticalRealRadius (gap denominator_positive)
-open GaussianRationalHorner (positive_product scalar_congr)
+open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianNamedInverseRate (rateNumerator rateDenominator denominator_positive)
@@ -32,7 +32,7 @@ open GaussianNamedPositiveExponentialOrder (scalar_coordinate_distance)
 open GaussianPositiveRadiusFiniteSum (boundBy)
 open GaussianEuclideanDistanceName (fraction fraction_represents)
 open RationalGaussianEmbedding (embed scalarZero)
-open RationalValueBounds (upper upper_of_radius radius_symmetric upper_triangle upper_congr upper_mono)
+open RationalValueBounds (upper upper_of_radius radius_symmetric upper_mono)
 open GaussianRationalSlackRemoval (slack slack_removal_at)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -50,26 +50,15 @@ def clock (f : PR 2) (s x A : PTm n) : PTm n :=
 
 private theorem nonnegative_radius_base (f : PR 2) (q x A : PTm n) (h : Γ ⊢[PRAAx] source f x A) : Γ ⊢[PRAAx]
     upper scalarZero (fstT (realPoint f q x A)) one (unit q) := by
-  let c : PTm n := GaussianNamedGammaPositiveLower.lower
   have h18 : Γ ⊢[PRAAx] le one (num 18) := le_of_eq_add (d := num 17) (by ipra_ring)
-  have nonnegative : Γ ⊢[PRAAx] upper scalarZero c zero one := by
-    apply RationalRepresentedUpper.from_signed scalarZero c (ZT.ofNat zero) (ZT.ofNat one) one (num 18) zero one
-      (le_refl one) h18 (RationalGaussianEmbedding.scalar_zero_represents one) (fraction_represents one (num 18) h18)
-    apply zle_of_toZ one
-    simp only [RationalRepresentedUpper.left,RationalRepresentedUpper.right,ZT.toZ_mul,ZT.toZ_add,ZT.toZ_ofNat]
-    ipra_simps
-    ring
   have low := GaussianNamedGammaPositiveLower.original_gamma_positive_lower (axisF f) q x A
     (.andI (GaussianEulerVerticalProjection.projected_source f x A h) (GaussianEulerVerticalProjection.projected_real_samples f x))
-  exact upper_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (by ipra_ring) (upper_triangle _ _ _ _ _ _ _ nonnegative low)
+  exact upper_zero_of_natural_lower h18 (fraction_represents one (num 18) h18) low
 
 theorem radius_value (f : PR 2) (p q x A : PTm n) (h : Γ ⊢[PRAAx] source f x A) : Γ ⊢[PRAAx]
     RationalArithmetic.represents (realBound f p q x A) (ZT.ofNat (radiusNumerator f p q x A)) (radiusDenominator f p q x A) := by
-  have base := GaussianEulerVerticalShiftedRadius.shifted_represents (realPoint f q x A) (unit q) (unit_positive q)
-    (nonnegative_radius_base f q x A h)
-  have add := RationalRepresentations.represents_add _ _ _ _ _ _ base (fraction_represents one (unit p) (unit_positive p))
-  apply scalar_congr (.eqRefl _) _ (.eqRefl _) add
-  ipra_lc [radiusNumerator]
+  exact two_query_represents (realPoint f q x A) (unit q) (unit p)
+    (unit_positive q) (unit_positive p) (nonnegative_radius_base f q x A h)
 
 private theorem late_complex (f : PR 2) (s x A : PTm n) (h : Γ ⊢[PRAAx] source f x A) : Γ ⊢[PRAAx]
     GaussianNamedGammaLateInput.input f s (clock f s x A) x A :=
@@ -85,16 +74,10 @@ private theorem encoded_source (f : PR 2) (s x A : PTm n) (h : Γ ⊢[PRAAx] sou
 private theorem encoded_radius_bound (s z R B A : PTm n)
     (h : Γ ⊢[PRAAx] GaussianEulerIntegralGammaIdentification.source z R B A) : Γ ⊢[PRAAx]
     boundBy (GaussianEulerVerticalGammaBound.point s z R B A) (embed (GaussianEulerVerticalGammaBound.realBound s s z R B A)) := by
-  let r := GaussianEulerVerticalGammaBound.realBound s s z R B A
-  let D := GaussianEulerVerticalGammaBound.radiusDenominator s s z R B A
-  have hd : Γ ⊢[PRAAx] le one D := positive_product _ _
-    (GaussianEulerVerticalRealRadius.denominator_positive _ _ (unit_positive s)) (unit_positive s)
-  have rep := GaussianEulerVerticalGammaBound.radius_value s s z R B A h
-  have first : Γ ⊢[PRAAx] fstT (embed r) ≐ r := (fst_pair _ _).eqTrans
-    (RationalNormalForm.normalize_fixed_point _ (RationalArithmetic.add_guard _ _))
-  exact GaussianPositiveRadiusFiniteSum.from_representation _ _ _ _ hd
-    (GaussianPositiveRealArithmetic.positive_embed r (GaussianRationalL1.nonnegative_of_representation _ _ _ hd rep))
-    (scalar_congr first.eqSymm (.eqRefl _) (.eqRefl _) rep)
+  have hd : Γ ⊢[PRAAx] le one (GaussianEulerVerticalGammaBound.radiusDenominator s s z R B A) :=
+    positive_product _ _ (GaussianEulerVerticalRealRadius.denominator_positive _ _ (unit_positive s)) (unit_positive s)
+  exact GaussianPositiveRadiusFiniteSum.from_embedded_representation _ _ _ _ hd
+    (GaussianEulerVerticalGammaBound.radius_value s s z R B A h)
     (GaussianEulerVerticalGammaBound.original_gamma_vertical_bound s s z R B A h)
 
 private theorem companion_coordinate (f : PR 2) (q t x A : PTm n) (h : Γ ⊢[PRAAx] source f x A) : Γ ⊢[PRAAx]
@@ -103,21 +86,14 @@ private theorem companion_coordinate (f : PR 2) (q t x A : PTm n) (h : Γ ⊢[PR
       (fstT (realPoint f q x A)) (num 4*unit q+unit t) (unit t*unit q) := by
   let r := clock f t x A
   let E := ap2 GaussianGammaReciprocalInverse.gammaF t (GaussianEulerVerticalNamedReference.realEncodedData f r x A (commonRadius f x))
-  let V := GaussianEulerVerticalGammaBound.realBound t t (numerator f r x) (commonRadius f x) (denominator f r x) (two*A)
   have projected := GaussianEulerVerticalNamedReference.projected_independent_rate f t r x A (commonRadius f x) h
     (late_complex f t x A h).andE₂.andE₁ (le_add_left _ _)
     (GaussianEulerVerticalNamedRadius.common_radius_bounds f x).andE₁ (GaussianEulerVerticalNamedRadius.common_radius_bounds f x).andE₂
   have near := GaussianNamedInverseRate.rate_at _ _ _ _ _ _ q t projected
   have d := denominator_positive (Γ := Γ) (unit t) q t (unit_positive t)
   have coord := upper_of_radius _ _ _ _ (radius_symmetric _ _ _ _ (scalar_coordinate_distance _ _ _ _ d near))
-  have inner := RationalReciprocalPowerName.fraction_add_upper (Γ := Γ) (fstT E) one (unit t) (unit_positive t)
-  have outer := RationalReciprocalPowerName.fraction_add_upper (Γ := Γ) (GaussianEulerVerticalShiftedRadius.shiftedScalar E (unit t)) one (unit t) (unit_positive t)
-  have twice := upper_triangle _ _ _ _ _ _ _ outer inner
-  have total := upper_triangle _ _ _ _ _ _ _ twice coord
-  have first : Γ ⊢[PRAAx] fstT (embed V) ≐ V := (fst_pair _ _).eqTrans
-    (RationalNormalForm.normalize_fixed_point _ (RationalArithmetic.add_guard _ _))
-  exact upper_mono _ _ _ _ _ _ (positive_product _ _ (positive_product _ _ (unit_positive t) (unit_positive t)) d)
-    (upper_congr first.eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _) total)
+  have shifted := upper_after_two_shifts E (fstT (realPoint f q x A)) (unit t) _ _ (unit_positive t) d coord
+  exact upper_mono _ _ _ _ _ _ (positive_product _ _ (unit_positive t) d) shifted
     (le_congr (by dsimp only [rateNumerator,rateDenominator]; ipra_ring) (.eqRefl _) (le_refl _))
 
 private theorem original_slack (f : PR 2) (p q t x A : PTm n) (h : Γ ⊢[PRAAx] source f x A) : Γ ⊢[PRAAx]

@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalRealRadius
 import IPRADerivations.Analysis.FiniteOperations.FiniteSums.GaussianPositiveRadiusFiniteSum
+import IPRADerivations.Analysis.Names.Arithmetic.RationalReciprocalPowerName
 
 /-!
 # A signed observation shifted by its requested tolerance
@@ -18,10 +19,11 @@ open_ipra
 open GaussianEulerVerticalRealRadius (gap gap_identity denominator denominator_positive)
 open GaussianEuclideanDistanceName (fraction fraction_represents)
 open GaussianRationalL1 (rawGaussian rawDen raw_represents raw_den_positive)
-open RationalGaussianEmbedding (scalarZero)
+open GaussianRationalHorner (positive_product scalar_congr)
+open RationalGaussianEmbedding (embed scalarZero scalar_zero_represents)
 open RationalSupMetric (numeratorOf denominatorOf)
 open RationalRepresentedUpper (left right to_signed from_signed)
-open RationalValueBounds (upper)
+open RationalValueBounds (upper upper_congr upper_mono upper_triangle)
 open ComplexLogarithmRemainder (re)
 open PolynomialBisection (slack)
 
@@ -41,6 +43,45 @@ theorem shifted_represents (q U : PTm n) (hU : Γ ⊢[PRAAx] le one U)
   simp only [ZT.toZ]
   ipra_simps
   linear_combination e
+
+/-- A lower bound represented by a natural numerator can be weakened to zero
+without increasing the allowance. -/
+theorem upper_zero_of_natural_lower {a b N E A B : PTm n}
+    (hE : Γ ⊢[PRAAx] le one E) (ha : Γ ⊢[PRAAx] RationalArithmetic.represents a (ZT.ofNat N) E)
+    (h : Γ ⊢[PRAAx] upper a b A B) : Γ ⊢[PRAAx] upper scalarZero b A B := by
+  apply RationalValueBounds.upper_order_left scalarZero a b A B ?_ h
+  apply RationalArithmetic.order_of_representations scalarZero a (ZT.ofNat zero) (ZT.ofNat N) one E
+    (scalar_zero_represents one) ha (le_refl one) hE
+  apply zle_of_toZ N
+  simp [ZT.toZ_mul,ZT.toZ_ofNat]
+
+/-- Read the rational radius with its two independently requested tolerances. -/
+theorem two_query_represents (q U V : PTm n)
+    (hU : Γ ⊢[PRAAx] le one U) (hV : Γ ⊢[PRAAx] le one V)
+    (h : Γ ⊢[PRAAx] upper scalarZero (fstT q) one U) : Γ ⊢[PRAAx]
+    RationalArithmetic.represents (RationalArithmetic.add (shiftedScalar q U) (fraction one V))
+      (ZT.ofNat (gap q U*V+denominator q U)) (denominator q U*V) := by
+  have actual := RationalRepresentations.represents_add _ _ _ _ _ _
+    (shifted_represents q U hU h) (fraction_represents one V hV)
+  apply scalar_congr (.eqRefl _) _ (.eqRefl _) actual
+  ipra_lc
+
+/-- Add two temporary observation allowances and recover the real coordinate
+of the embedded radius. -/
+theorem upper_after_two_shifts (q y U A B : PTm n)
+    (hU : Γ ⊢[PRAAx] le one U) (hB : Γ ⊢[PRAAx] le one B)
+    (h : Γ ⊢[PRAAx] upper (fstT q) y A B) : Γ ⊢[PRAAx]
+    upper (fstT (embed (RationalArithmetic.add (shiftedScalar q U) (fraction one U)))) y
+      (two*B+A*U) (U*B) := by
+  let r := RationalArithmetic.add (shiftedScalar q U) (fraction one U)
+  have inner := RationalReciprocalPowerName.fraction_add_upper (fstT q) one U hU
+  have outer := RationalReciprocalPowerName.fraction_add_upper (shiftedScalar q U) one U hU
+  have total := upper_triangle _ _ _ _ _ _ _ (upper_triangle _ _ _ _ _ _ _ outer inner) h
+  have real : Γ ⊢[PRAAx] fstT (embed r) ≐ r := (fst_pair _ _).eqTrans
+    (RationalNormalForm.normalize_fixed_point _ (RationalArithmetic.add_guard _ _))
+  exact upper_mono _ _ _ _ _ _ (positive_product _ _ (positive_product _ _ hU hU) hB)
+    (upper_congr real.eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _) total)
+    (le_congr (by ipra_ring) (.eqRefl _) (le_refl _))
 
 theorem upper_shift (s q U A B : PTm n) (hU : Γ ⊢[PRAAx] le one U)
     (h : Γ ⊢[PRAAx] upper scalarZero (fstT q) one U)

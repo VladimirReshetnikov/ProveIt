@@ -16,6 +16,7 @@ set_option autoImplicit false
 namespace LeanProofs.IPRA.Analysis.GaussianEulerVerticalGammaBound
 
 open_ipra
+open GaussianEulerVerticalShiftedRadius (upper_zero_of_natural_lower two_query_represents)
 open GaussianEulerVerticalNativeProjection (argument)
 open GaussianEulerVerticalQuadrature (cutoffRadius cutoff_radius_budget)
 open GaussianEulerVerticalRealRadius (gap denominator denominator_positive)
@@ -28,7 +29,7 @@ open GaussianNameEquivalence (cross_at cross_symm)
 open GaussianNamedPositiveExponentialOrder (scalar_coordinate_distance)
 open GaussianRationalSlackRemoval (slack slack_removal_at)
 open RationalGaussianEmbedding (scalarZero)
-open RationalValueBounds (upper upper_congr upper_of_radius upper_mono upper_triangle)
+open RationalValueBounds (upper upper_congr upper_of_radius upper_mono)
 open GaussianEuclideanDistanceName (fraction fraction_represents)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -47,29 +48,17 @@ private theorem nonnegative_radius_base (q z R B A : PTm n) (h : Γ ⊢[PRAAx] s
   let c : PTm n := fraction one (num 18)
   let y := fstT (point q (argument z) R B A)
   have h18 : Γ ⊢[PRAAx] le one (num 18) := le_of_eq_add (d := num 17) (by ipra_ring)
-  have nonnegative : Γ ⊢[PRAAx] upper scalarZero c zero one := by
-    apply RationalRepresentedUpper.from_signed scalarZero c (ZT.ofNat zero) (ZT.ofNat one) one (num 18) zero one
-      (le_refl one) h18 (RationalGaussianEmbedding.scalar_zero_represents one) (fraction_represents one (num 18) h18)
-    apply zle_of_toZ one
-    simp only [RationalRepresentedUpper.left,RationalRepresentedUpper.right,ZT.toZ_mul,ZT.toZ_add,ZT.toZ_ofNat]
-    ipra_simps
-    ring
   have native := GaussianEulerVerticalNativeProjection.lower_source z R B A h.andE₁
   have low : Γ ⊢[PRAAx] upper c y one (unit q) :=
     GaussianEulerIntegralPositiveLower.original_gamma_positive_lower q (argument z) R B A
       (.andI native (GaussianEulerVerticalNativeProjection.imaginary_zero z)) h.andE₂
-  have joined := upper_triangle _ _ _ _ _ _ _ nonnegative low
-  exact upper_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (by ipra_ring) joined
+  exact upper_zero_of_natural_lower h18 (fraction_represents one (num 18) h18) low
 
 theorem radius_value (p q z R B A : PTm n) (h : Γ ⊢[PRAAx] source z R B A) : Γ ⊢[PRAAx]
     RationalArithmetic.represents (realBound p q z R B A) (ZT.ofNat (radiusNumerator p q z R B A))
       (radiusDenominator p q z R B A) := by
-  let y := point q (argument z) R B A
-  have base := GaussianEulerVerticalShiftedRadius.shifted_represents y (unit q) (unit_positive q)
-    (nonnegative_radius_base q z R B A h)
-  have add := RationalRepresentations.represents_add _ _ _ _ _ _ base (fraction_represents one (unit p) (unit_positive p))
-  apply GaussianRationalHorner.scalar_congr (.eqRefl _) _ (.eqRefl _) add
-  ipra_lc [radiusNumerator]
+  exact two_query_represents (point q (argument z) R B A) (unit q) (unit p)
+    (unit_positive q) (unit_positive p) (nonnegative_radius_base q z R B A h)
 
 private theorem cutoff_coordinate (t A R : PTm n) : Γ ⊢[PRAAx]
     upper (fstT (cutoffRadius (t+num 4) t A R)) (fstT qzero) one (unit t) := by
