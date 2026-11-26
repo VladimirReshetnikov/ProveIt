@@ -617,4 +617,7 @@ theorem checker_closed :
 #print axioms checker_program_closed
 #print axioms checker_closed
 
+theorem reverse_close (S T d A B : PTm n) (h : Γ ⊢[PRAAx] originalClose S T d A B) :
+    Γ ⊢[PRAAx] originalClose T S d A B := .andI (Prf.andE₂ h) (Prf.andE₁ h)
+
 end LeanProofs.IPRA.Analysis.RationalHausdorff

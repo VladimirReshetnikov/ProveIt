@@ -30,9 +30,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 /-! ## Common denominators -/
 
-theorem shift_inst2'' (g : PTm 2) (a b : PTm n) : Syn.shift (inst2 g a b) = inst2 g (Syn.shift a) (Syn.shift b) := by
-  simp only [inst2, Syn.shift, Syn.subst_subst]
-  congr 1; funext k; fin_cases k <;> simp
+alias shift_inst2'' := Independence.shift_inst2
 
 theorem subst_dvd' {m : ℕ} (σ : Fin n → PTm m) (d y : PTm n) :
     (dvd d y).subst σ = dvd (Syn.subst σ d) (Syn.subst σ y) := by

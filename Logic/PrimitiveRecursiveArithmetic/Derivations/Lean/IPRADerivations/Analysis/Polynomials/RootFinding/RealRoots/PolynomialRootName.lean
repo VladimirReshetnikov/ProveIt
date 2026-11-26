@@ -179,12 +179,12 @@ theorem rational_interval_discrepancy (L R A : ZT n) (d t : PTm n)
     simp only [ZT.toZ_mul, ZT.toZ_ofNat, Q.mk_mul, map_mul]
   exact abs_le_of_nonnegative lower bound
 
-private theorem left_value_congr {s t : PTm n} (h : Γ ⊢[PRAAx] s ≐ t) :
+theorem left_value_congr {s t : PTm n} (h : Γ ⊢[PRAAx] s ≐ t) :
     ZT.toZ Γ (left s) = ZT.toZ Γ (left t) := by
   simp only [left, unpack, ZT.toZ]
   rw [natEq (congrFst (congrFst h)), natEq (congrSnd (congrFst h))]
 
-private theorem denominator_congr {s t : PTm n} (h : Γ ⊢[PRAAx] s ≐ t) :
+theorem denominator_congr {s t : PTm n} (h : Γ ⊢[PRAAx] s ≐ t) :
     Γ ⊢[PRAAx] denominator s ≐ denominator t := congrSnd (congrSnd h)
 
 def intervalDifference (s t : PTm n) : ZT n := cross (left s) (left t) (denominator s) (denominator t)

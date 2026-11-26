@@ -32,6 +32,7 @@ open LeanProofs.IPRA.Foundations.SequenceComposition (length)
 open LeanProofs.IPRA.Foundations.GapDecision (zabs zabs_congr zabs_neg)
 open LeanProofs.IPRA.Probability.Variance (ad)
 open LeanProofs.IPRA.Probability.MedianWeighted (ad_le_of ad_mul)
+export RationalHausdorff (reverse_close)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -102,9 +103,6 @@ ipra_subst transferIndex
 
 theorem transfer_index_range (w S T d : PTm n) (hS : Γ ⊢[PRAAx] le one (length S)) :
     Γ ⊢[PRAAx] lt (transferIndex w S T d) (length S) := RationalNearest.selected_spec _ _ _ _ hS
-
-theorem reverse_close (S T d A B : PTm n) (h : Γ ⊢[PRAAx] originalClose S T d A B) :
-    Γ ⊢[PRAAx] originalClose T S d A B := .andI (Prf.andE₂ h) (Prf.andE₁ h)
 
 def transferNumerator (w T d A B C D : PTm n) : PTm n :=
   (A*RationalPointDistance.denominator w T d+RationalPointDistance.numerator w T d*B)*D+

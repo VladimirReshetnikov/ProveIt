@@ -35,8 +35,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 theorem congrBell {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) : Γ ⊢[PRAAx] bell a ≐ bell b :=
   congrFst (congrAp1 _ h)
 
-theorem zero_lt_succ' (M : PTm n) : Γ ⊢[PRAAx] lt zero (succ M) :=
-  le_of_eq_add (d := M) (by ipra_ring)
+alias zero_lt_succ' := LeanProofs.IPRA.zero_lt_succ
 
 alias mul_one' := Common.mul_one_right
 

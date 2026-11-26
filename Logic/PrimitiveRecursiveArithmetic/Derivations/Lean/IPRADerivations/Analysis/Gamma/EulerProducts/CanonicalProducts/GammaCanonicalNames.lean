@@ -45,13 +45,9 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
-theorem eval_re_eq {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) : ZT.toZ Γ (re a) = ZT.toZ Γ (re b) := by
-  simp only [re, ZT.toZ]
-  rw [natEq (congrFst (congrFst h)), natEq (congrSnd (congrFst h))]
+alias eval_re_eq := ComplexLogarithmCauchy.eval_re_congr
 
-theorem eval_im_eq {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) : ZT.toZ Γ (im a) = ZT.toZ Γ (im b) := by
-  simp only [im, ZT.toZ]
-  rw [natEq (congrFst (congrSnd h)), natEq (congrSnd (congrSnd h))]
+alias eval_im_eq := ComplexLogarithmCauchy.eval_im_congr
 
 theorem sum_count_congr (z B N L D : PTm n) {r s : PTm n} (h : Γ ⊢[PRAAx] r ≐ s) :
     Γ ⊢[PRAAx] finiteSum z B N r L D ≐ finiteSum z B N s L D :=
