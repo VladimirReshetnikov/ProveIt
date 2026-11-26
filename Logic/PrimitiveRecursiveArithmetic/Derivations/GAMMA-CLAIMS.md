@@ -3311,3 +3311,6 @@ The original kept powers and cofinal central exponential give a disk bound with 
 
 The named Barnes evaluator has an explicit upper threshold for every positive rational order gap on integer disks. A computed positive integer witness gives a quadratic lower exponent inside every sufficiently large disk. The separate dyadic witnesses exceed every prescribed quadratic type threshold. All estimates concern the actual canonical value or its named extension.
 [BarnesUpperOrderThreshold](Lean/IPRADerivations/Analysis/Barnes/BarnesUpperOrderThreshold.lean), [BarnesDyadicRadius](Lean/IPRADerivations/Analysis/Barnes/BarnesDyadicRadius.lean), [GaussianBarnesCanonicalOrdinaryUpperGrowth](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalOrdinaryUpperGrowth.lean), [GaussianBarnesCanonicalOrdinaryLowerGrowth](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalOrdinaryLowerGrowth.lean)
+
+At every positive rational input the actual cofinal Euler log-Gamma sampler and certified reciprocal of the canonical Barnes sampler give one regular hyperfactorial name. The original product of that name with the canonical Barnes value equals the original exponentiated Gamma expression in iPRA.
+[GaussianBarnesCanonicalHyperfactorial](Lean/IPRADerivations/Analysis/Barnes/FunctionalEquations/GaussianBarnesCanonicalHyperfactorial.lean)
