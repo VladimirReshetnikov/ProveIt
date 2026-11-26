@@ -2,6 +2,7 @@ import IPRADerivations.Analysis.Gamma.Zeta.Mellin.Compact.GaussianGammaZetaMelli
 import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaCompactCutoffAlignment
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianGammaEulerShiftLimit
 import IPRADerivations.Analysis.Names.GaussianCompactNamedAdditivity
+import IPRADerivations.DiophantineNumberTheory.AperyMultibound
 
 /-!
 # Nested powered cutoff windows for the original Mellin sampler
@@ -17,6 +18,7 @@ set_option maxHeartbeats 1050000
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinCutoffWindows
 
 open_ipra
+open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianCompactRiemannName (data)
 open GaussianGammaCompactQuadratureBoundary (width exact_right_endpoint)
 open GaussianGammaCompactCutoffGeometry
@@ -28,9 +30,13 @@ open GaussianGammaZetaMellinCompact (gain compact_input)
 open GaussianGammaZetaMellinGrid (evaluatorF fixedData)
 open GaussianNameEquivalence (crossEquivalent cross_trans)
 open GaussianEuclideanDistanceName (pointCN)
-open GaussianRationalHorner (positive_product)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
+open GaussianRationalHorner (canonical positive_product qadd qzero)
+open GaussianRationalMetric (distanceBounded)
+open GaussianRationalSyntheticDivision (qadd_congr qzero_add)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
+local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 local notation "nameF" => GaussianGammaZetaMellinCompact.nameF
 local notation "P" => GaussianGammaZetaMellinCompact.source
 local notation "S" => GaussianEulerLowerPowerCoefficients.source
@@ -76,6 +82,66 @@ theorem data_congr (a a' W W' E E' L T x : PTm n)
       · exact .eqRefl _
       · exact .eqRefl _)
   simpa only [GaussianCompactRiemannName.subst_data,Syn.subst_var,Matrix.cons_val] using e
+
+theorem panel_split_input (F : PR 3) (a C D E L T x : PTm n)
+    (h : Γ ⊢[PRAAx] GaussianCompactRiemannName.input F a (C+D) E L T x)
+    (hc : Γ ⊢[PRAAx] le one C) (hd : Γ ⊢[PRAAx] le one D) :
+    Γ ⊢[PRAAx] GaussianCompactNamedAdditivity.input F a C D E L T x :=
+  .andI h.andE₁ (.andI h.andE₂.andE₁ (.andI hc (.andI hd h.andE₂.andE₂)))
+
+private theorem split_at (F : PR 3) (r a C D E L T x : PTm n)
+    (h : Γ ⊢[PRAAx] GaussianCompactNamedAdditivity.input F a C D E L T x) :
+    let G := GaussianCompactRiemannName.nameF F
+    Γ ⊢[PRAAx] distanceBounded (ap2 G r (data a (C+D) E L T x))
+      (qadd (ap2 G r (data a C E L T x)) (ap2 G r (data (a+C) D E L T x)))
+      (num 11) (unit (r+num 6)) :=
+  distance_congr (GaussianCompactRiemannName.name_at F r a (C+D) E L T x).eqSymm
+    (qadd_congr (GaussianCompactRiemannName.name_at F r a C E L T x).eqSymm
+      (GaussianCompactRiemannName.name_at F r (a+C) D E L T x).eqSymm)
+    (.eqRefl _) (.eqRefl _) (GaussianCompactNamedAdditivity.sample_additivity F r a C D E L T x h)
+
+/-- Two adjacent splits of the same compact observation fit one error unit. -/
+theorem three_panel_observation (F : PR 3) (r a W C₁ C₂ C₃ E L T x : PTm n)
+    (hW : Γ ⊢[PRAAx] W ≐ C₁+C₂+C₃)
+    (hFull : Γ ⊢[PRAAx] GaussianCompactNamedAdditivity.input F a (C₁+C₂) C₃ E L T x)
+    (hPrefix : Γ ⊢[PRAAx] GaussianCompactNamedAdditivity.input F a C₁ C₂ E L T x) :
+    let G := GaussianCompactRiemannName.nameF F
+    let l := ap2 G r (data a C₁ E L T x)
+    let m := ap2 G r (data (a+C₁) C₂ E L T x)
+    let h := ap2 G r (data (a+(C₁+C₂)) C₃ E L T x)
+    Γ ⊢[PRAAx] distanceBounded (ap2 G r (data a W E L T x)) (qadd (qadd l m) h) one (unit r) := by
+  intro G l m h
+  let s := ap2 G r (data a (C₁+C₂) E L T x)
+  let U := unit r
+  let V := unit (r+num 6)
+  have hV := unit_positive (Γ := Γ) (r+num 6)
+  have first := split_at F r a (C₁+C₂) C₃ E L T x hFull
+  have next := split_at F r a C₁ C₂ E L T x hPrefix
+  have add := GaussianNameArithmetic.sum_distance s (qadd l m) h h (num 11) zero V hV next
+    (GaussianRationalPowerDifference.distance_refl_zero h V hV)
+  have both := distance_triangle_same _ _ _ _ _ _ hV first add
+  have same := congrAp2 G (.eqRefl r) (data_congr a a W (C₁+C₂+C₃) E E L T x (.eqRefl _) hW (.eqRefl _))
+  have scale : Γ ⊢[PRAAx] V ≐ U*num 64 :=
+    (pw_add two r (num 6)).eqTrans
+      (congrMul (.eqRefl _) (LeanProofs.IPRA.DiophantineNumberTheory.AperyMultibound.pw_num 2 6))
+  have room : Γ ⊢[PRAAx] le ((num 11+(num 11+zero))*U) (one*V) :=
+    le_congr (.eqRefl _) ((one_mul V).eqTrans scale).eqSymm (by ipra_le 42*𝔞(U))
+  exact distance_congr same.eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _)
+    (distance_radius_mono _ _ _ _ _ _ hV (unit_positive r) room both)
+
+/-- Discard the two exterior panels and transport the middle observation. -/
+theorem comparison_from_panel_bounds (f g l m h V X Y D : PTm n)
+    (hD : Γ ⊢[PRAAx] le one D) (cm : Γ ⊢[PRAAx] canonical m)
+    (lower : Γ ⊢[PRAAx] distanceBounded l qzero X D) (upper : Γ ⊢[PRAAx] distanceBounded h qzero Y D)
+    (split : Γ ⊢[PRAAx] distanceBounded f (qadd (qadd l m) h) V D)
+    (aligned : Γ ⊢[PRAAx] distanceBounded m g (two*V) D) : Γ ⊢[PRAAx] distanceBounded f g (X+Y+num 3*V) D := by
+  have removeL := distance_congr (.eqRefl _) (qzero_add _ cm) (add_zero _) (.eqRefl _)
+    (GaussianNameArithmetic.sum_distance _ _ _ _ _ _ _ hD lower
+      (GaussianRationalPowerDifference.distance_refl_zero m D hD))
+  have removeBoth := distance_congr (.eqRefl _) (GaussianRationalLinearProduct.qadd_zero_right m cm)
+    (.eqRefl _) (.eqRefl D) (GaussianNameArithmetic.sum_distance _ _ _ _ _ _ _ hD removeL upper)
+  exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
+    (distance_triangle_same _ _ _ _ _ _ hD (distance_triangle_same _ _ _ _ _ _ hD split removeBoth) aligned)
 
 theorem middle_alignment (z R B A p q : PTm n) (hz : Γ ⊢[PRAAx] S z R B A)
     (hpq : Γ ⊢[PRAAx] le p q) :
