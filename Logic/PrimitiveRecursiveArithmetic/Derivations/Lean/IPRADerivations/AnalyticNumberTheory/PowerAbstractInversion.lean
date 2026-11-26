@@ -1,4 +1,6 @@
-import IPRADerivations.AnalyticNumberTheory.PowerDivisorInversion
+import IPRADerivations.AnalyticNumberTheory.PowerDivisorRow
+import IPRADerivations.AnalyticNumberTheory.MobiusBounds
+import IPRADerivations.AnalyticNumberTheory.EulerProduct
 
 /-!
 # Möbius inversion from an abstract row identity (`riemann_ipra_prime_criteria_2026-11-20`, `thm:powerdivisor`)
@@ -9,9 +11,12 @@ Packet: `analytic-number-theory/riemann_ipra_prime_criteria_2026-11-20`, `new-gr
 both factors are units, and the residue selected in two steps is `b_s`. Thus every surviving coefficient reduces to the
 same divisor sum as before."
 
-`PowerDivisorInversion` derives the inversion for the rows `B_h(⌊N/d^h⌋)` of one coefficient body. Its column argument
-only uses the row identity `sg(d) R(d) = Σ_{m≤N} [d ∣ m] sg(m) sg(d) G(m)`. This module makes that explicit, for arbitrary
-bodies `R(d)` (the row values) and `G(m)` (the column terms) at the parameter `P = ⟨⟨N, h⟩, y⟩`:
+The column argument of the finite inversion only uses the row identity
+`sg(d) R(d) = Σ_{m≤N} [d ∣ m] sg(m) sg(d) G(m)`. This module proves the inversion from that identity, for
+arbitrary bodies `R(d)` (the row values) and `G(m)` (the column terms) at the parameter `P = ⟨⟨N, h⟩, y⟩`;
+`PowerDivisorInversion` (the rows `B_h(⌊N/d^h⌋)` of one coefficient body) and `PowerResidueInversion` are
+instances. The parameter `Zp`, the weights `wP`, `wN` and their column sums (`kB_mu`) are stated first, in
+the namespace `PowerDivisorInversion`:
 
 * `RowHyp`: the row identity `R(d) = Σ_{m<N+1} [d ∣ m] sg(m) G(m)` for every `d ≥ 1`, in every context extending the
   shifted one (a schema, since it is used under the bound variable `d`);
@@ -24,6 +29,87 @@ The progression rows (`PowerResidueInversion`) instantiate `R(d) = [gcd(d^h, q) 
 -/
 
 set_option linter.unusedSimpArgs false
+
+namespace LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorInversion
+
+open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (GP GN G_at congrMu)
+open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (muP muN congrEqb' congrSg)
+open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
+open Syn
+open scoped Fm
+open ConciseIPRA.PTm (app zero succ)
+open LeanProofs.IPRA.PTm (num monus pred)
+
+variable {n : ℕ} {Γ : List (Fm PTm n)}
+
+variable (w : PTm 2)
+
+/-! ## The parameter, the weights `μ^±` and their column sums -/
+
+/-- The parameter `⟨⟨N, h⟩, y⟩`. -/
+abbrev Zp (N h y : PTm n) : PTm n := pairT (pairT N h) y
+
+/-- `sg(d)[d ∣ m] w(d)` over `0 = d`, `1 = ⟨m, ⟨⟨N, h⟩, y⟩⟩`. -/
+def kB : PTm 2 := (sg (var 0) * eqb (rem (fstT (var 1)) (var 0)) zero) * Syn.subst ![var 0, sndT (var 1)] w
+
+theorem inst2_kB (d P : PTm n) : inst2 (kB w) d P =
+    (sg d * eqb (rem (fstT P) d) zero) * inst2 w d (sndT P) := by
+  have hw : Syn.subst ![d, P] (Syn.subst ![var 0, sndT (var 1)] w) = inst2 w d (sndT P) := by
+    simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
+  simp only [inst2, kB, PTm.subst_mul, hw]
+  simp
+
+/-- `μ⁺_{N+1}(d)` over `0 = d`, `1 = ⟨⟨N, h⟩, y⟩`. -/
+abbrev wP : PTm 2 := muP (succ (fstT (fstT (var 1)))) (var 0)
+/-- `μ⁻_{N+1}(d)`. -/
+abbrev wN : PTm 2 := muN (succ (fstT (fstT (var 1)))) (var 0)
+
+theorem pB_at (b : PTm 3) (m M Z : PTm n) :
+    Γ ⊢[PRAAx] inst2 (pB b) m (pairT M Z) ≐ ap2 (sumF (colB b)) M (pairT m Z) := by
+  rw [inst2_pB]
+  exact congrAp2 _ (fst_pair _ _) (congrPairT (.eqRefl _) (snd_pair _ _))
+
+/-- The column sums of `μ^±` are the divisor sums `Σ_{d ∣ m} μ^±(d)` of `MobiusBounds`. -/
+theorem kB_mu (m N h y : PTm n) :
+    Γ ⊢[PRAAx] (ap2 (sumF (kB wP)) (succ N) (pairT m (Zp N h y)) ≐ ap2 (sumF GP) (succ N) (pairT (succ N) m)) ⋏
+      (ap2 (sumF (kB wN)) (succ N) (pairT m (Zp N h y)) ≐ ap2 (sumF GN) (succ N) (pairT (succ N) m)) := by
+  have hz : ∀ (Δ : List (Fm PTm (n + 1))) (d : PTm (n + 1)),
+      Δ ⊢[PRAAx] (inst2 (kB wP) d (pairT (Syn.shift m) (Zp (Syn.shift N) (Syn.shift h) (Syn.shift y))) ≐
+          inst2 GP d (pairT (succ (Syn.shift N)) (Syn.shift m))) ⋏
+        (inst2 (kB wN) d (pairT (Syn.shift m) (Zp (Syn.shift N) (Syn.shift h) (Syn.shift y))) ≐
+          inst2 GN d (pairT (succ (Syn.shift N)) (Syn.shift m))) := by
+    intro Δ d
+    rw [inst2_kB, inst2_kB]
+    have g := G_at (Γ := Δ) d (succ (Syn.shift N)) (Syn.shift m)
+    have f1 : Δ ⊢[PRAAx] fstT (pairT (Syn.shift m) (Zp (Syn.shift N) (Syn.shift h) (Syn.shift y))) ≐ Syn.shift m :=
+      fst_pair _ _
+    have f2 : Δ ⊢[PRAAx] succ (fstT (fstT (sndT (pairT (Syn.shift m) (Zp (Syn.shift N) (Syn.shift h) (Syn.shift y)))))) ≐
+        succ (Syn.shift N) :=
+      congrSucc ((congrFst ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))).eqTrans (fst_pair _ _))
+    have c := congrMu (Γ := Δ) (d := d) f2
+    have e : Δ ⊢[PRAAx] sg d * eqb (rem (fstT (pairT (Syn.shift m) (Zp (Syn.shift N) (Syn.shift h) (Syn.shift y)))) d) zero ≐
+        sg d * eqb (rem (Syn.shift m) d) zero :=
+      congrMul (.eqRefl _) (congrEqb' (congrAp2 remF f1 (.eqRefl _)) (.eqRefl _))
+    refine .andI ?_ ?_
+    · have hw : inst2 (wP : PTm 2) d (sndT (pairT (Syn.shift m) (Zp (Syn.shift N) (Syn.shift h) (Syn.shift y)))) =
+          muP (succ (fstT (fstT (sndT (pairT (Syn.shift m) (Zp (Syn.shift N) (Syn.shift h) (Syn.shift y))))))) d := by
+        simp [inst2]
+      rw [hw]
+      exact (congrMul e (Prf.andE₁ c)).eqTrans (Prf.andE₁ g).eqSymm
+    · have hw : inst2 (wN : PTm 2) d (sndT (pairT (Syn.shift m) (Zp (Syn.shift N) (Syn.shift h) (Syn.shift y)))) =
+          muN (succ (fstT (fstT (sndT (pairT (Syn.shift m) (Zp (Syn.shift N) (Syn.shift h) (Syn.shift y))))))) d := by
+        simp [inst2]
+      rw [hw]
+      exact (congrMul e (Prf.andE₂ c)).eqTrans (Prf.andE₂ g).eqSymm
+  have sh : Syn.shift (pairT m (Zp N h y)) = pairT (Syn.shift m) (Zp (Syn.shift N) (Syn.shift h) (Syn.shift y)) := by
+    simp [Syn.shift]
+  have sh2 : Syn.shift (pairT (succ N) m) = pairT (succ (Syn.shift N)) (Syn.shift m) := by simp [Syn.shift]
+  refine .andI (sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))) (sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_)))
+  · rw [sh, sh2]; exact Prf.andE₁ (hz _ _)
+  · rw [sh, sh2]; exact Prf.andE₂ (hz _ _)
+
+end LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorInversion
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PowerAbstractInversion
 
