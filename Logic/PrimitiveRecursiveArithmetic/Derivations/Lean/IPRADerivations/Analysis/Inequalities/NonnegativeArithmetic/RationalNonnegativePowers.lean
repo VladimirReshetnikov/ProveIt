@@ -18,6 +18,8 @@ namespace LeanProofs.IPRA.Analysis.RationalNonnegativePowers
 open_ipra
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (fraction fraction_represents subst_fraction)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (positive_product)
+open GaussianRationalSyntheticBounds (natCode natCode_nonnegative)
+open RationalArgmin (rationalLE rationalLE_congr)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -35,6 +37,17 @@ theorem fraction_multiply (A B C D : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hD : 
   apply ZT.derive
   simp only [ZT.toZ_mul,ZT.toZ_ofNat]
   ipra_simps
+
+/-- Multiplying by a natural number changes only the fraction's numerator. -/
+theorem nat_mul_fraction {A C D E : PTm n} (hD : Γ ⊢[PRAAx] le one D) (hE : Γ ⊢[PRAAx] A*C ≐ E) :
+    Γ ⊢[PRAAx] RationalArithmetic.multiply (natCode A) (fraction C D) ≐ fraction E D :=
+  (fraction_multiply A one C D (le_refl one) hD).eqTrans (fraction_congr hE (one_mul D))
+
+theorem nat_mul_fraction_bound (A : PTm n) {v C D : PTm n} (hD : Γ ⊢[PRAAx] le one D)
+    (h : Γ ⊢[PRAAx] rationalLE v (fraction C D)) :
+    Γ ⊢[PRAAx] rationalLE (RationalArithmetic.multiply (natCode A) v) (fraction (A*C) D) :=
+  rationalLE_congr (.eqRefl _) (nat_mul_fraction hD (.eqRefl _))
+    (RationalArithmetic.multiply_monotone (natCode A) _ _ (natCode_nonnegative A) h)
 
 def power (A B k : PTm n) : PTm n := fraction (pw A k) (pw B k)
 

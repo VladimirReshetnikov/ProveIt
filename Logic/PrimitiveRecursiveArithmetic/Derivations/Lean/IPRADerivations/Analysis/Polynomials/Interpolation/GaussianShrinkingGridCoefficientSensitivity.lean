@@ -89,8 +89,7 @@ theorem original_coefficient_error (C D N M d H e A B : PTm n)
   have code := (qsub_congr (scaled_reader C N d H e he) (scaled_reader D M d H e he)).eqTrans
     (GaussianPolynomialCoefficientDifferences.scalar_scaled_difference _ _ _)
   have scale : Γ ⊢[PRAAx] RationalArithmetic.multiply (natCode (gain d e)) (fraction A B) ≐ fraction (gain d e*A) B :=
-    (RationalNonnegativePowers.fraction_multiply _ _ _ _ (le_refl one) hB).eqTrans
-      (RationalNonnegativePowers.fraction_congr (.eqRefl _) (by ipra_ring))
+    RationalNonnegativePowers.nat_mul_fraction hB (.eqRefl _)
   have metric := GaussianCoefficientNormEntries.l1_to_euclidean _ (gain d e*A) B hB
     (RationalArgmin.rationalLE_congr (GaussianCoefficientL1.qL1_congr code) scale scaled)
   have inverseBound : Γ ⊢[PRAAx] bounded (power (inverse one H) e) (pw H e) one :=

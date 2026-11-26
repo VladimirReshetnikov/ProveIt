@@ -80,8 +80,7 @@ theorem term_error (p q z R B d e : PTm n) (h : Γ ⊢[PRAAx] source z R B) (he 
   have budgetCode : Γ ⊢[PRAAx] multiply (natCode (two*pw R d))
       (fraction (two*(cap R d*radiusNumerator p q)) (radiusDenominator p q)) ≐
       fraction (termModulus R d*radiusNumerator p q) (radiusDenominator p q) :=
-    (RationalNonnegativePowers.fraction_multiply _ _ _ _ (le_refl one) (denominator_positive p q)).eqTrans
-      (RationalNonnegativePowers.fraction_congr (by unfold termModulus; ipra_ring) (by ipra_ring))
+    RationalNonnegativePowers.nat_mul_fraction (denominator_positive p q) (by unfold termModulus; ipra_ring)
   exact RationalArgmin.rationalLE_congr (qL1_congr code).eqSymm budgetCode product
 
 theorem original_sum_binding (q z R B d : PTm n) : Γ ⊢[PRAAx]
@@ -112,8 +111,7 @@ theorem original_sum_error (p q z R B d : PTm n) (h : Γ ⊢[PRAAx] source z R B
       PTm.subst_mul,ConciseIPRA.PTm.subst_succ] using actual
   have code : Γ ⊢[PRAAx] multiply (natCode (succ d)) (fraction (termModulus R d*radiusNumerator p q) (radiusDenominator p q)) ≐
       fraction (modulus R d*radiusNumerator p q) (radiusDenominator p q) :=
-    (RationalNonnegativePowers.fraction_multiply _ _ _ _ (le_refl one) (denominator_positive p q)).eqTrans
-      (RationalNonnegativePowers.fraction_congr (by unfold modulus; ipra_ring) (by ipra_ring))
+    RationalNonnegativePowers.nat_mul_fraction (denominator_positive p q) (by unfold modulus; ipra_ring)
   exact RationalArgmin.rationalLE_congr (.eqRefl _) code (GaussianFiniteSumL1Variation.sum_error _ _ _ _ _ _ terms)
 
 theorem original_prefix_regularity (p q z R B d : PTm n) (h : Γ ⊢[PRAAx] source z R B) : Γ ⊢[PRAAx]

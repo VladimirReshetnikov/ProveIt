@@ -34,7 +34,8 @@ open GaussianPolynomialExponentialCoefficientVariation (variationBudget)
 open GaussianRationalDistanceOrder (distance_radius_mono)
 open GaussianRationalL1 (qL1)
 open GaussianRationalMetric (qsub distanceBounded)
-open GaussianRationalSyntheticBounds (natCode natCode_nonnegative)
+open GaussianRationalSyntheticBounds (natCode)
+open RationalNonnegativePowers (nat_mul_fraction nat_mul_fraction_bound)
 open RationalArgmin (rationalLE rationalLE_congr)
 open RationalArithmetic (multiply)
 
@@ -109,16 +110,6 @@ theorem late_product_gap (p q t z R B r s M e : PTm n)
     GaussianBarnesCanonicalTaylorProduct.headDegree] using
     padded_head_coefficient (sh z) (sh R) (sh B) (sh e) (var 0) source'
 
-private theorem scale_fraction (A C D : PTm n) (hD : Γ ⊢[PRAAx] le one D) :
-    Γ ⊢[PRAAx] multiply (natCode A) (fraction C D) ≐ fraction (A*C) D :=
-  (RationalNonnegativePowers.fraction_multiply _ _ _ _ (le_refl one) hD).eqTrans
-    (RationalNonnegativePowers.fraction_congr (.eqRefl _) (one_mul _))
-
-private theorem scale_bound (A v C D : PTm n) (hD : Γ ⊢[PRAAx] le one D)
-    (h : Γ ⊢[PRAAx] rationalLE v (fraction C D)) : Γ ⊢[PRAAx] rationalLE (multiply (natCode A) v) (fraction (A*C) D) :=
-  rationalLE_congr (.eqRefl _) (scale_fraction A C D hD)
-    (RationalArithmetic.multiply_monotone _ _ _ (natCode_nonnegative _) h)
-
 theorem product_error_bound (p R M e : PTm n) :
     Γ ⊢[PRAAx] rationalLE (productError p R M e) (fraction (gain R M e) (unit p)) := by
   let E := massError p M
@@ -130,8 +121,8 @@ theorem product_error_bound (p R M e : PTm n) :
   have base := rationalLE_congr (RationalAlgebra.multiply_commutative _ _) (RationalAlgebra.multiply_commutative _ _) cap
   have scaled : Γ ⊢[PRAAx] rationalLE (exponentialError p R M (previous M))
       (fraction (integerBudget R M*(num 8*succ (previous M))) (unit p)) :=
-    rationalLE_congr (.eqRefl _) (scale_fraction (integerBudget R M) _ _ (unit_positive p)) base
-  exact scale_bound (succ e) _ _ _ (unit_positive p) (scale_bound (headCap R) _ _ _ (unit_positive p) scaled)
+    rationalLE_congr (.eqRefl _) (nat_mul_fraction (unit_positive p) (.eqRefl _)) base
+  exact nat_mul_fraction_bound (succ e) (unit_positive p) (nat_mul_fraction_bound (headCap R) (unit_positive p) scaled)
 
 theorem finite_gap (p q t z R B r s M e : PTm n)
     (hz : Γ ⊢[PRAAx] source z R B) (he : Γ ⊢[PRAAx] le e (previous M))

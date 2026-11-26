@@ -88,8 +88,7 @@ theorem exponential_error_norm (p q R e f : PTm n) (hR : Γ ⊢[PRAAx] le one R)
     (RationalAlgebra.multiply_commutative _ _) (RationalAlgebra.multiply_commutative _ _) cap)
   have code : Γ ⊢[PRAAx] multiply (natCode (integralBudget R e)) E ≐
       fraction (exponentialFactor R e*radiusNumerator p q) (radiusDenominator p q) :=
-    (RationalNonnegativePowers.fraction_multiply _ _ _ _ (le_refl one) (denominator_positive p q)).eqTrans
-      (RationalNonnegativePowers.fraction_congr (by unfold exponentialFactor; ipra_ring) (by ipra_ring))
+    RationalNonnegativePowers.nat_mul_fraction (denominator_positive p q) (by unfold exponentialFactor; ipra_ring)
   exact RationalArgmin.rationalLE_congr (.eqRefl _) code capped
 
 theorem head_canonical (R : PTm n) (hR : Γ ⊢[PRAAx] le one R) : Γ ⊢[PRAAx]
@@ -139,8 +138,7 @@ theorem row_error_of_head (P D p q R e i : PTm n) (hR : Γ ⊢[PRAAx] le one R)
   have code : Γ ⊢[PRAAx] multiply (natCode (headBudget R))
       (fraction (exponentialFactor R e*radiusNumerator p q) (radiusDenominator p q)) ≐
       fraction (rowFactor R e*radiusNumerator p q) (radiusDenominator p q) :=
-    (RationalNonnegativePowers.fraction_multiply _ _ _ _ (le_refl one) (denominator_positive p q)).eqTrans
-      (RationalNonnegativePowers.fraction_congr (by unfold rowFactor; ipra_ring) (by ipra_ring))
+    RationalNonnegativePowers.nat_mul_fraction (denominator_positive p q) (by unfold rowFactor; ipra_ring)
   exact RationalArgmin.rationalLE_congr
     (qL1_congr (GaussianPolynomialCoefficientDifferences.scalar_scaled_difference _ _ _)).eqSymm code product
 
@@ -193,8 +191,7 @@ theorem cauchy_error_of_head (P D p q R e : PTm n) (hR : Γ ⊢[PRAAx] le one R)
   have sum := GaussianFiniteSumL1Variation.sum_error _ _ _ _ _ _ rows
   have code : Γ ⊢[PRAAx] multiply (natCode (succ e)) (fraction (rowFactor R e*radiusNumerator p q) (radiusDenominator p q)) ≐
       fraction (modulus R e*radiusNumerator p q) (radiusDenominator p q) :=
-    (RationalNonnegativePowers.fraction_multiply _ _ _ _ (le_refl one) (denominator_positive p q)).eqTrans
-      (RationalNonnegativePowers.fraction_congr (by unfold modulus; ipra_ring) (by ipra_ring))
+    RationalNonnegativePowers.nat_mul_fraction (denominator_positive p q) (by unfold modulus; ipra_ring)
   exact RationalArgmin.rationalLE_congr (.eqRefl _) code sum
 
 theorem cauchy_error (p q R e : PTm n) (hR : Γ ⊢[PRAAx] le one R) : Γ ⊢[PRAAx]

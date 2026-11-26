@@ -68,8 +68,7 @@ theorem term_error (p q z R B d e : PTm n) (h : Γ ⊢[PRAAx] source z R B) (he 
         (GaussianPolynomialCoefficientDifferences.scalar_scaled_difference _ _ _))
   have scale : Γ ⊢[PRAAx] multiply (natCode (two*pw R d)) (fraction (two*(cap R d*unit q+unit p)) (radiusDenominator p q)) ≐
       fraction (GaussianGammaCanonicalPrefixName.termModulus R d*(cap R d*unit q+unit p)) (radiusDenominator p q) :=
-    (RationalNonnegativePowers.fraction_multiply _ _ _ _ (le_refl one) (denominator_positive p q)).eqTrans
-      (RationalNonnegativePowers.fraction_congr (by unfold GaussianGammaCanonicalPrefixName.termModulus; ipra_ring) (by ipra_ring))
+    RationalNonnegativePowers.nat_mul_fraction (denominator_positive p q) (by unfold GaussianGammaCanonicalPrefixName.termModulus; ipra_ring)
   exact RationalArgmin.rationalLE_congr (qL1_congr code).eqSymm scale bound
 
 theorem sum_error (p q z R B d : PTm n) (h : Γ ⊢[PRAAx] source z R B) : Γ ⊢[PRAAx]
@@ -95,11 +94,10 @@ theorem sum_error (p q z R B d : PTm n) (h : Γ ⊢[PRAAx] source z R B) : Γ �
   have scale : Γ ⊢[PRAAx] multiply (natCode (succ d))
       (fraction (GaussianGammaCanonicalPrefixName.termModulus R d*(cap R d*unit q+unit p)) (radiusDenominator p q)) ≐
       fraction (mixedNumerator p q R d) (radiusDenominator p q) :=
-    (RationalNonnegativePowers.fraction_multiply _ _ _ _ (le_refl one) (denominator_positive p q)).eqTrans
-      (RationalNonnegativePowers.fraction_congr (by
+    RationalNonnegativePowers.nat_mul_fraction (denominator_positive p q) (by
         unfold mixedNumerator GaussianGammaOriginalPrefixRegularity.modulus GaussianGammaOriginalPrefixRegularity.termModulus
           GaussianGammaCanonicalPrefixName.modulus GaussianGammaCanonicalPrefixName.termModulus
-        ipra_ring) (by ipra_ring))
+        ipra_ring)
   exact RationalArgmin.rationalLE_congr (.eqRefl _) scale (GaussianFiniteSumL1Variation.sum_error _ _ _ _ _ _ terms)
 
 theorem raw_prefix_error (p q z R B d : PTm n) (h : Γ ⊢[PRAAx] source z R B) : Γ ⊢[PRAAx]

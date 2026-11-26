@@ -81,8 +81,7 @@ theorem term_error (p q R d w e : PTm n) (hR : Γ ⊢[PRAAx] le one R) (hw : Γ 
   have scale : Γ ⊢[PRAAx] multiply (natCode (two*pw R d))
       (fraction (two*radiusNumerator p q) (radiusDenominator p q)) ≐
       fraction (termModulus R d*radiusNumerator p q) (radiusDenominator p q) :=
-    (RationalNonnegativePowers.fraction_multiply _ _ _ _ (le_refl one) (denominator_positive p q)).eqTrans
-      (RationalNonnegativePowers.fraction_congr (by unfold termModulus; ipra_ring) (by ipra_ring))
+    RationalNonnegativePowers.nat_mul_fraction (denominator_positive p q) (by unfold termModulus; ipra_ring)
   exact RationalArgmin.rationalLE_congr (qL1_congr code).eqSymm scale bound
 
 theorem raw_regularity (p q R d w : PTm n) (hR : Γ ⊢[PRAAx] le one R) (hw : Γ ⊢[PRAAx] bounded w R one) : Γ ⊢[PRAAx]
@@ -102,8 +101,7 @@ theorem raw_regularity (p q R d w : PTm n) (hR : Γ ⊢[PRAAx] le one R) (hw : �
       PTm.subst_mul,ConciseIPRA.PTm.subst_succ] using actual
   have scale : Γ ⊢[PRAAx] multiply (natCode (succ d)) (fraction (termModulus R d*radiusNumerator p q) (radiusDenominator p q)) ≐
       fraction (modulus R d*radiusNumerator p q) (radiusDenominator p q) :=
-    (RationalNonnegativePowers.fraction_multiply _ _ _ _ (le_refl one) (denominator_positive p q)).eqTrans
-      (RationalNonnegativePowers.fraction_congr (by unfold modulus; ipra_ring) (by ipra_ring))
+    RationalNonnegativePowers.nat_mul_fraction (denominator_positive p q) (by unfold modulus; ipra_ring)
   exact GaussianCoefficientNormEntries.l1_to_euclidean _ _ _ (denominator_positive p q)
     (RationalArgmin.rationalLE_congr (.eqRefl _) scale (GaussianFiniteSumL1Variation.sum_error _ _ _ _ _ _ terms))
 
