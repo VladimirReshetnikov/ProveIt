@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.FiniteDifferences.GaussianPolynomialForwardDifferenceNormalization
-import IPRADerivations.Analysis.Polynomials.GaussianPolynomialCoefficientDifferences
-import IPRADerivations.Analysis.Polynomials.GaussianRationalCoefficientScaling
+import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianPolynomialCoefficientDifferences
+import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianRationalCoefficientScaling
 
 /-!
 # Exact linearity of the encoded Gaussian forward-difference grid

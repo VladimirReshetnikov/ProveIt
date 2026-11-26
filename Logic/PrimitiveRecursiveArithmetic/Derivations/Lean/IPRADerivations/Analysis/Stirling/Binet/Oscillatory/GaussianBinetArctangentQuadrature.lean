@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.GaussianBinetArctangentResolventRate
-import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceStrip
+import IPRADerivations.Analysis.Stirling.Binet.Laplace.Strips.GaussianBinetLaplaceStrip
 
 /-!
 # The original compact quadrature defining the right-half-plane arctangent

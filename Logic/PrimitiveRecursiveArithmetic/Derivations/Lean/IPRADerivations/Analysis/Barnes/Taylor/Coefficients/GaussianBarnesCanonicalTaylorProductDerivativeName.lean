@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.GaussianBarnesCanonicalTaylorProductCoefficientName
-import IPRADerivations.Analysis.Names.GaussianNamedNaturalScale
+import IPRADerivations.Analysis.Names.Scaling.GaussianNamedNaturalScale
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedUniformRateClosure
 
 /-!

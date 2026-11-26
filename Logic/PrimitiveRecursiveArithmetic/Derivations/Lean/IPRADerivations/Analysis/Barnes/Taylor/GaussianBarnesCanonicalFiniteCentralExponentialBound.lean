@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Taylor.GaussianBarnesCanonicalFiniteCentralExponential
-import IPRADerivations.Analysis.Exponential.GaussianNamedExponentialTaylorTransport
-import IPRADerivations.Analysis.Names.GaussianNamedBoundedProductObservation
+import IPRADerivations.Analysis.Exponential.Names.GaussianNamedExponentialTaylorTransport
+import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedBoundedProductObservation
 
 /-!
 # Cutoff-independent bound on the finite central Barnes scalar

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.GaussianBinetArctangentResolvent
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalRoundedPower
-import IPRADerivations.Analysis.Trigonometry.GaussianSineProductImaginaryLogDerivativeTail
+import IPRADerivations.Analysis.Trigonometry.Hyperbolic.GaussianSineProductImaginaryLogDerivativeTail
 
 /-!
 # Uniform compact bounds for the actual arctangent integrand

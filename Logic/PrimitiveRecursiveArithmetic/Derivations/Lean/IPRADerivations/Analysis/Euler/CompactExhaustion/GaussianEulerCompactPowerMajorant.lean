@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Euler.GaussianEulerExponentCompactBounds
-import IPRADerivations.Analysis.Exponential.GaussianPositiveExponentialMajorant
+import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerExponentCompactBounds
+import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianPositiveExponentialMajorant
 
 /-!
 # Uniform compact majorant for the original Euler power

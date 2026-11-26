@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Raabe.GaussianRaabeLogPrimitiveCell
-import IPRADerivations.Analysis.Euler.GaussianHarmonicLogarithmPower
+import IPRADerivations.Analysis.Euler.HarmonicLogarithms.GaussianHarmonicLogarithmPower
 
 /-!
 # The actual logarithm primitive at a positive dyadic cutoff

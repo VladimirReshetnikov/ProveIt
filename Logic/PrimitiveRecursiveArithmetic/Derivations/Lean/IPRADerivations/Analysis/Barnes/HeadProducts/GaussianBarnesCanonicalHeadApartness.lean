@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalFacto
 import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalHeadSplit
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteProductApartness
 import IPRADerivations.Core.SearchParameters
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianGammaShiftedDeflatedZero
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.Taylor.GaussianGammaShiftedDeflatedZero
 
 /-!
 # Constructive zero or apartness test for a finite Barnes product

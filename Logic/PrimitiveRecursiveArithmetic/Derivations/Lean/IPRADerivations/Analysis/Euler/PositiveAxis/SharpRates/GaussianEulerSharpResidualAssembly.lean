@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Names.GaussianNameArithmetic
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalDistanceOrder
-import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianReconstructionRoots
+import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalDistanceOrder
+import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianReconstructionRoots
 
 /-!
 # Exact radius arithmetic for the Euler comparison

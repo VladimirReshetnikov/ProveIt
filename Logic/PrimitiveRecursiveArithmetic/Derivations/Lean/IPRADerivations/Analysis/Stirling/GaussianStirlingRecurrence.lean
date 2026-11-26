@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Stirling.GaussianStirlingGammaLogShift
 import IPRADerivations.Analysis.Stirling.GaussianStirlingRationalLogShift
-import IPRADerivations.Analysis.Stirling.GaussianStirlingDifferenceAlgebra
-import IPRADerivations.Analysis.Names.GaussianNamedDifference
+import IPRADerivations.Analysis.Stirling.Telescoping.GaussianStirlingDifferenceAlgebra
+import IPRADerivations.Analysis.Names.Differences.GaussianNamedDifference
 
 /-!
 # Exact named Stirling difference at every positive rational argument

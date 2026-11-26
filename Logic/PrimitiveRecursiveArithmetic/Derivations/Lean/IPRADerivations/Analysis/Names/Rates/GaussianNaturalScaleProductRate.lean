@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Names.GaussianNaturalScaleProductName
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedInverseRate
+import IPRADerivations.Analysis.Names.Scaling.GaussianNaturalScaleProductName
+import IPRADerivations.Analysis.Names.Rates.Reciprocals.GaussianNamedInverseRate
 
 /-!
 # Bounded observation error under fixed natural scaling

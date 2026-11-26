@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Taylor.GaussianBarnesCanonicalWeightedTaylorBallDyadic
 import IPRADerivations.Analysis.Barnes.Taylor.GaussianBarnesCanonicalWeightedTaylorBallOverlap
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalSquareGrid
+import IPRADerivations.Analysis.RationalArithmetic.Grids.GaussianRationalSquareGrid
 
 /-!
 # A finite rational cover for the Barnes Taylor balls

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.Logarithms.GaussianEulerLogarithmicIntervalName
-import IPRADerivations.Analysis.Exponential.GaussianScalarExponentialProductTail
+import IPRADerivations.Analysis.Exponential.FiniteSeries.GaussianScalarExponentialProductTail
 
 /-!
 # Absolute bounds for original logarithmic compact quadratures

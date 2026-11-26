@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Integration.GaussianCompactIntervalRescaling
-import IPRADerivations.Analysis.Integration.GaussianCompactMeshIndependence
+import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactIntervalRescaling
+import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactMeshIndependence
 import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactAdditivity
 
 /-!

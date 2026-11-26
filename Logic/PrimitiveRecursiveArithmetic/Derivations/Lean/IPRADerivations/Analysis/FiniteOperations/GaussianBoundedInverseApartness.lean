@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalLowerBounds
-import IPRADerivations.Analysis.Exponential.GaussianExponentialSmallPerturbation
+import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialSmallPerturbation
 
 /-!
 # Constructive apartness from a bounded inverse name

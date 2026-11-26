@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.Gauss.GaussianGammaGaussEulerHeads
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianGammaGaussDomain
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.GaussianGammaGaussDomain
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerInverseApproximationName
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianGaussMultiplicationLogarithm
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.PowerEstimates.GaussianGaussMultiplicationLogarithm
 
 /-!
 # Uniform upward Euler cutoffs for the Gauss comparison

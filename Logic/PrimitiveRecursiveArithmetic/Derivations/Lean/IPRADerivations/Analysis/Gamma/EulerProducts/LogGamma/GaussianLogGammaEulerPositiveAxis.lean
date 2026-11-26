@@ -1,8 +1,8 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerExponentialLimit
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Exponentiation.GaussianLogGammaEulerExponentialLimit
 import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRightHalfPlaneArgumentAxis
-import IPRADerivations.Analysis.Stirling.GaussianStirlingLogDuplication
+import IPRADerivations.Analysis.Stirling.Duplication.GaussianStirlingLogDuplication
 import IPRADerivations.Analysis.Gamma.GaussianGammaInputProperness
-import IPRADerivations.Analysis.SpecialFunctions.GaussianNamedDampingPowerRealSamples
+import IPRADerivations.Analysis.SpecialFunctions.DampingPower.GaussianNamedDampingPowerRealSamples
 
 /-!
 # The cofinal Euler logarithm on the positive rational axis

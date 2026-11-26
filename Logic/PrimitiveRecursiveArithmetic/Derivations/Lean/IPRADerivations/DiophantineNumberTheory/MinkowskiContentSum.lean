@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.RationalNormalForm
+import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalNormalForm
 import IPRADerivations.Core.ProdLemmas
 import IPRADerivations.Core.Header
 

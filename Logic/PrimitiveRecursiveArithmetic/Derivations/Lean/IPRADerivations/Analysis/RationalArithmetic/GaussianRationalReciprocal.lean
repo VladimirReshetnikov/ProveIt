@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalMetric
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalL1
+import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalMetric
+import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalL1
 
 /-!
 # Actual Gaussian-rational reciprocals and Euclidean power bounds

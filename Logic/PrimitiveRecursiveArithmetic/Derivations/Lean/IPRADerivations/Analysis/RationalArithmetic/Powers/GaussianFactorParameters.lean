@@ -1,7 +1,7 @@
-import IPRADerivations.Analysis.Polynomials.GaussianInitialCoefficientBound
+import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianInitialCoefficientBound
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianFactorBudget
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalSyntheticBounds
-import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianRationalDeflation
+import IPRADerivations.Analysis.Polynomials.RootFinding.Deflation.GaussianRationalDeflation
 
 /-!
 # Computed input parameters and actual deflation residuals

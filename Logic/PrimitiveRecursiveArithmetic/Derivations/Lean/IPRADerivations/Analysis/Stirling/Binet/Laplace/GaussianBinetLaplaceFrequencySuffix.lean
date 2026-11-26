@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetKernelFrequencyGrid
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceImproperName
 import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.GaussianBinetSineStripCut
-import IPRADerivations.Analysis.Integration.GaussianCompactMeshIndependence
+import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactMeshIndependence
 
 /-!
 # Original Binet integral on the common positive frequency suffix

@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerCommonDenominator
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerRationalContinuity
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerRescale
-import IPRADerivations.Analysis.Names.GaussianNamedRightHalfPlaneLift
+import IPRADerivations.Analysis.Names.RightHalfPlane.GaussianNamedRightHalfPlaneLift
 
 /-!
 # Canonical cofinal log-Gamma on regular right-half-plane names

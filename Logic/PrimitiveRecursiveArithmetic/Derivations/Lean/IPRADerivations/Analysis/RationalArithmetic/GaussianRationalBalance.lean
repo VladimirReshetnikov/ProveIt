@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalDistanceOrder
+import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalDistanceOrder
 
 /-!
 # Exact balance rearrangements for actual Gaussian rational distances

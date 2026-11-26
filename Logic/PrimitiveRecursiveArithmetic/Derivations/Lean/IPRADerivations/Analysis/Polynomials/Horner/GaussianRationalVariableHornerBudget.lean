@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalHornerLipschitz
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalNormalization
+import IPRADerivations.Analysis.RationalArithmetic.Representations.GaussianRationalNormalization
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerDifference
 import IPRADerivations.Core.CongruenceTactic
 

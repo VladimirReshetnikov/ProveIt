@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.Geometry.GaussianEuclideanDistanceName
+import IPRADerivations.Analysis.Geometry.Distances.GaussianEuclideanDistanceName
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalRelativeTwoTerm
-import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianRationalMonicReduction
+import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianRationalMonicReduction
 import IPRADerivations.Core.LinearCombination
 
 /-!

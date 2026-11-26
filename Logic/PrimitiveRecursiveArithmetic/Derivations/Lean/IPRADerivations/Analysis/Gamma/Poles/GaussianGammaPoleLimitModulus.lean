@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Poles.GaussianGammaPoleLimitTransport
-import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianRootAdequacySchedule
+import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.GaussianRootAdequacySchedule
 
 /-!
 # A common precision clock for the two local pole limits

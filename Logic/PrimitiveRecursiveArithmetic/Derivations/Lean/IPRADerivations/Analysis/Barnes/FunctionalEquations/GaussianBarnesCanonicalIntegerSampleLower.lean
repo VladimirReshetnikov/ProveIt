@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.GaussianBarnesCanonicalIntegerValues
 import IPRADerivations.Analysis.Barnes.BarnesIntegerGrowth
-import IPRADerivations.Analysis.Exponential.GaussianExponentialReference
+import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialReference
 import IPRADerivations.Analysis.FiniteOperations.GaussianBoundedInverseApartness
 import IPRADerivations.Core.CommonLemmas
 

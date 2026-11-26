@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.Bose.GaussianBinetBoseExponential
-import IPRADerivations.Analysis.Exponential.GaussianExponentialAffineLower
+import IPRADerivations.Analysis.Exponential.Estimates.GaussianExponentialAffineLower
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteProductApartness
 
 /-!

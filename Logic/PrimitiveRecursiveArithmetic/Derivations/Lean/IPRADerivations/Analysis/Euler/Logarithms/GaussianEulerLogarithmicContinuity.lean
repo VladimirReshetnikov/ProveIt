@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.Euler.Logarithms.GaussianEulerLogarithmicCertificateOverlap
-import IPRADerivations.Analysis.Euler.Logarithms.GaussianEulerLogarithmicCompactParameterRate
-import IPRADerivations.Analysis.Euler.GaussianEulerDerivativeParameterPath
+import IPRADerivations.Analysis.Euler.Logarithms.Exhaustion.GaussianEulerLogarithmicCertificateOverlap
+import IPRADerivations.Analysis.Euler.Logarithms.ParameterRates.GaussianEulerLogarithmicCompactParameterRate
+import IPRADerivations.Analysis.Euler.Derivatives.GaussianEulerDerivativeParameterPath
 
 /-!
 # A uniform parameter modulus for the actual logarithmic improper names

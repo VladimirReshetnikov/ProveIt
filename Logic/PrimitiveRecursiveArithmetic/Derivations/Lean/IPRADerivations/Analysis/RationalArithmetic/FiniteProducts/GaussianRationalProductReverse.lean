@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalFiniteProduct
-import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianRationalFiniteRoots
+import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianRationalFiniteRoots
 
 /-!
 # Exact reversal of an actual rational product

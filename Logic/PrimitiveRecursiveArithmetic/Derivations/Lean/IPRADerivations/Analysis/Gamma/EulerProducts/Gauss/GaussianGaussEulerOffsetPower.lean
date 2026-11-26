@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.Gauss.GaussianGaussEulerPowerRatio
 import IPRADerivations.Analysis.Gamma.EulerProducts.Gauss.GaussianGaussEulerRowExponents
-import IPRADerivations.Analysis.Exponential.GaussianNamedRepeatedExponential
-import IPRADerivations.Analysis.Integration.GaussianMomentReflection
+import IPRADerivations.Analysis.Exponential.Names.GaussianNamedRepeatedExponential
+import IPRADerivations.Analysis.Integration.Moments.GaussianMomentReflection
 
 /-!
 # Collecting the common factors of the shifted Euler exponents

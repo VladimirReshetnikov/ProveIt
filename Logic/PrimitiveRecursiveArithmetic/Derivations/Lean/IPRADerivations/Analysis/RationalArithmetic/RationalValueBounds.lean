@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Names.AggregateChain
+import IPRADerivations.Analysis.Names.Aggregation.AggregateChain
 import IPRADerivations.Core.CongruenceTactic
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas

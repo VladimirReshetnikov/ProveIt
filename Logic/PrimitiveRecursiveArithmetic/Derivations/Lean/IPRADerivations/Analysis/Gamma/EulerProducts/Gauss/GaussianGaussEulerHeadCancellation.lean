@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.Gauss.GaussianGammaGaussEulerHeads
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaFallingFactorial
+import IPRADerivations.Analysis.Gamma.EulerProducts.Factorials.GaussianGammaFallingFactorial
 
 /-!
 # Gauss denominator cancellation across two arguments

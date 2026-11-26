@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.GaussianBarnesCanonicalExponentTaylor
 import IPRADerivations.Analysis.Barnes.Prefactors.GaussianBarnesCanonicalPrefactorShiftBinding
-import IPRADerivations.Analysis.Exponential.GaussianSignedNameExponentialOrder
+import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianSignedNameExponentialOrder
 
 /-!
 # Frozen rational polynomials for the full original Barnes exponent

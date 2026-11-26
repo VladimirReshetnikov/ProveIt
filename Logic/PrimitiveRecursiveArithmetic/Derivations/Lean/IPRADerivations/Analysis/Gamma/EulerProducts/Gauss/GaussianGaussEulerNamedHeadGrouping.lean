@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.Gauss.GaussianGaussEulerInverseHeadGrouping
-import IPRADerivations.Analysis.Names.GaussianNamedConstantFamilyProduct
+import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedConstantFamilyProduct
 
 /-!
 # The exact Gauss inverse-head identity on the named products

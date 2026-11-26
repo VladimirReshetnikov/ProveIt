@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.GaussianBinetOscillatorySineQuotient
-import IPRADerivations.Analysis.Exponential.GaussianRationalExponentialTangent
+import IPRADerivations.Analysis.Exponential.Estimates.GaussianRationalExponentialTangent
 
 /-!
 # Exact zero-time value of the regularized sine column

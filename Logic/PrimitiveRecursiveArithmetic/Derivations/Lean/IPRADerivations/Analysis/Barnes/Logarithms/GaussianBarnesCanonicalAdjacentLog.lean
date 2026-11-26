@@ -1,7 +1,7 @@
-import IPRADerivations.Analysis.Stirling.GaussianStirlingGammaFractionalIncrementLogGap
-import IPRADerivations.Analysis.Beta.GaussianBetaUpperPowerCancellation
+import IPRADerivations.Analysis.Stirling.GammaIncrements.GaussianStirlingGammaFractionalIncrementLogGap
+import IPRADerivations.Analysis.Beta.Endpoints.GaussianBetaUpperPowerCancellation
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedLipschitzRate
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedDifferenceQuotientProperness
+import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedDifferenceQuotientProperness
 
 /-!
 # The adjacent Euler logarithm needed by the Barnes recurrence

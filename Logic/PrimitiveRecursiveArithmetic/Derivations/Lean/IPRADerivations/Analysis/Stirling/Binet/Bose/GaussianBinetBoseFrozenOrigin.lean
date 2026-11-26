@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Bose.GaussianBinetBoseFrozenMatrix
 import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.GaussianBinetSecondDecaySharedTail
-import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceStripCutoff
+import IPRADerivations.Analysis.Stirling.Binet.Laplace.Strips.GaussianBinetLaplaceStripCutoff
 
 /-!
 # Exact zero-origin readback of the frozen Bose matrix

@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalHead
 import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalBaseProductShift
 import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalCorrectionShift
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteConstantFolds
-import IPRADerivations.Analysis.Exponential.GaussianNamedFiniteExponentialFold
+import IPRADerivations.Analysis.Exponential.Names.GaussianNamedFiniteExponentialFold
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteProductFamilyAlgebra
 
 /-!

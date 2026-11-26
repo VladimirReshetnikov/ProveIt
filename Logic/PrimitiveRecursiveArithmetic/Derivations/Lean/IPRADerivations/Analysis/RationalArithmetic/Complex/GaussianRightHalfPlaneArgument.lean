@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentOriginalExponential
-import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentPartialExponential
-import IPRADerivations.Analysis.Names.GaussianBoundedConstantProductName
+import IPRADerivations.Analysis.Trigonometry.Arctangent.PartialSums.GaussianArctangentPartialExponential
+import IPRADerivations.Analysis.Names.FiniteOperations.GaussianBoundedConstantProductName
 import IPRADerivations.Analysis.Exponential.GaussianExponentialInverse
 import IPRADerivations.Analysis.Names.GaussianNameBranch
 

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.GaussianBarnesCanonicalDerivativeTailBinding
-import IPRADerivations.Analysis.Names.Rates.GaussianNativeDerivativeQuotientRate
+import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNativeDerivativeQuotientRate
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
 
 /-! The actual divided difference of the original Barnes tail logarithm

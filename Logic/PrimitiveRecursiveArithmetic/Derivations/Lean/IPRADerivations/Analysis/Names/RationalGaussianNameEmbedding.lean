@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.RationalGaussianEmbedding
-import IPRADerivations.Analysis.Optimization.RationalCubeInfimumName
+import IPRADerivations.Analysis.Optimization.CubeInfimum.RationalCubeInfimumName
 import IPRADerivations.Analysis.Exponential.GaussianRadiusExponentialName
 import IPRADerivations.Analysis.Names.GaussianNameBounds
 

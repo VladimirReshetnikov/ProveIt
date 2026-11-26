@@ -1,8 +1,8 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerFullHeadInverse
+import IPRADerivations.Analysis.Gamma.EulerProducts.FiniteHeads.GaussianGammaEulerFullHeadInverse
 import IPRADerivations.Analysis.Gamma.EulerProducts.Gauss.GaussianGammaGaussEulerHeads
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianGammaGaussReferenceProduct
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.ReferenceProduct.GaussianGammaGaussReferenceProduct
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteProductFamily
-import IPRADerivations.Analysis.Gamma.GaussianGammaCompactCutoffSplit
+import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaCompactCutoffSplit
 
 /-!
 # The full-head Euler exponential families

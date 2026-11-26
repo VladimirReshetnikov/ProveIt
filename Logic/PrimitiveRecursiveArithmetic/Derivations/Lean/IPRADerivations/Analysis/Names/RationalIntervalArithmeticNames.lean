@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.RationalIntervalArithmeticPrecision
+import IPRADerivations.Analysis.RationalArithmetic.Intervals.RationalIntervalArithmeticPrecision
 import IPRADerivations.Core.CongruenceTactic
 
 /-!

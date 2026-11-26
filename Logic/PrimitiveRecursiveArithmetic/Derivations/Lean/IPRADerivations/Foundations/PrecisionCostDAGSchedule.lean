@@ -1,5 +1,5 @@
 import IPRADerivations.Foundations.PrecisionCostDAG
-import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianRootSchedule
+import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.GaussianRootSchedule
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.SubstCommand
 import IPRADerivations.Core.Header

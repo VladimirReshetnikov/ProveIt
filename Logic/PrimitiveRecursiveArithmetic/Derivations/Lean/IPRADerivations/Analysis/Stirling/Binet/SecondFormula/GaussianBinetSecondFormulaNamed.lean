@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.GaussianBinetSecondFormula
 import IPRADerivations.Analysis.Stirling.Binet.GaussianBinetFirstFormulaNamed
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRightHalfPlaneLiftTransport
+import IPRADerivations.Analysis.Names.Rates.RightHalfPlane.GaussianNamedRightHalfPlaneLiftTransport
 
 /-!
 # Second Binet formula for regular right-half-plane names

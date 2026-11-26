@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.Exponential.GaussianExponentialLinearRemainder
-import IPRADerivations.Analysis.Exponential.GaussianExponentialReference
-import IPRADerivations.Analysis.Integration.GaussianRationalPanelTailDistance
+import IPRADerivations.Analysis.Exponential.Estimates.GaussianExponentialLinearRemainder
+import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialReference
+import IPRADerivations.Analysis.Integration.Partitions.GaussianRationalPanelTailDistance
 
 /-!
 # Finite contraction when the original exponential is close to one

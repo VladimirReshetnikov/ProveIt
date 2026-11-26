@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Exponential.GaussianRationalRadiusExponentialLipschitz
+import IPRADerivations.Analysis.Exponential.Estimates.GaussianRationalRadiusExponentialLipschitz
 import IPRADerivations.Analysis.Exponential.GaussianUnitDiskExponentialName
 import IPRADerivations.Core.CongruenceTactic
 

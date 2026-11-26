@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Euler.Logarithms.GaussianEulerLogarithmicInputProperness
-import IPRADerivations.Analysis.Euler.Logarithms.GaussianEulerLogarithmicCertificateGeometry
-import IPRADerivations.Analysis.Euler.Logarithms.GaussianEulerLogarithmicTopExtension
-import IPRADerivations.Analysis.Euler.Logarithms.GaussianEulerLogarithmicFixedCutoff
+import IPRADerivations.Analysis.Euler.Logarithms.Exhaustion.GaussianEulerLogarithmicCertificateGeometry
+import IPRADerivations.Analysis.Euler.Logarithms.UpperBounds.GaussianEulerLogarithmicTopExtension
+import IPRADerivations.Analysis.Euler.Logarithms.Exhaustion.GaussianEulerLogarithmicFixedCutoff
 
 /-!
 # Equal encoded inputs give the same original logarithmic integral

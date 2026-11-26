@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.GaussianStirlingNames
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianGaussTriplicationPi
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.GaussianGaussTriplicationPi
 import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentPiMargins
 
 /-!

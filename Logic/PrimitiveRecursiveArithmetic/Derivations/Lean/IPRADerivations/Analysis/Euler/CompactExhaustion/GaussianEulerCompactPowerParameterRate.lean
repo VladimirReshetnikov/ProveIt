@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactPowerVariation
-import IPRADerivations.Analysis.Euler.Integration.GaussianEulerIntegrandParameterContinuity
+import IPRADerivations.Analysis.Euler.Integration.Parameters.GaussianEulerIntegrandParameterContinuity
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedAddRate
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedMultiplyRate
 

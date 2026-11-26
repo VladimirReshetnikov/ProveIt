@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Taylor.GaussianBarnesCanonicalTaylorRecomposition
-import IPRADerivations.Analysis.Exponential.GaussianRationalPolynomialExponentialProductTruncation
+import IPRADerivations.Analysis.Exponential.Polynomials.GaussianRationalPolynomialExponentialProductTruncation
 
 /-!
 # The degree-truncated Barnes value polynomial

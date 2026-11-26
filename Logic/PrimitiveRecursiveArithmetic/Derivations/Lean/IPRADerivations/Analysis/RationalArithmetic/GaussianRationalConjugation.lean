@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalPhaseCertificate
-import IPRADerivations.Analysis.Exponential.GaussianRationalPolynomialExponential
+import IPRADerivations.Analysis.RationalArithmetic.Directions.GaussianRationalPhaseCertificate
+import IPRADerivations.Analysis.Exponential.Polynomials.GaussianRationalPolynomialExponential
 import IPRADerivations.Analysis.RationalArithmetic.RationalGaussianEmbedding
 import IPRADerivations.Core.CongruenceTactic
 

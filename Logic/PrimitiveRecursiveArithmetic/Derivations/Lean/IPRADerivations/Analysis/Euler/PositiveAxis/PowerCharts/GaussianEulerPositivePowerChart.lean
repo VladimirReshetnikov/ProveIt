@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Names.Rates.GaussianBoundedConstantProductRate
 import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactPowerVariation
-import IPRADerivations.Analysis.Euler.Integration.GaussianEulerDecayFactorBounds
+import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayFactorBounds
 
 /-!
 # The actual positive rational power chart (d/h)*t^(e/f)

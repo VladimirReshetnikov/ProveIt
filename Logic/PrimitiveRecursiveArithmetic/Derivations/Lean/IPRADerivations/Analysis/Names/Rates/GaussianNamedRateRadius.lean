@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedInverseRate
+import IPRADerivations.Analysis.Names.Rates.Reciprocals.GaussianNamedInverseRate
 
 /-! Increase the leading radius of an independent rate while retaining its
 original two observation allowances. -/

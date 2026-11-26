@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.GaussianBarnesCanonicalHeadPolynomialDerivative
-import IPRADerivations.Analysis.Names.Rates.GaussianNativeDerivativeQuotientQuadratic
+import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNativeDerivativeQuotientQuadratic
 
 /-!
 # Named quotient for the original finite Barnes base powers

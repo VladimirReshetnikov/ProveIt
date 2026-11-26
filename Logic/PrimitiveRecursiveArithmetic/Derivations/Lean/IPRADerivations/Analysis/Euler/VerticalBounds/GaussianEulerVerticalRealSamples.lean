@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalNativeProjection
-import IPRADerivations.Analysis.Euler.GaussianEulerRealIntegrandNonnegative
+import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.GaussianEulerRealIntegrandNonnegative
 
 /-!
 # Actual real observations of the original real-argument Euler integrand

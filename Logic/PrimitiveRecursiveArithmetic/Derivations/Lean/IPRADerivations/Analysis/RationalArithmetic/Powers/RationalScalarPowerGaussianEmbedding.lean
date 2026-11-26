@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.RationalPolynomialGaussianEmbedding
+import IPRADerivations.Analysis.Polynomials.Representation.RationalPolynomialGaussianEmbedding
 
 /-!
 # Original signed rational powers on the Gaussian real axis

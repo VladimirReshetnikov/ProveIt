@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetKernelCofinal
 import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetKernelImaginaryRatioPrefix
-import IPRADerivations.Analysis.Trigonometry.GaussianSineProductImaginaryCothExpansion
+import IPRADerivations.Analysis.Trigonometry.Hyperbolic.GaussianSineProductImaginaryCothExpansion
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedAddRate
 
 /-!

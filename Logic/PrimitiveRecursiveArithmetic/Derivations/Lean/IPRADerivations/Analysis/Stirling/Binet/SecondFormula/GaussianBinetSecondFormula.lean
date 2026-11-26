@@ -4,7 +4,7 @@ import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.GaussianBinetSecond
 import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.GaussianBinetSecondFrequencySchedule
 import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.GaussianBinetSecondErrorBudget
 import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.GaussianBinetSineKernelPrefix
-import IPRADerivations.Analysis.Stirling.Binet.GaussianBinetFrozenKernelLaplace
+import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.GaussianBinetFrozenKernelLaplace
 
 /-!
 # Binet's second formula for the original improper Bose integral

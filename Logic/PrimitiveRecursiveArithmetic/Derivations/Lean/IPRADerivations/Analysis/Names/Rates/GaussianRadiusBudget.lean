@@ -1,5 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.GoldbachGeometric
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalL1
+import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalL1
 
 /-!
 # Strict geometric budget for the monic residual radius

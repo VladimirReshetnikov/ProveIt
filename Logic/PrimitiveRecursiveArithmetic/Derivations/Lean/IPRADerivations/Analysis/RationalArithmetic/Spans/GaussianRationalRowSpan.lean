@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Polynomials.Elimination.GaussianRationalRowElimination
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalFubini
+import IPRADerivations.Analysis.Polynomials.Elimination.RowReduction.GaussianRationalRowElimination
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalFubini
 import IPRADerivations.Core.CongruenceTactic
 
 /-!

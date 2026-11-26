@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.PolynomialRemainder
+import IPRADerivations.Analysis.Polynomials.Taylor.PolynomialRemainder
 import IPRADerivations.DiophantineNumberTheory.Dirichlet
 import IPRADerivations.AnalyticNumberTheory.PhiLower
 import IPRADerivations.Core.Header

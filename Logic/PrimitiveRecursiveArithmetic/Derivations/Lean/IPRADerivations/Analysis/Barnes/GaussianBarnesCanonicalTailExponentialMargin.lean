@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.GaussianBarnesCanonicalDerivativeTailBinding
 import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalTailExponential
-import IPRADerivations.Analysis.Geometry.GaussianExactDiskShrinking
-import IPRADerivations.Analysis.Exponential.GaussianNamedExponentialLinearRate
+import IPRADerivations.Analysis.Geometry.DiskNames.GaussianExactDiskShrinking
+import IPRADerivations.Analysis.Exponential.Names.GaussianNamedExponentialLinearRate
 
 /-!
 # A uniform small-increment source for the original Barnes tail exponential

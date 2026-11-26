@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.GaussianEulerPositiveTimePowerProduct
-import IPRADerivations.Analysis.Logarithm.GaussianPositiveRationalLogarithmProperness
+import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianPositiveRationalLogarithmProperness
 
 /-!
 # Logarithm increment at a positive rational argument

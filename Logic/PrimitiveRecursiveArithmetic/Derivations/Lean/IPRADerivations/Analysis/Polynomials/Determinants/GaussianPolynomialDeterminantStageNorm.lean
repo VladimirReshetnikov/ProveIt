@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Determinants.GaussianPolynomialDeterminantTerms
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalConvolutionNorm
-import IPRADerivations.Analysis.Polynomials.GaussianCoefficientNormOrder
+import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianRationalConvolutionNorm
+import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianCoefficientNormOrder
 
 /-!
 # Norm of the actual determinant-word product

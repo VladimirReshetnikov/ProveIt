@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitKernel.GaussianEulerUnitKernelCompactName
-import IPRADerivations.Analysis.Integration.GaussianAffinePanelDisplacement
-import IPRADerivations.Analysis.Integration.GaussianWeightedPanelRowDistance
+import IPRADerivations.Analysis.Integration.Quadrature.GaussianAffinePanelDisplacement
+import IPRADerivations.Analysis.Integration.Partitions.GaussianWeightedPanelRowDistance
 
 /-!
 # Source-only endpoint continuity of actual ordinary unit-kernel panels

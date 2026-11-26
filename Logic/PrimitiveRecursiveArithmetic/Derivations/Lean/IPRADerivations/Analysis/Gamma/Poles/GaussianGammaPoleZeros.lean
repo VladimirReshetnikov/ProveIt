@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerHeadLower
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianGammaC7Name
-import IPRADerivations.Analysis.Exponential.GaussianExponentialReference
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.ReciprocalGamma.GaussianGammaC7Name
+import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialReference
 import IPRADerivations.Core.CongruenceTactic
 
 /-!

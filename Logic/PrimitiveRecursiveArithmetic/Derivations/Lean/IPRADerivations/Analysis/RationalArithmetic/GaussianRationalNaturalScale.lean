@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Polynomials.GaussianRationalCoefficientScaling
-import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianTranslatedNonconstant
+import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianRationalCoefficientScaling
+import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.GaussianTranslatedNonconstant
 import IPRADerivations.Core.CongruenceTactic
 
 /-!

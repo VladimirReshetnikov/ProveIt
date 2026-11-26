@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Beta.GaussianBetaAllDegreeMixedInverseContinuity
+import IPRADerivations.Analysis.Beta.Endpoints.GaussianBetaAllDegreeMixedInverseContinuity
 import IPRADerivations.Analysis.Gamma.Names.GaussianNamedGamma
 
 /-!

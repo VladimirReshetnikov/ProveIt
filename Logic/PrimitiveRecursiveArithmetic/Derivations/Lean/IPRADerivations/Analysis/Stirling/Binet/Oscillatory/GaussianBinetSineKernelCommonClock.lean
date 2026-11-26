@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.Binet.GaussianBinetFixedHorizonPositiveMargin
+import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.GaussianBinetFixedHorizonPositiveMargin
 import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.GaussianBinetSineDampedRetiming
 
 /-!

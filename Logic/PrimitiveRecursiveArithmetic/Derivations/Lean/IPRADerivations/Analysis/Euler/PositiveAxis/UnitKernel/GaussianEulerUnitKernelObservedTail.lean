@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitKernel.GaussianEulerUnitKernelNestedObservations
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalRadiusCorrectionSum
-import IPRADerivations.Analysis.Integration.GaussianRationalSignedPanelTailDistance
+import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalRadiusCorrectionSum
+import IPRADerivations.Analysis.Integration.Partitions.GaussianRationalSignedPanelTailDistance
 
 /-!
 # The signed real gap controls the actual complex omitted strips

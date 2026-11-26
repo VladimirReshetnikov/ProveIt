@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.GaussianBinetArctangentCosineLaplace
-import IPRADerivations.Analysis.Stirling.Binet.GaussianBinetImaginaryExponentialIntegral
-import IPRADerivations.Analysis.Polynomials.GaussianInverseBinomialRows
+import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.GaussianBinetImaginaryExponentialIntegral
+import IPRADerivations.Analysis.Polynomials.Translation.GaussianInverseBinomialRows
 
 /-!
 # Actual damped cosine panels as products

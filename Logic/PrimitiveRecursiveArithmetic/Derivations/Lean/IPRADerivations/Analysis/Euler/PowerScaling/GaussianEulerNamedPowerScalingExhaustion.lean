@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PowerScaling.GaussianEulerNamedPowerScalingImproper
-import IPRADerivations.Analysis.Euler.Integration.GaussianEulerPowerChartUniformExhaustion
+import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.GaussianEulerPowerChartUniformExhaustion
 
 /-!
 # Cofinality of the actual named power-damped Euler panels

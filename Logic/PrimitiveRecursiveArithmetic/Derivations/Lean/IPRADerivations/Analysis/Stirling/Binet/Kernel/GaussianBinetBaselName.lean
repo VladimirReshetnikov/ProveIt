@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetBaselBinding
 import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetKernelPi
 import IPRADerivations.Analysis.Names.GaussianNameRingLaws
-import IPRADerivations.Analysis.Names.Rates.GaussianApproximateInverseDistance
+import IPRADerivations.Analysis.Names.Rates.Reciprocals.GaussianApproximateInverseDistance
 
 /-!
 # The Basel identity for the original zeta and π names

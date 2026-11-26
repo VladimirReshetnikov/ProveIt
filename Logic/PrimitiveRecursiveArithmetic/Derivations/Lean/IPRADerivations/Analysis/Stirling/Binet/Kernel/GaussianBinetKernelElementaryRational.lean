@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetKernelRationalTimeCleared
 import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetKernelSinhApartness
 import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetKernelZero
-import IPRADerivations.Analysis.Names.GaussianNamedClearedScalarQuotient
+import IPRADerivations.Analysis.Names.Apartness.GaussianNamedClearedScalarQuotient
 
 /-!
 # The actual elementary Binet kernel at rational time

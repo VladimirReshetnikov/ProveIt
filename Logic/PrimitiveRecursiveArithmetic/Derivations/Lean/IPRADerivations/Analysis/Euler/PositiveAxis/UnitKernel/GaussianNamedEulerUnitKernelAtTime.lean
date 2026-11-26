@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.PositiveAxis.GaussianNamedEulerUnitOuterLogRate
+import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.GaussianNamedEulerUnitOuterLogRate
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitKernel.GaussianNamedEulerUnitKernelFrozenRate
 import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactPowerMajorant
 

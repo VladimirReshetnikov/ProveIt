@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Logarithms.GaussianBarnesCanonicalFiniteLogRows
-import IPRADerivations.Analysis.Exponential.GaussianNamedFiniteExponentialFold
+import IPRADerivations.Analysis.Exponential.Names.GaussianNamedFiniteExponentialFold
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteProductFamilyCongruence
 
 /-!

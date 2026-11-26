@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.BarnesCutoff
-import IPRADerivations.Analysis.Logarithm.GaussianLocalLogarithmName
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedDifferenceQuotient
+import IPRADerivations.Analysis.Logarithm.Local.GaussianLocalLogarithmName
+import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedDifferenceQuotient
 
 /-!
 # The original cubic Barnes logarithm on rational disks

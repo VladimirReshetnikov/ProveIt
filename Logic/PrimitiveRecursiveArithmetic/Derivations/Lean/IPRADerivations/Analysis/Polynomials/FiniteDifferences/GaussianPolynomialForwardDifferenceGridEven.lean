@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Polynomials.FiniteDifferences.GaussianPolynomialForwardDifferenceGridLinearity
 import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalHornerLeadingSplit
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalParityPower
-import IPRADerivations.Analysis.LinearAlgebra.GaussianDeterminantSignTransport
+import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianDeterminantSignTransport
 
 /-!
 # Cancellation of the next polynomial degree by opposite Gaussian steps

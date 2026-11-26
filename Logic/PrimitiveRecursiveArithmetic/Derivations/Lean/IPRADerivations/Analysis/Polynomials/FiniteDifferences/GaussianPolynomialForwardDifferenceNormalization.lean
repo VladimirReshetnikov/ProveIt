@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.FiniteDifferences.GaussianPolynomialForwardDifferenceGridError
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalInverseQuadraticAlgebra
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedDifferenceQuotient
+import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedDifferenceQuotient
 
 /-!
 # Normalize the forward difference at an apart Gaussian step

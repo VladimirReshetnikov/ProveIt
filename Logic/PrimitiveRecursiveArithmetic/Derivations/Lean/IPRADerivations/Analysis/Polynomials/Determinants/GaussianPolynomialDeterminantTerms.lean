@@ -1,8 +1,8 @@
 import IPRADerivations.Foundations.RuntimePermutationWords
 import IPRADerivations.Foundations.GuardedTotalization
-import IPRADerivations.Analysis.Polynomials.GaussianRationalPolynomialProduct
-import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianRationalMonicReduction
-import IPRADerivations.Analysis.Polynomials.GaussianRationalCoefficientScaling
+import IPRADerivations.Analysis.Polynomials.Products.GaussianRationalPolynomialProduct
+import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianRationalMonicReduction
+import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianRationalCoefficientScaling
 import IPRADerivations.Core.CongruenceTactic
 
 /-!

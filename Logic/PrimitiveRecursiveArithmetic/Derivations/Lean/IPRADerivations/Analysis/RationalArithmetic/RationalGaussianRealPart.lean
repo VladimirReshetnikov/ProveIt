@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.RationalGaussianEmbedding
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalFiniteSum
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalFiniteSum
 import IPRADerivations.Core.LinearCombination
 
 /-!

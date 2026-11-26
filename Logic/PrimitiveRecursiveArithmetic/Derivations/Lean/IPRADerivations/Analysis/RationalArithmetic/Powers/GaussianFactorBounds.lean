@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianFactorParameters
-import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianMonicResidualRadius
+import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.GaussianMonicResidualRadius
 import IPRADerivations.Foundations.BoundedSyntaxInduction
 
 /-!

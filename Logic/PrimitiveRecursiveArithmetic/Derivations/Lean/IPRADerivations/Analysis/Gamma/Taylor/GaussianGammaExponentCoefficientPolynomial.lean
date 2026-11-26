@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaLinearCoefficient
-import IPRADerivations.Analysis.Gamma.Zeta.GaussianGammaZetaWeightedNorm
-import IPRADerivations.Analysis.Exponential.GaussianFiniteExponentialCoefficientMajorant
+import IPRADerivations.Analysis.Gamma.Zeta.Coefficients.GaussianGammaZetaWeightedNorm
+import IPRADerivations.Analysis.Exponential.Polynomials.GaussianFiniteExponentialCoefficientMajorant
 import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalExponentBound
 
 /-!

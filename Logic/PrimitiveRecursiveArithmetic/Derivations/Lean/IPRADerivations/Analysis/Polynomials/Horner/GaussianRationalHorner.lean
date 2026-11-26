@@ -1,7 +1,7 @@
-import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianRationalRootProduct
-import IPRADerivations.Analysis.RationalArithmetic.RationalRepresentations
-import IPRADerivations.Analysis.Polynomials.GaussianPolynomialPerturbation
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalNormalization
+import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianRationalRootProduct
+import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalRepresentations
+import IPRADerivations.Analysis.Polynomials.Taylor.GaussianPolynomialPerturbation
+import IPRADerivations.Analysis.RationalArithmetic.Representations.GaussianRationalNormalization
 import IPRADerivations.Core.LinearCombination
 
 /-!

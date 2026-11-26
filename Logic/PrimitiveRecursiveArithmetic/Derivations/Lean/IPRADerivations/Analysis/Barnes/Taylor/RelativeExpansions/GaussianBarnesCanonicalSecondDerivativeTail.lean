@@ -1,8 +1,8 @@
 import IPRADerivations.Analysis.Barnes.Taylor.RelativeExpansions.GaussianBarnesCanonicalSecondDerivativeRow
 import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.GaussianBarnesCanonicalDerivativeTail
 import IPRADerivations.Analysis.Barnes.Logarithms.GaussianBarnesCanonicalLogTail
-import IPRADerivations.Analysis.LinearAlgebra.GaussianRationalMatrixFiniteSums
-import IPRADerivations.Analysis.Series.GaussianReciprocalSquareInterval
+import IPRADerivations.Analysis.LinearAlgebra.Matrices.GaussianRationalMatrixFiniteSums
+import IPRADerivations.Analysis.Series.ReciprocalSquares.GaussianReciprocalSquareInterval
 
 /-!
 # Finite tails of the original rational second-derivative rows

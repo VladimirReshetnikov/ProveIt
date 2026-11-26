@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Names.GaussianNamedDifference
+import IPRADerivations.Analysis.Names.Differences.GaussianNamedDifference
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedLipschitzRate
 
 /-!

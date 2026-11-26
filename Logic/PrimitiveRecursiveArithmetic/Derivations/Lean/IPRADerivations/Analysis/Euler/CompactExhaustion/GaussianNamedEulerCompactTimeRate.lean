@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.Euler.Integration.GaussianNamedEulerIntegrandParameterContinuity
-import IPRADerivations.Analysis.Names.GaussianNamedRationalApproximation
-import IPRADerivations.Analysis.Names.GaussianNamedRightHalfPlane
+import IPRADerivations.Analysis.Euler.Integration.Parameters.GaussianNamedEulerIntegrandParameterContinuity
+import IPRADerivations.Analysis.Names.Approximation.GaussianNamedRationalApproximation
+import IPRADerivations.Analysis.Names.RightHalfPlane.GaussianNamedRightHalfPlane
 
 /-!
 # Original named Euler integrand: uniform compact time variation

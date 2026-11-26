@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalSquareCancellation
-import IPRADerivations.Analysis.Exponential.GaussianExponentialReference
+import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialReference
 
 /-!
 # Recover the branch from equality of Gaussian named squares

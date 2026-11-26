@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Series.BaselSquares
+import IPRADerivations.Analysis.Series.Basel.BaselSquares
 import IPRADerivations.Core.OrderCertificates
 
 /-!

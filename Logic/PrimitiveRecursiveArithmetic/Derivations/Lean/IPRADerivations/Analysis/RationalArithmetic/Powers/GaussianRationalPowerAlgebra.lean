@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalSumAlgebra
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalSumAlgebra
 import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalProductWitness
 import IPRADerivations.Analysis.Inequalities.RationalNonnegativePowers
 import IPRADerivations.Core.LinearCombination

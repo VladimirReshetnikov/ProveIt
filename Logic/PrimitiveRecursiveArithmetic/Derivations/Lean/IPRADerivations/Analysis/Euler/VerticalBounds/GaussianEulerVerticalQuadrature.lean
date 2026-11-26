@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalPointwise
-import IPRADerivations.Analysis.Integration.GaussianPositiveRadiusQuadrature
+import IPRADerivations.Analysis.Integration.Quadrature.GaussianPositiveRadiusQuadrature
 import IPRADerivations.Analysis.Euler.GaussianEulerImproperName
 
 /-!

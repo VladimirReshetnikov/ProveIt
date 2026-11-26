@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Euler.PowerScaling.GaussianEulerNamedPowerScalingFormulaFrozen
-import IPRADerivations.Analysis.SpecialFunctions.GaussianNamedDampingPowerCompactPaid
-import IPRADerivations.Analysis.Euler.Integration.GaussianEulerPowerScalingUniformObservation
-import IPRADerivations.Analysis.Euler.GaussianEulerDerivativePrecision
+import IPRADerivations.Analysis.SpecialFunctions.DampingPower.GaussianNamedDampingPowerCompactPaid
+import IPRADerivations.Analysis.Euler.PowerScaling.GaussianEulerPowerScalingUniformObservation
+import IPRADerivations.Analysis.Euler.Derivatives.GaussianEulerDerivativePrecision
 
 /-!
 # Comparing the actual named cutoff sampler to the named Gamma formula

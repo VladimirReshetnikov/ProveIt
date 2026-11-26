@@ -1,7 +1,7 @@
-import IPRADerivations.Analysis.Logarithm.GaussianLocalLogarithmLinearRemainder
-import IPRADerivations.Analysis.Names.GaussianNamedDifference
+import IPRADerivations.Analysis.Logarithm.Local.GaussianLocalLogarithmLinearRemainder
+import IPRADerivations.Analysis.Names.Differences.GaussianNamedDifference
 import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalExponent
-import IPRADerivations.Analysis.Exponential.GaussianExponentialRadiusIndependence
+import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialRadiusIndependence
 
 /-!
 # The terminal logarithm remainder in the Barnes shift

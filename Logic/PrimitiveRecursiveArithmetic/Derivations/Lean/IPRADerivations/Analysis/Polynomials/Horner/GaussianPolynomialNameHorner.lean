@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Names.GaussianNameRingLaws
-import IPRADerivations.Analysis.Polynomials.GaussianGeneralPolynomialValueName
+import IPRADerivations.Analysis.Polynomials.Evaluation.GaussianGeneralPolynomialValueName
 import IPRADerivations.Core.SumSplit
 
 /-!

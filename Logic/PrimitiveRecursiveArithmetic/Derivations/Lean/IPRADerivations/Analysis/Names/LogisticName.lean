@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.RootFinding.PolynomialRootName
+import IPRADerivations.Analysis.Polynomials.RootFinding.RealRoots.PolynomialRootName
 import IPRADerivations.Probability.Minkowski
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas

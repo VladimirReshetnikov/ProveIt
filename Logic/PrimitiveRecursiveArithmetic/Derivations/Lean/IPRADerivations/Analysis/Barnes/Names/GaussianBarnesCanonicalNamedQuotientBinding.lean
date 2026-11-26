@@ -1,8 +1,8 @@
 import IPRADerivations.Analysis.Barnes.Names.GaussianBarnesCanonicalNamed
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedIncrementDifferenceQuotient
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedDifferenceQuotientProperness
+import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedIncrementDifferenceQuotient
+import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedDifferenceQuotientProperness
 import IPRADerivations.Analysis.FiniteOperations.GaussianBoundedInverseApartness
-import IPRADerivations.Analysis.Gamma.Digamma.GaussianGammaDigammaTwoShiftNamedSize
+import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.Named.GaussianGammaDigammaTwoShiftNamedSize
 import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentExponentialPeriod
 
 /-!

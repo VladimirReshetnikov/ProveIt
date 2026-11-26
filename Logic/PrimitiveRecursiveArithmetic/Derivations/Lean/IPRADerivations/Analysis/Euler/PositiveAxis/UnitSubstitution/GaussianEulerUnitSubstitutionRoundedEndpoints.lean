@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.GaussianEulerUnitSubstitutionLatticeGeometry
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.GaussianEulerUnitSubstitutionEndpoints
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalReconstruction
+import IPRADerivations.Analysis.RationalArithmetic.Representations.GaussianRationalReconstruction
 import IPRADerivations.Core.CertificateTactics
 
 /-!

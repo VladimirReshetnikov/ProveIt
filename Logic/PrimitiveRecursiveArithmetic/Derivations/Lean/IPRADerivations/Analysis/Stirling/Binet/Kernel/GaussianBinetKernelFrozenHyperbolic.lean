@@ -1,8 +1,8 @@
 import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetKernelImaginaryRatioCofinal
 import IPRADerivations.Analysis.Names.Rates.GaussianBoundedConstantProductRate
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedDifferenceRate
-import IPRADerivations.Analysis.Exponential.GaussianRadiusExponentialLipschitzRate
-import IPRADerivations.Analysis.Trigonometry.GaussianPiRationalScaleRepresentation
+import IPRADerivations.Analysis.Exponential.Estimates.GaussianRadiusExponentialLipschitzRate
+import IPRADerivations.Analysis.Trigonometry.Pi.GaussianPiRationalScaleRepresentation
 
 /-!
 # The original hyperbolic names at a frozen imaginary ratio

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalDyadicHeadCorrection
 import IPRADerivations.Analysis.Barnes.Taylor.GaussianBarnesCanonicalCentralUniformBound
-import IPRADerivations.Analysis.Exponential.GaussianNamedExponentialTaylorTransport
+import IPRADerivations.Analysis.Exponential.Names.GaussianNamedExponentialTaylorTransport
 
 /-!
 # Dyadic growth bound for the original Barnes central scalar

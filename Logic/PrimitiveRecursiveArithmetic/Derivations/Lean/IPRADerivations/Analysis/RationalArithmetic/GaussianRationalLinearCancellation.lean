@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Polynomials.GaussianRationalGridCoefficientEquality
-import IPRADerivations.Analysis.Polynomials.GaussianRationalPolynomialProductDegree
+import IPRADerivations.Analysis.Polynomials.Interpolation.GaussianRationalGridCoefficientEquality
+import IPRADerivations.Analysis.Polynomials.Products.GaussianRationalPolynomialProductDegree
 
 /-!
 # Actual monic linear cancellation and padding of the computed degree

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalWendelBoundary
-import IPRADerivations.Analysis.Names.GaussianNamedRealOrderLinear
+import IPRADerivations.Analysis.Names.Order.GaussianNamedRealOrderLinear
 
 /-!
 # The uniform logarithmic Wendel estimate

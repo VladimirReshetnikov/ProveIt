@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.WallisFinite
+import IPRADerivations.Analysis.Stirling.Wallis.WallisFinite
 import IPRADerivations.Probability.Variance
 
 /-!

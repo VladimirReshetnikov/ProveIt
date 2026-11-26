@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.PolynomialRemainder
+import IPRADerivations.Analysis.Polynomials.Taylor.PolynomialRemainder
 import Mathlib.Algebra.BigOperators.Fin
 import IPRADerivations.Core.Header
 

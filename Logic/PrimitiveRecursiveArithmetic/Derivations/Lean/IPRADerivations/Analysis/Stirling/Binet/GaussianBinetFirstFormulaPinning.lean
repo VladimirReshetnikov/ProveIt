@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Stirling.Binet.GaussianBinetFirstFormulaDecay
-import IPRADerivations.Analysis.Stirling.Binet.GaussianBinetWeightedResolvent
-import IPRADerivations.Analysis.Names.GaussianNamedDifferenceAlgebra
-import IPRADerivations.Analysis.Names.GaussianNamedDifferenceZero
+import IPRADerivations.Analysis.Stirling.Binet.WeightedIntegrals.GaussianBinetWeightedResolvent
+import IPRADerivations.Analysis.Names.Differences.GaussianNamedDifferenceAlgebra
+import IPRADerivations.Analysis.Names.Differences.GaussianNamedDifferenceZero
 
 /-!
 # The first Binet identity reduces to the actual Laplace unit difference

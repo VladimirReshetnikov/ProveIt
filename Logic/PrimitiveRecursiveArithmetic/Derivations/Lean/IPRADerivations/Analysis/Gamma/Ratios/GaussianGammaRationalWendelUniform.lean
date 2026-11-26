@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Exponential.GaussianRationalExponentialTangent
+import IPRADerivations.Analysis.Exponential.Estimates.GaussianRationalExponentialTangent
 
 /-!
 # The explicit uniform relative Wendel estimate on the original quotient

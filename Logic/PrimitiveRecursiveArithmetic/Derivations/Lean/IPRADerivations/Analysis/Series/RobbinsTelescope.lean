@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Series.RobbinsSeries
-import IPRADerivations.Analysis.Integration.BaselQuadrature
+import IPRADerivations.Analysis.Integration.Quadrature.BaselQuadrature
 
 /-!
 # The Robbins double inequality in difference form

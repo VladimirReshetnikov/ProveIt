@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Logarithms.GaussianBarnesCanonicalLogTail
-import IPRADerivations.Analysis.Exponential.GaussianExponentialReference
+import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialReference
 import IPRADerivations.Foundations.DyadicGain
 
 /-!

@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Gamma.BohrMollerup.GaussianBohrMollerupChords
-import IPRADerivations.Analysis.Names.GaussianNamedStrictOrderDifference
+import IPRADerivations.Analysis.Gamma.BohrMollerup.FiniteBrackets.GaussianBohrMollerupChords
+import IPRADerivations.Analysis.Names.Differences.GaussianNamedStrictOrderDifference
 
 /-!
 # Named logarithmic increment squeeze for a fixed presentation

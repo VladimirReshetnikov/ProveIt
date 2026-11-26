@@ -1,7 +1,7 @@
-import IPRADerivations.Analysis.Polynomials.GaussianPolynomialRowQuotient
-import IPRADerivations.Analysis.LinearAlgebra.GaussianScalarDiagonalDeterminant
-import IPRADerivations.Analysis.LinearAlgebra.GaussianScalarDeterminantMultiplication
-import IPRADerivations.Analysis.Polynomials.GaussianRationalGridCoefficientEquality
+import IPRADerivations.Analysis.Polynomials.Division.GaussianPolynomialRowQuotient
+import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarDiagonalDeterminant
+import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarDeterminantMultiplication
+import IPRADerivations.Analysis.Polynomials.Interpolation.GaussianRationalGridCoefficientEquality
 
 /-!
 # Actual determinant row factors with bounded coefficient witnesses

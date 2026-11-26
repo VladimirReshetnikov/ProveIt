@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Euler.GaussianEulerNamedLowerTail
-import IPRADerivations.Analysis.Euler.GaussianEulerVaryingCutoffName
+import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerNamedLowerTail
+import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerVaryingCutoffName
 
 /-!
 # Source-only actual varying-cutoff Euler name

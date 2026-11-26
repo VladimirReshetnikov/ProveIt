@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Determinants.GaussianPolynomialDeterminant
-import IPRADerivations.Analysis.Polynomials.GaussianPolynomialNormBuffers
+import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianPolynomialNormBuffers
 import IPRADerivations.Foundations.RuntimePermutationFactorialBound
 import IPRADerivations.Core.LinearCombination
 

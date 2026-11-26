@@ -1,7 +1,7 @@
-import IPRADerivations.Analysis.Gamma.Zeta.GaussianGammaZetaCoefficientNorm
+import IPRADerivations.Analysis.Gamma.Zeta.Coefficients.GaussianGammaZetaCoefficientNorm
 import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalExponent
-import IPRADerivations.Analysis.Exponential.GaussianFiniteExponentialWeightedNorm
-import IPRADerivations.Analysis.Exponential.GaussianPositiveExponentialMajorant
+import IPRADerivations.Analysis.Exponential.Polynomials.GaussianFiniteExponentialWeightedNorm
+import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianPositiveExponentialMajorant
 
 /-!
 # The actual original Gamma linear coefficient and its stored monomial

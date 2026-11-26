@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.GaussianGammaFunctionalEquation
 import IPRADerivations.Analysis.Gamma.GaussianGammaReciprocalInverse
-import IPRADerivations.Analysis.Exponential.GaussianRobinMeshExponential
+import IPRADerivations.Analysis.Exponential.IntegerPowers.GaussianRobinMeshExponential
 
 /-!
 # The original Gamma shift on its two actual pole-free domains

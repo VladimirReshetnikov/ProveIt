@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaCoefficientObservationPolynomials
 import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaUnitCoefficientMass
-import IPRADerivations.Analysis.Names.GaussianShrinkingGridValueRecovery
+import IPRADerivations.Analysis.Names.Approximation.GaussianShrinkingGridValueRecovery
 
 /-!
 # Original coefficient comparison on a computed shrinking Gamma grid

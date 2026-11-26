@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitKernel.GaussianEulerUnitKernelCompactName
-import IPRADerivations.Analysis.Integration.GaussianCompactIntervalRescaling
+import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactIntervalRescaling
 
 /-!
 # The original rational unit-kernel names respect panel rescaling

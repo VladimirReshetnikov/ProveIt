@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Powers.RationalIntervalPowerComparison
-import IPRADerivations.Analysis.Optimization.RationalConvexIntervalBounds
+import IPRADerivations.Analysis.Optimization.Convexity.RationalConvexIntervalBounds
 
 /-!
 # Order of power names at a common finer precision offset

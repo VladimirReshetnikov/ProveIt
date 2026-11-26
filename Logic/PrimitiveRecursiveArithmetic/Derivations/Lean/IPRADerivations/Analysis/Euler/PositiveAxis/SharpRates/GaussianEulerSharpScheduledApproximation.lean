@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.SharpRates.GaussianEulerSharpScheduleBudget
-import IPRADerivations.Analysis.Gamma.GaussianEulerSharpGammaRate
+import IPRADerivations.Analysis.Gamma.Integrals.GaussianEulerSharpGammaRate
 
 /-!
 # Actual finite Euler observations at the documented sharp degree

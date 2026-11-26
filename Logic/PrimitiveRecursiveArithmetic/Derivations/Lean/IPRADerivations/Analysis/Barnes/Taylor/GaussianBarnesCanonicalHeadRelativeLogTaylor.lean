@@ -5,11 +5,11 @@ cubic errors on the certified zero-free chart.
 -/
 import IPRADerivations.Analysis.Barnes.Taylor.GaussianBarnesCanonicalHeadRelativeLogMargin
 import IPRADerivations.Analysis.Barnes.Taylor.GaussianBarnesCanonicalHeadPolynomialTaylor
-import IPRADerivations.Analysis.Logarithm.GaussianLocalLogarithmQuadraticRate
+import IPRADerivations.Analysis.Logarithm.Local.GaussianLocalLogarithmQuadraticRate
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateComposition
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalSquareCancellation
-import IPRADerivations.Analysis.Polynomials.GaussianPolynomialCoefficientDifferences
+import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianPolynomialCoefficientDifferences
 
 set_option autoImplicit false
 set_option maxHeartbeats 550000

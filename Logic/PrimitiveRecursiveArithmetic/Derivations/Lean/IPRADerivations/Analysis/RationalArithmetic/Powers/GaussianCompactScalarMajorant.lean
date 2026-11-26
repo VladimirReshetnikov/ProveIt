@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalSumMajorant
-import IPRADerivations.Analysis.Integration.GaussianCompactRiemannName
-import IPRADerivations.Analysis.Euler.Integration.GaussianEulerDecayOrder
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalSumMajorant
+import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactRiemannName
+import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayOrder
 import IPRADerivations.Analysis.RationalArithmetic.RationalGaussianRealPart
 
 /-!

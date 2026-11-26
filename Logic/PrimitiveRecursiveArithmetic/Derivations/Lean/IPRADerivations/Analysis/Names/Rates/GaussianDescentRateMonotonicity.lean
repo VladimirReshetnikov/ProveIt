@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianDescentClock
+import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.GaussianDescentClock
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianFactorBudget
 import IPRADerivations.Analysis.Inequalities.RationalNonnegativePowers
 import IPRADerivations.Core.LinearCombination

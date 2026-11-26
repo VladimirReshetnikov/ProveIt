@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Integration.GaussianCompactRiemannName
+import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactRiemannName
 
 /-!
 # Numerical cut of the actual sine grid near zero

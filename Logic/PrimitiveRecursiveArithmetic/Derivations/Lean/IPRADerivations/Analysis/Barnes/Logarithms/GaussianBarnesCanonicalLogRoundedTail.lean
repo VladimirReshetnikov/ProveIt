@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Logarithms.GaussianBarnesCanonicalLogObservation
 import IPRADerivations.Analysis.Barnes.Logarithms.GaussianBarnesCanonicalLogTail
-import IPRADerivations.Analysis.LinearAlgebra.GaussianRationalMatrixFiniteSums
+import IPRADerivations.Analysis.LinearAlgebra.Matrices.GaussianRationalMatrixFiniteSums
 import IPRADerivations.Analysis.Integration.GaussianRationalRiemannRefinement
 
 /-!

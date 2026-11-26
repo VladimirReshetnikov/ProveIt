@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianOffDominantTerms
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalSumAlgebra
+import IPRADerivations.Analysis.Polynomials.RootFinding.DominantTerms.GaussianOffDominantTerms
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalSumAlgebra
 
 /-!
 # Actual ascending power expansion of the rational Horner evaluator

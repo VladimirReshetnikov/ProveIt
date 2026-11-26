@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.GaussianBinetSineKernelFrequency
-import IPRADerivations.Analysis.Stirling.Binet.GaussianBinetFrozenKernelRectangle
+import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.GaussianBinetFrozenKernelRectangle
 import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.GaussianBinetSecondWeightedSineTranspose
 
 /-!

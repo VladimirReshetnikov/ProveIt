@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.Exponential.GaussianNamedPositiveExponentialOrder
+import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianNamedPositiveExponentialOrder
 import IPRADerivations.Analysis.RationalArithmetic.RationalGaussianRealPart
-import IPRADerivations.Analysis.RationalArithmetic.RationalRepresentedUpper
+import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalRepresentedUpper
 
 /-!
 # One-sided order from the actual three-piece observation sum

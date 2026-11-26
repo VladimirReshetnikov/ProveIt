@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerShiftLimit
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianGammaEulerShiftLimit
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerApproximationName
 
 /-!

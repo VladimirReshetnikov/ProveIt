@@ -1,7 +1,7 @@
-import IPRADerivations.Analysis.Gamma.GaussianGammaHalfPlaneInputContinuity
-import IPRADerivations.Analysis.Names.GaussianNamedRightHalfPlane
+import IPRADerivations.Analysis.Gamma.Names.Input.GaussianGammaHalfPlaneInputContinuity
+import IPRADerivations.Analysis.Names.RightHalfPlane.GaussianNamedRightHalfPlane
 import IPRADerivations.Foundations.FiniteQueryDemand
-import IPRADerivations.Analysis.Exponential.GaussianExponentialReference
+import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialReference
 
 /-!
 # A regular Gamma program on a fixed primitive-recursive complex name

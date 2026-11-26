@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Raabe.GaussianRaabeStirlingCell
-import IPRADerivations.Analysis.Stirling.GaussianStirlingExpansionFirstOrder
+import IPRADerivations.Analysis.Stirling.Expansions.GaussianStirlingExpansionFirstOrder
 
 /-!
 # The original sampled log-Gamma and the elementary Raabe term

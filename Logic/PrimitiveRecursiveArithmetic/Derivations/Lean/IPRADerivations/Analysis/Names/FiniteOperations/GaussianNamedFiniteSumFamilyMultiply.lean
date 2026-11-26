@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteSumFamilyAdd
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedDifferenceQuotient
+import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedDifferenceQuotient
 
 /-!
 # Factoring a common multiplier from a finite sum of Gaussian names

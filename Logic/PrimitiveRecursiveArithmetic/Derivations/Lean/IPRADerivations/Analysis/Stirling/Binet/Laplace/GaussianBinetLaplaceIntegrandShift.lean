@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceExponentialShift
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceIntegrand
-import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceStripHorizon
+import IPRADerivations.Analysis.Stirling.Binet.Laplace.Strips.GaussianBinetLaplaceStripHorizon
 import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetKernelWeightedBridge
 
 /-!

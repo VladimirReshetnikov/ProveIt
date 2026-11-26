@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Names.GaussianNameConjugation
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedInverseRate
+import IPRADerivations.Analysis.Names.Rates.Reciprocals.GaussianNamedInverseRate
 
 /-!
 # Conjugation preserves independent observation rates

@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.BohrMollerup.GaussianBohrMollerupSqueeze
-import IPRADerivations.Analysis.Gamma.BohrMollerup.GaussianBohrMollerupPeriod
-import IPRADerivations.Analysis.Gamma.BohrMollerup.GaussianBohrMollerupLogWindow
-import IPRADerivations.Analysis.Gamma.BohrMollerup.GaussianBohrMollerupZeroAlgebra
+import IPRADerivations.Analysis.Gamma.BohrMollerup.Uniqueness.GaussianBohrMollerupPeriod
+import IPRADerivations.Analysis.Gamma.BohrMollerup.Uniqueness.GaussianBohrMollerupLogWindow
+import IPRADerivations.Analysis.Gamma.BohrMollerup.Uniqueness.GaussianBohrMollerupZeroAlgebra
 
 /-!
 # Cofinal comparison of two fixed Bohr–Mollerup presentations

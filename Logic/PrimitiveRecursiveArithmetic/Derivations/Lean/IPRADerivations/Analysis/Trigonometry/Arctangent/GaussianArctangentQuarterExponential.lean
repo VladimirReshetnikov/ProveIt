@@ -1,9 +1,9 @@
-import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentExponentialPrefix
-import IPRADerivations.Analysis.Exponential.GaussianExponentialReference
+import IPRADerivations.Analysis.Trigonometry.Arctangent.PartialSums.GaussianArctangentExponentialPrefix
+import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialReference
 import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalExponent
 import IPRADerivations.Analysis.Gamma.HalfInteger.GaussianGammaHalfPiName
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedDiagonalRate
-import IPRADerivations.Analysis.Exponential.GaussianRationalUniformExponentialLipschitz
+import IPRADerivations.Analysis.Exponential.Estimates.GaussianRationalUniformExponentialLipschitz
 
 /-!
 # The exponential at the named arctangent quarter turn

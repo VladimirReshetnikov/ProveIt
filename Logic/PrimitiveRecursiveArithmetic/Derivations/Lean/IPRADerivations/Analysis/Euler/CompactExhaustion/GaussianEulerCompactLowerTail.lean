@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.PositiveAxis.GaussianEulerLowerTailRowBound
+import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.GaussianEulerLowerTailRowBound
 import IPRADerivations.Analysis.FiniteOperations.GaussianUniformFiniteSumBound
 
 /-!

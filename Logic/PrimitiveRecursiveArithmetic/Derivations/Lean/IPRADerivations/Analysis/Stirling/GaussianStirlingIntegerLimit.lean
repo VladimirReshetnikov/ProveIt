@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.Stirling.GaussianStirlingIntegerTail
+import IPRADerivations.Analysis.Stirling.Telescoping.GaussianStirlingIntegerTail
 import IPRADerivations.Analysis.Euler.PositiveAxis.SharpRates.GaussianEulerSharpScheduledApproximation
-import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianRootSchedule
+import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.GaussianRootSchedule
 
 /-!
 # Cofinal primitive-recursive name for the integer Stirling limit

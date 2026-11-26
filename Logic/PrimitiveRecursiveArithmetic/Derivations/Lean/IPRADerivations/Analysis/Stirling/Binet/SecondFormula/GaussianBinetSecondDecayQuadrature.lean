@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.GaussianBinetSecondDecayEnvelope
-import IPRADerivations.Analysis.Euler.Integration.GaussianEulerDecayQuadratureAtZero
-import IPRADerivations.Analysis.Euler.GaussianEulerDampedTimeRate
+import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayQuadratureAtZero
+import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDampedTimeRate
 
 /-!
 # Rescaled decay quadrature for the second Binet rows

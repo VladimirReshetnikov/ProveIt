@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetKernelFrequencyGrid
-import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceStripHorizon
+import IPRADerivations.Analysis.Stirling.Binet.Laplace.Strips.GaussianBinetLaplaceStripHorizon
 
 /-!
 # Independent radii for the Binet frequency grid

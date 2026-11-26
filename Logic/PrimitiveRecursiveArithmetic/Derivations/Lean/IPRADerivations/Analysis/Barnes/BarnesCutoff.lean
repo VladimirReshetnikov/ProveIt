@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Series.ReciprocalSquareTail
+import IPRADerivations.Analysis.Series.ReciprocalSquares.ReciprocalSquareTail
 import IPRADerivations.Core.Powers
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas

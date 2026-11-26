@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Spans.GaussianRationalRowSpanPivotTransfer
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalTranslationAlgebra
+import IPRADerivations.Analysis.RationalArithmetic.Translations.GaussianRationalTranslationAlgebra
 
 /-!
 # Actual forward row-span coefficients for one nonzero pivot

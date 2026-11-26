@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.GaussianBarnesCanonicalExponentTaylorCoefficientCauchy
-import IPRADerivations.Analysis.Names.GaussianFastValueCut
+import IPRADerivations.Analysis.Names.Order.GaussianFastValueCut
 
 /-!
 # A common modulus for the retained original Barnes exponent coefficients

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Deflation.GaussianBarnesCanonicalDeflatedNamed
-import IPRADerivations.Analysis.Beta.GaussianEulerBetaPolynomialPrimitive
+import IPRADerivations.Analysis.Beta.EulerProducts.GaussianEulerBetaPolynomialPrimitive
 
 /-!
 # The internal translated power of a regular Barnes argument

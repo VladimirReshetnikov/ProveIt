@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.Logarithms.GaussianEulerLogarithmicMixedParameterRate
+import IPRADerivations.Analysis.Euler.Logarithms.ParameterRates.GaussianEulerLogarithmicMixedParameterRate
 import IPRADerivations.Analysis.Gamma.Names.GaussianNamedGamma
 import IPRADerivations.Foundations.DyadicGain
 

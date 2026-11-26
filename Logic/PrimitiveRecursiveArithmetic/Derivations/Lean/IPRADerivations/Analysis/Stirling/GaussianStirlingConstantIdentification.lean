@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.GaussianStirlingConstantIdentificationCore
-import IPRADerivations.Analysis.Stirling.GaussianStirlingDuplicationResidual
-import IPRADerivations.Analysis.Stirling.GaussianStirlingHalfStep
+import IPRADerivations.Analysis.Stirling.Duplication.GaussianStirlingDuplicationResidual
+import IPRADerivations.Analysis.Stirling.Duplication.GaussianStirlingHalfStep
 
 /-!
 # Identification of the original Stirling constant

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.PositiveAxis.GaussianEulerUnitLogarithmicComposition
+import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.GaussianEulerUnitLogarithmicComposition
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerIntegrandName
 
 /-!

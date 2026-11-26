@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaWeierstrassFiniteName
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianGammaAdjacentCutoff
-import IPRADerivations.Analysis.Gamma.GaussianGammaFoldedApproximantBalance
+import IPRADerivations.Analysis.Gamma.EulerProducts.Weierstrass.GaussianGammaWeierstrassFiniteName
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.ReciprocalGamma.GaussianGammaAdjacentCutoff
+import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaFoldedApproximantBalance
 import IPRADerivations.Analysis.Gamma.GaussianGammaReciprocalInverse
 
 /-!

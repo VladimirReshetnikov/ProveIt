@@ -1,7 +1,7 @@
-import IPRADerivations.Analysis.Names.GaussianNamedDifferenceAlgebra
-import IPRADerivations.Analysis.Logarithm.GaussianPositiveRationalLogarithmIncrement
+import IPRADerivations.Analysis.Names.Differences.GaussianNamedDifferenceAlgebra
+import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianPositiveRationalLogarithmIncrement
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerDifference
-import IPRADerivations.Analysis.Stirling.GaussianStirlingOddCoefficients
+import IPRADerivations.Analysis.Stirling.Expansions.GaussianStirlingOddCoefficients
 
 /-!
 # A finite cell for the positive logarithm primitive

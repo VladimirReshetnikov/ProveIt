@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.GaussianBarnesCanonicalDerivativeAlgebra
 import IPRADerivations.Analysis.Barnes.Taylor.RelativeExpansions.GaussianBarnesCanonicalSecondDerivativeStep
-import IPRADerivations.Analysis.Euler.Integration.GaussianEulerIncompleteFactorialDenominator
+import IPRADerivations.Analysis.Euler.Integration.Incomplete.GaussianEulerIncompleteFactorialDenominator
 
 /-!
 # Exact low-degree coefficients of the corrected Barnes logarithm row

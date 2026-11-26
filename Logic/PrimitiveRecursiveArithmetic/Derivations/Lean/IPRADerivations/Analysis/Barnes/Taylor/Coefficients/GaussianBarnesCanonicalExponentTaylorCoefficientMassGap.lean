@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.GaussianBarnesCanonicalExponentTaylorRetainedCoefficient
-import IPRADerivations.Analysis.Polynomials.GaussianCoefficientUniformNorm
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalL1Algebra
+import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianCoefficientUniformNorm
+import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalL1Algebra
 
 /-!
 # Coefficient mass of two retained Barnes exponent buffers

@@ -1,9 +1,9 @@
 import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetKernelTimeContinuity
-import IPRADerivations.Analysis.Exponential.GaussianExponentialRealPartMajorant
+import IPRADerivations.Analysis.Exponential.Estimates.GaussianExponentialRealPartMajorant
 import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalNormTransfer
-import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerResidualDomain
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Convergence.GaussianLogGammaEulerResidualDomain
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedAddRate
-import IPRADerivations.Analysis.Exponential.GaussianSignedNameExponentialOrder
+import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianSignedNameExponentialOrder
 
 /-!
 # Complex Laplace damping at rational times

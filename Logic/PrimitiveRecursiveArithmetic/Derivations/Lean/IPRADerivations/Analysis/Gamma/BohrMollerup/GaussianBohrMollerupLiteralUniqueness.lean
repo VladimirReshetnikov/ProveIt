@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.Gamma.BohrMollerup.GaussianBohrMollerupBracketEnclosure
-import IPRADerivations.Analysis.Gamma.BohrMollerup.GaussianBohrMollerupBracketWidth
-import IPRADerivations.Analysis.Gamma.BohrMollerup.GaussianBohrMollerupPositivePresentation
+import IPRADerivations.Analysis.Gamma.BohrMollerup.FiniteBrackets.GaussianBohrMollerupBracketEnclosure
+import IPRADerivations.Analysis.Gamma.BohrMollerup.FiniteBrackets.GaussianBohrMollerupBracketWidth
+import IPRADerivations.Analysis.Gamma.BohrMollerup.Named.GaussianBohrMollerupPositivePresentation
 
 /-!
 # Uniqueness by the literal dyadic Bohr–Mollerup brackets

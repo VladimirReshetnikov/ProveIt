@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.GaussianRationalUniformFirstOrderPolynomial
+import IPRADerivations.Analysis.Polynomials.Taylor.GaussianRationalUniformFirstOrderPolynomial
 import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalHornerPerturbation
 
 /-!

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Integration.BaselQuadrature
+import IPRADerivations.Analysis.Integration.Quadrature.BaselQuadrature
 import IPRADerivations.Core.LinearCombination
 
 /-!

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.Chebyshev
+import IPRADerivations.Analysis.Polynomials.SpecialPolynomials.Chebyshev
 import IPRADerivations.Analysis.RationalArithmetic.Powers.Pochhammer
 import IPRADerivations.AnalyticNumberTheory.Mobius
 import IPRADerivations.Core.LinearCombination

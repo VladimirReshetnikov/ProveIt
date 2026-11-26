@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalQuadrature
 import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactAdditivity
-import IPRADerivations.Analysis.Exponential.GaussianNamedPositiveExponentialOrder
+import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianNamedPositiveExponentialOrder
 
 /-!
 # Vertical domination on arbitrary original compact Euler intervals

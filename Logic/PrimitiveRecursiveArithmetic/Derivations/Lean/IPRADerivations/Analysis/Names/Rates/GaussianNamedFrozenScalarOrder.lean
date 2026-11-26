@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRealOrderTransport
-import IPRADerivations.Analysis.Exponential.GaussianSignedNameExponentialOrder
-import IPRADerivations.Analysis.Gamma.Digamma.GaussianGammaDigammaHarmonicCells
-import IPRADerivations.Analysis.RationalArithmetic.RationalRepresentedUpper
+import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianSignedNameExponentialOrder
+import IPRADerivations.Analysis.Gamma.Digamma.ElementaryBounds.GaussianGammaDigammaHarmonicCells
+import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalRepresentedUpper
 
 /-!
 # Finite scalar order on frozen regular real names

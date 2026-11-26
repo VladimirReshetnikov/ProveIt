@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Determinants.GaussianPolynomialDeterminantStageNorm
-import IPRADerivations.Analysis.Polynomials.GaussianPolynomialConvolutionDifference
-import IPRADerivations.Analysis.Polynomials.GaussianPolynomialCoefficientDifferences
+import IPRADerivations.Analysis.Polynomials.Products.GaussianPolynomialConvolutionDifference
+import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianPolynomialCoefficientDifferences
 import IPRADerivations.Analysis.Polynomials.Determinants.GaussianPolynomialDeterminantNorm
 
 /-!

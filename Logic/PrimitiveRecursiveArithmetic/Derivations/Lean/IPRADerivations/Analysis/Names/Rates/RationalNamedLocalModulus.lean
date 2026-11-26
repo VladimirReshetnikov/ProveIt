@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Optimization.RationalNestedConvexDistance
+import IPRADerivations.Analysis.Optimization.Convexity.RationalNestedConvexDistance
 import IPRADerivations.Analysis.RationalArithmetic.Powers.RationalIntervalPowerComparison
 
 /-!

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentPartialQuadrature
+import IPRADerivations.Analysis.Trigonometry.Arctangent.PartialSums.GaussianArctangentPartialQuadrature
 
 /-!
 # Matched-grid arctangent chord comparison

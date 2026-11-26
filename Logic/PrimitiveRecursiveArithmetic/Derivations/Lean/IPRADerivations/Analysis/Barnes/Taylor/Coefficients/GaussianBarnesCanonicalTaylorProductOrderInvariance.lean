@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.GaussianBarnesCanonicalExponentTaylorBuffer
 import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.GaussianBarnesCanonicalTaylorProduct
-import IPRADerivations.Analysis.Exponential.GaussianPolynomialExponentialLowJet
-import IPRADerivations.Analysis.Polynomials.GaussianPolynomialProductLeftPadding
+import IPRADerivations.Analysis.Exponential.Polynomials.GaussianPolynomialExponentialLowJet
+import IPRADerivations.Analysis.Polynomials.Products.GaussianPolynomialProductLeftPadding
 
 /-!
 # Retained coefficient invariance of the stored Barnes Taylor product

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.RationalRepresentedUpper
+import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalRepresentedUpper
 
 /-!
 # Addition of signed one-sided rational bounds

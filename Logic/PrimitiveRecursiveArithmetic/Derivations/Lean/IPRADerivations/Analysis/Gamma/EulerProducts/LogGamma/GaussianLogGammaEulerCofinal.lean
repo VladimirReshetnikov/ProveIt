@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerHeadGap
-import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerResidualRadius
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Convergence.GaussianLogGammaEulerHeadGap
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Convergence.GaussianLogGammaEulerResidualRadius
 
 /-!
 # Cofinal Euler logarithm observations

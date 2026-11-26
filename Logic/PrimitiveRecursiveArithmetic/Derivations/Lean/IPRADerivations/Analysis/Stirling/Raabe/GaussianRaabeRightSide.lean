@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Raabe.GaussianRaabeLogPrimitiveCell
 import IPRADerivations.Analysis.Stirling.GaussianStirlingConstant
-import IPRADerivations.Analysis.Names.GaussianNamedDifference
+import IPRADerivations.Analysis.Names.Differences.GaussianNamedDifference
 
 /-!
 # The original named right side of Raabe's formula

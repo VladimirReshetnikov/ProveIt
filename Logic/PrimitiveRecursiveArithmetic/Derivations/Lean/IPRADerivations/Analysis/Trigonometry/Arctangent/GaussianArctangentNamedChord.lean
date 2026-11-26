@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentChordComparison
-import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentPartialTrig
-import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentPartialUnitEndpoint
+import IPRADerivations.Analysis.Trigonometry.Arctangent.PartialSums.GaussianArctangentPartialTrig
+import IPRADerivations.Analysis.Trigonometry.Arctangent.PartialSums.GaussianArctangentPartialUnitEndpoint
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRealOrderTransport
 
 /-!

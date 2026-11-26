@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.GaussianEulerPositivePowerChartImageCuts
 import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.GaussianEulerPositivePowerChartImageCompactModulus
-import IPRADerivations.Analysis.Integration.GaussianPartitionedFiniteSumWeightReplacement
+import IPRADerivations.Analysis.Integration.Partitions.GaussianPartitionedFiniteSumWeightReplacement
 
 /-!
 # Exact width and compact bounds for the positive chart lattice

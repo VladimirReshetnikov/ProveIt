@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Determinants.GaussianPolynomialDeterminant
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalPermutationSum
-import IPRADerivations.Analysis.Polynomials.GaussianRationalPolynomialProductDegree
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalPermutationSum
+import IPRADerivations.Analysis.Polynomials.Products.GaussianRationalPolynomialProductDegree
 
 /-!
 # Selecting the leading coefficient in the actual determinant sum

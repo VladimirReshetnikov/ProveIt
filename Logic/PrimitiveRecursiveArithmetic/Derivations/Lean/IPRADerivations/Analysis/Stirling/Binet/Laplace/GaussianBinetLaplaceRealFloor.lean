@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceDomination
 import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.GaussianBinetSineDampedAxis
-import IPRADerivations.Analysis.Euler.Integration.GaussianEulerDecayCompactLower
+import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayCompactLower
 
 /-!
 # Positive lower bound for the original real Binet integrand on a compact interval

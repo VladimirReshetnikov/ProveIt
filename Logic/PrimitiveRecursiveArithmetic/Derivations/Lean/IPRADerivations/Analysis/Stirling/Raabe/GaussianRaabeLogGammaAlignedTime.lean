@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Stirling.Raabe.GaussianRaabeUnitGridRecurrence
-import IPRADerivations.Analysis.Integration.GaussianCompactAlignedTime
+import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactAlignedTime
 import IPRADerivations.Analysis.Logarithm.GaussianCompactLogarithmBounds
-import IPRADerivations.Analysis.Stirling.GaussianStirlingGammaFractionalIncrementConvexity
+import IPRADerivations.Analysis.Stirling.GammaIncrements.GaussianStirlingGammaFractionalIncrementConvexity
 
 /-!
 # Equal rational tags for the actual real log-Gamma evaluator

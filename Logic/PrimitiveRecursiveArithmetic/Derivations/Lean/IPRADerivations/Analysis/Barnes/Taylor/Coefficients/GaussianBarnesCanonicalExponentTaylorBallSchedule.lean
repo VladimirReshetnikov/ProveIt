@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.GaussianBarnesCanonicalExponentTaylorSchedule
 import IPRADerivations.Analysis.Barnes.Prefactors.GaussianBarnesCanonicalPrefactorExponentEstimate
-import IPRADerivations.Analysis.Exponential.GaussianNamedExponentialTaylorTransport
+import IPRADerivations.Analysis.Exponential.Names.GaussianNamedExponentialTaylorTransport
 
 /-!
 # A single stored Barnes exponent Taylor polynomial on a certified ball

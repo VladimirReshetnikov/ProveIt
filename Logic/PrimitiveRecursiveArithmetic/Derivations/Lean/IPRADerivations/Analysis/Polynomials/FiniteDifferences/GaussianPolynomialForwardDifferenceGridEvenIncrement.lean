@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.FiniteDifferences.GaussianPolynomialForwardDifferenceGridEvenError
 import IPRADerivations.Analysis.Polynomials.FiniteDifferences.GaussianPolynomialForwardDifferenceGridIncrement
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedDifferenceQuotient
+import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedDifferenceQuotient
 
 /-!
 # Exact increment of the sum of opposite normalized grids

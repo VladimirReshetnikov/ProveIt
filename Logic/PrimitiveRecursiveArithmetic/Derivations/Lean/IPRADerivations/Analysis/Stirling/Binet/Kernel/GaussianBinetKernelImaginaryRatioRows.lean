@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetKernelRows
-import IPRADerivations.Analysis.Trigonometry.GaussianSineProductImaginaryScaling
+import IPRADerivations.Analysis.Trigonometry.Hyperbolic.GaussianSineProductImaginaryScaling
 
 /-!
 # Exact original Binet row at a matched rational π sample

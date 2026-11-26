@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalTailExponential
-import IPRADerivations.Analysis.Trigonometry.GaussianCyclicExponentialSamples
+import IPRADerivations.Analysis.Trigonometry.Cyclic.GaussianCyclicExponentialSamples
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteProductApartness
 
 /-!

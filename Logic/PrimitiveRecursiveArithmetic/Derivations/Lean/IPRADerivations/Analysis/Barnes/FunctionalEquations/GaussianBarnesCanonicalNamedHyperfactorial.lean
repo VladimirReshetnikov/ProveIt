@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalOrdinaryUpperGrowth
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerNamed
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianGammaAdjacentCutoff
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.ReciprocalGamma.GaussianGammaAdjacentCutoff
 import IPRADerivations.Analysis.Exponential.GaussianRadiusExponentialName
 
 /-!

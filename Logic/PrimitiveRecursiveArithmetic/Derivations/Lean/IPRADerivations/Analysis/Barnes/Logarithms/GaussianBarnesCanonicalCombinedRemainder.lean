@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalHarmonicRemainder
 import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalTerminalRemainder
-import IPRADerivations.Analysis.Stirling.Binet.GaussianBinetStirlingRealBound
+import IPRADerivations.Analysis.Stirling.Binet.StirlingBounds.GaussianBinetStirlingRealBound
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedSmallPerturbationTransport
 
 /-!

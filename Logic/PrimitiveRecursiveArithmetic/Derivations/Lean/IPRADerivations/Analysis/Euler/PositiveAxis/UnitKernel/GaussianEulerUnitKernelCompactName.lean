@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitKernel.GaussianEulerUnitKernelCompactRate
-import IPRADerivations.Analysis.Integration.GaussianCompactRiemannName
+import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactRiemannName
 import IPRADerivations.Core.CongruenceTactic
 
 /-!

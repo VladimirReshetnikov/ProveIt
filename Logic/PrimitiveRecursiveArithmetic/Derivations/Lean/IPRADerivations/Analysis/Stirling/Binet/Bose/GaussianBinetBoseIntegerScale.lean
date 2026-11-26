@@ -1,7 +1,7 @@
-import IPRADerivations.Analysis.Names.Rates.GaussianApproximateInverseDistance
+import IPRADerivations.Analysis.Names.Rates.Reciprocals.GaussianApproximateInverseDistance
 import IPRADerivations.Analysis.Stirling.Binet.Bose.GaussianBinetBoseExponential
-import IPRADerivations.Analysis.Exponential.GaussianBoundedIntegerExponentialStages
-import IPRADerivations.Analysis.Names.GaussianNamedNaturalScale
+import IPRADerivations.Analysis.Exponential.IntegerPowers.GaussianBoundedIntegerExponentialStages
+import IPRADerivations.Analysis.Names.Scaling.GaussianNamedNaturalScale
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedProductObservationBound
 
 /-!

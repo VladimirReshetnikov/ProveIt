@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalFiniteSum
-import IPRADerivations.Analysis.Polynomials.GaussianRationalSyntheticCoefficientValues
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalFiniteSum
+import IPRADerivations.Analysis.Polynomials.Division.GaussianRationalSyntheticCoefficientValues
 import IPRADerivations.Core.SumSplit
 
 /-!

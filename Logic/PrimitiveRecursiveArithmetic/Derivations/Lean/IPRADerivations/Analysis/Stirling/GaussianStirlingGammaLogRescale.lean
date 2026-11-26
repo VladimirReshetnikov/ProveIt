@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.GaussianStirlingLogDuplication
+import IPRADerivations.Analysis.Stirling.Duplication.GaussianStirlingLogDuplication
 
 /-!
 # Invariance under positive rescaling of the rational log-Gamma input

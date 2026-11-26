@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRightHalfPlaneArgument
-import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentExtensionAxis
-import IPRADerivations.Analysis.Euler.Integration.GaussianEulerDecayOrder
-import IPRADerivations.Analysis.Names.GaussianImaginaryNameConjugation
+import IPRADerivations.Analysis.Trigonometry.Arctangent.Extension.GaussianArctangentExtensionAxis
+import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayOrder
+import IPRADerivations.Analysis.Names.ImaginaryParts.GaussianImaginaryNameConjugation
 
 /-!
 # Exact axis and real-axis value of the right half-plane argument

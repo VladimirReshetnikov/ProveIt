@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Taylor.Grids.GaussianBarnesCanonicalFiniteTaylorGrid
 import IPRADerivations.Analysis.Polynomials.FiniteDifferences.GaussianPolynomialForwardDifferenceGridError
-import IPRADerivations.Analysis.Polynomials.GaussianRationalCoefficientScaling
+import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianRationalCoefficientScaling
 
 /-!
 # Literal Barnes observations and one scaled Taylor grid

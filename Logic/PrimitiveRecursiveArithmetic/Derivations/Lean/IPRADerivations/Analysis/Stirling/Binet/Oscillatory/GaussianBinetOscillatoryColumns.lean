@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.Binet.GaussianBinetCosinePrimitive
+import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.GaussianBinetCosinePrimitive
 import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.GaussianBinetOscillatoryMatrixCell
 
 /-!

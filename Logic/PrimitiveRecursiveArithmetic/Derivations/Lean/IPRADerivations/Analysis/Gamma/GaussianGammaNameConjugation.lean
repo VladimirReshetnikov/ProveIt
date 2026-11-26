@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Names.GaussianNameConjugation
-import IPRADerivations.Analysis.Gamma.GaussianGammaFiniteConjugation
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaWeierstrassLimit
-import IPRADerivations.Analysis.Exponential.GaussianExponentialRadiusIndependence
+import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaFiniteConjugation
+import IPRADerivations.Analysis.Gamma.EulerProducts.Weierstrass.GaussianGammaWeierstrassLimit
+import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialRadiusIndependence
 
 /-!
 # Conjugation of the original named Gamma reciprocal

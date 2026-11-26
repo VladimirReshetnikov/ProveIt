@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Names.GaussianFastValueCut
+import IPRADerivations.Analysis.Names.Order.GaussianFastValueCut
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalSyntheticBounds
 import IPRADerivations.Core.LinearCombination
 

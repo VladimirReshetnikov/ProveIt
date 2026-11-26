@@ -1,8 +1,8 @@
-import IPRADerivations.Analysis.Euler.GaussianEulerRealIntegrandLowerEnvelope
-import IPRADerivations.Analysis.Euler.PositiveAxis.GaussianEulerUnitPanelGeometry
-import IPRADerivations.Analysis.Integration.GaussianCompactRiemannLower
+import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.GaussianEulerRealIntegrandLowerEnvelope
+import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.GaussianEulerUnitPanelGeometry
+import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactRiemannLower
 import IPRADerivations.Analysis.RationalArithmetic.RationalUpperAddition
-import IPRADerivations.Analysis.Gamma.GaussianEulerIntegralGammaIdentification
+import IPRADerivations.Analysis.Gamma.Integrals.GaussianEulerIntegralGammaIdentification
 import IPRADerivations.Core.CertificateTactics
 
 /-!

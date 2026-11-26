@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Names.GaussianNamedPositiveReciprocal
+import IPRADerivations.Analysis.Names.Apartness.GaussianNamedPositiveReciprocal
 import IPRADerivations.Analysis.Gamma.Names.GaussianNamedGamma
 
 /-!

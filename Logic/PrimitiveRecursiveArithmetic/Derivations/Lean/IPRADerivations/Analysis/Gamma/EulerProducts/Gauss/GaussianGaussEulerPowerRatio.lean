@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianGaussMultiplicationPowerRate
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.PowerEstimates.GaussianGaussMultiplicationPowerRate
 import IPRADerivations.Analysis.Gamma.EulerProducts.Gauss.GaussianGaussEulerCutoff
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianNamedGammaHalfShift
 

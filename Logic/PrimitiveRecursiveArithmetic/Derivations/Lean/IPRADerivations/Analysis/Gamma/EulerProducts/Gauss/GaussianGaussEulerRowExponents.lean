@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianGammaGaussReference
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerShift
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.ReferenceProduct.GaussianGammaGaussReference
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianGammaEulerShift
 
 /-!
 # Relative Euler exponents for Gauss multiplication

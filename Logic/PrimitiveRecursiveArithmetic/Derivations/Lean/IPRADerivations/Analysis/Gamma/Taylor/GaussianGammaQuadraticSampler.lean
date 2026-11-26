@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.GaussianGammaFiniteQuadraticExpansion
+import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaFiniteQuadraticExpansion
 
 /-!
 # The original reciprocal-Gamma sampler has the cubic quadratic expansion

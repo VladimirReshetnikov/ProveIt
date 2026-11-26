@@ -1,7 +1,7 @@
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalFiniteSumReversal
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalFiniteSumReversal
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.GaussianEulerUnitSubstitutionDensity
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.GaussianEulerUnitSubstitutionImageGrid
-import IPRADerivations.Analysis.Euler.PositiveAxis.GaussianEulerUnitDecayInput
+import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.GaussianEulerUnitDecayInput
 
 /-!
 # Reversed original unit-substitution density rows and their real source

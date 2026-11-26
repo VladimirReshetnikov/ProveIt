@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerShiftLimit
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianGammaEulerShiftLimit
 import IPRADerivations.Analysis.Exponential.GaussianExponentialInverse
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalNaturalScale
 

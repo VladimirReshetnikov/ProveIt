@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerReciprocalSlopeBound
-import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerTaylorUniform
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Derivatives.GaussianLogGammaEulerReciprocalSlopeBound
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Derivatives.GaussianLogGammaEulerTaylorUniform
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
 
 /-!

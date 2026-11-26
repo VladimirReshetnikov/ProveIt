@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Exponential.GaussianExponentialReference
+import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialReference
 import IPRADerivations.Analysis.Names.GaussianNameRingLaws
 
 /-!

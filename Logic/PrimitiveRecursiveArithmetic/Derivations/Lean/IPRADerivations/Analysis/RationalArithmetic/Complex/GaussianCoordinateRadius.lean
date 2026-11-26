@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalValueEquality
+import IPRADerivations.Analysis.RationalArithmetic.Representations.GaussianRationalValueEquality
 import IPRADerivations.Analysis.RationalArithmetic.RationalValueBounds
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalDirectionNormalizer
+import IPRADerivations.Analysis.RationalArithmetic.Directions.GaussianRationalDirectionNormalizer
 import IPRADerivations.Core.LinearCombination
 
 /-!

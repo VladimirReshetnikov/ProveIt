@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactExhaustion
-import IPRADerivations.Analysis.Euler.Integration.GaussianEulerPowerScalingCell
-import IPRADerivations.Analysis.Names.Rates.GaussianApproximateInverseDistance
+import IPRADerivations.Analysis.Euler.PowerScaling.GaussianEulerPowerScalingCell
+import IPRADerivations.Analysis.Names.Rates.Reciprocals.GaussianApproximateInverseDistance
 
 /-!
 # Scaled Euler exhaustion with independent Gamma observations

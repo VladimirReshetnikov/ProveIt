@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.GammaEulerMesh
-import IPRADerivations.Analysis.Optimization.RationalCubeInfimumName
+import IPRADerivations.Analysis.Optimization.CubeInfimum.RationalCubeInfimumName
 
 /-!
 # Actual regular Euler-constant and fixed-N mesh names

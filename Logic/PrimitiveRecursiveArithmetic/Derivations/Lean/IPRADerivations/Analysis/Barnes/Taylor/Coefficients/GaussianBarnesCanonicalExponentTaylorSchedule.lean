@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.GaussianBarnesCanonicalExponentTaylorHorner
-import IPRADerivations.Analysis.Names.GaussianFastValueCut
+import IPRADerivations.Analysis.Names.Order.GaussianFastValueCut
 
 /-!
 # Explicit finite schedules for the original Barnes exponent Taylor polynomial

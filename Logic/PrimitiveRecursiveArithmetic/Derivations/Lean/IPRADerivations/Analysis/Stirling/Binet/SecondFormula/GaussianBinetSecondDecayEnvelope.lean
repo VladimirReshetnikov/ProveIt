@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceScalarMajorant
-import IPRADerivations.Analysis.Euler.GaussianEulerWeightedHalfDecay
+import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerWeightedHalfDecay
 
 /-!
 # Positive envelopes for the original second Binet decay

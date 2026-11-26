@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.RationalIntegerNormalization
+import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalIntegerNormalization
 import IPRADerivations.Analysis.Optimization.RationalArgmin
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.SubstCommand

@@ -1,7 +1,7 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerDerivativeQuotient
-import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerResidualRadius
-import IPRADerivations.Analysis.Names.GaussianNamedRightHalfPlaneSigned
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalValueEquality
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Derivatives.GaussianLogGammaEulerDerivativeQuotient
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Convergence.GaussianLogGammaEulerResidualRadius
+import IPRADerivations.Analysis.Names.RightHalfPlane.GaussianNamedRightHalfPlaneSigned
+import IPRADerivations.Analysis.RationalArithmetic.Representations.GaussianRationalValueEquality
 
 /-!
 # Common-denominator Taylor inputs for signed Gaussian samples

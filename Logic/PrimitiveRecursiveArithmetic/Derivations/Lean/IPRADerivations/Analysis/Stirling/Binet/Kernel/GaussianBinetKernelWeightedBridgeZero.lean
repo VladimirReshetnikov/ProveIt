@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetKernelWeightedBridge
-import IPRADerivations.Analysis.Stirling.Binet.GaussianBinetWeightedExponentialZero
-import IPRADerivations.Analysis.Names.GaussianNamedDifferenceZero
+import IPRADerivations.Analysis.Stirling.Binet.WeightedIntegrals.GaussianBinetWeightedExponentialZero
+import IPRADerivations.Analysis.Names.Differences.GaussianNamedDifferenceZero
 
 /-!
 # The nonsingular weighted Binet kernel at zero time

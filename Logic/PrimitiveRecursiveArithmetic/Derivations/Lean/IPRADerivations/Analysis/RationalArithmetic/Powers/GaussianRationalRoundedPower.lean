@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerDifference
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalDistanceOrder
+import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalDistanceOrder
 
 /-!
 # Actual rounded integer powers on the rational unit circle

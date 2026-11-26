@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.GaussianStirlingConstant
-import IPRADerivations.Analysis.Names.GaussianNamedDifference
+import IPRADerivations.Analysis.Names.Differences.GaussianNamedDifference
 
 /-!
 # The logarithmic algebra of the normalized Stirling ratio

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.GaussianEulerWeightedHalfDecay
+import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerWeightedHalfDecay
 import IPRADerivations.Analysis.Logarithm.GaussianUpperTimeLogarithmPower
 
 /-!

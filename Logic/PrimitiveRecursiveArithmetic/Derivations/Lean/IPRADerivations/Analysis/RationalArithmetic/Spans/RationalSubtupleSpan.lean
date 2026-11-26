@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Spans.RationalAnnihilatorOnSpan
-import IPRADerivations.Analysis.LinearAlgebra.GaussianRationalMatrixFiniteSums
+import IPRADerivations.Analysis.LinearAlgebra.Matrices.GaussianRationalMatrixFiniteSums
 import IPRADerivations.Foundations.RuntimePermutationWords
 
 /-!

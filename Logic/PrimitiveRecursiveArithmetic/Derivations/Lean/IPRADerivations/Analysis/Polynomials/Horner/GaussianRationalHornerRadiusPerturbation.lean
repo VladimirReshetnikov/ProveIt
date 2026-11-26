@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalHornerPerturbation
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalDistanceOrder
+import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalDistanceOrder
 
 /-!
 # Exact Horner coefficient perturbation at a rational query radius

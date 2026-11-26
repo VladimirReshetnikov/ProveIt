@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.Names.GaussianNamedRightHalfPlane
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerHeadShift
-import IPRADerivations.Analysis.RationalArithmetic.RationalRepresentedUpper
+import IPRADerivations.Analysis.Names.RightHalfPlane.GaussianNamedRightHalfPlane
+import IPRADerivations.Analysis.Gamma.EulerProducts.FiniteHeads.GaussianGammaEulerHeadShift
+import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalRepresentedUpper
 
 /-!
 # The actual named input plus one in the original right half-plane

@@ -1,8 +1,8 @@
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianGammaGaussReference
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.ReferenceProduct.GaussianGammaGaussReference
 import IPRADerivations.Analysis.Gamma.EulerProducts.Gauss.GaussianGaussEulerPositiveExponents
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianGaussMultiplicationPowerPerturbation
-import IPRADerivations.Analysis.Exponential.GaussianNamedRepeatedExponential
-import IPRADerivations.Analysis.Names.GaussianNaturalScaleProductName
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.PowerEstimates.GaussianGaussMultiplicationPowerPerturbation
+import IPRADerivations.Analysis.Exponential.Names.GaussianNamedRepeatedExponential
+import IPRADerivations.Analysis.Names.Scaling.GaussianNaturalScaleProductName
 
 /-!
 # Collecting the positive Euler offset in Gauss multiplication

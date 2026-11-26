@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Logarithms.GaussianBarnesCanonicalLogRoundedTail
-import IPRADerivations.Analysis.Exponential.GaussianExponentialReference
+import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialReference
 
 /-!
 # A fixed finite interval of the original Barnes logarithmic rows

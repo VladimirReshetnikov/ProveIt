@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaFixedDegreeHorizon
 import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaDegreeTail
 import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalTailMetric
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedInverseRate
+import IPRADerivations.Analysis.Names.Rates.Reciprocals.GaussianNamedInverseRate
 
 /-!
 # Exact C18 between the original canonical tail and a fixed-degree name

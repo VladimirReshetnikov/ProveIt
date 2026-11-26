@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaOriginalPrefixRegularity
+import IPRADerivations.Analysis.Gamma.EulerProducts.OriginalPrefixes.GaussianGammaOriginalPrefixRegularity
 import IPRADerivations.Core.CongruenceTactic
 
 /-!

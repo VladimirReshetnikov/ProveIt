@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceRectangleJoin
+import IPRADerivations.Analysis.Stirling.Binet.Laplace.Rectangles.GaussianBinetLaplaceRectangleJoin
 
 /-!
 # Binet's first formula on the original encoded right half-plane

@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.GaussianEulerPositivePowerChartOrder
-import IPRADerivations.Analysis.Exponential.GaussianRealExponentialCompactLower
-import IPRADerivations.Analysis.Euler.GaussianEulerDampedTimeRate
-import IPRADerivations.Analysis.RationalArithmetic.RationalCompactObservationTightening
+import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianRealExponentialCompactLower
+import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDampedTimeRate
+import IPRADerivations.Analysis.RationalArithmetic.Intervals.RationalCompactObservationTightening
 import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalRealSamples
 
 /-!

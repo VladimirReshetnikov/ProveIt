@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.Poles.GaussianGammaLocalPoleGuards
 import IPRADerivations.Analysis.Names.GaussianNameArithmetic
 import IPRADerivations.Analysis.Gamma.Poles.GaussianGammaPoleFiniteFactors
-import IPRADerivations.Analysis.Names.Rates.GaussianApproximateInverseDistance
+import IPRADerivations.Analysis.Names.Rates.Reciprocals.GaussianApproximateInverseDistance
 
 /-!
 # Continuity of the actual finite correction factors at a Gamma pole

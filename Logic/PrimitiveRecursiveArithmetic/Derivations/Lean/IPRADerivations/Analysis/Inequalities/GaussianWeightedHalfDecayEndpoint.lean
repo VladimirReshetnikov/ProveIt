@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.PositiveAxis.GaussianEulerHalfDecayTailBound
+import IPRADerivations.Analysis.Euler.PositiveAxis.HalfDecay.GaussianEulerHalfDecayTailBound
 import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactUpperTail
 
 /-!

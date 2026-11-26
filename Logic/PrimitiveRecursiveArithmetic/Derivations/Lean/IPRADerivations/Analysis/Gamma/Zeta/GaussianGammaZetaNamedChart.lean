@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Gamma.Zeta.GaussianGammaZetaDirichletProductParameterRate
-import IPRADerivations.Analysis.Names.GaussianNamedRightHalfPlaneDemandLift
+import IPRADerivations.Analysis.Gamma.Zeta.Dirichlet.GaussianGammaZetaDirichletProductParameterRate
+import IPRADerivations.Analysis.Names.RightHalfPlane.GaussianNamedRightHalfPlaneDemandLift
 
 /-!
 # Signed rational charts for the original C58 samplers

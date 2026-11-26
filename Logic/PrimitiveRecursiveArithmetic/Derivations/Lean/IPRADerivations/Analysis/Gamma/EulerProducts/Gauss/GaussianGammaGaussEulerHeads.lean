@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerDenominatorGrouping
+import IPRADerivations.Analysis.Gamma.EulerProducts.FiniteHeads.GaussianGammaEulerDenominatorGrouping
 
 /-!
 # Exact grouping of the maintained finite Euler heads

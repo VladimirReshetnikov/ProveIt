@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalCorrection
-import IPRADerivations.Analysis.Exponential.GaussianBoundedIntegerExponential
+import IPRADerivations.Analysis.Exponential.IntegerPowers.GaussianBoundedIntegerExponential
 import IPRADerivations.Analysis.Exponential.GaussianLocalLogarithmExponentialIdentity
-import IPRADerivations.Analysis.Gamma.GaussianGammaFoldedApproximantBalance
+import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaFoldedApproximantBalance
 
 /-!
 # Exponentiating one original Barnes logarithm row

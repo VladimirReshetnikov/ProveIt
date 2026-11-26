@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Gamma.Digamma.GaussianGammaDigammaIntegerBracket
-import IPRADerivations.Analysis.Gamma.Digamma.GaussianGammaDigammaInteger
+import IPRADerivations.Analysis.Gamma.Digamma.ElementaryBounds.GaussianGammaDigammaIntegerBracket
+import IPRADerivations.Analysis.Gamma.Digamma.ElementaryBounds.GaussianGammaDigammaInteger
 
 /-!
 # The native positive-rational digamma reciprocal series

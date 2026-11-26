@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.Integration.GaussianCompactRiemannSplit
-import IPRADerivations.Analysis.Integration.GaussianCompactUniformGridComparison
-import IPRADerivations.Analysis.Logarithm.GaussianPositiveRationalLogarithm
+import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactRiemannSplit
+import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactUniformGridComparison
+import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianPositiveRationalLogarithm
 
 /-!
 # Ordinary quadrature on a native rational lattice

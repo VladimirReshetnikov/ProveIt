@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.Bose.GaussianBinetBoseOriginExhaustion
-import IPRADerivations.Analysis.Names.GaussianFastValueCut
+import IPRADerivations.Analysis.Names.Order.GaussianFastValueCut
 
 /-!
 # The original Bose integral including the origin at a fixed horizon

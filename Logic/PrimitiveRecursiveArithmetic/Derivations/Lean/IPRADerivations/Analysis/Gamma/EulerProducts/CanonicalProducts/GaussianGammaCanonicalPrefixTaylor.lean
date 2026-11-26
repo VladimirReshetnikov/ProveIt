@@ -1,8 +1,8 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaOriginalPrefixCoefficientNames
+import IPRADerivations.Analysis.Gamma.EulerProducts.OriginalPrefixes.GaussianGammaOriginalPrefixCoefficientNames
 import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaUnitCoefficientMass
-import IPRADerivations.Analysis.Polynomials.GaussianShrinkingPolynomialTail
+import IPRADerivations.Analysis.Polynomials.Taylor.GaussianShrinkingPolynomialTail
 import IPRADerivations.Analysis.Integration.GaussianRationalRiemannRefinement
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedDifferenceQuotient
+import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedDifferenceQuotient
 
 /-!
 # Original finite Gamma polynomials versus canonical coefficient prefixes

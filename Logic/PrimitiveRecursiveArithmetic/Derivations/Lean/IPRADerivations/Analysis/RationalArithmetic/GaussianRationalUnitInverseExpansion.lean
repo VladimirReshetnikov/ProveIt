@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalLinearProduct
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalDistanceOrder
+import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalDistanceOrder
 import IPRADerivations.Core.OrderCertificates
 
 /-!

@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.Geometry.GaussianRelativeNormTriangle
+import IPRADerivations.Analysis.Geometry.Distances.GaussianRelativeNormTriangle
 import IPRADerivations.Analysis.Polynomials.Horner.GaussianReciprocalHorner
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalNormalization
+import IPRADerivations.Analysis.RationalArithmetic.Representations.GaussianRationalNormalization
 import IPRADerivations.Core.CongruenceTactic
 
 /-!

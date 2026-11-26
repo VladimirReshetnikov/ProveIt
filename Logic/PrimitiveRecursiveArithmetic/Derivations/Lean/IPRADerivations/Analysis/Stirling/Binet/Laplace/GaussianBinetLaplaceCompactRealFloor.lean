@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceRealFloor
-import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceStrip
-import IPRADerivations.Analysis.Integration.GaussianCompactRiemannLower
+import IPRADerivations.Analysis.Stirling.Binet.Laplace.Strips.GaussianBinetLaplaceStrip
+import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactRiemannLower
 
 /-!
 # Positive mass of the original real Binet Laplace quadrature

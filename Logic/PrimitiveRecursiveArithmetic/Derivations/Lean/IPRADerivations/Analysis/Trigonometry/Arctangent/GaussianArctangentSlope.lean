@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentExponentialPrefix
+import IPRADerivations.Analysis.Trigonometry.Arctangent.PartialSums.GaussianArctangentExponentialPrefix
 
 /-!
 # Finite slope of the native partial arctangent quadrature

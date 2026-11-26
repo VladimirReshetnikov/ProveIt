@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Gamma.CriticalPoints.GaussianGammaNegativeCriticalLocationComparison
-import IPRADerivations.Analysis.Gamma.CriticalPoints.GaussianGammaNegativeCriticalGrid
+import IPRADerivations.Analysis.Gamma.CriticalPoints.NegativeIntervals.GaussianGammaNegativeCriticalLocationComparison
+import IPRADerivations.Analysis.Gamma.CriticalPoints.NegativeIntervals.GaussianGammaNegativeCriticalGrid
 
 /-!
 # The regular primitive recursive location in each negative interval

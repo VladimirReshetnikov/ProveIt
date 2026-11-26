@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalValue
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteProductFamilyCongruence
-import IPRADerivations.Analysis.Exponential.GaussianExponentialRadiusIndependence
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianGammaAdjacentCutoff
+import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialRadiusIndependence
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.ReciprocalGamma.GaussianGammaAdjacentCutoff
 
 /-!
 # Disk independence of the original finite Barnes product

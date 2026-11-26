@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.GaussianGammaInputContinuity
+import IPRADerivations.Analysis.Gamma.Names.Input.GaussianGammaInputContinuity
 import IPRADerivations.Analysis.Gamma.GaussianGammaEncodingRescaling
 import IPRADerivations.Analysis.Gamma.Poles.GaussianGammaPoleLimitModulus
 import IPRADerivations.Analysis.Gamma.Poles.GaussianGammaPoleDifferenceQuotient

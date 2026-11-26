@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Polynomials.GaussianPolynomialPerturbation
-import IPRADerivations.Analysis.RationalArithmetic.GaussianProductNorm
+import IPRADerivations.Analysis.Polynomials.Taylor.GaussianPolynomialPerturbation
+import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianProductNorm
 import IPRADerivations.Core.CommonLemmas
 
 /-!

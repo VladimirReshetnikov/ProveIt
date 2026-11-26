@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Taylor.RelativeExpansions.GaussianBarnesCanonicalHigherRelative
 import IPRADerivations.Analysis.Barnes.Taylor.RelativeExpansions.GaussianBarnesCanonicalRelativeMercatorRemainder
-import IPRADerivations.Analysis.LinearAlgebra.GaussianRationalMatrixFiniteSums
+import IPRADerivations.Analysis.LinearAlgebra.Matrices.GaussianRationalMatrixFiniteSums
 
 /-!
 # Split the original weighted Mercator polynomial into Barnes degrees

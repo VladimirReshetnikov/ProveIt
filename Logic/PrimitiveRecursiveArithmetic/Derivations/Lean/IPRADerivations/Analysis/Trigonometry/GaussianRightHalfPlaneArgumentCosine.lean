@@ -1,8 +1,8 @@
 import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRightHalfPlaneArgumentAxis
-import IPRADerivations.Analysis.Exponential.GaussianRightHalfPlaneArgumentExponential
-import IPRADerivations.Analysis.Exponential.GaussianExponentialLinearRemainder
+import IPRADerivations.Analysis.Exponential.RightHalfPlane.GaussianRightHalfPlaneArgumentExponential
+import IPRADerivations.Analysis.Exponential.Estimates.GaussianExponentialLinearRemainder
 import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianCoordinateRadius
-import IPRADerivations.Analysis.RationalArithmetic.RationalRepresentedUpper
+import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalRepresentedUpper
 
 /-!
 # Exact nonnegative cosine observations for the small argument

@@ -1,8 +1,8 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitKernel.GaussianEulerUnitKernelLatticeSum
-import IPRADerivations.Analysis.Integration.GaussianCompactUniformGridComparison
+import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactUniformGridComparison
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerIntegrandTimeProperness
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalRoundedPower
-import IPRADerivations.Analysis.Euler.Integration.GaussianEulerDecayFactorBounds
+import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayFactorBounds
 
 /-!
 # The original unit-kernel lattice versus its ordinary affine quadrature

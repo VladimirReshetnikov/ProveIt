@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.Logarithms.GaussianEulerLogarithmicIntervalName
-import IPRADerivations.Analysis.Integration.GaussianCompactIntervalRescaling
+import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactIntervalRescaling
 
 /-!
 # Actual logarithmic compact additivity with an unchanged client

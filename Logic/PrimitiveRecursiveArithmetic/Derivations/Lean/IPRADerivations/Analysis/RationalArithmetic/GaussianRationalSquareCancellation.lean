@@ -3,7 +3,7 @@ import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerD
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalNaturalScale
 import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianCoordinateRadius
 import IPRADerivations.Analysis.RationalArithmetic.RationalGaussianEmbedding
-import IPRADerivations.Analysis.RationalArithmetic.RationalRepresentedUpper
+import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalRepresentedUpper
 
 /-!
 # Stable cancellation of rational squares

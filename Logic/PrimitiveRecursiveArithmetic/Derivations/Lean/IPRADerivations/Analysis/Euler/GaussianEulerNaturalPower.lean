@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.PositiveAxis.GaussianEulerIntegerMomentUniform
+import IPRADerivations.Analysis.Euler.PositiveAxis.Moments.GaussianEulerIntegerMomentUniform
 
 /-!
 # Original Euler powers at an exact internal natural coefficient

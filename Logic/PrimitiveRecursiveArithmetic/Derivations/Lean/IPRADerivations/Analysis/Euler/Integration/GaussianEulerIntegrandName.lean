@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Logarithm.GaussianPositiveRationalLogarithm
-import IPRADerivations.Analysis.Exponential.GaussianPositiveExponentialMajorant
+import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianPositiveRationalLogarithm
+import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianPositiveExponentialMajorant
 import IPRADerivations.Core.CongruenceTactic
 
 /-!

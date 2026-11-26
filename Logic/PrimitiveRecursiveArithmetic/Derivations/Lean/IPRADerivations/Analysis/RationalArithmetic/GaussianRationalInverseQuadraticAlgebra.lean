@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.Polynomials.GaussianRationalCoefficientScaling
+import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianRationalCoefficientScaling
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerAlgebra
-import IPRADerivations.Analysis.Polynomials.GaussianRationalSyntheticCoefficientValues
+import IPRADerivations.Analysis.Polynomials.Division.GaussianRationalSyntheticCoefficientValues
 import IPRADerivations.Analysis.Names.GaussianNameRingLaws
 
 /-!

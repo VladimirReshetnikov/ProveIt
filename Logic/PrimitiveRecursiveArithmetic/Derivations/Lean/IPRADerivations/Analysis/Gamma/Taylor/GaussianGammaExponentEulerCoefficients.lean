@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaExponentCoefficientStability
-import IPRADerivations.Analysis.Logarithm.GaussianFiniteLogarithmCoefficientRecursion
+import IPRADerivations.Analysis.Logarithm.FiniteSeries.GaussianFiniteLogarithmCoefficientRecursion
 
 /-!
 # Euler coefficients of the actual sampled Gamma exponent

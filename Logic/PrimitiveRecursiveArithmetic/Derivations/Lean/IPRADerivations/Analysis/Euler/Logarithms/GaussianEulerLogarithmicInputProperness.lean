@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.Euler.Logarithms.GaussianEulerLogarithmicClientRate
+import IPRADerivations.Analysis.Euler.Logarithms.Exhaustion.GaussianEulerLogarithmicClientRate
 import IPRADerivations.Analysis.Euler.Logarithms.GaussianEulerLogarithmicIntervalName
-import IPRADerivations.Analysis.Integration.GaussianCompactClientIndependence
+import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactClientIndependence
 
 /-!
 # Original logarithmic compact names at equal rational parameters

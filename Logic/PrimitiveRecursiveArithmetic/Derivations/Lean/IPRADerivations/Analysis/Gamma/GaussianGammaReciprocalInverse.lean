@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.FiniteOperations.GaussianBoundedInverseApartness
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerHeadLower
-import IPRADerivations.Analysis.Gamma.GaussianGammaC9Bound
+import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaC9Bound
 import IPRADerivations.Analysis.Exponential.GaussianExponentialInverse
 
 /-!

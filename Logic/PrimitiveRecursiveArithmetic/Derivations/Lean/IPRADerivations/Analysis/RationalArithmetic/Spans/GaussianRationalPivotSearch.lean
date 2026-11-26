@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.Elimination.GaussianRationalRowElimination
+import IPRADerivations.Analysis.Polynomials.Elimination.RowReduction.GaussianRationalRowElimination
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.Core.CongruenceTactic
 

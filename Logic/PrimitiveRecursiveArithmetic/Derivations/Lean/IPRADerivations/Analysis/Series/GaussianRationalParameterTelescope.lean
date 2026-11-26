@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Integration.GaussianRationalRiemannRefinement
-import IPRADerivations.Analysis.Names.GaussianFastValueCut
+import IPRADerivations.Analysis.Names.Order.GaussianFastValueCut
 
 /-!
 # Finite parameter telescopes for actual Gaussian sample programs

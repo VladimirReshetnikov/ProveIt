@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.GaussianBarnesCanonicalExponentTaylorBuffer
-import IPRADerivations.Analysis.Polynomials.Elimination.GaussianBivariatePowerExpansion
-import IPRADerivations.Analysis.LinearAlgebra.GaussianRationalMatrixFiniteSums
+import IPRADerivations.Analysis.Polynomials.Elimination.Bivariate.GaussianBivariatePowerExpansion
+import IPRADerivations.Analysis.LinearAlgebra.Matrices.GaussianRationalMatrixFiniteSums
 
 /-!
 # Exact evaluation of the stored Barnes exponent polynomial

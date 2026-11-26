@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerIntegrandName
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerShift
-import IPRADerivations.Analysis.Exponential.GaussianExponentialRadiusIndependence
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianGammaEulerShift
+import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialRadiusIndependence
 
 /-!
 # The actual Euler integrand on a fixed complex name

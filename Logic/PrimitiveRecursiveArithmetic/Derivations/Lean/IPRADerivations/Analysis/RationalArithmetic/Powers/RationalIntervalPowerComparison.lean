@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.RationalArithmetic.RationalNestedIntervals
-import IPRADerivations.Analysis.Optimization.RationalMultiplicativeConvexity
+import IPRADerivations.Analysis.RationalArithmetic.Intervals.RationalNestedIntervals
+import IPRADerivations.Analysis.Optimization.Convexity.RationalMultiplicativeConvexity
 import IPRADerivations.Analysis.Inequalities.RationalNonnegativePowerOrder
 import IPRADerivations.Core.CongruenceTactic
 

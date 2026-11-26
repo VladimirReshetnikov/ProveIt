@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.GaussianEulerUnitSubstitutionFloorCuts
-import IPRADerivations.Analysis.RationalArithmetic.RationalTiltedFloorWidth
+import IPRADerivations.Analysis.RationalArithmetic.Grids.RationalTiltedFloorWidth
 
 /-!
 # Source-only adjacent widths of the actual original unit chart cuts

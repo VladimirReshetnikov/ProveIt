@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.GaussianGammaRealValues
-import IPRADerivations.Analysis.Euler.PositiveAxis.GaussianEulerLowerPowerCoefficients
+import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.GaussianEulerLowerPowerCoefficients
 import IPRADerivations.Core.CertificateTactics
 
 /-!

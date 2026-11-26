@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Exponential.GaussianRobinMeshExponential
+import IPRADerivations.Analysis.Exponential.IntegerPowers.GaussianRobinMeshExponential
 
 /-!
 # Square of the original half-argument Euler exponential

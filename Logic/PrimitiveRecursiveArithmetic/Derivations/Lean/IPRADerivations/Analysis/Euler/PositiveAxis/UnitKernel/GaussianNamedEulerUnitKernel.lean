@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.Names.GaussianUnitIntervalInputDecoding
+import IPRADerivations.Analysis.Names.Approximation.GaussianUnitIntervalInputDecoding
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitKernel.GaussianEulerUnitKernelCompactRate
-import IPRADerivations.Analysis.Integration.GaussianCompactRiemannName
+import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactRiemannName
 
 /-!
 # The actual unit-interval Euler kernel on a regular real input

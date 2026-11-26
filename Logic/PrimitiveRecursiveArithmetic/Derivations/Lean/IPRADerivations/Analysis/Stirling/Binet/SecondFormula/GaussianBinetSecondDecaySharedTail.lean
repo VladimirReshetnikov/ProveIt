@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.GaussianBinetSecondDecayFrozenTail
-import IPRADerivations.Analysis.LinearAlgebra.GaussianRationalMatrixFiniteSums
+import IPRADerivations.Analysis.LinearAlgebra.Matrices.GaussianRationalMatrixFiniteSums
 
 /-!
 # Frozen second Binet tail at an externally chosen mesh and clock

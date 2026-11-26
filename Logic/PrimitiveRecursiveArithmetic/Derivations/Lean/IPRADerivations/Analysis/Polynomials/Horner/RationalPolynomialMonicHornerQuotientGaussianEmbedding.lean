@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Horner.RationalPolynomialMonicHornerReductionGaussianEmbedding
-import IPRADerivations.Analysis.Polynomials.RationalPolynomialYShiftGaussianEmbedding
+import IPRADerivations.Analysis.Polynomials.Translation.RationalPolynomialYShiftGaussianEmbedding
 import IPRADerivations.Analysis.Polynomials.Horner.GaussianPolynomialMonicHornerQuotient
 import IPRADerivations.Core.CongruenceTactic
 

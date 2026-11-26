@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.GaussianBarnesCanonicalHyperfactorial
 import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalShiftChart
-import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerRecurrence
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Recurrence.GaussianLogGammaEulerRecurrence
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianNamedGammaHalfShift
 
 /-! # The unit increment of the exact hyperfactorial numerator exponent -/

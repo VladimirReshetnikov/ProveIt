@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteProductName
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianGammaAdjacentCutoff
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.ReciprocalGamma.GaussianGammaAdjacentCutoff
 import IPRADerivations.Analysis.FiniteOperations.GaussianBoundedInverseApartness
 
 /-!

@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianCompactScalarMajorant
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerPositiveAxis
-import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerRecurrence
-import IPRADerivations.Analysis.Integration.GaussianRationalQuadratureDifference
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Recurrence.GaussianLogGammaEulerRecurrence
+import IPRADerivations.Analysis.Integration.Quadrature.GaussianRationalQuadratureDifference
 
 /-!
 # The real log-Gamma recurrence on adjacent unit quadratures

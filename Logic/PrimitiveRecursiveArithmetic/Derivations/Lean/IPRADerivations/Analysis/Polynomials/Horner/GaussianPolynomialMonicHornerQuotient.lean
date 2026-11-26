@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Horner.GaussianPolynomialMonicHornerReduction
-import IPRADerivations.Analysis.Polynomials.GaussianPolynomialYShift
+import IPRADerivations.Analysis.Polynomials.Translation.GaussianPolynomialYShift
 import IPRADerivations.Core.CongruenceTactic
 
 /-!

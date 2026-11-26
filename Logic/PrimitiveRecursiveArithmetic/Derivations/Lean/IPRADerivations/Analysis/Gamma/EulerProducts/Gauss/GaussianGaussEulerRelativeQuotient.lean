@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.Gauss.GaussianGaussEulerFiniteIdentity
 import IPRADerivations.Analysis.Gamma.EulerProducts.Gauss.GaussianGaussEulerFiniteApartness
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianGammaReflectionQuotient
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Reflection.GaussianGammaReflectionQuotient
 
 /-!
 # Gauss's exact finite quotient of quotients

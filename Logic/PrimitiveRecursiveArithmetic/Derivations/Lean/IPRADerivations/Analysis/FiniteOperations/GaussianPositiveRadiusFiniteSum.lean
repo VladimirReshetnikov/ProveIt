@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.GaussianPositiveRealArithmetic
 import IPRADerivations.Analysis.RationalArithmetic.RationalGaussianRealPart
-import IPRADerivations.Analysis.RationalArithmetic.RationalRepresentedUpper
+import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalRepresentedUpper
 import IPRADerivations.Core.LinearCombination
 
 /-!

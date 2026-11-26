@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianRationalDeflation
+import IPRADerivations.Analysis.Polynomials.RootFinding.Deflation.GaussianRationalDeflation
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalReciprocal
 
 /-!

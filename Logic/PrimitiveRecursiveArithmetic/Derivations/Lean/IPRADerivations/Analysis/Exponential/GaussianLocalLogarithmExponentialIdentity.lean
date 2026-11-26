@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Logarithm.GaussianLocalLogarithmName
+import IPRADerivations.Analysis.Logarithm.Local.GaussianLocalLogarithmName
 
 /-!
 # Source C4 for the actual ORIGINAL local logarithm and exponential names

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Integration.GaussianCompactAlignedTime
+import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactAlignedTime
 import IPRADerivations.Analysis.Names.GaussianCompactNamedAdditivity
 
 /-!

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalReciprocal
-import IPRADerivations.Analysis.Geometry.GaussianEuclideanDistanceName
+import IPRADerivations.Analysis.Geometry.Distances.GaussianEuclideanDistanceName
 
 /-!
 # Actual rational unit-circle parametrization with a Boolean sign

@@ -8,7 +8,7 @@ import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalHeadE
 import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.GaussianBarnesCanonicalPrefactorExponentDerivative
 import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalValue
 import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalRatioBinding
-import IPRADerivations.Analysis.Gamma.GaussianGammaFoldedApproximantBalance
+import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaFoldedApproximantBalance
 
 set_option autoImplicit false
 set_option maxHeartbeats 650000

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceDifferencePrefix
-import IPRADerivations.Analysis.Integration.GaussianCompactDifferenceRefinement
+import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactDifferenceRefinement
 
 /-!
 # The original improper Binet difference on a common finite grid

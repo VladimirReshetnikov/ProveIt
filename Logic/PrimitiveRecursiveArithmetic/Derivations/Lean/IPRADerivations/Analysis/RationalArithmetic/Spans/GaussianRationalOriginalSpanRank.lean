@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.RationalArithmetic.Spans.GaussianRationalFullReducedSpan
 import IPRADerivations.Analysis.RationalArithmetic.Spans.GaussianRationalProperSpanWitness
 import IPRADerivations.Analysis.RationalArithmetic.Spans.GaussianRationalRowSpanRewind
-import IPRADerivations.Analysis.Polynomials.Elimination.GaussianSuperellipticSubspaceTheorem
+import IPRADerivations.Analysis.Polynomials.Elimination.Superelliptic.GaussianSuperellipticSubspaceTheorem
 
 /-!
 # Full rank and properness of the original Gaussian-rational span

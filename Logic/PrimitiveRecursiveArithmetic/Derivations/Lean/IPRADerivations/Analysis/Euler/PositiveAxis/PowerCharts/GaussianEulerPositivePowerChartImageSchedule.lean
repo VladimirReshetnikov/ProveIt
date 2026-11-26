@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.GaussianEulerPositivePowerChartImageBudget
-import IPRADerivations.Analysis.Euler.Integration.GaussianEulerPowerScalingGridSchedule
+import IPRADerivations.Analysis.Euler.PowerScaling.GaussianEulerPowerScalingGridSchedule
 
 /-!
 # A source-derived count and clocks for the corrected image integral

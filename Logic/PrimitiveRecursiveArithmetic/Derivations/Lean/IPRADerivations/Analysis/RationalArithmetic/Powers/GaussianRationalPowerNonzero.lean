@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Polynomials.GaussianRationalPolynomialProductDegree
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalCurveFibers
+import IPRADerivations.Analysis.Polynomials.Products.GaussianRationalPolynomialProductDegree
+import IPRADerivations.Analysis.RationalArithmetic.Fibers.GaussianRationalCurveFibers
 
 /-!
 # Nonzero values of the actual Gaussian rational power

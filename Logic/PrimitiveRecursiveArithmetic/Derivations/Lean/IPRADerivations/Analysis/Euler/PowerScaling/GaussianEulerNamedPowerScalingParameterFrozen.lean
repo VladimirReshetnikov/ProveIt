@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PowerScaling.GaussianEulerNamedPowerScalingParameter
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedPositiveReciprocalFrozen
+import IPRADerivations.Analysis.Names.Rates.Reciprocals.GaussianNamedPositiveReciprocalFrozen
 
 /-!
 # Rescaled Gamma parameters at literal frozen exponent observations

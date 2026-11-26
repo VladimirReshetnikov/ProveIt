@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.GaussianBinetSineRealDampedPanels
 import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.GaussianBinetSineFrozenPiTerm
 import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.GaussianBinetOscillatorySineRows
-import IPRADerivations.Analysis.Integration.GaussianRationalQuadratureDifference
+import IPRADerivations.Analysis.Integration.Quadrature.GaussianRationalQuadratureDifference
 
 /-!
 # The actual damped sine quadrature evaluates a frozen Binet row

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.CriticalPoints.GaussianGammaMinimumRational
-import IPRADerivations.Analysis.Gamma.CriticalPoints.GaussianGammaMinimumGlobalStrictComparison
-import IPRADerivations.Analysis.Gamma.CriticalPoints.GaussianGammaMinimumGlobalApartness
+import IPRADerivations.Analysis.Gamma.CriticalPoints.PositiveMinimum.GaussianGammaMinimumGlobalStrictComparison
+import IPRADerivations.Analysis.Gamma.CriticalPoints.PositiveMinimum.GaussianGammaMinimumGlobalApartness
 
 /-!
 # The minimum of the original named Gamma on the positive half-line

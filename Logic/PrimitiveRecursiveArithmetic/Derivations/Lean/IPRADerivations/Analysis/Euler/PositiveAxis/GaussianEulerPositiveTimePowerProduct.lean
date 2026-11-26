@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Euler.GaussianHarmonicLogarithmProduct
-import IPRADerivations.Analysis.Euler.Integration.GaussianEulerIntegrationByPartsParameterShift
+import IPRADerivations.Analysis.Euler.HarmonicLogarithms.GaussianHarmonicLogarithmProduct
+import IPRADerivations.Analysis.Euler.Integration.Parts.GaussianEulerIntegrationByPartsParameterShift
 
 /-!
 # Products of positive rational times in the original complex-power names

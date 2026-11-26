@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.GaussianEulerUnitSubstitutionImageGrid
-import IPRADerivations.Analysis.Optimization.RationalCubeInfimumIntervals
+import IPRADerivations.Analysis.Optimization.CubeInfimum.RationalCubeInfimumIntervals
 import IPRADerivations.Core.CertificateTactics
 
 /-!

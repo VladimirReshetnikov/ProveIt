@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.GaussianBarnesCanonicalHeadCorrectionDerivative
 import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalHead
-import IPRADerivations.Analysis.Series.RationalHarmonicDyadicUpper
+import IPRADerivations.Analysis.Series.Harmonic.RationalHarmonicDyadicUpper
 
 /-!
 # Dyadic bound for the literal Barnes head correction

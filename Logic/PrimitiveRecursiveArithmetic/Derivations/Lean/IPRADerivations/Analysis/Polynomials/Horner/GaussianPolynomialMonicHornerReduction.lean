@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.GaussianPolynomialConstantInjection
+import IPRADerivations.Analysis.Polynomials.Representation.GaussianPolynomialConstantInjection
 import IPRADerivations.Core.CongruenceTactic
 
 /-!

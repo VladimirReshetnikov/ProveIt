@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalUnscaledChord
-import IPRADerivations.Analysis.Names.GaussianNamedStrictOrderDifference
-import IPRADerivations.Analysis.Stirling.GaussianStirlingOddCoefficients
-import IPRADerivations.Analysis.Logarithm.GaussianPositiveRationalLogarithmOrder
+import IPRADerivations.Analysis.Names.Differences.GaussianNamedStrictOrderDifference
+import IPRADerivations.Analysis.Stirling.Expansions.GaussianStirlingOddCoefficients
+import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianPositiveRationalLogarithmOrder
 
 /-!
 # The exact rational Gautschi comparison in logarithms

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Exponential.GaussianNamedPositiveExponentialOrder
+import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianNamedPositiveExponentialOrder
 import IPRADerivations.Analysis.Inequalities.GapRemoval
 
 /-!

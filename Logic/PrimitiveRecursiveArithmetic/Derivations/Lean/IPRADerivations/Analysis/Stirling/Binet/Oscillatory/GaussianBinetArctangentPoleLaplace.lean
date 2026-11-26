@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.GaussianBinetArctangentSignedPole
-import IPRADerivations.Analysis.Stirling.Binet.GaussianBinetExponentialIntegral
-import IPRADerivations.Analysis.Stirling.Binet.GaussianBinetExponentialRectangleEndpoint
+import IPRADerivations.Analysis.Stirling.Binet.ExponentialIntegrals.GaussianBinetExponentialIntegral
+import IPRADerivations.Analysis.Stirling.Binet.ExponentialIntegrals.GaussianBinetExponentialRectangleEndpoint
 import IPRADerivations.Analysis.RationalArithmetic.GaussianScalarColumnSelection
 
 /-!

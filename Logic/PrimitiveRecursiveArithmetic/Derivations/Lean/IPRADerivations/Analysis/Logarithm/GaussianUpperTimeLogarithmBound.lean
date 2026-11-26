@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Euler.GaussianHarmonicLogarithmName
-import IPRADerivations.Analysis.Series.RationalHarmonicIntervalVariation
+import IPRADerivations.Analysis.Euler.HarmonicLogarithms.GaussianHarmonicLogarithmName
+import IPRADerivations.Analysis.Series.Harmonic.RationalHarmonicIntervalVariation
 
 /-!
 # The original logarithm is bounded by its positive time above one

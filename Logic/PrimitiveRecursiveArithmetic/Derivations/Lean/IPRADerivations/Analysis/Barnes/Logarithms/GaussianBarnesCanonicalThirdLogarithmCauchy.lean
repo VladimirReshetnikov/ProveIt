@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Logarithms.GaussianBarnesCanonicalThirdLogarithmSeries
-import IPRADerivations.Analysis.Series.GaussianReciprocalSquareInterval
+import IPRADerivations.Analysis.Series.ReciprocalSquares.GaussianReciprocalSquareInterval
 
 /-!
 # Cauchy estimate for original cubic Barnes logarithm prefixes on x>0

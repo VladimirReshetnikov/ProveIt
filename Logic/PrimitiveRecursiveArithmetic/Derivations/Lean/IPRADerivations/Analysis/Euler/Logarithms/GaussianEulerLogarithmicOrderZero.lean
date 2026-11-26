@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.Logarithms.GaussianEulerLogarithmicIntervalName
-import IPRADerivations.Analysis.Integration.GaussianCompactClientIndependence
+import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactClientIndependence
 
 /-!
 # The actual logarithmic Euler quadrature at order zero

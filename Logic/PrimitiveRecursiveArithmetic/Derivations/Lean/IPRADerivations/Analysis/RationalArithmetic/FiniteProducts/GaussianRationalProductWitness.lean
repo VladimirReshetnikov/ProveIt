@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalReconstruction
+import IPRADerivations.Analysis.RationalArithmetic.Representations.GaussianRationalReconstruction
 import IPRADerivations.Analysis.FiniteOperations.GaussianProductStability
 import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.RationalProductWitness
 import IPRADerivations.Analysis.RationalArithmetic.Covers.GaussianRationalCover

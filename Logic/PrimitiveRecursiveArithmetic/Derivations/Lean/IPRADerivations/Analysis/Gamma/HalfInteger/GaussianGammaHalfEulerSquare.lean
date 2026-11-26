@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.HalfInteger.GaussianGammaHalfEulerHead
 import IPRADerivations.Analysis.Gamma.HalfInteger.GaussianGammaHalfEulerExponential
-import IPRADerivations.Analysis.Stirling.GaussianGammaHalfWallisRate
+import IPRADerivations.Analysis.Stirling.Wallis.GaussianGammaHalfWallisRate
 
 /-!
 # Exact square of the original finite Gamma at one half

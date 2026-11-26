@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.Digamma.GaussianGammaDigammaEulerDerivative
+import IPRADerivations.Analysis.Gamma.Digamma.Derivative.GaussianGammaDigammaEulerDerivative
 
 /-!
 # The harmonic remainder in the original Barnes shift

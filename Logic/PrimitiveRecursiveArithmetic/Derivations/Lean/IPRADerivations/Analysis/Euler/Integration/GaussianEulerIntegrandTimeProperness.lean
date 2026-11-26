@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.Integration.GaussianEulerPowerInputProperness
+import IPRADerivations.Analysis.Euler.Integration.Parameters.GaussianEulerPowerInputProperness
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaWeierstrassApproximant
 import IPRADerivations.Core.CongruenceTactic
 

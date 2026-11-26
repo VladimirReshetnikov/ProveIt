@@ -1,8 +1,8 @@
 import IPRADerivations.Analysis.Stirling.GaussianStirlingGammaLogarithm
-import IPRADerivations.Analysis.Logarithm.GaussianNamedPositiveLogarithmScale
+import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianNamedPositiveLogarithmScale
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianGammaShift
 import IPRADerivations.Analysis.Gamma.GaussianGammaRadiusOverlap
-import IPRADerivations.Analysis.Euler.GaussianHarmonicLogarithmName
+import IPRADerivations.Analysis.Euler.HarmonicLogarithms.GaussianHarmonicLogarithmName
 
 /-!
 # The original logarithmic Gamma recurrence on positive rationals

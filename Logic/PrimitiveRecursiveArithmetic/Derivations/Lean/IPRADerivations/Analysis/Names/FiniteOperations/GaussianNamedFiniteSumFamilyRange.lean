@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteSumFamilySplit
-import IPRADerivations.Analysis.LinearAlgebra.GaussianRationalMatrixFiniteSums
+import IPRADerivations.Analysis.LinearAlgebra.Matrices.GaussianRationalMatrixFiniteSums
 
 /-!
 # Splitting a named Gaussian sum at a numerical index

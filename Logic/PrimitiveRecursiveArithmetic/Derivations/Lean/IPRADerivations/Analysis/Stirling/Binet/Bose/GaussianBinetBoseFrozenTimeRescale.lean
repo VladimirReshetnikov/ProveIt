@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Bose.GaussianBinetBoseFrozenMatrix
 import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.GaussianBinetArctangentTimeRate
-import IPRADerivations.Analysis.Integration.GaussianCompactRiemannSplit
+import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactRiemannSplit
 
 /-!
 # Frozen Bose observations under positive time recoding

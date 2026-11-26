@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteSumFamilyCongruence
-import IPRADerivations.Analysis.Euler.GaussianHarmonicLogarithmProduct
+import IPRADerivations.Analysis.Euler.HarmonicLogarithms.GaussianHarmonicLogarithmProduct
 
 /-!
 # The actual logarithm of a factorial is the sum of its logs

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Inequalities.GaussianWeightedMonomialBasis
 import IPRADerivations.Analysis.RationalArithmetic.Powers.RationalScalarPowerGaussianEmbedding
-import IPRADerivations.Analysis.Polynomials.RationalPolynomialGaussianEmbedding
+import IPRADerivations.Analysis.Polynomials.Representation.RationalPolynomialGaussianEmbedding
 import IPRADerivations.Foundations.SequenceEquality
 
 /-!

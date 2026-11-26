@@ -1,8 +1,8 @@
 import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaFiniteCoefficientPolynomial
-import IPRADerivations.Analysis.Gamma.GaussianGammaSynchronousExponentCompatibility
-import IPRADerivations.Analysis.Names.GaussianBoundedConstantProductName
-import IPRADerivations.Analysis.Exponential.GaussianExponentialRadiusIndependence
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianGammaC7Name
+import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaSynchronousExponentCompatibility
+import IPRADerivations.Analysis.Names.FiniteOperations.GaussianBoundedConstantProductName
+import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialRadiusIndependence
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.ReciprocalGamma.GaussianGammaC7Name
 
 /-!
 # Actual cofinal polynomial observations of the original C7 name

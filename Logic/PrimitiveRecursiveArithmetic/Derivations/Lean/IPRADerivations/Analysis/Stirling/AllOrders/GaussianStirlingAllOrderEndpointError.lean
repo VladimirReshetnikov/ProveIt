@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.AllOrders.GaussianStirlingAllOrderCentralBernoulliError
+import IPRADerivations.Analysis.Stirling.AllOrders.Bernoulli.GaussianStirlingAllOrderCentralBernoulliError
 
 /-!
 # Quantitative double vanishing at the Bernoulli panel endpoints

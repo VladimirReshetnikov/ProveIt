@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalRatioBinding
-import IPRADerivations.Analysis.Stirling.GaussianStirlingMultiplicativeBoundsStrictOrder
+import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingMultiplicativeBoundsStrictOrder
 
 /-!
 # The strict rational Gautschi inequalities for the actual Gamma ratio

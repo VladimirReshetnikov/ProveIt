@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Taylor.GaussianBarnesCanonicalFiniteCentralExponential
 import IPRADerivations.Analysis.Gamma.GaussianGammaEncodingRescaling
-import IPRADerivations.Analysis.Gamma.GaussianGammaExponentStep
+import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaExponentStep
 import IPRADerivations.Core.CommonLemmas
 
 /-!

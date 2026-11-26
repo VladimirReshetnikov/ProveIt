@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.Exponential.GaussianFiniteExponentialWeightedNorm
+import IPRADerivations.Analysis.Exponential.Polynomials.GaussianFiniteExponentialWeightedNorm
 import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalVariableHornerBudget
-import IPRADerivations.Analysis.Polynomials.GaussianCoefficientNameBounds
+import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianCoefficientNameBounds
 import IPRADerivations.Core.LinearCombination
 
 /-!

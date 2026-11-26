@@ -1,8 +1,8 @@
 import IPRADerivations.Analysis.Barnes.Taylor.Grids.GaussianBarnesCanonicalFiniteTaylorFirstGridRate
 import IPRADerivations.Analysis.Barnes.Taylor.Grids.GaussianBarnesCanonicalFiniteTaylorEvenGridReadback
 import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.GaussianBarnesCanonicalFixedTaylorDerivativeZero
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedDifferenceQuotientApproximation
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedDifferenceQuotientProperness
+import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedDifferenceQuotientApproximation
+import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedDifferenceQuotientProperness
 
 /-!
 # The first derivative of the original fixed Barnes product

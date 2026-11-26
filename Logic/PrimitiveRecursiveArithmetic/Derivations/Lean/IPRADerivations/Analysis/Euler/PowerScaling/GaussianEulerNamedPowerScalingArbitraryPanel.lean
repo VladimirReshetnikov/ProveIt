@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.Integration.GaussianEulerPowerScalingArbitraryObservation
+import IPRADerivations.Analysis.Euler.PowerScaling.GaussianEulerPowerScalingArbitraryObservation
 import IPRADerivations.Analysis.Euler.PowerScaling.GaussianEulerNamedPowerScalingImproper
 
 /-!

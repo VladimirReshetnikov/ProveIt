@@ -1,9 +1,9 @@
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.GaussianBarnesCanonicalHyperfactorial
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.GaussianBarnesCanonicalIntegerValues
-import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerExponentialLimit
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Exponentiation.GaussianLogGammaEulerExponentialLimit
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerPositiveAxis
-import IPRADerivations.Analysis.Exponential.GaussianBoundedIntegerExponential
-import IPRADerivations.Analysis.Exponential.GaussianExponentialDiskMajorant
+import IPRADerivations.Analysis.Exponential.IntegerPowers.GaussianBoundedIntegerExponential
+import IPRADerivations.Analysis.Exponential.Estimates.GaussianExponentialDiskMajorant
 
 /-!
 # The analytic hyperfactorial at positive integers

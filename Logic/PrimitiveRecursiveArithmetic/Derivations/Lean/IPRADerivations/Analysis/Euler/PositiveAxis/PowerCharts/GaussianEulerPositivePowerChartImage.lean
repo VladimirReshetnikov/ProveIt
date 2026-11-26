@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.GaussianEulerPositivePowerChartLower
-import IPRADerivations.Analysis.Names.GaussianPositiveCompactInputDecoding
+import IPRADerivations.Analysis.Names.Approximation.GaussianPositiveCompactInputDecoding
 
 /-!
 # Literal rational image nodes from the actual positive power chart

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitKernel.GaussianEulerUnitKernelCompactName
-import IPRADerivations.Analysis.Integration.GaussianCompactZeroWidth
+import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactZeroWidth
 
 /-!
 # Actual unit-kernel compact panel additivity

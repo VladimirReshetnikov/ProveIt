@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.GaussianGammaExponentialHorizonCoherence
+import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaExponentialHorizonCoherence
 import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaFiniteCoefficientPolynomial
 
 /-!

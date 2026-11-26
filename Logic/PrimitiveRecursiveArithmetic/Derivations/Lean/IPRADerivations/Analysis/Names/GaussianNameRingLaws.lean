@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Names.GaussianNameArithmetic
-import IPRADerivations.Analysis.Polynomials.GaussianRationalCoefficientScaling
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalSumAlgebra
-import IPRADerivations.Analysis.Polynomials.GaussianCoefficientNormOrder
+import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianRationalCoefficientScaling
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalSumAlgebra
+import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianCoefficientNormOrder
 
 /-!
 # Ring laws for the actual normalized Gaussian name programs

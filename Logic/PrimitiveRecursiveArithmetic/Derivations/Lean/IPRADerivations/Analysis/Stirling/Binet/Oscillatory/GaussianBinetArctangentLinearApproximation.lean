@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.GaussianBinetArctangentQuadratureBound
-import IPRADerivations.Analysis.Stirling.Binet.GaussianBinetReciprocalRows
-import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceStripCutoff
+import IPRADerivations.Analysis.Stirling.Binet.WeightedIntegrals.GaussianBinetReciprocalRows
+import IPRADerivations.Analysis.Stirling.Binet.Laplace.Strips.GaussianBinetLaplaceStripCutoff
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianCompactScalarMajorant
 
 /-!

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Integration.GaussianRationalRiemannRefinement
-import IPRADerivations.Analysis.LinearAlgebra.GaussianRationalMatrixFiniteSums
+import IPRADerivations.Analysis.LinearAlgebra.Matrices.GaussianRationalMatrixFiniteSums
 
 /-!
 # Uniform norm bounds on actual finite Gaussian sums

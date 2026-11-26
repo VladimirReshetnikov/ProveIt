@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Names.GaussianNameRingLaws
-import IPRADerivations.Analysis.Polynomials.GaussianGeneralCoefficientNames
-import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianDominantScalarOrder
+import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianGeneralCoefficientNames
+import IPRADerivations.Analysis.Polynomials.RootFinding.DominantTerms.GaussianDominantScalarOrder
 import IPRADerivations.Core.CongruenceTactic
 
 /-!

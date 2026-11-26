@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.GaussianStirlingDifferenceBounds
+import IPRADerivations.Analysis.Stirling.Telescoping.GaussianStirlingDifferenceBounds
 import IPRADerivations.Analysis.Stirling.GaussianStirlingIntegerLimit
 
 /-!

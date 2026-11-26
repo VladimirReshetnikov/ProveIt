@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Exponential.GaussianSignedNameExponentialOrder
+import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianSignedNameExponentialOrder
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerDifference
 import IPRADerivations.Analysis.Names.GaussianNameArithmetic
 

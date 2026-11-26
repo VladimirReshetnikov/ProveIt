@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedInverseRate
+import IPRADerivations.Analysis.Names.Rates.Reciprocals.GaussianNamedInverseRate
 
 /-!
 # Original diagonal variation gives the exact independent observation rate

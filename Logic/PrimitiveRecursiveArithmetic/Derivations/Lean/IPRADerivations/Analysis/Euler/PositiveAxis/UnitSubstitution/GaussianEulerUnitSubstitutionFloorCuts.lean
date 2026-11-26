@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.GaussianEulerUnitSubstitutionTiltedNodes
-import IPRADerivations.Analysis.Euler.PositiveAxis.GaussianEulerUnitDecayInput
-import IPRADerivations.Analysis.RationalArithmetic.RationalUnitFloorBounds
-import IPRADerivations.Analysis.Integration.GaussianPartitionedFiniteSum
+import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.GaussianEulerUnitDecayInput
+import IPRADerivations.Analysis.RationalArithmetic.Grids.RationalUnitFloorBounds
+import IPRADerivations.Analysis.Integration.Partitions.GaussianPartitionedFiniteSum
 
 /-!
 # Actual bounded integer cuts of the unchanged original unit chart

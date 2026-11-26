@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.Gauss.GaussianGaussEulerNamedHeadGrouping
 import IPRADerivations.Analysis.Gamma.EulerProducts.Gauss.GaussianGaussEulerFactorFamilies
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianGaussMultiplicationFixedProducts
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.GaussianGaussMultiplicationFixedProducts
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteProductFamilyAlgebra
 
 /-!

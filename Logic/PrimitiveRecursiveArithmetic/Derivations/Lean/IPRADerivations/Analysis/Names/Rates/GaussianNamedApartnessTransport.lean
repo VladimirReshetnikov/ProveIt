@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Trigonometry.GaussianSineReflectionLower
+import IPRADerivations.Analysis.Trigonometry.SineProducts.GaussianSineReflectionLower
 import IPRADerivations.Analysis.Names.GaussianNameReciprocal
 
 /-!

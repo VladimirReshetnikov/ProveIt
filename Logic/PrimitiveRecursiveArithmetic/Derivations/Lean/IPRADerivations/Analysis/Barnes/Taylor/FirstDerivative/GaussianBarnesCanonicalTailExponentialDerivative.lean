@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalTailExponentialMargin
-import IPRADerivations.Analysis.Exponential.GaussianNamedExponentialShiftDerivative
+import IPRADerivations.Analysis.Exponential.Names.GaussianNamedExponentialShiftDerivative
 import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalRatioBinding
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateComposition
 

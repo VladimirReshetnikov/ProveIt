@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.Logarithms.GaussianBarnesCanonicalLogCofinal
 import IPRADerivations.Analysis.Barnes.Taylor.GaussianBarnesCanonicalCenteredHead
-import IPRADerivations.Analysis.Polynomials.GaussianPolynomialPowerNormVariation
-import IPRADerivations.Analysis.Polynomials.GaussianRationalPolynomialProductTruncation
+import IPRADerivations.Analysis.Polynomials.Products.GaussianPolynomialPowerNormVariation
+import IPRADerivations.Analysis.Polynomials.Products.GaussianRationalPolynomialProductTruncation
 
 /-!
 # Disk-uniform mass of the original centered Barnes head

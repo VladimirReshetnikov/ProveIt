@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalBase
-import IPRADerivations.Analysis.Trigonometry.GaussianCyclicExponentialSamples
+import IPRADerivations.Analysis.Trigonometry.Cyclic.GaussianCyclicExponentialSamples
 
 /-!
 # Exact zeros and late lower bounds of original Barnes factors

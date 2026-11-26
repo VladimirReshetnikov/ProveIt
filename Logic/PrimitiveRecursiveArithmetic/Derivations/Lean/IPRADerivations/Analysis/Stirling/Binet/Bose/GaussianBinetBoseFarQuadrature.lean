@@ -1,9 +1,9 @@
 import IPRADerivations.Analysis.Stirling.Binet.Bose.GaussianBinetBoseFarBound
 import IPRADerivations.Analysis.Stirling.Binet.Bose.GaussianBinetBoseCompact
-import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceStripCutoff
+import IPRADerivations.Analysis.Stirling.Binet.Laplace.Strips.GaussianBinetLaplaceStripCutoff
 import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.GaussianBinetSecondDecayEnvelope
 import IPRADerivations.Analysis.Names.GaussianCompactNamedAdditivity
-import IPRADerivations.Analysis.SpecialFunctions.GaussianNamedDampingPowerReciprocalTail
+import IPRADerivations.Analysis.SpecialFunctions.DampingPower.GaussianNamedDampingPowerReciprocalTail
 
 /-!
 # Uniform upper-tail bound for the original second Binet left sums

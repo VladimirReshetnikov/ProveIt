@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitKernel.GaussianNamedEulerUnitKernelAtTime
-import IPRADerivations.Analysis.Euler.PositiveAxis.GaussianNamedEulerUnitTimeExponential
-import IPRADerivations.Analysis.Euler.PositiveAxis.GaussianEulerUnitDecayInput
-import IPRADerivations.Analysis.Exponential.GaussianRealNameExponentialInjectivity
+import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.GaussianNamedEulerUnitTimeExponential
+import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.GaussianEulerUnitDecayInput
+import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianRealNameExponentialInjectivity
 
 /-!
 # The genuine unit kernel at the original decay image

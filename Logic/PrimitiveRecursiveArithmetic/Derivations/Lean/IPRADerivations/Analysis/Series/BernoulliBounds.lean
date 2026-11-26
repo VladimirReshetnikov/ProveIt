@@ -1,5 +1,5 @@
 import IPRADerivations.Core.IntCertificates
-import IPRADerivations.Analysis.Polynomials.BernoulliCoefficients
+import IPRADerivations.Analysis.Polynomials.SpecialPolynomials.BernoulliCoefficients
 import Mathlib.Data.Nat.Cast.Field
 
 /-!

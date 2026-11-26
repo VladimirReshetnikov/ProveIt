@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerHeadRescaling
+import IPRADerivations.Analysis.Gamma.EulerProducts.FiniteHeads.GaussianGammaEulerHeadRescaling
 import IPRADerivations.Analysis.Gamma.EulerProducts.Gauss.GaussianGaussEulerHeadCancellation
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianGammaGaussReferenceProduct
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.ReferenceProduct.GaussianGammaGaussReferenceProduct
 
 /-!
 # Exact Gauss head grouping at the original reference arguments

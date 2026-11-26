@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalTailFiniteSplit
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalFubini
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalFubini
 import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalExponent
 import IPRADerivations.Core.CongruenceTactic
 

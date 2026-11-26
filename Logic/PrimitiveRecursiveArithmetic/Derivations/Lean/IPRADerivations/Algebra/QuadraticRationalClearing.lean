@@ -1,5 +1,5 @@
 import IPRADerivations.Algebra.QuadraticPositiveScaling
-import IPRADerivations.Analysis.RationalArithmetic.RationalRepresentations
+import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalRepresentations
 import IPRADerivations.Core.CertificateTactics
 
 /-!

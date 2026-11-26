@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.Bose.GaussianBinetBosePrefixQuadrature
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalFubini
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalFubini
 
 /-!
 # Exchange the finite Bose exponential count with the time mesh

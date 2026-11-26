@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.Bose.GaussianBinetBosePrefixQuadrature
-import IPRADerivations.Analysis.Integration.GaussianCompactMeshIndependence
+import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactMeshIndependence
 
 /-!
 # Read a literal Bose prefix on any certified refinement

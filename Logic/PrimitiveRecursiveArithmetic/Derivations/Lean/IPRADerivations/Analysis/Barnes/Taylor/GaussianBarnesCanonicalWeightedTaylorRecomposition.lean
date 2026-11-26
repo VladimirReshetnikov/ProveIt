@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Taylor.GaussianBarnesCanonicalTaylorRecomposition
-import IPRADerivations.Analysis.Exponential.GaussianRationalPolynomialExponentialFixedRadius
+import IPRADerivations.Analysis.Exponential.Polynomials.GaussianRationalPolynomialExponentialFixedRadius
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
 
 /-!

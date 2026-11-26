@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Exponential.LogarithmExponentialCoefficients
+import IPRADerivations.Analysis.Exponential.Polynomials.LogarithmExponentialCoefficients
 import IPRADerivations.Core.LinearCombination
 
 /-!

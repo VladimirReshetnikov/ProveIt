@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.LinearAlgebra.GaussianRationalAnnihilatorVector
+import IPRADerivations.Analysis.LinearAlgebra.Cofactors.GaussianRationalAnnihilatorVector
 import IPRADerivations.Analysis.RationalArithmetic.Spans.GaussianRationalRowSpan
 
 /-!

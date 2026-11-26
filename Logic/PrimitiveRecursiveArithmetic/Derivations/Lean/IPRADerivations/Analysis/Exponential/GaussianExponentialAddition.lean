@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Exponential.GaussianExponentialReference
+import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialReference
 
 /-!
 # Addition for independently sampled Gaussian exponential names

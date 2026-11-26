@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.Bose.GaussianBinetBoseDenominator
-import IPRADerivations.Analysis.Exponential.GaussianExponentialLinearRemainder
+import IPRADerivations.Analysis.Exponential.Estimates.GaussianExponentialLinearRemainder
 
 /-!
 # The exact linear readback of the original Bose denominator

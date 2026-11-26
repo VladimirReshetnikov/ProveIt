@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaWeierstrassConvergence
+import IPRADerivations.Analysis.Gamma.EulerProducts.Weierstrass.GaussianGammaWeierstrassConvergence
 import IPRADerivations.Analysis.Gamma.GaussianGammaReciprocalInverse
 
 /-!

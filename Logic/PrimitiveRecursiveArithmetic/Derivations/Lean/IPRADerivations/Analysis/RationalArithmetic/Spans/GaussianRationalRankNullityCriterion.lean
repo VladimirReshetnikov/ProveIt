@@ -1,8 +1,8 @@
-import IPRADerivations.Analysis.Polynomials.Elimination.GaussianRationalEliminationPivotColumns
-import IPRADerivations.Analysis.Polynomials.Elimination.GaussianRationalEliminationTagProfile
+import IPRADerivations.Analysis.Polynomials.Elimination.RowReduction.GaussianRationalEliminationPivotColumns
+import IPRADerivations.Analysis.Polynomials.Elimination.RowReduction.GaussianRationalEliminationTagProfile
 import IPRADerivations.Analysis.RationalArithmetic.Spans.GaussianRationalPivotHistoryCount
-import IPRADerivations.Analysis.LinearAlgebra.GaussianRationalFreeColumnVector
-import IPRADerivations.Analysis.LinearAlgebra.GaussianRationalAnnihilatorVector
+import IPRADerivations.Analysis.LinearAlgebra.Cofactors.GaussianRationalFreeColumnVector
+import IPRADerivations.Analysis.LinearAlgebra.Cofactors.GaussianRationalAnnihilatorVector
 
 /-!
 # Full computed pivot count and the actual right kernel

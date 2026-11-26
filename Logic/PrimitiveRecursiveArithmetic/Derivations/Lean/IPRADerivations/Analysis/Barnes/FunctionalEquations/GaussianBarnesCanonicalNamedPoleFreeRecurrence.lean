@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.GaussianBarnesCanonicalNamedFunctionalEquation
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianGammaC7NamedInverse
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.ReciprocalGamma.GaussianGammaC7NamedInverse
 
 /-!
 # The usual Barnes functional equation on certified pole-free Gaussian names

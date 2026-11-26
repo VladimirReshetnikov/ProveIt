@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.GaussianPolynomialCoefficientDifferences
+import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianPolynomialCoefficientDifferences
 import IPRADerivations.Analysis.Polynomials.Determinants.GaussianPolynomialDeterminantNorm
 
 /-!

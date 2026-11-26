@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.GaussianEulerUnitSubstitutionCompactName
-import IPRADerivations.Analysis.Euler.Integration.GaussianEulerDecayRealSamples
-import IPRADerivations.Analysis.Euler.Integration.GaussianEulerDecayAddition
-import IPRADerivations.Analysis.Exponential.GaussianExponentialSmallPerturbation
+import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayRealSamples
+import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayAddition
+import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialSmallPerturbation
 
 /-!
 # Original mapped unit endpoints exhaust zero and one

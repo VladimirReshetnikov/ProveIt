@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianGeneralFTAConstants
-import IPRADerivations.Analysis.Geometry.GaussianGeometricProductBound
+import IPRADerivations.Analysis.Polynomials.RootFinding.FundamentalTheorem.GaussianGeneralFTAConstants
+import IPRADerivations.Analysis.Geometry.GeometricBounds.GaussianGeometricProductBound
 
 /-!
 # The computed general-FTA product is uniformly bounded

@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.Exponential.GaussianRationalExponentialTail
-import IPRADerivations.Analysis.Geometry.GaussianEuclideanDistanceName
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalDistanceOrder
+import IPRADerivations.Analysis.Exponential.Estimates.GaussianRationalExponentialTail
+import IPRADerivations.Analysis.Geometry.Distances.GaussianEuclideanDistanceName
+import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalDistanceOrder
 import IPRADerivations.Core.CongruenceTactic
 
 /-!

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.GaussianGammaTerminalContinuity
+import IPRADerivations.Analysis.Gamma.Names.Input.GaussianGammaTerminalContinuity
 import IPRADerivations.Analysis.Gamma.Poles.GaussianGammaPoleProductRate
 import IPRADerivations.Analysis.Gamma.Poles.GaussianGammaPoleReciprocalFactor
 import IPRADerivations.Analysis.Gamma.Poles.GaussianGammaLocalPoleFormula

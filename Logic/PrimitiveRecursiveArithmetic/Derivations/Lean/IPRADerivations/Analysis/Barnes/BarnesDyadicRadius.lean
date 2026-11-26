@@ -1,5 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.ZetaFiniteContract
-import IPRADerivations.Analysis.Polynomials.GaussianCoefficientNameBounds
+import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianCoefficientNameBounds
 import IPRADerivations.Core.CommonLemmas
 
 /-!

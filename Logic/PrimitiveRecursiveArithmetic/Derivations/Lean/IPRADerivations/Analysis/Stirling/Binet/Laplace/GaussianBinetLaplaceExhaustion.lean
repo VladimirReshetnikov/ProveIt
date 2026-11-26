@@ -1,8 +1,8 @@
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceSharpTail
-import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceStripHorizon
+import IPRADerivations.Analysis.Stirling.Binet.Laplace.Strips.GaussianBinetLaplaceStripHorizon
 import IPRADerivations.Analysis.Names.GaussianCompactNamedAdditivity
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedSmallAddendRate
-import IPRADerivations.Analysis.Gamma.GaussianGammaCompactCutoffAlignment
+import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaCompactCutoffAlignment
 
 /-!
 # Compact additivity and exhaustion rate for the actual Binet integral

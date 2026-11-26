@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Taylor.RelativeExpansions.GaussianBarnesCanonicalCorrectedMercatorPrefix
 import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalSingleExponential
-import IPRADerivations.Analysis.Polynomials.GaussianRationalPolynomialBuffers
+import IPRADerivations.Analysis.Polynomials.Representation.GaussianRationalPolynomialBuffers
 
 /-!
 # Stored rational Taylor coefficients of the original Barnes exponent

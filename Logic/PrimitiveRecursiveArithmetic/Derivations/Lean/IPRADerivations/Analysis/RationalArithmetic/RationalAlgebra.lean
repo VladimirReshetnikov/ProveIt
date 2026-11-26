@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.RationalArithmetic.RationalRepresentations
-import IPRADerivations.Analysis.RationalArithmetic.RationalFiniteSum
+import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalRepresentations
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalFiniteSum
 import IPRADerivations.Core.LinearCombination
 
 /-!

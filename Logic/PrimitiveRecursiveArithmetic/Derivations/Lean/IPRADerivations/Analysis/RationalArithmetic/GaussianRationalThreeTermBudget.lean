@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianResidualDecreaseWeights
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalRelativeNormAlgebra
-import IPRADerivations.Analysis.Polynomials.GaussianRationalSyntheticDivision
+import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.GaussianResidualDecreaseWeights
+import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianRationalRelativeNormAlgebra
+import IPRADerivations.Analysis.Polynomials.Division.GaussianRationalSyntheticDivision
 import IPRADerivations.Core.CongruenceTactic
 import IPRADerivations.Core.LinearCombination
 

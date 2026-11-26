@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalProduct
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianGammaShiftedDeflatedZero
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.Taylor.GaussianGammaShiftedDeflatedZero
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalRoundedPower
 
 /-!

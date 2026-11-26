@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.PolynomialTaylor
+import IPRADerivations.Analysis.Polynomials.Taylor.PolynomialTaylor
 import IPRADerivations.Core.IntCertificates
 
 /-!

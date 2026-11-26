@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Barnes.FunctionalEquations.GaussianBarnesCanonic
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.GaussianBarnesCanonicalHyperfactorial
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerChartAgreement
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerPositiveAxis
-import IPRADerivations.Analysis.Names.GaussianNamedRightHalfPlaneConstant
+import IPRADerivations.Analysis.Names.RightHalfPlane.GaussianNamedRightHalfPlaneConstant
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedApartnessTransport
 
 /-!

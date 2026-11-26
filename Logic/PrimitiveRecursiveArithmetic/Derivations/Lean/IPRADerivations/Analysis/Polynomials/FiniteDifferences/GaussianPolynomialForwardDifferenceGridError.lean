@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.FiniteDifferences.GaussianPolynomialForwardDifferenceGrid
-import IPRADerivations.Analysis.Names.GaussianNamedDifference
+import IPRADerivations.Analysis.Names.Differences.GaussianNamedDifference
 import IPRADerivations.Foundations.BoundedSyntaxInduction
 
 /-!

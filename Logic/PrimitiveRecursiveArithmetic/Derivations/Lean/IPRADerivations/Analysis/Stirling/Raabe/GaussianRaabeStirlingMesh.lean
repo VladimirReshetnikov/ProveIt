@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Stirling.Raabe.GaussianRaabeAffineMean
 import IPRADerivations.Analysis.Stirling.Raabe.GaussianRaabeStirlingCell
 import IPRADerivations.Analysis.Logarithm.GaussianCompactLogarithmBounds
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianCompactScalarMajorant
-import IPRADerivations.Analysis.Integration.GaussianRationalPanelTailDistance
+import IPRADerivations.Analysis.Integration.Partitions.GaussianRationalPanelTailDistance
 
 /-!
 # The elementary Stirling quadrature on a far unit interval

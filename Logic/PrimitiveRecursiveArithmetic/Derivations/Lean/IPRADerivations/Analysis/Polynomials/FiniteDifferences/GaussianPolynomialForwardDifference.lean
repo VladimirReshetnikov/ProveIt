@@ -1,8 +1,8 @@
-import IPRADerivations.Analysis.Polynomials.GaussianTranslationCoefficientValues
-import IPRADerivations.Analysis.Polynomials.GaussianRationalPolynomialDegree
-import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianRationalMonicCompanion
+import IPRADerivations.Analysis.Polynomials.Translation.GaussianTranslationCoefficientValues
+import IPRADerivations.Analysis.Polynomials.Representation.GaussianRationalPolynomialDegree
+import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianRationalMonicCompanion
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalNaturalScale
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalValueEquality
+import IPRADerivations.Analysis.RationalArithmetic.Representations.GaussianRationalValueEquality
 
 /-!
 # One Gaussian polynomial forward difference at encoded degree

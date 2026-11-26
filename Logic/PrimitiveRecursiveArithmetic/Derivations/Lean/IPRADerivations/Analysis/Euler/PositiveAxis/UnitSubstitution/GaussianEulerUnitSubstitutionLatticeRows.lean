@@ -3,7 +3,7 @@ import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.GaussianEule
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.GaussianEulerUnitSubstitutionNearbyKernel
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.GaussianEulerUnitSubstitutionDensityPrecision
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitKernel.GaussianEulerUnitKernelLatticeSum
-import IPRADerivations.Analysis.RationalArithmetic.RationalSandwichRadius
+import IPRADerivations.Analysis.RationalArithmetic.Distances.RationalSandwichRadius
 
 /-!
 # Compare the original unit-lattice rows with the reversed Euler rows

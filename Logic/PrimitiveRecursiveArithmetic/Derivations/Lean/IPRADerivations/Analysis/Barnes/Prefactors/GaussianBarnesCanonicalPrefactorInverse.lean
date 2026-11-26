@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Prefactors.GaussianBarnesCanonicalPrefactor
-import IPRADerivations.Analysis.Exponential.GaussianExponentialInverseSamples
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianGammaAdjacentCutoff
+import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialInverseSamples
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.ReciprocalGamma.GaussianGammaAdjacentCutoff
 
 /-!
 # The original Barnes prefactor is apart from zero

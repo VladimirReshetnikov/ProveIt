@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.GaussianEulerPositivePowerChartImageComparison
-import IPRADerivations.Analysis.Integration.GaussianCompactMeshIndependence
+import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactMeshIndependence
 
 /-!
 # The exact corrected panel's ordinary compact name

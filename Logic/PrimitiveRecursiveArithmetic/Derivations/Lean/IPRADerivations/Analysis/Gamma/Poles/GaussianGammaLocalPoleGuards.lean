@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Poles.GaussianGammaPoleZeros
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianGammaShiftTrajectory
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianGammaShiftTrajectory
 import IPRADerivations.Core.CongruenceTactic
 
 /-!

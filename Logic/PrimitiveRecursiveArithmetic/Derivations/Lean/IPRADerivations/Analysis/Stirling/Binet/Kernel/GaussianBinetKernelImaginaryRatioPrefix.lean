@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetKernelImaginaryRatioRows
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteSumFamily
-import IPRADerivations.Analysis.Polynomials.GaussianRationalCoefficientScaling
+import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianRationalCoefficientScaling
 
 /-!
 # Exact finite original Binet prefix at a frozen imaginary ratio

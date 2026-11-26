@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Poles.GaussianGammaLocalPoleFormula
-import IPRADerivations.Analysis.Exponential.GaussianRobinMeshExponential
+import IPRADerivations.Analysis.Exponential.IntegerPowers.GaussianRobinMeshExponential
 import IPRADerivations.Analysis.Gamma.GaussianGammaInputProperness
 import IPRADerivations.Core.CongruenceTactic
 

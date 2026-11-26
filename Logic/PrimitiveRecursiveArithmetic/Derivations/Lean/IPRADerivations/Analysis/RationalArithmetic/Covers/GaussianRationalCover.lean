@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalMetric
+import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalMetric
 import IPRADerivations.Analysis.FiniteOperations.GaussianProductStability
 
 /-!

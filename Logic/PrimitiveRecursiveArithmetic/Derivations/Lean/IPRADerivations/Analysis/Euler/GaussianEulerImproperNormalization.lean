@@ -1,8 +1,8 @@
-import IPRADerivations.Analysis.Euler.PositiveAxis.GaussianEulerUnitIntegrand
-import IPRADerivations.Analysis.Euler.PositiveAxis.GaussianEulerUnitEndpointDecay
+import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.GaussianEulerUnitIntegrand
+import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.GaussianEulerUnitEndpointDecay
 import IPRADerivations.Analysis.Euler.GaussianEulerImproperName
-import IPRADerivations.Analysis.Euler.Integration.GaussianEulerDecayCompactAntiderivative
-import IPRADerivations.Analysis.Exponential.GaussianRobinMeshExponential
+import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayCompactAntiderivative
+import IPRADerivations.Analysis.Exponential.IntegerPowers.GaussianRobinMeshExponential
 
 /-!
 # Unit normalization of the original improper Euler integral

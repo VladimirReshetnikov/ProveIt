@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Taylor.GaussianBarnesCanonicalTaylorDerivativeUniformInput
-import IPRADerivations.Analysis.Geometry.GaussianNamedDiskDemandLift
+import IPRADerivations.Analysis.Geometry.DiskNames.GaussianNamedDiskDemandLift
 
 /-!
 # Cofinal Barnes factorial names at regular Gaussian inputs

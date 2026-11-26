@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Names.RationalGaussianNameEmbedding
-import IPRADerivations.Analysis.Euler.Integration.GaussianEulerDecayOrder
+import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayOrder
 
 /-!
 # Exact scalar differences and Euclidean width transport

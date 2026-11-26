@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.Names.GaussianNamedDifferenceAlgebra
+import IPRADerivations.Analysis.Names.Differences.GaussianNamedDifferenceAlgebra
 import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalExponent
-import IPRADerivations.Analysis.Polynomials.GaussianRationalSyntheticCoefficientValues
+import IPRADerivations.Analysis.Polynomials.Division.GaussianRationalSyntheticCoefficientValues
 
 /-!
 # Difference identities for original named Gaussian sums

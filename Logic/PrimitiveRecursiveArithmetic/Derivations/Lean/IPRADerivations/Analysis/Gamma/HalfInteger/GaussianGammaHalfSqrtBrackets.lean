@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Stirling.GaussianGammaHalfWallisRate
-import IPRADerivations.Analysis.Exponential.GaussianNamedPositiveExponentialOrder
+import IPRADerivations.Analysis.Stirling.Wallis.GaussianGammaHalfWallisRate
+import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianNamedPositiveExponentialOrder
 import IPRADerivations.Foundations.SquareRootRelationalCandidates
 
 /-!

@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.Taylor.RelativeExpansions.GaussianBarnesCanonicalSecondDerivativeStep
 import IPRADerivations.Analysis.Barnes.Taylor.RelativeExpansions.GaussianBarnesCanonicalSecondDerivativeTail
-import IPRADerivations.Analysis.Series.GaussianScaledReciprocalSquareInterval
-import IPRADerivations.Analysis.Integration.GaussianRationalQuadratureDifference
+import IPRADerivations.Analysis.Series.ReciprocalSquares.GaussianScaledReciprocalSquareInterval
+import IPRADerivations.Analysis.Integration.Quadrature.GaussianRationalQuadratureDifference
 
 /-!
 # Uniform second-order estimate for exact kept Barnes derivative sums

@@ -1,7 +1,7 @@
-import IPRADerivations.Analysis.Polynomials.GaussianPolynomialScaling
+import IPRADerivations.Analysis.Polynomials.Representation.GaussianPolynomialScaling
 import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalHorner
 import IPRADerivations.Analysis.FiniteOperations.GaussianProductStability
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalMetric
+import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalMetric
 
 /-!
 # Common-denominator rational finite root-product stability

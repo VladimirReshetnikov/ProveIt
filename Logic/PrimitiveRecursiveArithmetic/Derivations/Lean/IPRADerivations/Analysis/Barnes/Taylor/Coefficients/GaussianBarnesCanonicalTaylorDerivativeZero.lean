@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalProperness
 import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.GaussianBarnesCanonicalTaylorProductDerivativeName
 import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.GaussianBarnesCanonicalHeadDerivativeFractionProperness
-import IPRADerivations.Analysis.Exponential.GaussianRationalPolynomialExponentialStability
+import IPRADerivations.Analysis.Exponential.Polynomials.GaussianRationalPolynomialExponentialStability
 
 /-!
 # The original degree-zero Barnes Taylor name

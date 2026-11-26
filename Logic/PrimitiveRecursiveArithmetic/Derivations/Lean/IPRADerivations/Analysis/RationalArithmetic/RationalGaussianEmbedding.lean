@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.RationalAlgebra
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalValueEquality
+import IPRADerivations.Analysis.RationalArithmetic.Representations.GaussianRationalValueEquality
 import IPRADerivations.Core.LinearCombination
 
 /-!

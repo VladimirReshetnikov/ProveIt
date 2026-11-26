@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteProduct
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalNormSquareTransport
+import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianRationalNormSquareTransport
 
 /-!
 # Multiplicative transformations of the actual finite observation product

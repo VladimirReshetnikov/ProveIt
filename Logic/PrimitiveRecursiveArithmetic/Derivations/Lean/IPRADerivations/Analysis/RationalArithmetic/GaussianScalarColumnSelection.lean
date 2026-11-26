@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.LinearAlgebra.GaussianScalarDeterminant
+import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarDeterminant
 import IPRADerivations.Analysis.Polynomials.Determinants.GaussianPolynomialColumnAlternation
-import IPRADerivations.Analysis.LinearAlgebra.GaussianDeterminantSignTransport
+import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianDeterminantSignTransport
 import IPRADerivations.Foundations.RuntimeWordSorting
 import IPRADerivations.Core.CongruenceTactic
 import IPRADerivations.Core.LinearCombination

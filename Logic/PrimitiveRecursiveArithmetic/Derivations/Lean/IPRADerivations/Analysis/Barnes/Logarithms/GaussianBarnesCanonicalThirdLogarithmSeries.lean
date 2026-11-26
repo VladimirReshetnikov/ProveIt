@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Logarithms.GaussianBarnesCanonicalThirdLogarithmTail
-import IPRADerivations.Analysis.Exponential.GaussianPositiveExponentialProduct
+import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianPositiveExponentialProduct
 import IPRADerivations.Core.CommonLemmas
 
 /-!

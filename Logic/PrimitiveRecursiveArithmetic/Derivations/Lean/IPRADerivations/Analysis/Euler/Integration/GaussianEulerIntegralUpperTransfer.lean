@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.GaussianEulerIntegralGammaIdentification
+import IPRADerivations.Analysis.Gamma.Integrals.GaussianEulerIntegralGammaIdentification
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalSlackRemoval
 
 /-!

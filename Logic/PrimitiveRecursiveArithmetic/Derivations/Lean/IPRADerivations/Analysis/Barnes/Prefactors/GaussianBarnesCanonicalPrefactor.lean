@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Stirling.GaussianStirlingConstant
-import IPRADerivations.Analysis.Gamma.GaussianGammaFiniteApproximantName
+import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaFiniteApproximantName
 import IPRADerivations.Analysis.Exponential.GaussianExponentialAddition
-import IPRADerivations.Analysis.Exponential.GaussianExponentialRadiusIndependence
+import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialRadiusIndependence
 
 /-!
 # The original Barnes canonical-product prefactor

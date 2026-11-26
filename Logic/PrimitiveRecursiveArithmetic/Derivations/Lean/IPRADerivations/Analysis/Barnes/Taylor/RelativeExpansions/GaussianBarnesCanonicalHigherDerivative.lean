@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Taylor.RelativeExpansions.GaussianBarnesCanonicalHigherCofinal
-import IPRADerivations.Analysis.Names.GaussianBoundedConstantProductName
+import IPRADerivations.Analysis.Names.FiniteOperations.GaussianBoundedConstantProductName
 
 /-!
 # Factorial-scaled higher Barnes logarithmic coefficients

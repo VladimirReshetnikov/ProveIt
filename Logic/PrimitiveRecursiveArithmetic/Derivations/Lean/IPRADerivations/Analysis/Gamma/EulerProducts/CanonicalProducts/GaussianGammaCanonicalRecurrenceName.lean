@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalRecurrenceObservations
-import IPRADerivations.Analysis.Names.GaussianFastValueCut
+import IPRADerivations.Analysis.Names.Order.GaussianFastValueCut
 
 /-!
 # The literal canonical Gamma coefficient recurrence sum is an actual name

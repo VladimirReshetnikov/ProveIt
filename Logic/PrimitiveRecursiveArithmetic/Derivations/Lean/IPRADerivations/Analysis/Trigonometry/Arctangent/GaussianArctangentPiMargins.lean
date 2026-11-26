@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Stirling.GaussianGammaHalfWallisConvergence
-import IPRADerivations.Analysis.RationalArithmetic.RationalRepresentedUpper
+import IPRADerivations.Analysis.Stirling.Wallis.GaussianGammaHalfWallisConvergence
+import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalRepresentedUpper
 
 /-!
 # Strict rational margins for the original arctangent π name

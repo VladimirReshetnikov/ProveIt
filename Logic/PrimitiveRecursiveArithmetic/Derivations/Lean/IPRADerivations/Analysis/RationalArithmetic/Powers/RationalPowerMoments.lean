@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.PowerSums
-import IPRADerivations.Analysis.RationalArithmetic.RationalSumConstants
-import IPRADerivations.Analysis.RationalArithmetic.RationalRepresentedUpper
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalSumConstants
+import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalRepresentedUpper
 
 /-!
 # The rational observation of the original power-sum moment

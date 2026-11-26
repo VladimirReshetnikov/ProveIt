@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Series.GaussianRationalParameterTelescope
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedDifferenceQuotient
-import IPRADerivations.Analysis.Names.Rates.GaussianApproximateInverseDistance
+import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedDifferenceQuotient
+import IPRADerivations.Analysis.Names.Rates.Reciprocals.GaussianApproximateInverseDistance
 
 /-!
 # Exact normalization of an original finite parameter telescope

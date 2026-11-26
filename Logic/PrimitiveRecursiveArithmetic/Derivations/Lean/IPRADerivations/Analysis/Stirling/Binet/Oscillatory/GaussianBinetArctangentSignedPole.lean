@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.GaussianBinetArctangentResolvent
-import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerResidualRadius
-import IPRADerivations.Analysis.Trigonometry.GaussianSineProductImaginaryLogDerivativeTail
-import IPRADerivations.Analysis.Names.GaussianNamedRightHalfPlaneSigned
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Convergence.GaussianLogGammaEulerResidualRadius
+import IPRADerivations.Analysis.Trigonometry.Hyperbolic.GaussianSineProductImaginaryLogDerivativeTail
+import IPRADerivations.Analysis.Names.RightHalfPlane.GaussianNamedRightHalfPlaneSigned
 
 /-!
 # Signed rational charts for the two arctangent poles

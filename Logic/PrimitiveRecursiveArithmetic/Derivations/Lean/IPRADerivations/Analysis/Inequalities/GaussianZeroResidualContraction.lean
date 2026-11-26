@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianDescentClock
-import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianTranslatedBalancedRadius
+import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.GaussianDescentClock
+import IPRADerivations.Analysis.Polynomials.RootFinding.BalancedRadius.GaussianTranslatedBalancedRadius
 
 /-!
 # The actual zero-residual branch contracts

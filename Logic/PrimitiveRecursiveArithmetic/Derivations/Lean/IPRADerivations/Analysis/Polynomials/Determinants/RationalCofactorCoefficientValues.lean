@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.LinearAlgebra.RationalCofactorSupport
-import IPRADerivations.Analysis.LinearAlgebra.RationalMatrixInputHeight
+import IPRADerivations.Analysis.LinearAlgebra.Cofactors.RationalCofactorSupport
+import IPRADerivations.Analysis.LinearAlgebra.Matrices.RationalMatrixInputHeight
 
 /-!
 # Exact values of the returned signed cofactor coefficients

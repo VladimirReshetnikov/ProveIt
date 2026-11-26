@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.GaussianBarnesCanonicalPrefactorExponentDerivative
 import IPRADerivations.Analysis.Barnes.Prefactors.GaussianBarnesCanonicalPrefactorLipschitz
-import IPRADerivations.Analysis.Names.GaussianNamedBoundedProductObservation
+import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedBoundedProductObservation
 
 /-!
 # Quantitative expansion of the original Barnes prefactor exponent

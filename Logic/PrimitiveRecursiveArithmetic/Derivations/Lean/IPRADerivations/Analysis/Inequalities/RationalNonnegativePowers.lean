@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Geometry.GaussianEuclideanDistanceName
-import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianDescentClockArithmetic
+import IPRADerivations.Analysis.Geometry.Distances.GaussianEuclideanDistanceName
+import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.GaussianDescentClockArithmetic
 import IPRADerivations.Core.CongruenceTactic
 import IPRADerivations.Core.CommonLemmas
 

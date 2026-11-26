@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerReflectionHead
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Reflection.GaussianGammaEulerReflectionHead
 import IPRADerivations.Analysis.Names.GaussianNameRingLaws
 
 /-!

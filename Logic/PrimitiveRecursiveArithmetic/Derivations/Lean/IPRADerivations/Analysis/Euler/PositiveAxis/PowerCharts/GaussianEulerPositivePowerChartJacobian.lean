@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.GaussianEulerPositivePowerChart
-import IPRADerivations.Analysis.Euler.Integration.GaussianEulerPowerIncrement
-import IPRADerivations.Analysis.Euler.GaussianEulerDampedTimeRate
+import IPRADerivations.Analysis.Euler.Integration.Parameters.GaussianEulerPowerIncrement
+import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDampedTimeRate
 import IPRADerivations.Core.CongruenceTactic
 
 /-!

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Beta.GaussianBetaAllDegreeEulerInverse
+import IPRADerivations.Analysis.Beta.Endpoints.GaussianBetaAllDegreeEulerInverse
 import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactPowerMajorant
 
 /-!

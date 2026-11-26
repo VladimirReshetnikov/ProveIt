@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteProduct
 import IPRADerivations.Analysis.RationalArithmetic.RationalGaussianEmbedding
-import IPRADerivations.Analysis.RationalArithmetic.RationalRepresentedUpper
+import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalRepresentedUpper
 
 /-!
 # Finite products of nonnegative Gaussian real-axis observations

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalNaturalScale
-import IPRADerivations.Analysis.Polynomials.GaussianRationalSyntheticDivision
-import IPRADerivations.Analysis.RationalArithmetic.RationalRepresentedUpper
+import IPRADerivations.Analysis.Polynomials.Division.GaussianRationalSyntheticDivision
+import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalRepresentedUpper
 
 /-!
 # Positive natural scaling preserves and reflects scalar order

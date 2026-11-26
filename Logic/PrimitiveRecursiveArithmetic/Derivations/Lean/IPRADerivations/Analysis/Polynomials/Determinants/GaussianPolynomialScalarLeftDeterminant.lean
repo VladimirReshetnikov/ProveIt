@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.Polynomials.GaussianScalarPolynomialMatrixProduct
-import IPRADerivations.Analysis.LinearAlgebra.GaussianScalarDeterminantMultiplication
-import IPRADerivations.Analysis.Polynomials.GaussianRationalGridCoefficientEquality
+import IPRADerivations.Analysis.Polynomials.CompanionMatrices.GaussianScalarPolynomialMatrixProduct
+import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarDeterminantMultiplication
+import IPRADerivations.Analysis.Polynomials.Interpolation.GaussianRationalGridCoefficientEquality
 
 /-!
 # The determinant of the actual scalar-left polynomial matrix product

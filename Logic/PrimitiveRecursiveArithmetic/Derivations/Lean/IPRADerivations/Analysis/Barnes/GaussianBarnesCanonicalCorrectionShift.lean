@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.Deflation.GaussianBarnesCanonicalDeflatedFactor
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerHeadQuadratic
-import IPRADerivations.Analysis.Integration.GaussianRationalQuadratureDifference
-import IPRADerivations.Analysis.Exponential.GaussianPositiveExponentialMajorant
+import IPRADerivations.Analysis.Gamma.EulerProducts.FiniteHeads.GaussianGammaEulerHeadQuadratic
+import IPRADerivations.Analysis.Integration.Quadrature.GaussianRationalQuadratureDifference
+import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianPositiveExponentialMajorant
 import IPRADerivations.Core.CongruenceTactic
 
 /-!

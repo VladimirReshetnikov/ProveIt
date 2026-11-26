@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerHeadShift
+import IPRADerivations.Analysis.Gamma.EulerProducts.FiniteHeads.GaussianGammaEulerHeadShift
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalNaturalScale
 
 /-!

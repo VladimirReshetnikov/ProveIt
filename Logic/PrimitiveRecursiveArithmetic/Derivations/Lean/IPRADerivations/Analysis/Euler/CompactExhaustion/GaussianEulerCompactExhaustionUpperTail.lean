@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.GaussianEulerNamedUpperTail
+import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerNamedUpperTail
 import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.GaussianEulerPositivePowerChartImageCompactModulus
 
 /-!

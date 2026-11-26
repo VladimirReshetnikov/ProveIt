@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalDyadicCentralBound
-import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianBalancedRadiusArithmetic
+import IPRADerivations.Analysis.Polynomials.RootFinding.BalancedRadius.GaussianBalancedRadiusArithmetic
 
 /-!
 # A quadratic dyadic exponent for the Barnes central scalar

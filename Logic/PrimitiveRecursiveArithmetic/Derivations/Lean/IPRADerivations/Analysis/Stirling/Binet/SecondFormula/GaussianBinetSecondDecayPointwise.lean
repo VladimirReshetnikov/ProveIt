@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.GaussianBinetSecondDecayEnvelope
-import IPRADerivations.Analysis.Stirling.Binet.GaussianBinetExponentialPanel
+import IPRADerivations.Analysis.Stirling.Binet.ExponentialIntegrals.GaussianBinetExponentialPanel
 import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.GaussianBinetArctangentQuadratureBound
 import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetKernelPi
 

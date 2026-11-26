@@ -1,8 +1,8 @@
 import IPRADerivations.Analysis.Stirling.Binet.Bose.GaussianBinetBoseCompactBound
-import IPRADerivations.Analysis.Integration.GaussianCompactIntervalRescaling
-import IPRADerivations.Analysis.Integration.GaussianCompactMeshIndependence
+import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactIntervalRescaling
+import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactMeshIndependence
 import IPRADerivations.Analysis.Names.GaussianCompactNamedAdditivity
-import IPRADerivations.Analysis.Gamma.GaussianGammaCompactCutoffAlignment
+import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaCompactCutoffAlignment
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedSmallAddendRate
 
 /-!

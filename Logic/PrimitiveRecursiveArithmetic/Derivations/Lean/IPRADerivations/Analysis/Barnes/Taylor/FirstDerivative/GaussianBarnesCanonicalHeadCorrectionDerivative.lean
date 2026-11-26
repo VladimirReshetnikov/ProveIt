@@ -1,8 +1,8 @@
 import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalCorrectionShift
 import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalExponentBound
 import IPRADerivations.Analysis.Integration.GaussianRationalRiemannRefinement
-import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianCharacteristicEntryNorm
-import IPRADerivations.Analysis.Euler.Integration.GaussianEulerIncompleteFactorialCombination
+import IPRADerivations.Analysis.Polynomials.RootFinding.Characteristic.GaussianCharacteristicEntryNorm
+import IPRADerivations.Analysis.Euler.Integration.Incomplete.GaussianEulerIncompleteFactorialCombination
 
 /-!
 # Exact quadratic expansion of the original finite Barnes correction

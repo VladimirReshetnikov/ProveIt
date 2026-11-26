@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.SharpRates.GaussianEulerSharpDegreeSchedule
-import IPRADerivations.Analysis.Beta.GaussianBetaContiguousUpperTailBudget
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalL1Algebra
+import IPRADerivations.Analysis.Beta.Tails.GaussianBetaContiguousUpperTailBudget
+import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalL1Algebra
 
 /-!
 # Numerical evaluation of the documented sharp Euler degree

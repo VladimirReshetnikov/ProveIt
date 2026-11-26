@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalValue
 import IPRADerivations.Analysis.Barnes.Taylor.GaussianBarnesCanonicalCenteredHead
 import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalHeadExponentialFactors
 import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.GaussianBarnesCanonicalPrefactorExponentDerivative
-import IPRADerivations.Analysis.Gamma.GaussianGammaFoldedApproximantBalance
+import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaFoldedApproximantBalance
 
 /-!
 # The original Barnes value as kept powers times one exponential

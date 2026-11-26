@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.GaussianEulerPositivePowerChartLogarithm
 import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.GaussianEulerPositivePowerChartOrder
-import IPRADerivations.Analysis.Exponential.GaussianRealNameExponentialInjectivity
+import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianRealNameExponentialInjectivity
 
 /-!
 # A uniform real disk for the original power-chart logarithm

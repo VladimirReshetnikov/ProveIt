@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Determinants.GaussianPolynomialDeterminantNorm
-import IPRADerivations.Analysis.Polynomials.GaussianPolynomialCoefficientDifferences
+import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianPolynomialCoefficientDifferences
 
 /-!
 # Error summation for the actual runtime polynomial determinant

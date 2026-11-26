@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Geometry.GaussianExactDiskShrinking
-import IPRADerivations.Analysis.Exponential.GaussianExponentialRadiusIndependence
+import IPRADerivations.Analysis.Geometry.DiskNames.GaussianExactDiskShrinking
+import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialRadiusIndependence
 
 /-!
 # Original larger-disk exponentials through exact rational disk correction

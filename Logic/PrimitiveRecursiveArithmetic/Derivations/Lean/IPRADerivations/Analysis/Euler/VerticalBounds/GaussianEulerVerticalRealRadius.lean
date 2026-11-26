@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Euler.Integration.GaussianEulerDecayRealSamples
-import IPRADerivations.Analysis.RationalArithmetic.RationalRepresentedUpper
+import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayRealSamples
+import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalRepresentedUpper
 
 /-!
 # A positive exact radius from a real observation's lower envelope

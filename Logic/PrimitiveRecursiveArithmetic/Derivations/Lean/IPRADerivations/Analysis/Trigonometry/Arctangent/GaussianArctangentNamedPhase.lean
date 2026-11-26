@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentExponentialPeriod
-import IPRADerivations.Analysis.Names.GaussianNamedRightHalfPlane
-import IPRADerivations.Analysis.Names.GaussianNaturalScaleProductName
+import IPRADerivations.Analysis.Names.RightHalfPlane.GaussianNamedRightHalfPlane
+import IPRADerivations.Analysis.Names.Scaling.GaussianNaturalScaleProductName
 
 /-!
 # Natural and quarter arguments of the literal full turn

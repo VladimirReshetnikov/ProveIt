@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Stirling.GaussianStirlingGammaLogarithm
-import IPRADerivations.Analysis.Euler.GaussianHarmonicLogarithmName
-import IPRADerivations.Analysis.SpecialFunctions.GaussianNamedDampingPowerRealSamples
-import IPRADerivations.Analysis.Exponential.GaussianRealExponentialPositiveIncrement
+import IPRADerivations.Analysis.Euler.HarmonicLogarithms.GaussianHarmonicLogarithmName
+import IPRADerivations.Analysis.SpecialFunctions.DampingPower.GaussianNamedDampingPowerRealSamples
+import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianRealExponentialPositiveIncrement
 
 /-!
 # Stirling's (A(x)) on positive rational arguments

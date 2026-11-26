@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.GaussianEulerUnitSubstitutionCompactName
-import IPRADerivations.Analysis.Euler.Integration.GaussianEulerDecayOrder
+import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayOrder
 
 /-!
 # The actual decay-image grid of the unit-substitution density

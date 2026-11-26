@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteSumFamily
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteProductFamilyAppend
-import IPRADerivations.Analysis.Exponential.GaussianExponentialReference
+import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialReference
 
 /-!
 # Endpoint splits of finite sums of Gaussian names

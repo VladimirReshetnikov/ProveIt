@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRightHalfPlaneArgument
-import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentPartialRepresentation
+import IPRADerivations.Analysis.Trigonometry.Arctangent.PartialSums.GaussianArctangentPartialRepresentation
 
 /-!
 # Fraction independence of the right half-plane argument

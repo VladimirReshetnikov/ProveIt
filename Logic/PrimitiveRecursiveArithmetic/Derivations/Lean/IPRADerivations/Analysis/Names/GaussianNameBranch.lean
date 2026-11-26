@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Names.GaussianNameEquivalence
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalDistanceOrder
+import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalDistanceOrder
 
 /-!
 # Select a regular name with a fixed numerical branch bit

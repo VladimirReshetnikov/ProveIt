@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Taylor.Grids.GaussianBarnesCanonicalCofinalTaylorGridIncrementRate
-import IPRADerivations.Analysis.Names.GaussianNamedNaturalScale
+import IPRADerivations.Analysis.Names.Scaling.GaussianNamedNaturalScale
 
 /-!
 # Named Barnes factorial difference quotient

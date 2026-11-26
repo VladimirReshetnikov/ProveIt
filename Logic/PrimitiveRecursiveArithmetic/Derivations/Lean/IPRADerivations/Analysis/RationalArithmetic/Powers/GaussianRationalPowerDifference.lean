@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerAlgebra
-import IPRADerivations.Analysis.Geometry.GaussianRationalRelativeTriangle
+import IPRADerivations.Analysis.Geometry.Distances.GaussianRationalRelativeTriangle
 
 /-!
 # Actual Gaussian-rational power differences at runtime exponents

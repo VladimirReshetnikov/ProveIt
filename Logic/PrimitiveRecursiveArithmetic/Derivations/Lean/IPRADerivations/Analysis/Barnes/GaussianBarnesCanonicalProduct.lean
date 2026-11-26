@@ -3,7 +3,7 @@ import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalHeadS
 import IPRADerivations.Analysis.Barnes.Logarithms.GaussianBarnesCanonicalFiniteLogProduct
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
 import IPRADerivations.Analysis.Gamma.GaussianGammaInputProperness
-import IPRADerivations.Analysis.Names.GaussianFastValueCut
+import IPRADerivations.Analysis.Names.Order.GaussianFastValueCut
 
 /-!
 # The original Barnes canonical product at finite cutoffs

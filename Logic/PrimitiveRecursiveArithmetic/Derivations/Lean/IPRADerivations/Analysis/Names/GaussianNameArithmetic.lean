@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Names.GaussianNameBounds
-import IPRADerivations.Analysis.RationalArithmetic.GaussianValueNormalizerExtensionality
+import IPRADerivations.Analysis.RationalArithmetic.Representations.GaussianValueNormalizerExtensionality
 import IPRADerivations.Core.CongruenceTactic
 
 /-!

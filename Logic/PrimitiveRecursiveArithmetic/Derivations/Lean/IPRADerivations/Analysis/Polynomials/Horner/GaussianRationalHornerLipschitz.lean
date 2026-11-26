@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalHornerPerturbation
-import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianEuclideanResidualRadius
+import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.GaussianEuclideanResidualRadius
 import IPRADerivations.AnalyticNumberTheory.GoldbachGeometric
 import IPRADerivations.Core.LinearCombination
 

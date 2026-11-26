@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalHornerPrefixTaylor
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaDeflatedPrefixTaylor
+import IPRADerivations.Analysis.Gamma.EulerProducts.OriginalPrefixes.GaussianGammaDeflatedPrefixTaylor
 
 /-!
 # A scale-sensitive all-order tail for the actual deflated P polynomials

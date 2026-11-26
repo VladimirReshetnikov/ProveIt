@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Taylor.Grids.GaussianBarnesCanonicalFiniteTaylorGridComparison
 import IPRADerivations.Analysis.Barnes.Taylor.Grids.GaussianBarnesCanonicalFiniteTaylorNormalizedGridBudget
-import IPRADerivations.Analysis.Names.Rates.GaussianNativeDerivativeQuotientRate
+import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNativeDerivativeQuotientRate
 import IPRADerivations.Core.CommonLemmas
 
 /-!

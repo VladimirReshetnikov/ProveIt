@@ -1,5 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.MeshChange
-import IPRADerivations.Analysis.Optimization.RationalCubeInfimumIntervals
+import IPRADerivations.Analysis.Optimization.CubeInfimum.RationalCubeInfimumIntervals
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalSyntheticBounds
 import IPRADerivations.Core.LinearCombination
 

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Bose.GaussianBinetBoseGeometricRatio
-import IPRADerivations.Analysis.Geometry.GaussianRationalGeometricPowerTail
-import IPRADerivations.Analysis.Geometry.GaussianRationalInverseGeometric
+import IPRADerivations.Analysis.Geometry.GeometricBounds.GaussianRationalGeometricPowerTail
+import IPRADerivations.Analysis.Geometry.GeometricBounds.GaussianRationalInverseGeometric
 
 /-!
 # Geometric prefixes of the original Bose reciprocal

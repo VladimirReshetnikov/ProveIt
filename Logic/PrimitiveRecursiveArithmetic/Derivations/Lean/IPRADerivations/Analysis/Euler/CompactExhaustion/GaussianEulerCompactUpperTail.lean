@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Euler.PositiveAxis.GaussianEulerUpperTailScalar
-import IPRADerivations.Analysis.Euler.PositiveAxis.GaussianEulerHalfDecayTailBound
+import IPRADerivations.Analysis.Euler.PositiveAxis.UpperBounds.GaussianEulerUpperTailScalar
+import IPRADerivations.Analysis.Euler.PositiveAxis.HalfDecay.GaussianEulerHalfDecayTailBound
 import IPRADerivations.Core.CongruenceTactic
 
 /-!

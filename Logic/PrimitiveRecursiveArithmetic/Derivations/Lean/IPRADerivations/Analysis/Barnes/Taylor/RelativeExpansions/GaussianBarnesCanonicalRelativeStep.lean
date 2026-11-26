@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.GaussianBarnesCanonicalDerivativeRow
-import IPRADerivations.Analysis.Logarithm.GaussianLocalLogarithmMultiplicativeIncrement
-import IPRADerivations.Analysis.Geometry.GaussianRelativeNormTriangle
+import IPRADerivations.Analysis.Logarithm.Local.GaussianLocalLogarithmMultiplicativeIncrement
+import IPRADerivations.Analysis.Geometry.Distances.GaussianRelativeNormTriangle
 
 /-!
 # Actual relative step of the Barnes local logarithm

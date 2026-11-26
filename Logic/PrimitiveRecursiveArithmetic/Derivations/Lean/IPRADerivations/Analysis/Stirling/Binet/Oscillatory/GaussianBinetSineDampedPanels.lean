@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.GaussianBinetSineDampedTransform
 import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.GaussianBinetOscillatorySineQuotient
-import IPRADerivations.Analysis.Exponential.GaussianRationalExponentialTangent
+import IPRADerivations.Analysis.Exponential.Estimates.GaussianRationalExponentialTangent
 
 /-!
 # The same sine quotient on the original damped panels

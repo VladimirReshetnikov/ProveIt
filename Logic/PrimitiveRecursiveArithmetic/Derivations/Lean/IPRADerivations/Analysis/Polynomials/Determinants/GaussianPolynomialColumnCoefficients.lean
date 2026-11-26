@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Determinants.GaussianPolynomialColumnAlternation
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalFiniteGridIdentity
+import IPRADerivations.Analysis.RationalArithmetic.Grids.GaussianRationalFiniteGridIdentity
 
 /-!
 # Actual determinant coefficient negation under an adjacent column swap

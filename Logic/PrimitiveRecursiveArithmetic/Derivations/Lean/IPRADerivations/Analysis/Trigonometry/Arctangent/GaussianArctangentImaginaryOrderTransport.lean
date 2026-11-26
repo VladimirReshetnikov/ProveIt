@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentInverseForward
+import IPRADerivations.Analysis.Trigonometry.Arctangent.Inverse.GaussianArctangentInverseForward
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRealOrderTransport
 
 /-!

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceIntegrand
-import IPRADerivations.Analysis.Names.Rates.GaussianApproximateInverseDistance
+import IPRADerivations.Analysis.Names.Rates.Reciprocals.GaussianApproximateInverseDistance
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedProductObservationBound
 import IPRADerivations.Analysis.Integration.GaussianRationalRiemannRefinement
 

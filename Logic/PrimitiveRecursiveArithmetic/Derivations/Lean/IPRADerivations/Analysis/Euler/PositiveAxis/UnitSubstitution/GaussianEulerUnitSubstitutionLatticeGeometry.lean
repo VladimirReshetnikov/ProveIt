@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.GaussianEulerUnitSubstitutionFloorCuts
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.GaussianEulerUnitSubstitutionReversedDensity
-import IPRADerivations.Analysis.Integration.GaussianPartitionedFiniteSumDistance
+import IPRADerivations.Analysis.Integration.Partitions.GaussianPartitionedFiniteSumDistance
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitKernel.GaussianEulerUnitKernelCompactName
 
 /-!

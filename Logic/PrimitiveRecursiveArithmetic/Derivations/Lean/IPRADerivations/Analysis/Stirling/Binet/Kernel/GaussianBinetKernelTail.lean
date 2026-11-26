@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetKernelRows
 import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetKernelTailMajorant
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteSumFamilyRange
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedLipschitzRate
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalSumMajorant
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalSumMajorant
 
 /-!
 # Sharp tails for the actual finite Binet kernel names

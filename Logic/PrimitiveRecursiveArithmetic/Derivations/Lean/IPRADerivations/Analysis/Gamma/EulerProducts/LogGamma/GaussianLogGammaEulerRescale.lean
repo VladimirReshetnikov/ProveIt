@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerCofinal
-import IPRADerivations.Analysis.Logarithm.GaussianRightHalfPlaneLogarithmRescale
+import IPRADerivations.Analysis.Logarithm.RightHalfPlane.GaussianRightHalfPlaneLogarithmRescale
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteSumFamilyCongruence
-import IPRADerivations.Analysis.Gamma.GaussianGammaCompactCutoffAlignment
+import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaCompactCutoffAlignment
 
 /-!
 # Transport the original log-Gamma name across a common denominator

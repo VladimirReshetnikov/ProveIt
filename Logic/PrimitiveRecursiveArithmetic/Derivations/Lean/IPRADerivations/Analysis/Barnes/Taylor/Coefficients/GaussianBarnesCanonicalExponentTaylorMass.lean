@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.GaussianBarnesCanonicalExponentTaylorBuffer
 import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.GaussianBarnesCanonicalHeadCorrectionExponentialDerivative
 import IPRADerivations.Analysis.Barnes.Prefactors.GaussianBarnesCanonicalPrefactorLipschitz
-import IPRADerivations.Analysis.Polynomials.GaussianCoefficientUniformNorm
+import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianCoefficientUniformNorm
 
 /-!
 # The frozen Barnes exponent coefficients have a uniform mass cap

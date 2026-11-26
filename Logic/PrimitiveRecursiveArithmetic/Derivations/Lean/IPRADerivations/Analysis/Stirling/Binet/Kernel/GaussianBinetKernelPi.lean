@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.GaussianStirlingConstant
-import IPRADerivations.Analysis.Euler.GaussianEulerExponentCompactBounds
+import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerExponentCompactBounds
 
 /-!
 # The original π observations used in the Binet kernel

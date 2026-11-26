@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.Integration.GaussianPositiveRadiusQuadrature
-import IPRADerivations.Analysis.Integration.GaussianCompactRiemannName
-import IPRADerivations.Analysis.Exponential.GaussianNamedPositiveExponentialOrder
+import IPRADerivations.Analysis.Integration.Quadrature.GaussianPositiveRadiusQuadrature
+import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactRiemannName
+import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianNamedPositiveExponentialOrder
 
 /-!
 # Actual compact quadrature from positive real row majorants

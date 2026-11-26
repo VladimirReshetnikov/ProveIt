@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalNormalizedMultiplier
 import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalGaussDenominator
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianGammaGaussReflectionCancellation
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.ReferenceProduct.GaussianGammaGaussReflectionCancellation
 
 /-!
 # The original finite Barnes recurrence with the Euler Gamma head

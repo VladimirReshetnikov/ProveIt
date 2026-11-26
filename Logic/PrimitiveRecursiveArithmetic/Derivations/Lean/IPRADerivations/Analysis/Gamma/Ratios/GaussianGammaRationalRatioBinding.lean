@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalLogGautschi
-import IPRADerivations.Analysis.Stirling.GaussianStirlingLogDuplication
+import IPRADerivations.Analysis.Stirling.Duplication.GaussianStirlingLogDuplication
 
 /-!
 # Exact recovery of the original Gamma numerator from its ratio name

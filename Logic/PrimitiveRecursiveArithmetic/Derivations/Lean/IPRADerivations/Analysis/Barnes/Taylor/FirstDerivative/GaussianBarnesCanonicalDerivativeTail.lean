@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.GaussianBarnesCanonicalDerivativeRow
 import IPRADerivations.Analysis.Barnes.Logarithms.GaussianBarnesCanonicalLogTail
-import IPRADerivations.Analysis.LinearAlgebra.GaussianRationalMatrixFiniteSums
-import IPRADerivations.Analysis.Series.GaussianReciprocalSquareInterval
+import IPRADerivations.Analysis.LinearAlgebra.Matrices.GaussianRationalMatrixFiniteSums
+import IPRADerivations.Analysis.Series.ReciprocalSquares.GaussianReciprocalSquareInterval
 
 /-!
 # Finite tails of the rational first-derivative expressions

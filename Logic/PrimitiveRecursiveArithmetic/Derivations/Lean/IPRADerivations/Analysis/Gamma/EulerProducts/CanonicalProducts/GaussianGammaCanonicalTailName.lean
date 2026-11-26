@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GammaCanonicalNames
-import IPRADerivations.Analysis.Logarithm.GaussianLocalLogarithmName
+import IPRADerivations.Analysis.Logarithm.Local.GaussianLocalLogarithmName
 import IPRADerivations.Core.CongruenceTactic
 
 /-!

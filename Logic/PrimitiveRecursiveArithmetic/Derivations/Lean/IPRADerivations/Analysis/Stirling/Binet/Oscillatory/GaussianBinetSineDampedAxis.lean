@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceDecay
-import IPRADerivations.Analysis.Stirling.Binet.GaussianBinetExponentialIntegralGrid
+import IPRADerivations.Analysis.Stirling.Binet.ExponentialIntegrals.GaussianBinetExponentialIntegralGrid
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerPositiveAxis
-import IPRADerivations.Analysis.Gamma.Digamma.GaussianGammaDigammaTwoShiftSecants
+import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.Rational.GaussianGammaDigammaTwoShiftSecants
 
 /-!
 # Real damping on the actual sine transform mesh

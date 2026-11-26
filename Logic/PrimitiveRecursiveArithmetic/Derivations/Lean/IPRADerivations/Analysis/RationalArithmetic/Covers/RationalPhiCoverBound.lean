@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.RationalPhiSection
+import IPRADerivations.Analysis.RationalArithmetic.GoldenRatio.RationalPhiSection
 import IPRADerivations.Analysis.RationalArithmetic.Covers.RationalPhiCoverAssignment
 import IPRADerivations.Analysis.RationalArithmetic.Covers.RationalCoverPadding
 

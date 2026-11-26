@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Names.GaussianBoundedConstantProductName
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedInverseRate
+import IPRADerivations.Analysis.Names.FiniteOperations.GaussianBoundedConstantProductName
+import IPRADerivations.Analysis.Names.Rates.Reciprocals.GaussianNamedInverseRate
 
 /-!
 # Exact input rates for the actual bounded constant-product program

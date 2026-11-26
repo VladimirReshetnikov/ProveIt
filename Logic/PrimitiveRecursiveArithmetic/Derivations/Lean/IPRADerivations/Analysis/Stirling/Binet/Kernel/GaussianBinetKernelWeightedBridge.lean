@@ -1,8 +1,8 @@
 import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetKernelHalfExponential
 import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetKernelRationalTimeCleared
-import IPRADerivations.Analysis.Stirling.Binet.GaussianBinetWeightedExponential
-import IPRADerivations.Analysis.Names.GaussianNamedStrictOrderDifference
-import IPRADerivations.Analysis.Names.GaussianNamedDifferenceAlgebra
+import IPRADerivations.Analysis.Stirling.Binet.WeightedIntegrals.GaussianBinetWeightedExponential
+import IPRADerivations.Analysis.Names.Differences.GaussianNamedStrictOrderDifference
+import IPRADerivations.Analysis.Names.Differences.GaussianNamedDifferenceAlgebra
 
 /-!
 # The nonsingular weighted Binet kernel at positive time

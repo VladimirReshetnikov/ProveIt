@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerRepresentation
-import IPRADerivations.Analysis.Stirling.GaussianStirlingGammaFractionalIncrementLogGap
+import IPRADerivations.Analysis.Stirling.GammaIncrements.GaussianStirlingGammaFractionalIncrementLogGap
 
 /-!
 # Normalization of the cofinal Euler logarithm at one

@@ -1,7 +1,7 @@
-import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentCayleyValues
-import IPRADerivations.Analysis.Exponential.GaussianBoundedIntegerExponential
+import IPRADerivations.Analysis.Trigonometry.Arctangent.Cayley.GaussianArctangentCayleyValues
+import IPRADerivations.Analysis.Exponential.IntegerPowers.GaussianBoundedIntegerExponential
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaWeierstrassApproximant
-import IPRADerivations.Analysis.Exponential.GaussianNamedExponentialDifferenceIdentity
+import IPRADerivations.Analysis.Exponential.Names.GaussianNamedExponentialDifferenceIdentity
 
 /-!
 # Sine as a normalized combination of the original exponential names

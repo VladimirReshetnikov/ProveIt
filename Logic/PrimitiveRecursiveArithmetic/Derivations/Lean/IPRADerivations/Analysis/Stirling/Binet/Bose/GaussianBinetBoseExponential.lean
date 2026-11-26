@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetKernelPi
-import IPRADerivations.Analysis.Trigonometry.GaussianPiRationalScale
-import IPRADerivations.Analysis.Euler.Integration.GaussianEulerDecayFactorBounds
+import IPRADerivations.Analysis.Trigonometry.Pi.GaussianPiRationalScale
+import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayFactorBounds
 
 /-!
 # The original exponential at signed Pi-scaled rational times

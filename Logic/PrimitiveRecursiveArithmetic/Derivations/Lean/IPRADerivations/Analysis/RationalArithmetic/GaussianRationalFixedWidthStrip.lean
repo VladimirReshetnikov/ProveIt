@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Polynomials.GaussianPolynomialMonicCompanion
-import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianRationalMonicReduction
+import IPRADerivations.Analysis.Polynomials.CompanionMatrices.GaussianPolynomialMonicCompanion
+import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianRationalMonicReduction
 import IPRADerivations.Core.CongruenceTactic
 
 /-!

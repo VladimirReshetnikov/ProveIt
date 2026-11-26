@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalFractionalChord
-import IPRADerivations.Analysis.Names.GaussianNamedNaturalScaleOrder
-import IPRADerivations.Analysis.Euler.GaussianHarmonicWeightedQuadraticName
+import IPRADerivations.Analysis.Names.Scaling.GaussianNamedNaturalScaleOrder
+import IPRADerivations.Analysis.Euler.HarmonicLogarithms.GaussianHarmonicWeightedQuadraticName
 import IPRADerivations.Analysis.Stirling.GaussianStirlingNames
 
 /-!

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Geometry.GaussianNamedDiskDemandReadback
+import IPRADerivations.Analysis.Geometry.DiskNames.GaussianNamedDiskDemandReadback
 import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.GaussianBarnesCanonicalValueDerivativeProperness
 import IPRADerivations.Analysis.Barnes.Names.GaussianBarnesCanonicalNamed
 

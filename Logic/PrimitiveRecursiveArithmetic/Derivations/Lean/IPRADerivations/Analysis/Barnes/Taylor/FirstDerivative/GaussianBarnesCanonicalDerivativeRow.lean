@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.Logarithms.GaussianBarnesCanonicalLogRow
 import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalBase
 import IPRADerivations.Analysis.Gamma.Poles.GaussianGammaLocalPoleGuards
-import IPRADerivations.Analysis.Polynomials.GaussianRationalCoefficientScaling
+import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianRationalCoefficientScaling
 
 /-!
 # Rational first-derivative row of the Barnes canonical logarithm

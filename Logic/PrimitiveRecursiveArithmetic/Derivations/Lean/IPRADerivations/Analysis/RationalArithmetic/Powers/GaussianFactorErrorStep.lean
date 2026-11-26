@@ -1,7 +1,7 @@
-import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianRationalDeflationError
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalReconstruction
+import IPRADerivations.Analysis.Polynomials.RootFinding.Deflation.GaussianRationalDeflationError
+import IPRADerivations.Analysis.RationalArithmetic.Representations.GaussianRationalReconstruction
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianFactorBounds
-import IPRADerivations.Analysis.Polynomials.GaussianCoefficientNormOrder
+import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianCoefficientNormOrder
 import IPRADerivations.Core.CongruenceTactic
 
 /-!

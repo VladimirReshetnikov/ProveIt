@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalBlockSums
-import IPRADerivations.Analysis.LinearAlgebra.GaussianRationalMatrixFiniteSums
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalBlockSums
+import IPRADerivations.Analysis.LinearAlgebra.Matrices.GaussianRationalMatrixFiniteSums
 
 /-!
 # A contiguous suffix as a zero-masked Gaussian sum

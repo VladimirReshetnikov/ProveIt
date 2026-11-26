@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactExhaustionScaled
-import IPRADerivations.Analysis.Euler.GaussianEulerDampedTimeRate
+import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDampedTimeRate
 
 /-!
 # Removal of the exact chart coefficient from cofinal observations

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetKernelFrozenPrefix
-import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceStripCutoff
+import IPRADerivations.Analysis.Stirling.Binet.Laplace.Strips.GaussianBinetLaplaceStripCutoff
 
 /-!
 # Shared-clock finite kernel on the original Laplace strip grid

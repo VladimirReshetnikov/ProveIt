@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Names.GaussianNamedHalfPlaneCorrection
+import IPRADerivations.Analysis.Names.RightHalfPlane.GaussianNamedHalfPlaneCorrection
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerIntegralUpperBound
 import IPRADerivations.Analysis.Euler.GaussianNamedEulerQuadrature
 

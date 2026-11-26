@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.RationalArithmetic.RationalPhiFeatures
+import IPRADerivations.Analysis.RationalArithmetic.GoldenRatio.RationalPhiFeatures
 import IPRADerivations.Analysis.RationalArithmetic.Covers.RationalSubspaceCoverSearch
-import IPRADerivations.Analysis.RationalArithmetic.RationalCurvePointsGaussianEmbedding
+import IPRADerivations.Analysis.RationalArithmetic.Fibers.RationalCurvePointsGaussianEmbedding
 import IPRADerivations.Foundations.FiniteCoverAssignment
 import IPRADerivations.Core.CongruenceTactic
 

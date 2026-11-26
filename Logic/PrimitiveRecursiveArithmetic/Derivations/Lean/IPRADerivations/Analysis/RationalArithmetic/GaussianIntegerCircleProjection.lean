@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalCircleParametrization
-import IPRADerivations.Analysis.Geometry.GaussianRelativeNormTriangle
+import IPRADerivations.Analysis.Geometry.Distances.GaussianRelativeNormTriangle
 
 /-!
 # Exact integer errors of the actual rational circle projection

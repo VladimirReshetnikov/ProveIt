@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Logarithms.GaussianBarnesCanonicalLogRow
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalFiniteSum
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalFiniteSum
 import IPRADerivations.Core.CongruenceTactic
 
 /-!

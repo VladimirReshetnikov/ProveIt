@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.RationalSupMetric
+import IPRADerivations.Analysis.RationalArithmetic.Distances.RationalSupMetric
 import IPRADerivations.Core.CongruenceTactic
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas

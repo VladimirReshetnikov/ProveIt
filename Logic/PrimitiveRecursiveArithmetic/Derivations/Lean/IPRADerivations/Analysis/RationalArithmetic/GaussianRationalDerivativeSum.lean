@@ -1,8 +1,8 @@
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalDerivativeWeights
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalL1Algebra
+import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalL1Algebra
 import IPRADerivations.Analysis.Inequalities.RationalNonnegativePowers
 import IPRADerivations.Analysis.Barnes.BarnesCutoff
-import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianDescentClockArithmetic
+import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.GaussianDescentClockArithmetic
 import IPRADerivations.Core.CongruenceTactic
 import IPRADerivations.Core.LinearCombination
 

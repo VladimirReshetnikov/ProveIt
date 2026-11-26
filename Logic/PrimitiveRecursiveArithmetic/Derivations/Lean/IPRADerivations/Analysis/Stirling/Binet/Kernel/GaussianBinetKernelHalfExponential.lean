@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetKernelFrozenHyperbolic
-import IPRADerivations.Analysis.Euler.Integration.GaussianEulerDecayQuadratureAtZero
+import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayQuadratureAtZero
 
 /-!
 # Products of the fixed Binet half-time exponentials

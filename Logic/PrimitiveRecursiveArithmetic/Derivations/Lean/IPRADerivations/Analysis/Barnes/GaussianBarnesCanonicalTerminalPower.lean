@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalTerminalRemainder
 import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalBaseProductShift
-import IPRADerivations.Analysis.Exponential.GaussianBoundedIntegerExponential
-import IPRADerivations.Analysis.Logarithm.GaussianLocalLogarithmMultiplicativeIncrement
+import IPRADerivations.Analysis.Exponential.IntegerPowers.GaussianBoundedIntegerExponential
+import IPRADerivations.Analysis.Logarithm.Local.GaussianLocalLogarithmMultiplicativeIncrement
 
 /-!
 # Exact power of the original terminal logarithm

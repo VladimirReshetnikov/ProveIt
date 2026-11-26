@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Names.Rates.GaussianRationalModulus
-import IPRADerivations.Analysis.Optimization.AggregateOptimization
-import IPRADerivations.Analysis.Polynomials.GaussianCoefficientNormEntries
+import IPRADerivations.Analysis.Optimization.Aggregates.AggregateOptimization
+import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianCoefficientNormEntries
 import IPRADerivations.Foundations.GuardedTotalization
 
 /-!

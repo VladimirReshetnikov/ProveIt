@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Powers.RationalReciprocalPowerTail
-import IPRADerivations.Analysis.Optimization.RationalCubeInfimumName
+import IPRADerivations.Analysis.Optimization.CubeInfimum.RationalCubeInfimumName
 import IPRADerivations.Analysis.RationalArithmetic.RationalClosure
 import IPRADerivations.Core.CongruenceTactic
 

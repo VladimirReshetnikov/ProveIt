@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Geometry.GaussianEuclideanDistanceName
+import IPRADerivations.Analysis.Geometry.Distances.GaussianEuclideanDistanceName
 
 /-!
 # Clearing displacement bounds between normalized native fractions

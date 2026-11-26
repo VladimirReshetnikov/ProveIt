@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.GaussianBarnesCanonicalFunctionalEquation
 import IPRADerivations.Analysis.Barnes.Names.GaussianBarnesCanonicalNamedFrozen
 import IPRADerivations.Analysis.Euler.GaussianEulerNamedShiftInput
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianGammaC7NamedFrozen
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.ReciprocalGamma.GaussianGammaC7NamedFrozen
 
 /-!
 # The original cleared Barnes functional equation on regular Gaussian names

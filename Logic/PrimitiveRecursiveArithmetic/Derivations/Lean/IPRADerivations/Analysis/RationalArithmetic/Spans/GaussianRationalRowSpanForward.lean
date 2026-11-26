@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.Spans.GaussianRationalRowSpanPivotForward
 import IPRADerivations.Analysis.RationalArithmetic.Spans.GaussianRationalRowSpanRewind
-import IPRADerivations.Analysis.Polynomials.Elimination.GaussianSuperellipticSubspaceFromSpan
+import IPRADerivations.Analysis.Polynomials.Elimination.Superelliptic.GaussianSuperellipticSubspaceFromSpan
 import IPRADerivations.Core.CongruenceTactic
 
 /-!

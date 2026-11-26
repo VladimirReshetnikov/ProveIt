@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.GaussianBinetArctangentCosineRectangle
-import IPRADerivations.Analysis.Integration.GaussianRationalQuadratureMean
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalFubini
+import IPRADerivations.Analysis.Integration.Quadrature.GaussianRationalQuadratureMean
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalFubini
 
 /-!
 # Exact transposition of the original cosine rectangle

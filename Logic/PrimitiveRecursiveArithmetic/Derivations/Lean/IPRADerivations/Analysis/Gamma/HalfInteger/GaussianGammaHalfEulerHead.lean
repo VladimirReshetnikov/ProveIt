@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaHalfRisingFactorial
-import IPRADerivations.Analysis.Beta.GaussianEulerBetaProductValue
+import IPRADerivations.Analysis.Gamma.EulerProducts.Factorials.GaussianGammaHalfRisingFactorial
+import IPRADerivations.Analysis.Beta.EulerProducts.GaussianEulerBetaProductValue
 
 /-!
 # Exact original finite Euler head at one half

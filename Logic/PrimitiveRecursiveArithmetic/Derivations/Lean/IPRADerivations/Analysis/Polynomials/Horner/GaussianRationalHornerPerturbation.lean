@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianRationalDeflationError
-import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianMonicResidualRadius
-import IPRADerivations.Analysis.Polynomials.GaussianCoefficientNormOrder
+import IPRADerivations.Analysis.Polynomials.RootFinding.Deflation.GaussianRationalDeflationError
+import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.GaussianMonicResidualRadius
+import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianCoefficientNormOrder
 
 /-!
 # Uniform original-coefficient perturbation of actual rational Horner programs

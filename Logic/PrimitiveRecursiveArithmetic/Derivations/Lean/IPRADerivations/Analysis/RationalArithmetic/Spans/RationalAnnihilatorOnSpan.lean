@@ -1,7 +1,7 @@
-import IPRADerivations.Analysis.Polynomials.RationalAnnihilatorPolynomial
+import IPRADerivations.Analysis.Polynomials.Annihilators.RationalAnnihilatorPolynomial
 import IPRADerivations.Analysis.RationalArithmetic.Spans.RationalOriginalAnnihilator
-import IPRADerivations.Analysis.Polynomials.Elimination.RationalSuperellipticSubspace
-import IPRADerivations.Analysis.Polynomials.Elimination.GaussianSuperellipticSubspaceFromSpan
+import IPRADerivations.Analysis.Polynomials.Elimination.Superelliptic.RationalSuperellipticSubspace
+import IPRADerivations.Analysis.Polynomials.Elimination.Superelliptic.GaussianSuperellipticSubspaceFromSpan
 
 /-!
 # The actual rational annihilator polynomial vanishes on the original span

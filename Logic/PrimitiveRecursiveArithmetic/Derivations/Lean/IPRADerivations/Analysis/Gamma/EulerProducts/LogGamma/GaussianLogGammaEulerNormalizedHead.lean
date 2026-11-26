@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerFactorSum
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaFactorialLogSum
-import IPRADerivations.Analysis.Gamma.BohrMollerup.GaussianBohrMollerupDifference
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedDifferenceQuotientProperness
+import IPRADerivations.Analysis.Gamma.BohrMollerup.Uniqueness.GaussianBohrMollerupDifference
+import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedDifferenceQuotientProperness
 
 /-!
 # Cancel the factorial logarithm in the finite Euler head

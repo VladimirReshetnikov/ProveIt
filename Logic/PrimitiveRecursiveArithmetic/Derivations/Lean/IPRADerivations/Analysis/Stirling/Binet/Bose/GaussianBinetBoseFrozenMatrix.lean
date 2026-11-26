@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Bose.GaussianBinetBosePrefixTranspose
 import IPRADerivations.Analysis.Stirling.Binet.Bose.GaussianBinetBoseLiteralFrozen
-import IPRADerivations.Analysis.Euler.Integration.GaussianEulerDecayQuadraturePrecision
+import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayQuadraturePrecision
 
 /-!
 # Compare the transposed Bose prefix with one frozen π matrix

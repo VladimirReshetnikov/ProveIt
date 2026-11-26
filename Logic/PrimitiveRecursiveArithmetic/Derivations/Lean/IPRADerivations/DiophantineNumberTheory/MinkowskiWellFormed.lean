@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.RationalNormalForm
+import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalNormalForm
 import IPRADerivations.DiophantineNumberTheory.MinkowskiCenterVectors
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.Header

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalHeadPolynomial
-import IPRADerivations.Analysis.Polynomials.GaussianRationalUniformFirstOrderPolynomial
+import IPRADerivations.Analysis.Polynomials.Taylor.GaussianRationalUniformFirstOrderPolynomial
 
 /-!
 # First-order bound for the actual finite Barnes base-power product

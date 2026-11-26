@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteEulerLateInput
 import IPRADerivations.Analysis.Gamma.Names.GaussianNamedGammaLateInput
 import IPRADerivations.Analysis.Euler.PositiveAxis.SharpRates.GaussianEulerSharpAllDegrees
-import IPRADerivations.Analysis.Gamma.GaussianEulerIntegralGammaIdentification
+import IPRADerivations.Analysis.Gamma.Integrals.GaussianEulerIntegralGammaIdentification
 
 /-!
 # The literal sharp Euler rate on an original regular complex name

@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.Gamma.GaussianGammaFiniteValueProperness
+import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaFiniteValueProperness
 import IPRADerivations.Analysis.Names.GaussianNameConjugation
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaWeierstrassLimit
+import IPRADerivations.Analysis.Gamma.EulerProducts.Weierstrass.GaussianGammaWeierstrassLimit
 import IPRADerivations.Analysis.Gamma.GaussianGammaReciprocalInverse
 import IPRADerivations.Core.CongruenceTactic
 

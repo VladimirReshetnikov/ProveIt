@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.GaussianStirlingDuplication
+import IPRADerivations.Analysis.Stirling.Duplication.GaussianStirlingDuplication
 import IPRADerivations.Analysis.Stirling.GaussianStirlingOriginalIntegerLimit
 
 /-!

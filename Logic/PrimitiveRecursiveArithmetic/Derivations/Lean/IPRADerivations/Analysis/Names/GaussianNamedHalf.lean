@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalRealSamples
-import IPRADerivations.Analysis.Integration.GaussianEvenMomentWholeLineValue
-import IPRADerivations.Analysis.Names.GaussianNamedBoundedProductObservation
+import IPRADerivations.Analysis.Integration.Moments.GaussianEvenMomentWholeLineValue
+import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedBoundedProductObservation
 
 /-!
 # Halving a regular Gaussian name

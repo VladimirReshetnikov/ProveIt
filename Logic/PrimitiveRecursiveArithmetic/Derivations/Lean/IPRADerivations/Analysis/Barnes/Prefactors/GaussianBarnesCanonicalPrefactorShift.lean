@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Prefactors.GaussianBarnesCanonicalPrefactor
-import IPRADerivations.Analysis.Names.GaussianNamedStrictOrderDifference
-import IPRADerivations.Analysis.Gamma.GaussianGammaFoldedApproximantBalance
+import IPRADerivations.Analysis.Names.Differences.GaussianNamedStrictOrderDifference
+import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaFoldedApproximantBalance
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerHeadLower
 
 /-!

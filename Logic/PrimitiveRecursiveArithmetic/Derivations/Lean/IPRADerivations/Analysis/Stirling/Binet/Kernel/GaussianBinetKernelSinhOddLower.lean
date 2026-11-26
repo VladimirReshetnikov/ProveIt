@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.Exponential.GaussianPositiveExponentialTermBound
-import IPRADerivations.Analysis.Exponential.GaussianScalarExponentialOddTaylor
-import IPRADerivations.Analysis.Trigonometry.GaussianPiRationalScale
+import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianPositiveExponentialTermBound
+import IPRADerivations.Analysis.Exponential.FiniteSeries.GaussianScalarExponentialOddTaylor
+import IPRADerivations.Analysis.Trigonometry.Pi.GaussianPiRationalScale
 
 /-!
 # Finite positive lower bound for the original hyperbolic sine

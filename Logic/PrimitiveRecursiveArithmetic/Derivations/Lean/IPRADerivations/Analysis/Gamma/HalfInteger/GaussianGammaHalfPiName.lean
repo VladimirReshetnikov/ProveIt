@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.GaussianGammaHalfWallisRate
+import IPRADerivations.Analysis.Stirling.Wallis.GaussianGammaHalfWallisRate
 import IPRADerivations.Core.CommonLemmas
 
 /-!

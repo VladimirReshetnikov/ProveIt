@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.PositiveAxis.GaussianEulerLowerBlockWeight
+import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.GaussianEulerLowerBlockWeight
 
 /-!
 # The actual lower-panel sum with a retained numerical coefficient

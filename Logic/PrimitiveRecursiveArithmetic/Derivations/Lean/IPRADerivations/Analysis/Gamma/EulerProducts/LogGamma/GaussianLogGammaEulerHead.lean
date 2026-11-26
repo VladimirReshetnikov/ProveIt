@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Logarithm.GaussianRightHalfPlaneLogarithm
+import IPRADerivations.Analysis.Logarithm.RightHalfPlane.GaussianRightHalfPlaneLogarithm
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteSumFamily
 
 /-!

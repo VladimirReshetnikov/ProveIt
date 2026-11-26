@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Geometry.GaussianEuclideanDistanceUpperCut
-import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianRootSchedule
+import IPRADerivations.Analysis.Geometry.Distances.GaussianEuclideanDistanceUpperCut
+import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.GaussianRootSchedule
 import IPRADerivations.Core.CongruenceTactic
 
 /-!

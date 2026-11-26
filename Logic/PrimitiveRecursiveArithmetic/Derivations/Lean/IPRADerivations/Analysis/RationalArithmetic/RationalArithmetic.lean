@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.RationalNormalForm
+import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalNormalForm
 import IPRADerivations.Analysis.Optimization.RationalArgmin
 import IPRADerivations.Analysis.RationalArithmetic.RationalValueBounds
 

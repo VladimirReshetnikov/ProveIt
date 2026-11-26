@@ -1,8 +1,8 @@
 import IPRADerivations.Analysis.Euler.Logarithms.GaussianEulerLogarithmicOrderZero
-import IPRADerivations.Analysis.Euler.Logarithms.GaussianEulerLogarithmicFixedCutoff
-import IPRADerivations.Analysis.Euler.GaussianEulerFixedCutoffApproximation
-import IPRADerivations.Analysis.Gamma.GaussianEulerIntegralGammaIdentification
-import IPRADerivations.Analysis.Gamma.GaussianGammaHalfPlaneInputContinuity
+import IPRADerivations.Analysis.Euler.Logarithms.Exhaustion.GaussianEulerLogarithmicFixedCutoff
+import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerFixedCutoffApproximation
+import IPRADerivations.Analysis.Gamma.Integrals.GaussianEulerIntegralGammaIdentification
+import IPRADerivations.Analysis.Gamma.Names.Input.GaussianGammaHalfPlaneInputContinuity
 
 /-!
 # The order-zero logarithmic integral is the original Gamma name

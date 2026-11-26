@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.SpecialFunctions.HypergeometricTerm
+import IPRADerivations.Analysis.SpecialFunctions.Hypergeometric.HypergeometricTerm
 import IPRADerivations.Core.OrderCertificates
 
 /-!

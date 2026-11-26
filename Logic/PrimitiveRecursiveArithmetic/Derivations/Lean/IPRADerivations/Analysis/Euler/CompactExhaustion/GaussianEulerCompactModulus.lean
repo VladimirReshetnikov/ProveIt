@@ -1,8 +1,8 @@
-import IPRADerivations.Analysis.Euler.GaussianEulerExponentCompactBounds
-import IPRADerivations.Analysis.Exponential.GaussianRadiusExponentialLipschitzRate
-import IPRADerivations.Analysis.Exponential.GaussianExponentialRadiusIndependence
+import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerExponentCompactBounds
+import IPRADerivations.Analysis.Exponential.Estimates.GaussianRadiusExponentialLipschitzRate
+import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialRadiusIndependence
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
-import IPRADerivations.Analysis.Integration.GaussianCompactRiemannName
+import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactRiemannName
 import IPRADerivations.Core.CongruenceTactic
 
 /-!

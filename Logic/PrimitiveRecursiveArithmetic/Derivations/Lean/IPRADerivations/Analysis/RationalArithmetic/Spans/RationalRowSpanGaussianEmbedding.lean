@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.RationalArithmetic.RationalGaussianRealPart
-import IPRADerivations.Analysis.Polynomials.RationalPolynomialGaussianEmbedding
+import IPRADerivations.Analysis.Polynomials.Representation.RationalPolynomialGaussianEmbedding
 import IPRADerivations.Analysis.RationalArithmetic.Spans.GaussianRationalRowSpan
-import IPRADerivations.Analysis.Polynomials.Elimination.GaussianSuperellipticSubspaceFromSpan
+import IPRADerivations.Analysis.Polynomials.Elimination.Superelliptic.GaussianSuperellipticSubspaceFromSpan
 
 /-!
 # Original rational row combinations and embedded field spans

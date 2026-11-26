@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Bose.GaussianBinetBoseImproperName
 import IPRADerivations.Analysis.Stirling.Binet.GaussianBinetFirstFormula
-import IPRADerivations.Analysis.Names.GaussianNaturalScaleProductName
+import IPRADerivations.Analysis.Names.Scaling.GaussianNaturalScaleProductName
 
 /-!
 # The normalized right-hand side of the second Binet formula

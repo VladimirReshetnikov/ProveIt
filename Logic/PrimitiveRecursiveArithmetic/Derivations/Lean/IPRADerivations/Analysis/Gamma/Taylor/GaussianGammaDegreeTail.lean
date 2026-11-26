@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaFiniteDegreeRearrangem
 import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalTailMetric
 import IPRADerivations.Analysis.FiniteOperations.GaussianProductStability
 import IPRADerivations.Analysis.Names.GaussianNameArithmetic
-import IPRADerivations.Analysis.Polynomials.GaussianCoefficientNormOrder
+import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianCoefficientNormOrder
 import IPRADerivations.Core.CommonLemmas
 
 /-!

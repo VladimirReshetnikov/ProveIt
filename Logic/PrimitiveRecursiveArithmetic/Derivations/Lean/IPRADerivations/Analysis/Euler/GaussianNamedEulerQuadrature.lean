@@ -1,8 +1,8 @@
-import IPRADerivations.Analysis.Euler.Integration.GaussianNamedEulerIntegrandParameterContinuity
-import IPRADerivations.Analysis.Names.GaussianNamedRationalApproximation
-import IPRADerivations.Analysis.Euler.Integration.GaussianEulerIntegrandParameterContinuity
+import IPRADerivations.Analysis.Euler.Integration.Parameters.GaussianNamedEulerIntegrandParameterContinuity
+import IPRADerivations.Analysis.Names.Approximation.GaussianNamedRationalApproximation
+import IPRADerivations.Analysis.Euler.Integration.Parameters.GaussianEulerIntegrandParameterContinuity
 import IPRADerivations.Analysis.Gamma.Names.GaussianNamedGamma
-import IPRADerivations.Analysis.Gamma.GaussianEulerIntegralGammaIdentification
+import IPRADerivations.Analysis.Gamma.Integrals.GaussianEulerIntegralGammaIdentification
 
 /-!
 # The original Euler quadrature schedule on a named parameter

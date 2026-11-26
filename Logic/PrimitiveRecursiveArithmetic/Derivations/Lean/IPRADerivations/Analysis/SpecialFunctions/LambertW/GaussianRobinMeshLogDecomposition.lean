@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.SpecialFunctions.LambertW.GaussianRobinLowerDecomposition
-import IPRADerivations.Analysis.Gamma.GaussianGammaFiniteApproximantName
+import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaFiniteApproximantName
 import IPRADerivations.Core.CongruenceTactic
 
 /-!

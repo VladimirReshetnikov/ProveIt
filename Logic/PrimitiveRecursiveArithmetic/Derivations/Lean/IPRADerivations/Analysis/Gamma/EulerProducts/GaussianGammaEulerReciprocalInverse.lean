@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.GaussianGammaFoldedQBound
+import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaFoldedQBound
 import IPRADerivations.Analysis.Gamma.GaussianGammaReciprocalInverse
 
 /-!

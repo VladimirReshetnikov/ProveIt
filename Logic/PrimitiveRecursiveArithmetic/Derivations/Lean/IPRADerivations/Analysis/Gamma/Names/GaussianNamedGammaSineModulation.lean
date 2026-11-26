@@ -1,8 +1,8 @@
 import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentExponentialPeriod
-import IPRADerivations.Analysis.Euler.GaussianEulerNamedIBPRecurrence
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaFactorialValues
-import IPRADerivations.Analysis.Gamma.Names.GaussianNamedGammaFirstCrossing
-import IPRADerivations.Analysis.Exponential.GaussianRealNameExponentialInjectivity
+import IPRADerivations.Analysis.Euler.Integration.Parts.GaussianEulerNamedIBPRecurrence
+import IPRADerivations.Analysis.Gamma.EulerProducts.Factorials.GaussianGammaFactorialValues
+import IPRADerivations.Analysis.Gamma.Names.PositiveAxis.GaussianNamedGammaFirstCrossing
+import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianRealNameExponentialInjectivity
 
 /-!
 # Modulating the original named Gamma by an exponential

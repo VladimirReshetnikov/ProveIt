@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.Polynomials.GaussianCoefficientL1
+import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianCoefficientL1
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalSyntheticBounds
-import IPRADerivations.Analysis.RationalArithmetic.RationalSumLinearity
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalSumLinearity
 import IPRADerivations.Core.CongruenceTactic
 import IPRADerivations.Core.LinearCombination
 

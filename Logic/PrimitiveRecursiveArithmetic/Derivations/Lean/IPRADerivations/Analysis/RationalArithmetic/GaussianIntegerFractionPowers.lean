@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalReciprocal
-import IPRADerivations.Analysis.Polynomials.GaussianRationalSyntheticDivision
+import IPRADerivations.Analysis.Polynomials.Division.GaussianRationalSyntheticDivision
 import IPRADerivations.Analysis.Logarithm.ComplexLogarithmCauchy
-import IPRADerivations.Analysis.Exponential.LogarithmExponentialCoefficients
+import IPRADerivations.Analysis.Exponential.Polynomials.LogarithmExponentialCoefficients
 import IPRADerivations.Core.CongruenceTactic
 
 /-!

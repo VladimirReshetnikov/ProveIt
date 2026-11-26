@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.GaussianBinetArctangentSineGridComparison
-import IPRADerivations.Analysis.Integration.GaussianCompactMeshIndependence
-import IPRADerivations.Analysis.Names.GaussianFastValueCut
+import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactMeshIndependence
+import IPRADerivations.Analysis.Names.Order.GaussianFastValueCut
 import IPRADerivations.AnalyticNumberTheory.ZetaFiniteContract
 
 /-!

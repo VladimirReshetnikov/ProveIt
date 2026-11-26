@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.RationalGaussianRealPart
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalNaturalScale
-import IPRADerivations.Analysis.Exponential.GaussianRationalPolynomialExponential
+import IPRADerivations.Analysis.Exponential.Polynomials.GaussianRationalPolynomialExponential
 
 /-!
 # Nonnegative real values of the actual Gaussian rational programs

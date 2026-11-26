@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Gamma.GaussianGammaDensityDomain
-import IPRADerivations.Analysis.Gamma.GaussianEulerQuadraticGamma
+import IPRADerivations.Analysis.Gamma.Distributions.GaussianGammaDensityDomain
+import IPRADerivations.Analysis.Gamma.Integrals.GaussianEulerQuadraticGamma
 
 /-!
 # Source-derived half-integer trajectory for Gaussian moments

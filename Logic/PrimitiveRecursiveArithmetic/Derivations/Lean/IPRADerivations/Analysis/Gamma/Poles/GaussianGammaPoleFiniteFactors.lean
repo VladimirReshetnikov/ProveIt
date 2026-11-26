@@ -1,8 +1,8 @@
 import IPRADerivations.Analysis.Gamma.Poles.GaussianGammaLocalPoleGuards
 import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalFiniteProduct
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalNaturalScale
-import IPRADerivations.Analysis.LinearAlgebra.GaussianRationalMatrixFiniteSums
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianGammaRepeatedShift
+import IPRADerivations.Analysis.LinearAlgebra.Matrices.GaussianRationalMatrixFiniteSums
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianGammaRepeatedShift
 import IPRADerivations.Core.CongruenceTactic
 
 /-!

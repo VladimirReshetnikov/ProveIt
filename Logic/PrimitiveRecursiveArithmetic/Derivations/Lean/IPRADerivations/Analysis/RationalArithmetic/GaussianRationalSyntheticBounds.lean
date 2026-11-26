@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Polynomials.GaussianRationalSyntheticDivision
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalL1Algebra
+import IPRADerivations.Analysis.Polynomials.Division.GaussianRationalSyntheticDivision
+import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalL1Algebra
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianFactorBudget
 import IPRADerivations.Analysis.RationalArithmetic.RationalAlgebra
 import IPRADerivations.Core.CongruenceTactic
