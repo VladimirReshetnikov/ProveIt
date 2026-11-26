@@ -2912,3 +2912,6 @@ At zero input every sample of the literal finite canonical product is exactly on
 
 A bounded search across actual factor bases identifies an exact zero in the finite product or builds a quantitative late observation certificate of apartness.
 [GaussianBarnesCanonicalHeadApartness](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadApartness.lean)
+
+Two original regular names with explicit apartness witnesses give apartness at the actual retimed product observation.
+[GaussianNamedProductApartness](Lean/IPRADerivations/Analysis/GaussianNamedProductApartness.lean)
