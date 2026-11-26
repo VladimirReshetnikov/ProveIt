@@ -3059,3 +3059,6 @@ The actual kept base-power product agrees with a rational coefficient polynomial
 
 The actual full Barnes divided difference has a uniform rate once the original fixed prefix quotient is supplied. The join uses the checked disk continuity of the fixed prefix and the closed tail exponential derivative, retaining both independent observation errors.
 [GaussianBarnesCanonicalValueDerivativeJoin](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalValueDerivativeJoin.lean)
+
+The exponential of the actual combined logarithmic remainder approaches the exact constant one at independent precisions and uniform leading rate `factor(radius R M)*(R²+M+1)/K`. The translated input and midpoint have uniformly certified rational disk bounds.
+[GaussianBarnesCanonicalCombinedRemainderRate](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalCombinedRemainderRate.lean), [GaussianBarnesCanonicalShiftChart](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalShiftChart.lean)
