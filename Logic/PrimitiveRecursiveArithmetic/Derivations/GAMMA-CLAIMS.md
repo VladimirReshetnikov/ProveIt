@@ -3293,3 +3293,6 @@ The exact finite harmonic numerator below a dyadic cutoff is at most one plus th
 
 Reading the actual stored coefficient, scaling by its factorial, and applying the original center scalar gives an independent-clock approximation to the cofinal derivative. A primitive-recursive clock on each retained order pays both schedule bounds.
 [GaussianBarnesCanonicalWeightedTaylorBallCoefficient](Lean/IPRADerivations/Analysis/Barnes/Taylor/Coefficients/GaussianBarnesCanonicalWeightedTaylorBallCoefficient.lean)
+
+A finite maximum of the retained coefficient clocks selects a single actual polynomial for the chosen grid chart. The closed iPRA certificate gives its exact center readback, geometric value error against the original Barnes evaluator, and independently observed dyadic error against the cofinal factorial Taylor name at every retained order.
+[GaussianBarnesCanonicalWeightedTaylorBallCoefficientFamily](Lean/IPRADerivations/Analysis/Barnes/Taylor/Coefficients/GaussianBarnesCanonicalWeightedTaylorBallCoefficientFamily.lean), [GaussianBarnesCanonicalWeightedTaylorBallCoverCertificate](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalWeightedTaylorBallCoverCertificate.lean)
