@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.RuntimePermutationDigitSum
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # Actual natural finite sums reindexed by numerical permutation words
@@ -28,14 +29,10 @@ def read (f : PTm 2) (m w x i : PTm n) : PTm n := inst2 f (digit m w i) x
 def reader (f : PTm 2) : PTm 2 := read f (sndT (fstT (var 1))) (fstT (fstT (var 1))) (sndT (var 1)) (var 0)
 def total (f : PTm 2) (m w x : PTm n) : PTm n := ap2 (sumF (reader f)) m (data m w x)
 def ordinary (f : PTm 2) (m x : PTm n) : PTm n := ap2 (sumF f) m x
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (m w x : PTm n) :
-    Syn.subst σ (data m w x) = data (Syn.subst σ m) (Syn.subst σ w) (Syn.subst σ x) := by simp [data]
-@[simp] theorem subst_read {l : ℕ} (σ : Fin n → PTm l) (f : PTm 2) (m w x i : PTm n) :
-    Syn.subst σ (read f m w x i) = read f (Syn.subst σ m) (Syn.subst σ w) (Syn.subst σ x) (Syn.subst σ i) := by simp [read]
-@[simp] theorem subst_total {l : ℕ} (σ : Fin n → PTm l) (f : PTm 2) (m w x : PTm n) :
-    Syn.subst σ (total f m w x) = total f (Syn.subst σ m) (Syn.subst σ w) (Syn.subst σ x) := by simp [total]
-@[simp] theorem subst_ordinary {l : ℕ} (σ : Fin n → PTm l) (f : PTm 2) (m x : PTm n) :
-    Syn.subst σ (ordinary f m x) = ordinary f (Syn.subst σ m) (Syn.subst σ x) := by simp [ordinary]
+ipra_subst data
+ipra_subst read
+ipra_subst total
+ipra_subst ordinary
 
 theorem read_congr (f : PTm 2) {m m' w w' x x' i i' : PTm n}
     (hm : Γ ⊢[PRAAx] m ≐ m') (hw : Γ ⊢[PRAAx] w ≐ w') (hx : Γ ⊢[PRAAx] x ≐ x') (hi : Γ ⊢[PRAAx] i ≐ i') : Γ ⊢[PRAAx]
@@ -121,10 +118,8 @@ Every numerical bound, original word and persistent datum remains an input. -/
 def output (f : PTm 2) (m w x : PTm n) : PTm n := pairT (total f m w x) (ordinary f m x)
 def outputF (f : PTm 2) : PR 3 := PTm.toPR (output f (var 0) (var 1) (var 2))
 def run (f : PTm 2) (m w x : PTm n) : PTm n := ap3 (outputF f) m w x
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (f : PTm 2) (m w x : PTm n) :
-    Syn.subst σ (output f m w x) = output f (Syn.subst σ m) (Syn.subst σ w) (Syn.subst σ x) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (f : PTm 2) (m w x : PTm n) :
-    Syn.subst σ (run f m w x) = run f (Syn.subst σ m) (Syn.subst σ w) (Syn.subst σ x) := by simp [run]
+ipra_subst output
+ipra_subst run
 theorem program_at (f : PTm 2) (m w x : PTm n) : Γ ⊢[PRAAx] run f m w x ≐ output f m w x := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output f (var 0) (var 1) (var 2) : PTm 3) ![m,w,x]
 theorem returned_total (f : PTm 2) (m w x : PTm n) : Γ ⊢[PRAAx] fstT (run f m w x) ≐ total f m w x :=

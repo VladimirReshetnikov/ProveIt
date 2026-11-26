@@ -1,5 +1,6 @@
 import IPRADerivations.Core.BoundedSums
 import IPRADerivations.Core.Order
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Strong induction for a violation term
@@ -42,12 +43,9 @@ private theorem strong_sum (v : PTm 2)
     (step : ∀ {k : ℕ} {Δ : List (Fm PTm k)} (N x : PTm k),
       (Δ ⊢[PRAAx] ap2 (sumF v) N x ≐ zero) → (Δ ⊢[PRAAx] inst2 v N x ≐ zero)) :
     ([] : List (Fm PTm 2)) ⊢[PRAAx] siF v := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero]
-    exact sum_zero _ _
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact (sum_succ' _ _ _).eqTrans ((congrAdd Prf.hyp0 (step _ _ Prf.hyp0)).eqTrans (add_zero _))
+  ipra_ind [subst_ap2]
+  · exact sum_zero _ _
+  · exact (sum_succ' _ _ _).eqTrans ((congrAdd Prf.hyp0 (step _ _ Prf.hyp0)).eqTrans (add_zero _))
 
 /-- Strong induction: if the vanishing of all violations below `N` gives the vanishing of the violation at `N`,
 then every violation vanishes. -/

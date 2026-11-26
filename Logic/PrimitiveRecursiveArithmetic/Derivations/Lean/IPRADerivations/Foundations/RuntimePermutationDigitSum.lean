@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.RuntimeWordSorting
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # The sum of numerical permutation digits
@@ -23,9 +24,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 def digitTotal (m w : PTm n) : PTm n := ap2 (sumF digitBody) m (data m w)
 def positionTotal (m : PTm n) : PTm n := ap2 (sumF (var 0)) m zero
 
-@[simp] theorem subst_digitTotal {l : ℕ} (σ : Fin n → PTm l) (m w : PTm n) :
-    Syn.subst σ (digitTotal m w) = digitTotal (Syn.subst σ m) (Syn.subst σ w) := by
-  simp [digitTotal]
+ipra_subst digitTotal
 
 theorem digit_total_congr {m m' w w' : PTm n}
     (hm : Γ ⊢[PRAAx] m ≐ m') (hw : Γ ⊢[PRAAx] w ≐ w') :

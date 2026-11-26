@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.Core.ProdLemmas
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Primitive scaling: the gcd of a list (`ipra_presentations_to_witnesses`, `lem:primitive-scaling`)
@@ -99,14 +100,9 @@ private abbrev posF : Fm PTm 3 :=
     (G ω (var 0) (var 1) (var 2) ≐ succ (pred (G ω (var 0) (var 1) (var 2))))
 
 private theorem pos₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] posF ω := by
-  refine ind _ ⟨trivial, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_pred, Syn.subst_var,
-      Syn.inst_zero, Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact .impI (pos_of_eq_succ ((G_zero ω _ _).eqTrans Prf.hyp0))
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_pred, Syn.subst_var,
-      Syn.repl_zero, repl_one, repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (pos_of_eq_succ ((G_succ ω _ _ _).eqTrans (gcd_pos (.impE Prf.hyp1 Prf.hyp0))))
+  ipra_ind (⟨trivial, trivial⟩) [subst_ap2, subst_pairT]
+  · exact .impI (pos_of_eq_succ ((G_zero ω _ _).eqTrans Prf.hyp0))
+  · exact .impI (pos_of_eq_succ ((G_succ ω _ _ _).eqTrans (gcd_pos (.impE Prf.hyp1 Prf.hyp0))))
 
 /-- Every partial gcd is positive. -/
 theorem G_pos {s : PTm k} (hs : Γ ⊢[PRAAx] s ≐ succ (pred s)) (i x : PTm k) :
@@ -140,18 +136,12 @@ private abbrev monoF : Fm PTm 4 :=
     dvd (G ω (var 0) (var 2) (var 3)) (G ω (var 1) (var 2) (var 3))
 
 private theorem mono₀ : ([] : List (Fm PTm 4)) ⊢[PRAAx] monoF ω := by
-  refine ind _ ⟨trivial, trivial, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, subst_pairT, PTm.subst_pred,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, inst_three,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine .impI (.impI ?_)
+  ipra_ind (⟨trivial, trivial, trivial⟩) [subst_le, subst_ap2, subst_pairT]
+  · refine .impI (.impI ?_)
     have hi : [le (var 0 : PTm 3) zero, (var 1 : PTm 3) ≐ succ (pred (var 1))] ⊢[PRAAx]
         (var 0 : PTm 3) ≐ zero := (monus_zero _).eqSymm.eqTrans Prf.hyp0
     exact dvd_congr (congrAp2 _ hi.eqSymm (.eqRefl _)) (dvd_self' (G_pos ω Prf.hyp1 zero _))
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, subst_pairT, PTm.subst_pred,
-      Syn.subst_var, Syn.repl_zero, repl_one, repl_two, repl_three,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (.impI (mono_step ω Prf.hyp1 Prf.hyp0 (.impE hyp2 Prf.hyp1)))
+  · exact .impI (.impI (mono_step ω Prf.hyp1 Prf.hyp0 (.impE hyp2 Prf.hyp1)))
 
 /-- A later partial gcd divides an earlier one. -/
 theorem G_mono {s i N : PTm k} (hs : Γ ⊢[PRAAx] s ≐ succ (pred s)) (h : Γ ⊢[PRAAx] le i N)

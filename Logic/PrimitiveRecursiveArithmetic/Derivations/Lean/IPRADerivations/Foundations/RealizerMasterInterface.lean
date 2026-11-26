@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.RealizerGraph
 import IPRADerivations.Foundations.BoundedSyntax
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # A derived interface for an actual finite list of input certificates
@@ -44,10 +45,8 @@ def bundle (X : Interface) (inner : PR 2) : Interface where
   observe := PTm.toPR (var 0 : PTm 3)
   related := BoundedSyntax.bitF (relationFormula X inner)
 
-@[simp] theorem subst_boundTerm {m : ℕ} (σ : Fin n → PTm m) (X : Interface) (inner : PR 2) (q p : PTm n) :
-    Syn.subst σ (boundTerm X inner q p) = boundTerm X inner (Syn.subst σ q) (Syn.subst σ p) := by simp [boundTerm]
-@[simp] theorem subst_verifyTerm {m : ℕ} (σ : Fin n → PTm m) (X : Interface) (inner : PR 2) (C q p : PTm n) :
-    Syn.subst σ (verifyTerm X inner C q p) = verifyTerm X inner (Syn.subst σ C) (Syn.subst σ q) (Syn.subst σ p) := by simp [verifyTerm]
+ipra_subst boundTerm
+ipra_subst verifyTerm
 
 theorem query_at (X : Interface) (inner : PR 2) (q p : PTm n) : Γ ⊢[PRAAx]
     ap2 (bundle X inner).query q p ≐ one := by

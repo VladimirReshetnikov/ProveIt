@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.RuntimeAdjacentPermutationSwap
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # Actual bounded adjacent sorting of numerical words
@@ -54,20 +55,13 @@ def identityCode (m : PTm n) : PTm n := RuntimePermutationWords.encode (RuntimeP
   fin_cases k <;> rfl
 @[simp] theorem subst_active {l : ℕ} (σ : Fin n → PTm l) (m w : PTm n) :
     Syn.subst σ (active m w) = active (Syn.subst σ m) (Syn.subst σ w) := by simp [active]
-@[simp] theorem subst_inactive {l : ℕ} (σ : Fin n → PTm l) (m w : PTm n) :
-    Syn.subst σ (inactive m w) = inactive (Syn.subst σ m) (Syn.subst σ w) := by simp [inactive]
-@[simp] theorem subst_descentIndex {l : ℕ} (σ : Fin n → PTm l) (m w : PTm n) :
-    Syn.subst σ (descentIndex m w) = descentIndex (Syn.subst σ m) (Syn.subst σ w) := by simp [descentIndex]
-@[simp] theorem subst_sortStep {l : ℕ} (σ : Fin n → PTm l) (m w : PTm n) :
-    Syn.subst σ (sortStep m w) = sortStep (Syn.subst σ m) (Syn.subst σ w) := by simp [sortStep,sel]
-@[simp] theorem subst_state {l : ℕ} (σ : Fin n → PTm l) (m w j : PTm n) :
-    Syn.subst σ (state m w j) = state (Syn.subst σ m) (Syn.subst σ w) (Syn.subst σ j) := by simp [state]
-@[simp] theorem subst_fuel {l : ℕ} (σ : Fin n → PTm l) (m : PTm n) :
-    Syn.subst σ (fuel m) = fuel (Syn.subst σ m) := by simp [fuel]
-@[simp] theorem subst_final {l : ℕ} (σ : Fin n → PTm l) (m w : PTm n) :
-    Syn.subst σ (final m w) = final (Syn.subst σ m) (Syn.subst σ w) := by simp [final]
-@[simp] theorem subst_identityCode {l : ℕ} (σ : Fin n → PTm l) (m : PTm n) :
-    Syn.subst σ (identityCode m) = identityCode (Syn.subst σ m) := by simp [identityCode]
+ipra_subst inactive
+ipra_subst descentIndex
+ipra_subst sortStep [sel]
+ipra_subst state
+ipra_subst fuel
+ipra_subst final
+ipra_subst identityCode
 
 theorem descent_at (m w i : PTm n) : Γ ⊢[PRAAx] descentBit m w i ≐
     BoundedSyntax.bit (descentSyntax (var 0) (var 1) (var 2)) ![m,w,i] :=
@@ -209,9 +203,7 @@ theorem step_rank (m w j R : PTm n)
 def stateInvariant (m w j : PTm n) : Fm PTm n :=
   lt (state m w j) (RuntimePermutationWords.horizon m) ⋏
     ((inactive m (state m w j) ≐ one) ⋎ le (RuntimePermutationWords.inversions m (state m w j)+j) (RuntimePermutationWords.inversions m w))
-@[simp] theorem subst_stateInvariant {l : ℕ} (σ : Fin n → PTm l) (m w j : PTm n) :
-    (stateInvariant m w j).subst σ = stateInvariant (Syn.subst σ m) (Syn.subst σ w) (Syn.subst σ j) := by
-  simp [stateInvariant]
+ipra_subst stateInvariant
 theorem invariant_zero (m w : PTm n) (hw : Γ ⊢[PRAAx] lt w (RuntimePermutationWords.horizon m)) :
     Γ ⊢[PRAAx] stateInvariant m w zero :=
   .andI (lt_congr (state_zero _ _).eqSymm (.eqRefl _) hw)
@@ -295,12 +287,8 @@ def sorted (m w : PTm n) : Fm PTm n := .all
 def strictSorted (m w : PTm n) : Fm PTm n := .all
   (lt (succ (var 0)) (Syn.shift m) ⟶ lt (RuntimePermutationWords.digit (Syn.shift m) (Syn.shift w) (var 0))
     (RuntimePermutationWords.digit (Syn.shift m) (Syn.shift w) (succ (var 0))))
-@[simp] theorem subst_sorted {l : ℕ} (σ : Fin n → PTm l) (m w : PTm n) :
-    (sorted m w).subst σ = sorted (Syn.subst σ m) (Syn.subst σ w) := by
-  simp [sorted,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_strictSorted {l : ℕ} (σ : Fin n → PTm l) (m w : PTm n) :
-    (strictSorted m w).subst σ = strictSorted (Syn.subst σ m) (Syn.subst σ w) := by
-  simp [strictSorted,Syn.subst_shift,Syn.shift_subst]
+ipra_subst sorted [Syn.subst_shift, Syn.shift_subst]
+ipra_subst strictSorted [Syn.subst_shift, Syn.shift_subst]
 theorem sorted_at (m w i : PTm n) (h : Γ ⊢[PRAAx] sorted m w) (hi : Γ ⊢[PRAAx] lt (succ i) m) :
     Γ ⊢[PRAAx] le (RuntimePermutationWords.digit m w i) (RuntimePermutationWords.digit m w (succ i)) := by
   have hh := h.allE i
@@ -430,8 +418,7 @@ def tieIndex (m w : PTm n) : PTm n := BoundedReflection.wit tieBody m (RuntimePe
   fin_cases k <;> rfl
 @[simp] theorem subst_tieExists {l : ℕ} (σ : Fin n → PTm l) (m w : PTm n) :
     Syn.subst σ (tieExists m w) = tieExists (Syn.subst σ m) (Syn.subst σ w) := by simp [tieExists]
-@[simp] theorem subst_tieIndex {l : ℕ} (σ : Fin n → PTm l) (m w : PTm n) :
-    Syn.subst σ (tieIndex m w) = tieIndex (Syn.subst σ m) (Syn.subst σ w) := by simp [tieIndex]
+ipra_subst tieIndex
 theorem tie_at (m w i : PTm n) : Γ ⊢[PRAAx] tieBit m w i ≐
     BoundedSyntax.bit (tieSyntax (var 0) (var 1) (var 2)) ![m,w,i] := BoundedSyntax.program_correct _ _
 theorem tie_reflection (m w i : PTm n) : Γ ⊢[PRAAx] Fm.iff (tieBit m w i ≐ one)
@@ -516,8 +503,7 @@ theorem final_one_dimension (w : PTm n) : Γ ⊢[PRAAx] final one w ≐ w :=
 
 def adjacentTie (m w i : PTm n) : Fm PTm n := lt (succ i) m ⋏
   RuntimePermutationWords.digit m w i ≐ RuntimePermutationWords.digit m w (succ i)
-@[simp] theorem subst_adjacentTie {l : ℕ} (σ : Fin n → PTm l) (m w i : PTm n) :
-    (adjacentTie m w i).subst σ = adjacentTie (Syn.subst σ m) (Syn.subst σ w) (Syn.subst σ i) := by simp [adjacentTie]
+ipra_subst adjacentTie
 theorem adjacent_tie_congr {m m' w w' i i' : PTm n} (hm : Γ ⊢[PRAAx] m ≐ m')
     (hw : Γ ⊢[PRAAx] w ≐ w') (hi : Γ ⊢[PRAAx] i ≐ i') (h : Γ ⊢[PRAAx] adjacentTie m w i) :
     Γ ⊢[PRAAx] adjacentTie m' w' i' := by
@@ -531,8 +517,7 @@ def certificate (m w : PTm n) : Fm PTm n :=
     (RuntimePermutationWords.permutationBit m (final m w) ≐ RuntimePermutationWords.permutationBit m w ⋏
       ((RuntimePermutationWords.permutationBit m w ≐ one ⟶ final m w ≐ identityCode m) ⋏
         (RuntimePermutationWords.permutationBit m w ≐ zero ⟶ adjacentTie m (final m w) (tieIndex m (final m w))))))
-@[simp] theorem subst_certificate {l : ℕ} (σ : Fin n → PTm l) (m w : PTm n) :
-    (certificate m w).subst σ = certificate (Syn.subst σ m) (Syn.subst σ w) := by simp [certificate]
+ipra_subst certificate
 theorem sorting_correct (m w : PTm n) (hw : Γ ⊢[PRAAx] lt w (RuntimePermutationWords.horizon m)) :
     Γ ⊢[PRAAx] certificate m w :=
   .andI (state_bound _ _ _ hw) (.andI (final_sorted _ _ hw) (.andI (checker_preserved _ _ _ hw)
@@ -548,10 +533,8 @@ def output (m w : PTm n) : PTm n := pairT (final m w)
         (pairT (RuntimePermutationWords.inversions m (final m w)) (pairT (tieIndex m (final m w)) (fuel m))))))
 def outputF : PR 2 := PTm.toPR (output (var 0) (var 1))
 def run (m w : PTm n) : PTm n := ap2 outputF m w
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (m w : PTm n) :
-    Syn.subst σ (output m w) = output (Syn.subst σ m) (Syn.subst σ w) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (m w : PTm n) :
-    Syn.subst σ (run m w) = run (Syn.subst σ m) (Syn.subst σ w) := by simp [run]
+ipra_subst output
+ipra_subst run
 theorem program_at (m w : PTm n) : Γ ⊢[PRAAx] run m w ≐ output m w := by
   simpa [run,outputF,ap2] using toPR_eq (Γ := Γ) (output (var 0) (var 1)) ![m,w]
 

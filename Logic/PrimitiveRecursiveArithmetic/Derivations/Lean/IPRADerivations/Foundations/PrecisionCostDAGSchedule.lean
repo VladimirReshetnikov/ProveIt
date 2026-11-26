@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.PrecisionCostDAG
 import IPRADerivations.Analysis.GaussianRootSchedule
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # A derived dyadic schedule for the actual rational dependency DAG
@@ -51,30 +52,19 @@ def entryBody : PTm 2 := entry (var 1) (var 0)
 def prefixValue (r R : PTm n) : PTm n := Analysis.RationalFiniteSum.sum entryBody r R
 def total (G Eta r : PTm n) : PTm n := prefixValue r (row G Eta r)
 
-@[simp] theorem subst_rowNumerators {m : ℕ} (σ : Fin n → PTm m) (G v : PTm n) :
-    Syn.subst σ (rowNumerators G v) = rowNumerators (Syn.subst σ G) (Syn.subst σ v) := by simp [rowNumerators]
-@[simp] theorem subst_majorant {m : ℕ} (σ : Fin n → PTm m) (G N : PTm n) :
-    Syn.subst σ (majorant G N) = majorant (Syn.subst σ G) (Syn.subst σ N) := by simp [majorant]
-@[simp] theorem subst_base {m : ℕ} (σ : Fin n → PTm m) (G N : PTm n) :
-    Syn.subst σ (base G N) = base (Syn.subst σ G) (Syn.subst σ N) := by simp [base]
-@[simp] theorem subst_amplification {m : ℕ} (σ : Fin n → PTm m) (G N : PTm n) :
-    Syn.subst σ (amplification G N) = amplification (Syn.subst σ G) (Syn.subst σ N) := by simp [amplification]
-@[simp] theorem subst_precision {m : ℕ} (σ : Fin n → PTm m) (G N k : PTm n) :
-    Syn.subst σ (precision G N k) = precision (Syn.subst σ G) (Syn.subst σ N) (Syn.subst σ k) := by simp [precision]
-@[simp] theorem subst_unit {m : ℕ} (σ : Fin n → PTm m) (k : PTm n) :
-    Syn.subst σ (unit k) = unit (Syn.subst σ k) := by simp [unit]
-@[simp] theorem subst_schedule {m : ℕ} (σ : Fin n → PTm m) (G N k : PTm n) :
-    Syn.subst σ (schedule G N k) = schedule (Syn.subst σ G) (Syn.subst σ N) (Syn.subst σ k) := by simp [schedule]
-@[simp] theorem subst_uniformErrors {m : ℕ} (σ : Fin n → PTm m) (N D : PTm n) :
-    Syn.subst σ (uniformErrors N D) = uniformErrors (Syn.subst σ N) (Syn.subst σ D) := by simp [uniformErrors]
-@[simp] theorem subst_scheduledErrors {m : ℕ} (σ : Fin n → PTm m) (G N k : PTm n) :
-    Syn.subst σ (scheduledErrors G N k) = scheduledErrors (Syn.subst σ G) (Syn.subst σ N) (Syn.subst σ k) := by simp [scheduledErrors]
-@[simp] theorem subst_scheduledBudgets {m : ℕ} (σ : Fin n → PTm m) (G N k : PTm n) :
-    Syn.subst σ (scheduledBudgets G N k) = scheduledBudgets (Syn.subst σ G) (Syn.subst σ N) (Syn.subst σ k) := by simp [scheduledBudgets]
+ipra_subst rowNumerators
+ipra_subst majorant
+ipra_subst base
+ipra_subst amplification
+ipra_subst precision
+ipra_subst unit
+ipra_subst schedule
+ipra_subst uniformErrors
+ipra_subst scheduledErrors
+ipra_subst scheduledBudgets
 @[simp] theorem subst_prefix {m : ℕ} (σ : Fin n → PTm m) (r R : PTm n) :
     Syn.subst σ (prefixValue r R) = prefixValue (Syn.subst σ r) (Syn.subst σ R) := by simp [prefixValue]
-@[simp] theorem subst_total {m : ℕ} (σ : Fin n → PTm m) (G Eta r : PTm n) :
-    Syn.subst σ (total G Eta r) = total (Syn.subst σ G) (Syn.subst σ Eta) (Syn.subst σ r) := by simp [total]
+ipra_subst total
 
 theorem numerator_body_at (w R : PTm n) : inst2 numeratorBody w R = fstT (safeEntry R w) := by simp [numeratorBody,inst2]
 theorem majorant_body_at (v G : PTm n) : inst2 majorantBody v G = rowNumerators G v := by simp [majorantBody,inst2]
@@ -175,12 +165,8 @@ def errorsBound (Eta N D : PTm n) : Fm PTm n := .all
   (lt (var 0) (Syn.shift N) ⟶ rationalLE (localError (Syn.shift Eta) (var 0)) (fraction one (Syn.shift D)))
 def totalBoundLaw (G Eta N D r : PTm n) : Fm PTm n :=
   le r N ⟶ rationalLE (total G Eta r) (fraction (pw (base G N) r) D)
-@[simp] theorem subst_errorsBound {m : ℕ} (σ : Fin n → PTm m) (Eta N D : PTm n) :
-    (errorsBound Eta N D).subst σ = errorsBound (Syn.subst σ Eta) (Syn.subst σ N) (Syn.subst σ D) := by
-  simp [errorsBound,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_totalBoundLaw {m : ℕ} (σ : Fin n → PTm m) (G Eta N D r : PTm n) :
-    (totalBoundLaw G Eta N D r).subst σ = totalBoundLaw (Syn.subst σ G) (Syn.subst σ Eta) (Syn.subst σ N) (Syn.subst σ D) (Syn.subst σ r) := by
-  simp [totalBoundLaw]
+ipra_subst errorsBound [Syn.subst_shift, Syn.shift_subst]
+ipra_subst totalBoundLaw
 
 theorem errors_bound_at (Eta N D v : PTm n) (h : Γ ⊢[PRAAx] errorsBound Eta N D) (hv : Γ ⊢[PRAAx] lt v N) : Γ ⊢[PRAAx]
     rationalLE (localError Eta v) (fraction one D) := by
@@ -336,10 +322,8 @@ def output (G N k : PTm n) : PTm n := pairT (schedule G N k)
   (pairT (scheduledBudgets G N k) (pairT (precision G N k) (majorant G N)))
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (G N k : PTm n) : PTm n := ap3 outputF G N k
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (G N k : PTm n) :
-    Syn.subst σ (output G N k) = output (Syn.subst σ G) (Syn.subst σ N) (Syn.subst σ k) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (G N k : PTm n) :
-    Syn.subst σ (run G N k) = run (Syn.subst σ G) (Syn.subst σ N) (Syn.subst σ k) := by simp [run]
+ipra_subst output
+ipra_subst run
 
 theorem program_at (G N k : PTm n) : Γ ⊢[PRAAx] run G N k ≐ output G N k := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![G,N,k]

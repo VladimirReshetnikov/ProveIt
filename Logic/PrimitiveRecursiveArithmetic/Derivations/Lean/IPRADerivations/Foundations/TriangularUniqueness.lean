@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.HurwitzProduct
 import IPRADerivations.Foundations.BoundedFormulas
 import IPRADerivations.AnalyticNumberTheory.Valuation
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Uniqueness for triangular recurrences (`ipra_coherent_methods_2026-11-15`, `thm:hurwitz-ode`)
@@ -144,13 +145,9 @@ private def bitF (y y' : PTm 2) : Fm PTm 2 :=
   allB (eB y y') (succ (var 0)) (var 1) ≐ one
 
 private theorem bit₀ (T : Triangular y y' F F') : ([] : List (Fm PTm 2)) ⊢[PRAAx] bitF y y' := by
-  refine ind _ trivial ?_ ?_
-  · simp only [bitF, Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact bit_zero T _
-  · simp only [bitF, Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have ih : [bitF y y'] ⊢[PRAAx] allB (eB y y') (succ (var 0)) (var 1) ≐ one := Prf.hyp0
+  ipra_ind [bitF, subst_ap2]
+  · exact bit_zero T _
+  · have ih : [bitF y y'] ⊢[PRAAx] allB (eB y y') (succ (var 0)) (var 1) ≐ one := Prf.hyp0
     exact bit_step T ih
 
 /-- The uniqueness clause of `thm:hurwitz-ode` for an arbitrary triangular recurrence. -/

@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.CodedViableChain
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # Automatic initial selection and tagged coded viable chains
@@ -45,21 +46,13 @@ def returnBound (I : Instance) (p : PTm n) : PTm n := succ (pairT one (codeBound
 def hasChain (I : Instance) (p : PTm n) : Fm PTm n := .ex
   (lt (var 0) (codeBound I (Syn.shift p)) ⋏ admissibleCode I (var 0) (Syn.shift p))
 
-@[simp] theorem subst_flag {m : ℕ} (σ : Fin n → PTm m) (I : Instance) (p : PTm n) :
-    Syn.subst σ (flag I p) = flag I (Syn.subst σ p) := by simp [flag,BoundedReflection.exB]
-@[simp] theorem subst_selected {m : ℕ} (σ : Fin n → PTm m) (I : Instance) (p : PTm n) :
-    Syn.subst σ (selected I p) = selected I (Syn.subst σ p) := by simp [selected]
-@[simp] theorem subst_rawChain {m : ℕ} (σ : Fin n → PTm m) (I : Instance) (p : PTm n) :
-    Syn.subst σ (rawChain I p) = rawChain I (Syn.subst σ p) := by simp [rawChain]
-@[simp] theorem subst_payload {m : ℕ} (σ : Fin n → PTm m) (I : Instance) (p : PTm n) :
-    Syn.subst σ (payload I p) = payload I (Syn.subst σ p) := by simp [payload]
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (I : Instance) (p : PTm n) :
-    Syn.subst σ (output I p) = output I (Syn.subst σ p) := by simp [output]
-@[simp] theorem subst_returnBound {m : ℕ} (σ : Fin n → PTm m) (I : Instance) (p : PTm n) :
-    Syn.subst σ (returnBound I p) = returnBound I (Syn.subst σ p) := by simp [returnBound]
-@[simp] theorem subst_hasChain {m : ℕ} (σ : Fin n → PTm m) (I : Instance) (p : PTm n) :
-    (hasChain I p).subst σ = hasChain I (Syn.subst σ p) := by
-  simp [hasChain,Syn.subst_shift,Syn.shift_subst]
+ipra_subst flag [BoundedReflection.exB]
+ipra_subst selected
+ipra_subst rawChain
+ipra_subst payload
+ipra_subst output
+ipra_subst returnBound
+ipra_subst hasChain [Syn.subst_shift, Syn.shift_subst]
 
 theorem initial_at (I : Instance) (a p : PTm n) : inst2 (initialBody I) a p = I.V (I.h p) a p := by
   simp [initialBody,inst2]

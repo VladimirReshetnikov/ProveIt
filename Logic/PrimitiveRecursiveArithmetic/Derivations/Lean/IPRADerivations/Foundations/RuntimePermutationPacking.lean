@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.RuntimePermutationInsertion
 import IPRADerivations.Foundations.RuntimePermutationFactorialBound
 import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # Exact rectangular indexing of the actual retained permutation list
@@ -37,12 +38,9 @@ def minorWord (m z : PTm n) : PTm n := entry (words m) (minorRank m z)
 def unpackRank (m z : PTm n) : PTm n := position (inserted m (column m z) (minorWord m z)) (succ m)
 def unpackF : PR 2 := PTm.toPR (unpackRank (var 1) (var 0))
 
-@[simp] theorem subst_grid {l : ℕ} (σ : Fin n → PTm l) (m : PTm n) : Syn.subst σ (grid m) = grid (Syn.subst σ m) := by
-  simp [grid]
+ipra_subst grid
 
-@[simp] theorem subst_unpackRank {l : ℕ} (σ : Fin n → PTm l) (m z : PTm n) :
-    Syn.subst σ (unpackRank m z) = unpackRank (Syn.subst σ m) (Syn.subst σ z) := by
-  simp [unpackRank,column,minorWord,minorRank,RuntimePermutationWords.position]
+ipra_subst unpackRank [column, minorWord, minorRank, RuntimePermutationWords.position]
 
 theorem unpack_at (m z : PTm n) : Γ ⊢[PRAAx] ap2 unpackF z m ≐ unpackRank m z := by
   simpa [unpackF,ap2] using toPR_eq (Γ := Γ) (unpackRank (var 1) (var 0) : PTm 2) ![z,m]

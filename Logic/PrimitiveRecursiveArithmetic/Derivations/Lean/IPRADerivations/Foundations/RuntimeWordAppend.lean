@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.RuntimePermutationWords
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # Appending a numerical mixed-radix word digit
@@ -28,8 +29,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 def append (m d w v : PTm n) : PTm n := w+v*pw m d
-@[simp] theorem subst_append {l : ℕ} (σ : Fin n → PTm l) (m d w v : PTm n) :
-    Syn.subst σ (append m d w v) = append (Syn.subst σ m) (Syn.subst σ d) (Syn.subst σ w) (Syn.subst σ v) := by simp [append]
+ipra_subst append
 
 theorem positive_form (D : PTm n) (h : Γ ⊢[PRAAx] le one D) : Γ ⊢[PRAAx] D ≐ succ (pred D) := by
   refine .orE (zero_or_succ D) ?_ Prf.hyp0

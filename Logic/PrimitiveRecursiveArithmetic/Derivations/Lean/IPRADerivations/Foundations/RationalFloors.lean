@@ -1,5 +1,6 @@
 import IPRADerivations.Topology.DimensionUnits
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # Floors of rationals with different denominators
@@ -104,25 +105,13 @@ def crossX (Pu _Qu Ru _Pv Qv Rv : PTm n) : PTm n := Pu * succ Rv + Qv * succ Ru
 /-- The cross term `P_v R_u' + Q_u R_v'`. -/
 def crossY (_Pu Qu Ru Pv _Qv Rv : PTm n) : PTm n := Pv * succ Ru + Qu * succ Rv
 
-@[simp] theorem subst_numer {k : ℕ} (σ : Fin n → PTm k) (Dn h₁ h₂ S P Q R : PTm n) :
-    Syn.subst σ (numer Dn h₁ h₂ S P Q R) =
-      numer (Syn.subst σ Dn) (Syn.subst σ h₁) (Syn.subst σ h₂) (Syn.subst σ S) (Syn.subst σ P)
-        (Syn.subst σ Q) (Syn.subst σ R) := by
-  simp [numer]
+ipra_subst numer
 
-@[simp] theorem subst_denom {k : ℕ} (σ : Fin n → PTm k) (h₁ R : PTm n) :
-    Syn.subst σ (denom h₁ R) = denom (Syn.subst σ h₁) (Syn.subst σ R) := by
-  simp [denom]
+ipra_subst denom
 
-@[simp] theorem subst_crossX {k : ℕ} (σ : Fin n → PTm k) (Pu Qu Ru Pv Qv Rv : PTm n) :
-    Syn.subst σ (crossX Pu Qu Ru Pv Qv Rv) = crossX (Syn.subst σ Pu) (Syn.subst σ Qu) (Syn.subst σ Ru)
-      (Syn.subst σ Pv) (Syn.subst σ Qv) (Syn.subst σ Rv) := by
-  simp [crossX]
+ipra_subst crossX
 
-@[simp] theorem subst_crossY {k : ℕ} (σ : Fin n → PTm k) (Pu Qu Ru Pv Qv Rv : PTm n) :
-    Syn.subst σ (crossY Pu Qu Ru Pv Qv Rv) = crossY (Syn.subst σ Pu) (Syn.subst σ Qu) (Syn.subst σ Ru)
-      (Syn.subst σ Pv) (Syn.subst σ Qv) (Syn.subst σ Rv) := by
-  simp [crossY]
+ipra_subst crossY
 
 theorem crossX_swap (Pu Qu Ru Pv Qv Rv : PTm n) :
     crossX Pv Qv Rv Pu Qu Ru = crossY Pu Qu Ru Pv Qv Rv := rfl

@@ -1,5 +1,6 @@
 import IPRADerivations.Core.Pairing
 import IPRADerivations.Core.BoundedSums
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # The trace kernel: invariants of primitive-recursive runs
@@ -144,13 +145,9 @@ theorem add_step {j k s₀ x : PTm n}
       ((congrInst2 step ih (.eqRefl _)).eqTrans (run_succ step k (run step j s₀ x) x).eqSymm))
 
 private theorem add₀ : ([] : List (Fm PTm 4)) ⊢[PRAAx] addF step := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, PTm.subst_add, subst_ap2, subst_pairT, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, inst_two, inst_three, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact (congrAp2 (runF step) (add_zero _) (.eqRefl _)).eqTrans (run_zero step _ _).eqSymm
-  · simp only [Fm.subst_eq, PTm.subst_add, subst_ap2, subst_pairT, Syn.subst_var, Syn.repl_zero,
-      repl_one, repl_two, repl_three, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact add_step step Prf.hyp0
+  ipra_ind [subst_ap2, subst_pairT]
+  · exact (congrAp2 (runF step) (add_zero _) (.eqRefl _)).eqTrans (run_zero step _ _).eqSymm
+  · exact add_step step Prf.hyp0
 
 /-- `run (j + k) s₀ x = run k (run j s₀ x) x`. -/
 theorem run_add (j k s₀ x : PTm n) :

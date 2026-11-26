@@ -3,6 +3,7 @@ import IPRADerivations.Core.Pairing
 import IPRADerivations.Core.BoundedSums
 import IPRADerivations.Combinatorics.BinomialTheorem
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Rational roots in every degree (`ipra_presentations_to_witnesses`, `lem:norm-rational-roots`)
@@ -115,16 +116,10 @@ private abbrev powF : Fm PTm 7 :=
       dvd (succ (var 1)) (var 5 * pw (var 2) (monus (var 6) (var 0)))
 
 private theorem pow₀ : ([] : List (Fm PTm 7)) ⊢[PRAAx] powF := by
-  refine ind _ ⟨⟨trivial, trivial⟩, trivial, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_or, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul,
-      PTm.subst_monus, Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, inst_three,
-      inst_four, inst_five, inst_six, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (.impI (dvd_congr
+  ipra_ind (⟨⟨trivial, trivial⟩, trivial, trivial⟩) [subst_ap2, inst_five, inst_six, repl_five, repl_six]
+  · exact .impI (.impI (dvd_congr
       (congrMul (.eqRefl _) (congrPw (.eqRefl _) (monus_zero _).eqSymm)) Prf.hyp0))
-  · simp only [Fm.subst_imp, Fm.subst_or, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul,
-      PTm.subst_monus, Syn.subst_var, Syn.repl_zero, repl_one, repl_two, repl_three, repl_four,
-      repl_five, repl_six, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (.impI (pow_step Prf.hyp1 (.impE (.impE hyp2 Prf.hyp1) Prf.hyp0)))
+  · exact .impI (.impI (pow_step Prf.hyp1 (.impE (.impE hyp2 Prf.hyp1) Prf.hyp0)))
 
 /-- `m ∣ c r^d` with `m`, `r` coprime gives `m ∣ c`. -/
 theorem pow_cancel {m' r u v c d : PTm k} (hB : Γ ⊢[PRAAx] Bez m' r u v)
@@ -203,15 +198,9 @@ private abbrev lowF : Fm PTm 5 :=
   le (var 0) (var 3) ⟶ dvd (succ (var 2)) (P a (var 0) (var 1) (succ (var 2)) (var 3) (var 4))
 
 private theorem low₀ : ([] : List (Fm PTm 5)) ⊢[PRAAx] lowF a := by
-  refine ind _ ⟨trivial, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, subst_pairT, Syn.subst_var,
-      Syn.inst_zero, Syn.inst_one, inst_two, inst_three, inst_four, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact .impI (dvd_congr (sum_zero (tB a) _).eqSymm (dvd_zero _))
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, subst_pairT, Syn.subst_var,
-      Syn.repl_zero, repl_one, repl_two, repl_three, repl_four, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact .impI (low_step a Prf.hyp0
+  ipra_ind (⟨trivial, trivial⟩) [subst_le, subst_ap2, subst_pairT]
+  · exact .impI (dvd_congr (sum_zero (tB a) _).eqSymm (dvd_zero _))
+  · exact .impI (low_step a Prf.hyp0
       (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)))
 
 /-- The terms below the top one are all divisible by `q`. -/

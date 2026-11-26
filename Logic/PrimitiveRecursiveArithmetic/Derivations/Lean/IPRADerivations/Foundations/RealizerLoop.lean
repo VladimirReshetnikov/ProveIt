@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.RealizerGraph
 import IPRADerivations.Foundations.FiberCompiler
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # A bounded runtime fold with actual finite-query metadata
@@ -151,8 +152,7 @@ def queryBody (D : Code) : PTm 2 := ap3 D.query (var 0) (fstT (var 1)) (sndT (va
 def demands (D : Code) (q p : PTm n) : PTm n := sequence (queryBody D) (ap2 D.fuel q p) (pairT q p)
 def demandF (D : Code) : PR 2 := PTm.toPR (demands D (var 0) (var 1))
 
-@[simp] theorem subst_demands {k : ℕ} (σ : Fin n → PTm k) (D : Code) (q p : PTm n) :
-    Syn.subst σ (demands D q p) = demands D (Syn.subst σ q) (Syn.subst σ p) := by simp [demands]
+ipra_subst demands
 
 theorem demands_length (D : Code) (q p : PTm n) : Γ ⊢[PRAAx] length (demands D q p) ≐ ap2 D.fuel q p :=
   MasterCertificate.sequence_length _ _ _
@@ -179,12 +179,8 @@ def run (D : Code) (j C q p : PTm n) : PTm n :=
 def transformTerm (D : Code) (C q p : PTm n) : PTm n := run D (ap2 D.fuel q p) C q p
 def transformF (D : Code) : PR 3 := PTm.toPR (transformTerm D (var 0) (var 1) (var 2))
 
-@[simp] theorem subst_run {k : ℕ} (σ : Fin n → PTm k) (D : Code) (j C q p : PTm n) :
-    Syn.subst σ (run D j C q p) = run D (Syn.subst σ j) (Syn.subst σ C) (Syn.subst σ q) (Syn.subst σ p) := by
-  simp [run]
-@[simp] theorem subst_transformTerm {k : ℕ} (σ : Fin n → PTm k) (D : Code) (C q p : PTm n) :
-    Syn.subst σ (transformTerm D C q p) = transformTerm D (Syn.subst σ C) (Syn.subst σ q) (Syn.subst σ p) := by
-  simp [transformTerm]
+ipra_subst run
+ipra_subst transformTerm
 
 theorem run_zero (D : Code) (C q p : PTm n) : Γ ⊢[PRAAx] run D zero C q p ≐ ap2 D.initial q p := by
   have h := TraceReflection.run_zero (Δ := Γ) (init := initTerm D) (step := stepTerm D) (pairT C (pairT q p))
@@ -271,12 +267,9 @@ def masterOf (u : PTm n) : PTm n := fstT u
 def queryOf (u : PTm n) : PTm n := fstT (sndT u)
 def parameterOf (u : PTm n) : PTm n := sndT (sndT u)
 
-@[simp] theorem subst_masterOf {k : ℕ} (σ : Fin n → PTm k) (u : PTm n) :
-    Syn.subst σ (masterOf u) = masterOf (Syn.subst σ u) := by simp [masterOf]
-@[simp] theorem subst_queryOf {k : ℕ} (σ : Fin n → PTm k) (u : PTm n) :
-    Syn.subst σ (queryOf u) = queryOf (Syn.subst σ u) := by simp [queryOf]
-@[simp] theorem subst_parameterOf {k : ℕ} (σ : Fin n → PTm k) (u : PTm n) :
-    Syn.subst σ (parameterOf u) = parameterOf (Syn.subst σ u) := by simp [parameterOf]
+ipra_subst masterOf
+ipra_subst queryOf
+ipra_subst parameterOf
 
 def external (X : Interface) (D : Code) (C q p : PTm n) : Fm PTm n :=
   queryAt D.guard q p ⋏ queryAt (allOf (residuals D)) q p ⋏ masterValid X (demands D q p) C p

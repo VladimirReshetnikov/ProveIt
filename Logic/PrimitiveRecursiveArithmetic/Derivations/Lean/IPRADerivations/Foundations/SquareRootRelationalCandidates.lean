@@ -7,6 +7,7 @@ import IPRADerivations.Analysis.RationalRepresentations
 import IPRADerivations.Analysis.GaussianEuclideanDistanceName
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # Actual finite rational square-root candidates
@@ -64,35 +65,20 @@ def rationalResidual (u v k j : PTm n) : Fm PTm n :=
   Analysis.RationalArgmin.rationalLE (inputValue u v)
     (Analysis.RationalArithmetic.add (Analysis.RationalArithmetic.multiply (point j k) (point j k)) (errorValue u v k))
 
-@[simp] theorem subst_unit {m : ℕ} (σ : Fin n → PTm m) (k : PTm n) :
-    Syn.subst σ (unit k) = unit (Syn.subst σ k) := by simp [unit]
+ipra_subst unit
 @[simp] theorem subst_three {m : ℕ} (σ : Fin n → PTm m) :
     Syn.subst σ (three : PTm n) = (three : PTm m) := by simp [three]
-@[simp] theorem subst_cutoff {m : ℕ} (σ : Fin n → PTm m) (u v k : PTm n) :
-    Syn.subst σ (cutoff u v k) = cutoff (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ k) := by simp [cutoff]
-@[simp] theorem subst_candidate {m : ℕ} (σ : Fin n → PTm m) (u v k : PTm n) :
-    Syn.subst σ (candidate u v k) = candidate (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ k) := by
-  simp [candidate,SquareRootNames.jn]
-@[simp] theorem subst_target {m : ℕ} (σ : Fin n → PTm m) (u k : PTm n) :
-    Syn.subst σ (target u k) = target (Syn.subst σ u) (Syn.subst σ k) := by simp [target]
-@[simp] theorem subst_budget {m : ℕ} (σ : Fin n → PTm m) (u v k : PTm n) :
-    Syn.subst σ (budget u v k) = budget (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ k) := by simp [budget]
-@[simp] theorem subst_localCondition {m : ℕ} (σ : Fin n → PTm m) (u v k j : PTm n) :
-    (localCondition u v k j).subst σ = localCondition (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ k) (Syn.subst σ j) := by
-  simp [localCondition]
-@[simp] theorem subst_defect {m : ℕ} (σ : Fin n → PTm m) (u v k j : PTm n) :
-    Syn.subst σ (defect u v k j) = defect (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ k) (Syn.subst σ j) := by simp [defect]
-@[simp] theorem subst_compatible {m : ℕ} (σ : Fin n → PTm m) (j l : PTm n) :
-    (compatible j l).subst σ = compatible (Syn.subst σ j) (Syn.subst σ l) := by simp [compatible]
-@[simp] theorem subst_point {m : ℕ} (σ : Fin n → PTm m) (j k : PTm n) :
-    Syn.subst σ (point j k) = point (Syn.subst σ j) (Syn.subst σ k) := by simp [point]
-@[simp] theorem subst_inputValue {m : ℕ} (σ : Fin n → PTm m) (u v : PTm n) :
-    Syn.subst σ (inputValue u v) = inputValue (Syn.subst σ u) (Syn.subst σ v) := by simp [inputValue]
-@[simp] theorem subst_errorValue {m : ℕ} (σ : Fin n → PTm m) (u v k : PTm n) :
-    Syn.subst σ (errorValue u v k) = errorValue (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ k) := by simp [errorValue]
-@[simp] theorem subst_rationalResidual {m : ℕ} (σ : Fin n → PTm m) (u v k j : PTm n) :
-    (rationalResidual u v k j).subst σ = rationalResidual (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ k) (Syn.subst σ j) := by
-  simp [rationalResidual]
+ipra_subst cutoff
+ipra_subst candidate [SquareRootNames.jn]
+ipra_subst target
+ipra_subst budget
+ipra_subst localCondition
+ipra_subst defect
+ipra_subst compatible
+ipra_subst point
+ipra_subst inputValue
+ipra_subst errorValue
+ipra_subst rationalResidual
 
 theorem unit_positive (k : PTm n) : Γ ⊢[PRAAx] le one (unit k) :=
   le_trans (zero_lt_succ k) (Analysis.RationalClosure.succ_le_two_pow k)
@@ -239,19 +225,12 @@ def listBound (u v k : PTm n) : PTm n :=
 def position (u v k j : PTm n) : PTm n := FilteredEnumeration.rank retainedBody j (data u v k)
 def observed (u v k r : PTm n) : PTm n := point (entry (candidateList u v k) r) k
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (u v k : PTm n) :
-    Syn.subst σ (data u v k) = data (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ k) := by simp [data]
-@[simp] theorem subst_count {m : ℕ} (σ : Fin n → PTm m) (u v k : PTm n) :
-    Syn.subst σ (count u v k) = count (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ k) := by simp [count]
-@[simp] theorem subst_candidateList {m : ℕ} (σ : Fin n → PTm m) (u v k : PTm n) :
-    Syn.subst σ (candidateList u v k) = candidateList (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ k) := by simp [candidateList]
-@[simp] theorem subst_listBound {m : ℕ} (σ : Fin n → PTm m) (u v k : PTm n) :
-    Syn.subst σ (listBound u v k) = listBound (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ k) := by simp [listBound]
-@[simp] theorem subst_position {m : ℕ} (σ : Fin n → PTm m) (u v k j : PTm n) :
-    Syn.subst σ (position u v k j) = position (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ k) (Syn.subst σ j) := by
-  simp [position,FilteredEnumeration.rank]
-@[simp] theorem subst_observed {m : ℕ} (σ : Fin n → PTm m) (u v k r : PTm n) :
-    Syn.subst σ (observed u v k r) = observed (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ k) (Syn.subst σ r) := by simp [observed]
+ipra_subst data
+ipra_subst count
+ipra_subst candidateList
+ipra_subst listBound
+ipra_subst position [FilteredEnumeration.rank]
+ipra_subst observed
 
 theorem point_congr {j j' k k' : PTm n} (hj : Γ ⊢[PRAAx] j ≐ j') (hk : Γ ⊢[PRAAx] k ≐ k') : Γ ⊢[PRAAx]
     point j k ≐ point j' k' := by

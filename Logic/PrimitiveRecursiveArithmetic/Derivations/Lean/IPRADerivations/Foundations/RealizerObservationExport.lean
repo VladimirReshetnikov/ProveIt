@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.HerbrandCapsule
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # An actual bounded observation-image interface
@@ -48,8 +49,7 @@ def output (X : Interface) : Interface where
   observe := PTm.toPR (var 0 : PTm 3)
   related := X.related
 
-@[simp] theorem subst_observationBound {m : ℕ} (σ : Fin n → PTm m) (X : Interface) (q p : PTm n) :
-    Syn.subst σ (observationBound X q p) = observationBound X (Syn.subst σ q) (Syn.subst σ p) := by simp [observationBound]
+ipra_subst observationBound
 @[simp] theorem subst_image {m : ℕ} (σ : Fin n → PTm m) (X : Interface) (v q p : PTm n) :
     (image X v q p).subst σ = image X (Syn.subst σ v) (Syn.subst σ q) (Syn.subst σ p) := by
   simp only [image,Fm.subst_ex,Fm.subst_and,Fm.subst_eq,subst_valid,subst_ap3,Syn.subst_var,Syn.up_zero,
@@ -138,10 +138,8 @@ def demands (q : PTm n) : PTm n := sequence (var 1) one q
 def demandF : PR 2 := PTm.toPR (demands (var 0) : PTm 2)
 def transform (X : Interface) (C q p : PTm n) : PTm n := ap3 X.observe (entry C zero) q p
 def transformF (X : Interface) : PR 3 := PTm.toPR (transform X (var 0) (var 1) (var 2))
-@[simp] theorem subst_demands {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    Syn.subst σ (demands q) = demands (Syn.subst σ q) := by simp [demands]
-@[simp] theorem subst_transform {m : ℕ} (σ : Fin n → PTm m) (X : Interface) (C q p : PTm n) :
-    Syn.subst σ (transform X C q p) = transform X (Syn.subst σ C) (Syn.subst σ q) (Syn.subst σ p) := by simp [transform]
+ipra_subst demands
+ipra_subst transform
 theorem demand_at (q p : PTm n) : Γ ⊢[PRAAx] ap2 demandF q p ≐ demands q := by
   simpa [demandF,ap2] using toPR_eq (Γ := Γ) (demands (var 0) : PTm 2) ![q,p]
 theorem demand_length (q : PTm n) : Γ ⊢[PRAAx] length (demands q) ≐ one := MasterCertificate.sequence_length _ _ _
@@ -312,10 +310,8 @@ theorem sum_output_validity (v q p : PTm n) : Γ ⊢[PRAAx]
 def sumMaster (q : PTm n) : PTm n := sequence (var 1) (length (demands q)) q
 def sumRun (q p : PTm n) : PTm n := ap3 (transformF sumInput) (sumMaster q) q p
 def sumRunF : PR 2 := PTm.toPR (sumRun (var 0) (var 1))
-@[simp] theorem subst_sumMaster {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    Syn.subst σ (sumMaster q) = sumMaster (Syn.subst σ q) := by simp [sumMaster]
-@[simp] theorem subst_sumRun {m : ℕ} (σ : Fin n → PTm m) (q p : PTm n) :
-    Syn.subst σ (sumRun q p) = sumRun (Syn.subst σ q) (Syn.subst σ p) := by simp [sumRun]
+ipra_subst sumMaster
+ipra_subst sumRun
 theorem sum_master_valid (q p : PTm n) : Γ ⊢[PRAAx] masterValid sumInput (demands q) (sumMaster q) p := by
   apply canonical_master
   refine .allI (.impI ?_)

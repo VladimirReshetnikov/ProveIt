@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.SequenceComposition
 import IPRADerivations.Foundations.BoundedFormulas
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # Composition of bounded finite-query certificate realizers
@@ -126,10 +127,7 @@ def related (X : Interface) (c c' q p : PTm n) : Fm PTm n :=
 @[simp] theorem subst_valid {m : ℕ} (σ : Fin n → PTm m) (X : Interface) (c q p : PTm n) :
     (valid X c q p).subst σ = valid X (Syn.subst σ c) (Syn.subst σ q) (Syn.subst σ p) := by
   simp [valid]
-@[simp] theorem subst_related {m : ℕ} (σ : Fin n → PTm m) (X : Interface) (c c' q p : PTm n) :
-    (related X c c' q p).subst σ =
-      related X (Syn.subst σ c) (Syn.subst σ c') (Syn.subst σ q) (Syn.subst σ p) := by
-  simp [related]
+ipra_subst related
 
 theorem valid_congr (X : Interface) {c c' q q' p p' : PTm n}
     (hc : Γ ⊢[PRAAx] c ≐ c') (hq : Γ ⊢[PRAAx] q ≐ q') (hp : Γ ⊢[PRAAx] p ≐ p')
@@ -157,9 +155,7 @@ def masterValid (X : Interface) (demands C p : PTm n) : Fm PTm n :=
   lt C (masterBound X demands p) ⋏
     ((length C ≐ length demands) ⋏ masterValues X demands C p)
 
-@[simp] theorem subst_masterBound {m : ℕ} (σ : Fin n → PTm m) (X : Interface) (demands p : PTm n) :
-    Syn.subst σ (masterBound X demands p) = masterBound X (Syn.subst σ demands) (Syn.subst σ p) := by
-  simp [masterBound]
+ipra_subst masterBound
 @[simp] theorem subst_masterValues {m : ℕ} (σ : Fin n → PTm m) (X : Interface) (demands C p : PTm n) :
     (masterValues X demands C p).subst σ =
       masterValues X (Syn.subst σ demands) (Syn.subst σ C) (Syn.subst σ p) := by
@@ -211,9 +207,7 @@ theorem canonical_master (X : Interface) (f : PTm 2) (demands p x : PTm n)
 def sliceBody : PTm 2 := entry (sndT (var 1)) (fstT (var 1) + var 0)
 def slice (C offset amount : PTm n) : PTm n := sequence sliceBody amount (pairT offset C)
 
-@[simp] theorem subst_slice {m : ℕ} (σ : Fin n → PTm m) (C offset amount : PTm n) :
-    Syn.subst σ (slice C offset amount) = slice (Syn.subst σ C) (Syn.subst σ offset) (Syn.subst σ amount) := by
-  simp [slice]
+ipra_subst slice
 
 theorem sliceBody_at (C offset i : PTm n) :
     Γ ⊢[PRAAx] inst2 sliceBody i (pairT offset C) ≐ entry C (offset + i) := by
@@ -272,9 +266,7 @@ theorem extracted_master_valid (X : Interface) (inner : PR 2) (outer C p j : PTm
 def validityBit (X : Interface) (c q p : PTm n) : PTm n :=
   eqb (pairT (monus (succ c) (ap2 X.bound q p)) (ap3 X.verify c q p)) (pairT zero one)
 
-@[simp] theorem subst_validityBit {m : ℕ} (σ : Fin n → PTm m) (X : Interface) (c q p : PTm n) :
-    Syn.subst σ (validityBit X c q p) = validityBit X (Syn.subst σ c) (Syn.subst σ q) (Syn.subst σ p) := by
-  simp [validityBit]
+ipra_subst validityBit
 
 theorem validityBit_sound (X : Interface) (c q p : PTm n)
     (h : Γ ⊢[PRAAx] validityBit X c q p ≐ one) : Γ ⊢[PRAAx] valid X c q p := by
@@ -301,11 +293,7 @@ def masterBody (X : Interface) : PTm 2 :=
 def masterCoordinateBit (X : Interface) (demands C p : PTm n) : PTm n :=
   allB (masterBody X) (length demands) (pairT C (pairT demands p))
 
-@[simp] theorem subst_masterCoordinateBit {m : ℕ} (σ : Fin n → PTm m) (X : Interface)
-    (demands C p : PTm n) :
-    Syn.subst σ (masterCoordinateBit X demands C p) =
-      masterCoordinateBit X (Syn.subst σ demands) (Syn.subst σ C) (Syn.subst σ p) := by
-  simp [masterCoordinateBit, allB]
+ipra_subst masterCoordinateBit [allB]
 
 theorem masterBody_at (X : Interface) (demands C p i : PTm n) :
     Γ ⊢[PRAAx] inst2 (masterBody X) i (pairT C (pairT demands p)) ≐
@@ -365,9 +353,7 @@ def masterBit (X : Interface) (demands C p : PTm n) : PTm n :=
       (pairT (length C) (masterCoordinateBit X demands C p)))
     (pairT zero (pairT (length demands) one))
 
-@[simp] theorem subst_masterBit {m : ℕ} (σ : Fin n → PTm m) (X : Interface) (demands C p : PTm n) :
-    Syn.subst σ (masterBit X demands C p) =
-      masterBit X (Syn.subst σ demands) (Syn.subst σ C) (Syn.subst σ p) := by simp [masterBit]
+ipra_subst masterBit
 
 theorem masterBit_sound (X : Interface) (demands C p : PTm n)
     (h : Γ ⊢[PRAAx] masterBit X demands C p ≐ one) : Γ ⊢[PRAAx] masterValid X demands C p := by
@@ -579,10 +565,7 @@ def bundleBody {X Y : Interface} (R : Realizer X Y) : PTm 2 :=
 def bundle {X Y : Interface} (R : Realizer X Y) (C outer p : PTm n) : PTm n :=
   sequence (bundleBody R) (length outer) (pairT C (pairT outer p))
 
-@[simp] theorem subst_bundle {m : ℕ} (σ : Fin n → PTm m) {X Y : Interface}
-    (R : Realizer X Y) (C outer p : PTm n) :
-    Syn.subst σ (bundle R C outer p) = bundle R (Syn.subst σ C) (Syn.subst σ outer) (Syn.subst σ p) := by
-  simp [bundle]
+ipra_subst bundle
 
 theorem bundleBody_at {X Y : Interface} (R : Realizer X Y) (C outer p j : PTm n) :
     Γ ⊢[PRAAx] inst2 (bundleBody R) j (pairT C (pairT outer p)) ≐ bundleValue R C outer p j := by
@@ -674,10 +657,7 @@ def demandTerm {X Y Z : Interface} (R : Realizer X Y) (S : Realizer Y Z) (q p : 
 def demandF {X Y Z : Interface} (R : Realizer X Y) (S : Realizer Y Z) : PR 2 :=
   PTm.toPR (demandTerm R S (var 0) (var 1))
 
-@[simp] theorem subst_demandTerm {m : ℕ} (σ : Fin n → PTm m) {X Y Z : Interface}
-    (R : Realizer X Y) (S : Realizer Y Z) (q p : PTm n) :
-    Syn.subst σ (demandTerm R S q p) = demandTerm R S (Syn.subst σ q) (Syn.subst σ p) := by
-  simp [demandTerm]
+ipra_subst demandTerm
 
 theorem demand_at {X Y Z : Interface} (R : Realizer X Y) (S : Realizer Y Z) (q p : PTm n) :
     Γ ⊢[PRAAx] ap2 (demandF R S) q p ≐ demandTerm R S q p := by
@@ -690,10 +670,7 @@ def transformTerm {X Y Z : Interface} (R : Realizer X Y) (S : Realizer Y Z) (C q
 def transformF {X Y Z : Interface} (R : Realizer X Y) (S : Realizer Y Z) : PR 3 :=
   PTm.toPR (transformTerm R S (var 0) (var 1) (var 2))
 
-@[simp] theorem subst_transformTerm {m : ℕ} (σ : Fin n → PTm m) {X Y Z : Interface}
-    (R : Realizer X Y) (S : Realizer Y Z) (C q p : PTm n) :
-    Syn.subst σ (transformTerm R S C q p) =
-      transformTerm R S (Syn.subst σ C) (Syn.subst σ q) (Syn.subst σ p) := by simp [transformTerm]
+ipra_subst transformTerm
 
 theorem transform_at {X Y Z : Interface} (R : Realizer X Y) (S : Realizer Y Z) (C q p : PTm n) :
     Γ ⊢[PRAAx] ap3 (transformF R S) C q p ≐ transformTerm R S C q p := by

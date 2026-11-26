@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.RealizerMasterInterface
 import IPRADerivations.Foundations.BoundedSelection
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # An actual reflected least-search node over interface observations
@@ -53,12 +54,9 @@ def testBody (X : Interface) (D : Code) : PTm 2 :=
 def selected (X : Interface) (D : Code) (C q p : PTm n) : PTm n :=
   BooleanizationCorollaries.first (testBody X D) (ap2 D.bound q p) (data C q p)
 
-@[simp] theorem subst_demands {m : ℕ} (σ : Fin n → PTm m) (D : Code) (q p : PTm n) :
-    Syn.subst σ (demands D q p) = demands D (Syn.subst σ q) (Syn.subst σ p) := by simp [demands]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (C q p : PTm n) :
-    Syn.subst σ (data C q p) = data (Syn.subst σ C) (Syn.subst σ q) (Syn.subst σ p) := by simp [data]
-@[simp] theorem subst_test {m : ℕ} (σ : Fin n → PTm m) (X : Interface) (D : Code) (C q p i : PTm n) :
-    Syn.subst σ (test X D C q p i) = test X D (Syn.subst σ C) (Syn.subst σ q) (Syn.subst σ p) (Syn.subst σ i) := by simp [test]
+ipra_subst demands
+ipra_subst data
+ipra_subst test
 @[simp] theorem subst_accepted {m : ℕ} (σ : Fin n → PTm m) (X : Interface) (D : Code) (C q p i : PTm n) :
     (accepted X D C q p i).subst σ = accepted X D (Syn.subst σ C) (Syn.subst σ q) (Syn.subst σ p) (Syn.subst σ i) := by
   unfold accepted
@@ -257,10 +255,8 @@ def output (X : Interface) (D : Code) : Interface where
   observe := PTm.toPR (sndT (var 0) : PTm 3)
   related := PTm.toPR (eqb (var 0) (var 1) : PTm 4)
 
-@[simp] theorem subst_result {m : ℕ} (σ : Fin n → PTm m) (X : Interface) (D : Code) (C q p : PTm n) :
-    Syn.subst σ (result X D C q p) = result X D (Syn.subst σ C) (Syn.subst σ q) (Syn.subst σ p) := by simp [result]
-@[simp] theorem subst_boundTerm {m : ℕ} (σ : Fin n → PTm m) (X : Interface) (D : Code) (q p : PTm n) :
-    Syn.subst σ (boundTerm X D q p) = boundTerm X D (Syn.subst σ q) (Syn.subst σ p) := by simp [boundTerm]
+ipra_subst result
+ipra_subst boundTerm
 theorem transform_at (X : Interface) (D : Code) (C q p : PTm n) : Γ ⊢[PRAAx]
     ap3 (transformF X D) C q p ≐ result X D C q p := by
   simpa [transformF,ap3] using toPR_eq (Γ := Γ) (result X D (var 0) (var 1) (var 2)) ![C,q,p]

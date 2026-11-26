@@ -3,6 +3,7 @@ import IPRADerivations.Foundations.FilteredEnumerationCode
 import IPRADerivations.Foundations.BoundedSyntaxInduction
 import IPRADerivations.Core.Parity
 import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # Numeric permutation words for the runtime determinant
@@ -48,28 +49,16 @@ def distinct (P m : PTm n) : Fm PTm n := .all
   (lt (var 0) (Syn.shift m) ⟶ distinctFrom (Syn.shift P) (var 0))
 def tuple (P m : PTm n) : Fm PTm n := length P ≐ m ⋏ (range P m ⋏ distinct P m)
 
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (m w : PTm n) :
-    Syn.subst σ (data m w) = data (Syn.subst σ m) (Syn.subst σ w) := by simp [data]
-@[simp] theorem subst_horizon {l : ℕ} (σ : Fin n → PTm l) (m : PTm n) :
-    Syn.subst σ (horizon m) = horizon (Syn.subst σ m) := by simp [horizon]
-@[simp] theorem subst_digit {l : ℕ} (σ : Fin n → PTm l) (m w i : PTm n) :
-    Syn.subst σ (digit m w i) = digit (Syn.subst σ m) (Syn.subst σ w) (Syn.subst σ i) := by simp [digit]
-@[simp] theorem subst_word {l : ℕ} (σ : Fin n → PTm l) (m w : PTm n) :
-    Syn.subst σ (word m w) = word (Syn.subst σ m) (Syn.subst σ w) := by simp [word]
-@[simp] theorem subst_encode {l : ℕ} (σ : Fin n → PTm l) (P m : PTm n) :
-    Syn.subst σ (encode P m) = encode (Syn.subst σ P) (Syn.subst σ m) := by simp [encode]
-@[simp] theorem subst_entriesEqual {l : ℕ} (σ : Fin n → PTm l) (P Q m : PTm n) :
-    (entriesEqual P Q m).subst σ = entriesEqual (Syn.subst σ P) (Syn.subst σ Q) (Syn.subst σ m) := by
-  simp [entriesEqual,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_range {l : ℕ} (σ : Fin n → PTm l) (P m : PTm n) :
-    (range P m).subst σ = range (Syn.subst σ P) (Syn.subst σ m) := by simp [range,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_distinctFrom {l : ℕ} (σ : Fin n → PTm l) (P i : PTm n) :
-    (distinctFrom P i).subst σ = distinctFrom (Syn.subst σ P) (Syn.subst σ i) := by
-  simp [distinctFrom,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_distinct {l : ℕ} (σ : Fin n → PTm l) (P m : PTm n) :
-    (distinct P m).subst σ = distinct (Syn.subst σ P) (Syn.subst σ m) := by simp [distinct,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_tuple {l : ℕ} (σ : Fin n → PTm l) (P m : PTm n) :
-    (tuple P m).subst σ = tuple (Syn.subst σ P) (Syn.subst σ m) := by simp [tuple]
+ipra_subst data
+ipra_subst horizon
+ipra_subst digit
+ipra_subst word
+ipra_subst encode
+ipra_subst entriesEqual [Syn.subst_shift, Syn.shift_subst]
+ipra_subst range [Syn.subst_shift, Syn.shift_subst]
+ipra_subst distinctFrom [Syn.subst_shift, Syn.shift_subst]
+ipra_subst distinct [Syn.subst_shift, Syn.shift_subst]
+ipra_subst tuple
 
 theorem radix_at (m w i : PTm n) : Γ ⊢[PRAAx] inst2 radixBody i (data m w) ≐ m := by
   simpa [radixBody,inst2,data] using snd_pair (Γ := Γ) w m
@@ -231,10 +220,8 @@ def permutation (m w : PTm n) : Fm PTm n := tuple (word m w) m
 def permutationSyntax (m w : PTm n) : BFm n := tupleSyntax (word m w) m
 def checkerF : PR 2 := LeanProofs.IPRA.Foundations.BoundedSyntax.bitF (permutationSyntax (var 0) (var 1))
 def permutationBit (m w : PTm n) : PTm n := ap2 checkerF m w
-@[simp] theorem subst_permutation {l : ℕ} (σ : Fin n → PTm l) (m w : PTm n) :
-    (permutation m w).subst σ = permutation (Syn.subst σ m) (Syn.subst σ w) := by simp [permutation]
-@[simp] theorem subst_permutationBit {l : ℕ} (σ : Fin n → PTm l) (m w : PTm n) :
-    Syn.subst σ (permutationBit m w) = permutationBit (Syn.subst σ m) (Syn.subst σ w) := by simp [permutationBit]
+ipra_subst permutation
+ipra_subst permutationBit
 theorem tuple_syntax_formula (P m : PTm n) : formula (tupleSyntax P m) = tuple P m := by
   simp [tupleSyntax,formula,BFm.lt,BFm.le,tuple,range,distinct,distinctFrom,lt,le,neg,Syn.shift]
 theorem checker_at (m w : PTm n) : Γ ⊢[PRAAx] permutationBit m w ≐
@@ -262,15 +249,10 @@ def count (m : PTm n) : PTm n := FilteredEnumerationCode.count keepBody (horizon
 def words (m : PTm n) : PTm n := FilteredEnumerationCode.list keepBody (horizon m) m
 def position (P m : PTm n) : PTm n := FilteredEnumeration.rank keepBody (encode P m) m
 def codeBound (m : PTm n) : PTm n := FilteredEnumerationCode.codeBound keepBody (horizon m) m
-@[simp] theorem subst_count {l : ℕ} (σ : Fin n → PTm l) (m : PTm n) :
-    Syn.subst σ (count m) = count (Syn.subst σ m) := by simp [count]
-@[simp] theorem subst_words {l : ℕ} (σ : Fin n → PTm l) (m : PTm n) :
-    Syn.subst σ (words m) = words (Syn.subst σ m) := by simp [words]
-@[simp] theorem subst_position {l : ℕ} (σ : Fin n → PTm l) (P m : PTm n) :
-    Syn.subst σ (position P m) = position (Syn.subst σ P) (Syn.subst σ m) := by
-  simp [position,FilteredEnumeration.rank]
-@[simp] theorem subst_codeBound {l : ℕ} (σ : Fin n → PTm l) (m : PTm n) :
-    Syn.subst σ (codeBound m) = codeBound (Syn.subst σ m) := by simp [codeBound]
+ipra_subst count
+ipra_subst words
+ipra_subst position [FilteredEnumeration.rank]
+ipra_subst codeBound
 theorem keep_at (m w : PTm n) : inst2 keepBody w m = permutationBit m w := by simp [keepBody,inst2]
 theorem words_length (m : PTm n) : Γ ⊢[PRAAx] length (words m) ≐ count m :=
   FilteredEnumerationCode.list_length _ _ _
@@ -307,8 +289,7 @@ theorem retained_position_unique (m r s : PTm n) (hr : Γ ⊢[PRAAx] lt r (count
 
 
 def identity (m : PTm n) : PTm n := sequence (var 0 : PTm 2) m zero
-@[simp] theorem subst_identity {l : ℕ} (σ : Fin n → PTm l) (m : PTm n) :
-    Syn.subst σ (identity m) = identity (Syn.subst σ m) := by simp [identity]
+ipra_subst identity
 theorem identity_length (m : PTm n) : Γ ⊢[PRAAx] length (identity m) ≐ m := sequence_length _ _ _
 theorem identity_lookup (m i : PTm n) (hi : Γ ⊢[PRAAx] lt i m) : Γ ⊢[PRAAx]
     entry (identity m) i ≐ i := by
@@ -361,12 +342,9 @@ def parity (m w : PTm n) : PTm n := par (inversions m w)
   fin_cases k <;> rfl
 @[simp] theorem subst_rowPrefix {l : ℕ} (σ : Fin n → PTm l) (m w i t : PTm n) :
     Syn.subst σ (rowPrefix m w i t) = rowPrefix (Syn.subst σ m) (Syn.subst σ w) (Syn.subst σ i) (Syn.subst σ t) := by simp [rowPrefix]
-@[simp] theorem subst_inversionPrefix {l : ℕ} (σ : Fin n → PTm l) (m w t : PTm n) :
-    Syn.subst σ (inversionPrefix m w t) = inversionPrefix (Syn.subst σ m) (Syn.subst σ w) (Syn.subst σ t) := by simp [inversionPrefix]
-@[simp] theorem subst_inversions {l : ℕ} (σ : Fin n → PTm l) (m w : PTm n) :
-    Syn.subst σ (inversions m w) = inversions (Syn.subst σ m) (Syn.subst σ w) := by simp [inversions]
-@[simp] theorem subst_parity {l : ℕ} (σ : Fin n → PTm l) (m w : PTm n) :
-    Syn.subst σ (parity m w) = parity (Syn.subst σ m) (Syn.subst σ w) := by simp [parity]
+ipra_subst inversionPrefix
+ipra_subst inversions
+ipra_subst parity
 theorem inversion_at (m w i j : PTm n) : Γ ⊢[PRAAx] inversionBit m w i j ≐
     LeanProofs.IPRA.Foundations.BoundedSyntax.bit (inversionSyntax (var 0) (var 1) (var 2) (var 3)) ![m,w,i,j] := by
   simpa only [inversionBit,inversionF] using
@@ -432,10 +410,8 @@ def output (m w : PTm n) : PTm n := pairT (words m) (pairT (count m) (pairT (wor
 def outputF : PR 2 := PTm.toPR (output (var 0) (var 1))
 def run (m w : PTm n) : PTm n := ap2 outputF m w
 def boundF : PR 1 := PTm.toPR (codeBound (var 0))
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (m w : PTm n) :
-    Syn.subst σ (output m w) = output (Syn.subst σ m) (Syn.subst σ w) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (m w : PTm n) :
-    Syn.subst σ (run m w) = run (Syn.subst σ m) (Syn.subst σ w) := by simp [run]
+ipra_subst output
+ipra_subst run
 theorem program_at (m w : PTm n) : Γ ⊢[PRAAx] run m w ≐ output m w := by
   simpa [run,outputF,ap2] using toPR_eq (Γ := Γ) (output (var 0) (var 1)) ![m,w]
 theorem bound_program_at (m : PTm n) : Γ ⊢[PRAAx] ap1 boundF m ≐ codeBound m := by

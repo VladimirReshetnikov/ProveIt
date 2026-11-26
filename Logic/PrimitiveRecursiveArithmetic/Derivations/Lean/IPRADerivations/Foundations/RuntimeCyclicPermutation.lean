@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.RuntimeWordAppend
 import IPRADerivations.Foundations.FiniteFiberGrouping
 import IPRADerivations.Foundations.GuardedTotalization
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # A cyclic permutation and its wrap bit
@@ -25,13 +26,9 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 def rotation (m k j : PTm n) : PTm n := rem (j + k) m
 def wrap (m k j : PTm n) : PTm n := quo (j + k) m
 
-@[simp] theorem subst_rotation {l : ℕ} (σ : Fin n → PTm l) (m k j : PTm n) :
-    Syn.subst σ (rotation m k j) = rotation (Syn.subst σ m) (Syn.subst σ k) (Syn.subst σ j) := by
-  simp [rotation]
+ipra_subst rotation
 
-@[simp] theorem subst_wrap {l : ℕ} (σ : Fin n → PTm l) (m k j : PTm n) :
-    Syn.subst σ (wrap m k j) = wrap (Syn.subst σ m) (Syn.subst σ k) (Syn.subst σ j) := by
-  simp [wrap]
+ipra_subst wrap
 
 theorem rotation_spec (m k j : PTm n) (hm : Γ ⊢[PRAAx] le one m) :
     Γ ⊢[PRAAx] (j + k ≐ m * wrap m k j + rotation m k j) ⋏ lt (rotation m k j) m :=
@@ -110,9 +107,7 @@ def rotationBody : PTm 2 := rotation (fstT (var 1)) (sndT (var 1)) (var 0)
 def rotationTable (m k : PTm n) : PTm n := sequence rotationBody m (pairT m k)
 def rotationCode (m k : PTm n) : PTm n := RuntimePermutationWords.encode (rotationTable m k) m
 
-@[simp] theorem subst_rotationTable {l : ℕ} (σ : Fin n → PTm l) (m k : PTm n) :
-    Syn.subst σ (rotationTable m k) = rotationTable (Syn.subst σ m) (Syn.subst σ k) := by
-  simp [rotationTable]
+ipra_subst rotationTable
 
 theorem rotation_lookup (m k i : PTm n) (hi : Γ ⊢[PRAAx] lt i m) :
     Γ ⊢[PRAAx] entry (rotationTable m k) i ≐ rotation m k i := by
@@ -180,9 +175,7 @@ theorem rotation_listed (m k : PTm n) (hk : Γ ⊢[PRAAx] lt k m) :
 /-- The first wrapped position in the increasing list of positions. -/
 def cutoff (m k : PTm n) : PTm n := monus m k
 
-@[simp] theorem subst_cutoff {l : ℕ} (σ : Fin n → PTm l) (m k : PTm n) :
-    Syn.subst σ (cutoff m k) = cutoff (Syn.subst σ m) (Syn.subst σ k) := by
-  simp [cutoff]
+ipra_subst cutoff
 
 theorem cutoff_span (m k : PTm n) (hk : Γ ⊢[PRAAx] le k m) :
     Γ ⊢[PRAAx] m ≐ cutoff m k + k :=
@@ -253,13 +246,9 @@ theorem wrap_count (m k : PTm n) (hk : Γ ⊢[PRAAx] lt k m) :
   refine (congrAp2 (sumF wrapBody) (cutoff_span m k (le_of_lt hk)) (.eqRefl _)).eqTrans ?_
   exact (sum_split wrapBody c k x).eqTrans ((congrAdd left right).eqTrans (zero_add k))
 
-@[simp] theorem subst_rotationCode {l : ℕ} (σ : Fin n → PTm l) (m k : PTm n) :
-    Syn.subst σ (rotationCode m k) = rotationCode (Syn.subst σ m) (Syn.subst σ k) := by
-  simp [rotationCode]
+ipra_subst rotationCode
 
-@[simp] theorem subst_wrapCount {l : ℕ} (σ : Fin n → PTm l) (m k : PTm n) :
-    Syn.subst σ (wrapCount m k) = wrapCount (Syn.subst σ m) (Syn.subst σ k) := by
-  simp [wrapCount]
+ipra_subst wrapCount
 
 theorem rotation_checker (m k : PTm n) (hk : Γ ⊢[PRAAx] lt k m) :
     Γ ⊢[PRAAx] RuntimePermutationWords.permutationBit m (rotationCode m k) ≐ one :=
@@ -272,10 +261,7 @@ def matchesRotation (m k w : PTm n) : Fm PTm n := .all
     RuntimePermutationWords.digit (Syn.shift m) (Syn.shift w) (var 0) ≐
       rotation (Syn.shift m) (Syn.shift k) (var 0))
 
-@[simp] theorem subst_matchesRotation {l : ℕ} (σ : Fin n → PTm l) (m k w : PTm n) :
-    (matchesRotation m k w).subst σ =
-      matchesRotation (Syn.subst σ m) (Syn.subst σ k) (Syn.subst σ w) := by
-  simp [matchesRotation,Syn.subst_shift,Syn.shift_subst]
+ipra_subst matchesRotation [Syn.subst_shift, Syn.shift_subst]
 
 theorem matches_at (m k w i : PTm n) (h : Γ ⊢[PRAAx] matchesRotation m k w)
     (hi : Γ ⊢[PRAAx] lt i m) :
@@ -337,9 +323,7 @@ theorem actual_rotation_unique_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3
 def inverseIndex (m k r : PTm n) : PTm n :=
   GuardedTotalization.sel (Signum.sg (monus k r)) (cutoff m k + r) (monus r k)
 
-@[simp] theorem subst_inverseIndex {l : ℕ} (σ : Fin n → PTm l) (m k r : PTm n) :
-    Syn.subst σ (inverseIndex m k r) = inverseIndex (Syn.subst σ m) (Syn.subst σ k) (Syn.subst σ r) := by
-  simp [inverseIndex,GuardedTotalization.sel,Signum.sg]
+ipra_subst inverseIndex [GuardedTotalization.sel, Signum.sg]
 
 theorem inverse_small_row (m k r : PTm n)
     (hk : Γ ⊢[PRAAx] lt k m) (hrk : Γ ⊢[PRAAx] lt r k) : Γ ⊢[PRAAx]

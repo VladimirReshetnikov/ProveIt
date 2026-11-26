@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.BackwardViability
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # The certified finite chain (`ipra_evidence_framework`, "certified finite chain")
@@ -201,17 +202,12 @@ private def invF (I : Instance) (s : PTm 1) : Fm PTm 2 :=
         (I.V (monus (I.h (var 1)) (var 0)) (chain I s (var 0) (var 1)) (var 1) ≐ one))
 
 private theorem inv₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] invF I s := by
-  refine ind _ ⟨⟨trivial, trivial⟩, trivial, trivial, trivial⟩ ?_ ?_
-  · simp only [invF, Fm.subst_imp, Fm.subst_and, Fm.subst_eq, subst_lt, subst_le, subst_start,
-      subst_V, subst_chain, Instance.subst_bd, Instance.subst_h, PTm.subst_monus, Syn.subst_var,
-      Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine .impI (.impI ?_)
+  ipra_ind (⟨⟨trivial, trivial⟩, trivial, trivial, trivial⟩) [invF, subst_lt, subst_le, subst_start, subst_V,
+      subst_chain, Instance.subst_bd, Instance.subst_h]
+  · refine .impI (.impI ?_)
     exact .andI (lt_congr (chain_zero I s _).eqSymm (.eqRefl _) (.andE₁ Prf.hyp1))
       ((V_congr I (monus_zero _) (chain_zero I s _)).eqTrans (.andE₂ Prf.hyp1))
-  · simp only [invF, Fm.subst_imp, Fm.subst_and, Fm.subst_eq, subst_lt, subst_le, subst_start,
-      subst_V, subst_chain, Instance.subst_bd, Instance.subst_h, PTm.subst_monus, Syn.subst_var,
-      Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have ih : [invF I s] ⊢[PRAAx]
+  · have ih : [invF I s] ⊢[PRAAx]
         (lt (start s (var 1)) (I.bd zero (var 1)) ⋏
           (I.V (I.h (var 1)) (start s (var 1)) (var 1) ≐ one)) ⟶
         le (var 0) (I.h (var 1)) ⟶

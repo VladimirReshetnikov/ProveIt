@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.DemandClosure
 import IPRADerivations.Foundations.ChainViability
 import IPRADerivations.Foundations.SequenceComposition
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # A concrete cyclic two-coordinate demand closure
@@ -39,14 +40,10 @@ def update (B C v : PTm n) : PTm n := vector
 def operator : PTm 2 := update (fstT (var 1)) (sndT (var 1)) (var 0)
 
 @[simp] theorem subst_two {m : ℕ} (σ : Fin n → PTm m) : Syn.subst σ (two : PTm n) = two := by simp [two]
-@[simp] theorem subst_clip {m : ℕ} (σ : Fin n → PTm m) (B x : PTm n) :
-    Syn.subst σ (clip B x) = clip (Syn.subst σ B) (Syn.subst σ x) := by simp [clip]
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (a b i : PTm n) :
-    Syn.subst σ (value a b i) = value (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ i) := by simp [value]
-@[simp] theorem subst_vector {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (vector a b) = vector (Syn.subst σ a) (Syn.subst σ b) := by simp [vector]
-@[simp] theorem subst_update {m : ℕ} (σ : Fin n → PTm m) (B C v : PTm n) :
-    Syn.subst σ (update B C v) = update (Syn.subst σ B) (Syn.subst σ C) (Syn.subst σ v) := by simp [update]
+ipra_subst clip
+ipra_subst value
+ipra_subst vector
+ipra_subst update
 
 theorem clip_le (B x : PTm n) : Γ ⊢[PRAAx] le (clip B x) B := ChainViability.monus_le _ _
 theorem clip_of_above (B x : PTm n) (h : Γ ⊢[PRAAx] le B x) : Γ ⊢[PRAAx] clip B x ≐ B :=
@@ -167,12 +164,9 @@ def orbit (B C k : PTm n) : PTm n := iterate operator k two (pairT B C)
 def result (B C : PTm n) : PTm n := orbit B C (B+C)
 def resultF : PR 2 := PTm.toPR (result (var 0) (var 1))
 def run (B C : PTm n) : PTm n := ap2 resultF B C
-@[simp] theorem subst_orbit {m : ℕ} (σ : Fin n → PTm m) (B C k : PTm n) :
-    Syn.subst σ (orbit B C k) = orbit (Syn.subst σ B) (Syn.subst σ C) (Syn.subst σ k) := by simp [orbit]
-@[simp] theorem subst_result {m : ℕ} (σ : Fin n → PTm m) (B C : PTm n) :
-    Syn.subst σ (result B C) = result (Syn.subst σ B) (Syn.subst σ C) := by simp [result]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (B C : PTm n) :
-    Syn.subst σ (run B C) = run (Syn.subst σ B) (Syn.subst σ C) := by simp [run]
+ipra_subst orbit
+ipra_subst result
+ipra_subst run
 
 theorem rank_stage (B C : PTm n) : Γ ⊢[PRAAx]
     iterate operator (rank two (vector B C)) two (pairT B C) ≐ result B C :=

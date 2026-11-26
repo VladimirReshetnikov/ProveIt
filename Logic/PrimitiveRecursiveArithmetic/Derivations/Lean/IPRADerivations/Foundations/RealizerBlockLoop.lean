@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.RealizerMasterInterface
 import IPRADerivations.Foundations.RealizerLoop
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # A source bounded fold with variable blocks of input queries
@@ -170,13 +171,9 @@ def submaster (D : Code) (C i q p : PTm n) : PTm n :=
   slice C (prefixSum (inner D) (outer D q p) p i) (length (block (inner D) (outer D q p) p i))
 def run (D : Code) (i C q p : PTm n) : PTm n := RealizerLoop.run (loopCode D) i (masters D C q p) q p
 
-@[simp] theorem subst_outer {m : ℕ} (σ : Fin n → PTm m) (D : Code) (q p : PTm n) :
-    Syn.subst σ (outer D q p) = outer D (Syn.subst σ q) (Syn.subst σ p) := by simp [outer]
-@[simp] theorem subst_demands {m : ℕ} (σ : Fin n → PTm m) (D : Code) (q p : PTm n) :
-    Syn.subst σ (demands D q p) = demands D (Syn.subst σ q) (Syn.subst σ p) := by simp [demands]
-@[simp] theorem subst_submaster {m : ℕ} (σ : Fin n → PTm m) (D : Code) (C i q p : PTm n) :
-    Syn.subst σ (submaster D C i q p) = submaster D (Syn.subst σ C) (Syn.subst σ i) (Syn.subst σ q) (Syn.subst σ p) := by
-  simp [submaster]
+ipra_subst outer
+ipra_subst demands
+ipra_subst submaster
 
 theorem demand_at (D : Code) (q p : PTm n) : Γ ⊢[PRAAx] ap2 (demandF D) q p ≐ demands D q p :=
   RealizerGraph.Code.seqDemand_at (RealizerMasterInterface.code (inner D)) (loopRawCode D) q p

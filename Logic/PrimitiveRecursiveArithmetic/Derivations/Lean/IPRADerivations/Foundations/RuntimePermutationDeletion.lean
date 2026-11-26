@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.RuntimePermutationSums
 import IPRADerivations.Foundations.RuntimeWordAppend
 import IPRADerivations.Foundations.InjectionCount
 import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # Actual deletion of the maximum digit of a numerical permutation word
@@ -38,20 +39,13 @@ def deleteBody : PTm 2 := deletedValue (sndT (var 1)) (fstT (var 1)) (var 0)
 def deleted (m w : PTm n) : PTm n := sequence deleteBody m (data m w)
 def deletedWord (m w : PTm n) : PTm n := encode (deleted m w) m
 def deletedRank (m w : PTm n) : PTm n := RuntimePermutationWords.position (deleted m w) m
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (m w : PTm n) :
-    Syn.subst σ (data m w) = data (Syn.subst σ m) (Syn.subst σ w) := by simp [data]
-@[simp] theorem subst_maximumPosition {l : ℕ} (σ : Fin n → PTm l) (m w : PTm n) :
-    Syn.subst σ (maximumPosition m w) = maximumPosition (Syn.subst σ m) (Syn.subst σ w) := by simp [maximumPosition,BoundedReflection.wit]
-@[simp] theorem subst_slot {l : ℕ} (σ : Fin n → PTm l) (p i : PTm n) :
-    Syn.subst σ (slot p i) = slot (Syn.subst σ p) (Syn.subst σ i) := by simp [slot,sel,Signum.sg]
-@[simp] theorem subst_deletedValue {l : ℕ} (σ : Fin n → PTm l) (m w i : PTm n) :
-    Syn.subst σ (deletedValue m w i) = deletedValue (Syn.subst σ m) (Syn.subst σ w) (Syn.subst σ i) := by simp [deletedValue]
-@[simp] theorem subst_deleted {l : ℕ} (σ : Fin n → PTm l) (m w : PTm n) :
-    Syn.subst σ (deleted m w) = deleted (Syn.subst σ m) (Syn.subst σ w) := by simp [deleted]
-@[simp] theorem subst_deletedWord {l : ℕ} (σ : Fin n → PTm l) (m w : PTm n) :
-    Syn.subst σ (deletedWord m w) = deletedWord (Syn.subst σ m) (Syn.subst σ w) := by simp [deletedWord]
-@[simp] theorem subst_deletedRank {l : ℕ} (σ : Fin n → PTm l) (m w : PTm n) :
-    Syn.subst σ (deletedRank m w) = deletedRank (Syn.subst σ m) (Syn.subst σ w) := by simp [deletedRank,RuntimePermutationWords.position]
+ipra_subst data
+ipra_subst maximumPosition [BoundedReflection.wit]
+ipra_subst slot [sel, Signum.sg]
+ipra_subst deletedValue
+ipra_subst deleted
+ipra_subst deletedWord
+ipra_subst deletedRank [RuntimePermutationWords.position]
 
 theorem max_test_at (m w i : PTm n) : Γ ⊢[PRAAx] inst2 maxTest i (data m w) ≐ eqb m (digit (succ m) w i) := by
   simp only [maxTest,inst2,subst_eqb,RuntimePermutationWords.subst_digit,subst_fstT,subst_sndT,
@@ -192,8 +186,7 @@ theorem after_index (m p k : PTm n) (hp : Γ ⊢[PRAAx] lt p k) (hk : Γ ⊢[PRA
   exact .andI (le_congr form (.eqRefl _) km) (.andI pk form.eqSymm)
 def recovered (m p d k : PTm n) : PTm n := sel (eqb k p) m
   (sel (Signum.sg (monus p k)) (digit m d k) (digit m d (pred k)))
-@[simp] theorem subst_recovered {l : ℕ} (σ : Fin n → PTm l) (m p d k : PTm n) :
-    Syn.subst σ (recovered m p d k) = recovered (Syn.subst σ m) (Syn.subst σ p) (Syn.subst σ d) (Syn.subst σ k) := by simp [recovered,sel,Signum.sg]
+ipra_subst recovered [sel, Signum.sg]
 theorem recovered_congr {m p p' d d' k : PTm n} (hp : Γ ⊢[PRAAx] p ≐ p') (hd : Γ ⊢[PRAAx] d ≐ d') : Γ ⊢[PRAAx]
     recovered m p d k ≐ recovered m p' d' k := by
   ipra_congr (recovered (var 0) (var 1) (var 2) (var 3) : PTm 4) with [.eqRefl m, hp, hd, .eqRefl k]
@@ -250,8 +243,7 @@ theorem position_rank_unique (m w v : PTm n) (hw : Γ ⊢[PRAAx] lt w (horizon (
       ((entry_congr (.eqRefl _) hd).eqTrans (Prf.andE₂ (deleted_rank_correct m v hv hq))))
 
 def packed (m w : PTm n) : PTm n := deletedRank m w+maximumPosition m w*RuntimePermutationWords.count m
-@[simp] theorem subst_packed {l : ℕ} (σ : Fin n → PTm l) (m w : PTm n) :
-    Syn.subst σ (packed m w) = packed (Syn.subst σ m) (Syn.subst σ w) := by simp [packed]
+ipra_subst packed
 theorem packed_bound (m w : PTm n) (hw : Γ ⊢[PRAAx] lt w (horizon (succ m)))
     (hp : Γ ⊢[PRAAx] permutationBit (succ m) w ≐ one) : Γ ⊢[PRAAx]
     lt (packed m w) (RuntimePermutationWords.count m*succ m) :=
@@ -277,10 +269,8 @@ def outputF : PR 2 := PTm.toPR (output (var 0) (var 1))
 def run (m w : PTm n) : PTm n := ap2 outputF m w
 def fields (p : PTm n) : Fin 5 → PTm n := ![fstT p,fstT (sndT p),fstT (sndT (sndT p)),
   fstT (sndT (sndT (sndT p))),sndT (sndT (sndT (sndT p)))]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (m w : PTm n) :
-    Syn.subst σ (output m w) = output (Syn.subst σ m) (Syn.subst σ w) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (m w : PTm n) :
-    Syn.subst σ (run m w) = run (Syn.subst σ m) (Syn.subst σ w) := by simp [run]
+ipra_subst output
+ipra_subst run
 @[simp] theorem subst_fields {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) (i : Fin 5) :
     Syn.subst σ (fields p i) = fields (Syn.subst σ p) i := by fin_cases i <;> simp [fields]
 theorem program_at (m w : PTm n) : Γ ⊢[PRAAx] run m w ≐ output m w := by

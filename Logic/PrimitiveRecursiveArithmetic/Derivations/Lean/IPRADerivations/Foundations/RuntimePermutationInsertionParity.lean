@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.RuntimePermutationInsertion
 import IPRADerivations.Foundations.BoundedSyntaxBackwardInduction
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # Exact inversion counts for the actual maximum-label insertion
@@ -195,8 +196,7 @@ theorem moving_inversions (m p d : PTm n) (hp : Γ ⊢[PRAAx] lt p m) : Γ ⊢[P
 
 def countBalance (m p d : PTm n) : Fm PTm n := inversions (succ m) (insertedWord m p d)+p ≐ inversions m d+m
 def countSyntax (m p d : PTm n) : BFm n := .eq (inversions (succ m) (insertedWord m p d)+p) (inversions m d+m)
-@[simp] theorem subst_countBalance {j : ℕ} (σ : Fin n → PTm j) (m p d : PTm n) :
-    (countBalance m p d).subst σ = countBalance (Syn.subst σ m) (Syn.subst σ p) (Syn.subst σ d) := by simp [countBalance]
+ipra_subst countBalance
 theorem count_formula (m p d : PTm n) : BoundedSyntax.formula (countSyntax m p d) = countBalance m p d := rfl
 
 theorem balance_backward (m p d : PTm n) (hp : Γ ⊢[PRAAx] lt p m) (hn : Γ ⊢[PRAAx] countBalance m (succ p) d) :
@@ -248,8 +248,7 @@ def output (m p d : PTm n) : PTm n := pairT (insertedWord m p d)
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (m p d : PTm n) : PTm n := ap3 outputF m p d
 
-@[simp] theorem subst_output {j : ℕ} (σ : Fin n → PTm j) (m p d : PTm n) :
-    Syn.subst σ (output m p d) = output (Syn.subst σ m) (Syn.subst σ p) (Syn.subst σ d) := by simp [output]
+ipra_subst output
 
 theorem program_at (m p d : PTm n) : Γ ⊢[PRAAx] run m p d ≐ output m p d := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![m,p,d]

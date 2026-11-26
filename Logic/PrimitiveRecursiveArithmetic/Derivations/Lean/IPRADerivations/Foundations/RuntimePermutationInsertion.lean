@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.RuntimePermutationDeletion
 import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # Actual insertion of the largest numerical permutation label
@@ -35,17 +36,11 @@ def body : PTm 2 := recovered (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (
 def inserted (m p d : PTm n) : PTm n := sequence body (succ m) (data m p d)
 def insertedWord (m p d : PTm n) : PTm n := encode (inserted m p d) (succ m)
 
-@[simp] theorem subst_compressed {l : ℕ} (σ : Fin n → PTm l) (p k : PTm n) :
-    Syn.subst σ (compressed p k) = compressed (Syn.subst σ p) (Syn.subst σ k) := by
-  simp [compressed,sel,Signum.sg]
+ipra_subst compressed [sel, Signum.sg]
 
-@[simp] theorem subst_inserted {l : ℕ} (σ : Fin n → PTm l) (m p d : PTm n) :
-    Syn.subst σ (inserted m p d) = inserted (Syn.subst σ m) (Syn.subst σ p) (Syn.subst σ d) := by
-  simp [inserted,data]
+ipra_subst inserted [data]
 
-@[simp] theorem subst_insertedWord {l : ℕ} (σ : Fin n → PTm l) (m p d : PTm n) :
-    Syn.subst σ (insertedWord m p d) = insertedWord (Syn.subst σ m) (Syn.subst σ p) (Syn.subst σ d) := by
-  simp [insertedWord]
+ipra_subst insertedWord
 
 theorem slot_congr {p q i j : PTm n} (hp : Γ ⊢[PRAAx] p ≐ q) (hi : Γ ⊢[PRAAx] i ≐ j) :
     Γ ⊢[PRAAx] slot p i ≐ slot q j := by

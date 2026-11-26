@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.SquareRootRelationalCandidates
 import IPRADerivations.Foundations.ViableChainSelection
 import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # Actual certified finite relational square-root paths
@@ -73,32 +74,19 @@ def selectedCode (u v h : PTm n) : PTm n := sndT (run u v h)
 def codeBound (u v h : PTm n) : PTm n := CodedViableChain.codeBound compatibility (data u v h)
 def outputBound (u v h : PTm n) : PTm n := ViableChainSelection.returnBound compatibility (data u v h)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (u v h : PTm n) :
-    Syn.subst σ (data u v h) = data (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ h) := by simp [data]
-@[simp] theorem subst_inputNumerator {m : ℕ} (σ : Fin n → PTm m) (p : PTm n) :
-    Syn.subst σ (inputNumerator p) = inputNumerator (Syn.subst σ p) := by simp [inputNumerator]
-@[simp] theorem subst_inputDenominator {m : ℕ} (σ : Fin n → PTm m) (p : PTm n) :
-    Syn.subst σ (inputDenominator p) = inputDenominator (Syn.subst σ p) := by simp [inputDenominator]
-@[simp] theorem subst_horizon {m : ℕ} (σ : Fin n → PTm m) (p : PTm n) :
-    Syn.subst σ (horizon p) = horizon (Syn.subst σ p) := by simp [horizon]
-@[simp] theorem subst_zeroBit {m : ℕ} (σ : Fin n → PTm m) (z : PTm n) :
-    Syn.subst σ (zeroBit z) = zeroBit (Syn.subst σ z) := by simp [zeroBit]
-@[simp] theorem subst_edgeDefect {m : ℕ} (σ : Fin n → PTm m) (j l : PTm n) :
-    Syn.subst σ (edgeDefect j l) = edgeDefect (Syn.subst σ j) (Syn.subst σ l) := by simp [edgeDefect]
-@[simp] theorem subst_gridLabel {m : ℕ} (σ : Fin n → PTm m) (i a p : PTm n) :
-    Syn.subst σ (gridLabel i a p) = gridLabel (Syn.subst σ i) (Syn.subst σ a) (Syn.subst σ p) := by simp [gridLabel]
-@[simp] theorem subst_observation {m : ℕ} (σ : Fin n → PTm m) (i a p : PTm n) :
-    Syn.subst σ (observation i a p) = observation (Syn.subst σ i) (Syn.subst σ a) (Syn.subst σ p) := by simp [observation]
-@[simp] theorem subst_bound {m : ℕ} (σ : Fin n → PTm m) (i p : PTm n) :
-    Syn.subst σ (bound i p) = bound (Syn.subst σ i) (Syn.subst σ p) := by simp [bound]
-@[simp] theorem subst_localTest {m : ℕ} (σ : Fin n → PTm m) (i a p : PTm n) :
-    Syn.subst σ (localTest i a p) = localTest (Syn.subst σ i) (Syn.subst σ a) (Syn.subst σ p) := by simp [localTest]
-@[simp] theorem subst_edgeTest {m : ℕ} (σ : Fin n → PTm m) (i a b p : PTm n) :
-    Syn.subst σ (edgeTest i a b p) = edgeTest (Syn.subst σ i) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ p) := by simp [edgeTest]
-@[simp] theorem subst_witnessAt {m : ℕ} (σ : Fin n → PTm m) (i p : PTm n) :
-    Syn.subst σ (witnessAt i p) = witnessAt (Syn.subst σ i) (Syn.subst σ p) := by simp [witnessAt]
-@[simp] theorem subst_witnessCode {m : ℕ} (σ : Fin n → PTm m) (p : PTm n) :
-    Syn.subst σ (witnessCode p) = witnessCode (Syn.subst σ p) := by simp [witnessCode]
+ipra_subst data
+ipra_subst inputNumerator
+ipra_subst inputDenominator
+ipra_subst horizon
+ipra_subst zeroBit
+ipra_subst edgeDefect
+ipra_subst gridLabel
+ipra_subst observation
+ipra_subst bound
+ipra_subst localTest
+ipra_subst edgeTest
+ipra_subst witnessAt
+ipra_subst witnessCode
 
 theorem numerator_at (u v h : PTm n) : Γ ⊢[PRAAx] inputNumerator (data u v h) ≐ u := fst_pair _ _
 theorem denominator_at (u v h : PTm n) : Γ ⊢[PRAAx] inputDenominator (data u v h) ≐ v :=
@@ -243,20 +231,13 @@ def programF : PR 3 := PTm.toPR (run (var 0) (var 1) (var 2))
 def observationF : PR 4 := PTm.toPR (selectedObservation (var 0) (var 1) (var 2) (var 3))
 def boundF : PR 3 := PTm.toPR (outputBound (var 0) (var 1) (var 2))
 
-@[simp] theorem subst_flag {m : ℕ} (σ : Fin n → PTm m) (p : PTm n) :
-    Syn.subst σ (flag p) = flag (Syn.subst σ p) := by simp [flag]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (u v h : PTm n) :
-    Syn.subst σ (run u v h) = run (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ h) := by simp [run]
-@[simp] theorem subst_selectedCode {m : ℕ} (σ : Fin n → PTm m) (u v h : PTm n) :
-    Syn.subst σ (selectedCode u v h) = selectedCode (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ h) := by simp [selectedCode]
-@[simp] theorem subst_codeBound {m : ℕ} (σ : Fin n → PTm m) (u v h : PTm n) :
-    Syn.subst σ (codeBound u v h) = codeBound (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ h) := by simp [codeBound]
-@[simp] theorem subst_outputBound {m : ℕ} (σ : Fin n → PTm m) (u v h : PTm n) :
-    Syn.subst σ (outputBound u v h) = outputBound (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ h) := by simp [outputBound]
-@[simp] theorem subst_selectedIndex {m : ℕ} (σ : Fin n → PTm m) (u v h i : PTm n) :
-    Syn.subst σ (selectedIndex u v h i) = selectedIndex (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ h) (Syn.subst σ i) := by simp [selectedIndex]
-@[simp] theorem subst_selectedObservation {m : ℕ} (σ : Fin n → PTm m) (u v h i : PTm n) :
-    Syn.subst σ (selectedObservation u v h i) = selectedObservation (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ h) (Syn.subst σ i) := by simp [selectedObservation]
+ipra_subst flag
+ipra_subst run
+ipra_subst selectedCode
+ipra_subst codeBound
+ipra_subst outputBound
+ipra_subst selectedIndex
+ipra_subst selectedObservation
 
 theorem program_at (u v h : PTm n) : Γ ⊢[PRAAx] ap3 programF u v h ≐ run u v h := by
   simpa [programF,ap3] using toPR_eq (Γ := Γ) (run (var 0) (var 1) (var 2) : PTm 3) ![u,v,h]

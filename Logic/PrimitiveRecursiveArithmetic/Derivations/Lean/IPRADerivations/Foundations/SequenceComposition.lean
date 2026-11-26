@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.MasterCertificate
 import IPRADerivations.Core.MultiSums
 import IPRADerivations.Core.CongruenceTactic
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # Actual sequence append and runtime demand flattening
@@ -36,8 +37,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 def length (a : PTm n) : PTm n := fstT a
 def empty : PTm n := pairT zero zero
 
-@[simp] theorem subst_length {m : ℕ} (σ : Fin n → PTm m) (a : PTm n) :
-    Syn.subst σ (length a) = length (Syn.subst σ a) := by simp [length]
+ipra_subst length
 @[simp] theorem subst_empty {m : ℕ} (σ : Fin n → PTm m) :
     Syn.subst σ (empty : PTm n) = (empty : PTm m) := by simp [empty]
 
@@ -54,19 +54,14 @@ def appendValue (a b i : PTm n) : PTm n :=
   sg (monus (length a) i) * entry a i +
     monus one (sg (monus (length a) i)) * entry b (monus i (length a))
 
-@[simp] theorem subst_appendValue {m : ℕ} (σ : Fin n → PTm m) (a b i : PTm n) :
-    Syn.subst σ (appendValue a b i) =
-      appendValue (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ i) := by
-  simp [appendValue, sg]
+ipra_subst appendValue [sg]
 
 def appendBody : PTm 2 := appendValue (fstT (var 1)) (sndT (var 1)) (var 0)
 
 def append (a b : PTm n) : PTm n :=
   sequence appendBody (length a + length b) (pairT a b)
 
-@[simp] theorem subst_append {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (append a b) = append (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [append]
+ipra_subst append
 
 theorem append_length (a b : PTm n) :
     Γ ⊢[PRAAx] length (append a b) ≐ length a + length b := sequence_length _ _ _
@@ -111,9 +106,7 @@ theorem append_right {a b i : PTm n} (hi : Γ ⊢[PRAAx] lt i (length b)) :
 
 def block (inner : PR 2) (outer x j : PTm n) : PTm n := ap2 inner (entry outer j) x
 
-@[simp] theorem subst_block {m : ℕ} (σ : Fin n → PTm m) (inner : PR 2) (outer x j : PTm n) :
-    Syn.subst σ (block inner outer x j) =
-      block inner (Syn.subst σ outer) (Syn.subst σ x) (Syn.subst σ j) := by simp [block]
+ipra_subst block
 
 /-- Variables `0=j`, `1=outer`, `2=x`. -/
 def lengthBody (inner : PR 2) : PTm 3 := length (block inner (var 1) (var 2) (var 0))
@@ -137,9 +130,7 @@ def foldStep (inner : PR 2) : PTm 4 := append (var 1) (block inner (var 2) (var 
 def foldF (inner : PR 2) : PR 3 := recDef empty (foldStep inner)
 def fold (inner : PR 2) (outer x j : PTm n) : PTm n := ap3 (foldF inner) j outer x
 
-@[simp] theorem subst_fold {m : ℕ} (σ : Fin n → PTm m) (inner : PR 2) (outer x j : PTm n) :
-    Syn.subst σ (fold inner outer x j) =
-      fold inner (Syn.subst σ outer) (Syn.subst σ x) (Syn.subst σ j) := by simp [fold]
+ipra_subst fold
 
 theorem fold_zero (inner : PR 2) (outer x : PTm n) :
     Γ ⊢[PRAAx] fold inner outer x zero ≐ empty := by
@@ -212,12 +203,7 @@ def lookupCondition (inner : PR 2) (outer x j localIndex count : PTm n) : Fm PTm
     entry (fold inner outer x count) (prefixSum inner outer x j + localIndex) ≐
       entry (block inner outer x j) localIndex
 
-@[simp] theorem subst_lookupCondition {m : ℕ} (σ : Fin n → PTm m) (inner : PR 2)
-    (outer x j localIndex count : PTm n) :
-    (lookupCondition inner outer x j localIndex count).subst σ =
-      lookupCondition inner (Syn.subst σ outer) (Syn.subst σ x) (Syn.subst σ j)
-        (Syn.subst σ localIndex) (Syn.subst σ count) := by
-  simp [lookupCondition]
+ipra_subst lookupCondition
 
 theorem fold_lookup_step (inner : PR 2) (outer x j localIndex count : PTm n)
     (ih : Γ ⊢[PRAAx] lookupCondition inner outer x j localIndex count)
@@ -267,9 +253,7 @@ theorem fold_lookup (inner : PR 2) (outer x j localIndex count : PTm n)
 
 def flatMap (inner : PR 2) (outer x : PTm n) : PTm n := fold inner outer x (length outer)
 
-@[simp] theorem subst_flatMap {m : ℕ} (σ : Fin n → PTm m) (inner : PR 2) (outer x : PTm n) :
-    Syn.subst σ (flatMap inner outer x) = flatMap inner (Syn.subst σ outer) (Syn.subst σ x) := by
-  simp [flatMap]
+ipra_subst flatMap
 
 theorem flatMap_length (inner : PR 2) (outer x : PTm n) :
     Γ ⊢[PRAAx] length (flatMap inner outer x) ≐ prefixSum inner outer x (length outer) :=

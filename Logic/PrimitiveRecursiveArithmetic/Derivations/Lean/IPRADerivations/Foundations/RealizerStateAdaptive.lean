@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.RealizerBlockLoop
 import IPRADerivations.Core.Parity
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # Finite-candidate state-adaptive interface calls
@@ -72,10 +73,8 @@ def blockCode (D : Code) : RealizerBlockLoop.Code where
   invariant := D.invariant
   stabilityInvariant := D.stabilityInvariant
 
-@[simp] theorem subst_selectedSlot {m : ℕ} (σ : Fin n → PTm m) (D : Code) (i s q p : PTm n) :
-    Syn.subst σ (selectedSlot D i s q p) = selectedSlot D (Syn.subst σ i) (Syn.subst σ s) (Syn.subst σ q) (Syn.subst σ p) := by simp [selectedSlot]
-@[simp] theorem subst_candidate {m : ℕ} (σ : Fin n → PTm m) (D : Code) (i t q p : PTm n) :
-    Syn.subst σ (candidate D i t q p) = candidate D (Syn.subst σ i) (Syn.subst σ t) (Syn.subst σ q) (Syn.subst σ p) := by simp [candidate]
+ipra_subst selectedSlot
+ipra_subst candidate
 @[simp] theorem subst_localStep {m : ℕ} (σ : Fin n → PTm m) (D : Code) (i s c q p : PTm n) :
     Syn.subst σ (localStep D i s c q p) = localStep D (Syn.subst σ i) (Syn.subst σ s) (Syn.subst σ c) (Syn.subst σ q) (Syn.subst σ p) := by
   simp only [localStep,ConciseIPRA.PTm.subst_app]
@@ -84,10 +83,8 @@ def blockCode (D : Code) : RealizerBlockLoop.Code where
   fin_cases j <;> rfl
 @[simp] theorem subst_candidateData {m : ℕ} (σ : Fin n → PTm m) (i q p : PTm n) :
     Syn.subst σ (candidateData i q p) = candidateData (Syn.subst σ i) (Syn.subst σ q) (Syn.subst σ p) := by simp [candidateData]
-@[simp] theorem subst_candidateBlock {m : ℕ} (σ : Fin n → PTm m) (D : Code) (i q p : PTm n) :
-    Syn.subst σ (candidateBlock D i q p) = candidateBlock D (Syn.subst σ i) (Syn.subst σ q) (Syn.subst σ p) := by simp [candidateBlock]
-@[simp] theorem subst_adaptiveStep {m : ℕ} (σ : Fin n → PTm m) (D : Code) (i s C q p : PTm n) :
-    Syn.subst σ (adaptiveStep D i s C q p) = adaptiveStep D (Syn.subst σ i) (Syn.subst σ s) (Syn.subst σ C) (Syn.subst σ q) (Syn.subst σ p) := by simp [adaptiveStep]
+ipra_subst candidateBlock
+ipra_subst adaptiveStep
 
 theorem candidate_body_at (D : Code) (i t q p : PTm n) : Γ ⊢[PRAAx]
     inst2 (candidateBody D) t (candidateData i q p) ≐ candidate D i t q p := by

@@ -6,6 +6,7 @@ import IPRADerivations.Core.ParityArith
 import IPRADerivations.Core.CongruenceTactic
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # Actual adjacent position swaps of numeric permutation words
@@ -42,16 +43,11 @@ def swapWord (m w j : PTm n) : PTm n := RuntimePermutationWords.encode
 def rankSwap (m j t : PTm n) : PTm n := RuntimePermutationWords.position
   (swapTuple (RuntimePermutationWords.word m (entry (RuntimePermutationWords.words m) t)) m j) m
 
-@[simp] theorem subst_tau {l : ℕ} (σ : Fin n → PTm l) (j i : PTm n) :
-    Syn.subst σ (tau j i) = tau (Syn.subst σ j) (Syn.subst σ i) := by simp [tau,sel]
-@[simp] theorem subst_tupleData {l : ℕ} (σ : Fin n → PTm l) (P j : PTm n) :
-    Syn.subst σ (tupleData P j) = tupleData (Syn.subst σ P) (Syn.subst σ j) := by simp [tupleData]
-@[simp] theorem subst_swapTuple {l : ℕ} (σ : Fin n → PTm l) (P m j : PTm n) :
-    Syn.subst σ (swapTuple P m j) = swapTuple (Syn.subst σ P) (Syn.subst σ m) (Syn.subst σ j) := by simp [swapTuple]
-@[simp] theorem subst_swapWord {l : ℕ} (σ : Fin n → PTm l) (m w j : PTm n) :
-    Syn.subst σ (swapWord m w j) = swapWord (Syn.subst σ m) (Syn.subst σ w) (Syn.subst σ j) := by simp [swapWord]
-@[simp] theorem subst_rankSwap {l : ℕ} (σ : Fin n → PTm l) (m j t : PTm n) :
-    Syn.subst σ (rankSwap m j t) = rankSwap (Syn.subst σ m) (Syn.subst σ j) (Syn.subst σ t) := by simp [rankSwap]
+ipra_subst tau [sel]
+ipra_subst tupleData
+ipra_subst swapTuple
+ipra_subst swapWord
+ipra_subst rankSwap
 
 alias different_of_lt := Common.ne_of_lt
 theorem different_symm {a b : PTm n} (h : Γ ⊢[PRAAx] neg (a ≐ b)) : Γ ⊢[PRAAx] neg (b ≐ a) :=
@@ -330,8 +326,7 @@ theorem tau_order_iff (j i l : PTm n)
 /-! The exceptional ordered pairs are handled by actual Boolean/delta
 values; every other inversion bit is transported through its reflection. -/
 def pairDelta (i l a b : PTm n) : PTm n := eqb i a*eqb l b
-@[simp] theorem subst_pairDelta {k : ℕ} (σ : Fin n → PTm k) (i l a b : PTm n) :
-    Syn.subst σ (pairDelta i l a b) = pairDelta (Syn.subst σ i) (Syn.subst σ l) (Syn.subst σ a) (Syn.subst σ b) := by simp [pairDelta]
+ipra_subst pairDelta
 theorem delta_one (i l a b : PTm n) (h : Γ ⊢[PRAAx] pairT i l ≐ pairT a b) : Γ ⊢[PRAAx] pairDelta i l a b ≐ one :=
   (congrMul (eqb_of_eq (pair_first h)) (eqb_of_eq (pair_second h))).eqTrans (one_mul _)
 theorem delta_zero (i l a b : PTm n) (h : Γ ⊢[PRAAx] neg (pairT i l ≐ pairT a b)) : Γ ⊢[PRAAx] pairDelta i l a b ≐ zero := by
@@ -444,14 +439,9 @@ def rowEqual (g h : PTm 3) (m p q i : PTm n) : Fm PTm n := .all
   (lt (var 0) (Syn.shift m) ⟶ inst3 g (Syn.shift i) (var 0) (Syn.shift p) ≐ inst3 h (Syn.shift i) (var 0) (Syn.shift q))
 def tableEqual (g h : PTm 3) (m p q : PTm n) : Fm PTm n := .all
   (lt (var 0) (Syn.shift m) ⟶ rowEqual g h (Syn.shift m) (Syn.shift p) (Syn.shift q) (var 0))
-@[simp] theorem subst_doubleSum {k : ℕ} (σ : Fin n → PTm k) (g : PTm 3) (m p : PTm n) :
-    Syn.subst σ (doubleSum g m p) = doubleSum g (Syn.subst σ m) (Syn.subst σ p) := by simp [doubleSum]
-@[simp] theorem subst_rowEqual {k : ℕ} (σ : Fin n → PTm k) (g h : PTm 3) (m p q i : PTm n) :
-    (rowEqual g h m p q i).subst σ = rowEqual g h (Syn.subst σ m) (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ i) := by
-  simp [rowEqual,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_tableEqual {k : ℕ} (σ : Fin n → PTm k) (g h : PTm 3) (m p q : PTm n) :
-    (tableEqual g h m p q).subst σ = tableEqual g h (Syn.subst σ m) (Syn.subst σ p) (Syn.subst σ q) := by
-  simp [tableEqual,Syn.subst_shift,Syn.shift_subst]
+ipra_subst doubleSum
+ipra_subst rowEqual [Syn.subst_shift, Syn.shift_subst]
+ipra_subst tableEqual [Syn.subst_shift, Syn.shift_subst]
 theorem row_equal_at (g h : PTm 3) (m p q i l : PTm n) (he : Γ ⊢[PRAAx] rowEqual g h m p q i)
     (hl : Γ ⊢[PRAAx] lt l m) : Γ ⊢[PRAAx] inst3 g i l p ≐ inst3 h i l q := by
   have gate : Γ ⊢[PRAAx] lt l m ⟶ inst3 g i l p ≐ inst3 h i l q := by
@@ -541,8 +531,7 @@ theorem double_swap (g : PTm 3) (m j p : PTm n) (hj : Γ ⊢[PRAAx] lt (succ j) 
 
 def deltaData (a b v : PTm n) : PTm n := pairT a (pairT b v)
 def deltaTable : PTm 3 := pairDelta (var 0) (var 1) (fstT (var 2)) (fstT (sndT (var 2)))*sndT (sndT (var 2))
-@[simp] theorem subst_deltaData {k : ℕ} (σ : Fin n → PTm k) (a b v : PTm n) :
-    Syn.subst σ (deltaData a b v) = deltaData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ v) := by simp [deltaData]
+ipra_subst deltaData
 alias eqb_congr := Common.congrEqb
 theorem eqb_symmetric (a b : PTm n) : Γ ⊢[PRAAx] eqb a b ≐ eqb b a := congrMonus (.eqRefl _) (add_comm _ _)
 theorem delta_table_at (a b v i l : PTm n) : Γ ⊢[PRAAx]
@@ -868,14 +857,10 @@ def rankOutput (m j t : PTm n) : PTm n := pairT (rankSwap m j t)
     (RuntimePermutationWords.parity m (entry (RuntimePermutationWords.words m) (rankSwap m j t))))
 def rankOutputF : PR 3 := PTm.toPR (rankOutput (var 0) (var 1) (var 2))
 def rankRun (m j t : PTm n) : PTm n := ap3 rankOutputF m j t
-@[simp] theorem subst_wordOutput {l : ℕ} (σ : Fin n → PTm l) (m w j : PTm n) :
-    Syn.subst σ (wordOutput m w j) = wordOutput (Syn.subst σ m) (Syn.subst σ w) (Syn.subst σ j) := by simp [wordOutput]
-@[simp] theorem subst_wordRun {l : ℕ} (σ : Fin n → PTm l) (m w j : PTm n) :
-    Syn.subst σ (wordRun m w j) = wordRun (Syn.subst σ m) (Syn.subst σ w) (Syn.subst σ j) := by simp [wordRun]
-@[simp] theorem subst_rankOutput {l : ℕ} (σ : Fin n → PTm l) (m j t : PTm n) :
-    Syn.subst σ (rankOutput m j t) = rankOutput (Syn.subst σ m) (Syn.subst σ j) (Syn.subst σ t) := by simp [rankOutput]
-@[simp] theorem subst_rankRun {l : ℕ} (σ : Fin n → PTm l) (m j t : PTm n) :
-    Syn.subst σ (rankRun m j t) = rankRun (Syn.subst σ m) (Syn.subst σ j) (Syn.subst σ t) := by simp [rankRun]
+ipra_subst wordOutput
+ipra_subst wordRun
+ipra_subst rankOutput
+ipra_subst rankRun
 theorem word_program_at (m w j : PTm n) : Γ ⊢[PRAAx] wordRun m w j ≐ wordOutput m w j := by
   simpa [wordRun,wordOutputF,ap3] using toPR_eq (Γ := Γ) (wordOutput (var 0) (var 1) (var 2)) ![m,w,j]
 theorem rank_program_at (m j t : PTm n) : Γ ⊢[PRAAx] rankRun m j t ≐ rankOutput m j t := by

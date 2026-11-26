@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.RealizerComposition
 import IPRADerivations.Foundations.RealizerProduct
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # A typed acyclic program frontend for bounded finite-query realizers
@@ -100,10 +101,8 @@ theorem Code.of_compose {X Y Z : Interface} (R : Realizer X Y) (S : Realizer Y Z
 def bit (test : PR 2) (q p : PTm n) : PTm n := eqb (ap2 test q p) one
 def pick (b a c : PTm n) : PTm n := monus one b * a + b * c
 
-@[simp] theorem subst_bit {m : ℕ} (σ : Fin n → PTm m) (test : PR 2) (q p : PTm n) :
-    Syn.subst σ (bit test q p) = bit test (Syn.subst σ q) (Syn.subst σ p) := by simp [bit]
-@[simp] theorem subst_pick {m : ℕ} (σ : Fin n → PTm m) (b a c : PTm n) :
-    Syn.subst σ (pick b a c) = pick (Syn.subst σ b) (Syn.subst σ a) (Syn.subst σ c) := by simp [pick]
+ipra_subst bit
+ipra_subst pick
 
 theorem bit_cases (test : PR 2) (q p : PTm n) :
     Γ ⊢[PRAAx] (bit test q p ≐ zero) ⋎ (bit test q p ≐ one) := eqb_cases _ _

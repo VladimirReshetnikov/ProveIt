@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.RuntimePermutationDeletion
 import IPRADerivations.Topology.InjectionBound
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # The retained runtime permutation count is bounded by the actual factorial
@@ -31,12 +32,9 @@ def packing (m r : PTm n) : PTm n := packed m (retained m r)
 def packingBody : PTm 2 := packing (var 1) (var 0)
 def packingF : PR 2 := PTm.toPR packingBody
 def factorial (m : PTm n) : PTm n := ap2 factF m zero
-@[simp] theorem subst_retained {l : ℕ} (σ : Fin n → PTm l) (m r : PTm n) :
-    Syn.subst σ (retained m r) = retained (Syn.subst σ m) (Syn.subst σ r) := by simp [retained]
-@[simp] theorem subst_packing {l : ℕ} (σ : Fin n → PTm l) (m r : PTm n) :
-    Syn.subst σ (packing m r) = packing (Syn.subst σ m) (Syn.subst σ r) := by simp [packing]
-@[simp] theorem subst_factorial {l : ℕ} (σ : Fin n → PTm l) (m : PTm n) :
-    Syn.subst σ (factorial m) = factorial (Syn.subst σ m) := by simp [factorial]
+ipra_subst retained
+ipra_subst packing
+ipra_subst factorial
 theorem packing_at (m r : PTm n) : Γ ⊢[PRAAx] ap2 packingF r m ≐ packing m r := by
   simpa [packingF,packingBody,ap2] using toPR_eq (Γ := Γ) packingBody ![r,m]
 theorem retained_bound (m r : PTm n) (hr : Γ ⊢[PRAAx] lt r (count (succ m))) : Γ ⊢[PRAAx] lt (retained m r) (horizon (succ m)) :=
@@ -81,10 +79,8 @@ theorem count_factorial_bound (m : PTm n) : Γ ⊢[PRAAx] le (count m) (factoria
 def output (m : PTm n) : PTm n := pairT (count m) (factorial m)
 def outputF : PR 1 := PTm.toPR (output (var 0))
 def run (m : PTm n) : PTm n := ap1 outputF m
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (m : PTm n) :
-    Syn.subst σ (output m) = output (Syn.subst σ m) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (m : PTm n) :
-    Syn.subst σ (run m) = run (Syn.subst σ m) := by simp [run]
+ipra_subst output
+ipra_subst run
 theorem program_at (m : PTm n) : Γ ⊢[PRAAx] run m ≐ output m := by
   simpa [run,outputF,ap1] using toPR_eq (Γ := Γ) (output (var 0) : PTm 1) ![m]
 theorem returned_count (m : PTm n) : Γ ⊢[PRAAx] fstT (run m) ≐ count m := (congrFst (program_at m)).eqTrans (fst_pair _ _)

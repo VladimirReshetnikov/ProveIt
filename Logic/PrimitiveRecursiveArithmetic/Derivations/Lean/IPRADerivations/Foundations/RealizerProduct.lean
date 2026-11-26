@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.RealizerComposition
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # Binary product interfaces and actual bounded fanout realizers
@@ -53,19 +54,11 @@ def relationTerm (Y Z : Interface) (o o' q p : PTm n) : PTm n :=
   eqb (pairT (ap4 Y.related (fstT o) (fstT o') (fstT q) p)
     (ap4 Z.related (sndT o) (sndT o') (sndT q) p)) (pairT one one)
 
-@[simp] theorem subst_queryTerm {m : ℕ} (σ : Fin n → PTm m) (Y Z : Interface) (q p : PTm n) :
-    Syn.subst σ (queryTerm Y Z q p) = queryTerm Y Z (Syn.subst σ q) (Syn.subst σ p) := by simp [queryTerm]
-@[simp] theorem subst_boundTerm {m : ℕ} (σ : Fin n → PTm m) (Y Z : Interface) (q p : PTm n) :
-    Syn.subst σ (boundTerm Y Z q p) = boundTerm Y Z (Syn.subst σ q) (Syn.subst σ p) := by simp [boundTerm]
-@[simp] theorem subst_verifyTerm {m : ℕ} (σ : Fin n → PTm m) (Y Z : Interface) (c q p : PTm n) :
-    Syn.subst σ (verifyTerm Y Z c q p) = verifyTerm Y Z (Syn.subst σ c) (Syn.subst σ q) (Syn.subst σ p) := by
-  simp [verifyTerm]
-@[simp] theorem subst_observeTerm {m : ℕ} (σ : Fin n → PTm m) (Y Z : Interface) (c q p : PTm n) :
-    Syn.subst σ (observeTerm Y Z c q p) = observeTerm Y Z (Syn.subst σ c) (Syn.subst σ q) (Syn.subst σ p) := by
-  simp [observeTerm]
-@[simp] theorem subst_relationTerm {m : ℕ} (σ : Fin n → PTm m) (Y Z : Interface) (o o' q p : PTm n) :
-    Syn.subst σ (relationTerm Y Z o o' q p) = relationTerm Y Z (Syn.subst σ o)
-      (Syn.subst σ o') (Syn.subst σ q) (Syn.subst σ p) := by simp [relationTerm]
+ipra_subst queryTerm
+ipra_subst boundTerm
+ipra_subst verifyTerm
+ipra_subst observeTerm
+ipra_subst relationTerm
 
 def product (Y Z : Interface) : Interface where
   query := PTm.toPR (queryTerm Y Z (var 0) (var 1))
@@ -292,22 +285,10 @@ def transformTerm {X Y Z : Interface} (R : Realizer X Y) (S : Realizer X Z) (C q
 def transformF {X Y Z : Interface} (R : Realizer X Y) (S : Realizer X Z) : PR 3 :=
   PTm.toPR (transformTerm R S (var 0) (var 1) (var 2))
 
-@[simp] theorem subst_demandTerm {m : ℕ} (σ : Fin n → PTm m) {X Y Z : Interface}
-    (R : Realizer X Y) (S : Realizer X Z) (q p : PTm n) :
-    Syn.subst σ (demandTerm R S q p) = demandTerm R S (Syn.subst σ q) (Syn.subst σ p) := by
-  simp [demandTerm]
-@[simp] theorem subst_leftMaster {m : ℕ} (σ : Fin n → PTm m) {X Y Z : Interface}
-    (R : Realizer X Y) (S : Realizer X Z) (C q p : PTm n) :
-    Syn.subst σ (leftMaster R S C q p) =
-      leftMaster R S (Syn.subst σ C) (Syn.subst σ q) (Syn.subst σ p) := by simp [leftMaster]
-@[simp] theorem subst_rightMaster {m : ℕ} (σ : Fin n → PTm m) {X Y Z : Interface}
-    (R : Realizer X Y) (S : Realizer X Z) (C q p : PTm n) :
-    Syn.subst σ (rightMaster R S C q p) =
-      rightMaster R S (Syn.subst σ C) (Syn.subst σ q) (Syn.subst σ p) := by simp [rightMaster]
-@[simp] theorem subst_transformTerm {m : ℕ} (σ : Fin n → PTm m) {X Y Z : Interface}
-    (R : Realizer X Y) (S : Realizer X Z) (C q p : PTm n) :
-    Syn.subst σ (transformTerm R S C q p) =
-      transformTerm R S (Syn.subst σ C) (Syn.subst σ q) (Syn.subst σ p) := by simp [transformTerm]
+ipra_subst demandTerm
+ipra_subst leftMaster
+ipra_subst rightMaster
+ipra_subst transformTerm
 
 theorem demand_at {X Y Z : Interface} (R : Realizer X Y) (S : Realizer X Z) (q p : PTm n) :
     Γ ⊢[PRAAx] ap2 (demandF R S) q p ≐ demandTerm R S q p := by
@@ -438,8 +419,7 @@ def fanout {X Y Z : Interface} (R : Realizer X Y) (S : Realizer X Z) : Realizer 
 
 def singleton (q : PTm n) : PTm n := sequence (var 1) one q
 
-@[simp] theorem subst_singleton {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    Syn.subst σ (singleton q) = singleton (Syn.subst σ q) := by simp [singleton]
+ipra_subst singleton
 
 theorem singleton_length (q : PTm n) : Γ ⊢[PRAAx] length (singleton q) ≐ one :=
   MasterCertificate.sequence_length _ _ _
@@ -470,12 +450,8 @@ def rightDemandF (companion : PR 2) : PR 2 := PTm.toPR (rightDemandTerm companio
 def leftTransformF : PR 3 := PTm.toPR (fstT (entry (var 0) zero))
 def rightTransformF : PR 3 := PTm.toPR (sndT (entry (var 0) zero))
 
-@[simp] theorem subst_leftDemandTerm {m : ℕ} (σ : Fin n → PTm m) (companion : PR 2) (q p : PTm n) :
-    Syn.subst σ (leftDemandTerm companion q p) = leftDemandTerm companion (Syn.subst σ q) (Syn.subst σ p) := by
-  simp [leftDemandTerm]
-@[simp] theorem subst_rightDemandTerm {m : ℕ} (σ : Fin n → PTm m) (companion : PR 2) (q p : PTm n) :
-    Syn.subst σ (rightDemandTerm companion q p) = rightDemandTerm companion (Syn.subst σ q) (Syn.subst σ p) := by
-  simp [rightDemandTerm]
+ipra_subst leftDemandTerm
+ipra_subst rightDemandTerm
 
 theorem leftDemand_at (companion : PR 2) (q p : PTm n) :
     Γ ⊢[PRAAx] ap2 (leftDemandF companion) q p ≐ leftDemandTerm companion q p := by
