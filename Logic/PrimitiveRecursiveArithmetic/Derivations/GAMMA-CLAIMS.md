@@ -3128,3 +3128,6 @@ A single dyadic upper bound on the native step pays the original quotient margin
 
 The actual quotient by an apart regular named Gaussian step agrees to an explicit independent rate with the native quotient at a decoded late step. The error keeps the individual endpoint approximation rates and the actual reciprocal clock.
 [GaussianNamedIncrementQuotientFrozenRate](Lean/IPRADerivations/Analysis/GaussianNamedIncrementQuotientFrozenRate.lean)
+
+The original base and late apart step have exact common-denominator native encodings and a matched exact sum. The actual named addition clock is retained, and rational step bounds give native smallness certificates.
+[GaussianNamedIncrementChart](Lean/IPRADerivations/Analysis/GaussianNamedIncrementChart.lean)
