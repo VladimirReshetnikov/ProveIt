@@ -24,23 +24,17 @@ open GaussianBarnesCanonicalHeadUniformMass (headCap padded_head_coefficient sub
 open GaussianBarnesCanonicalHigherRows (previous)
 open GaussianBarnesCanonicalLogCofinal (source)
 open GaussianBarnesCanonicalTaylorProductCoefficientCauchy
-  (exponential exponentialError exponential_gap exponentPrefix paddedHead paddedDegree productCoefficient
-    coefficient_reader subst_exponentPrefix subst_paddedHead subst_paddedDegree)
+  (exponentialError subst_exponentialError productCoefficient late_product_gap_with_head)
 open GaussianBarnesCanonicalTaylorProductCoefficientName (integerBudget)
-open GaussianCoefficientL1 (qL1_congr)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (fraction)
 open GaussianExponentialReference (unit_monotone)
 open GaussianFastValueCut (exponent query_budget)
-open GaussianFiniteSumL1Variation (termsError)
 open GaussianPolynomialExponentialCoefficientVariation (variationBudget)
 open GaussianRationalDistanceOrder (distance_radius_mono)
-open GaussianRationalL1 (qL1 qL1_nonnegative)
-open GaussianRationalLowCoefficientConvolution (exponentCoefficient exponent_inside term termBody term_at)
+open GaussianRationalL1 (qL1)
 open GaussianRationalMetric (qsub distanceBounded)
 open GaussianRationalSyntheticBounds (natCode natCode_nonnegative)
-open GaussianRationalSyntheticDivision (qsub_congr)
-open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open RationalArgmin (rationalLE rationalLE_congr)
 open RationalArithmetic (multiply)
 
@@ -80,11 +74,7 @@ def ready (p R M e q r : PTm n) : Fm PTm n :=
 
 @[simp] theorem subst_rowError {l : ℕ} (σ : Fin n → PTm l) (p R M : PTm n) :
     Syn.subst σ (rowError p R M) = rowError (Syn.subst σ p) (Syn.subst σ R) (Syn.subst σ M) := by
-  simp [rowError,exponentialError,massError,massCap,GaussianBarnesCanonicalExponentTaylorMass.coefficientCap,
-    GaussianBarnesCanonicalExponentTaylorMass.linearCap,GaussianBarnesCanonicalExponentTaylorMass.squareCap,
-    GaussianBarnesCanonicalExponentTaylorMass.stirlingCap,GaussianBarnesCanonicalExponentTaylorMass.quadraticCap,
-    GaussianBarnesCanonicalExponentTaylorMass.halfCap,GaussianBarnesCanonicalPrefactor.quadraticCoefficientData,
-    GaussianBarnesCanonicalPrefactor.negativeHalf,pw,one,two]
+  simp [rowError]
 
 @[simp] theorem subst_gain {l : ℕ} (σ : Fin n → PTm l) (R M e : PTm n) :
     Syn.subst σ (gain R M e) = gain (Syn.subst σ R) (Syn.subst σ M) (Syn.subst σ e) := by simp [gain]
@@ -104,74 +94,20 @@ def ready (p R M e q r : PTm n) : Fm PTm n :=
     (ready p R M e q r).subst σ = ready (Syn.subst σ p) (Syn.subst σ R) (Syn.subst σ M) (Syn.subst σ e)
       (Syn.subst σ q) (Syn.subst σ r) := by simp [ready]
 
-private theorem prefix_reader (q z R B r M e : PTm n) (he : Γ ⊢[PRAAx] le e (previous M)) :
-    let N := previous M
-    Γ ⊢[PRAAx] entry (exponentPrefix q z R B r M) (monus N e) ≐
-      exponentCoefficient (exponential q z R B r M N) (N*N) e := by
-  let N := previous M
-  have hm : Γ ⊢[PRAAx] le N (N*N) :=
-    le_congr (one_mul N) (.eqRefl _) (mul_le_mul_right N (zero_lt_succ (succ M)))
-  exact (GaussianPolynomialLowPrefix.original_reader (exponential q z R B r M N) (N*N) N e he).eqTrans
-    (exponent_inside _ _ _ (le_trans he hm)).eqSymm
-
-private theorem row_gap (p q t z R B r s M e i : PTm n)
-    (hz : Γ ⊢[PRAAx] source z R B) (he : Γ ⊢[PRAAx] le e (previous M))
-    (hq : Γ ⊢[PRAAx] le (prefactorGain R*unit p) (unit q)) (ht : Γ ⊢[PRAAx] le (prefactorGain R*unit p) (unit t))
-    (hr : Γ ⊢[PRAAx] le (GaussianBarnesCanonicalExponentTaylorRetainedCoefficient.cutoff p R M) r)
-    (hs : Γ ⊢[PRAAx] le (GaussianBarnesCanonicalExponentTaylorRetainedCoefficient.cutoff p R M) s) : Γ ⊢[PRAAx]
-    rationalLE (qL1 (qsub (term (paddedHead z R B e) (exponentPrefix q z R B r M) (paddedDegree R e) (previous M) e i)
-      (term (paddedHead z R B e) (exponentPrefix t z R B s M) (paddedDegree R e) (previous M) e i))) (rowError p R M) := by
-  let N := previous M
-  let j := monus e i
-  let a := entry (paddedHead z R B e) (monus (paddedDegree R e) i)
-  let b := entry (exponentPrefix q z R B r M) (monus N j)
-  let c := entry (exponentPrefix t z R B s M) (monus N j)
-  have hj := le_trans (GaussianRationalMonicReconstruction.monus_le_left e i) he
-  have codes := qsub_congr (prefix_reader q z R B r M j hj) (prefix_reader t z R B s M j hj)
-  have expGap : Γ ⊢[PRAAx] rationalLE (qL1 (qsub b c)) (exponentialError p R M N) :=
-    rationalLE_congr (qL1_congr codes).eqSymm (.eqRefl _) (exponential_gap p q t z R B r s M N j hz hj hq ht hr hs)
-  have head : Γ ⊢[PRAAx] rationalLE (qL1 a) (natCode (headCap R)) := padded_head_coefficient z R B e i hz
-  have product := RationalArgmin.transitive (GaussianRationalL1Algebra.qL1_multiply (Γ := Γ) a (qsub b c))
-    (GaussianFiniteExponentialWeightedNorm.multiply_bounds _ _ _ _ (qL1_nonnegative _) (natCode_nonnegative _) head expGap)
-  exact rationalLE_congr (qL1_congr (GaussianPolynomialCoefficientDifferences.scalar_scaled_difference a b c)).eqSymm
-    (.eqRefl _) product
-
 theorem late_product_gap (p q t z R B r s M e : PTm n)
     (hz : Γ ⊢[PRAAx] source z R B) (he : Γ ⊢[PRAAx] le e (previous M))
     (hq : Γ ⊢[PRAAx] le (prefactorGain R*unit p) (unit q)) (ht : Γ ⊢[PRAAx] le (prefactorGain R*unit p) (unit t))
     (hr : Γ ⊢[PRAAx] le (GaussianBarnesCanonicalExponentTaylorRetainedCoefficient.cutoff p R M) r)
     (hs : Γ ⊢[PRAAx] le (GaussianBarnesCanonicalExponentTaylorRetainedCoefficient.cutoff p R M) s) : Γ ⊢[PRAAx]
     rationalLE (qL1 (qsub (productCoefficient q z R B r M e) (productCoefficient t z R B s M e))) (productError p R M e) := by
-  let P := paddedHead z R B e
-  let K := paddedDegree R e
-  let N := previous M
-  let x := GaussianRationalLowCoefficientConvolution.data P (exponentPrefix q z R B r M) K N e
-  let y := GaussianRationalLowCoefficientConvolution.data P (exponentPrefix t z R B s M) K N e
-  have rows : Γ ⊢[PRAAx] termsError termBody termBody (succ e) x y (rowError p R M) := by
-    refine .allI (.impI ?_)
-    let a (u : PTm n) := Syn.shift u
-    let Δ := lt (var 0) (succ (a e)) :: Γ.map Fm.shift
-    have hz' : Δ ⊢[PRAAx] source (a z) (a R) (a B) := by simpa [Δ,a,Fm.shift,Syn.shift] using hz.shift.wk
-    have he' : Δ ⊢[PRAAx] le (a e) (previous (a M)) := by simpa [Δ,a,Fm.shift,Syn.shift] using he.shift.wk
-    have clock_budget {u : PTm n} (h : Γ ⊢[PRAAx] le (prefactorGain R*unit p) (unit u)) :
-        Δ ⊢[PRAAx] le (prefactorGain (a R)*unit (a p)) (unit (a u)) := by
-      simpa [Δ,a,Fm.shift,Syn.shift] using h.shift.wk
-    let cut {k : ℕ} (p R M : PTm k) := GaussianBarnesCanonicalExponentTaylorRetainedCoefficient.cutoff p R M
-    have cutoff_budget {u : PTm n} (h : Γ ⊢[PRAAx] le (cut p R M) u) : Δ ⊢[PRAAx] le (cut (a p) (a R) (a M)) (a u) := by
-      simpa [Δ,a,Fm.shift,Syn.shift,cut,GaussianBarnesCanonicalExponentTaylorRetainedCoefficient.cutoff,tailGain,pw,two] using h.shift.wk
-    have codes := qsub_congr (Γ := Δ)
-      (term_at (paddedHead (a z) (a R) (a B) (a e)) (exponentPrefix (a q) (a z) (a R) (a B) (a r) (a M))
-        (paddedDegree (a R) (a e)) (previous (a M)) (a e) (var 0))
-      (term_at (paddedHead (a z) (a R) (a B) (a e)) (exponentPrefix (a t) (a z) (a R) (a B) (a s) (a M))
-        (paddedDegree (a R) (a e)) (previous (a M)) (a e) (var 0))
-    simpa only [termsError,Δ,a,P,K,N,x,y,Syn.shift,GaussianRationalLowCoefficientConvolution.subst_data,
-      subst_exponentPrefix,subst_paddedHead,subst_paddedDegree,GaussianBarnesCanonicalHigherRows.subst_previous,subst_rowError,
-      ConciseIPRA.PTm.subst_succ] using rationalLE_congr (qL1_congr codes).eqSymm (.eqRefl _)
-        (row_gap (a p) (a q) (a t) (a z) (a R) (a B) (a r) (a s) (a M) (a e) (var 0)
-          hz' he' (clock_budget hq) (clock_budget ht) (cutoff_budget hr) (cutoff_budget hs))
-  exact rationalLE_congr
-    (qL1_congr (qsub_congr (coefficient_reader q z R B r M e he) (coefficient_reader t z R B s M e he))).eqSymm
-    (.eqRefl _) (GaussianFiniteSumL1Variation.sum_error termBody termBody (succ e) x y (rowError p R M) rows)
+  refine late_product_gap_with_head p q t z R B r s M e (headCap R) hz he hq ht hr hs ?_
+  intro sh Δ
+  have source' : Δ ⊢[PRAAx] source (sh z) (sh R) (sh B) := by
+    simpa [Δ,sh,Fm.shift,Syn.shift] using hz.shift.wk
+  simpa only [Δ,sh,Syn.shift,subst_headCap,GaussianBarnesCanonicalTaylorProductCoefficientCauchy.paddedHead,
+    GaussianBarnesCanonicalTaylorProductCoefficientCauchy.paddedDegree,GaussianBarnesCanonicalTaylorProduct.headPolynomial,
+    GaussianBarnesCanonicalTaylorProduct.headDegree] using
+    padded_head_coefficient (sh z) (sh R) (sh B) (sh e) (var 0) source'
 
 private theorem scale_fraction (A C D : PTm n) (hD : Γ ⊢[PRAAx] le one D) :
     Γ ⊢[PRAAx] multiply (natCode A) (fraction C D) ≐ fraction (A*C) D :=
