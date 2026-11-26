@@ -2858,3 +2858,6 @@ The original finite and cofinal Dirichlet sums agree across equal rational encod
 
 The checked shifts repair sample windows that meet the named boundary, including the relative-error threshold. A cofinal named order comparison removes errors that can be made arbitrarily small while retaining independent observation precisions.
 [GaussianNamedCofinalOrder](Lean/IPRADerivations/Analysis/GaussianNamedCofinalOrder.lean), [GaussianGammaDigammaTwoShiftWindowBuffer](Lean/IPRADerivations/Analysis/GaussianGammaDigammaTwoShiftWindowBuffer.lean)
+
+The actual cubic Mercator rows have the explicit rational Gaussian bound and rounded-observation rate. Summing the original finite rows gives the paper’s tail radius and the corrected Barnes cutoff.
+[GaussianBarnesCanonicalLogRow](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalLogRow.lean), [GaussianBarnesCanonicalLogTail](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalLogTail.lean), [GaussianBarnesCanonicalLogObservation](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalLogObservation.lean)
