@@ -3083,3 +3083,6 @@ Equivalent Gaussian fractions on one certified disk give equivalent actual cofin
 
 The actual finite head quotient converges to the sum of the original correction exponential derivative times the exact polynomial and the original exponential times the polynomial slope. The leading error is uniform on a disk, applies at zeros of the head, and scales linearly with the native Gaussian step.
 [GaussianNativeDerivativeQuotientQuadratic](Lean/IPRADerivations/Analysis/GaussianNativeDerivativeQuotientQuadratic.lean), [GaussianBarnesCanonicalHeadPolynomialQuotient](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadPolynomialQuotient.lean), [GaussianBarnesCanonicalHeadDerivativeJoin](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadDerivativeJoin.lean), [GaussianBarnesCanonicalHeadDerivative](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadDerivative.lean)
+
+The derivative of the actual prefactor times the original kept head has a uniform first-order quotient rate with denominator `B*initial R`. The proof keeps both original named factors and allows all zeros of the head.
+[GaussianBarnesCanonicalPrefixDerivativeJoin](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefixDerivativeJoin.lean), [GaussianBarnesCanonicalPrefixDerivative](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefixDerivative.lean)
