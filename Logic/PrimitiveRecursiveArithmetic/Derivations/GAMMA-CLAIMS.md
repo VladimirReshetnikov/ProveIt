@@ -3395,3 +3395,6 @@ The actual first and second derivative names are independent of the certified ra
 
 Equal rational charts with equivalent candidate values give equivalent original log quotients even with independently certified logarithm radii. Euclidean reduction and the actual integer shift bring any positive rational input to the interval [1,2). Constancy of the actual log quotient gives f(x)=f(1)G(x) and the original normalized equality when f(1)=1.
 [GaussianBarnesVignerasQuotientProperness](Lean/IPRADerivations/Analysis/Barnes/Vigneras/GaussianBarnesVignerasQuotientProperness.lean), [GaussianBarnesVignerasProportionality](Lean/IPRADerivations/Analysis/Barnes/Vigneras/GaussianBarnesVignerasProportionality.lean), [GaussianBarnesVignerasBaseInterval](Lean/IPRADerivations/Analysis/Barnes/Vigneras/GaussianBarnesVignerasBaseInterval.lean)
+
+At every positive integer cutoff the original logarithms satisfy log G(N+1) plus the actual finite sum of j log j equals N log Γ(N+1). The exponential reads back the original Barnes value.
+[GaussianBarnesCanonicalIntegerLogarithm](Lean/IPRADerivations/Analysis/Barnes/FunctionalEquations/IntegerValues/GaussianBarnesCanonicalIntegerLogarithm.lean)
