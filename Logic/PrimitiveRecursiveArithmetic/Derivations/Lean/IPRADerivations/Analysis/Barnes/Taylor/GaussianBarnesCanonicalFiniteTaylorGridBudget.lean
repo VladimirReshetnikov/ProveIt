@@ -57,6 +57,23 @@ def numerator (q z R B H M : PTm n) : PTm n :=
 
 def denominator (q B M : PTm n) : PTm n := pw B (succ (previous M))*unit q
 
+@[simp] theorem subst_clockGain {l : ℕ} (σ : Fin n → PTm l) (z R B : PTm n) :
+    Syn.subst σ (clockGain z R B) = clockGain (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) := by
+  simp [clockGain,capGain,GaussianRadiusExponentialLipschitzRate.factor,GaussianNamedExponentialRateFromConstant.cap,one,two]
+
+@[simp] theorem subst_analyticGain {l : ℕ} (σ : Fin n → PTm l) (z R B M : PTm n) :
+    Syn.subst σ (analyticGain z R B M) = analyticGain (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ M) := by
+  simp [analyticGain,headMass,GaussianRationalPolynomialExponentialRecomposition.coefficientBudget,
+    GaussianBarnesCanonicalTaylorProduct.headPolynomial,GaussianBarnesCanonicalTaylorProduct.headDegree,
+    RationalSupMetric.numeratorOf,one,two]
+
+@[simp] theorem subst_numerator {l : ℕ} (σ : Fin n → PTm l) (q z R B H M : PTm n) :
+    Syn.subst σ (numerator q z R B H M) = numerator (Syn.subst σ q) (Syn.subst σ z) (Syn.subst σ R)
+      (Syn.subst σ B) (Syn.subst σ H) (Syn.subst σ M) := by simp [numerator]
+
+@[simp] theorem subst_denominator {l : ℕ} (σ : Fin n → PTm l) (q B M : PTm n) :
+    Syn.subst σ (denominator q B M) = denominator (Syn.subst σ q) (Syn.subst σ B) (Syn.subst σ M) := by simp [denominator]
+
 private theorem grid_power (C H M : PTm n) : Γ ⊢[PRAAx]
     pw (C*(previous M*H)) (succ (previous M)) ≐ pw (C*previous M) (succ (previous M))*pw H (succ (previous M)) :=
   (congrAp2 powF (.eqRefl _) (by ipra_ring)).eqTrans
