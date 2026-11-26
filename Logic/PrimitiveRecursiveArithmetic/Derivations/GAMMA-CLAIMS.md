@@ -3086,3 +3086,6 @@ The actual finite head quotient converges to the sum of the original correction 
 
 The derivative of the actual prefactor times the original kept head has a uniform first-order quotient rate with denominator `B*initial R`. The proof keeps both original named factors and allows all zeros of the head.
 [GaussianBarnesCanonicalPrefixDerivativeJoin](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefixDerivativeJoin.lean), [GaussianBarnesCanonicalPrefixDerivative](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefixDerivative.lean)
+
+Equivalent fractions give identical data for the actual prefactor derivative sampler and equivalent output names at independent precisions.
+[GaussianBarnesCanonicalPrefactorDerivativeProperness](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefactorDerivativeProperness.lean)
