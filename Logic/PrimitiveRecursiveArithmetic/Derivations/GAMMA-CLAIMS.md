@@ -3362,3 +3362,6 @@ Every actual sample of the positive rational Barnes logarithm is real, and its e
 
 Bind the original positive rational Log((N+1)/N) to its actual Mercator observations. Exact quartic cancellation leaves (14N+3)/(144N⁴). The named weighted Glaisher correction increment is independently bounded by 2/N³ for N≥2, a summable rate. Binding this increment to the finite hyperfactorial logarithms and evaluating the Barnes multiplication constant are separate.
 [GaussianBarnesGlaisherLogarithm](Lean/IPRADerivations/Analysis/Barnes/FunctionalEquations/GaussianBarnesGlaisherLogarithm.lean), [GaussianBarnesGlaisherQuartic](Lean/IPRADerivations/Analysis/Barnes/FunctionalEquations/GaussianBarnesGlaisherQuartic.lean), [GaussianBarnesGlaisherIncrement](Lean/IPRADerivations/Analysis/Barnes/FunctionalEquations/GaussianBarnesGlaisherIncrement.lean)
+
+Real exponential injectivity gives L(x+1) = L(x) + Log Gamma(x) for every positive rational x using the original cofinal Euler log Gamma, and L(1) = 0 in every positive rational presentation of one.
+[GaussianBarnesCanonicalPositiveLogarithmRecurrence](Lean/IPRADerivations/Analysis/Barnes/FunctionalEquations/GaussianBarnesCanonicalPositiveLogarithmRecurrence.lean)
