@@ -1,0 +1,66 @@
+\subsection{An exponential restriction at discriminant \texorpdfstring{$-131$}{-131}}
+The class polynomial has degree five. Its constant coefficient is
+$2^{81}17^3 23^3$, and reduction modulo $17$ gives $X(X-8)^4$.
+Consequently one root $b$ has $v_{17}(b)=3$ and the other four,
+$u_1,\ldots,u_4$, satisfy $v_{17}(u_i-8)\ge1/4$.
+Indeed, the simple zero lifts by Hensel's lemma, and the valuation of
+the product of all roots gives its valuation. For a root reducing to
+$8$, if $0<v_{17}(u_i-8)<1/4$ the fourth-degree term in the expansion
+about $8$ would be the unique term of minimum valuation.
+
+Suppose that a polynomial of precisely five terms vanishes at these
+roots. Removing its smallest monomial factor gives exponents
+$0=e_0<e_1<e_2<e_3<e_4=D$. Then some $j\in\{1,2,3,4\}$ satisfies
+\[
+ 3e_j\ \leq\!
+ \sum_{\substack{1\leq k\leq4\\ k\ne j}}
+    \big(v_{17}(e_k-e_j)-v_{17}(e_k)\big).
+ \tag{Q}\label{eq:quinticgap}
+\]
+In particular $D\ge17^{e_1}$, and some difference $e_k-e_j$ with
+$k\ge1$, $k\ne j$, is divisible by $17^{e_j}$.
+
+To prove (Q), write $w_i=\log(u_i/8)$, so that
+$v_{17}(w_i)\ge1/4$ and the $w_i$ are distinct. For any four distinct
+nonnegative integers $n_l$ the determinant $\det(u_i^{n_l})$ has
+valuation
+\[
+ B + \sum_{l<m}v_{17}(n_m-n_l),
+ \qquad B=\sum_{i<h}v_{17}(w_h-w_i).
+\]
+Here is a direct valuation check. Remove the unit column factors
+$8^{n_l}$ and expand $\det(\exp(w_i n_l))$ by Cauchy--Binet.
+For indices $0\le t_0<\cdots<t_3$, dividing the two alternants by
+their ordinary Vandermondes gives integral Schur polynomials of
+degree $b'=\sum_{i=0}^3(t_i-i)$ in $w$ and in $n$, respectively.
+Their combined valuation is at least $b'/4$. The factorials in the
+denominator cost at most $b'/14$: for $t_i<17$ the valuation is zero;
+for $t_i\ge17$, Legendre's bound gives
+$v_{17}(t_i!)\le(t_i-1)/16\le(t_i-i)/14$.
+Thus the leading term $(0,1,2,3)$ is a unit after division, and all
+later terms have positive valuation tending to infinity. This proves
+the asserted exact valuation.
+
+The five-by-five alternant on the roots is singular because its
+columns satisfy the rational relation. Expand it along the row for
+$b$. The term indexed by $j$ has valuation $3e_j+B$ plus the
+valuation of the Vandermonde on the other four exponents. Some term
+with $j>0$ must have valuation at most that of term $0$.
+Cancel the pairs common to the two minors to obtain (Q). Each of its
+three summands is at most $\log_{17}D$.
+
+\paragraph{A certified degree cutoff.}
+For $D\le1000$ the anchor exponent $e_j$ in (Q) must equal $1$ or
+$2$, since $17^3>1000$. The program
+\texttt{checks/degree\_131.py} enumerates each triple of remaining
+positive exponents satisfying (Q), sorted into buckets by
+$v_{17}(e_k-e_j)$. It finds $179{,}365$ admissible triples for anchor
+$1$ and one for anchor $2$. For each, reduce the five powers of $X$
+modulo the monic class polynomial and then modulo $1{,}000{,}000{,}007$.
+The powers $1$ and $X^{e_j}$ are coordinate vectors, so a
+three-by-three determinant on the remaining coordinates tests full
+rank. Every tested determinant is nonzero modulo that integer.
+It follows that every five-term relation would have normalized degree
+at least $1001$. The class polynomial provides a six-term relation,
+and the existence of a five-term one of higher degree remains open
+in this analysis.

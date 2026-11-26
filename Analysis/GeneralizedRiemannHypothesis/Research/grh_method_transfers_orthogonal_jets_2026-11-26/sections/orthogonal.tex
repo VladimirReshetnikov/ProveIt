@@ -1,0 +1,224 @@
+\section{Exact tests for a block of a split orthogonal matrix}
+\label{sec:orthogonal}
+
+The finite Fourier argument in
+\path{grh/src/New/Spanning/SecondMoment/PositiveType.lean}
+is independent of the final zero-free theorem. Its estimate
+\texttt{re\_sum\_addChar\_dotProduct\_mul\_le} bounds an additive character
+coefficient through the masses of two stabilizers; its final theorem
+\texttt{card\_mul\_sum\_det\_eq\_zero\_le} applies this to a singular
+matrix compression. Earlier ProveIt reports already passed from vectors
+to frames, obtained rectangular matrix distribution bounds, and computed
+the precise obstruction for isotropic blocks of symplectic matrices.
+We do not count those results again. Here is a different exact boundary
+calculation for split orthogonal matrices. It identifies an optimal
+statistical test for the \emph{entire block}, not only its rank.
+
+This result is a complete human proof. The group counts it uses are
+classical; for related counts of isotropic subspaces see Li--Zhang,
+Lemma~3.2.2, and for finite-field rank laws see Fulman--Goldstein.\cite{lizhang,fulman}
+The exact block comparison below is new to the inspected report corpus.
+No claim of worldwide priority is made.
+
+\subsection{Statement}
+
+Let $q$ be an odd prime power, $m\ge1$, and put
+\[
+ J=\begin{pmatrix}0&I_m\\I_m&0\end{pmatrix},\qquad
+ G=\{g\in\operatorname{GL}_{2m}(\mathbb F_q):g^{\mathsf T}Jg=J\}.
+\]
+This is the split orthogonal group $O^+(2m,q)$.
+Its determinant-one subgroup is denoted by $G^+=SO^+(2m,q)$; this
+notation does not mean the possibly smaller commutator subgroup.
+Write
+\[
+ g=\begin{pmatrix}A&B\\C&D\end{pmatrix}
+\]
+in this hyperbolic basis, and let $U_m$ be a uniform $m\times m$ matrix
+over $\mathbb F_q$. Thus the entries of $U_m$ are independent and uniform.
+For laws $P,Q$ on the finite matrix space,
+$d_{\mathrm{TV}}(P,Q)=\frac12\sum_M|P(M)-Q(M)|$.
+
+\begin{theorem}[Optimal parity and full-rank tests]
+\label{thm:orthogonal-optimal-test}
+If $g$ is uniform in $G^+$, then $\operatorname{rank}C$ is even and
+\begin{equation}
+ d_{\mathrm{TV}}(C,U_m)
+   =\Pr\bigl(\operatorname{rank}U_m\text{ is odd}\bigr).
+ \label{eq:SO-TV}
+\end{equation}
+Consequently the test ``the block has odd rank'' achieves the full
+total variation distance; no test using all its entries improves this
+distinguishing advantage.
+
+If instead $g$ is uniform in the full group $G$, then
+\begin{equation}
+ d_{\mathrm{TV}}(C,U_m)
+  =\prod_{j=1}^{m}(1-q^{-j})
+    -\frac{1}{2\prod_{j=1}^{m-1}(1+q^{-j})}.
+ \label{eq:O-TV}
+\end{equation}
+Here the full-rank test achieves the full distance. Empty products equal
+one, so the formula also includes $m=1$.
+\end{theorem}
+
+For clarity, ``achieves the full distance'' uses
+$d_{\mathrm{TV}}(P,Q)=\max_E|P(E)-Q(E)|$.
+With equally likely hypotheses, the corresponding best success
+probability is $(1+d_{\mathrm{TV}})/2$.
+
+\subsection{Proof by counting isotropic subspaces}
+
+Let $W=\mathbb F_q^m\oplus0$ and $L=gW$.
+The space $L$ is maximal totally isotropic for $J$ and
+\[
+ \operatorname{rank}C=m-\dim(L\cap W).
+\]
+Write
+\[
+ {m\brack r}_q
+ =\prod_{i=0}^{r-1}\frac{q^m-q^i}{q^r-q^i},\quad
+ F_q(m,r)=\prod_{i=0}^{r-1}(q^m-q^i),\quad
+ T_m=2\prod_{i=1}^{m-1}(1+q^i).
+\]
+
+\paragraph{The determinant and rank parity.}
+Every element of $G$ stabilizing $W$ has block form
+\(
+ \left(\begin{smallmatrix}P&*\\0&P^{-\mathsf T}\end{smallmatrix}\right)
+\), hence determinant one.
+Suppose $\dim(L\cap W)=m-r$. A change of basis in $W$, extended by the
+inverse transpose on its complementary isotropic subspace, puts the
+intersection in standard position. In its orthogonal quotient, $L$ is
+transverse to the remaining part of $W$, hence is the graph of a
+skew-symmetric matrix. An upper unipotent isometry with a skew-symmetric
+upper-right block removes that graph. Both changes stabilize $W$ and
+have determinant one. The resulting space is
+\[
+ \langle e_1,\ldots,e_{m-r},f_{m-r+1},\ldots,f_m\rangle.
+\]
+It is the image of $W$ under the isometry which swaps $e_i$ with $f_i$
+in precisely $r$ hyperbolic pairs. That isometry has determinant
+$(-1)^r$. Multiplying by it leaves an element stabilizing $W$, proving
+\begin{equation}
+ \det g=(-1)^{\operatorname{rank}C}.
+ \label{eq:orthogonal-parity}
+\end{equation}
+This construction also proves transitivity on maximal isotropic
+subspaces. Since their stabilizer has determinant one, the two determinant
+cosets of $G$ give two equally sized families, selected by the parity
+of $r$.
+
+\paragraph{The exact rank counts.}
+Choose $D=L\cap W$ of dimension $m-r$ in ${m\brack r}_q$ ways.
+The quotient $D^\perp/D$ is a hyperbolic space of dimension $2r$.
+The possible $L/D$ are precisely its maximal isotropic complements to
+$W/D$. Writing each such complement as a graph gives a skew-symmetric
+$r\times r$ matrix. There are $q^{r(r-1)/2}$ such matrices because
+$q$ is odd. Thus the number of possible $L$ at block rank $r$ is
+\begin{equation}
+ N_m(r)={m\brack r}_q q^{r(r-1)/2}.
+ \label{eq:orthogonal-subspace-count}
+\end{equation}
+The elementary $q$-binomial identity
+\[
+ \sum_{r=0}^{m}{m\brack r}_q q^{r(r-1)/2}
+   =\prod_{i=0}^{m-1}(1+q^i)=T_m
+\]
+follows by induction from the Gaussian-binomial recursion.
+Uniform group elements induce the uniform law on each orbit. Therefore
+the full orthogonal rank law and the special orthogonal rank law are
+\begin{align}
+ o_m(r)&=N_m(r)/T_m,\label{eq:O-rank-law}\\
+ s_m(r)&=\begin{cases}2o_m(r),&r\text{ even},\\0,&r\text{ odd}.
+                 \end{cases}\label{eq:SO-rank-law}
+\end{align}
+For an independent-entry matrix, choose its $r$-dimensional image and
+then a surjection onto it. This gives
+\begin{equation}
+ u_m(r)=\Pr(\operatorname{rank}U_m=r)
+       ={m\brack r}_qF_q(m,r)q^{-m^2}.
+ \label{eq:iid-rank-law}
+\end{equation}
+
+\paragraph{Why rank suffices for all matrix tests.}
+For each $P\in\operatorname{GL}_m(\mathbb F_q)$,
+the matrix $\operatorname{diag}(P,P^{-\mathsf T})$ lies in $G^+$.
+Left and right multiplication by these matrices transform $C$ into
+$P^{-\mathsf T}CQ$ for independently arbitrary invertible $P,Q$.
+Uniform measure on either group is invariant under these operations.
+Since left and right invertible transformations act transitively on
+matrices of a given rank, both block laws are uniform conditional on
+rank. The independent-entry law has the same property. Thus the total
+variation distance of the full matrices equals that of their rank laws.
+
+\paragraph{Comparing the mass at each rank.}
+Set $R_m(r)=2o_m(r)/u_m(r)$, also for odd $r$. Cancellation in the exact
+formulas gives
+\[
+ R_m(m)=\frac{1}{(1-q^{-m})
+                      \prod_{j=1}^{m-1}(1-q^{-2j})}>1,
+ \qquad
+ \frac{R_m(r-1)}{R_m(r)}=q^{m-r+1}-1.
+\]
+Because $q\ge3$, each displayed ratio is at least two.
+Hence $s_m(r)>u_m(r)$ at every even rank, while $s_m(r)=0$ at every
+odd rank. All the deficit lies at the odd ranks, proving
+\eqref{eq:SO-TV}.
+
+For the full orthogonal group, the likelihood ratio is $R_m(r)/2$.
+At rank $m$ it is less than one: writing $Q=q^{-1}\le1/3$, its
+denominator before the factor two satisfies
+\[
+ (1-Q^m)\prod_{j=1}^{m-1}(1-Q^{2j})
+ \ge (1-Q)\left(1-\sum_{j=1}^{\infty}Q^{2j}\right)
+ \ge \frac{7}{12}>\frac12.
+\]
+It is greater than $1/2$, because that same product is less than one.
+At rank $m-1$ the ratio is therefore greater than
+$(q-1)/2\ge1$, and it increases as rank decreases.
+Thus only full rank has deficient mass in $o_m$ compared with $u_m$.
+Their full-rank probabilities are respectively
+\[
+ o_m(m)=\frac{1}{2\prod_{j=1}^{m-1}(1+q^{-j})},\qquad
+ u_m(m)=\prod_{j=1}^{m}(1-q^{-j}).
+\]
+Their difference proves~\eqref{eq:O-TV}.\hfill$\square$
+
+\subsection{Finite examples and the limiting obstruction}
+
+The supporting program \path{code/check_orthogonal_blocks.py} uses exact rational
+arithmetic. It independently enumerates all maximal isotropic subspaces
+and all square matrices for $q=3$, $m=1,2,3$. At $m=3$ it examines all
+$33{,}880$ three-dimensional subspaces of $\mathbb F_3^6$ in unique
+reduced-row-echelon form, of which $80$ are isotropic. It also independently
+enumerates all $2$ and $576$ elements of $SO^+(2m,3)$ for $m=1,2$ from
+elementary generators, checks the preserved form, and checks every
+individual block probability. No group enumeration at $m=3$ is claimed.
+
+\begin{center}
+\begin{tabular}{c|c|c|l}
+ $m$ & $d_{\mathrm{TV}}(C_{SO},U_m)$ &
+       $d_{\mathrm{TV}}(C_O,U_m)$ & nonzero $SO$ rank masses\\\hline
+ $1$ & $2/3$ & $1/6$ & $r=0:\ 1$\\
+ $2$ & $32/81$ & $47/216$ & $r=0:\ 1/4,\quad r=2:\ 3/4$\\
+ $3$ & $11570/19683$ & $13597/58320$ &
+       $r=0:\ 1/40,\quad r=2:\ 39/40$
+\end{tabular}
+\end{center}
+
+For the full orthogonal group, fixed $q$ and $m\to\infty$ in
+\eqref{eq:O-TV} give the positive limiting distance
+\[
+ \prod_{j=1}^{\infty}(1-q^{-j})
+ -\frac{1}{2\prod_{j=1}^{\infty}(1+q^{-j})}.
+\]
+The products converge to positive limits, and the proof above shows
+that the difference is positive for every odd $q$.
+Even when $q\to\infty$, this expression tends to $1/2$.
+The matrix entries therefore do not become independent at this maximal
+isotropic boundary. The determinant component leaves a precise parity
+signature, and averaging the two components leaves a precise full-rank
+signature. This is a method transfer in finite geometry and probability,
+with no use of RH or GRH as a premise.
+

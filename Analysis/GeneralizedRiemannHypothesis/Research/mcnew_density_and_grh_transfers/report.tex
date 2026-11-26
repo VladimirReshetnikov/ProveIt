@@ -1,0 +1,193 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,booktabs,geometry,microtype,xcolor,fancyhdr,hyperref}
+\geometry{letterpaper,margin=0.94in,top=0.95in,bottom=0.95in}
+\definecolor{ink}{HTML}{17394A}
+\hypersetup{colorlinks=true,linkcolor=ink,urlcolor=ink,pdftitle={A density separation for geometric progressions and transfers from Dirichlet GRH}}
+\pagestyle{fancy}\fancyhf{}\lhead{\small\textcolor{ink}{GEOMETRIC PROGRESSIONS AND DIRICHLET GRH}}\rhead{\small Research note}\cfoot{\thepage}\setlength{\headheight}{15pt}
+\newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\Q}{\mathbb Q}\newcommand{\N}{\mathbb N}\newcommand{\R}{\mathbb R}
+\newcommand{\Z}{\mathbb Z}\newcommand{\ii}{\mathrm{i}}
+\newcommand{\wt}{W}\newcommand{\ind}{\mathbf 1}\newcommand{\src}[2]{\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/#1}{#2}}
+\newcommand{\prior}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/5cc267af75a635199ac5d93a7d49cbce521daefc/docs/incoming/#1}{#2}}
+\allowdisplaybreaks
+\begin{document}
+\noindent{\small\sffamily\color{ink} MATHEMATICAL RESEARCH NOTE\hfill 26 NOVEMBER 2026}
+\vspace{0.6em}
+\begin{flushleft}{\LARGE\bfseries A density separation for geometric progressions}\\[0.35em]
+{\large Smooth-number exchange, Frobenius tests, and the scope of a Lean proof of Dirichlet GRH}
+\end{flushleft}
+\begin{abstract}
+McNew asked whether forbidding all three-term geometric progressions of rational ratio reduces the largest possible natural density strictly below the corresponding supremum for integer ratios. We prove that the difference exceeds $0.0001306$. A replacement on integers supported at $2,3,5$ gains reciprocal mass against every rational-ratio competitor, even after paying for new progressions that cross the replacement boundary. Two exact finite certificates and a smooth-factor density argument give the result. We also determine three restricted Rankin optima, including all ratios supported on $2,3,5,7$. These theorems are unconditional. A separate transfer from the one-sided zero test in \texttt{grh-lean} classifies binary Frobenius weights having strictly negative coefficients on every nonlinear irreducible and produces a single prime-counting criterion for Dedekind RH. The arithmetic estimate required by that criterion remains open.
+\end{abstract}
+\section{The density question}
+For $E\subseteq\N=\{1,2,\dots\}$, its natural density is $d(E)=\lim_{x\to\infty}|E\cap[1,x]|/x$ when the limit exists. Write $\alpha$ for the supremum of these densities over sets avoiding $a,ar,ar^2$ whenever $r\in\Q$, $r>1$, and all three terms are integers. Write $\beta$ for the corresponding supremum with $r\in\N$, $r>1$. For example, $4,6,9$ is forbidden only by the first rule.
+\begin{theorem}\label{t:gap}
+$\displaystyle\beta-\alpha>0.0001306$.
+\end{theorem}
+This answers Question 7.4 in McNew's published paper \cite{mcnew}. That paper constructs an integer-ratio-free set denser than Rankin's greedy set. Comparing one construction with Rankin leaves open the possibility that another rational-ratio-free set is equally dense. Our comparison is uniform in that competing set. The earlier \prior{grh_transfers_density_gaps_and_zero_tests.zip}{ProveIt density report} separates natural from upper density under each ratio rule and explicitly leaves the comparison between the two natural-density optima open. We use its smooth-factor organization. Section~\ref{sec:lean} describes its connection to the source repository and the independent analytic transfer.
+\section{A replacement on smooth integers}
+For $Y\ge5$ let $S_Y$ be the semigroup of positive integers with all prime factors at most $Y$, including $1$. Put $S=S_5$ and $W(F)=\sum_{n\in F}1/n$. Write
+\[
+              t=83/1000,\qquad g=23/10000,\qquad N=10^6.
+\]
+The constants below include the cost of modifying the rest of a much larger semigroup.
+\begin{lemma}[Finite exchange]\label{l:exchange}
+There exists an integer-ratio-free set $B\subset S\cap[1,N]$ such that every rational-ratio-free $A\subset S$ satisfies
+\begin{equation}
+       W(B)-W(A)-tW(B\setminus A)\ \ge\ g. \label{eq:exchange}
+\end{equation}
+\end{lemma}
+\begin{proof}
+The witness $B$ is given in Table~\ref{tab:B}. Its construction starts from the seven additions to the $2,3,5$ slice in the proof of McNew's Theorem 3.3. Start with $60,90,150,180,300,450,900$. Visit $2^i3^j5^k\le N$ in increasing order with all ternary digits of $i,j,k$ in $\{0,1\}$. Retain an integer if adjoining it introduces no integer-ratio progression. One verification constructs $B$ by this rule, another uses the listed integers directly. Checking every $b\in B$ and $2\le r\le\sqrt{N/b}$ verifies the required avoidance.
+\begin{table}[ht]\centering\small
+\caption{The 102 integers of the replacement.}\label{tab:B}
+\begin{tabular}{rrrrrrrrrr}\toprule
+1 & 2 & 3 & 5 & 6 & 8 & 10 & 15 & 16 & 24 \\
+27 & 40 & 48 & 54 & 60 & 80 & 81 & 90 & 120 & 125 \\
+135 & 150 & 162 & 180 & 216 & 250 & 270 & 300 & 375 & 405 \\
+432 & 450 & 512 & 625 & 648 & 750 & 900 & 1000 & 1024 & 1080 \\
+1250 & 1296 & 1536 & 1875 & 2000 & 2560 & 3000 & 3072 & 3375 & 4096 \\
+5000 & 5120 & 6750 & 7680 & 8192 & 10000 & 10125 & 12288 & 13824 & 15360 \\
+16875 & 19683 & 20480 & 24576 & 27000 & 27648 & 39366 & 40960 & 41472 & 50625 \\
+59049 & 61440 & 64000 & 69120 & 82944 & 98415 & 110592 & 118098 & 122880 & 128000 \\
+138240 & 157464 & 192000 & 196830 & 207360 & 221184 & 295245 & 314928 & 320000 & 331776 \\
+384000 & 414720 & 472392 & 512000 & 531441 & 552960 & 590490 & 640000 & 663552 & 787320 \\
+944784 & 960000 \\
+\bottomrule\end{tabular}
+\end{table}
+For $V=S\cap[1,N]$ we have $|V|=507$. The total smooth mass is $15/4$ by three geometric series. The tail mass $T$ and the replacement mass are exactly
+\[
+   T=\frac{12000753838363}{108839116800000000},\qquad
+   W(B)=\frac{1928068463873}{680244480000}.
+\]
+Assign weight $w_n=(1-t\ind_B(n))/n$ to $n\in V$. The desired finite assertion is
+\begin{equation}
+ \max_{I\subseteq V\ {\rm rational\text{-}ratio\text{-}free}}\sum_{n\in I}w_n
+ \ \le\ (1-t)W(B)-T-g.\label{eq:finite}
+\end{equation}
+Indeed the omitted portion of $A$ costs at most $T$ and $B\subset V$. Moving terms in \eqref{eq:finite} gives \eqref{eq:exchange}.
+
+Here are the two algorithms certifying \eqref{eq:finite}. They use the common denominator $D=1000\operatorname{lcm}(V)=108839116800000000000$. In integer units the permissible upper bound is $282623874296968197000$.
+\begin{enumerate}
+\item Visit undecided integers from least to greatest. The sum of selected and undecided weights bounds every completion. Close a branch when this bound is at most the target. At $m$, branch on discarding $m$ and on retaining $m$. In the second branch discard every still available $m^2/a$ with $a<m$ selected, whenever $m^2/a\in V$. These are exactly the future third terms newly forbidden. If the undecided set becomes empty, check the selected weight. The complete traversal closes in 295,651 calls.
+\item Independently enumerate the 16,446 rational triples from distinct endpoints $u<v$ with $uv$ a square and $\sqrt{uv}\in V$. A set of deletions must meet each triple. A lower bound for deletion cost is obtained by assigning integer masses to triples with total incident mass at each vertex at most its weight $Dw_n$. Every cover pays at least their sum. In decreasing order of minimum vertex weight, assign each triple the minimum residual capacity of its three vertices. If the sum is insufficient, branch on paying for each of the three vertices of the first uncovered triple, removing all edges it meets in that branch. Decrease the target by the payment. The initial required payment is the total integer weight minus the permissible upper bound. This recursion certifies it in 184 calls.
+\end{enumerate}
+Both checks use exact integer arithmetic. The archive includes the direct subset verifier and the independent cover verifier with their transcripts.
+\end{proof}
+\begin{lemma}[Extension to every finite prime set $p\le Y$]\label{l:patch}
+Given any rational-ratio-free $E\subset S_Y$, there is an integer-ratio-free $F\subset S_Y$ with $W(F)\ge W(E)+g$.
+\end{lemma}
+\begin{proof}
+Let $A=E\cap S$. Replace $A$ by $B$, keeping the rest of $E$. For each newly inserted $b\in B\setminus A$, remove any $br^2$ where $r\ge2$ is an integer with a prime divisor greater than $5$. Such removals are outside $S$. Consider a progression that the replacement introduced. It meets $B\setminus A$. If its integer ratio is $5$-smooth, the outside prime valuations are constant along the progression. Its member in $B$ forces all three to be in $S$, contradicting the construction of $B$. Otherwise the middle and last terms have a prime divisor greater than $5$. Thus the inserted member must be the first term, and its last term was removed. All progressions consisting entirely of previously retained members were already forbidden in $E$.
+
+The total deleted outside mass is at most $W(B\setminus A)\sum_{r\notin S}r^{-2}$. The sum equals
+\[
+ \zeta(2)-\prod_{p\in\{2,3,5\}}(1-p^{-2})^{-1}
+   =\zeta(2)-25/16 < 83/1000 .
+\]
+For a rational check, use $\zeta(2)\le\sum_{n=1}^{100}n^{-2}+1/100$. Now apply Lemma~\ref{l:exchange}. The bound allows for all positive integer ratios, uniformly in $Y$ and in the ambient set $E$.
+\end{proof}
+\section{From reciprocal mass to natural density}
+Define $U_Q(Y)$ and $U_I(Y)$ to be the suprema of $W$ on admissible subsets of $S_Y$ for rational and integer ratios respectively. The preceding lemma gives $U_I(Y)\ge U_Q(Y)+g$, without requiring an optimizer. Set
+\[
+ c_Y=\prod_{p\le Y}(1-p^{-1}),\qquad v_Y=\prod_{p>Y}(1-p^{-2}).
+\]
+For any rational-ratio-free set $E\subset\N$ of natural density $d$, unique factorization $n=hs$ with $s\in S_Y$ and $h$ free of primes $\le Y$ gives
+\[
+ \sum_{n\in E,\ n\le x}\frac1n\le
+ U_Q(Y)\sum_{h\le x,\ p\mid h\Rightarrow p>Y}\frac1h.
+\]
+The smooth part in each fixed $h$-fiber is rational-ratio-free, since dilation preserves its triples. The left side is $(d+o(1))\log x$ by partial summation. The sum on the right is $(c_Y+o(1))\log x$ by periodicity and partial summation. Hence $\alpha\le c_Y U_Q(Y)$.
+ 
+For any finite integer-ratio-free $F\subset S_Y$, take all $hs$ with $s\in F$ and $h$ squarefree with prime factors $>Y$. In a geometric triple each outside valuation would be an arithmetic progression in $\{0,1\}$, so it would be constant. All three terms would have the same $h$, contradicting the choice of $F$. The allowed $h$ have density $c_Yv_Y$, by the Chinese remainder theorem at finitely many primes and the tail bound $\sum_{p>K}p^{-2}$. The sets contributed by the finitely many $s$ are disjoint and have total natural density $c_Yv_Y W(F)$. Finite truncation approximates $U_I(Y)$ because $W(S_Y)=1/c_Y$ is finite. It follows that
+\begin{align}
+ \beta-\alpha
+ &\ge c_Y\big(U_I(Y)-U_Q(Y)\big)-c_Y U_I(Y)(1-v_Y)\nonumber\\
+ &\ge c_Yg-\sum_{p>Y}p^{-2}.\label{eq:global}
+\end{align}
+Thus one local exchange works at every smooth cutoff, while the squarefree loss can be made smaller than its gain. Even the elementary bounds $c_Y\ge1/(2\sqrt Y)$ and $\sum_{p>Y}p^{-2}\le1/Y$ prove strict separation for sufficiently large $Y$. The first follows by including every odd integer $3\le m\le Y$ in the product and using $(1-1/m)^2\ge(m-2)/m$.
+
+For Theorem~\ref{t:gap}, take $Y=6841$. Sieve through $2{,}000{,}000$. Starting with $10^{18}$, multiply by $(p-1)/p$ and round down at each $p\le Y$. Bound the tail from above by rounding each $10^{18}/p^2$ up through the sieve limit and adding $10^{18}/2,000,000$ for the rest. Substitution into \eqref{eq:global} gives
+\[
+   \beta-\alpha\ \ge\frac{130649725461309}{10^{18}}>0.0001306 .
+\]
+The numerical certificate is \texttt{check\_bridge.py}. A second choice $Y=100000$ with the crude tail $1/Y$ gives $\beta-\alpha>0.0001$ in \texttt{verify\_separation.py}.
+\section{How far Rankin's rule is optimal}
+One can also locate an absolute upper bound for $\alpha$ and exhibit a set witnessing an absolute lower bound for $\beta$. These estimates provide information distinct from the strict comparison. They do not, by themselves, separate the two suprema.
+
+Fix a finite prime set $P$. Call a rational ratio $P$-supported if every prime factor of its numerator and denominator lies in $P$. Define $C$ to be the positive $P$-smooth integers whose prime exponents have only ternary digits $0,1$. On all integers define $R_P$ by this same rule at primes of $P$, with no other conditions. The ternary exponent set is three-term-arithmetic-progression-free. Indeed at the lowest digit where three exponents differ, the relation $a+c=2b$ mod $3$ cannot hold with all digits $0,1$. Hence $R_P$ avoids all nonconstant $P$-supported rational progressions.
+\begin{theorem}\label{t:rankin}
+For each $P$ in Table~\ref{tab:rankin}, $R_P$ attains the largest possible natural density among sets avoiding $P$-supported rational progressions. It also attains the supremum of upper logarithmic densities. Its density is
+\[
+ d_P=\prod_{p\in P}(1-p^{-1})\prod_{p\in P}\prod_{j\ge0}(1+p^{-3^j}).
+\]
+In particular $\alpha<0.740912$.
+\end{theorem}
+McNew's Theorem 6.1 and the subsequent observation establish the restricted optimality when $\prod_{p\in P}(1-p^{-1})^{-1}\le2$. Each row of the table is outside that range. The last row supplies the stated absolute upper bound because rational-ratio-free sets obey its restrictions.
+\begin{table}[ht]\centering\small\caption{Exact finite tests and rounded optimal densities.}\label{tab:rankin}
+\begin{tabular}{llllr}\toprule
+$P$ & low ternary digits $k_p$ & box size & $\lambda$ & $d_P$ (approx.)\\\midrule
+$2,3$ & $2,2$ &81& $51/50$ & $0.779336473$\\
+$2,3,5$ & $2,2,1$ &243& $11/10$ & $0.754148705$\\
+$2,3,5,7$ & $2,2,1,1$ &729& $21/20$ & $0.740911746$\\\bottomrule
+\end{tabular}\end{table}
+\begin{proof}
+It suffices to show $W(E)\le W(C)$ for every admissible $P$-smooth subset $E$. The rough-fiber upper bound above then works with a logarithmic limsup. The set $R_P$ has the stated natural density by summing over its $P$-smooth parts and truncating their convergent reciprocal sum.
+
+For each prime $p$ keep the lowest $k_p$ ternary digits of its exponent. The low box $L$ consists of all low parts, with exponents $0\le a_p<3^{k_p}$. A high part is the complementary string of digits. In each low box the exact check gives for every admissible $I\subset L$
+\begin{equation}
+      \lambda W(I\setminus C)\le W((C\cap L)\setminus I).\label{eq:low}
+\end{equation}
+This is the same threshold algorithm as for \eqref{eq:finite}, with weight $1/n$ on $C\cap L$, $\lambda/n$ elsewhere, and threshold $W(C\cap L)$. The three traversals close in $73$, $3823$, and $4,582,553$ calls. Dilation by a fixed high part preserves both the inequalities and the forbidden progressions. Apply \eqref{eq:low} at each high part whose digits are all good. If $M=W(C\setminus E)$ is the total missing greedy mass, the excess with good high part and bad low part is thus at most $M/\lambda$.
+
+It remains to bound the mass in $E$ with a digit $2$ in the high part. For each such number $n$ form $a,b$ by changing \emph{all} of its ternary $2$'s to $0$ and $1$, respectively, leaving all other digits alone. Then $a,b\in C$ and $a,b,n$ form a nonconstant integer-ratio progression. At least one witness is missing. Charge $1/n$ to a missing witness, allowing overcounting for an upper bound. For a given witness $w=b$, the relative weights $(1/n)/(1/w)$ arise by changing a nonempty subset of its $1$-digits to $2$, with at least one high digit changed. At digit $(p,j)$ this costs the factor $p^{-3^j}$. For $w=a$, change $0$-digits to $2$ and use $p^{-2\cdot3^j}$. By allowing all possible low digits and all nonempty high subsets, the total charge to $w$ is at most $C_{\rm tail}/w$, where
+\[
+ C_{\rm tail}=\sum_{e=1,2}
+ \left(\prod_{p\in P}\prod_{0\le j<k_p}(1+p^{-e3^j})\right)
+ \left(\prod_{p\in P}(1-p^{-e3^{k_p}})^{-1}-1\right).
+\]
+Indeed $\prod_{i\ge0}(1+z^{3^i})\le(1-z)^{-1}$ for $0<z<1$, by uniqueness of ternary expansion. All weights can be summed in either order by positivity. Therefore
+\[
+ W(C)-W(E)\ge (1-1/\lambda-C_{\rm tail})M.
+\]
+The coefficient is positive in the three rows, exceeding $0.014$, $0.062$, and $0.0057$, respectively, by rational arithmetic in \texttt{verify\_rankin.py}. This proves the infinite weighted optima and, in fact, uniqueness on the smooth semigroup. The density bounds printed by the checker use the same geometric majorant on the Euler-product tail.
+\end{proof}
+
+For the other direction take $P$ to be the eight primes through $19$. In \texttt{integral\_ratio\_support.txt} we give an integer-ratio-free set $J$ of $8197$ $P$-smooth numbers, the largest $99,792,810$. At primes outside $P$ use Rankin's ternary digit rule. In any progression the outside valuations would all be constant, leaving a progression inside $J$. The natural density of this explicit construction is
+\[
+ W(J)\prod_{p\le19}(1-p^{-1})
+ \prod_{p>19}\left[(1-p^{-2})\prod_{j\ge1}(1+p^{-3^j})\right].
+\]
+Existence follows by finite Euler products and the fact that a violation at an outside prime $p$ requires $p^2\mid n$. Verifying the triples in $J$, retaining the $j=1$ positive factors through $200000$, and bounding the remaining product from below by $200000/200001$ gives $\beta\ge0.723891309687823565$. All fixed-point divisions round downward. The data serve only to exhibit an admissible set. Optimality of these $8197$ choices is unnecessary. McNew's Theorem 3.3 gave $\beta>0.72195$ by modifying the greedy construction at three primes.
+\section{What transfers from the Lean proof}\label{sec:lean}
+We inspected \texttt{lsernau/grh-lean} at revision \nolinkurl{72fead102f663d5c7a407964a13dc0cf9d977207}. The \src{src/Statements.lean}{public statements} use Mathlib's terms, and \src{src/Main.lean}{the main file} gives five exports. In particular, the nonvanishing formulation is for Dirichlet characters of nonzero modulus in $\Re s>1/2$, with the principal pole excepted. The open-strip formulation includes imprimitive characters. The readable edition reports compilation with Lean 4.35.0, Mathlib revision \nolinkurl{56a005855ea17e0b0958f73ec801ae140b0a1679}, and the axioms \texttt{propext}, \texttt{Classical.choice}, and \texttt{Quot.sound}. Verification in this study comprised source inspection, mathematical proofs, and the accompanying finite checks. The Lean build and kernel replays are those reported by the project.
+
+\paragraph{The combinatorial route.}
+In \src{src/New/Reduction/Data/Existence.lean\#L77-L116}{the sparse-set construction}, \texttt{exists\_three\_term\_free} encodes a vector of small digits as an integer and selects a sphere to rule out nonconstant weighted midpoint relations. The ProveIt density report carries the idea of progression avoidance in coordinates to prime-exponent vectors. For integers, $v_p(a)+v_p(c)=2v_p(b)$ at every $p$ expresses $ac=b^2$ exactly. An integer ratio forces the steps in all coordinates to be nonnegative. This additional ordering is precisely what charges a new cross-boundary triple to its final term in Lemma~\ref{l:patch}. The source's Behrend lemma motivates the line of inquiry. The proof of Theorem~\ref{t:gap} uses the ordering, the smooth-fiber estimates, and the replacement certificate independently of any zero theorem.
+
+\paragraph{The analytic route.}
+The \src{src/New/Reduction/Zeros/PrimeError.lean}{weighted prime remainder} at modulus $q$ has coefficients $\Lambda(m)(1-\chi_d(m))\ind_{m\equiv1\bmod q}$ and smoothing kernel $1/m-1/x$ for $m\le x$. After subtracting $\log x/\varphi(q)$ and the specified constant, the transform has residues proportional to
+\[
+ \frac{\sum_{\psi\bmod q}\operatorname{ord}_s L(\psi)
+       -\sum_{\psi\bmod q}\operatorname{ord}_s L(\psi\chi_d)}
+      {\varphi(q)s(1-s)}
+\]
+at points in the open strip. The \src{src/New/Reduction/Zeros/Criterion.lean}{one-sided criterion} chooses $d$ so the twisted functions have no zeros in the relevant rectangle. This prevents cancellation, after which Landau's theorem turns an eventual upper bound into zero exclusion.
+ 
+Where does the upper bound come from? In \src{src/New/Reduction/MainInequality.lean}{the main inequality}, short integral forms with controlled index and sufficiently many target directions give an upper bound on corrected log covolume. A determinant estimate for the same twisted lattice gives a lower bound. The common leading contributions cancel. The remaining prime sum has a positive coefficient. The \src{src/New/Reduction/OneSidedBound.lean}{one-sided bound} controls the errors and passes from integer to real scales. Both determinant estimates depend on the same arithmetic construction of forms, levels and twists. A new Frobenius weight needs an estimate of its own. The following transfer determines a precise target for such an estimate.
+\input{frobenius}
+\appendix
+\input{jensen}
+\section{Further research questions and reproducibility}
+McNew's Conjecture 7.2 asks whether $\alpha$ itself equals the density of Rankin's set. Our four-prime result leaves the unrestricted conjecture open. Can the positive loss in \eqref{eq:low} be certified on larger sets of small primes without an exponentially growing low-digit box? Can the replacement $B$ and the budget for removed endpoints be optimized jointly to improve the lower bound on $\beta-\alpha$? On the analytic side, can a geometric construction realize $\ind_{[G,G]}-\ind_{\{1\}}$ for the discriminant-$-23$ splitting field with sufficient positivity and denominator control? The needed prime sum is explicit.
+
+All finite certificates use standard-library Python. The archive's README gives the replay commands, and \texttt{evidence/} records file identities and the scope of the comparison with ProveIt. The primary paper's Question 7.4 and the earlier analysis identify the problem precisely. A targeted literature search and manuscript screening support the comparison made here. Historical priority has not been established.
+\begin{thebibliography}{9}
+\bibitem{mcnew} N. McNew, \emph{On sets of integers which contain no three terms in geometric progression}, Math. Comp. 84 (2015), 2893--2910. See Theorem 3.3, Section 6, and Question 7.4. \href{https://www.nathanmcnew.com/GPFsets.pdf}{Author's manuscript}.
+\bibitem{grh} L. Sernau and collaborators, \emph{GRH for Dirichlet $L$-functions, in Lean 4}. \href{https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207}{Pinned repository}.
+\bibitem{prior} V. Reshetnikov, ProveIt, \href{https://github.com/VladimirReshetnikov/ProveIt/tree/5cc267af75a635199ac5d93a7d49cbce521daefc/docs/incoming}{incoming manuscript collection}. Principal comparisons are \prior{grh_transfers_density_gaps_and_zero_tests.zip}{the density and zero-test report}, \prior{grh_relative_prime_races_2026-11-25.zip}{the relative prime-race report}, and \prior{grh_cyclic_generator_transfer_2026-11-25.zip}{the cyclic-generator report}.
+\bibitem{gm} L. Greni\'e and G. Molteni, \emph{Explicit versions of the prime ideal theorem for Dedekind zeta functions under GRH}, \href{https://arxiv.org/abs/1312.4463}{arXiv:1312.4463}.
+\bibitem{hermite} For the operational representation of the three-variable Hermite polynomials used in Appendix A, see \href{https://doi.org/10.1186/s13662-020-03102-0}{doi:10.1186/s13662-020-03102-0}. C. M. Newman, \emph{Fourier transforms with only real zeros}, Proc. AMS 61 (1976), 245--251, \href{https://doi.org/10.2307/2041319}{doi:10.2307/2041319}, gives a broader classification under Gaussian damping.
+\end{thebibliography}
+\end{document}

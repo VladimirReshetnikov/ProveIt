@@ -1,0 +1,206 @@
+\section{An exact refinement of the cyclotomic annihilator}
+\label{sec:cyc}
+An intermediate step of the readable edition constructs an integer $X$ from a
+Bernoulli matrix and proves that $4X^2$ kills a family of Galois cocycles.
+Here we solve an optimization problem inside this argument. The value of a
+single integer meeting the Lean hypotheses and the effective integer obtained
+by combining several such proofs can differ. At modulus five and weight one
+we determine both exactly. The statements in this section use the cyclotomic
+lemmas imported by the proof. They are independent of zero location in the
+critical strip.
+
+\subsection{The upstream interface}
+Fix integers $N,e\ge1$. Put $U=(\mathbb Z/N\mathbb Z)^\times$ and use the
+representatives $0\le t<N$. Write
+\[
+ b(t)=(e+2)!N^{e+1} B_{e+1}(t/N),\quad K=(e+2)!(e+1)N,\qquad
+ F(c)=(c^e-1)(c^{e+1}-1).
+\]
+Here $B_j(x)$ is the Bernoulli polynomial with $B_1(x)=x-1/2$.
+The values $b(t)$ are integers. Call a character relevant if
+$\chi(-1)=(-1)^{e+1}$, and put
+$B_\chi=\sum_{t\in U} b(t)\chi(t)$. These sums are nonzero for all relevant
+characters by the functional equation and nonvanishing at $1+e$.
+The principal character for $N=1$ uses $t=0$. Characters at other moduli
+extend by zero on nonunits.
+
+The source's predicate \texttt{IsStickelbergerBound} asks a positive
+candidate $X$ to satisfy two requirements.
+First, for every rational prime $p$, some $c\equiv1\pmod N$ coprime to $p$
+has $F(c)\mid X$. Such a $c$ must be at least two for positive $X$.
+Second, for each $c\equiv1\pmod N$ and each relevant character
+in a characteristic-zero integral domain $O$, there must be $w\in O$
+independent of the modulus $m$ such that
+\begin{equation}
+ (c^{e+1}-1)X\equiv 2w S_{m,c,\chi}\pmod{mO},\quad
+ S_{m,c,\chi}=\sum_{0\le a<Nm}\left\lfloor\frac{ca}{Nm}\right\rfloor
+ a^e\chi(a),\quad (m,c)=1.                         \label{eq:stick}
+\end{equation}
+The source proves
+$Kc^eS_{m,c,\chi}\equiv(c^{e+1}-1)B_\chi\pmod{mO}$.
+It chooses the matrix
+\[
+ T_{u,v}=2b(t)+(-1)^e\mathbf1_{t=1}+\mathbf1_{t=-1},\qquad
+ t=vu^{-1}\pmod N ,
+\]
+and supplies the witness
+$X_0=F(1+N)F(1+2N)|\det T|$. Character vectors diagonalize $T$.
+Relevant characters have eigenvalue $2B_\chi$, and the others have
+eigenvalue $2(-1)^e$. The adjugate clears every relevant eigenvalue at once.
+See \src{Lib/Cyclotomic/Voronoi.lean}{Voronoi, lines 134--151, 245--256 and 384--459}.
+
+\subsection{The common denominator of the character values}
+For each complex relevant $\chi$, let $d_\chi$ be the order of its image
+and let $D_\chi$ generate the positive ideal
+$(2B_\chi)\mathbb Z[\zeta_{d_\chi}]\cap\mathbb Z$.
+Set $D=\mathop{\rm lcm}_\chi D_\chi$, with empty lcm one.
+Equivalently $D_\chi$ is the least common denominator of the rational
+coefficients of $(2B_\chi)^{-1}$ in the cyclotomic power basis. This gives a
+finite exact calculation for every $N,e$.
+
+\begin{proposition}
+$D$ is the least positive integer divisible by every relevant $2B_\chi$ in
+every characteristic-zero character value domain. For any coprime $a,b\ge2$
+congruent to $1\pmod N$,
+\[
+             X(a,b)=\mathop{\rm lcm}(D,F(a),F(b))
+\]
+satisfies both upstream requirements.
+\end{proposition}
+\begin{proof}
+The finite image of any such character generates a cyclotomic subring of
+$O$. Indeed, in its fraction field the image is cyclic, and a primitive
+$d$th root in characteristic zero has minimal polynomial $\Phi_d$ over
+$\mathbb Q$. Thus each complex-character divisibility transfers to $O$.
+Taking $O=\mathbb Z[\zeta_{d_\chi}]$ proves the converse. An algebraic
+integer in $\mathbb Q(\zeta_d)$ belongs to $\mathbb Z[\zeta_d]$, so one
+may equally compute the denominators in a single cyclotomic field containing
+all character values.
+For $X=X(a,b)$ the quotient $u=X/(2B_\chi)$ lies in $O$.
+Multiply the upstream congruence by $2u$ to obtain \eqref{eq:stick} with
+$w=uKc^e$. Each rational prime is coprime to at least one of $a,b$,
+giving the first requirement. The adjugate argument also shows $D\mid|\det T|$.
+\end{proof}
+
+\subsection{An exact local calculation}
+Define $M=\prod_p p^{m_p}$ using the following finite prescription.
+Write $v_p$ for the ordinary integer valuation. For odd $p$,
+\begin{equation}
+m_p=\begin{cases}
+2v_p(N)+v_p(e(e+1)) & p\mid N,\\
+\displaystyle\sum_{j\in\{e,e+1\},\ p-1\mid j}(1+v_p(j)) & p\nmid N.
+\end{cases}                                                    \label{eq:mp}
+\end{equation}
+For $p=2$ put $m_2=v_2(e(e+1))+2v_2(N)$ if $4\mid N$, and
+$m_2=v_2(e(e+1))+3$ otherwise. Set $H=\mathop{\rm lcm}(D,M)$.
+
+\begin{theorem}\label{th:gcd}
+The gcd of the integers $X(a,b)$ over all admissible coprime pairs is exactly
+$H$. Every positive integer satisfying the upstream first requirement is a
+multiple of $M$.
+\end{theorem}
+\begin{proof}
+For each $p$ minimize $v_p(F(c))$ over $c\ge2$ with $c\equiv1\pmod N$
+and $p\nmid c$. For odd $p\mid N$, the lifting-the-exponent formula gives
+$2v_p(c-1)+v_p(e(e+1))$ and one can take $v_p(c-1)=v_p(N)$.
+For odd $p\nmid N$, an exponent divisible by $p-1$ forces at least
+$1+v_p(j)$ in $c^j-1$ by Fermat's theorem and lifting the exponent.
+A primitive root modulo $p^2$, combined with the progression modulo $N$,
+attains equality for all $j$ at once and contributes zero for the other
+exponents. At two, let $a'=v_2(c-1), b'=v_2(c+1)$. The two exponents have
+opposite parity, giving total valuation
+$2a'+b'-1+v_2(e(e+1))$. If $4\mid N$ we can take
+$a'=v_2(N), b'=1$. Otherwise $c\equiv3\pmod8$ is possible and minimizes
+$2a'+b'$ at four. This proves the formulas and $M\mid X$ for every
+positive $X$ passing the first requirement.
+
+Fix $p$ and choose one minimizing $a$. Choose $b>1$ congruent to $a$ modulo
+$p^{m_p+1}$ and to $1$ modulo $N$ and every prime divisor of $a$. These
+congruences are compatible, including when $p\mid N$, and give
+$(a,b)=1$ and $v_p(F(b))=m_p$. Thus
+$v_p(X(a,b))=\max(v_p(D),m_p)$ is attained for each $p$.
+Taking the gcd proves the claim. A finite set of witnesses always suffices:
+start with any one witness and minimize at each of its prime divisors.
+\end{proof}
+
+\begin{corollary}\label{cor:kill}
+In the setting of the repository's odd component with coefficients
+$O/\ell^\nu$, the integer $4H^2$ annihilates all its cocycles. For
+$\ell>N+e+3$, at most $v_\ell(H)+1$ Galois elements suffice to detect an
+element by evaluation. For a CM subfield $E\subseteq\mathbb Q(\mu_N)$,
+under the source's coefficient hypotheses, $16\varphi(N)H^2$ annihilates
+the module \texttt{shaOdd} at weight $e$ and every level.
+\end{corollary}
+\begin{proof}
+For each genuine witness $X$, the source proves the assertions with $X$ in
+place of $H$. Take the gcd of the integer annihilators using B\'ezout's
+identity. For detection choose a witness attaining the minimum valuation at
+the specified $\ell$. These two operations are different. In particular
+the proof never requires $H$ itself to pass the first requirement.
+See \src{Lib/Cyclotomic/Kolyvagin/ReciprocityComponentBounds.lean}{component
+annihilation and detection, lines 676 and 1104}, and
+\src{Lib/Cyclotomic/OddSha.lean}{CM descent, line 535}.
+\end{proof}
+Here $O$ is the integer ring of a finite extension of $\mathbb Q_\ell$ as in
+the source. The component consists of locally constant cocycles on
+$G_\mathbb Q$ for $(\mathrm{cyc}^e\chi)^{-1}$, of odd parity, subject to its
+specified vanishing at conjugation, inertia and the local set at $\ell$.
+CM descent also asks for enough roots of unity in $O$. The finite-level
+CM object uses cocycles with its particular local conditions.
+The identification of this object with a conventional cohomology group,
+and control of even class-group eigenspaces in Vandiver's conjecture,
+would require further arguments. The upstream
+\src{Lib/Cyclotomic/OddSha.lean}{module overview} states the comparison
+issue explicitly. Classical higher Stickelberger theory already gives arithmetic annihilation results (see \href{https://archive.numdam.org/articles/10.1016/j.crma.2003.09.019/}{Banaszak, \emph{Higher analogues of Stickelberger's theorem}}). Our sharpness statement concerns the
+displayed construction.
+
+\subsection{The smallest witness at modulus five}
+At $N=5,e=1$, the four $b(t)$, in increasing order of $t$, are
+$1,-11,-11,1$. The trivial and quadratic characters give relevant
+eigenvalues $-40$ and $48$. The two odd characters give $-2$ each.
+Thus $D=240$, $|\det T|=7680$, $F(6)=175$, $F(11)=1200$ and
+$X_0=1\,612\,800\,000$.
+
+\begin{theorem}
+At $(N,e)=(5,1)$ the least positive integer satisfying the full upstream
+predicate is $8400$. The gcd of \emph{all} its positive witnesses is $1200$.
+\end{theorem}
+\begin{proof}
+The pair $(6,11)$ gives $8400$ and $(11,16)$ gives $61200$ since
+$F(16)=3825$. Their gcd is $1200=M$, a divisor of every witness by
+Theorem~\ref{th:gcd}. For $0<X\le8400$, the only possible auxiliary
+integers are $6,11,16$: $F$ is increasing and $F(21)=8800$.
+The eligible integers with $F(c)\mid X$ must have gcd one. The only way
+within the budget is to include $6$ and $11$: $6$ and $16$ share a
+factor, and $\mathop{\rm lcm}(F(11),F(16))=61200$.
+Thus $8400\mid X$.
+\end{proof}
+The example proves more than a reduction in the written size of a bound.
+The original witness permits the exceptional prime seven. Since
+$7\nmid4\cdot1200^2$, the corresponding odd components vanish at seven at
+\emph{every} finite level. More generally at modulus five and weight one
+only $2,3,5$ can support these components. This is an exclusion of primes;
+it does not assert a nonzero component at any of those three.
+
+\begin{center}
+\begin{tabular}{rr r r r r}
+\toprule
+$N$ & $e$ & $D$ & $M$ & $X(1+N,1+2N)$ & $H$\\
+\midrule
+5&1&240&1200&8400&1200\\
+5&2&1440&1200&41\,176\,800&7200\\
+7&2&16\,128&2352&1\,986\,179\,328&112\,896\\
+8&1&192&384&23\,040&384\\
+12&2&17\,280&864&2\,973\,559\,680&17\,280\\
+15&1&2880&3600&489\,600&14\,400\\
+\bottomrule
+\end{tabular}
+\end{center}
+The checker in \path{checks/cyclotomic.py} uses polynomial inversion modulo
+cyclotomic polynomials over $\mathbb Q$. It exhibits finite lists of
+coprime-pair witnesses giving each claimed gcd. In the classical scalar
+case $(N,e)=(1,11)$ it gives
+$H=2^{10}3^4\cdot5\cdot7\cdot11\cdot13\cdot691$.
+Consequently at primes greater than $15$ only $691$ survives this test.
+It comes from the numerator of $B_{12}=-691/2730$.
+This recovers the familiar Bernoulli obstruction in this normalization.

@@ -1,0 +1,125 @@
+\section{What the proof actually makes available}
+\label{sec:architecture}
+
+\subsection{The endpoint and its scope}
+
+The readable project's \src{Statements.lean} imports Mathlib and states
+RH and zero-location / nonvanishing assertions for Dirichlet characters.
+For example, the right-half-plane statement quantifies over every
+positive modulus \(N\), every \(\C\)-valued Dirichlet character \(\chi\),
+and every \(s\) with \(\Rea s>1/2\), excluding \(s=1\) for the principal
+character. It does not quantify over arbitrary Hecke characters of number
+fields, Dedekind zeta functions, or automorphic representations
+\cite{statements}.
+
+The repository supplies a readable and a compact edition. This report uses
+the readable source names. Earlier reports sometimes quote the compact
+edition's differently organized paths and slightly different intermediate
+constants. Such differences are not mathematical contradictions.
+
+\subsection{The central covolume comparison}
+
+The arithmetic construction uses definite unitary groups over a CM field,
+derivatives of theta functions, iterated theta lifts, and integral lattices
+of automorphic forms. Its three central inputs are:
+\begin{enumerate}[leftmargin=*,itemsep=3pt]
+\item \emph{Short forms:} theta derivatives carry divisibility gains at
+specified primes, while their archimedean sizes remain controlled.
+\item \emph{Enough forms:} a second-moment argument supplies a nearly
+spanning independent family, so a norm bound controls a substantial
+covolume rather than a few isolated vectors.
+\item \emph{Integral forms are long:} comparison of determinant heights,
+using separately fitted twists at the coefficient primes, gives a lower
+bound for the same covolume corrected by an index.
+\end{enumerate}
+
+Writing \(d\) for target dimension, \(n\) for the selected family's rank,
+\(V\) for logarithmic squared covolume, \(I\) for its index bound,
+and \(H_{\rm main}\) for the shared main height, the comparison has the
+schematic form
+\[
+ d(H_{\rm main}-E_{\rm low})
+ \ \le\ V+2I
+ \ \le\ n(H_{\rm main}-m\,\mathrm{rem}+E_{\rm up})+2I.
+\]
+The main height is nonnegative, \(n\le d\), and \(n\ge d/2\).
+The source's \src{star\_inequality} concludes exactly
+\[
+             m\,\mathrm{rem}\le f a(\log b)^5.
+\]
+Here \(m\) is the number of lifts, \(f\) counts infinite places, and \(a\)
+is an arithmetic scale \cite{mainineq}. With \(m\asymp\sqrt{x}\),
+careful conversion of the weighted remainder gives the critical
+square-root saving. The readable source obtains an intermediate
+\(x^{-1/2+6\varepsilon}\) bound with all parameters fixed in the
+prescribed order \cite{onesided}. The exponent \(1/2\) is connected to
+the chain length; a new proof cannot ignore the costs of maintaining
+integrality and spanning through that chain.
+
+This is the primary transferable idea: compare the \emph{same} integral
+object from both sides, so the large common height cancels. A family
+of unrelated short forms, or a determinant lower bound with incompatible
+normalization, does not produce the inequality.
+
+\subsection{The analytic endpoint}
+
+The arithmetic coefficient in the source's prime sum is built from
+\[
+ \Lambda(n)\,\mathbf1_{n\equiv1\pmod q}(1-\chi_d(n)).
+\]
+A reciprocal-ramp kernel, \((1/n-1/x)_+\), turns its logarithmic-derivative
+series into a meromorphic Mellin transform. Its poles record
+differences of zero multiplicities of untwisted and quadratically twisted
+Dirichlet \(L\)-functions. A one-sided bound and a Landau-type
+nonnegative-transform argument exclude the relevant poles.
+An auxiliary twist is chosen to avoid zeros in a specified compact
+region, preventing cancellation of the zero under investigation
+\cite{criterion,landau}.
+
+The meromorphic-transform argument can be reused in broader settings.
+The difficult part of a new RH proof is obtaining the new prime sum
+with the correct sign and the same square-root saving. Depending on
+the chosen detector, a known baseline can replace the zero-avoiding
+analytic twist, but it does not replace the arithmetic inequality.
+
+\subsection{The torsion-selection interface}
+
+The source's \src{RootsOfUnity.lean} proves that finitely many integral
+polynomials that are not excessively divisible at given points can
+remain nearly as little divisible at a common tuple
+\((\zeta_j-1)_j\), where the \(\zeta_j\) have \(p\)-power order.
+The bound is chosen before the polynomials, and individual values incur
+a positive tolerance. Its scalar step compares with a Gauss valuation
+at the \emph{selected} shell radius \cite{roots}.
+
+The arithmetic callers encode local conditions and denominator estimates
+in such polynomials. This makes the selection lemma a separate
+mathematical asset: its proof does not require the truth of RH.
+The next section improves a different, useful comparison---with the
+\emph{original fixed-radius} Gauss valuation---and proves why the distinction
+is essential.
+
+\subsection{Source map}
+
+Paths below are relative to \texttt{grh/src/}.
+The file \path{evidence/source_manifest.json} records exact URLs and hashes.
+
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}p{0.52\linewidth}X@{}}
+\toprule
+Source & Role\\ \midrule
+\path{Statements.lean}, \path{Main.lean} & Mathlib endpoint statements\\
+\path{New/Reduction/MainInequality.lean} & Main height cancellation\\
+\path{New/Reduction/ShortAndEnough.lean} & Shortness and spanning\\
+\path{New/Determinant/Twist/LongForms.lean} & Covolume lower bound\\
+\path{New/Reduction/OneSidedBound.lean} & Scale choice and GRH endpoint\\
+\path{New/Reduction/Zeros/Criterion.lean} & Zero-multiplicity detector\\
+\path{New/Congruences/Selmer/RootsOfUnity.lean} & Scalar and packet
+torsion selectors\\
+\path{New/Congruences/FirstOrder/DenominatorBound.lean} &
+How even classes are avoided\\
+\path{Lib/Cyclotomic/OddSha.lean} & Fixed-field odd-cocycle length bound\\
+\bottomrule
+\end{tabularx}
+\end{center}
+

@@ -1,0 +1,40 @@
+\section{An infinite family attaining the exact maximum}\label{sec:family}
+\begin{theorem}\label{thm:family}
+For every integer $m\ge1$, take
+\[
+ \Delta_m=-2^{\,6\cdot7^{m-1}},\qquad h_m=2^{\,3\cdot7^{m-1}-2}.
+\]
+Then $h(\Delta_m)=h_m$ and $s(\Delta_m)=h_m+1$. This statement is independent of GRH.
+\end{theorem}
+The family in \cite{sparseparallel} has discriminants $-2^{2+6\cdot7^{m-1}}$ for $m\ge2$. The discriminants here differ by a factor of four. In particular, every choice of $h_m$ distinct nonnegative powers of such a $j$ is a basis for $\Q(j)$ over $\Q$. Dependence would give a polynomial with at most $h_m$ terms. Taking the exponents $0,1,\ldots,h_m$ shows that the minimum is attained. At $m=2$ it is $524{,}289$. At $m=3$ it is $2^{145}+1$.
+
+\begin{proof}
+Write $M=7^m$, $h=2^{3\cdot7^{m-1}-2}$, $f=2h$. The order of conductor $f$ in $\Q(i)$ has discriminant $-4f^2=\Delta_m$. Its class number is $f/2=h$, by the order class number formula: the Gaussian field has class number one, the unit index is two, and 2 ramifies.
+
+The prime 7 is inert in $\Q(i)$ and coprime to $f$. The ring class field is unramified above 7. By Deuring reduction every conjugate of $j$ reduces to a supersingular invariant. In characteristic 7 the only such invariant is $1728\equiv6$. To check uniqueness directly, the Hasse invariant of $y^2=x^3+Ax+B$ in characteristic 7 is the coefficient of $x^6$ in $(x^3+Ax+B)^3$, namely $3B$. Supersingularity forces $B=0$. Thus all $h$ distinct conjugates lie in the same disk $6(1+7\mathcal O)$ in a common unramified completion.\cite{cmred}
+
+Put $w(n)=n-v_7(n!)$. We show
+\[
+  w(i)<w(h)\ (0\le i<h),\qquad w(h)<w(i)\ (i>h).
+\]
+Because $2^3=1+7$, raising this equality to the power $7^{m-1}$ gives $4h\equiv1\pmod M$. For an interval of $r$ consecutive positive integers adjoining the cut, either $[h-r+1,h]$ (when $r\le h$) or $[h+1,h+r]$, it suffices to prove that the sum of the 7-adic valuations in the interval is strictly less than $r$.
+
+First take $1\le r<M/5$. Its elements have the form $h+j$ with $|j|\le r$. The nonzero integer $1+4j$ has $|1+4j|\le4r+1<M$, so $v_7(h+j)=v_7(1+4j)$. In either arithmetic progression of $r$ consecutive choices of $j$, there are at most $r/7^a+1$ multiples of $7^a$ among the values $1+4j$. Summing over $a\le\log_7(4r+1)$ bounds the valuation sum by
+\[
+    r/6+\log_7(4r+1)<r .
+\]
+Indeed $4r+1\le5^r$ and $5^6<7^5$.
+
+If $r\ge M/5$, direct counting of multiples in the original interval instead gives $r/6+\log_7(h+r)$. When $r\le h$, we have
+\[
+ \log_7(h+r)\le\log_7(2h)<M/6\le5r/6 ,
+\]
+where $2^{18}<7^7$ implies $(3/7)\log_7 2<1/6$. When $r>h$, use $h+r<2r\le 5^r$ and $\log_7 5<5/6$. These exhaust the two intervals and prove the strict inequalities for $w$.
+
+It follows that $\min_{n\ge h} w(n)>\max_{0\le i<h}w(i)$. Lemma~\ref{lem:disk} prevents a polynomial with at most $h$ terms from vanishing at $h$ points of the disk. The degree-$h$ class polynomial supplies the opposite inequality.
+\end{proof}
+
+\paragraph{How frequently a single residue helps.}
+For any order with $(\Delta/7)=-1$ or $(\Delta/13)=-1$, the same argument through Corollary~\ref{cor:coarse} yields
+$s(\Delta)\ge h-O(\log(2h))$, independently of GRH. In characteristic 13 there is also exactly one supersingular invariant, and it is nonzero (the standard count is $\lfloor p/12\rfloor$ plus the corrections for 0 and 1728). The conductor is prime to an inert prime detected by the symbol. Among order discriminants counted once by absolute value, the stated union has natural density $1-(1-3/7)(1-6/13)=9/13$ by the Chinese remainder theorem. This is the density of the sufficient congruence conditions.
+\input{prime-conductors}

@@ -1,0 +1,33 @@
+\subsection{A larger separation from the first eighty integers}
+The twelve-integer proof gives a common lower bound using a single incompatible prefix. We can count the loss over all prefixes through $N$. For $Y\ge N$, all those integers are $Y$-smooth. With $J(k)$ as above, put
+\[
+ L_N=\sum_{k=1}^N\frac{J(k)}{k(k+1)}
+      -\max_{A\subseteq[1,N]\ {\rm admissible}}
+              \sum_{a\in A}\left(\frac1a-\frac1{N+1}\right).
+\]
+The second expression integrates $|A\cap[1,t]|/t^2$ from $1$ to $N+1$.
+The remaining integral of any prefix deficit is nonnegative. Thus $U-B\ge cL_N$. For $N=80$ the exact values are
+\[
+ \begin{array}{lrrl}
+ \text{ratio}&L_{80}&Y&\text{certified lower bound on }u-b\\\hline
+ \text{rational}&1553/45360&293&0.002836\\
+ \text{integer}&16567/132300&83&0.013336 .
+ \end{array}
+\]
+To reproduce the finite maximum, form each forbidden triple on $[1,k]$ as an edge with three vertices. Maximizing retained weight equals the total weight minus the minimum weight of a set meeting every edge. If an uncovered edge is $\{i,j,l\}$, branch on including each of its three vertices in the cover and remove all incident edges. The optimum is the minimum over these branches, with zero cost for the empty edge set. The program caches identical remaining sets of edges. It applies the same recursion with unit weights for each $J(k)$ and with integer multiples of the displayed rational weights for the second term. It then lower bounds $cL_{80}-\sum_{p>Y}p^{-2}$ with the same prime cutoff $100000$. This is \texttt{check\_integer\_prefix.py}. No floating-point optimizer is used.
+
+\subsection{Computability and attainment of the natural-density optima}
+For each ratio convention the natural-density supremum $b$ is a computable real and there is an admissible set with natural density $b$.
+First, $vB\le b\le B$. For the lower bound choose a finite set $A$ approaching the weighted optimum defining $B$, and use this same fiber at every squarefree rough $g$. Its density is $cv\sum_{a\in A}1/a$, by the density of the permitted rough integers and a finite sum. Since $B\le1$, replacing $b$ by $B$ costs at most $1/Y$. For a fixed $Y$ the finite weighted optimization through $H$ costs at most $1-c\sum_{h\in S,\ h\le H}1/h$, which tends to zero and is an explicitly computable rational. This gives both-sided effective bounds without identifying the exact optimizer.
+
+Here are details of attainment. Write $D(n)$ for the largest prime dividing $n$, with $D(1)=1$. Let $F_x(y)$ be the proportion of positive integers at most $x$ with $D(n)\le y$. For every fixed positive integer $a$,
+\[
+                 \sup_{y\ge1}|F_{x/a}(y)-F_x(y)|\longrightarrow0 .
+\]
+To see this, Dickman's theorem gives convergence of the distribution functions of $\log D(n)/\log x$ to the continuous law with distribution function $t\mapsto\rho(1/t)$ on $(0,1]$, extended by zero on $t\le0$ and one on $t\ge1$. Pointwise convergence of distribution functions to a continuous distribution function is uniform, by choosing a finite grid of quantiles and using monotonicity. Replacing $\log x$ by $\log(x/a)$ rescales $t$ by a factor tending to one, with uniform error tending to zero by continuity on a compact interval and the constant tails. This proves the assertion. See Dickman, \emph{On the frequency of numbers containing prime factors of a certain relative magnitude} (1930), and \href{https://library.slmath.org/books/Book44/files/09andrew.pdf}{Granville, \emph{Smooth numbers}, section 1}.
+
+Choose cutoffs $Y_j\to\infty$ and finite smooth sets as above so the product rules $E_j$ have densities $e_j\to b$. For $\epsilon_j=2^{-j}$ each rule is approximable, in proportion on $[1,x]$ uniformly for integer $x\ge1$, within $\epsilon_j$ by a finite Boolean combination $C_j$ of divisibility conditions. Indeed membership in a finite list of exact smooth parts is a finite divisibility condition, and ignoring prime squares beyond $K$ costs at most $\sum_{p>K}p^{-2}$. Inclusion--exclusion writes the indicator of $C_j$ as a finite linear combination of $\mathbf1_{a\mid n}$. For $y\ge D(a)$, the joint probability of $a\mid n$ and $D(n)\le y$ is $\lfloor x/a\rfloor F_{x/a}(y)/\lfloor x\rfloor$. The uniform estimate just proved shows that this equals $a^{-1}F_x(y)+o_a(1)$ as $x\to\infty$, uniformly in such $y$.
+
+Choose increasing thresholds $m_j>Y_j$ large enough that, for every $x,y\ge m_j$, the joint probability for $C_j$ and $D\le y$ differs from $d(C_j)F_x(y)$ by at most $\epsilon_j$. Using $E_j$ everywhere instead costs at most $2\epsilon_j$ more. On the bin $m_j<D(n)\le m_{j+1}$ use rule $E_j$. Omit the initial bin. In any forbidden triple, its largest prime would occur to exponent at most one wherever present, by squarefreeness above the local cutoff. The arithmetic progression of its three valuations must then be constant. All three members follow the same rule, a contradiction. For each bin the probability retained differs from $e_j$ times its probability by at most $6\epsilon_j$ (and both are zero if $x<m_j$). The mass of finitely many initial bins tends to zero since $F_x(m)\to0$ for fixed $m$. The errors on indices $j\ge J$ sum to at most $6\sum_{j\ge J}\epsilon_j$. Letting $x$ and then $J$ tend to infinity proves that this single set has natural density $b$.
+
+The same weighted upper bound applies to every admissible set if one takes the limsup of its logarithmic means. Since an extremal set of natural density $b$ realizes logarithmic density $b$ as well, the supremum of upper logarithmic densities equals $b$. Rankin's stronger optimality conjecture therefore also has a finite-witness formulation. A finite, admissible set on some $Y$-smooth integers with reciprocal sum exceeding the full $Y$-smooth greedy sum would refute it: keep the greedy exponent rule at all outside primes and use the new local choice. The three outside valuation vectors of a progression would have to be equal. The converse follows because the normalized local optima converge to $b$ and the normalized local greedy sums converge to Rankin's density.

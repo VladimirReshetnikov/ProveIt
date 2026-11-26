@@ -1,0 +1,60 @@
+\section{The theorem available for transfer}
+\label{sec:lean-audit}
+
+Luke Sernau's repository rewrites the proof attributed to Levent Alp\"oge with Claude.
+The readable and compact editions have identical public statement files. Each imports
+Mathlib alone. With $q$ a positive integer and $\chi$ any Dirichlet character modulo $q$,
+the exported nonvanishing theorem gives
+\[
+ \Re(s)>\tfrac12,\quad (\chi\ne 1\ \text{or}\ s\ne1)
+ \quad\Longrightarrow\quad L(s,\chi)\ne0 .
+\]
+Here $1$ denotes the principal character. The other four declarations give
+Mathlib's Riemann hypothesis, the corresponding explicit statement for $\zeta$,
+the critical-strip assertion for every Dirichlet character, and its specialization
+to primitive characters. These statements make no hypothesis about central
+nonvanishing. The half-plane and strip forms include imprimitive characters.
+See the pinned
+\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/Statements.lean}{public types}
+and \href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/Main.lean}{final declarations}.
+
+\paragraph{How the proof reaches this statement.}
+For a multiple $q_0$ of $18480$ and prime $d\equiv q_0/2-1\pmod {q_0}$ the development
+compares two estimates of the same lattice covolume with an index correction.
+Short integral forms and a spanning estimate give the upper estimate.
+A determinant bound for chains of theta lifts gives the lower estimate.
+Cancellation of their common main term bounds a weighted prime sum.
+After comparison with the prime number theorem at a second cutoff, the estimate becomes
+$R_{q_0,d}(x)\le x^{-1/2+\varepsilon}$ for sufficiently large $x$,
+where $R_{q_0,d}$ is obtained by centering
+\[
+  \sum_{\substack{n\le x\\n\equiv1\ (q_0)}}\!
+     \Lambda(n)\bigl(1-(n/d)\bigr)\bigl(n^{-1}-x^{-1}\bigr).
+\]
+For a putative zero $\rho$ in the open right half of the critical strip,
+choose $1/2<\beta<\Re\rho$.
+The twist-selection result supplies $d$ such that the twisted factors have no
+zeros in $\Re s\ge\beta$, $|\Im s|\le|\Im\rho|$. In this window the
+numerator of a residue of the transform of $R_{q_0,d}$ counts untwisted zeros
+with nonnegative multiplicities. Positivity at real poles and the one-sided bound
+allow Landau's lemma to force the residue at $\rho$ to vanish. Finally one
+induces an arbitrary character of modulus $q$ to $q_0=18480q$.
+An extension of this method to another family would need both the requisite
+arithmetic inequality and control of zeros of its auxiliary twists.
+See the
+\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/New/Reduction/MainInequality.lean}{covolume comparison},
+\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/New/Reduction/OneSidedBound.lean}{remainder theorem}, and
+\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/New/Reduction/Zeros/Criterion.lean}{zero criterion}.
+
+\paragraph{Verification record.}
+The source revision is \texttt{72fead102f663d5c7a407964a13dc0cf9d977207},
+using Lean 4.35.0 and Mathlib \texttt{56a00585}. Our SHA-256 check of the
+uncompressed \texttt{git archive} agrees with the digest in Andrew Sutherland's
+verification record. His published checks cover all 803 readable and 794 compact
+source modules. He reports that both builds, per-module kernel replays and the
+three independent export checkers nanoda, con-leche and con-ron passed,
+and that all five declarations use only \texttt{propext}, \texttt{Classical.choice}
+and \texttt{Quot.sound}. The compact edition also passed the full paranoid
+Comparator on two machines. The local work for this report consisted of source
+inspection and a hash check. The kernel results are Sutherland's. See
+\href{https://math.mit.edu/~drew/shortgrh/}{the verification logs and exports}.

@@ -1,0 +1,145 @@
+\section{An exact choice of weights for Gaussian Hecke characters}
+Let $K=\mathbb Q(i)$. Every nonzero ideal has a generator $a$, and
+$\eta((a))=(a/|a|)^4$ is independent of the choice of generator.
+Write $L_k(s)=L_K(s,\eta^k)$ and $L_0=\zeta_K$.
+For $k\ne0$ these are entire Hecke functions of nonzero infinity type.
+Conjugation of ideals gives $L_{-k}=L_k$.
+Their zeros enter, for example, the explicit formula for counts of Gaussian prime angles.
+See \href{https://arxiv.org/abs/1705.07498}{Rudnick and Waxman, \emph{Angles of Gaussian primes}}.
+
+For a real even trigonometric polynomial on the unit circle write
+$P(z)=h_0+\sum_{k=1}^N h_k(z^k+z^{-k})$.
+In the half-plane $\Re s>1$, termwise logarithmic differentiation gives
+\[
+ D_P(s)=\sum_{\mathfrak p,m\ge1}
+ \frac{\log N\mathfrak p\,P(\eta(\mathfrak p)^m)}{(N\mathfrak p)^{ms}}
+ =-h_0\frac{\zeta'_K}{\zeta_K}(s)
+ -2\sum_{k=1}^N h_k\frac{L'_k}{L_k}(s).
+\]
+Here $\mathfrak p$ ranges over prime ideals, including the prime above 2. A nonnegative $P$
+gives nonnegative local weights. Nonnegative $h_k$ ensure that orders of zeros
+add with the same sign. Its mean $h_0$ is the residue of $D_P$ at 1.
+Thus one can ask for the smallest main term compatible with prescribed
+sensitivity to several $L_k$ at once.
+
+\subsection{An optimal polynomial for a block of modes}
+Fix $0<\alpha<1$ and integers $1\le r\le N$. Define rising factorials
+$(a)_0=1$, $(a)_j=a(a+1)\cdots(a+j-1)$ and set
+\[
+ c_j=\frac{(\alpha)_j}{j!},\qquad b_j=\frac{(2\alpha)_j}{j!},\qquad
+ d=\min\{r,\lfloor N/2\rfloor+1\}.
+\]
+\noindent\textbf{Theorem.}
+Among nonnegative $P$ of degree at most $N$ satisfying $h_{N-j}\ge b_j$ for
+$0\le j<r$, the exact minimum of $h_0$ is
+\[
+ M_{N,r}(\alpha)=2\sum_{j=0}^{d-1}c_j^2
+ -\boldsymbol{1}_{\{N=2d-2\}}c_{d-1}^2.
+\]
+It is attained with every $h_k\ge0$. An extremizer is
+$P(z)=|\sum_{i=0}^N v_i z^i|^2$, where $v_i=c_{\min(i,N-i)}$ if
+$\min(i,N-i)<d$ and $v_i=0$ otherwise.
+
+The parameter $\alpha=1/2$ gives equal required gains $b_j=1$. With $r=N$
+this is precisely Belov's theorem after multiplying his cosine polynomial by two.
+Belov also proved uniqueness for that case. The weighted block and its use in
+the Hecke criterion are developed here. No priority claim is made for the general formula.
+See \href{https://doi.org/10.1070/IM1994v043n03ABEH001582}
+{Belov, \emph{On an extremal problem on the minimum of a trigonometric polynomial}}.
+
+\medskip\noindent\emph{Proof.}
+The coefficients $c_i$ decrease and $(1-z)^{-\alpha}=\sum c_i z^i$,
+so $\sum_{i=0}^j c_ic_{j-i}=b_j$. By symmetry,
+$h_{N-j}=\sum_{i=0}^j v_i v_{j-i}$.
+For $j<d$ this equals $b_j$. If $d\le j<r$, the support covers every index
+and $v_i\ge c_i$ throughout. The remaining constraints follow. Parseval gives the stated
+mean and every autocorrelation $h_k$ is nonnegative.
+
+For the lower bound use the Fej\'er--Riesz factorization
+$P(z)=|\sum_{i=0}^N u_i z^i|^2$, padding with zeros when needed.
+Put $A_i=|u_i|$ and $B_i=|u_{N-i}|$ for $0\le i<d$.
+Set $w_i=1$, except that $w_{d-1}=1/2$ when $N=2d-2$.
+Then $\sum w_i(A_i^2+B_i^2)\le h_0$, since the center index counts once.
+Write $e_h=[z^h](1-z)^\alpha$, set $y_i=w_ic_i$, and define
+\[
+ \lambda_j=\sum_{h=0}^{d-1-j}e_h y_{j+h},\qquad
+ H_{ij}=\begin{cases}\lambda_{i+j}& i+j<d,\\0&i+j\ge d.\end{cases}
+\]
+Here $e_0=1$, $e_h<0$ for $h\ge1$, and $\sum_{h=0}^m e_h>0$,
+as follows by taking the coefficient at $z^m$ of $(1-z)^{\alpha-1}$.
+Since $y_i$ is positive and nonincreasing, $\lambda_j>0$. The convolution
+of $c$ with $e$ is $(1,0,\ldots)$, giving
+$(Hc)_i=\sum_{j<d-i}c_j\lambda_{i+j}=w_ic_i$.
+
+For any $i,j$, the arithmetic--geometric mean inequality gives
+$2 A_i B_j\le A_i^2 c_j/c_i+B_j^2 c_i/c_j$. Multiply by $H_{ij}$
+and sum, using symmetry and $Hc=(w_i c_i)_i$. It follows that
+\[
+ 2\sum_{j<d}\lambda_j b_j
+ \le 2\sum_{j<d}\lambda_j h_{N-j}
+ \le 2\sum_{i,j<d} H_{ij}A_i B_j
+ \le \sum_{i<d}w_i(A_i^2+B_i^2)\le h_0.
+\]
+The first sum on the left, without the factor two, is
+$\sum_{i,j<d}H_{ij}c_i c_j=\sum_{i<d}w_ic_i^2$.
+This proves sharpness.\hfill$\square$
+
+\medskip
+For example, for $N=r=4$ and $\alpha=1/3$ the factor is
+$1+z/3+2z^2/9+z^3/3+z^4$, and the optimal mean is $184/81$.
+It meets the first three upper-frequency constraints with equality.
+The lower-frequency constraints beyond $\lfloor N/2\rfloor+1$ never increase the optimum.
+Stirling's formula gives $c_j\sim j^{\alpha-1}/\Gamma(\alpha)$. For the full
+block as $N\to\infty$ this yields
+\[
+ M_{N,N}(\alpha)=
+ \begin{cases}
+ 2\sum_{j\ge0}c_j^2+o(1), &0<\alpha<1/2,\\
+ (2/\pi)\log N+O(1), &\alpha=1/2,\\
+ \dfrac{2(N/2)^{2\alpha-1}}{(2\alpha-1)\Gamma(\alpha)^2}(1+o(1)),
+ &1/2<\alpha<1 .
+ \end{cases}
+\]
+The bounded-cost regime prescribes decreasing gains. Each of the $N$ gains
+is strictly positive at every fixed $N$.
+
+\subsection{The arithmetic estimate required by the extremizer}
+Set $g_P=\lim_{s\to1}(D_P(s)-h_0/(s-1))-h_0$, and define
+\[
+ U_P(x)=\sum_{(N\mathfrak p)^m\le x}\!
+ \log N\mathfrak p\,P(\eta(\mathfrak p)^m)
+ \left(\frac1{(N\mathfrak p)^m}-\frac1x\right)-h_0\log x-g_P.
+\]
+\noindent\textbf{Criterion.}
+Fix the extremal polynomial. An eventual bound $U_P(x)\le C_\epsilon
+x^{-1/2+\epsilon}$ for each $0<\epsilon<1/2$ implies RH for
+each $L_k$ with $h_k>0$. In particular, $r=N$ detects every
+$L_k$ for $1\le k\le N$.
+
+\medskip\noindent\emph{Proof.}
+For $\Re s>1$, termwise integration gives
+\[
+ \int_1^\infty U_P(x)x^{-s}\,dx=
+ \frac{D_P(s)}{s(s-1)}-\frac{h_0}{(s-1)^2}-\frac{g_P}{s-1}.
+\]
+The expression is regular at 1 by construction. At a zero $\rho$
+in the open strip, its residue is
+$(h_0\operatorname{ord}_\rho\zeta_K+2\sum h_k\operatorname{ord}_\rho L_k)/
+[\rho(1-\rho)]$. This is positive for a real zero detected by $P$, and
+nonzero at any detected nonreal zero. The Hecke functions have no zeros on
+$\Re s=1$.
+Set $\beta=1/2+\epsilon$. Above a suitable cutoff the integrand
+$C_\epsilon x^{\beta-1}-U_P(x)$ is nonnegative. Its Mellin transform
+continues meromorphically into $\Re s>\beta$. A real pole there would
+have negative residue. If its abscissa of convergence exceeded $\beta$,
+Landau's theorem would give a singularity at that real abscissa, where
+a negative residue contradicts nonnegativity when approached from the right.
+Thus its integral is holomorphic on $\Re s>\beta$, excluding every detected zero there.
+Let $\epsilon$ decrease to zero and apply the Hecke functional equations.\hfill$\square$
+
+The optimum determines the smallest pole term allowed by this class of detector.
+The arithmetic estimate still concerns the angular values on individual Gaussian
+prime powers. The source's integral theta-lift comparison for a quadratic
+character and a congruence class supplies an estimate for different local coefficients.
+For the proposed transfer the unresolved task is to realize an angular weight
+in that comparison, already for $N=r=1$.

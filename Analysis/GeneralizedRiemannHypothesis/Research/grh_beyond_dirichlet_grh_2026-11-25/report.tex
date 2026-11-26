@@ -1,0 +1,591 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,tabularx,array,longtable}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black]{hyperref}
+\hypersetup{pdftitle={Beyond Dirichlet GRH: Methods and New Transfers},pdfauthor={Research analysis prepared for Vladimir Reshetnikov},pdfsubject={Sharp torsion specialization, analytic families, and standard Galois cohomology}}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\small Beyond Dirichlet GRH}
+\rhead{\small Methods and new transfers}
+\cfoot{\thepage}
+\setlength{\parskip}{0.32em}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=0.2em,topsep=0.35em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Sha}{\operatorname{Sha}}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\src}[1]{\texttt{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+\title{\textbf{Beyond Dirichlet GRH}\\[0.4em]
+\large Reusable proof mechanisms, a sharp torsion specialization theorem,\\
+and an explicit comparison with standard Galois cohomology}
+\author{Research analysis prepared for Vladimir Reshetnikov}
+\date{25 November 2026 \quad (Pacific date)}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+\begin{abstract}
+We inspect the exact published revision of \texttt{lsernau/grh-lean} and
+compare all five earlier transfer reports supplied through ProveIt. The
+exported theorems establish RH and GRH for Dirichlet $L$-functions; the
+present purpose is to reuse their internal arguments beyond familiar
+consequences of those conclusions.
+
+Three concrete transfers are proved. First, for any finite family of
+integral $p$-adic formal power series with total interior witness valuation
+at most $B$, a common nonvanishing torsion specialization exists at depth
+$H=h_*(r)+\lfloor B\rfloor$. This depth is independent of the number of
+variables and of degrees, and is sharp for one exponent under the stated
+radial restriction. A simultaneous first-$m$-powers version gives
+$H=h_*(r/m)+\lfloor mB\rfloor$. Second, the repository's stronger
+valuation-approximation theorem extends from polynomials to integral formal
+series over $\C_p$ with exactly the same torsion-order bound, yielding
+simultaneous determinantal and Fitting-ideal bounds. Third, for odd $\ell$
+and positive Tate exponent, the direct limit of the source's odd cocycle
+modules is identified with a precise eigenspace of the standard locally
+trivial $H^1$ group, transferring its uniform finite-level length bound.
+
+These are proved research deductions and completed comparison arguments.
+They do not settle a named major open conjecture. We identify the exact
+remaining obstacles for nonabelian GRH, arithmetic nonvanishing, Vandiver,
+and $K$-theory, and distinguish proof, formal verification, and literature
+priority throughout.
+\end{abstract}
+
+\vfill
+\small
+\textbf{Source revision:}
+\path{72fead102f663d5c7a407964a13dc0cf9d977207}.\\
+\textbf{Earlier-report snapshot:}
+\path{VladimirReshetnikov/ProveIt}, revision
+\path{a92443f00663b1b8b3c233d17df0ad49dc4f2b2c}.\\
+\textbf{Verification:} source inspection, independent proof reviews, and
+exact finite computations were performed. The new theorems in this report
+have not been compiled in Lean. External verification of the published
+RH/GRH source is cited, not represented as a local rebuild.
+\normalsize
+\newpage
+\tableofcontents
+\newpage
+
+\section{Findings and the standard of evidence}
+\label{sec:findings}
+
+\subsection{Answer to the research question}
+
+The repository contains reusable arguments with mathematical value outside
+RH and Dirichlet GRH. The strongest immediately usable transfers in this
+analysis are its integral torsion-selection machinery and its uniform
+cocycle bounds. The determinant mechanism also provides a substantial
+research program, but transplanting it to a new $L$-function requires new
+arithmetic constructions.
+
+The work below moves beyond a list of possible applications. It proves
+specific theorems for analytic families, matrix ranks, Fitting ideals, and
+standard Galois cohomology. It also sharpens the diagnosis of why several
+tempting conjectural applications are not yet established. No proof of
+general Hecke GRH, Vandiver, BSD, zero simplicity, or an equivalent new
+major conjecture is claimed.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{0.24\textwidth}YY}
+\toprule
+Result & What is established here & Status relative to earlier reports\\
+\midrule
+Sharp finite torsion test & Explicit $H=h_*(r)+\lfloor B\rfloor$, with
+sharpness; finite power-orbit extension & Not treated in the five reports;
+complete proof in Section~\ref{sec:sharp}\\
+Analytic valuation transfer & Same upstream order bound for integral formal
+series over completed $\C_p$ & New extraction and proof here;
+Section~\ref{sec:series-specialization}\\
+Matrices and finite complexes & Common torsion points preserve selected
+ranks; controlled Fitting valuations and inverse denominators & Concrete
+applications of the two torsion results\\
+Odd cocycle comparison & Standard all-places local $H^1$ kernel with exact
+complex-conjugation parity; inherited length bound & Supplies a comparison
+not proved in the source; Section~\ref{sec:odd-sha-comparison}\\
+Nonabelian GRH and other targets & Specific missing arithmetic hypotheses
+and failure modes & Research targets, not additional conjectures solved\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{What has been verified about the input}
+
+The inspected repository revision is
+\path{72fead102f663d5c7a407964a13dc0cf9d977207}, whose commit records
+25 November 2026. Its two editions are pinned to Lean~4.35.0 and Mathlib
+\path{56a005855ea17e0b0958f73ec801ae140b0a1679}.
+The five exported statements are in \path{grh/src/Statements.lean} and
+\path{grh/src/Main.lean}. They concern the Riemann zeta function and all
+Dirichlet characters over $\Q$, including imprimitive characters.
+They do not quantify over arbitrary Hecke or automorphic
+$L$-functions~\cite{repo,shortverify}.
+
+Independent checks of this exact shorter revision are reported by Andrew
+Sutherland. The Lean community's statement concerns the original RH proof
+and confirms both the intended statement and its verification. These
+sources support accepting the RH/Dirichlet-GRH premise while retaining the
+precise scope of the exported declarations~\cite{shortverify,community}.
+
+Our own work inspected the central proof interfaces, their definitions, and
+selected dependencies. A static import traversal confirms that the
+torsion-selection and odd-cocycle results do not import the RH/GRH exports.
+They are ingredients of the proof, not corollaries obtained by applying its
+final zero-location theorem. Static import inspection is weaker than
+kernel checking and is not described as such.
+
+\subsection{Proof, verification, and novelty are separate questions}
+
+Theorems proved in this report have full mathematical arguments, with two
+independent reviews of the main transfer proofs. Their formalization is
+outlined in the supplied artifacts; it has not been completed. The
+included exact computations check examples and counterexamples, not
+universal analytic or cohomological statements.
+
+The five prior reports contain no development of the present torsion,
+formal-series, or Fitting directions. This establishes a difference from
+the supplied work, not world-wide novelty. Related torsion-rigidity and
+simultaneous nonvanishing results already exist in work of Serban and
+Kriz--Nordentoft~\cite{serban,kn}. The source itself identifies numerous
+antecedents. We make no priority claim for the exact formulations here;
+their value is that their hypotheses, proofs, quantitative bounds, and
+connections to this source are explicit.
+
+\section{What the five previous reports already accomplish}
+\label{sec:prior}
+
+All five ZIP archives at the supplied ProveIt location were downloaded and
+their Git blob identities checked. The comparison below describes their
+contents; it is not an independent certification of every classification
+or numerical claim they contain. Full comparison notes and SHA-256 values
+are included in the artifacts~\cite{incoming}.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{p{0.27\textwidth}Y}
+\toprule
+Archive & Content already developed\\
+\midrule
+\path{grh-lean-transfers.zip} & CM coefficient-field classifications,
+weighted prime races, an $S_3$ splitting-weight detector, and an obstruction
+to replacing its nonabelian trace by fixed congruence weights.\\
+\path{grh-transfer.zip} & Arithmetic zero-sum criteria, abelian-field
+examples, and a one-sided split-prime criterion for the zeta function of
+an arbitrary finite Galois extension.\\
+\path{grh_transfer_analysis.zip} & Source audit, sharp rank/index-dependent
+determinant inequalities, basis-completion costs, and the discriminant
+$-23$ cubic as a concrete non-Dirichlet target.\\
+\path{grh_transfer_analysis_2026-11-25.zip} & Local twist/global height
+interface, sparse auxiliary-family selection, positive nonabelian
+detectors, and careful $K$-theory and witness-quantifier limitations.\\
+\path{grh_transfers.zip} & Partial exponent-six class-group classification,
+prime-race sign criteria, and analytic deductions for selected products.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+In particular, the earlier determinant analysis already proves, under its
+explicit hypotheses,
+\[
+ R\leq\frac{A+(B+2I)/\theta}{m},
+\]
+and its completion-cost variant. Generic one-sided zero-detection criteria,
+including finite-Galois and $S_3$ cases, are also already present. Restating
+these would not advance the requested program. We retain the determinant
+architecture as context and direct the new work toward the analytic and
+cohomological interfaces that those reports do not develop.
+
+\section{The actual reusable mechanism in the RH proof}
+\label{sec:mechanism}
+
+\subsection{One determinant is bounded in opposite directions}
+
+Write $d$ for target dimension, $n$ for the number of independent selected
+images, $m$ for the number of theta lifts, $M$ for the main contribution,
+$R$ for the prime remainder, and $C$ for a logarithmic squared covolume.
+The source's three central inputs have the following shape:
+\begin{align*}
+ C&\leq n(M-mR+L),\qquad\delta\leq dI, &&\text{short forms and index},\\
+ (1-4/b^2)d&\leq n\leq d, &&\text{enough forms},\\
+ d(M-3L)&\leq C+2\delta, &&\text{long integral forms}.
+\end{align*}
+Here $L=fa\log^4b$, $I=10\log(1+2b^2)fa\log^3b$, and the source has
+$M\geq0$. Comparison cancels the main term and gives
+\[
+ nmR\leq d(4L+2I).
+\]
+The dimension estimate makes $n\geq d/2$; the scale separation absorbs
+the remaining factors, giving
+\begin{equation}
+ mR\leq fa\log^5 b.
+ \label{eq:source-main}
+\end{equation}
+This is \src{New.star\_inequality}. Choosing a chain length comparable to
+$\sqrt{x}$ is part of the arithmetic construction that ultimately yields
+the critical exponent~\cite{mainineq,guide}.
+
+The difficulty in a new application is to construct the same main term on
+both sides with sufficiently small errors. An arbitrary new prime weight
+cannot be inserted in \eqref{eq:source-main} while leaving its proof
+unchanged.
+
+\subsection{The portable twisted-lattice inequality}
+
+The theorem \src{New.TwistedLattice.covolume\_add\_index\_nonneg} is genuinely
+generic. It concerns linear maps $\Theta_\xi$ from one complex vector
+space to a family of inner-product spaces, integral lattices at the
+$p$-adic identifications, and rational positive-definite Gram data at one
+base twist. If $n$ chosen vectors are completed to a basis of dimension
+$d$, it gives the schematic inequality
+\begin{equation}
+ 0\leq C+2\delta+(d-n)(b_{\rm size}+b_{\rm denom})+b_{\rm volume}.
+ \label{eq:portable-lattice}
+\end{equation}
+Its inputs include injectivity of the lifts, all-conjugate size bounds,
+integral denominator-clearing data for the added vectors, and heights of
+the determinant ratios. A favorable allowed twist may be chosen
+\emph{separately at each $p$-adic identification}. The matrix that clears
+the index at that identification must work uniformly across all its
+allowed twists~\cite{twisted}.
+
+This is why simultaneous twisting and denominator control matter. A
+different favorable twist at each prime is useful only because the global
+height comparison links the resulting determinant ratios. Neither the
+existence of local twists alone nor the usual untwisted product formula
+supplies all of \eqref{eq:portable-lattice}.
+
+\subsection{Two distinctions that survive every attempted transfer}
+
+\textbf{Character order and conductor norm.} The general twisting theorem
+constructs a character of $p$-power order and a suitable auxiliary prime
+set. It bounds the number of parameters and various normalized losses.
+It does not bound the norms of the auxiliary primes or the global
+conductor. Consequently its torsion-order bound cannot be advertised as a
+least-conductor theorem, a density theorem, or a conductor-aspect
+subconvexity estimate~\cite{general}.
+
+\textbf{Determinants and individual forms.} A determinant controls a product
+of eigenvalues. It cannot bound each eigenvalue: $\operatorname{diag}(T,T^{-1})$
+has determinant one and unbounded norm as $T\to\infty$. The source's
+spanning theorem controls a large family through a second moment. It does
+not isolate an arbitrary prescribed eigenform. Additional arguments would
+be necessary for applications to individual automorphic $L$-values,
+Ramanujan-type estimates, or derivatives at zeros.
+
+\input{sections/nonvanishing}
+\input{sections/series_fitting}
+\input{sections/odd_sha}
+
+\section{Which further problems are now within reach?}
+\label{sec:targets}
+
+\subsection{A concrete conditional arithmetic application}
+
+The matrix results give a useful exact specification for a next arithmetic
+project. Suppose a finite family of arithmetic objects has finite free
+complexes over
+$\Lambda=\mathcal O_K[[T_1,\ldots,T_s]]$, where $K/\Q_p$ is finite.
+Assume their degree-one cohomology is zero over $\operatorname{Frac}\Lambda$.
+Suppose, in addition, that a proved control theorem identifies the
+cohomology after character specialization with the arithmetic groups of
+interest, including any local correction or exceptional factors.
+
+Choose one generic-rank minor from every relevant differential, together
+with interior nonzero witnesses. Include additional nonzero functions
+whose vanishing would invalidate the control theorem. If the resulting
+aggregate valuation budget is $B$, Corollary~\ref{cor:power-orbit} produces
+a common character tuple of order dividing
+\[
+ p^{h_*(r/m)+\lfloor mB\rfloor}
+\]
+at whose first $m$ powers all the required ranks and nonvanishing factors
+hold. The cohomology dimension formula then yields the desired vanishing
+over $\C_p$. If integral sizes are required, the stronger
+Fitting-profile theorem supplies the appropriate valuation control.
+
+This is a proved \emph{conditional transfer criterion}. It does not assert
+the needed arithmetic complexes, generic vanishing, interpolation
+identities, or control theorem for an arbitrary elliptic curve or
+automorphic representation. Supplying those is the remaining arithmetic
+problem. The hypothesis of generic vanishing must never be disguised as a
+consequence of selecting a torsion point.
+
+\subsection{A first genuinely non-Dirichlet GRH benchmark}
+
+Let $F=\Q(\alpha)$ with $\alpha^3-\alpha-1=0$. Its discriminant is $-23$.
+The previous reports use its imaginary quadratic resolvent
+$K=\Q(\sqrt{-23})$ and a nontrivial class-group character $\psi$ to write
+\[
+ \zeta_F(s)=\zeta(s)L_K(s,\psi).
+\]
+The remaining zero-location question is about a Hecke factor over $K$,
+not a Dirichlet factor over $\Q$. This is an established benchmark from
+the earlier reports, not a newly proposed target here~\cite{incoming}.
+
+The principal-class selector in those reports gives an analytic criterion.
+The missing work is an arithmetic realization of its divisibility gains
+and the full short/enough/long comparison. Rational congruence and quadratic
+splitting tests in the existing data do not automatically detect this
+nonabelian splitting condition. The new torsion and cohomology results may
+help with the denominator side, but they do not supply that detector.
+
+A useful next deliverable would therefore be one concrete local
+divisibility identity for the principal-class statistic, with a compatible
+archimedean norm formula. If those formulas exhibit the same main term,
+the generic twisted-lattice theorem becomes applicable. Another
+equivalent prime-error reformulation would not fill this gap.
+
+\subsection{Why several attractive conclusions remain unsupported}
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{0.24\textwidth}YY}
+\toprule
+Target & Relevant reusable material & Missing ingredient\\
+\midrule
+Nonabelian Hecke or Dedekind GRH & Twisted lattices, local twisting,
+zero-detection criteria & A new prime detector and quantitative
+short/enough/long estimates for it\\
+Simultaneous arithmetic nonvanishing & Bounded torsion selection, rank and
+Fitting control & Integral arithmetic presentations, nonzero reference
+values, and proved specialization comparisons\\
+Vandiver and $K$-group vanishing & Uniform cocycle bounds and the comparison
+proved here & Correct parity sector, control of primes dividing $X$, and
+field-uniform input for the diagonal cyclotomic family\\
+Zero simplicity or pair correlation & No applicable direct output &
+Derivative bounds or information correlating distinct zeros\\
+Twin primes or strong prime correlations & Single weighted prime sums
+appear in the source & New estimates for products such as
+$\Lambda(n)\Lambda(n+2)$\\
+Individual subconvexity or Ramanujan bounds & Determinant/second-moment
+estimates & Isolation of individual forms and uniform conductor control\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The table records what this analysis does and does not establish. It is
+not a claim that these conjectures are logically independent of every
+possible future development of the method.
+
+\subsection{Literature position and a disciplined next step}
+
+Serban's work studies torsion rigidity and separation for integral formal
+power series; Kriz--Nordentoft already obtain arithmetic simultaneous
+nonvanishing in substantial settings~\cite{serban,kn}. These precedents
+rule out presenting ``torsion specialization of power series'' or
+``simultaneous nonvanishing'' as new merely by name. The specific additions
+here are an explicit sharp depth theorem with proof, the unchanged-bound
+completion argument, its matrix consequences, and the exact application
+of standard cohomology to the source's unusual cocycle definition.
+
+For an immediate implementation project, formalize these precise
+interfaces and instantiate them for one integral arithmetic presentation
+already under good control. For a new major zero-location theorem, the
+discriminant-$-23$ detector is a clear first test. The latter is a larger
+arithmetic project; its central missing estimates are identified rather
+than assumed.
+
+\section{Reproducibility and verification boundaries}
+\label{sec:reproduce}
+
+The archive contains this manuscript and its component \LaTeX{} files,
+the compiled PDF, exact computation scripts and outputs, source-audit and
+provenance data, independent proof-review notes, and a pinned extraction
+of the upstream modules needed for the principal reusable interfaces.
+All copied upstream source files retain their original bytes and are
+accompanied by the Apache-2.0 license, notice, and attribution. An adjusted
+Lake configuration and an audit entry point are explicitly identified as
+added files.
+
+The extraction contains the full transitive local import closure of the
+general torsion theorem, the odd-cocycle bound, and the twisted-lattice
+theorem. Mathlib and its external packages are pinned by the original
+manifest; their binaries are not bundled. The extraction is provided for
+reproduction and was not built in this session.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{p{0.43\textwidth}Y}
+\toprule
+Check & Observed result\\
+\midrule
+Upstream revision and selected declaration locations & Exact revision
+recorded; declarations found and hashed\\
+Five incoming archives & All five match the recorded Git blob hashes\\
+Local import closures & No RH/GRH endpoint in the extracted interfaces\\
+Mathematical transfer proofs & Written in full; independently reviewed\\
+Exact finite computations & Eighteen sharpness cases, three power
+specializations, and matrix/valuation examples pass\\
+PDF & Compiled, rendered, and visually checked\\
+New Lean theorem compilation & Not performed; no such certificate claimed\\
+Complete upstream kernel replay & Not performed here; independent
+verification sources cited separately\\
+Literature priority & Not established; related work identified\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The exact computation script uses integer cyclotomic resultants. For
+$\alpha\in\Q(\zeta_{p^h})^\times$ it computes
+\[
+ v_p(\alpha)=
+ \frac{v_p\bigl(N_{\Q(\zeta_{p^h})/\Q}(\alpha)\bigr)}{\varphi(p^h)},
+\]
+using the unique prime above $p$ and its total ramification. Rational
+expressions are evaluated by subtracting numerator and denominator
+valuations. This avoids floating-point decisions about zeros.
+
+\appendix
+\section{Source map for the central claims}
+
+All paths below are relative to \path{grh/src/} at the pinned source
+revision. The JSON audit records exact declaration locations and file
+hashes. Path names are evidence locators, not assertions of novelty.
+
+\small
+\begin{longtable}{p{0.49\textwidth}p{0.45\textwidth}}
+\toprule
+File & Role\\
+\midrule
+\endhead
+\path{Statements.lean}, \path{Main.lean} & Exact RH and Dirichlet-GRH
+endpoint statements\\
+\path{New/Reduction/MainInequality.lean} &
+\path{New.star_inequality}; main-term cancellation\\
+\path{New/Reduction/Lattices/TwistedLattice.lean} &
+\path{New.TwistedLattice.covolume_add_index_nonneg}; generic local-twist
+determinant comparison\\
+\path{New/Congruences/Selmer/RootsOfUnity.lean} &
+\path{New.Selmer.exists_rootsOfUnity_ellVal_eval_le_add}; uniform
+polynomial valuation selection\\
+\path{New/Congruences/Selmer/GeneralTheorem.lean} &
+\path{New.Selmer.exists_rootsOfUnity_ellVal_eval_le}; all first $m$ powers;
+\path{exists_anticyclotomic_twist}\\
+\path{Lib/GaloisRep/Main/SelmerModules.lean} &
+\path{shaLocalSet}, \path{shaOdd}; exact local conditions and
+precomposition parity\\
+\path{Lib/Cyclotomic/OddSha.lean} &
+\path{New.exists_length_shaOdd_le}; one integer bounding all finite
+levels and coefficient primes\\
+\bottomrule
+\end{longtable}
+\normalsize
+
+\section{A short mathematical glossary}
+
+\textbf{A $p$-adic valuation} measures divisibility by $p$: $v(p^ka)=k$
+when $a$ is a unit. Values may be rational in an algebraic extension.
+Large valuation means small $p$-adic absolute value. Setting $v(0)=\infty$
+makes a finite valuation bound imply nonvanishing.
+
+\textbf{Torsion specialization} here means substituting
+$T_a=\zeta_a-1$, with $\zeta_a$ a root of unity of $p$-power order. It
+does not mean substituting $T_a=\zeta_a$; the subtraction is essential for
+convergence of arbitrary integral formal series.
+
+\textbf{A Fitting ideal} of a finitely presented module is generated by
+minors of a presentation matrix. Its valuation measures a cumulative
+divisibility obstruction. For a square full-rank matrix its last such
+quantity is the determinant valuation.
+
+\textbf{A cocycle} is a function $z$ satisfying
+$z(gh)=z(g)+g z(h)$. Cohomology identifies cocycles differing by
+$g\mapsto ga-a$. The source's \path{shaOdd} consists of actual cocycles;
+Section~\ref{sec:odd-sha-comparison} explains why a suitable odd subspace
+has no nonzero coboundaries and how the local conditions compare.
+
+\textbf{A normalized length} need not be an integer if it is divided by a
+ramification index. Accordingly, a positive normalized Selmer length below
+one does not by itself imply that the module is zero. The uniform
+cohomological bound in Section~\ref{sec:odd-sha-comparison} uses the ordinary
+integer-valued length over a discrete valuation ring and its corresponding
+uniformizer valuation.
+
+\begin{thebibliography}{99}
+\bibitem{repo} L. Sernau and collaborators, \emph{GRH for Dirichlet
+$L$-functions, in Lean 4}, repository revision
+\path{72fead102f663d5c7a407964a13dc0cf9d977207}, 25 November 2026.
+\url{https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207}.
+
+\bibitem{guide} Same repository, \path{grh/GUIDE.md}, \path{grh/INDEX.md},
+and \path{grh/REFERENCES.md}, at the cited revision. The guide identifies
+the three central theorems and explains the distinction between generic
+background and specialized proof ingredients.
+
+\bibitem{shortverify} A. Sutherland, \emph{Verification files for the
+shorter Lean proof of RH and GRH}, exact revision \path{72fead10}.
+\url{https://math.mit.edu/~drew/shortgrh/}. Consulted 25 November 2026
+(Pacific date).
+
+\bibitem{community} Lean FRO and Mathlib Initiative, \emph{Lean
+verification of the Riemann Hypothesis}, 21 November 2026.
+\url{https://leanprover-community.github.io/blog/posts/riemann-hypothesis/}.
+
+\bibitem{alponge} L. Alp\"oge, announcement and methodological remarks,
+November 2026. \url{https://alpo.ge/remark.pdf}. The discussion of chains
+of theta lifts is on pp.~1, 3--4; the tentative $K$-group suggestion is
+footnote~6 on p.~4.
+
+\bibitem{incoming} V. Reshetnikov, ProveIt incoming research reports,
+revision \path{a92443f00663b1b8b3c233d17df0ad49dc4f2b2c}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/a92443f00663b1b8b3c233d17df0ad49dc4f2b2c/docs/incoming}.
+Five archive identities and hashes are recorded in the accompanying
+\path{artifacts/provenance.json}.
+
+\bibitem{mainineq} Sernau repository, \path{grh/src/New/Reduction/MainInequality.lean},
+\path{New.star_inequality}, at the revision in~\cite{repo}.
+
+\bibitem{twisted} Sernau repository,
+\path{grh/src/New/Reduction/Lattices/TwistedLattice.lean},
+\path{New.TwistedLattice.covolume_add_index_nonneg}, at the same revision.
+
+\bibitem{roots} Sernau repository,
+\path{grh/src/New/Congruences/Selmer/RootsOfUnity.lean},
+\path{New.Selmer.exists_rootsOfUnity_ellVal_eval_le_add}, at the same revision.
+
+\bibitem{general} Sernau repository,
+\path{grh/src/New/Congruences/Selmer/GeneralTheorem.lean},
+\path{New.Selmer.exists_rootsOfUnity_ellVal_eval_le} and
+\path{New.Selmer.exists_anticyclotomic_twist}, at the same revision.
+
+\bibitem{oddsha} Sernau repository, \path{grh/src/Lib/Cyclotomic/OddSha.lean},
+\path{New.exists_length_shaOdd_le}, and
+\path{grh/src/Lib/GaloisRep/Main/SelmerModules.lean}, at the same revision.
+
+\bibitem{serban} V. Serban, \emph{An infinitesimal $p$-adic multiplicative
+Manin--Mumford conjecture}, Journal de Th\'eorie des Nombres de Bordeaux
+\textbf{30} (2018), 393--408.
+\url{https://www.numdam.org/item/JTNB_2018__30_2_393_0.pdf}.
+
+\bibitem{kn} D. Kriz and A. C. Nordentoft, \emph{Horizontal $p$-adic
+$L$-functions}, arXiv:2310.20678.
+\url{https://arxiv.org/abs/2310.20678}.
+
+\bibitem{kurihara} M. Kurihara, \emph{Some remarks on conjectures about
+cyclotomic fields and $K$-groups of $\Z$}, Compositio Mathematica
+\textbf{81} (1992), 223--236.
+\url{https://www.numdam.org/item/CM_1992__81_2_223_0.pdf}.
+\end{thebibliography}
+\end{document}

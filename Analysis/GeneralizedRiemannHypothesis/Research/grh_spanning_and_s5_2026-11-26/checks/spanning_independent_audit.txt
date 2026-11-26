@@ -1,0 +1,180 @@
+INDEPENDENT AUDIT OF THE SPANNING REFINEMENT
+Date: 2026-11-26
+
+Sources inspected
+-----------------
+grh-lean commit 72fead102f663d5c7a407964a13dc0cf9d977207.
+All paths below are relative to grh/src/.
+
+New/Spanning/SecondMoment/FewTranslates.lean
+  line 151: IsNearIsometry, a lower Hilbert--Schmidt estimate on every
+            source subspace, not just a total-norm estimate.
+  line 288: sq_sum_hilbertSchmidtNorm_orthoProj_comp_le, the exact
+            Cauchy--Schwarz square estimate used here.
+  line 320: isSpread_of_second_moment; its proof replaces the square root
+            by an arithmetic mean, losing information near the threshold.
+  line 393: finrank_sup_range_add_finrank_comap, the rank-gain identity.
+  line 537: finrank_biSup_range_le, the loss when restricting the source.
+
+New/Spanning/SecondMoment/SpanningTheorem.lean
+  line 257: isNearIsometry_e0_comp_scaledPoincare (e0 is e-subscript-zero
+            in the Lean declaration): raw near-isometry error 5/b^4.
+  line 288: targetDim_mul_sum_hilbertSchmidtNorm_sq_le: raw moment
+            excess 9/b^4.
+  line 314: comap_scaledPoincare_eq_comap_goodPoincare: coordinates and
+            nonzero scalar factors preserve the relevant preimage ranks.
+  line 339: isSpread_goodPoincare: unitary action, commuting orthogonal
+            projection, and subsequent enlargement to common 1/(8b^2).
+
+New/Reduction/ShortAndEnough.lean
+  line 386: range_normalizedPoincare, the restricted source image.
+  lines 426--433: source codimension at most s/b^8, using
+            le_finrank_ramifiedSourceForms and f_div_N_sub_one_le.
+  line 448: enough_forms: original count coefficient 5 and missing
+            share 4/b^2.
+
+These are readings of the pinned source, not a new local Lean build.
+The proof below and report.tex are mathematical derivations from the
+source's stated hypotheses. No upstream Lean file was edited.
+
+1. Necessary hypotheses and exact square-root estimate
+-----------------------------------------------------
+Let s=dim S>0, d=dim W>0, and let a finite group act unitarily on T.
+Let P project orthogonally onto the invariant subspace W. Write
+C_g=P rho(g) B. Assume, for every U<=S,
+
+  dim U - u s <= ||PB P_U||_HS^2,
+  d mean_g ||B* rho(g) B||_HS^2 <= (1+v)s^2,
+
+where 0<=u<1 and v>=0. The condition s>0 must not be omitted: the
+original abstract source lemma permits S=0, in which case an asserted
+positive total-rank lower bound would be false.
+
+Put M=mean_g rho(g)BB*rho(g)*. The group change of variables gives
+tr(M^2)=mean_g ||B*rho(g)B||_HS^2. For F<=W of dimension k,
+
+  mean_g ||P_F rho(g)B||_HS^2
+    = tr(P_F M) <= sqrt(k tr(M^2))
+    <= s sqrt((1+v)k/d).
+
+Choose a translate at or below this average and set U=C_g^{-1}(F).
+On U, C_g equals P_F rho(g) B. Unitarity, commutation of P with rho,
+and contraction of the HS norm under right orthogonal projection give
+
+  dim C_g^{-1}(F) <= s[u+sqrt((1+v)k/d)].
+
+This is exactly the estimate available before the arithmetic-mean step
+in the source. Applying near-isometry to ker(PB) also gives
+(1-u)s <= rank(PB) <= d.
+
+2. Sharp universal rank coefficient, with its precise scope
+----------------------------------------------------------
+Apply the estimate to F=sum_g im(C_g), when every preimage is all S.
+The total span has rank at least alpha*d, where
+
+  alpha=(1-u)^2/(1+v).
+
+For rational u,v choose positive integers d,r with r/d=alpha. Take
+S=C, T=W=C^d, P=I, a cyclic group of order r rotating the first r
+coordinate axes and fixing the rest, and B(1)=sqrt(1-u)e_1.
+Near-isometry is an equality on S; the mean squared overlap is
+(1-u)^2/r; the moment hypothesis is an equality; the total span has
+rank r. Thus the coefficient cannot be increased universally.
+For arbitrary real u,v, r=ceil(alpha*d) in the same construction
+gives moment <=1+v and rank fraction approaching alpha as d grows.
+
+The claim is a sharp UNIVERSAL coefficient. It is not a formula for
+the exact minimum rank at every prescribed integer d,s and error pair.
+The independent lower bound ceil((1-u)s) may be stronger at particular
+dimensions. The underlying trace/rank method is classical; the new
+result here is the quantitative source interface and its application,
+not a claim to have invented the second-moment rank inequality.
+
+3. Finite selection, integer certificates, and source restriction
+---------------------------------------------------------------
+If the current rank is k<alpha*d, the selected translate adds at least
+
+  s[(1-u)-sqrt((1+v)k/d)]
+    >= h(alpha*d-k),
+  h=s(1+v)/(2d(1-u)).
+
+With q=max(0,1-h), after at most t translates the span has rank at least
+alpha*d*(1-q^t). Once the rank crosses alpha*d one may stop selecting.
+For a source subspace of codimension r0, the same selection loses at
+most t*r0 dimensions. All appearances of the floor in the translate
+budget must be retained; replacing floor(X) by X gives an incorrect
+unrounded exponential estimate.
+
+The exact algorithm in verify_spanning.py uses R=ceil(alpha*d) and
+
+  m(k)=min(s, floor(su+s sqrt((1+v)k/d))),
+  T(k)=min(R,k+s-m(k)),
+  H(q)=min_{q<=k<=R} T(k),
+  q_0=0, q_{j+1}=H(q_j).
+
+The suffix minimum is necessary because the actual current rank can
+exceed the available certified lower bound, and T need not be monotone.
+It is the greatest monotone minorant of this one-step transition.
+For k<R, m(k)<=s-1, so H(q)>=q+1 below R and termination takes at most R
+steps. This is a certificate derived from the stated profile; it is not
+a claim that the number of selected translates is optimal for every
+actual group action. Each floor is checked by exact rational squared
+comparisons and adjacent integer boundary checks, without numerical
+square roots. Logarithmic budget floors use rigorous rational atanh
+series bounds after range reduction.
+
+4. Improved arithmetic-source constants: b>=6
+--------------------------------------------
+Keep the source's separate errors u=5/b^4 and v=9/b^4. Put
+a=1-u, z=1+v, alpha=a^2/z, delta=1-alpha, and L=log(1+2b^2).
+Let t=floor(4dL/s) and suppose r0/s<=b^-8.
+
+Since s/d<=1/a and b>=6 (indeed b>=4 suffices for this step),
+
+  h<=z/(2a^2)<=33920/63001<1.
+
+The floor gives t>=4dL/s-1, hence the missing share is at most
+
+  delta + alpha*exp(h)*(1+2b^2)^(-2z/a) + 4b^-8 L.
+
+The three terms are bounded respectively by
+
+  19/b^4, 3/(4b^4), 8/b^6.
+
+Indeed delta=(19q-25q^2)/(1+9q)<=19q for q=b^-4; alpha<=1,
+exp(h)<e<3, z/a>=1; and L<=2b^2. For every real b>=6,
+
+  19 + 3/4 + 8/b^2 <= 719/36 < 20.
+
+Therefore at most the count coefficient 4 suffices to span
+(1-20/b^4)d dimensions, including the source restriction. More
+precisely |A|s<=4dL, and hence |A|dim(S0)<=4dL. This improves both
+the source theorem's count coefficient 5 and its loss 4/b^2. All
+rounding and restriction costs have been included.
+
+For b>=4 the original coefficient 5 yields the same 20/b^4 loss:
+its tail is <=1/b^5 and restriction loss <=10/b^6, so the deficit
+is at most b^-4[19+1/b+10/b^2]<=159/(8b^4)<20/b^4.
+The B=4 computational example is explicitly this five-times variant.
+
+5. Executable evidence and corpus comparison
+-------------------------------------------
+verify_spanning.py and spanning_certificates.json contain exact checks
+for a common-error example, three enumerated cyclic equality models,
+and the raw-source errors at B=4 (coefficient5), B=6,10,100
+(coefficient4). Fractions and integer comparisons are authoritative;
+decimal fields are illustrative. The illustrative dimensions d=1000,
+s=20 are not claimed to arise from an arithmetic datum.
+
+For u=v=1/100, d=1000,s=20, the profile certificate reaches rank840
+after148 translates and its universal threshold ceil(98010/101)=971
+after261 translates.
+
+The prior-work search covered the 350 extracted TeX members from all
+52 ZIP archives present at ProveIt commit
+9816644452bb42827167d6110e6d0322315a02b9. The broader review and exact
+archive inventory are supplied separately. Searches and focused reading
+found no earlier statement of this square-root profile, sharp universal
+rank coefficient, or raw-error b^-4 source refinement in that corpus.
+This is a bounded corpus comparison, not a global novelty certification
+or a proof audit of all 350 documents.

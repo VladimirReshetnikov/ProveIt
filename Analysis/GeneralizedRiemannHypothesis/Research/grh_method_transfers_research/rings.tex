@@ -1,0 +1,245 @@
+\section{Progression-free polynomial sets over finite local rings}
+\label{sec:finite-rings}
+
+Asada, Fourakis, Manski, McNew, Miller and Moreland asked in Question~6.5 of
+\emph{Subsets of $\mathbb F_q[x]$ free of 3-term geometric progressions}
+what changes when the coefficient field is replaced by another finite ring.
+We retain their nonunit-ratio convention. The analogue of their degree
+ball is the set of polynomials whose coefficients above degree $n$ vanish.
+All ratios in this section are polynomials.
+\href{https://www.nathanmcnew.com/fqxramsey.pdf}{Author manuscript, pp.~10--12};
+\href{https://doi.org/10.1016/j.ffa.2016.10.002}{published paper}.
+
+The Lean connection is an intermediate lemma. In the source,
+\texttt{modEq\_orderOf\_of\_div\_pow\_eq} turns a multiplicative equality
+into a restriction on exponents, and \texttt{exists\_three\_term\_free}
+constructs sets that avoid the resulting additive configurations. An
+earlier ProveIt report applied this idea to polynomial valuations over a
+field. Over a ring with nilpotents the scalar ratio and its square
+act differently. Tracking the prime valuations of the \emph{coefficients
+in a basis of the ring} detects forbidden endpoints. The resulting
+argument is elementary and independent of the statements about zeros
+of $L$-functions.
+\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/New/Reduction/Data/Existence.lean#L80-L162}{Lean source, lines 80--162};
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/d31039a48d963692e5a5176f47b6603fc9e9d9cf/docs/incoming/grh-progression-densities-and-cubic-prime-race.zip}{earlier field case}.
+
+Let $k=\mathbb F_q$, let $V$ be a $k$-vector space of dimension $b-1$,
+and give $R=k\oplus V$ the commutative multiplication
+$(u,v)(u',v')=(uu',uv'+u'v)$. Put $Q=|R|=q^b$.
+With a fixed basis of $V$, write $f\in R[x]$ as
+$(f_0,f_1,\ldots,f_{b-1})$ with entries in $k[x]$.
+The ball $B_n$ consists of all such tuples of degrees at most $n$ and has
+$Q^{n+1}$ elements. A set is admissible if it contains no triple
+$f,rf,r^2f$ with $r\in R[x]$ a nonunit. We work with subsets of
+$R[x]\setminus\{0\}$. Retaining zero would change no density.
+Write $\Delta(R)$ for the supremum of the upper ball densities of
+admissible sets. The natural ball density uses a limit in place of a
+limit superior. Reduction of $r=(a,c)$ modulo $V[x]$ detects units:
+$r$ is a unit exactly when $a\in k^\times$, as
+$(a,c)^{-1}=(a^{-1},-a^{-2}c)$ in this case.
+
+\medskip\noindent\textbf{Theorem (characteristic two).}
+Suppose $q$ is even. The set $S$ of nonzero tuples whose monic componentwise
+gcd is squarefree is admissible. For every $n\ge2$ it satisfies
+\[
+ |S\cap B_n|=Q^{n+1}-qQ^{n-1}+q-1.
+\]
+Its natural density is $1-q/Q^2$. The following bounds include a stronger
+construction for upper density:
+\begin{equation}
+ 1-\frac{1}{Q^2}\ \le\ \Delta(R)
+ \ \le\ 1-\frac{Q-1}{Q^3-1}
+ =1-\frac1{Q^2+Q+1}.
+ \label{eq:local-ring-densities}
+\end{equation}
+For fixed $q$ this determines the leading constant:
+$Q^2(1-\Delta(R))\to1$ as $b\to\infty$. All the even-characteristic
+assertions hold more generally for a finite commutative local $k$-algebra
+$R=k\oplus V$ with nilpotent maximal ideal $V$, provided every $v\in V$
+satisfies $v^2=0$. Distinct elements of $V$ may have nonzero product.
+
+\smallskip\noindent\emph{Proof.}
+In characteristic two, $r=a+c$ has $r^2=a^2$, since Frobenius
+acts coefficientwise on $c\in V[x]$ and all its coefficients square to zero.
+In the more general algebra the unit criterion follows by reduction
+modulo the nilpotent ideal $V[x]$ and a finite geometric-series inverse. If $a=0$ the last term
+of the progression is zero. Otherwise choose a monic irreducible
+$P\mid a$. Every component of the last term is divisible by $P^2$.
+Conversely every nonzero tuple with a common square factor $P^2$ is a
+multiple of the square of the scalar nonunit $P$. Thus $S$ consists
+exactly of the nonzero elements divisible by no square of a nonunit.
+
+For any nonzero tuple the indicator that its gcd is squarefree is
+$\sum_{d^2\mid\gcd(f_i)}\mu(d)$ over monic $d\in k[x]$. In $B_n$
+there are $Q^{n+1-2j}-1$ nonzero multiples of a fixed $d^2$ of degree
+$2j\le n$. Unique factorization gives
+$\sum_{d\ \mathrm{monic}}\mu(d)z^{\deg d}=1-qz$: it is the reciprocal
+of $\sum_{j\ge0}q^j z^j$. Thus only $j=0,1$ contribute after
+summing, yielding the count and the asserted natural density.
+
+We next compute the best upper density under the stronger condition that the set
+contain no pair $f,a^2f$ with $a\in k[x]$ nonconstant. In a single
+ball $B_n$, $n\ge1$, the two layers of highest degrees $n-1,n$ avoid
+all such pairs. They have $Q^{n+1}-Q^{n-1}$ elements. For the reverse
+bound, map each nonzero $f\in B_n$ to
+$x^{2\lfloor(n-\deg f)/2\rfloor}f$ in those two layers. Two distinct
+preimages of one point differ by multiplication by a positive even
+power of $x$. The map is therefore injective on any pair-avoiding set.
+
+To attain the limiting proportion in a single infinite set, let
+$h(f)$ be the largest monic polynomial whose square divides every
+component of $f$. In each prime valuation its exponent is half the common
+valuation rounded down. Thus
+\[
+ m(f)=\deg f-2\deg h(f)
+\]
+is invariant under multiplication by any nonzero scalar polynomial square.
+Choose $N_0=-1$ and $N_j=2^{j+1}$ for $j\ge1$. Assign each $f\ne0$
+to the unique $j$ with $N_{j-1}<m(f)\le N_j$, and include it exactly
+when $\deg f\in\{N_j-1,N_j\}$. All members of a forbidden pair
+would have the same assigned $j$ and degrees differing by at least two,
+which is impossible. In the top two layers of $B_{N_j}$ a missing
+element must have $m(f)\le N_{j-1}$, hence
+$\deg h(f)\ge L_j=\lceil(N_j-1-N_{j-1})/2\rceil$.
+For any monic $d$ of degree $s\le N_j/2$ the fraction of $B_{N_j}$
+divisible componentwise by $d^2$ is $Q^{-2s}$. A union bound
+shows that the missed fraction is at most
+$\sum_{s\ge L_j}(q/Q^2)^s$, which tends to zero. This proves the
+lower bound in \eqref{eq:local-ring-densities} and gives exactly
+$1-Q^{-2}$ as the largest attainable upper density under pair avoidance.
+The construction also applies for $b=1$.
+
+The natural-density extremum for this same pair condition is also exact.
+Each nonzero $f$ factors uniquely as $u h^2$, with $h=h(f)$ monic
+and $u$ squarefree in the componentwise gcd sense. For a pair-avoiding
+set $E$, let $I_u$ be the set of monic $h$ with $u h^2\in E$.
+If $1\in I_u$, there are no other elements. Otherwise
+\[
+  \sum_{h\in I_u}Q^{-2\deg h}
+  \le \sum_{s\ge1}(q/Q^2)^s\le1,
+\]
+since $q/Q^2\le1/2$. In either case the mass is at most one.
+Multiplying by $Q^{-\deg u}$ and summing over base tuples up to degree $n$
+gives
+\[
+  \sum_{f\in E\cap B_n}Q^{-\deg f}
+  \ \le\ \sum_{u\in S\cap B_n}Q^{-\deg u}.
+\]
+The number of all tuples of exact degree $t$ is $(Q-1)Q^t$.
+Whenever a set has natural ball density $\delta$, its exact-degree
+proportions tend to $\delta$ as well, by subtracting consecutive ball
+counts. Division of this last inequality by $(n+1)(Q-1)$ and
+convergence of arithmetic means now bound the natural density of $E$ by
+$1-q/Q^2$. The squarefree set $S$ attains it. In particular the two
+extrema for pair avoidance differ by exactly $(q-1)/Q^2$.
+
+For the upper bound for triple avoidance take any fixed scalar monic linear $P$. Every
+nonzero tuple has an exact common $P$-valuation $v$, the minimum of
+the component valuations with $v_P(0)=+\infty$. Partition each chain
+$h,Ph,P^2h,\ldots$ with $v(h)=0$ into triples starting at exponents
+$0,3,6,\ldots$. Multiplication by $P$ is injective and increases the
+maximum component degree by one. Hence the triples are disjoint, and
+every triple lying within $B_n$ forces at least one deletion. Their
+number is exactly
+\[
+ T_n=\sum_{0\le 3j\le n-2}
+ (Q^{n-1-3j}-Q^{n-2-3j}).
+\]
+Indeed their first terms have degree at most $n-2$ and valuation $3j$.
+Dividing by $Q^{n+1}$ and summing the limiting geometric series gives
+$(1-Q^{-1})Q^{-2}/(1-Q^{-3})$. This argument works in every
+characteristic, including $b=1$. Equation~\eqref{eq:local-ring-densities}
+now squeezes $Q^2(1-\Delta(R))$ between $Q^2/(Q^2+Q+1)$ and $1$.\hfill$\square$
+
+\medskip\noindent\textbf{Theorem (a strict gap for triple avoidance).}
+Let $D(R)$ be the supremum of natural densities of admissible sets
+whose ball densities converge. In the characteristic-two family,
+\[
+ 1-\frac q{Q^2}\le D(R)
+ \le 1-\frac q{Q^2}(1-Q^{-1})^q.
+\]
+Thus as $b\to\infty$ with $q$ fixed, $Q^2(1-D(R))\to q$.
+For every $b\ge2$ in this family, $D(R)<\Delta(R)$.
+
+\smallskip\noindent\emph{Proof.}
+The lower bound comes from the squarefree construction. To bound natural
+density from above, let $C$ consist of nonzero tuples whose gcd has no
+linear factor. By reduction modulo the product of the $q$ monic linears,
+the natural density of $C$ is $(1-Q^{-1})^q$. For each $g\in C$ form
+the $q$ triples $g,Pg,P^2g$, one for each monic linear $P$. Two different
+centers give disjoint collections: the common linear valuations of a
+member determine the multiplying polynomial $1$, $P$ or $P^2$ uniquely.
+Within one collection only the center $g$ is shared. Give a tuple $f$
+of degree $d$ the weight $Q^{-d}$. Omitting $g$ costs $Q^{-\deg g}$.
+If $g$ is present, at least one of $Pg,P^2g$ is missing for each $P$,
+which costs at least $qQ^{-2-\deg g}$. In either case the omitted
+weight is at least $qQ^{-2-\deg g}$. Sum over centers in $B_{n-2}$,
+so every tuple counted is in $B_n$. Divide by $(n+1)(Q-1)$ and pass to
+the limit using the exact-degree proportions of both $C$ and the
+omitted set as above. This gives the upper bound. For $b\ge2$ one has
+$q(1-Q^{-1})^q>q(1-q/Q)\ge q-1\ge1$, by strict Bernoulli inequality.
+Consequently this natural-density upper bound is strictly below the
+upper-density construction $1-Q^{-2}$.\hfill$\square$
+
+For $R=\mathbb F_2[\epsilon]/(\epsilon^2)$, the construction has
+natural density $7/8$. Every admissible set with a natural density has
+density at most $119/128$, while the block construction has upper density
+$15/16$. Every admissible subset of $\mathbb F_2[x]$ has
+upper density at most $6/7$. More generally any even $q$ and $b\ge2$
+give a lower bound at least $1-q^{-3}$, which exceeds the residue-field
+upper bound $1-1/(q^2+q+1)$ because $q^3>q^2+q+1$.
+The same comparison for an arbitrary $q$ holds in square-zero
+extensions of dimension $b\ge3$, by the following calculation.
+
+\medskip\noindent\textbf{Theorem (odd characteristic).}
+If $q$ is odd, the nonzero elements divisible by no square of a nonunit
+form an admissible set of natural density
+\begin{equation}
+ \prod_{P\ \mathrm{monic\ irreducible}}
+ \bigl(1-z_P^{b+1}+z_P^{b+2}-z_P^{2b+1}\bigr)
+ \ \ge\ 1-q^{-b},
+ \quad z_P=q^{-\deg P}.
+ \label{eq:local-ring-odd}
+\end{equation}
+
+\smallskip\noindent\emph{Proof.}
+Every forbidden triple ends at a multiple of a nonunit square. Discard
+the tuples with $f_0=0$ temporarily, a set of proportion $q^{-(n+1)}$.
+We claim the nonzero scalar part $f_0$ of an endpoint forces at least one
+prime $P$ to satisfy one of the following two mutually exclusive conditions:
+\[
+\begin{array}{ll}
+ v_P(f_0)=2, &P\mid f_i\quad(1\le i<b),\\
+ v_P(f_0)\ge3, &P^2\mid f_i\quad(1\le i<b).
+\end{array}
+\]
+Conversely either condition suffices for square divisibility. To see
+necessity write $f=(a,c)^2(h_0,h)=(a^2h_0,a^2h+2ach_0)$
+and take $P\mid a$. All nilpotent coordinates are multiples of $P$.
+If $v_P(a^2 h_0)\ge3$, either $P^2\mid a$ or $P\mid h_0$,
+and all are multiples of $P^2$. To prove sufficiency in the second
+case divide by the pure square $P^2$. In the first case set
+$h_0=f_0/P^2$. Since both $2$ and $h_0$ are invertible modulo $P$,
+choose $c_i$ solving $2c_i h_0\equiv f_i/P\pmod P$. Then
+$h_i=(f_i-2Pc_i h_0)/P^2$ is a polynomial for each $i$ and
+$f=(P,c)^2(h_0,h)$.
+
+For fixed $P$, uniform residues of independent polynomial coordinates
+modulo $P^3$ give total local obstruction probability
+$(z_P^2-z_P^3)z_P^{b-1}+z_P^3 z_P^{2(b-1)}$.
+The Chinese remainder theorem gives independence for any finite set of
+primes once $n$ is sufficiently large. For nonzero $f_0$ an obstruction
+with $\deg P=d$ requires $2d\le n$, and has probability at most
+$q^{-(b+1)d}$ because it needs $P^2\mid f_0$ and $P\mid f_i$ for all
+$i>0$. Thus the omitted large primes have total probability at most
+$\sum_{d>D} q^{-bd}$, tending to zero uniformly in $n$.
+This gives the product. Since $2b+1\ge b+2$ for $b\ge1$, every
+factor is at least $1-z_P^{b+1}$. Their product is $1-q^{-b}$ by
+unique factorization.\hfill$\square$
+
+These bounds answer Question~6.5 for an infinite family of finite local
+rings. They give both density extrema for endpoint-pair avoidance in characteristic two, and the even
+case determines the leading asymptotic of the optimal deficit. The
+exact triple-avoidance optimum even for the dual numbers over
+$\mathbb F_2$, and comparable results for general finite coefficient
+rings remain undetermined here.

@@ -1,0 +1,116 @@
+\subsection*{A larger certified gain using pairs of primes}
+
+For the integer problem a refinement gives the absolute lower bound
+\[
+                         d(E)-d(G)>10^{-728}.
+\]
+Use the same base-nine split and pivot prime $2$. Write $D=\{0,1,3,4\}$
+for the old low digits. The spokes are the $265$ odd primes through
+$1699$. Every new low vector has pivot $2$, with spoke digits $1$ or
+$2$. Include the vector with all spoke digits $1$, all vectors with
+one spoke digit $2$, and some vectors with two spoke digits $2$. The
+selection of pairs is specified below.
+
+For an old low vector, call a spoke active if its digit differs from
+$1$. Delete precisely the following old vectors, with $a\in D$ the
+pivot digit.
+\begin{itemize}
+\item With no active spoke, delete the vector if $a\in\{1,3,4\}$.
+\item With one active spoke, delete its vector if the spoke digit
+is $4$, or if it is $3$ and $a\ne0$.
+\item With two active spokes $p<r$, delete their vector if $\{p,r\}$
+is selected and their ordered digits belong to
+$\{3,4\}\times\{3,4\}$ or equal $(0,4)$. In this line the selection
+condition applies to both alternatives.
+\end{itemize}
+Keep every remaining old vector.
+
+\paragraph{A finite proof of avoidance.}
+Two new vectors in a putative progression force the third pivot to be
+$2$, and the cube $\{1,2\}^{266}$ contains only constant progressions.
+If there is just one new vector, every spoke where it has digit $1$ must
+also be $1$ at both old points, since $D$ has no nonconstant arithmetic
+progression. It suffices to check the pivot and the $k=0,1,2$ spokes
+where the new vector equals $2$. For $k=2$ that pair qualifies for the
+two-spoke deletion rule because its new vector was selected. Write $R$
+for the test in the three bullets on these ordered coordinates, with
+the pair considered selected. For each $v\in D^{k+1}$ form
+\[
+                  u=4\mathbf{1}-v
+             \quad\text{and}\quad
+                  u=2v-2\mathbf{1}.
+\]
+Retain $\{u,v\}$ when $u\in D^{k+1}$. The first choice treats
+$2\mathbf{1}$ as the middle, the second as an endpoint with old
+middle $v$. The numbers of distinct unordered pairs are respectively
+$4,12,40$ for $k=0,1,2$. In every pair $R(u)$ or $R(v)$ holds.
+This last finite identity is verified by the loops in
+\texttt{check\_spoke\_pairs.py}. At most $4^3$ values of $v$ occur in
+one case. This exhausts all signed progressions with one new point.
+All-old progressions were already excluded. The base-nine lifting
+preserves this conclusion since each digit sum and each doubled digit
+is at most eight.
+
+\paragraph{Selecting and pricing each pair.}
+Divide the low-digit weights by the weight of the all-ones vector.
+Summing over the four possible old pivot digits gives the multiplier
+$2+1+1/4+1/8=27/8$. For $p<r$ the net contribution of selecting the
+pair is
+\[
+ J(p,r)=\frac1{2pr}
+ -\frac{27}{8}\left[
+       (p^{-2}+p^{-3})(r^{-2}+r^{-3})+\frac{p}{r^3}\right].
+\]
+The last term inside the brackets is the weight of digits $(0,4)$.
+Select exactly the pairs with $J(p,r)>0$. Their additions and
+deletions have distinct active spoke sets, so their contributions add
+without overlaps. The complete normalized gain is
+\[
+ B=-\frac78+
+ \sum_{3\le p\le1699}\left(\frac1{2p}
+                   -\frac{11}{8p^2}-\frac{27}{8p^3}\right)
+             +\sum_{3\le p<r\le1699}\max\{0,J(p,r)\},
+\]
+where the indices in both sums are primes. Here $11/8$ is the sum of
+the normalized weights of pivot digits $1,3,4$, which are the three
+pivot values deleted when the single active spoke has digit $3$.
+
+The integer checker finds $15{,}693$ selected pairs. It bounds $B$ from
+below by rounding every summand down to a multiple of $10^{-15}$ and
+obtains
+\[
+                          B\ge\frac{73099512201}{10^{15}}.
+\]
+For independent reproduction,
+$8p^3r^3 J(p,r)=4p^2r^2-27((p+1)(r+1)+p^4)$. Put $P=\prod_{p\le1699}p$. The low-block weight
+normalization including the geometric prefactors is $\varphi(P)/P^2$.
+The independent higher-digit weights contribute
+$\prod_{p\mid P}\sum_{h\in\Ag}p^{-9h}\ge1$. The outside greedy
+density is at least $1/\zeta(2)>1/2$. Finally the checker verifies
+the integer comparison
+\[
+       73099512201\,\varphi(P)\,10^{728}>2\cdot10^{15} P^2.
+\]
+Multiplying these bounds gives the claimed improvement in natural
+density. No floating-point arithmetic enters the certificate.
+
+\paragraph{The actual size of the exchange.}
+Let $\eta=(d(E)-d(G))/d(G)$. The identity
+$H(w)=(1+w)(1+w^3)H(w^9)$ cancels both the outside factors and all high-digit factors when dividing \eqref{eq:delta} by $d(G)$. Thus the \emph{relative} increase is an exact rational number,
+\[
+ \eta=B\prod_{p\le1699}\frac{p^3}{(p+1)(p^3+1)} .
+\]
+Computing $B$ from the displayed finite sum as a rational gives
+$2.185320021572<10^{727}\eta<2.185320021573$.
+We also certify
+\begin{equation}\label{eq:numericgain}
+              1.5728 <10^{727}\bigl(d(E)-d(G)\bigr)< 1.5730 .
+\end{equation}
+For the absolute interval, take $T=100000$ and multiply the factors
+$(1-p^{-1})(1+p^{-1})(1+p^{-3})(1+p^{-9})$ for $p\le T$.
+This retains the first three ternary positions. Relative to this truncated probability, the true $d(G)$ can be lower by at most
+$\sum_{n>T}n^{-2}\le1/T$, or higher by at most
+$\sum_{n\ge2}n^{-27}\le 2^{-27}+2^{-26}/26$.
+The checker bounds the truncated probability by rounding each product outwards to $18$ decimal places. It tests both ends of \eqref{eq:numericgain} by rational comparisons. This completes Theorem~\ref{th:main}.
+
+For an example of the actual rule, let $P$ be the primorial through $1699$. The exchange drops $P$ and admits $2P$, $2pP$ for each spoke, and $2prP$ for each selected pair. The high digits and primes outside the finite list supply all the other integers represented by these patterns. The change in membership therefore has a genuine limiting density even though the numerical gain is exceptionally small.

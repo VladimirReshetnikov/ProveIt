@@ -1,0 +1,135 @@
+% Standalone section fragment. Mathematical proofs; not Lean formalization.
+\section{Scalar inertia is a substantive transfer hypothesis}
+
+The source's \texttt{SelmerDatum} is not an arbitrary Selmer representation.
+Besides a finite global congruence term, it requires an element $\gamma$ in
+inertia at a place away from $\ell$ such that both $\rho(\gamma)$ and
+$\rho(\gamma^{-c})$ are the scalar $\zeta I$, with $\zeta^2-1$ a unit.
+See \texttt{New/Congruences/Selmer/SelmerData.lean}, the fields
+\texttt{gamma\_mem\_inertiaAbove}, \texttt{rho\_eq\_smul\_one}, and
+\texttt{isUnit\_sq\_sub\_one} (the first two identifiers are written with
+Greek letters in the Lean source). The following tests are elementary
+consequences of that requirement, not new conjectures about Selmer groups.
+
+\begin{proposition}[Rank and determinant obstruction]
+Let $\mathcal O$ be a discrete valuation ring of residue characteristic
+$\ell$, with fraction field of characteristic zero, and let
+$\rho:G\longrightarrow\mathrm{GL}_n(\mathcal O)$, $n>0$.
+Let $I\subseteq G$ be a subgroup on which $\det\rho$ is trivial. Write
+$n=\ell^a n_0$ with $\gcd(n_0,\ell)=1$.
+If $n_0\in\{1,2\}$, there is no $\gamma\in I$ for which
+$\rho(\gamma)=\zeta I_n$ and $\zeta^2-1\in\mathcal O^\times$.
+\end{proposition}
+\begin{proof}
+Taking determinants gives $\zeta^n=1$, so $\zeta$ is a unit. In the residue
+field $k$,
+\[
+  (\bar\zeta^{n_0}-1)^{\ell^a}
+       =\bar\zeta^{\ell^a n_0}-1=0.
+\]
+As $k$ is a field, $\bar\zeta^{n_0}=1$. If $n_0$ is $1$ or $2$, this
+implies $\bar\zeta^2=1$. Thus $\zeta^2-1$ lies in the maximal ideal and is
+not a unit.
+\end{proof}
+
+This applies whenever the determinant of the representation is unramified
+at every finite place away from $\ell$, taking $I$ to be any of those
+inertia groups. It is a necessary test, not a sufficient criterion for a
+\texttt{SelmerDatum} to exist. For example, it rules out all ranks $1$ and
+$2$, and ranks $\ell^a$ and $2\ell^a$, with such determinant. The hypothesis
+on the determinant matters: adjoining a ramified scalar character changes
+it and can remove this particular obstruction.
+Such a preliminary character must have suitable nontrivial residual
+order. The source's own $\ell$-power-order twists reduce to $1$ in
+residue characteristic $\ell$, so those twists alone cannot turn
+$\bar\zeta^2=1$ into $\bar\zeta^2\ne1$. Tensoring by a scalar also
+cannot turn a nonscalar inertia matrix into a scalar one.
+
+\begin{lemma}[Scalars on symmetric powers]
+Let $F$ be a field of characteristic zero, let $A\in\mathrm{GL}_2(F)$,
+and let $r\geq1$. If $\mathrm{Sym}^r(A)$ is a scalar matrix, then $A$
+is a scalar matrix. Consequently, if also $\det A=1$, then
+$\mathrm{Sym}^r(A)$ is $I$ or $-I$.
+\end{lemma}
+\begin{proof}
+Extend scalars to an algebraic closure. If $\lambda,\mu$ are the eigenvalues
+of $A$, then $\lambda^r$ and $\lambda^{r-1}\mu$ occur among the eigenvalues
+of $\mathrm{Sym}^r(A)$. They are equal, so $\lambda=\mu\neq0$.
+If $A$ were not scalar, a Jordan basis would give
+$Ae_1=\lambda e_1$ and $Ae_2=\lambda(e_2+u e_1)$, with $u\neq0$.
+On the symmetric monomial $e_1^{r-1}e_2$, its action would then be
+\[
+ \lambda^r(e_1^{r-1}e_2+u e_1^r),
+\]
+which is not scalar. Hence $A=\lambda I$. The determinant condition gives
+$\lambda^2=1$, and the final assertion follows.
+\end{proof}
+
+\begin{corollary}[All positive symmetric powers]
+Let $V$ be a two-dimensional $\ell$-adic representation whose determinant
+is trivial on inertia away from $\ell$. For every $r\geq1$ and every
+integer $t$, no stable lattice in
+$\mathrm{Sym}^r(V)\otimes\chi_\ell^t$ can directly be a
+\texttt{SelmerDatum} with those inertia groups.
+\end{corollary}
+\begin{proof}
+The cyclotomic character is trivial on inertia away from $\ell$. If an
+inertia element acts as $\zeta I$ on the indicated symmetric power, the
+lemma gives $\zeta=\pm1$. Thus $\zeta^2-1=0$, contradicting the unit
+condition. The argument takes place over the fraction field and so is
+independent of the stable lattice.
+\end{proof}
+
+No hypothesis of semistability, tame ramification, diagonalizability, or
+finite inertia image was used. In particular, wild inertia and nontrivial
+unipotent matrices are covered by the Jordan argument. For an elliptic
+curve, the Weil pairing~\cite{milne} gives $\det V_\ell=\chi_\ell$, so the corollary
+applies to its positive symmetric powers and all Tate twists. This
+includes cases in which the preceding rank test alone does not apply.
+
+\paragraph{Interaction with the global obstruction.}
+Suppose in addition that $V$ is a two-dimensional representation of
+$G_{\mathbb Q}$ with determinant $\chi_\ell$, restricted to a CM field.
+Conjugation by complex conjugation is an inner operation on the
+representation, and $V^\vee\simeq V\otimes\chi_\ell^{-1}$. Therefore, for
+$W=\mathrm{Sym}^r(V)\otimes\chi_\ell^t$, its conjugate Tate dual is
+\[
+ D(W):=(W^c)^\vee(1)
+       \simeq\mathrm{Sym}^r(V)\otimes\chi_\ell^{1-r-t}.
+\]
+For odd $r$ and $t=(1-r)/2$, one has $D(W)\simeq W$. Thus these central
+normalizations also fail the finite-global-congruence-term hypothesis.
+A preliminary ramified anticyclotomic character with suitable prime-to-$\ell$
+residual order can sometimes remove the scalar-inertia obstruction,
+subject to its existence and local conditions; the source's
+$\ell$-power-order twists cannot. Every anticyclotomic twist nevertheless
+preserves $D(W)\simeq W$, since
+$D(W\otimes\psi)\simeq D(W)\otimes\psi$ when $\psi^c=\psi^{-1}$.
+Accordingly, anticyclotomic pre-twisting does not repair both problems.
+For even symmetric powers the displayed integral central normalization is
+unavailable; one must not claim this particular self-duality obstruction
+solely from the rank-two origin.
+
+\paragraph{Why the source avoids the global obstruction.}
+The source's main summands obey, on traces,
+\[
+ \rho^c\simeq\rho^\vee\otimes
+       \chi_\ell^{-(t-1)_{\mathbb N}},\qquad
+ D(\rho)\simeq\rho\otimes
+       \chi_\ell^{(t-1)_{\mathbb N}+1}.
+\]
+The subscript denotes truncated natural-number subtraction, as used in
+Lean. The shift is positive even when $t=0$. At the scalar Frobenius
+selected by the source, the annihilator of the conjugate-dual Hom module
+is
+\[
+ \alpha\bigl(1-p^{n((t-1)_{\mathbb N}+1)}\bigr).
+\]
+This is nonzero and has a valuation bound supplied by the chosen finite
+linear groups. The exact implementation is
+\sourcepath{IsMainSummandLike.normLength_congruenceTerm_le} in
+\sourcepath{New/Congruences/Selmer/MainSummands.lean}; the elementary
+annihilator estimate is \sourcepath{congruenceTerm_le} in
+\sourcepath{SelmerData.lean}. Replacing the source by a central self-dual
+representation sets the analogous scalar difference to zero, so this
+bound becomes infinite instead of small.

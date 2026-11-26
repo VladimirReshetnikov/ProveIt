@@ -1,0 +1,351 @@
+\section{Exact torsion costs over wild radical coefficient fields}
+\label{sec:false-tate}
+
+The repository's
+\texttt{exists\_rootOfUnity\_eval\_le\_gaussVal\_add}
+chooses a root of unity at which an integral polynomial does not gain
+much valuation. It is a quantitative ingredient in the construction of
+arithmetic twists, rather than a consequence of RH.
+The earlier graph-tower report treats the coefficient field
+$\mathbb Q_3(3^{1/3})$ in its supplement \texttt{wild-cubic.tex}
+\cite{priorGraph}. We extend that calculation to every odd prime and
+every pure degree-$p$ radical with Eisenstein defining polynomial.
+The result determines an exact local obstruction, including all strict
+endpoints and simultaneous polynomials with different witnesses.
+It does not construct the global Galois characters needed for a new
+nonabelian RH proof.
+
+\subsection{Statement and examples}
+Let $p$ be an odd prime, let $u\in\mathbb Z_p^\times$, and put
+\[
+ K=\mathbb Q_p(\pi),\qquad \pi^p=pu.
+\]
+Normalize the valuation on an algebraic closure by $v(p)=1$ and set
+$v(0)=+\infty$. For $h\ge1$ write
+\[
+ N_h=(p-1)p^{h-1},\quad r_h=N_h^{-1},\quad
+ Z_h=\{\zeta-1:\operatorname{ord}(\zeta)=p^h\}.
+\]
+Fix a finite nonempty set $S$ of positive integers, a radius
+$\rho\ge\max_{h\in S}r_h$, and a tolerance $\epsilon\ge0$.
+A packet consists of nonzero integral polynomials $F_i\in\mathcal O_K[T]$
+and witnesses $x_i$ with $v(x_i)\ge\rho$ and
+$t_i=v(F_i(x_i))<\infty$. Its cost and loss at $z$ are
+\[
+ B=\sum_i t_i,\qquad
+ \mathcal L(z)=\sum_i\max\{0,v(F_i(z))-t_i\}.
+\]
+Different polynomials may have different witnesses. A packet blocks $S$
+if $\mathcal L(z)>\epsilon$ for every $z\in\bigcup_{h\in S}Z_h$.
+Let $C_K(S,\epsilon)$ be the least cost of a blocking packet.
+
+\begin{theorem}[Exact wild-radical obstruction]\label{thm:false-tate-cost}
+For $h\ge2$ put
+\[
+ \delta_{p,h}=\frac1{p-1}-\frac{2p-1}{pN_h}>0,
+ \qquad
+ c_{p,h}(\epsilon)=
+ \min\left\{1,\frac{\lfloor\epsilon/\delta_{p,h}\rfloor+1}{p}\right\},
+\]
+and put $c_{p,1}(\epsilon)=1$. Then
+\begin{equation}\label{eq:false-tate-cost}
+ \boxed{\ C_K(S,\epsilon)=\sum_{h\in S}c_{p,h}(\epsilon).\ }
+\end{equation}
+The minimum is attained by polynomials with witness zero. Consequently,
+if a packet has cost strictly below the right side, some allowed torsion
+point satisfies $\mathcal L(z)\le\epsilon$. The strict budget inequality
+is necessary. The answer is independent of the unit $u$ and of $\rho$
+within the stated range. It remains unchanged for bounded integral
+formal power series $F_i\in\mathcal O_K[[T]]$.
+\end{theorem}
+
+For one shell the cost is $k/p$ when
+$(k-1)\delta_{p,h}\le\epsilon<k\delta_{p,h}$, for
+$1\le k\le p-1$, and is $1$ when
+$\epsilon\ge(p-1)\delta_{p,h}$. In particular,
+$\delta_{p,2}=(p-1)/p^2$. At $p=5$, $h=2$, this is the explicit staircase
+\[
+\begin{array}{c|ccccc}
+\epsilon &[0,4/25)&[4/25,8/25)&[8/25,12/25)&[12/25,16/25)&[16/25,\infty)\\\hline
+C_K(\{2\},\epsilon)&1/5&2/5&3/5&4/5&1
+\end{array}
+\]
+At $p=3$ the theorem recovers the predecessor's thresholds
+$\delta_{3,h}=1/2-5/(3N_h)$. Thus that special case is inherited;
+the general odd-prime and unit-uniform statement is the extension proved
+here. For any fixed $p$ the whole tolerance profile changes at every
+conductor because $\delta_{p,h}$ increases strictly to $1/(p-1)$.
+For each fixed $\epsilon$, however, its value is eventually
+\[
+ \min\left\{1,\frac{\lfloor(p-1)\epsilon\rfloor+1}{p}\right\}.
+\]
+
+\subsection{The degree-exact approximation theorem}
+The main arithmetic step determines every monic degree, not merely the
+first degree at which a good approximation exists.
+
+\begin{theorem}[Best monic approximation]\label{thm:false-tate-approx}
+Fix $h\ge2$, put $N=N_h$, $n=N/p$, and choose $\alpha\in Z_h$.
+For every $0\le m<N$,
+\begin{equation}\label{eq:false-tate-approx}
+ \max_{\substack{P\in\mathcal O_K[T]\text{ monic}\\\deg P=m}}
+ v(P(\alpha))
+ =\frac mN+\left\lfloor\frac mn\right\rfloor\delta_{p,h}.
+\end{equation}
+One monic polynomial $B$ of degree $n$ attains all these maxima:
+for $m=kn+j$, $0\le j<n$, $0\le k<p$, use $T^jB(T)^k$.
+Every root of $B$ has valuation $1/N$, and
+\[
+ v(B(0))=\frac1p,\qquad
+ v(B(\alpha))=\frac1p+\delta_{p,h}
+ =\frac{(2p-1)(p^{h-1}-1)}{pN}.
+\]
+The valuations are the same at every $\alpha\in Z_h$.
+For $h=1$, the maximum in degree $0\le m<N_1$ is simply $m/N_1$.
+\end{theorem}
+
+\begin{proof}
+We give the ramification and integral-basis calculation explicitly.
+These are classical local-field tools; related radical-cyclotomic
+ramification calculations appear in Viviani \cite{Viviani}, and explicit
+uniformizers for $u=1$ in Wang--Yuan \cite{WangYuan}.
+
+Write $C_j=\mathbb Q_p(\zeta_{p^j})$ and $E_j=KC_j$.
+The extension $K/\mathbb Q_p$ is totally ramified of degree $p$, with
+integer ring $\mathbb Z_p[\pi]$ and different exponent $2p-1$,
+since the derivative at $\pi$ is $p\pi^{p-1}$.
+It is not Galois: normality would put $\zeta_p$ in a field of degree $p$,
+whereas $[\mathbb Q_p(\zeta_p):\mathbb Q_p]=p-1$.
+
+The degree-$p$ extension $E_1/C_1$ is cyclic. The coprime ramification
+indices $p$ and $p-1$ show that $E_1/\mathbb Q_p$ is totally ramified
+of degree $p(p-1)$. The element
+\[
+ w=(\zeta_p-1)/\pi
+\]
+has valuation $1/[p(p-1)]$ and is a uniformizer. A nonidentity element
+of $\operatorname{Gal}(E_1/C_1)$ multiplies $w$ by a nontrivial
+$p$th root of unity, so the normalized valuation of its difference
+from $w$ is $p+1$. Thus the unique lower and upper ramification break
+of $E_1/C_1$ is $p$.
+
+The cyclotomic extension $C_h/C_1$ has upper breaks
+\[
+ p-1,\ 2(p-1),\ldots,(h-1)(p-1).
+\]
+For example, its lower breaks are $p^k-1$: if
+$v_p(a-1)=k$, the automorphism $\zeta\mapsto\zeta^a$ moves the
+uniformizer $\zeta-1$ by an element of normalized valuation $p^k$.
+Integrating the reciprocal successive indices gives the asserted upper
+breaks. The extensions $E_1/C_1$ and $C_h/C_1$ are Galois and linearly
+disjoint. Their intersection, of degree dividing $p$, could otherwise
+only be $E_1$, which would imply $K\subset C_h$, contrary to
+non-Galoisness of $K$ and the abelian nature of $C_h/\mathbb Q_p$.
+This proves $[E_h:\mathbb Q_p]=pN$ and $[E_h:K]=N$.
+
+For clarity, total ramification of the compositum is not inferred merely
+from total ramification of its two factors. In its abelian group over
+$C_1$, a character from the $E_1$ factor has break $p$; nontrivial
+characters from the other factor have breaks that are multiples of
+$p-1$. These never coincide for odd $p$. The product of two characters
+with unequal breaks has their larger break. Consequently no nontrivial
+character of the compositum is unramified, proving total ramification
+and the product rule for its upper filtration.
+
+For $h\ge2$ the upper-to-lower map sends $p$ to
+\[
+ (p-1)+p\bigl(p-(p-1)\bigr)=2p-1.
+\]
+Here the group index is one up to $p-1$ and is $p$ from $p-1$ to $p$.
+Lower ramification groups intersect with subgroups, so the cyclic
+extension $E_h/C_h$ has its sole lower break at $2p-1$.
+Its different exponent is therefore $2p(p-1)$.
+
+Let $d_C$ denote the different exponent of $C_h/\mathbb Q_p$.
+The shifted cyclotomic polynomial is Eisenstein over $\mathbb Q_p$,
+and $\mathbb Z_p[\alpha]=\mathcal O_{C_h}$. Its degree remains $N$
+over $K$, so the discriminant of the power-basis order
+$\mathcal O_K[\alpha]$ has valuation $p d_C$ in $K$.
+Transitivity of the different through $C_h$ and through $K$ gives
+\[
+ d(E_h/K)=2p(p-1)+p d_C-(2p-1)N.
+\]
+All the relevant residue degrees are one. The discriminant-index
+formula consequently yields
+\begin{equation}\label{eq:false-tate-index}
+ I:=\operatorname{length}_{\mathcal O_K}
+     (\mathcal O_{E_h}/\mathcal O_K[\alpha])
+ =\frac{(2p-1)N-2p(p-1)}2.
+\end{equation}
+
+Choose a monic degree-$n$ polynomial $B$ maximizing
+$b=v(B(\alpha))$. Such a maximum exists: its lower coefficients range
+in the compact set $\mathcal O_K^n$, and the evaluation map has compact
+image not containing zero because $\alpha$ has degree $N>n$ over $K$.
+The trial polynomial $T^n$ gives $b\ge1/p$.
+We claim that $b\notin N^{-1}\mathbb Z$.
+If it were, write
+\[
+ b=j/N+t/p,\qquad 0\le j<n,\quad t\ge1.
+\]
+Both $B(\alpha)$ and $\pi^t\alpha^j$ have this valuation. Since
+$E_h$ and $K$ have residue field $\mathbb F_p$, some unit of
+$\mathcal O_K$ cancels their initial residue. Subtracting its multiple
+of $\pi^tT^j$ from $B$ gives a better monic integral polynomial of
+the same degree, a contradiction.
+
+The $N$ elements
+\[
+ w_{jk}=\alpha^jB(\alpha)^k,
+ \qquad 0\le j<n,\quad 0\le k<p,
+\]
+form an $\mathcal O_K$-basis of $\mathcal O_K[\alpha]$, by triangularity
+in their distinct degrees $kn+j$. Their valuations are pairwise
+incongruent modulo $p^{-1}\mathbb Z$. Indeed $b$ has order $p$ in
+$(pN)^{-1}\mathbb Z/N^{-1}\mathbb Z$, so equality of two such classes
+first forces equality of $k$ and then of $j$.
+Every nonzero $K$-linear combination therefore has valuation equal
+to its uniquely least term.
+
+It follows that
+$w_{jk}/\pi^{\lfloor p v(w_{jk})\rfloor}$ form an integral basis
+of $E_h/K$: their valuations are distinct in $[0,1/p)$, so a linear
+combination is integral exactly when all its coefficients are integral.
+Put $\delta=b-1/p$. The valuations in degree $m=kn+j$ are
+$m/N+k\delta$. Their fractional parts after multiplication by $p$
+are precisely $0,1/N,\ldots,(N-1)/N$. Thus
+\begin{align*}
+ I&=\sum_{j,k}\lfloor p v(w_{jk})\rfloor\\
+  &=\frac{(p-1)(N-1)}2+
+       \frac{pN(p-1)}2\,\delta.
+\end{align*}
+Comparison with \eqref{eq:false-tate-index} gives
+\[
+ \delta=\frac1{p-1}-\frac{2p-1}{pN}.
+\]
+In the monic triangular basis $T^jB^k$, every monic degree-$m$
+polynomial has coefficient one at its leading basis element.
+The no-cancellation property bounds its valuation by that leading
+basis value, and the basis element itself attains it. This proves
+\eqref{eq:false-tate-approx}.
+
+We still need the assertion about the roots of $B$, because it is
+what makes the obstruction cost exactly $1/p$. Collect its roots of
+valuation $r=1/N$ into a monic factor $P$ of degree $a$. The factor
+lies in $K[T]$ since the valuation is Galois invariant, and is integral.
+Every other root contributes at most $r$ to $v(B(\alpha))$.
+If $a<n$, formula \eqref{eq:false-tate-approx} in degree $a$ gives
+$v(P(\alpha))\le a/N$. It would follow that
+$v(B(\alpha))\le n/N$, contrary to $\delta>0$.
+Therefore all roots have valuation $r$, and $v(B(0))=n/N=1/p$.
+The equality of valuations over the whole shell follows from
+$\operatorname{Gal}(E_h/K)$ acting transitively on the conjugates of
+$\alpha$ and preserving the valuation.
+
+Finally, at $h=1$ the values $v(a_j)+j/(p-1)$ of distinct nonzero
+coefficient terms of degree below $p-1$ are incongruent modulo
+$p^{-1}\mathbb Z$, since $p$ and $p-1$ are coprime. A monic polynomial
+of degree $m<p-1$ therefore cannot exceed $m/(p-1)$ in valuation.
+The monomial attains it.
+\end{proof}
+
+\subsection{From monic approximation to arbitrary packets}
+\begin{proof}[Proof of Theorem~\ref{thm:false-tate-cost}]
+For $F=\sum a_jT^j$ let
+$G_s(F)=\min_j\{v(a_j)+js\}$. Factoring over an algebraic closure gives
+\[
+ G_s(F)=v(a_{\deg F})+\sum_{F(\beta)=0}\min\{s,v(\beta)\},
+\]
+with multiplicities. Fix a shell of radius $r=1/N$, and let $P_i$
+collect exactly the roots of $F_i$ having valuation $r$.
+These monic factors are integral and defined over $K$.
+Because $t_i\ge G_\rho(F_i)\ge G_r(F_i)$, and because nonmatching roots
+have $v(z-\beta)=\min\{r,v(\beta)\}$, we have
+\[
+ \max\{0,v(F_i(z))-t_i\}
+ \le\sum_{P_i(\beta)=0}\bigl(v(z-\beta)-r\bigr).
+\]
+Every summand on the right is nonnegative. For $P=\prod_iP_i$,
+$m=\deg P$, this proves
+\begin{equation}\label{eq:false-tate-loss}
+ \mathcal L(z)\le v(P(z))-m/N.
+\end{equation}
+Moreover, matching roots contribute $m/N$ to the sum of
+$G_\rho(F_i)-G_0(F_i)$, and $G_0(F_i)\ge0$; hence the packet's cost
+is at least $m/N$.
+
+For $m<N$, Theorem~\ref{thm:false-tate-approx} bounds the right side
+of \eqref{eq:false-tate-loss} by $\lfloor m/n\rfloor\delta_{p,h}$.
+The least degree that can make this exceed $\epsilon$ is $kn$, where
+$k=\lfloor\epsilon/\delta_{p,h}\rfloor+1$, provided $k<p$.
+It costs $k/p$. At degree $N$ the shifted cyclotomic polynomial
+vanishes on the whole shell and has constant term of valuation one.
+For $k<p$, the polynomial $B^k$ with witness zero has cost $k/p$
+and loss exactly $k\delta_{p,h}$. This proves the single-shell formula
+with its strict endpoints. The $h=1$ case follows from the last part
+of the approximation theorem and the same cyclotomic construction.
+
+For several shells, their matching-root multisets are disjoint.
+Applying the preceding lower bound separately and summing their
+contributions to $\sum_i(G_\rho(F_i)-G_0(F_i))$ proves the lower
+bound by the sum in \eqref{eq:false-tate-cost}.
+For attainment, take one of the optimal blocking polynomials for each
+shell as separate members of the packet, all with witness zero.
+Each polynomial has every root on its own shell. On another shell its
+valuation minus its constant-term valuation is nonpositive, so it
+contributes zero to the positive-part loss. On its own shell it gives
+the required strict loss. The costs therefore add exactly.
+
+For bounded integral power series, truncate to a sufficiently high degree
+that the omitted terms have valuation greater than
+$\sum_i t_i+\epsilon$ at every witness and every allowed torsion point.
+This is possible because all these arguments have valuation bounded
+below by a fixed positive number. The witness values remain unchanged.
+Each loss at most $\epsilon$ is unchanged, and each loss exceeding
+$\epsilon$ still exceeds it, so blocking is preserved. The polynomial
+lower bound applies, and polynomial examples already attain it.
+\end{proof}
+
+\subsection{Independent exact arithmetic and scope}
+The accompanying \texttt{check\_false\_tate.py} constructs a maximizing
+polynomial by successive residue cancellation for $u=1$. It evaluates
+$P(\zeta-1)$ using
+\[
+ \operatorname{Res}_{Y}\bigl(Y^p-p,\ P(T)\bigr)
+       \pmod{\Phi_{p^h}(1+T)},
+\]
+where the coefficients of $P$ are written as polynomials in $Y$.
+If this remainder is $\sum_{j=0}^{N-1}c_jT^j$, then
+\[
+ pN\,v(P(\alpha))=\min_{c_j\ne0}\{Nv_p(c_j)+j\}.
+\]
+The formula uses the Eisenstein power basis in $C_h$ and the degree-$p$
+norm from $E_h$; no discriminant or ramification-break formula enters
+the calculation. The checked values are
+\[
+\begin{array}{c|r|r|c|r}
+(p,h)&N&\deg B&\delta_{p,h}&pN\,v(B(\alpha))\\\hline
+(3,2)&6&2&2/9&10\\
+(3,3)&18&6&11/27&40\\
+(3,4)&54&18&38/81&130\\
+(5,2)&20&4&4/25&36\\
+(5,3)&100&20&29/125&216\\
+(7,2)&42&6&6/49&78
+\end{array}
+\]
+The JSON certificate records every coefficient and cancellation step,
+and verifies that the resulting monic basis has distinct valuation
+classes. These are exact finite checks, not a proof by experimental
+extrapolation; the all-prime and all-conductor proof is above.
+
+The radical-cyclotomic extensions themselves and their ramification
+are classical \cite{Viviani,WangYuan}. The integral-basis viewpoint
+belongs to the established theory of higher Newton polygons and
+reduced bases \cite{GMN}. The contribution relative to the supplied
+reports is the general formula for the strict simultaneous-loss
+optimization over all odd-prime radical coefficient fields.
+A search of the cited primary literature did not establish publication
+priority for that optimization, so it should not be described as a
+new named conjecture being settled. Its practical use is an exact
+local budget for candidate twist families; global realization,
+Selmer comparison, and prime-sum estimates remain separate problems.

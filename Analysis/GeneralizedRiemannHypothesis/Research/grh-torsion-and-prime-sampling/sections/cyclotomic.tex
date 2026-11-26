@@ -1,0 +1,30 @@
+\subsection*{An exact formula over a cyclotomic coefficient field}
+Fix $s\ge1$, a compatible system of primitive roots $\xi_h$ with $\xi_{h+1}^p=\xi_h$, and the coefficient field $K_s=\mathbf Q_p(\xi_s)$. Its absolute ramification index is $N_s$. On an arbitrarily high shell, a packet over this field has precisely the same optimum as a packet on shell $s$.
+
+\begin{theorem}[Descent to the coefficient level]\label{thm:descent}
+For packets with coefficients in $\mathcal O_{K_s}$, the exact minimum witness budget needed to block the entire interval $[h_0,H]$ at tolerance $\delta\ge0$ is
+\[
+       \sum_{h=h_0}^H a_{\min(h,s)}(\delta),
+       \qquad a_j(\delta)=m_j/N_j .
+\]
+For $h_0\ge s$ the least guaranteed order exponent is exactly
+\[
+        h_0+\left\lfloor B/a_s(\delta)\right\rfloor .
+\]
+\end{theorem}
+\begin{proof}
+For $h\le s$ both the lower bound and the optimizing linear factors of Theorem~\ref{thm:exact-obstruction} already apply. Suppose $h>s$. Partition all roots of valuation $r_h$ in the packet into conjugacy orbits over $K_s$, repeated according to multiplicity. If an orbit has degree $d$, its norm valuation $d/N_h$ lies in $N_s^{-1}\mathbf Z$, so $u=dN_s/N_h$ is a positive integer.
+
+Pick a member $\alpha$ and a nearest point $\xi_h^b-1$. Every automorphism fixing $K_s$ acts on $\xi_h$ by an exponent congruent to $1$ modulo $p^s$. Consequently each root in that orbit has a nearest point whose exponent is congruent to $b$ modulo $p^s$. Ties cause no problem: one conjugating automorphism can be chosen for each member. Assign $u$ marks to the single unit class $b\bmod p^s$. If a test class $a\bmod p^s$ is unmarked, its $p$-adic distance in exponent from each of the nearest exponents for this orbit is given by the same $k=v_p(a-b)<s$. At every lift of $a$ to shell $h$, this orbit contributes to the upper bound for the loss at most
+\[
+             d\,\frac{p^k-1}{N_h}=u\,\frac{p^k-1}{N_s}.
+\]
+Write $U=\sum u$. The actual root budget on shell $h$ is $\sum d/N_h=U/N_s$. If $U<m_s\le N_s$, the least-occupied path on shell $s$ supplies an unmarked class with total loss at most $S_s(U)\le\delta$ at every lift. Thus blocking requires a cost at least $a_s$ on each shell $h>s$.
+
+Conversely choose the first $m_s$ positive unit exponents $b$ at level $s$. At level $h>s$ take one polynomial for each such $b$,
+\[
+            F_{h,b}(T)=(1+T)^{p^{h-s}}-\xi_s^b.
+\]
+Its roots are exactly the $\xi_h^c-1$ with $c\equiv b\pmod {p^s}$. Its value at the origin and its Gauss baseline both have valuation $r_s$. At $T=\xi_h^a-1$, its value is $\xi_s^a-\xi_s^b$. Hence the entire loss profile at level $s$ pulls back to level $h$. Values on all other shells have zero positive excess by the root factorization. Combining these polynomials with the linear constructions below level $s$ realizes the formula with a common witness $0$. The last assertion follows from strict budget crossing.
+\end{proof}
+For example, take $p=2$, $s=3$ and $\delta=1/4$. At every $h\ge3$ the exact price of blocking the shell over $\mathbf Q_2(\zeta_8)$ is $a_3=1/2$. A field that already contains all $2^h$-th roots permits the smaller costs in the preceding table as $h$ grows. This identifies exactly where extra coefficient ramification can aid an adversarial packet.

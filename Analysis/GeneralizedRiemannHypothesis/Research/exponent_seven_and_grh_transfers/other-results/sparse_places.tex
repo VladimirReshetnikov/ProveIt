@@ -1,0 +1,215 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,booktabs,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Qzero}{q_0}
+\title{An exact obstruction for the sparse places in the Lean proof of Dirichlet GRH}
+\author{}
+\date{}
+\begin{document}
+\maketitle
+\vspace{-2em}
+\begin{abstract}
+The Lean construction of the distinguished infinite places in a cyclotomic
+tower avoids triples formed by signed powers of a prime. We determine exactly
+which primes can be admitted simultaneously. A single explicit Behrend-type
+set works for every prime for which even a singleton can work. In one instance
+we give 120 places and certify that the first obstructing prime is
+$18\,216\,708\,648\,992\,767$. The argument is finite and independent of any
+hypothesis about zeros of $L$-functions.
+\end{abstract}
+
+\section{The sparse-place problem}
+
+Fix a multiple $q_0$ of $18480$, an integer $s\ge1$, and put
+\[
+h=3^{\lfloor\log_3 s\rfloor+4},\qquad
+Q=q_0\cdot3h\cdot2^s,\qquad v=v_2(q_0),\qquad N=2^{s+v}.
+\]
+The archive identifies the place labels with $(\Z/Q\Z)^\times$. The desired
+labels reduce to $-1$ modulo $q_0$. For a prime $p$, let $M_p=Q/p^{v_p(Q)}$.
+A set $T$ is \emph{sparse at $p$} if there are no
+$x,y,z\in T$, $0<i<j<h$, and signs $\epsilon,\delta\in\{1,-1\}$ with
+\[
+y/x\equiv \epsilon p^i\pmod{M_p},\qquad
+z/x\equiv \delta p^j\pmod{M_p}.
+\]
+The entries can coincide, and the signs are independent. This is precisely
+the local condition in \texttt{New.Parameters.IsSparse}. The upstream theorem
+\texttt{Parameters.exists\_large\_isSparse} uses
+$(2hH)^n\le2^s$ and $2h(L+1)<2^s$ to obtain at least
+$H^n/(nH^2)$ sparse places for primes $p\le L$
+\cite{definition,construction}.
+
+Let $d_p$ denote the order of the class of $p$ in
+$(\Z/M_p\Z)^\times/\{\pm1\}$. Equivalently, $d_p$ is the first positive
+exponent $t$ for which $p^t\equiv\pm1\pmod{M_p}$.
+
+\begin{theorem}\label{thm}
+Let $H\ge2$, $n\ge1$, and $B=(h-1)(H-1)+1$. Assume $B^n\le2^s$.
+There is a single set $T$ of labels $-1\pmod{q_0}$ with
+\[
+|T|\ \ge\ \frac{H^n}{nH^2}
+\]
+such that, for every prime $p$, the following three conditions are equivalent:
+$T$ is sparse at $p$, some nonempty set is sparse at $p$, and $2d_p\ge h$.
+The same equivalence holds simultaneously for every prescribed collection of
+primes, with the numerical condition imposed separately on each prime.
+\end{theorem}
+
+\begin{proof}
+A prime with $2d_p<h$ obstructs any nonempty set: use $x=y=z$,
+$i=d_p$, $j=2d_p$. We construct a set for which all obstructions arise this way.
+
+Take the digit cube $\{0,\ldots,H-1\}^n$, centered at
+$c=((H-1)/2,\dots,(H-1)/2)$. All values of $\|u-c\|^2$ differ by integers,
+since $a^2-(H-1)a$ is an integer for each digit $a$. Their range has length
+at most $n(H-1)^2/4$. The most populated sphere therefore contains
+at least $H^n/(1+\lfloor n(H-1)^2/4\rfloor)\ge H^n/(nH^2)$ points.
+Encode each such $u$ by $e(u)=\sum_{k=0}^{n-1}u_k B^k$. Whenever
+\[
+j e(y)\equiv(j-i)e(x)+i e(z)\pmod{2^s},\qquad 0<i<j<h,
+\]
+the digit on either side is at most $(h-1)(H-1)=B-1$ at each position.
+Both encoded sides are at most $B^n-1<2^s$. Equality of the encoded integers
+then forces equality in every digit. The vectors satisfy
+$y=(1-i/j)x+(i/j)z$. Strict convexity of the squared norm on the sphere
+centered at $c$ forces $x=y=z$.
+
+Put $g=1+3hq_0$ and $T=\{-g^{e(u)}\bmod Q: u\text{ on the chosen sphere}\}$.
+The integer $g$ is prime to $Q$ and congruent to $1\pmod{q_0}$.
+As $v_2(g-1)=v\ge4$,
+$v_2(g^a-1)=v+v_2(a)$ for $a>0$; indeed an odd power preserves the
+valuation, and each successive squaring adds one. Hence $g$ has order $2^s$
+modulo $N$, and all these labels are distinct.
+
+For odd $p$, the divisor $N$ of $M_p$ retains both congruences of any
+forbidden triple. On $(\Z/N\Z)^\times$, send a unit $u$ to its unique signed
+representative $r(u)\in\{u,-u\}$ that is $1\pmod4$. This is a group
+homomorphism, it kills both signs, and it fixes $g$. Writing the exponents
+as $e_1,e_2,e_3$, the congruences give
+\[
+ g^{e_2-e_1}=r(p)^i,\qquad g^{e_3-e_1}=r(p)^j\pmod N.
+\]
+Raise the first relation to $j$ and the second to $i$. The order of $g$
+gives $j e_2\equiv(j-i)e_1+i e_3\pmod{2^s}$. The digit argument shows
+$e_1=e_2=e_3$. Returning to the original full modulus $M_p$, both $i$ and
+$j$ are multiples of $d_p$, so $2d_p\le j<h$.
+
+For $p=2$, every ratio of two elements of $T$ is $1$ modulo $3h$, a divisor
+of $M_2$. A forbidden triple would imply $4^i\equiv1\pmod{3h}$. The order of
+$4$ modulo $3h$ is $h$, since $v_3(4^a-1)=1+v_3(a)$ for $a>0$.
+This contradicts $i<h$. Together with the singleton observation, this also
+gives $2d_2\ge h$.
+\end{proof}
+
+\begin{corollary}\label{cut}
+The largest integer cutoff $L$ for which any nonempty set is sparse at every
+prime $p\le L$ is
+\[
+\min\{p\text{ prime}:2d_p<h\}-1.
+\]
+The same $T$ from Theorem~\ref{thm} realizes this cutoff. In particular,
+$h(L+1)\le2^{s+v+1}$ is sufficient.
+\end{corollary}
+
+\begin{proof}
+A prime $p\equiv1\pmod Q$ has $d_p=1$; such primes exist by Dirichlet's
+theorem. This proves existence of a first obstruction. For odd $p$, choose
+$a=p$ or $-p$ so that $a\equiv1\pmod4$. Its order modulo $N$ is
+$2^{\max(0,s+v-v_2(a-1))}$ by the same valuation formula.
+This order divides $d_p$. Since $2^{v_2(a-1)}\le p+1$, we have
+$d_p\ge 2^{s+v}/(p+1)$. For $p=2$ the proof of Theorem~\ref{thm} applies.
+\end{proof}
+
+\section{An exact finite instance}
+
+Take $q_0=18480$, $s=44$ and $h=2187$. Then
+\[
+ Q=2^{48}3^9\cdot5\cdot7\cdot11
+ =2\,133\,004\,707\,139\,399\,188\,480.
+\]
+The choice $s=44$ is compatible with the tower identity $2^s=m^{22}$, with
+$m=4$. This example tests the finite sparse-place lemma alone.
+With $n=3$, $H=12$ and $B=24047$ we have $B^3=13\,905\,375\,151\,823<2^{44}$.
+Exactly 120 triples $(a,b,c)\in\{0,\ldots,11\}^3$ satisfy
+\[
+ (2a-11)^2+(2b-11)^2+(2c-11)^2=131.
+\]
+The unordered triples of odd squares are $(121,9,1)$, $(81,49,1)$ and
+$(81,25,25)$. Signs and coordinate permutations give $48+48+24=120$
+labels $-g^{a+Bb+B^2c}\bmod Q$.
+
+The original sufficient numerical cutoff is $4\,021\,990\,406$, and
+Corollary~\ref{cut}'s elementary bound gives $257\,407\,386\,108$. The
+exact largest cutoff is $18\,216\,708\,648\,992\,766$. The following
+certificate proves minimality of the next prime, $p_*$.
+
+For an odd bad prime one must have $d_p\le1093$ and its projective order
+modulo $2^{48}$ divides $d_p$. This dyadic order is a power of two at most
+$1024$. Thus $p\equiv\pm1\pmod{2^{38}}$. Of the $132\,543$ integers
+at least $2$ in these two classes through $p_*$, exactly $55\,083$ are prime
+to $Q$. The primes dividing $Q$ other than $2$ all fail the two-class test.
+For each retained integer $u$, calculate its dyadic order $d_2(u)$ as in
+Corollary~\ref{cut}. Test the multiples $k$ of $d_2(u)$ through $1093$ for
+$u^k\equiv\pm1\pmod Q$. Exactly seven integers pass.
+
+\begin{center}
+\begin{tabular}{rrl}
+\toprule
+Integer & Least exponent & Certificate\\
+\midrule
+$1\,020\,346\,790\,576\,129$ &1080& divisible by $157$\\
+$2\,185\,829\,116\,018\,687$ &320& divisible by $101999$\\
+$3\,870\,280\,929\,771\,521$ &972& divisible by $1663$\\
+$6\,412\,351\,813\,189\,631$ &864& divisible by $17$\\
+$9\,399\,724\,905\,857\,023$ &768& divisible by $23$\\
+$17\,099\,604\,835\,172\,353$ &324& divisible by $13$\\
+$18\,216\,708\,648\,992\,767$ &864& Lucas certificate, base $3$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For the last integer $p_*$, the factorization of $p_*-1$ is
+$2\cdot3^6\cdot11\cdot74413\cdot15264089$. Trial division proves primality
+of the factors. The accompanying program checks that $3^{p_*-1}=1\pmod{p_*}$
+and $\gcd(3^{(p_*-1)/r}-1,p_*)=1$ for each prime factor $r$.
+These congruences give multiplicative order $p_*-1$ modulo every prime
+dividing $p_*$, proving primality. At this prime $i=864$ and $j=1728$
+obstruct even a singleton.
+
+\section{Scope}
+
+The construction of convex-position digit vectors belongs to the Behrend
+tradition. Shapira treats simultaneous systems \cite{shapira}. A previous
+ProveIt report \cite{previous} uses a digit sphere to recover the exact spectra
+of several rational progression shapes in a fixed prime field. The present
+problem has two independent signs and varies the prime-to-$p$ modulus with
+the multiplier. The exact obstruction above depends on keeping the
+sign quotient in the dyadic projection and then returning to the full
+prime-to-$p$ modulus after the three exponents coincide. It solves the
+optimal prime-cutoff question for the repository's specific sparse-place
+condition and gives a stronger quantitative input to that proof. The largest
+possible cardinality at a fixed cutoff is a separate extremal problem.
+The global Dirichlet GRH argument still has all its other quantitative
+inputs; no new zero-free theorem follows here.
+
+\begin{thebibliography}{9}
+\bibitem{definition} \texttt{lsernau/grh-lean},
+\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/New/Reduction/Data/AdmissibleData.lean}{\texttt{New/Reduction/Data/AdmissibleData.lean}},
+definition \texttt{New.Parameters.IsSparse}. Readable edition.
+\bibitem{construction} Same repository and commit,
+\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/New/Reduction/Data/Existence.lean}{\texttt{New/Reduction/Data/Existence.lean}},
+\texttt{exists\_three\_term\_free} and \texttt{Parameters.exists\_large\_isSparse},
+lines 80 and 167.
+\bibitem{previous} ProveIt, \href{https://github.com/VladimirReshetnikov/ProveIt/blob/d31039a48d963692e5a5176f47b6603fc9e9d9cf/docs/incoming/dirichlet-grh-research.zip}{\texttt{dirichlet-grh-research.zip}}, \texttt{progressions/syndetic.tex}, Theorem 1.
+\bibitem{shapira} A.~Shapira, \emph{Behrend-type constructions for sets of
+linear equations}, Acta Arith. 122 (2006), 17--33.
+\href{https://doi.org/10.4064/aa122-1-2}{doi:10.4064/aa122-1-2}.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,151 @@
+\section{A tail bound for every principal binary orthogonal kernel}
+\label{sec:binary}
+
+\subsection{The separately posed question}
+
+Vaas asks about
+\[
+ \nu(Q)=\max_{J\subseteq[n]}\dim\ker Q[J],\qquad
+ Q\text{ uniform in }\{Q\in\GL(n,\F_2):Q^{\mathsf T}Q=I\},
+\]
+including whether constants $c,\alpha>0$ can make
+$\Prob(\nu(Q)\ge cn)\ge1-2^{-\alpha n^2}$. The retrieved public page has the question and no displayed answer. We solve the proposed linear alternative negatively and give an upper bound on the scale. We do not claim that this proves the exact typical order or establishes publication priority over all random-matrix literature.\cite{vaas}
+
+Everything below uses the symmetric bilinear dot product over $\F_2$. This is important: replacing it silently with an orthogonal group attached to a quadratic form would change the problem.
+
+\subsection{A quantitative symplectic incidence lemma}
+
+\begin{lemma}[Subspaces mapped into a prescribed subspace]\label{lem:symp-incidence}
+Let $V$ be a nondegenerate symplectic space of even dimension $N$ over $\F_2$. Fix subspaces $U,T\subseteq V$ of dimensions $d,t$. Let $S$ be uniform in $\Sp(V)$. For $1\le s\le N/2$,
+\[
+ \Prob\{\exists L\subseteq U:\dim L=s,\;S L\subseteq T\}
+ \le 6\,2^{-s(N-d-t)-s(s+1)/2}.
+\]
+If $s>d$ or $s>t$, the event is empty. For $s=0$ the bound with right side $6$ also holds.
+\end{lemma}
+
+\begin{proof}
+Fix an independent ordered $s$-frame $x_1,\ldots,x_s$ spanning one candidate $L$. Its orbit consists of all independent $s$-frames with the same alternating Gram matrix. Here is the extension fact used to identify that orbit. In the span of any frame, choose a symplectic basis for a nondegenerate summand and a basis for its radical. Pair the radical basis with dual vectors in the orthogonal complement of the nondegenerate summand, adjust those vectors to make the pairs hyperbolic, and complete to a symplectic basis of $V$. An isometry between the original spans carries these choices to compatible bases. The resulting basis map extends it to all of $V$. Thus the extension fact also covers a degenerate restricted form.
+
+Suppose $i$ independent images have already been selected. The conditions
+\[
+ \langle y_j,y_{i+1}\rangle=\langle x_j,x_{i+1}\rangle
+ \quad(1\le j\le i)
+\]
+are $i$ independent linear equations. They have $2^{N-i}$ solutions. At most $2^i$ lie in the previous span, so there are at least $2^{N-i}-2^i$ admissible next vectors. Consequently the orbit contains at least
+\begin{align*}
+ \prod_{i=0}^{s-1}(2^{N-i}-2^i)
+ &=2^{Ns-s(s-1)/2}\prod_{i=0}^{s-1}(1-2^{2i-N})\\
+ &\ge\frac23\,2^{Ns-s(s-1)/2}
+\end{align*}
+frames. Indeed $s\le N/2$ makes the finite product at least
+$\prod_{j\ge1}(1-4^{-j})\ge1-\sum_{j\ge1}4^{-j}=2/3$.
+There are at most $2^{ts}$ ordered frames in $T$, so
+\[
+ \Prob(SL\subseteq T)
+ \le\frac32\,2^{ts-Ns+s(s-1)/2}.
+\]
+
+The number of $s$-dimensional subspaces of $U$ satisfies
+\[
+ {d\brack s}_2
+ =\prod_{i=0}^{s-1}\frac{2^d-2^i}{2^s-2^i}
+ \le4\,2^{s(d-s)}.
+\]
+For the constant, $\prod_{j\ge1}(1-2^{-j})>1/4$; for example its first two factors times the elementary tail bound give
+$(1/2)(3/4)(1-\sum_{j\ge3}2^{-j})=9/32>1/4$.
+A union bound over the candidate subspaces gives the stated exponent and constant $6$.
+\end{proof}
+
+This is the useful transfer from kernel counting to an entire distribution: an $s$-dimensional kernel supplies a subspace, while the orbit of a whole independent frame is much larger than the orbit of one vector. The quadratic exponent in $s$ pays for the later union over every principal submatrix.
+
+\subsection{The canonical vector in characteristic two}
+
+Put $c=(1,\ldots,1)\in\F_2^n$ and write $B(x,y)=x^{\mathsf T}y$. Then
+\[
+ B(x,x)=B(x,c).
+\]
+Every isometry fixes $c$: for all $x$,
+$B(Qx,c)=B(Qx,Qx)=B(x,x)=B(x,c)$, and nondegeneracy gives $Q^{-1}c=c$.
+
+For $J\subseteq[n]$ let $E_J$ be its coordinate subspace, and put $j=|J|$. A vector in the kernel of $Q[J]$ is precisely a vector in
+\begin{equation}\label{eq:kernel-intersection}
+ K_J=E_J\cap Q^{-1}E_{J^c}.
+\end{equation}
+Therefore
+\[
+ \dim K_J\le\min(j,n-j)\le\lfloor n/2\rfloor.
+\]
+The empty and full sets have zero nullity, so only nonempty proper $J$ matter.
+
+\begin{theorem}[Uniform tail for the maximum principal nullity]\label{thm:binary}
+For a uniform $Q\in\mathcal O_n$ and every integer $r$ with
+$1\le r\le\lfloor n/2\rfloor$,
+\[
+ \Prob\{\nu(Q)\ge r\}\le
+ \min\{1,\;6\,2^{n-r(r-1)/2}\}.
+\]
+For $r>\lfloor n/2\rfloor$ the probability is zero.
+\end{theorem}
+
+\begin{proof}
+We prove a bound $6\,2^{-r(r-1)/2}$ for each fixed nonempty proper $J$, then sum over at most $2^n$ choices.
+
+\emph{Odd $n$.}
+Now $B(c,c)=1$ and
+\[
+ \F_2^n=\langle c\rangle\perp H,\qquad H=c^\perp.
+\]
+The form on $H$ is alternating and nondegenerate, of dimension $N=n-1$. Restriction identifies $\mathcal O_n$ with $\Sp(H)$: every symplectic map extends by fixing $c$. A uniform $Q$ therefore induces a uniform $S\in\Sp(H)$.
+
+Let $\rho$ be projection to $H$ along $c$. Since $c$ belongs to neither proper coordinate space, $\rho$ is injective on both $E_J$ and $E_{J^c}$. Their images have dimensions $d=j$ and $t=n-j$, so $d+t=N+1$. The projection commutes with $Q$. If $\dim K_J\ge r$, an $r$-dimensional subspace of $\rho(E_J)$ is mapped by $S$ into $\rho(E_{J^c})$. Apply Lemma~\ref{lem:symp-incidence} with $s=r\le N/2$. It gives
+\[
+ 6\,2^{r-r(r+1)/2}=6\,2^{-r(r-1)/2}.
+\]
+Ignoring the remaining $c$-component imposes fewer conditions, which is legitimate for this upper bound.
+
+\emph{Even $n$.}
+Here $c\in H=c^\perp$ and the radical of $B|_H$ is exactly $\langle c\rangle$. The quotient
+$\overline H=H/\langle c\rangle$ is a nondegenerate symplectic space of dimension $N=n-2$.
+The natural map $\mathcal O_n\to\Sp(\overline H)$ is onto. To see this directly, choose $f=e_1$. The plane $D=\langle c,f\rangle$ has Gram matrix
+$\left(\begin{smallmatrix}0&1\\1&1\end{smallmatrix}\right)$ and is nondegenerate. Its orthogonal complement is alternating and identifies with $\overline H$. Every symplectic map of that complement extends by the identity on $D$. Hence the induced $S$ is uniform.
+
+The spaces $E_J\cap H$ and $E_{J^c}\cap H$ have dimensions $j-1$ and $n-j-1$; both inject into the quotient. Their quotient images $U,T$ satisfy $d+t=N$.
+If $\dim K_J\ge r$, the subspace $K_J\cap H$ has dimension at least $r-1$. Its image in $\overline H$ remains injective and is mapped into $T$. Apply Lemma~\ref{lem:symp-incidence} with $s=r-1\le N/2$. The bound is
+\[
+ 6\,2^{-(r-1)r/2}.
+\]
+When $r=1$ this step is just the trivial bound by $6$; no zero-dimensional orbit count is required.
+
+Both parity cases give the same fixed-$J$ estimate. The union bound and the deterministic restriction following \eqref{eq:kernel-intersection} finish the proof.
+\end{proof}
+
+\subsection{Consequences and precise limits}
+
+\begin{corollary}[No linear maximum with high probability]\label{cor:no-linear}
+For fixed $0<c\le1/2$,
+\[
+ \Prob\{\nu(Q)\ge cn\}
+ \le 6\,2^{-c^2n^2/2+(1+c/2)n}
+\]
+whenever the integer threshold is feasible. If $c>1/2$ the event is empty. In particular the high-probability linear lower bound proposed in~\cite{vaas} is impossible.
+\end{corollary}
+\begin{proof}
+Use $r=\lceil cn\rceil$ in Theorem~\ref{thm:binary} and
+$r(r-1)\ge cn(cn-1)$.
+\end{proof}
+
+\begin{corollary}[A square-root upper scale]
+For every $a>0$ put
+\[
+ r_n=\left\lceil\frac{1+\sqrt{1+8(1+a)n}}2\right\rceil.
+\]
+Then $\Prob(\nu(Q)\ge r_n)\le6\,2^{-an}$, with probability zero if the threshold exceeds $n/2$. Consequently $\nu(Q)=O(\sqrt n)$ with exponentially high probability. More specifically, for every $\epsilon>0$, the probability that
+$\nu(Q)>(\sqrt2+\epsilon)\sqrt n$ tends to zero exponentially in $n$.
+\end{corollary}
+
+The proof does not supply a matching $\Omega(\sqrt n)$ lower bound. It leaves open whether the actual scale is logarithmic, square-root, or another sublinear scale. It also does not treat independent-entry random matrices as interchangeable with orthogonal matrices: the fixed vector $c$ and the even-dimensional quotient are essential.
+
+\subsection{Exact finite verification}
+
+The accompanying verifier constructs orthonormal ordered bases recursively over $\F_2$, interprets each as an orthogonal matrix, and computes every principal-submatrix rank using exact bit operations. It checks dimensions $1$ through $6$, the group orders, the deterministic maximum $\lfloor n/2\rfloor$, and the stated tail bound. The finite bounds are intentionally conservative at these sizes; their purpose is to check the group convention, matrix/kernel interpretation, and edge cases. The all-$n$ result rests on the proof above. Counts and complete nullity histograms are in \path{checks/binary_orthogonal_checks.json}.

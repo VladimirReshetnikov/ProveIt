@@ -1,0 +1,130 @@
+\section{Which two-factor eta products survive the zero test?}
+For positive integers $a\le b$, every $f_{a,b}(z)=\eta(az)\eta(bz)$ satisfies
+the strict quadratic Jensen inequalities at all shifts, for coefficients from
+$G(w)=\Lambda_{a,b}(1/2+\sqrt w)$, where
+$\Lambda_{a,b}(s)=(\sqrt{ab})^s\int_0^\infty f_{a,b}(iy)y^{s-1}\,dy$.
+Here $J^{d,n}(X)=\sum_{j=0}^d \binom{d}{j}G^{(n+j)}(0)X^j$.
+This completed Mellin transform is zero-free in $\operatorname{Re}s>1$ exactly when
+\[
+                         b/a\in\{1,2,3,5,7,11,23\}.
+\]
+At every other ratio the transform has infinitely many zeros there, and
+at every fixed shift the number of nonreal Jensen roots tends to infinity
+as the degree grows. In the coprime
+subfamily with $24\mid a+b$, the sole surviving pair is $(1,23)$.
+
+\paragraph{Proof.}
+A common dilation leaves this normalized completion invariant, by a change of variables in the integral.
+First divide $a,b$ by their gcd. Now set $g=\gcd(a+b,24)$, $r=24/g$,
+$A=ra$, $B=rb$, $N=AB$ and $m=(a+b)/g$. Both eta congruence sums for
+$f_{A,B}$ at level $N$ equal $A+B=24m$ (count both factors when $A=B$).
+The cusp-order formula has positive summands. Thus this is a weight-one
+cusp form of character $\chi(d)=(\frac{-AB}{d})$; see
+K.~Ono, \emph{The Web of Modularity}, Theorems 1.64--1.65.
+Its Fourier expansion starts with $q^m$ with coefficient one; denote its
+coefficients by $a_n$. We have $\gcd(m,N)=1$ since $a+b$ is coprime to
+$ab$ and $m$ is coprime to $r$.
+If $m>1$, the coefficient of $q$ in $T_m f_{A,B}$ is $a_m=1$ whereas
+$a_1=0$. This rules out an eigenfunction for all good-prime $T_p$,
+which generate $T_m$ by the Hecke relations.
+
+If $m=1$, $(A,B)$ is one of the twelve two-part partitions of $24$ and
+$a_1=1$. The four pairs $(5,19),(7,17),(9,15),(11,13)$ have $a_2=a_4=0$;
+the pair $(10,14)$ has $a_3=a_9=0$. The chosen prime $p$ in each case
+is coprime to $N$, so the eigenform relation $a_{p^2}=a_p^2-\chi(p)$ fails.
+The remaining seven are the classical multiplicative weight-one eta
+eigenforms. Their ratios give the set displayed above, and the absolutely
+convergent Euler products give nonvanishing on $\operatorname{Re}s>1$.
+See Dummit, Kisilevsky and McKay, \emph{Multiplicative products of
+$\eta$-functions}, Contemp. Math. 45 (1985), 89--98, and
+\href{https://www.numdam.org/item/10.5802/jtnb.495.pdf}{Voskresenskaya, section 2}
+for the explicit eigenform list. By
+\href{https://research-information.bris.ac.uk/ws/files/95488278/mf_zeros_revised.pdf}
+{Booker--Thorne, Theorem 1.1 and Remark (2)}, each excluded form
+has infinitely many zeros in $\operatorname{Re}s>1$.
+
+For the Jensen claim, center the Mellin kernel by putting $y=e^u/\sqrt{ab}$.
+Apart from a positive constant its logarithm is
+$h(u-v)+h(u+v)$, with
+$h(t)=t/4+\log\eta(ie^t)$ and $v=\tfrac12\log(b/a)$.
+The all-shift quadratic result follows from the paired-eta curvature estimate
+of the incoming \texttt{jensen.tex}. For clarity, its derivative estimate uses
+the term $-2\pi e^t/24$ and the terms
+$-\sigma_{-1}(k)e^{-2\pi k e^t}$ in the expansion of $h$ for $t\ge0$.
+For $Y=2\pi k e^t>6$ the fourth derivative of $e^{-Y}$ equals
+$e^{-Y}Y(Y^3-6Y^2+7Y-1)>0$.
+Eta inversion makes $h$ even, so $h^{(4)}<0$ on the real axis.
+For the even logarithm $g$ of the centered kernel this gives
+$(g(\sqrt{x}))''<0$ for $x>0$, by integrating $g^{(4)}<0$ first
+to obtain $g'''(u)<0$ and then $(ug''-g')'=ug'''<0$ for $u>0$.
+The normalized Mellin moments of $e^{g(\sqrt{x})}$ are strictly
+log-concave: writing $M_p=\int_0^\infty x^{p-1}e^{-V(x)}dx$ with
+$V(x)=-g(\sqrt{x})$, the expectation of $V'$ under the density
+$x^p e^{-V(x)}/M_{p+1}$ equals $pM_p/M_{p+1}$ by integration
+by parts. This expectation strictly increases with $p$ in steps of one
+because weighting a positive density by $x$ increases the mean of the
+strictly increasing $V'$ (by strict positive covariance).
+The moments $M_{n+1/2}/\Gamma(n+1/2)$ give the Jensen coefficients
+up to a constant and a geometric factor.
+
+\paragraph{Failure in every shift.}
+Use the normalized modular form $f_{A,B}$, whose completed transform is
+$E(s)L(s)$ with $E(s)=(\sqrt{N}/2\pi)^s\Gamma(s)$. The completion above
+is invariant under common dilation, by substitution in the Mellin integral.
+For every excluded pair choose a closed disk $D\subset\{\operatorname{Re}s>1\}$
+with a zero of $L$ inside and none on its boundary. Absolute convergence of
+the Dirichlet series gives arbitrarily large $t_j$ with
+$L(s+it_j)\to L(s)$ uniformly on $D$. Indeed truncate the series uniformly,
+and simultaneously approximate the phases $n^{-it_j}$ by one for the
+finitely many indices retained. Every fixed derivative of $L$ is uniformly
+bounded on the corresponding vertical strip by absolute convergence slightly
+to its left.
+
+Put $w=(s-1/2)^2$ and fix $n\ge0$. Uniformly on $D+it_j$ as $j\to\infty$,
+\[
+ \frac{[2(s-1/2)]^n G^{(n)}(w)}{E(s)(\log s)^n}
+ =L(s)+O_n(1/\log t_j).
+\]
+To verify this, expand $d/dw=[2(s-1/2)]^{-1}d/ds$ repeatedly.
+After the displayed power of $2(s-1/2)$ is applied, the leading term
+is $(E L)^{(n)}$; the terms with $k<n$ derivatives have coefficients
+$O_n(|s|^{k-n})$. Stirling's differentiated formula gives
+$E^{(k)}/E=(\log s)^k+O_k((\log|s|)^{k-1})$ for $k\ge1$ on this strip.
+Leibniz's rule proves the estimate. All normalizing factors are nonzero
+on the translated disks for large $j$.
+Rouch\'e's theorem now gives a zero of $G^{(n)}((s-1/2)^2)$ in every
+sufficiently large translated disk. Choose the disks disjoint with increasingly
+large positive ordinate: their squares about $1/2$ lie off the real axis and
+give infinitely many distinct zeros of $G^{(n)}$.
+Finally $J^{d,n}(w/d)\to G^{(n)}(w)$ locally uniformly as $d\to\infty$,
+by termwise binomial scaling and domination by the absolute Taylor series.
+Any finite collection of disjoint small disks around nonreal zeros must
+therefore contain zeros of every sufficiently large scaled polynomial.
+This proves the asserted divergence of the nonreal root count.
+
+In fact the number of nonreal roots is $\gg_{a,b,n}\log d/\log\log d$.
+To see this, a fixed sufficiently good uniform approximation on $D$ suffices
+for Rouch\'e. The corresponding shifts are relatively dense: a finite
+Dirichlet sum approximates $L$ uniformly, and the returns of its phase flow
+to any neighborhood of the identity have bounded gaps by compactness
+of the closure of the flow in its finite torus.
+We can therefore choose $\gg T$ disjoint translated disks at heights
+between $T/2$ and $T$. On their boundaries the derivative estimate and
+Stirling's formula give $|G^{(n)}((s-1/2)^2)|\ge e^{-2T}$ for large $T$.
+All the squared disks lie in $|w|\le R$ with $R=O(T^2)$.
+Writing the binomial scaling coefficient as
+$u_{d,j}=\prod_{k=0}^{j-1}(1-k/d)$ for $j\le d$ and zero otherwise gives
+$0\le1-u_{d,j}\le j(j-1)/(2d)$. Positivity of the Taylor coefficients yields
+\[
+ \max_{|w|\le R}|G^{(n)}(w)-J^{d,n}(w/d)|
+ \le R^2G^{(n+2)}(R)/(2d)\le e^{C_nT\log T}/d .
+\]
+For the last inequality, the centered eta kernel is bounded by
+$C\exp(-c e^{|u|})$ from its product and symmetry. Thus
+$\log\max_{|w|\le R+1}|G(w)|=O(\sqrt{R+1}\log(R+2))$ by its
+Mellin integral (or the gamma integral after substituting $e^{|u|}$).
+Cauchy's bound on a unit circle gives the same growth bound for the
+fixed derivative. With $T=c_n\log d/\log\log d$ and $c_n$ sufficiently
+small, the approximation error is at most $d^{-1/2}<e^{-2T}$.
+A second application of Rouch\'e transfers all these disks to the
+degree-$d$ polynomial. The constants depend on the eta product and shift.

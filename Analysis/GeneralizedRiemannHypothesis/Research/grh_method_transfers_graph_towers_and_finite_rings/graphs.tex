@@ -1,0 +1,144 @@
+\section{Five numerical patterns in graph towers}\label{sec:graphs}
+DuBose and Vallières prove that the valuation of the number of spanning trees
+in a $\mathbb Z_p^d$-tower of finite graphs eventually agrees with a polynomial
+in $p^n$ and $n$. Section 7 of their paper fits candidate polynomials to finite
+data for five two-dimensional towers \cite{DV}. The existence theorem alone
+does not specify those polynomials or the first level where they hold.
+The following computations determine both for the five examples.
+
+For a list $S$ of integer vectors, use the group $G_n=(\mathbb Z/p^n)^d$ as
+vertices. For each $s\in S$ and $v\in G_n$ put an undirected edge
+between $v$ and $v+s$. Retain parallel edges, including both edges if a
+step has order two. Assume the reductions of $S$ span $\mathbb F_p^d$,
+so these graphs are connected. Write $T_n=v_p(\kappa_n)$, with $\kappa_n$
+the number of spanning trees and $v_p(p)=1$.
+
+\begin{theorem}\label{thm:five}The five towers of \cite[\S7]{DV}
+have the following valuations. Write $e_1=(1,0)$ and $e_2=(0,1)$.
+\begin{center}\small
+\begin{tabular}{ccll}
+\toprule
+Example & $p$ & generators $S$ & $T_n$\\
+\midrule
+1 & 2 & $e_1,e_2$ & $(2n+4)2^n-6n-1$ \\
+2 & 2 & $e_1,e_1,e_2,e_2$ & $4^n+(2n+4)2^n-6n-2$ \\
+3 & 2 & $(1,5),(0,3),(1,2),(0,1)$ & $(n+33/4)2^n-4n-1$ \\
+4 & 3 & $e_1,e_2$ & $4\cdot3^n-2n-4$ \\
+5 & 3 & $(1,0),(2,3),(1,1)$ & $20\cdot3^{n-1}-2n-8$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+Rows 1, 2, 4 and 5 hold for every $n\ge1$. Row 3 holds for $n\ge4$,
+and its first three values are $5,19,65$.
+\end{theorem}
+
+\subsection{Reading a character at its conductor}
+Fix a primitive $p^h$-th root $\zeta$ in $\overline{\mathbb Q}_p$, set
+$e=\varphi(p^h)$ and $t=\zeta-1$. The polynomial $\Phi_{p^h}(1+T)$
+is Eisenstein, so $v_p(t)=1/e$. This is the exact radius calculation used
+by the repository's torsion specialization argument. The graph application
+uses this identity at \emph{every} character of a given conductor.
+
+For $u\in(\mathbb Z/p^h)^d$ primitive (at least one coordinate is a unit),
+the Laplacian eigenvalue at that character is
+\[
+ F_u(\zeta)=\sum_{s\in S}(2-\zeta^{\langle u,s\rangle}
+                                  -\zeta^{-\langle u,s\rangle}).
+\]
+Fourier characters diagonalize translations. Over the complex numbers all
+these eigenvalues are positive for nontrivial characters by connectedness.
+The matrix-tree theorem gives the product of nonzero eigenvalues divided by
+$p^{dn}$. Embedding the algebraic identity into $\overline{\mathbb Q}_p$
+and grouping by conductor yields
+\begin{equation}\label{eq:shells}
+ T_n=-dn+\sum_{h=1}^n W_h,\qquad
+ W_h=\sum_{[u]} e\,v_p(F_u(\zeta)).
+\end{equation}
+The brackets denote orbits of primitive vectors under multiplication by units
+modulo $p^h$. The action is free and its members are cyclotomic conjugates,
+all of the same valuation. This orbit decomposition is already used by
+DuBose and Vallières. Our evaluations of the individual orders give the
+all-level formulas.
+
+Two elementary rules will be useful. If an integral power series in $T$
+has first unit coefficient at degree $k$, and $k<e$, then its value at
+$t$ has valuation $k/e$. The same conclusion holds for $k<e+2$ if the
+constant and linear coefficients vanish identically. Both assertions follow
+by comparing the valuations term by term: lower coefficients divisible by
+$p$ contribute above the candidate, and higher powers do also. For arbitrary
+$k$ one can reduce the polynomial modulo $\Phi_{p^h}(1+T)$, obtaining
+$\sum_{j<e}c_jT^j$; the normalized order is exactly
+$\min_{c_j\ne0}\{e\,v_p(c_j)+j\}$. These integers lie in distinct residue
+classes modulo $e$. This gives the exact small-conductor check used below.
+
+\subsection{The dyadic square torus and its doubled edges}
+Write $X=\zeta^a$, $Y=\zeta^b$ and $F=4-X-X^{-1}-Y-Y^{-1}$.
+The identity
+\[
+ F=4-(X+Y)(1+(XY)^{-1})
+\]
+makes the exceptional characters explicit. For $h\ge3$, put $e=2^{h-1}$.
+For a mixed-parity primitive pair, both $a-b$ and $a+b$ are odd.
+Each factor in the product therefore has valuation $1/e$, giving normalized
+order $2$. There are $2e$ mixed-parity orbits, contributing $4e$.
+
+For the remaining orbits normalize $a=1$, so $b$ runs through the $e$ odd
+residues modulo $2^h$. The normalized orders of the factors are those of
+$1+\zeta^{1-b}$ and $1+\zeta^{1+b}$. For an exponent $k$ put $r=k+e$
+modulo $2^h$. If $r\ne0$, this order is $2^{v_2(r)}$. If $r=0$ the factor
+vanishes. For either sign, $1\pm b+e$ runs exactly once through the even
+residues. Of a given pair of exponents, one is $2$ modulo $4$, so its order
+is $2$. The other, when finite, has order at most $e$.
+Thus a finite product has normalized order at most $e+2<2e$, and subtracting
+from $4$ preserves that order. At a vanishing factor the order of $F$ is
+$2e$ instead.
+
+For either sign, the sum over the nonzero even residues is
+$\sum_{i=1}^{h-1}(e/2^i)2^i=(h-1)e$. At each of the two exceptional orbits
+the other factor has already contributed $2$ to this sum, so each requires a
+correction of $2e-2$. The odd--odd contribution is
+$2(h-1)e+2(2e-2)$. Consequently
+\[
+ W_h=(h+3)2^h-4\quad(h\ge3).
+\]
+At $h=1$ the eigenvalues are $4,4,8$, giving $W_1=7$.
+At $h=2$ the four mixed orbits each contribute $2$, and the two odd--odd
+orbits each contribute $4$, giving $W_2=16$. Equation~\eqref{eq:shells}
+gives row 1 by summation. Doubling each edge multiplies the number of
+spanning trees by $2^{4^n-1}$, since a tree uses $4^n-1$ edges with two
+independent parallel choices each. This proves row 2.
+
+\input{example3}
+
+\subsection{The two ternary towers}
+For the square torus $p=3$, the coefficient of $T^2$ in
+$F_u(1+T)$ is $-(a^2+b^2)$ and the lower two coefficients are exactly zero.
+Every primitive pair has $a^2+b^2\ne0$ modulo three. Thus each orbit has
+order $2$, even at $h=1$ by the strengthened comparison rule. The number
+of orbits is $4\cdot3^{h-1}$, giving row 4 of Theorem~\ref{thm:five}.
+
+For row 5 the projected steps are $a,,2a+3b,,a+b$. At $h=1$ the
+eigenvalue is three times the number of nonzero projected steps modulo
+three. The four orbits have normalized orders $4,4,2,2$, so $W_1=12$.
+For $h\ge2$, classify the primitive direction modulo nine. The following
+table gives the first nonzero degree $k$ of $F_u(1+T)$ modulo $(3,T^9)$.
+\begin{center}\small
+\begin{tabular}{c|rrrrrrrrr|ccc}
+$u$ & $(1,0)$ & $(1,1)$ & $(1,2)$ & $(1,3)$ & $(1,4)$ & $(1,5)$ &
+$(1,6)$ & $(1,7)$ & $(1,8)$ & $(0,1)$ & $(3,1)$ & $(6,1)$\\
+\hline
+$k$&4&6&2&6&4&2&4&4&2&2&2&2
+\end{tabular}
+\end{center}
+For an explicit verification put $J=\{a,2a+3b,a+b\}$ as a multiset.
+For $1\le j\le6$ the coefficient is the reduction modulo three of
+$-\sum_{k'\in J}(\binom{[k']_9}{j}+\binom{[-k']_9}{j})$,
+where the representatives lie in $[0,8]$. The constant is zero before reduction.
+The table persists at every higher lift since
+$(1+T)^9\equiv1\pmod{3,T^9}$. Normalizing a unit multiple amounts to a
+change of variable with invertible linear term. In the original Laurent
+expansion both the constant and the linear terms vanish exactly; thus
+$k\le6<e+2$ makes each displayed $k$ the normalized valuation at every
+$h\ge2$. Every displayed orbit has $3^{h-2}$ orbit lifts. The sum of the
+table is $40$, so $W_h=40\cdot3^{h-2}$. Summing from $W_1=12$ proves row 5.
+

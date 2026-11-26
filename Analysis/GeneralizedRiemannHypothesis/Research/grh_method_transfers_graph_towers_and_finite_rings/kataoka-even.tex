@@ -1,0 +1,55 @@
+\subsection{The four even positive indices and the triangular lattice}
+Let $A(U)=2-U-U^{-1}$. For $s\ge1$, put $e=2^{s-1}$ and take $\zeta$
+of exact order $2^s$. The conductor shell consists of the pairs
+$(X,Y)=(\zeta^a,\zeta^b)$ with at least one exponent odd modulo $2^s$.
+If $W_s$ sums the valuations of the Laplacian eigenvalue $F$ over that
+shell, the matrix-tree formula gives $T_s-T_{s-1}=W_s-2$.
+
+For $\lambda=2m$, $1\le m\le4$, the eigenvalue is
+$F=P_m(A(X))+2A(Y)$, where the integral polynomials satisfy
+$P_m(0)=0$ and $P_m(z)\equiv z^m\pmod2$. Explicitly, the four
+polynomials are $z$, $z(6-z)$, $z((3-z)^2+1)$, and
+$z(4-z)[4-z(4-z)]+2z$. These identities follow from
+$A(X^2)=A(X)(4-A(X))$ and $A(X^3)=A(X)(3-A(X))^2$.
+
+Put $L=2^j$, the smallest power of two at least $m$.
+Take $s\ge\max(3,j+2)$. If $a\ne0$ then
+$t=v_2(A(X))=2\cdot 2^{v_2(a)}/e$. When $t\le1/L$, the odd
+coefficient of $z^m$ gives $v_2(P_m(A(X)))=mt\le1$, since lower
+coefficients are even and the constant term vanishes.
+For odd $a$ this applies regardless of $b$; the $2e^2$ choices
+contribute $4me$ to $W_s$. With $a$ even and $b$ odd, each stratum
+$v_2(a)=k$ for $1\le k\le s-2-j$ contributes $2me$. There are
+$e/2^k$ choices of $a$ and $e$ choices of $b$ in that stratum.
+In the remaining $2L$ choices of $a$, either $a=0$, or $t\ge2/L$.
+For the latter, the leading monomial has valuation
+$mt\ge 2m/L>1+2/e$, and the terms of smaller positive degree
+have valuation at least $1+t>1+2/e$. Higher terms also exceed this
+bound. The strict bound for $2m/L$ follows at once for
+$(m,L)=(1,1),(2,2),(3,4),(4,4)$ and the stated range of $s$.
+The valuation of $F$ for all these $a$ is thus $1+2/e$.
+In total,
+\[
+ W_s=\big[2m(s-j)+2L\big]e+4L.
+\]
+
+For $\lambda=3$ use the exact identity
+$XYF=8XY-(1+X)(1+Y)(1+XY)$. For $s\ge2$, exactly one of $a,b,a+b$
+is even. Label this residue $t$. The two odd arguments each give
+$v_2(1+\zeta^{\mathrm{odd}})=1/e$. For each choice of the even position
+and its value there are $e$ pairs. When $t=e$ the product is zero,
+hence $v_2(F)=3$. For all the other even $t$ we have
+$v_2(1+\zeta^t)\le1$, hence $v_2(F)=2/e+v_2(1+\zeta^t)<3$.
+The sum of $v_2(1+\zeta^t)$ over those remaining even $t$ is $s-1$,
+since $-\zeta^t$ takes all nonidentity values in $\mu_e$ once and
+$\prod_{\xi\in\mu_e,\,\xi\ne1}(1-\xi)=e$. Thus
+$W_s=3(s+4)e-6$.
+
+For clarity, in the order $\lambda=2,4,6,8,3$, the shell totals at
+$s=1,2,3$ are $(7,18,36)$, $(10,30,56)$, $(10,28,88)$,
+$(10,28,80)$ and $(9,30,78)$, respectively. They can be obtained by
+reducing each orbit's eigenvalue modulo $Z^e+1$ and taking the smallest
+valuation in the basis $1,(Z-1),\ldots,(Z-1)^{e-1}$. The accompanying
+integer checker performs these small computations independently.
+Substituting in $T_0=0$, $T_s=T_{s-1}+W_s-2$, then using the shell
+formulas, gives the corresponding five rows of Theorem~\ref{thm:kataoka}.

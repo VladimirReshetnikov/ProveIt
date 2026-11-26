@@ -1,0 +1,24 @@
+\documentclass[11pt]{article}
+\input{style}
+\hypersetup{pdftitle={One-sided prime sums beyond Dirichlet GRH}}
+\title{\color{ink}\textbf{One-sided prime sums beyond Dirichlet GRH}}
+\author{Analytic companion to \emph{Three density questions about geometric progressions}}
+\date{25 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+For the standard Artin factor of the splitting field of $T^3-T-1$, we reduce the critical-line assertion to the eventual sign of an explicit prime sum on any prescribed power sequence. On every such grid the normalized prime sum has limiting values on both sides of $-2/3$, unconditionally. A second result determines the universal growth condition on auxiliary windows in the repository's abstract analytic criterion. We give the earlier ProveIt results on which each argument builds.
+\end{abstract}
+\section{What the source proves}
+\src{grh-compact/src/Statements.lean}{The public statement file} in \texttt{lsernau/grh-lean} quantifies over all complex Dirichlet characters of positive modulus, including imprimitive characters. It rules out zeros for $\Re s>1/2$, with the principal-character pole excepted, and places open-strip zeros on the critical line. The \src{grh/GUIDE.md}{reading guide} explains the three internal estimates. Short integral forms give an upper bound for a lattice of theta lifts, a second-moment argument produces enough such forms, and a determinant lower bound constrains how short the forms can be. Their comparison yields a one-sided estimate for a smoothed sum of primes in a residue class, filtered by a quadratic character. A Mellin-transform argument turns that one-sided bound into the asserted zero-free half-plane.
+ 
+The compact source uses Lean 4.35.0 at Mathlib revision \texttt{56a00585}. Its \src{grh-compact/README.md}{README} reports kernel and comparison checks with \texttt{propext}, \texttt{Classical.choice} and \texttt{Quot.sound}. We inspected the source at revision \texttt{72fead102f66}; we did not rerun its full build. The formal export covers degree-one Dirichlet functions over $\mathbb Q$. For a nonabelian Artin factor the determinant bound would need a new arithmetic input. The next section gives an explicit target for that input and proves an unconditional statement about the same sum.
+\input{cubic}
+\input{window}
+\section*{Sources and verification}
+\begin{itemize}
+\item L. Sernau and collaborators, based on work of L. Alp\"oge with Claude, \src{grh-compact/src/New/Endgame/OneSidedCriterion.lean}{one-sided criterion} and \src{grh-compact/src/New/Main.lean}{main argument}. The accompanying source index names the inspected declarations.
+\item D. Zagier, \href{https://www.its.caltech.edu/~matilde/Zagier123ModularForms.pdf}{\emph{Elliptic modular forms and their applications}}, Sect.~4.3. N. Ng, \href{https://www.cs.uleth.ca/~nathanng/RESEARCH/phd.thesis.pdf}{\emph{Limiting distributions and zeros of Artin $L$-functions}}, Sect.~3.4.
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/tree/28ad287a8d13c0f864ebb51c7c053ad06aa6e585/docs/incoming}{ProveIt, incoming reports}. The archive names and Git blob identifiers in \texttt{PRIOR.tsv} distinguish the earlier results used. The one-scale prime-only race, sampling argument and universal-window necessity are proved here. The new analytic statements have not been checked in Lean.
+\end{itemize}
+\end{document}

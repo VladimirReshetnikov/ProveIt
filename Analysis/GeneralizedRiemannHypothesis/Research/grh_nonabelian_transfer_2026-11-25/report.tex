@@ -1,0 +1,85 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,breaklinks=true]{hyperref}
+\usepackage{xurl}
+\hypersetup{pdftitle={Beyond Dirichlet GRH: optimal frames and an unramified nonabelian transfer},pdfauthor={Research prepared for Vladimir Reshetnikov}}
+\setlength{\emergencystretch}{2.5em}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlist{itemsep=3pt,topsep=5pt,leftmargin=*}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Beyond Dirichlet GRH}
+\fancyhead[R]{\small Research analysis, 25 November 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\OO}{\mathcal O}
+\newcommand{\DD}{\mathfrak D}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\Gal}{\operatorname{Gal}}
+\newcommand{\rd}{\operatorname{rd}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Sha}{\mathrm{Sha}}
+\newcommand{\pos}[1]{\left(#1\right)_+}
+\newcommand{\src}[2]{\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/#1.lean}{\texttt{\detokenize{#2}}}}
+\newcommand{\prior}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/28ad287a8d13c0f864ebb51c7c053ad06aa6e585/docs/incoming/#1}{#2}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\begin{document}
+\begin{titlepage}
+\vspace*{0.55in}
+{\color{MidnightBlue}\large RESEARCH REPORT}\par
+\vspace{0.25in}
+{\Huge\bfseries Beyond Dirichlet GRH}\par
+\vspace{0.16in}
+{\LARGE Optimal frames and an unramified\par nonabelian transfer}\par
+\vspace{0.35in}
+{\large Analysis of \texttt{lsernau/grh-lean}, building on the\par ProveIt incoming research archive}\par
+\vspace{0.35in}
+Prepared for Vladimir Reshetnikov\par
+25 November 2026\par
+\vspace{0.45in}
+\hrule
+\vspace{0.18in}
+\textbf{Main result.} The selected real $S_3$ field admits an optimal integral frame of bound $229$ using eight vectors. Its cubic extension of the source's cyclotomic CM field is unramified, so the different and fractional Weil lattice extend without a new ramification cost. A projective Hermitian argument supplies frames of every sufficiently large integer bound in the corrected lattice.
+
+\textbf{Research conclusion.} These results remove qualitative arithmetic obstacles to a nonabelian extension of the method. They do not yet give the scale-uniform frame and odd-cocycle estimates needed to prove a new nonabelian Riemann hypothesis. The remaining estimates are stated precisely.
+
+\textbf{Validation.} Full mathematical proofs and exact integer/rational certificates are included. The upstream Lean source was inspected and statically scanned; its complete Lean build and kernel checks were not rerun here.
+\vfill
+\small Source: \texttt{72fead102f663d5c7a407964a13dc0cf9d977207}\par
+ProveIt: \texttt{28ad287a8d13c0f864ebb51c7c053ad06aa6e585}
+\end{titlepage}
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+\input{sections/assessment}
+\input{sections/frames}
+\input{sections/unramified}
+\input{sections/projective}
+\input{sections/remaining}
+\input{sections/reproducibility}
+\input{sections/references}
+\end{document}

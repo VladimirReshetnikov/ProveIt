@@ -1,0 +1,170 @@
+\section{How many primes must a density rule couple?}
+Let $\alpha$ be the supremum of natural densities of subsets of
+$\mathbb N_{>0}$ containing no three distinct integers $a,b,c$ with
+$ac=b^2$. Partition the primes into blocks of size at most $d$. For each
+block choose an arbitrary set of allowed exponent vectors, and admit
+an integer when its vector belongs to the allowed set in every block.
+Let $\alpha_d$ be the corresponding supremum over all partitions and
+rules giving a progression-free set with natural density.
+The partition can vary with the competitor. In particular this model
+can impose dependence among infinitely many separate groups of primes.
+
+\medskip\noindent\textbf{Theorem (bounded prime blocks).}
+For each $d\ge1$, the number $\alpha_d$ is computable and is attained.
+An attaining construction uses Rankin's independent exponent rule
+outside a finite set of primes. Allowing upper density gives the same
+$\alpha_d$ in this class. Furthermore
+\[
+                  \alpha_d<\alpha,\qquad \lim_{d\to\infty}\alpha_d=\alpha .
+\]
+Thus every fixed bound on the number of jointly tested primes has a
+strict density cost, even after optimizing the partition.
+The result does not determine the unrestricted value $\alpha$ or the
+first block size that improves on the one-prime rule.
+
+\paragraph{Local probabilities.}
+For a finite prime set $B$, the $B$-smooth positive integers form a
+semigroup $S_B$. For $F\subset S_B$ write
+\[
+  c_B=\prod_{p\in B}(1-1/p),\qquad
+  \mu_B(F)=c_B\sum_{s\in F}1/s.
+\]
+This is the natural density of integers with $B$-smooth part in $F$.
+Indeed the finite exponent frequencies follow by the Chinese remainder
+theorem, and discarding exponents $\ge m$ costs at most
+$\sum_{p\in B}p^{-m}$ in upper density. Disjoint finite blocks have
+independent probabilities. A nonempty progression-free product forces
+each block rule to be progression-free: replace the smooth part of
+one admitted integer by the three local terms to see this. Conversely
+a product of progression-free rules is progression-free by projection.
+
+Let $G$ consist of the nonnegative integers whose base-three digits
+are zero or one, and let $C_B$ require all exponents in $G$. In an
+arithmetic progression of three exponents in $G$, the lowest varying
+digit would give a nonconstant progression in $\{0,1\}$ modulo three,
+which is impossible. Thus $C_B$ is progression-free.
+For infinite collections of Rankin primes the product of local
+probabilities gives the natural density: the possible violations at
+$p>Y$ require $p^2\mid n$ and cost at most $\sum_{p>Y}p^{-2}$.
+The infinite product is positive since every factor is at least
+$1-p^{-2}$.
+
+\paragraph{Most blocks admit Rankin's rule as an optimizer.}
+If $1/c_B\le2$, then $\mu_B(F)\le\mu_B(C_B)$ for every
+progression-free $F$. This is the light-block observation following
+McNew's Theorem~6.1. Here is a direct proof. For $s\in F\setminus C_B$
+replace every ternary digit $2$ in its exponents by $0$, respectively
+$1$, to get integers $a,b\in C_B$ with $a<b<s$ and $as=b^2$.
+At least one of these proper divisors is missing from $F$. Charge
+$1/s$ to one such divisor $t$. Each charged $s$ is a different
+$t u$ with $u\in S_B\setminus\{1\}$. The charge at $t$ is at most
+$(1/c_B-1)/t\le1/t$. Summing gives the claim.
+
+Call the remaining blocks heavy. If every prime of $B$ exceeds $4d$,
+then $\log(1/c_B)\le\sum_{p\in B}1/(p-1)\le1/4<\log 2$.
+Hence at most $\pi(4d)$ blocks are heavy, and their union $H$
+has at most $h=d\pi(4d)$ primes. Replace every light block by
+Rankin's rule. The new set has natural density equal to the finite
+heavy probability times the Rankin product off $H$. Its density is
+at least the original upper density, since finite collections of
+old block restrictions bound the latter from above, and the product
+of the corresponding new probabilities converges to the new density.
+A heavy rule may likewise be optimized separately. Its maximum exists:
+indicators of a maximizing sequence on the countable semigroup admit
+a pointwise convergent subsequence by diagonal extraction, avoidance
+passes to the limit, and the weights $1/s$ are summable.
+
+\paragraph{Existence of an optimal partition.}
+Take a sequence approaching $\alpha_d$, already in the form just
+described. Pass to a subsequence with constant number of exceptional
+primes and constant partition of their ordered positions. Each of the
+at most $h$ prime labels, after another subsequence, is either constant
+or tends to infinity. In every block temporarily impose valuation zero
+at each escaping prime $p$. The density loss is at most the sum of
+$1/p$ over these primes, hence tends to zero. The surviving local
+zero slices are progression-free on the fixed prime labels. One
+may now use the optimal rule on each fixed block and Rankin's rule
+at each discarded prime, since zero is an allowed Rankin exponent.
+This single fixed construction attains at least the limiting density,
+and belongs to the original class. The upper-density assertion follows
+from the replacement bound above.
+
+\paragraph{A uniform improvement.}
+Fix the at most $h$ exceptional primes of a competitor after replacement.
+A marker prime $\ell$ outside $H$ can be taken at most $L$, the
+$(h+1)$st prime. Choose $Y\ge L$, depending only on $d$, so large that
+\[
+          \sum_{q\le Y,\ q\ {\rm prime}}\frac1q
+                > 2L^2+(h+1)/2 .
+\]
+This is possible by Euler's divergence theorem. For the satellite set
+$B$ use all primes through $Y$ outside $H\cup\{\ell\}$. Thus
+$\sum_{q\in B}1/q>2L^2$. Apply the exchange of Section~\ref{sec:cap} to the lowest digits at the marker and satellites. Its cap proof works with any marker and leaves the higher digits binary.
+
+Write $w=1/\ell$, $u_q=1/q$. For fixed good higher digits the change
+in unnormalized reciprocal mass, relative to their common weight, is
+\[
+   \left(\prod_{q\in B}u_q\right)
+       \left[w^2\left(1+\sum_{q\in B}u_q\right)-(1+w)\right]
+      >\tfrac12\prod_{q\in B}u_q .
+\]
+The inequality uses $w\ge1/L$, $w\le1/2$. The higher digits have
+total weight at least one. With $P_Y=\prod_{p\le Y}p$ and
+$c_Y=\prod_{p\le Y}(1-1/p)$, the new local probability exceeds the
+old one by at least $\delta_d=c_Y/(2P_Y)>0$. Since local probability
+is at most one, this increases the full product by a factor at least
+$1+\delta_d$. Thus $\alpha\ge(1+\delta_d)\alpha_d>\alpha_d$.
+In particular, even allowing each partition to use distant, arbitrarily
+large primes gives a uniform gap for fixed $d$.
+
+\paragraph{Approximation by a finite block.}
+Let $P$ be the primes through $Y\ge2$, let $c=c_P$ and let $M$ be the
+largest reciprocal mass $\sum_{s\in F}1/s$ for a progression-free
+$F\subset S_P$. For any progression-free set $A$ of natural density,
+write $n=rs$ with $(r,\prod_{p\in P}p)=1$ and $s\in S_P$.
+For each fixed $r$ the permitted $s$ form a progression-free set.
+Consequently
+\[
+ \sum_{n\le X,\,n\in A}\frac1n
+  \le M\sum_{r\le X,\,(r,\prod_{p\in P}p)=1}\frac1r
+  =M(c\log X+O_Y(1)).
+\]
+The last estimate follows by finite inclusion--exclusion; partial
+summation gives $d(A)$ as the limit of the left side divided by
+$\log X$. This proves $\alpha\le cM$. A maximizing smooth template
+on $P$ and Rankin's rule elsewhere, which has width $\pi(Y)$, gives
+\[
+  \alpha_{\pi(Y)}\ge cM\prod_{p>Y}(1-p^{-2})
+       \ge cM\,\frac{Y}{Y+1}
+\]
+for integer $Y$, by telescoping over all integers greater than $Y$.
+Together with monotonicity this proves convergence. Choosing $Y=p_{d+1}-1$, where $p_j$ is the $j$th prime, gives $0<\alpha-\alpha_d\le 1/p_{d+1}$ since $cM\le1$. Thus $\alpha$ itself is computable.
+
+\paragraph{Effective computation for fixed width.}
+Uniformly over competitors after replacement, freezing exponents at
+heavy primes $p>Y$ to zero costs at most $h/Y$. Releasing just
+these primes to use Rankin's rule can only increase density. Thus
+optimizing partitions of primes through $Y$ of width $d$, with the
+Rankin tail, approximates $\alpha_d$ from below with error at most
+$h/Y$. There are finitely many partitions to search. Truncate each
+prime exponent below $m$; in total this costs at most
+$\sum_{p\le Y}p^{-m}$. On finite boxes, enumerate all subsets,
+reject any nonconstant arithmetic progression of exponent vectors,
+and maximize the exact rational probability. Finally the Rankin
+tail product through any $Z>Y$ has an absolute truncation error at most
+$\sum_{n>Z}n^{-2}\le1/Z$; its single-prime factors can be truncated
+geometrically. These estimates give rational intervals of arbitrary
+prescribed width. They make no assertion of practical running time.
+
+\paragraph{Relation to earlier work.}
+McNew's Theorems 5.1--5.2 concern unrestricted \emph{upper} density,
+and his Theorem~6.1 treats a one-prime logarithmic optimum.
+See \href{https://www.nathanmcnew.com/GPFsets.pdf}{McNew's paper,
+Sections 5--7}. The incoming manuscript
+\texttt{mcnew\_counterexample\_and\_grh\_transfers.zip} disproves
+Conjecture~7.2 by a marker and a shared deletion and shows that any
+fixed finite change to Rankin's rule admits improvement. The bounded-block
+theorem allows an arbitrary rule in every one of infinitely many
+blocks, proves a gap uniform over all their partitions, and gives
+attainment and effective approximation for each width. The lowest-digit
+construction above supplies its local gain.

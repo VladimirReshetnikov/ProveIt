@@ -1,0 +1,67 @@
+\section{The proof mechanism and its transferable interfaces}
+
+The source guide organizes the argument around three results: short integral forms, enough independent forms, and a lower bound saying that integral forms are long. Their interaction is more useful for transfer than the final assertion about zeros.\cite{source}
+
+\subsection{The arithmetic quantity carried by the construction}
+
+For a suitable auxiliary negative quadratic character $\chi_d$ and modulus $q$, the remainder has the shape
+\begin{align*}
+ \lambda_{d,q}(n)&=\Lambda(n)(1-\chi_d(n))\mathbf1_{n\equiv1\pmod q}\ge0,\\
+ R_{d,q}(x)&=\sum_{n\le x}\lambda_{d,q}(n)
+       \left(\frac1n-\frac1x\right)-\frac{\log x}{\varphi(q)}-c_{d,q}.
+\end{align*}
+The centering constant is the one for which the remainder tends to zero. The nonnegative weights and the ramp kernel will be used again in the moment theorem.
+
+The source constructs a CM field $E=K(\zeta_{q_1})$, with $K=\Q(\sqrt{-d})$, and a tower of unitary theta lifts. Its places and weights are tuned so that a derivative's guaranteed divisibility encodes these prime sums. At infinity, bounds on theta derivatives give short vectors. At finite places, divisibility and denominator estimates make them nearly integral. Their number is controlled by a second-moment spanning theorem.
+
+\subsection{The same covolume must occur on both sides}
+
+The exact source theorem
+\src{New/Reduction/MainInequality}{star_inequality}
+states
+\begin{equation}\label{eq:source-star}
+ D.m\,D.totalRemainder\le D.f\,D.a\,(D.logB)^5.
+\end{equation}
+Its proof chooses $n$ independent images among translates of short source forms in a target of dimension $d$, with $n\ge d/2$. A logarithmic squared covolume $V$ and an integral-index cost are bounded above and below. A convenient abstract normalization is
+\begin{equation}\label{eq:comparison}
+ d(H-L)\le V+2dI,\qquad
+ V\le n(H-MR+U),
+\end{equation}
+where $0<n\le d$, $M>0$, and the error terms are nonnegative. Setting $\alpha=n/d$ gives the exact implication
+\begin{equation}\label{eq:rank-loss}
+ \pos R\le
+ \frac{\pos{L+\alpha U+2I-(1-\alpha)H}}{\alpha M}
+ \le\frac1M\left(U+\frac{L+2I}{\alpha}\right),
+\end{equation}
+provided $H\ge0$. The first inequality is just rearrangement; the difficult work is proving \eqref{eq:comparison} for the same arithmetic family.
+
+This is also the correct quantity to average. Separate bounds on the average rank fraction and the average loss do not control $(L+2I)/\alpha$. The previous mean-transfer report already identifies this inverse-rank obstruction. The new moment theorem retains that combined loss rather than replacing it by a product of averages.\cite{priorMean}
+
+\subsection{Why varying the auxiliary twist is useful}
+
+The source's twisted-lattice product formula allows a suitable twist to be chosen separately for each nonarchimedean place. The archimedean size is read on the untwisted map, while valuations are compared with a locally favorable twist through a bounded-height determinant ratio. This is a strong and potentially portable way to avoid requiring one twist to be simultaneously optimal everywhere.
+
+The exact lower-bound theorem also needs controlled vectors completing the short family to a full basis. A full determinant bound alone cannot control every lower exterior power: the map $\operatorname{diag}(t,t^{-1})$ has determinant one and can make one coordinate arbitrarily short. Thus an extension must retain the auxiliary-vector input, not merely the final determinant identity. See
+\src{New/Reduction/Lattices/TwistedLattice}{TwistedLattice.covolume_add_index_nonneg}
+and \src{New/Determinant/Twist/LongForms}{integral_forms_long}.
+
+The congruence machinery selects twists with controlled normalized Selmer lengths and determinant denominators. A small normalized length does not automatically imply that an integral Selmer module is zero: the coefficient ramification may grow. Earlier reports already analyze this issue, and the present work does not infer new Vandiver, Bloch--Kato, or algebraic $K$-group vanishing assertions from it.\cite{priorCollection}
+
+\subsection{From a one-sided error to zero exclusion}
+
+After translating \eqref{eq:source-star} into prime sums, the scales are chosen with $m\asymp\sqrt x$, slowly growing $\log b$, and a much later cutoff $x_1$. A prime-number-theorem estimate at $x_1$ controls the residual terms. The output is an eventual one-sided bound of order $x^{-1/2+\varepsilon}$.
+
+The Mellin transform of the prime remainder has simple poles recording differences between zero multiplicities of Dirichlet functions and auxiliary quadratic twists. The source first chooses a twist avoiding cancellation near a hypothetical zero. Its Landau lemma then excludes the surviving pole from an upper bound on the remainder. The residue condition at real points is essential. The relevant declarations are
+\src{New/Reduction/Zeros/Criterion}{LFunction_ne_zero_of_primeRemainder_le}
+and \src{Lib/Analytic/Landau}{IsPolar.landau}. Related one-sided criteria predate the present source; Suzuki gives a systematic modern treatment.\cite{Suzuki}
+
+\subsection{Four independent obstacles to a new zero theorem}
+
+\begin{enumerate}
+\item \textbf{Encode the right primes.} A new target needs a divisor or derivative calculation whose coefficient detects its actual Frobenius information. Tensoring with a new field while keeping weights pulled back from the old cyclotomic quotient will not achieve this.
+\item \textbf{Keep the archimedean main term matched.} The new divisibility gain must enter the same normalized height comparison, with all extra discriminant, degree, level, and period costs accounted for.
+\item \textbf{Retain sufficient rank and denominator control.} The source second moment averages forms and group translates. It is not, by definition, a second moment over the prime cutoff $x$. A comparison theorem is needed before using it as the moment budget of a new prime statistic.
+\item \textbf{Identify the actual analytic object.} A theorem using the source's weakened internal Galois-representation notions cannot automatically be read as a theorem about every standard Artin or automorphic representation. The full external definition and all hypotheses must be matched.
+\end{enumerate}
+
+The following frame construction makes progress on the first local ingredient. The subsequent analytic theorems clarify the last-stage estimates a successful arithmetic construction could supply. None removes the need for the middle two steps.

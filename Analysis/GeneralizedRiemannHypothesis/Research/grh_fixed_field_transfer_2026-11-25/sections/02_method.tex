@@ -1,0 +1,58 @@
+\section{The transferable architecture of the proof}
+\label{sec:method}
+
+\subsection{Three arithmetic inputs and one cancellation}
+The source \up{grh/GUIDE.md}{reading guide} organizes the proof around short forms, enough forms, and the fact that integral forms must be long. These refer to the \emph{same} lattice of target forms with the same integral structures. Their compatibility is the mechanism.
+
+The short forms arise from derivatives of theta functions and chains of theta lifts. At selected primes, their divisibility records weighted prime sums. Integral normalization converts the divisibility into shorter vectors. A second-moment argument then makes the resulting family span almost all of the target. The lower bound uses determinants of lift norms, congruence and Selmer estimates to control denominators, and the product formula.
+
+For target dimension $D$, a selected independent family of size $n$, logarithmic squared covolume $c$, and index cost $I$, the comparison has the schematic form
+\[
+ \text{main amount}
+ \ \le\ \frac{c+2I}{D}
+ \ \le\ \text{main amount}-\frac nD\,mR+\text{error}.
+\]
+Here $R$ is the normalized arithmetic remainder one wants to control and $m$ is the length of the chain. The common main amount cancels. In the actual declaration
+\up{grh/src/New/Reduction/MainInequality.lean}{\file{star_inequality}},
+\[
+ m\,\mathrm{totalRemainder}\le f a(\log b)^5.
+\]
+The construction takes $m$ between $\sqrt x$ and $2\sqrt x$. After the remaining normalizations, the source obtains the one-sided estimate that excludes zeros to the right of $1/2$.
+
+This is a stronger structural idea than an implication from RH. A new family could in principle use the same comparison, but its arithmetic divisibility, spanning, and determinant inputs must be constructed for that family.
+
+\subsection{Why the local torsion lemma is useful}
+The congruence argument needs one auxiliary twist to control several denominators or extension classes at once. In
+\up{grh/src/New/Congruences/Selmer/RootsOfUnity.lean}{\file{RootsOfUnity.lean}},
+the key input selects a tuple of $p$-power roots of unity such that finitely many integral polynomial evaluations are each hardly more divisible than at their respective witness points. A sum of witness valuations bounds the total difficulty.
+
+The upstream theorem permits arbitrary integral algebraic coefficients, a bounded number of variables, arbitrary degrees, and arbitrary finite packet size. It prescribes an order bound before those polynomials are supplied, but allows positive additive tolerance. Those quantifiers matter: making the coefficient field depend on the polynomials can make its ramification arbitrarily large.
+
+The previous fixed-field report removes the tolerance by using discreteness of $v(K^\times)=e^{-1}\Z$. Its multivariable proof specializes one variable at a time, adjoins the selected root of unity to the coefficient field, and pays for the larger ramification at the next step. Sections~\ref{sec:scalar} and \ref{sec:multi} improve these two parts separately. The scalar improvement identifies the exact charge; the multivariable improvement avoids the intermediate field extensions entirely.
+
+\subsection{A source map for reuse}
+All paths below are relative to \file{grh/src/} in the pinned repository. The complete path-and-hash manifest is in the archive.
+\begin{center}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.25\linewidth}>{\raggedright\arraybackslash}p{.68\linewidth}@{}}
+\toprule
+Purpose & Main source\\
+\midrule
+Public mathematical scope & \file{Statements.lean}; \file{Main.lean}\\
+Divisibility and short vectors & \file{New/Reduction/ShortAndEnough.lean}; \file{New/Derivatives/Divisibility/}\\
+Near-spanning & \file{New/Spanning/SecondMoment/}; \file{New/Reduction/ShortAndEnough.lean}\\
+Generic determinant principle & \file{New/Reduction/Lattices/TwistedLattice.lean}\\
+Global height compatibility & \file{New/Reduction/Lattices/Heights.lean}\\
+Completion costs and long forms & \file{New/Determinant/Twist/LongForms.lean}\\
+Simultaneous torsion selection & \file{New/Congruences/Selmer/RootsOfUnity.lean}\\
+Arithmetic twist theorem & \file{New/Congruences/Selmer/GeneralTheorem.lean}\\
+Selmer hypotheses & \file{New/Congruences/Selmer/SelmerData.lean}; \file{Line.lean}\\
+Final comparison & \file{New/Reduction/MainInequality.lean}; \file{OneSidedBound.lean}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{A distinction that prevents false transfers}
+A bound on a product of determinants controls the \emph{sum} of their valuations. It need not control each valuation separately: a lower-than-expected valuation of one factor can offset a higher-than-allowed valuation of another. The local theorems below always retain the individual inequalities. Their proofs use a union bound on bad choices, rather than silently multiplying the entire packet and treating the resulting bound as equivalent.
+
+Similarly, an order bound for a character does not control the norms of its ramified primes. The latter is an arithmetic conductor question and remains a separate input to a global application.
+

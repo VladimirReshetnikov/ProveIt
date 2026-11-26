@@ -1,0 +1,119 @@
+\section{Assessment and what this report adds}
+
+The answer to the research question is \textbf{yes, at the level of methods
+and identifiable mathematical interfaces}. The source contains arithmetic
+constructions and cohomological bounds that have content well beyond its
+five final zero-location statements. A particularly concrete application is
+the strict-Selmer approach to algebraic K-groups. A second is the prospect of
+transporting the determinant argument to Hecke functions over a quadratic
+field, and hence to a nonabelian extension of $\Q$.
+
+The new work here is narrower than a claimed resolution of either target.
+We derive averaged analytic interfaces that a transferred arithmetic
+construction could satisfy, and compute exact preparatory identities for
+$K_{124}(\Z)$ and $K_{128}(\Z)$, with a longer screening table through
+degree $160$. These additions are accompanied by proofs and reproducible
+certificates. Merely repeating the reported $K$-theory application or
+listing consequences of Dirichlet GRH would not advance the supplied reports.
+
+\subsection{Exact scope of the repository}
+
+At the pinned revision, both editions export RH and GRH for
+\emph{Dirichlet} $L$-functions, all moduli and all characters. The types in
+\path{grh/src/Statements.lean} import Mathlib alone; the five corresponding
+theorems are in \path{grh/src/Main.lean}. General Hecke functions,
+Dedekind zeta functions of arbitrary number fields, and general automorphic
+$L$-functions are not additional exported statements \cite{repo}.
+
+The source author reports kernel and comparator checks. More substantially,
+Sutherland's independent verification page for this exact revision reports
+successful sandboxed builds and independent checker acceptance for both
+editions \cite{shortchecks}. We inspected that primary evidence and the
+source; we did not repeat the full Lean build or kernel replay in this
+investigation. This distinction has no bearing on accepting the user's
+premise for the present transfer analysis, but it matters when describing
+what this report itself verified.
+
+\subsection{Claim ledger}
+
+\begin{longtable}{@{}P{0.26\linewidth}P{0.42\linewidth}P{0.25\linewidth}@{}}
+\toprule
+Item & Conclusion & Status here\\
+\midrule
+\endhead
+RH and Dirichlet GRH &
+The five upstream statements, at the pinned source revision. &
+Imported result; source and external verification examined.\\[5pt]
+K-groups through degree $120$ &
+Mok--Zheng claim $K_{4m}(\Z)=0$ for $1\le m\le30$. &
+Existing follow-on claim; full bridge not independently certified here.\\[5pt]
+Positive-part Mellin criterion &
+Weighted positive-part integrability excludes all poles in a half-plane. &
+Complete human-readable proof in this report.\\[5pt]
+Signed moving averages &
+An upper bound for every moving interval suffices when the Mellin multiplier
+has no zeros in the relevant half-plane. &
+Complete proof; sampled signed bins are explicitly distinguished.\\[5pt]
+Arithmetic screening through $160$ &
+For even $54\le e\le80$, every prime $\ell>109$ admits one of two fields
+with three specified Bernoulli values all $\ell$-adic units. &
+Exact finite theorem; two independent rational formulas and B\'ezout
+certificates.\\[5pt]
+Degrees $124$ and $128$ &
+The field-selection gcd is $4$ in both cases; dimensions of prospective
+comparison spaces are computed. &
+Preparation only; no new K-group vanishing.\\[5pt]
+Conductor-$23$ nonabelian target &
+Three explicit averaged bounds would imply its RH. &
+Analytic reductions proved; arithmetic bounds remain open in this work.\\
+\bottomrule
+\end{longtable}
+
+The analytic arguments are adaptations of classical Landau theory.
+The finite rational identities and representation dimensions are claimed
+as verified results, without an assertion of bibliographic priority.
+
+\subsection{What the eleven predecessors already contain}
+
+All eleven ZIP archives in the specified incoming directory were downloaded
+at the pinned ProveIt revision and checked against their Git blob hashes.
+Every manuscript's structure and main claims were read; several relevant
+proofs were studied in detail. This is an overlap audit, not a blanket
+certification of every theorem in those manuscripts \cite{prior}.
+
+\begin{longtable}{@{}P{0.30\linewidth}P{0.63\linewidth}@{}}
+\toprule
+Predecessor group & Material already present\\
+\midrule
+\endhead
+Three initial/detailed analysis archives &
+The three-input determinant comparison, explicit rank and index losses,
+sparse auxiliary twists, the $\Q(\sqrt{-23})$ cubic benchmark, and
+K-theory source and quantifier issues.\\[4pt]
+Arithmetic and exponent-six archives &
+Field classifications and prime representations, nonabelian
+one-sided detectors, congruence-prediction obstructions, and
+class-group-exponent computations.\\[4pt]
+Two CM/prime-bias archives &
+Four-term singular-modulus relations, support bounds, Suzuki-type
+prime biases, convex balance, and sparse-scale zero tests.\\[4pt]
+Newest beyond-Dirichlet archive &
+Sharp torsion specialization, integral formal-series extensions,
+Fitting-profile control, and comparison of the source's odd cocycles
+with an ordinary cohomological local kernel.\\
+\bottomrule
+\end{longtable}
+
+In particular, the dated analysis already discusses both Pintar and
+Mok--Zheng, already proves the product-before-gcd rule, and already
+identifies the need to extract a strict-Selmer-to-Hecke theorem. We
+attribute those points to the predecessor. Our additional contributions
+are the averaged criteria, their precise failure examples, independent
+small-operator reconstruction, and exact screening and dimension
+calculations beyond the cited $120$ range.
+
+The archive includes a full filename-by-filename audit and provenance
+manifest. Some predecessor statements concern new classifications or
+large exhaustive computations; they are recorded as predecessor
+claims unless separately checked. The present argument does not depend
+on those large classifications.

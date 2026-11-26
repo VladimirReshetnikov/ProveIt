@@ -1,0 +1,88 @@
+\section{Which binary Frobenius tests can discard selected factors?}
+\label{sec:binary}
+At an unramified prime one often records a yes/no event, such as whether a polynomial stays irreducible. A zero of an $L$-function contributes to the explicit formula with a coefficient determined by that event. For a one-sided estimate to detect just a selected family, one wants all its coefficients to have the same sign and the unwanted coefficients to vanish. The earlier ProveIt report \cite{packetmc} classifies events with strictly negative coefficients on \emph{every} nonlinear irreducible. Here we allow zero coefficients. The possibility of equality changes the answer: a quotient, a normal subgroup in that quotient, and a sign character can all occur.
+
+\subsection{Classification}
+Let $H\triangleleft G$ be a normal subgroup of a finite group, $Q=G/H$, and let $f:G\to\{0,1\}$ be constant on conjugacy classes with $f(x^{-1})=f(x)$. On $\mathbb R^G$ write
+\[
+ A_{xy}=f(x^{-1}y),\qquad
+ V=\{v:\ \sum_{x\in C}v_x=0\ \text{for every }H\text{-coset }C\}.
+\]
+The orthogonal projection onto coset-constant vectors averages over $H$ and commutes with $A$. For an irreducible character $\chi$, $A$ acts on its isotypic space by $|G|\langle f,\chi\rangle/\chi(1)$, with the normalized character inner product. The characters in $V_{\mathbb C}$ are precisely those nontrivial on $H$. In particular $H=[G,G]$ singles out all the nonlinear characters. Call $f$ admissible if $A|_V\le0$.
+
+\begin{theorem}[Classification with zero coefficients]\label{th:binary}
+Coset-constant events are admissible and annihilate $V$. Every other admissible event factors through a quotient $G'=G/K$ for some $K\triangleleft G$ strictly contained in $H$. Write $H'=H/K$, $q:G'\to Q$. There exist a normal subgroup $J\triangleleft G'$ with $J\cap H'=1$, a conjugation-invariant homomorphism $\varepsilon:J\to\{1,-1\}$, and a binary class function $b$ on $Q$, invariant under inversion, such that
+\begin{equation}\label{eq:binary}
+ f(x)=b(q(x))-\varepsilon(x)\mathbf 1_J(x)\qquad(x\in G').
+\end{equation}
+Here $\varepsilon\mathbf 1_J$ is extended by zero and $b(q(j))=(1+\varepsilon(j))/2$ for $j\in J$. Conversely every such event is admissible. On $V$ its only possible nonzero eigenvalue is $-|K||J|$, with multiplicity
+\[
+               \frac{|G/K|-|G/H|}{|J|}.
+\]
+For a character nontrivial on $H$, a coefficient survives exactly when $K$ acts trivially and $J$ acts on the resulting representation of $G'$ by the scalar character $\varepsilon$.
+\end{theorem}
+
+\begin{proof}
+For $u,v$ in the same fiber, the negative of the quadratic form on $e_u-e_v$ is $2(f(u^{-1}v)-f(1))$. If it is zero, then $A(e_u-e_v)=0$, by semidefiniteness and invariance of $V$. If $f(1)=1$, all these differences give zero, so $f$ is constant in each fiber. Otherwise $f(1)=0$. The elements $h\in H$ for which $f(h)=0$ are exactly those with $A e_h=A e_1$. By translation invariance they are the intersection of $H$ with the stabilizer of a column, hence form a subgroup $K$; centrality of $f$ makes $K$ normal. Column equality and translation show $f$ is constant on $K$-cosets. If $K=H$ the first case applies. Otherwise pass to $G/K$. The operator on the $K$-coset-constant subspace becomes $|K|$ times the quotient operator and vanishes on its orthogonal complement. We now work in that quotient and write $h=|H'|\ge2$.
+
+In the identity fiber $f$ is one off the identity and zero at the identity. Split $V$ into spaces $W_C$ of sum-zero vectors on individual $H'$-cosets. For $B=-A|_V$ every diagonal block is the identity on $W_C$. Each off-diagonal block is a contraction, by positivity of the two-by-two block compression with identity diagonal. For fibers $C,D$, the binary matrix of $A$ between them is regular of row and column sum $r=\sum_{x\in C^{-1}D}f(x)$. Its squared Frobenius norm on all vectors is $hr$, and the constant direction accounts for $r^2$. As at most $h-1$ remaining singular values are nonzero and each is at most one, $r(h-r)\le h-1$. Hence $r$ is $0,1,h-1$ or $h$.
+
+A constant fiber gives a zero block. Any other fiber of $q$, called active, has one exceptional element $s_a$ over $a\in Q$: a missing element among ones, or a present element among zeros. Give it sign $\varepsilon_a=+1$ in the first case and $-1$ in the second. When $h=2$ always choose the missing element. On $W$ the corresponding block of $B$ is $\varepsilon_a$ times the permutation identifying the two fibers by right multiplication by $s_a$. The identity fiber is active, with $s_1=1$ and positive sign.
+
+Write the positive block matrix as a Gram matrix $B_{CD}=U_C^*U_D$, where each $U_C$ is an isometry. A block that is an isometry identifies equal image subspaces, since orthogonal projection onto one image preserves the norms of all vectors of the other and the dimensions agree. Consequently if $a,b$ are active, the blocks between the cosets $1,a,ab$ give
+\[
+                 B_{1,ab}=B_{1,a}B_{a,ab}.
+\]
+It is an isometry, so $ab$ is active. The active cosets therefore form a subgroup of $Q$. In the last identity the product of the exceptional matchings is right multiplication by $s_a s_b$. On the sum-zero space a permutation is determined by its restriction. For $h\ge3$ no permutation is minus the identity on that space: it would have to interchange each pair of distinct coordinates. Thus $s_{ab}=s_a s_b$ and $\varepsilon_{ab}=\varepsilon_a\varepsilon_b$. For $h=2$ all chosen signs are positive and ordinary faithfulness gives the same conclusions. Conjugation preserves the chosen exceptional element and sign in every active fiber. Their elements therefore form a normal subgroup $J$ with $J\cap H'=1$, and their signs give an invariant character. Filling in the constant background in each fiber gives \eqref{eq:binary}.
+
+Conversely the first term of \eqref{eq:binary} annihilates $V$. On the $K$-invariant part of $V$, the operator $-A$ acts as $|K|\sum_{j\in J}\varepsilon(j)R_j$, where $(R_j v)(x)=v(xj)$. The latter is $|K||J|$ times the orthogonal projection to the $\varepsilon$-isotypic subspace for $J$. On all $K$-invariant vectors this projection has rank $|G/K|/|J|$ by the regular action of $J$ on each of its cosets. On $H$-invariant vectors the rank is $|G/H|/|J|$, since $J$ embeds in $Q$. Subtraction proves the rank formula. Invariance of $\varepsilon$ and normality of $J$ make this projection central, which gives the criterion on irreducibles.
+\end{proof}
+
+\paragraph{An obstruction.}
+For $G=S_n$, $n\ge5$, and $H=A_n$, a binary event with all nonlinear coefficients nonpositive either kills them all or detects them all. Indeed $A_n$ is simple, so in the nonconstant case $K=1$. Normal subgroups with trivial intersection commute, hence $J\subset C_{S_n}(A_n)=1$. To see the last equality, an element centralizing every 3-cycle preserves the support of every 3-cycle, hence every point. The theorem now gives the same eigenvalue $-1$ on all of $V$. This rules out selective binary tests in these groups under the common-sign condition.
+
+\subsection{A minimal event for a twisted cubic}
+Let $L$ be the splitting field of $P(X)=X^3-X-1$ and set $E=L(i)$. Reduction modulo $2$ is irreducible and the discriminant is $-23$. Thus $\mathrm{Gal}(L/\mathbb Q)=S_3$ and its unique quadratic field is $\mathbb Q(\sqrt{-23})$. It follows that $G=\mathrm{Gal}(E/\mathbb Q)=S_3\times C_2$. Let $\sigma$ be the sign character, $\rho$ the two-dimensional standard character, and $\eta$ the nontrivial character of $C_2$. The untwisted example and its associated weight-one form are described in \cite{serrepoly,ng}.
+
+For a prime $p\nmid46$ define $f(p)=1$ in either of the following cases, and $f(p)=0$ otherwise.
+\begin{center}
+\begin{tabular}{@{}ll@{}}\toprule
+Congruence of $p$ & Factorization of $P$ modulo $p$ \\\midrule
+$p\equiv1\pmod4$ & irreducible \\
+$p\equiv3\pmod4$ & three distinct linear factors \\\bottomrule
+\end{tabular}
+\end{center}
+For the corresponding class function one has
+\begin{equation}\label{eq:identity}
+          f=\frac{1+\sigma}{4}+\frac{(1+\sigma)\eta}{12}
+                      -\frac{\rho\eta}{3}.
+\end{equation}
+This follows by evaluating on the three cycle types for each value of $\eta$; $\rho$ has traces $2,0,-1$ on identity, transpositions and 3-cycles respectively. The mean is $1/4$. There is no $\rho$ term.
+
+\begin{corollary}[Smallest support]
+This event is the unique least-support inversion-invariant binary class function having negative coefficient on $\rho\eta$ and zero coefficient on $\rho$. Its support has three of the twelve elements.
+\end{corollary}
+\begin{proof}
+Here $H=A_3\times1$ has order three. For a selective test in Theorem~\ref{th:binary}, $K=1$ and $J\ne1$. Since $J$ centralizes $H$, it lies in $C_3\times C_2$. Disjointness from $H$ leaves the unique subgroup $1\times C_2$. To select $\rho\eta$, the sign must be $\eta$. The active fibers therefore have two selected elements and one selected element, respectively; choosing zero on the remaining two fibers is the unique minimum.
+\end{proof}
+
+\begin{theorem}[One-sided criterion for one Hecke $L$-function]\label{th:cubic}
+Assume Dirichlet GRH as supplied by the upstream theorem. All nontrivial zeros of $L(s,\rho\eta)$ lie on $\Re s=1/2$ if and only if for every $\epsilon>0$ there is a constant $C_\epsilon$ such that, for $x\ge2$,
+\begin{equation}\label{eq:cubic}
+       \sum_{p\le x,\ p\nmid46} f(p)\log p-\frac{x}{4}
+                   \le C_\epsilon x^{1/2+\epsilon}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The standard representation of $S_3$ is induced from either nontrivial character of $A_3$. Twisting by $\eta$ commutes with induction. By Artin formalism and abelian class field theory, $L(s,\rho\eta)$ is the Hecke $L$-function of a nontrivial finite-order character over $\mathbb Q(\sqrt{-23})$, hence is entire, with the usual functional equation. The representation is self-dual. Only this monomial case of Artin holomorphy is needed.
+
+Write $g_p$ for Frobenius and $\Psi_f(x)=\sum_{p^k\le x,\ p\nmid46} f(g_p^k)\log p$. Prime powers with $k\ge2$ contribute $O(\sqrt x\log^2(2x))$. For $\Re s>1$ the Mellin transform of $\Psi_f(x)-x/4$ on $[1,\infty)$, with measure $x^{-s-1}dx$, is
+\[
+ T(s)=-\frac1s\sum_\chi c_\chi\frac{L'}{L}(s,\chi)
+                     -\frac1{4(s-1)}+U(s),
+\]
+where $c_\chi$ are the coefficients of \eqref{eq:identity}. The finitely many omitted Euler factors give $U$ holomorphic in $\Re s>0$. The principal pole cancels. Dirichlet GRH controls all four linear terms. At each zero $z$ of $L(s,\rho\eta)$ with $\Re z>1/2$, the residue of $T$ is $m_z/(3z)$, with $m_z$ its multiplicity.
+
+Fix $1/2<\theta<1$. Equation~\eqref{eq:cubic} for a smaller exponent and the prime-power bound make $Cx^\theta-\Psi_f(x)+x/4$ nonnegative on $[1,\infty)$ for some $C$. Its Mellin transform is $C/(s-\theta)-T(s)$. If its abscissa of convergence were $>\theta$, Landau's theorem would force a singularity at that real point. The only possible pole there has strictly negative residue. A nonnegative integral approached from the right cannot have such a residue. The integral thus converges and is holomorphic on $\Re s>\theta$, excluding all poles there. Let $\theta\downarrow1/2$ and apply the functional equation. Conversely, the fixed-conductor explicit formula under RH for these finitely many Dirichlet and Hecke functions bounds their centered von Mangoldt sums by $O(\sqrt x\log^2(2x))$ (or $O_\epsilon(x^{1/2+\epsilon})$), giving \eqref{eq:cubic} by \eqref{eq:identity}; see also the Artin explicit formula in \cite{ng}.
+\end{proof}
+Equation~\eqref{eq:cubic} is the outstanding arithmetic estimate. The upstream covolume bound was built for a different prime weight. In particular the two events at the identity and at a 3-cycle of $S_3$ can have the same image in the abelianization and different values of $f$. The character identity exhibits exactly where a new estimate is required.

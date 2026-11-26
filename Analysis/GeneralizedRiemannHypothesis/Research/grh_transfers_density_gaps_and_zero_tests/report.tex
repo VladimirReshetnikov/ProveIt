@@ -1,0 +1,60 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,booktabs,array,geometry,xcolor,fancyhdr,titlesec}
+\usepackage[hyphens]{url}
+\usepackage[colorlinks=true,linkcolor=teal!65!black,urlcolor=teal!65!black,citecolor=teal!65!black]{hyperref}
+\geometry{margin=.92in,headheight=15pt}
+\definecolor{navy}{HTML}{183547}\definecolor{ac}{HTML}{116962}
+\hypersetup{pdftitle={Geometric progressions and nonabelian zero tests after Dirichlet GRH}}
+\titleformat{\section}{\Large\bfseries\sffamily\color{navy}}{\thesection}{.65em}{}
+\titleformat{\subsection}{\large\bfseries\sffamily\color{navy}}{\thesubsection}{.65em}{}
+\pagestyle{fancy}\fancyhf{}\lhead{\small\sffamily\color{navy}Methods from the Dirichlet GRH proof}\rhead{\small\sffamily Research note}\cfoot{\small\sffamily\thepage}
+\setlength{\emergencystretch}{2em}\raggedbottom
+\setlength{\parskip}{.25em}
+\newtheorem{theorem}{Theorem}[section]
+\newcommand{\src}[2]{\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/#1}{#2}}
+\newcommand{\prior}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/48efe71a726dddc5a505534edaa4c0fd190416b9/docs/incoming/#1}{#2}}
+\begin{document}
+\thispagestyle{plain}
+{\sffamily\small\bfseries\color{ac}NUMBER THEORY AND COMBINATORICS\hfill 25 NOVEMBER 2026}\par\vspace{8pt}
+\noindent{\sffamily\bfseries\fontsize{25}{28}\selectfont\color{navy} Geometric progressions and\\ nonabelian zero tests\par}
+\noindent{\large\sffamily Three transfers from the Lean proof of Dirichlet GRH\par}
+\vspace{4pt}\noindent{\color{ac}\rule{\linewidth}{1pt}}
+
+\noindent The Lean development for Dirichlet $L$-functions contains a progression-free construction on exponents and a one-sided criterion detecting zeros. Following these ideas through the earlier ProveIt reports leads to answers to two published density questions and to finite-degree results for nonabelian zero tests.
+\begin{itemize}
+\item McNew asked whether sets of positive integers avoiding three-term geometric progressions have different extremal natural and upper densities. We prove $\alpha<\overline\alpha$ for rational ratios and $\beta<\overline\beta$ for integer ratios (Questions 7.1 and 7.3). The respective gaps exceed $0.002836$ and $0.069218$. The obstruction already occurs in $\{1,\ldots,12\}$.
+\item For every finite field, rational-ratio progression-free subsets of $\mathbb F_q[x]$ have strictly different optimal natural and upper densities. Both extrema are attainable, and the natural-density extremum is a computable real. Over $\mathbb F_2$ the gap exceeds $0.003660$. A change affecting just three polynomials explains the strict inequality.
+\item For the nonabelian Artin factor of the cubic $X^3-X-1$, the eta-product representation yields strict quadratic Tur\'an inequalities at every shift. Our finite-height certificate gives all Jensen degrees through $16$ at every shift. Using Ng's published zero count extends the range to $945{,}173$. An exact negative cubic discriminant for a different kernel disproves the general sufficient condition in Dimitrov--Lucas, Theorem~1. A moment argument identifies the allowable first-order perturbations of a Gaussian if every cubic is to remain real-rooted.
+\item For $G=\mathrm{PSL}_2(\mathbb F_q)$ in odd characteristic, $q\ge5$, we determine the smallest degree of a pointwise-nonnegative genuine character containing all nontrivial irreducibles. We also compute the minimum degree of a single coset action containing every irreducible. The classification includes the four exceptional small fields and the elementary case $q=3$.
+\end{itemize}
+These are mathematical proofs with auxiliary integer computations. The analytic result for the cubic field leaves its full critical-line conjecture open. All nine accompanying checkers use Python integer or rational arithmetic.
+
+\section{What the Lean proof makes available}
+\noindent\src{src/Statements.lean}{The public definitions} concern the Riemann zeta function and complex Dirichlet characters of positive modulus. In particular \src{src/Main.lean}{the exported nonvanishing theorem} covers $\Re s>1/2$ for Dirichlet $L(s,\chi)$ with the principal pole excepted. The primitive and general critical-strip formulations are separate exports. The pinned repository reports builds and kernel checks for its readable and compact editions on Lean 4.35.0, with the axioms \texttt{propext}, \texttt{Classical.choice} and \texttt{Quot.sound}. This study used source inspection and the published checks; it did not perform a fresh build. The source revision is \texttt{72fead102f66}, with Mathlib at \texttt{56a005855ea1}. The full commit and file identities are recorded in \texttt{source\_provenance.json}.
+
+\paragraph{Exponents.}
+In \src{src/New/Reduction/Data/Existence.lean\#L80-L116}{\texttt{exists\_three\_term\_free}}, an integer encodes a short digit vector. The construction bounds all digits so a weighted congruence implies exact coordinate equalities. Restricting to a sphere then rules out a strict weighted midpoint. In the polynomial ring the prime valuations already give integral coordinates. A nonconstant rational-function ratio yields a nonzero signed step in those coordinates. This leads to a concrete issue absent from the Lean lemma: the degree cutoffs weight configurations near their boundary disproportionately. We prove that choices maximizing different cutoffs are incompatible.
+
+\paragraph{Zeros.}
+The \src{src/New/Reduction/MainInequality.lean}{covolume inequality} compares two estimates for the same lattice, using short spanning forms and determinants from twisted theta lifts. It gives a \src{src/New/Reduction/OneSidedBound.lean}{one-sided estimate} for a smoothed prime sum involving a congruence class and a quadratic twist. The \src{src/New/Reduction/Zeros/Criterion.lean}{zero criterion} chooses a twist to prevent cancellation of zero orders in a prescribed region and applies a Landau argument. Extending this strategy to a nonabelian field requires an arithmetic estimate for the new Frobenius weights. We examine two independent pieces that can already be decided: what a specific completed $L$-function's moments imply, and the least degree of a character that gives every irreducible a positive multiplicity.
+
+\paragraph{Earlier results used for comparison.}
+Asada, Fourakis, Manski, McNew, Miller and Moreland studied polynomial ratios and explicitly asked about rational ratios in Question~6.4. Their formulation uses upper density; the distinction between the natural and upper optima proved here is a further question. McNew developed finite-prime methods over the integers. His later divisor-graph work gives an asymptotic with error term for the maximum size in each initial interval; simultaneous optimization across initial intervals is the issue here. See \href{https://arxiv.org/abs/1808.04923}{his later Theorem 9}. See the \href{https://arxiv.org/pdf/1512.01932}{finite-field paper} and the \href{https://arxiv.org/abs/1310.2277}{integer paper}. The \prior{grh-progression-densities-and-cubic-prime-race.zip}{incoming progression and cubic report} gives an upper-density improvement over the greedy set and a conditional prime-race sign for the discriminant-$-23$ field. The \prior{grh-methods-polynomial-density.zip}{subsequent polynomial-density report} gives finite-fiber approximations to the upper optimum. Our natural-density argument needs one compatible rule at every cutoff. The \prior{psl2_grh_transfer.zip}{character report} studies even characteristic and asks for the odd-characteristic degree optimization. Sections below give the resulting distinctions without assuming GRH for nonabelian Artin functions. Historical priority for the present conclusions has not been established.
+\input{integers}
+\input{integer_more}
+\input{natural_density}
+\input{gap}
+\input{jensen}
+\input{gaussian}
+\input{sector}
+\input{odd}
+\input{prime_powers}
+\section{Further research questions}
+\begin{enumerate}
+\item Over the integers, does Rankin's set attain $\alpha$ as McNew conjectured in 7.2? Is $\beta>\alpha$ as asked in 7.4? The comparisons with the corresponding upper densities leave both questions open here.
+\item Is the greedy ternary-valuation set optimal among sets with a natural density for \emph{rational} ratios? The finite-witness condition above reduces a negative answer to one exact weighted construction. How large is the true gap $u_2-b_2$?
+\item For the cubic Artin factor, which property of the arithmetic kernel yields cubic inequalities without locating any zeros? The Gaussian perturbation calculation rules out an entire class of curvature-only proofs. A uniform argument in the Jensen degree would be needed for the full critical-line conclusion.
+\item Can the optimal odd-characteristic Frobenius weights be realized in an arithmetic covolume comparison that supplies the required one-sided remainder? The character calculation gives its exact possible weights at all unramified primes.
+\end{enumerate}
+\end{document}

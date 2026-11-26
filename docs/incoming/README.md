@@ -484,6 +484,82 @@ Members byte-identical to a Git blob of the reviewed commit (the bundled source 
 each placement's `OMITTED.tsv` instead of being copied. Adopted ideas are tracked in
 [ADOPTION.md](../../Computability/DiophantineConsistency/research/lean-proof-simplification/ADOPTION.md).
 
+## Generalized Riemann Hypothesis research packets
+
+61 archives of 25 and 26 November 2026 about results beyond GRH for Dirichlet
+L-functions are placed, as delivered and without a write, in the new project
+[`Analysis/GeneralizedRiemannHypothesis/`](../../Analysis/GeneralizedRiemannHypothesis/README.md),
+one directory per archive under `Research/`, and retired here. Of their 2,250 members,
+2,094 are placed and 156 are listed in
+[`Research/OMITTED.tsv`](../../Analysis/GeneralizedRiemannHypothesis/Research/OMITTED.tsv):
+151 matched by `.gitignore`, 3 checksum manifests and 2 nested copies of sibling archives.
+Nothing was rerun or checked, and the mathematical claims have not been independently
+reviewed or formalized here.
+
+| Archive | Arrival | Placement |
+|---|---|---|
+| `grh-lean-transfers.zip` | `1e1728ad22` | [Research/grh-lean-transfers](../../Analysis/GeneralizedRiemannHypothesis/Research/grh-lean-transfers/README.txt) |
+| `grh-transfer.zip` | `1e1728ad22` | [Research/grh-transfer](../../Analysis/GeneralizedRiemannHypothesis/Research/grh-transfer/README.md) |
+| `grh_transfers.zip` | `1e1728ad22` | [Research/grh_transfers](../../Analysis/GeneralizedRiemannHypothesis/Research/grh_transfers/README.md) |
+| `grh_transfer_analysis.zip` | `a92443f006` | [Research/grh_transfer_analysis](../../Analysis/GeneralizedRiemannHypothesis/Research/grh_transfer_analysis/README.txt) |
+| `grh_transfer_analysis_2026-11-25.zip` | `a92443f006` | [Research/grh_transfer_analysis_2026-11-25](../../Analysis/GeneralizedRiemannHypothesis/Research/grh_transfer_analysis_2026-11-25/README.md) |
+| `grh_lean_transfer_analysis.zip` | `b35eb211b8` | [Research/grh_lean_transfer_analysis](../../Analysis/GeneralizedRiemannHypothesis/Research/grh_lean_transfer_analysis/README.txt) |
+| `grh-arithmetic-transfers.zip` | `981d2bff32` | [Research/grh-arithmetic-transfers](../../Analysis/GeneralizedRiemannHypothesis/Research/grh-arithmetic-transfers/README.md) |
+| `grh_cm_prime_applications.zip` | `c59bde1a0f` | [Research/grh_cm_prime_applications](../../Analysis/GeneralizedRiemannHypothesis/Research/grh_cm_prime_applications/README.txt) |
+| `grh-exponent-six-and-transfers.zip` | `13c30b3b67` | [Research/grh-exponent-six-and-transfers](../../Analysis/GeneralizedRiemannHypothesis/Research/grh-exponent-six-and-transfers/README.md) |
+| `grh_beyond_dirichlet_grh_2026-11-25.zip` | `b65aa62294` | [Research/grh_beyond_dirichlet_grh_2026-11-25](../../Analysis/GeneralizedRiemannHypothesis/Research/grh_beyond_dirichlet_grh_2026-11-25/README.md) |
+| `grh_cm_four_terms_and_prime_bias.zip` | `b65aa62294` | [Research/grh_cm_four_terms_and_prime_bias](../../Analysis/GeneralizedRiemannHypothesis/Research/grh_cm_four_terms_and_prime_bias/README.md) |
+| `grh_method_transfers_2026-11-25.zip` | `432747f0a3` | [Research/grh_method_transfers_2026-11-25](../../Analysis/GeneralizedRiemannHypothesis/Research/grh_method_transfers_2026-11-25/README.txt) |
+| `grh_method_transfers_2026-11-25(1).zip` | `f103286429` | [Research/grh_method_transfers_2026-11-25_1](../../Analysis/GeneralizedRiemannHypothesis/Research/grh_method_transfers_2026-11-25_1/README.txt) |
+| `grh_cm_sparse_equations.zip` | `59fdad3ee0` | [Research/grh_cm_sparse_equations](../../Analysis/GeneralizedRiemannHypothesis/Research/grh_cm_sparse_equations/README.md) |
+| `grh_sparse_singular_moduli.zip` | `a5e5f65240` | [Research/grh_sparse_singular_moduli](../../Analysis/GeneralizedRiemannHypothesis/Research/grh_sparse_singular_moduli/README.md) |
+| `grh_sylow_transfer_2026-11-25.zip` | `a5e5f65240` | [Research/grh_sylow_transfer_2026-11-25](../../Analysis/GeneralizedRiemannHypothesis/Research/grh_sylow_transfer_2026-11-25/README.md) |
+| `dirichlet-grh-research.zip` | `5cbdc86d13` | [Research/dirichlet-grh-research](../../Analysis/GeneralizedRiemannHypothesis/Research/dirichlet-grh-research/README.md) |
+| `grh_relative_prime_races_2026-11-25.zip` | `5cbdc86d13` | [Research/grh_relative_prime_races_2026-11-25](../../Analysis/GeneralizedRiemannHypothesis/Research/grh_relative_prime_races_2026-11-25/README.md) |
+| `psl2_grh_transfer.zip` | `eefb831ae4` | [Research/psl2_grh_transfer](../../Analysis/GeneralizedRiemannHypothesis/Research/psl2_grh_transfer/README.md) |
+| `grh_reflection_transfer_2026-11-25.zip` | `36d291a86b` | [Research/grh_reflection_transfer_2026-11-25](../../Analysis/GeneralizedRiemannHypothesis/Research/grh_reflection_transfer_2026-11-25/README.md) |
+| `grh_cyclic_generator_transfer_2026-11-25.zip` | `47eb73a0c7` | [Research/grh_cyclic_generator_transfer_2026-11-25](../../Analysis/GeneralizedRiemannHypothesis/Research/grh_cyclic_generator_transfer_2026-11-25/README.md) |
+| `grh_a6_transfer_2026-11-25.zip` | `6fe2c1bd45` | [Research/grh_a6_transfer_2026-11-25](../../Analysis/GeneralizedRiemannHypothesis/Research/grh_a6_transfer_2026-11-25/README.md) |
+| `grh_deficit_transfer_2026-11-25.zip` | `6fe2c1bd45` | [Research/grh_deficit_transfer_2026-11-25](../../Analysis/GeneralizedRiemannHypothesis/Research/grh_deficit_transfer_2026-11-25/README.md) |
+| `grh_kummer_window_transfer_2026-11-25.zip` | `6fe2c1bd45` | [Research/grh_kummer_window_transfer_2026-11-25](../../Analysis/GeneralizedRiemannHypothesis/Research/grh_kummer_window_transfer_2026-11-25/README.md) |
+| `grh_method_transfers_2026-11-25 (2).zip` | `6fe2c1bd45` | [Research/grh_method_transfers_2026-11-25_2](../../Analysis/GeneralizedRiemannHypothesis/Research/grh_method_transfers_2026-11-25_2/README.md) |
+| `grh_quantitative_twists_2026-11-25.zip` | `6fe2c1bd45` | [Research/grh_quantitative_twists_2026-11-25](../../Analysis/GeneralizedRiemannHypothesis/Research/grh_quantitative_twists_2026-11-25/README.md) |
+| `grh-torsion-and-prime-sampling.zip` | `274841c1cb` | [Research/grh-torsion-and-prime-sampling](../../Analysis/GeneralizedRiemannHypothesis/Research/grh-torsion-and-prime-sampling/README.md) |
+| `grh-torsion-and-zero-data.zip` | `274841c1cb` | [Research/grh-torsion-and-zero-data](../../Analysis/GeneralizedRiemannHypothesis/Research/grh-torsion-and-zero-data/README.md) |
+| `grh_exact_torsion_transfer_2026-11-25.zip` | `274841c1cb` | [Research/grh_exact_torsion_transfer_2026-11-25](../../Analysis/GeneralizedRiemannHypothesis/Research/grh_exact_torsion_transfer_2026-11-25/README.txt) |
+| `grh_structural_transfers_2026-11-25.zip` | `274841c1cb` | [Research/grh_structural_transfers_2026-11-25](../../Analysis/GeneralizedRiemannHypothesis/Research/grh_structural_transfers_2026-11-25/README.md) |
+| `grh_transfers_singular_moduli_and_symmetric_powers.zip` | `274841c1cb` | [Research/grh_transfers_singular_moduli_and_symmetric_powers](../../Analysis/GeneralizedRiemannHypothesis/Research/grh_transfers_singular_moduli_and_symmetric_powers/README.md) |
+| `grh_transfer_synthesis_2026-11-25.zip` | `28ad287a8d` | [Research/grh_transfer_synthesis_2026-11-25](../../Analysis/GeneralizedRiemannHypothesis/Research/grh_transfer_synthesis_2026-11-25/README.md) |
+| `grh-progression-densities-and-cubic-prime-race.zip` | `d31039a48d` | [Research/grh-progression-densities-and-cubic-prime-race](../../Analysis/GeneralizedRiemannHypothesis/Research/grh-progression-densities-and-cubic-prime-race/README.md) |
+| `grh_method_transfers_sharp_torsion.zip` | `d31039a48d` | [Research/grh_method_transfers_sharp_torsion](../../Analysis/GeneralizedRiemannHypothesis/Research/grh_method_transfers_sharp_torsion/README.md) |
+| `grh_sharp_torsion_and_symplectic_blocks.zip` | `d31039a48d` | [Research/grh_sharp_torsion_and_symplectic_blocks](../../Analysis/GeneralizedRiemannHypothesis/Research/grh_sharp_torsion_and_symplectic_blocks/README.md) |
+| `grh-methods-polynomial-density.zip` | `7af2d6e471` | [Research/grh-methods-polynomial-density](../../Analysis/GeneralizedRiemannHypothesis/Research/grh-methods-polynomial-density/README.md) |
+| `grh_fixed_field_transfer_2026-11-25.zip` | `7af2d6e471` | [Research/grh_fixed_field_transfer_2026-11-25](../../Analysis/GeneralizedRiemannHypothesis/Research/grh_fixed_field_transfer_2026-11-25/README.md) |
+| `grh_method_transfers_research.zip` | `7af2d6e471` | [Research/grh_method_transfers_research](../../Analysis/GeneralizedRiemannHypothesis/Research/grh_method_transfers_research/README.md) |
+| `grh_sharp_transfers_2026-11-25.zip` | `7af2d6e471` | [Research/grh_sharp_transfers_2026-11-25](../../Analysis/GeneralizedRiemannHypothesis/Research/grh_sharp_transfers_2026-11-25/README.md) |
+| `exponent_seven_and_grh_transfers.zip` | `ff8161efa6` | [Research/exponent_seven_and_grh_transfers](../../Analysis/GeneralizedRiemannHypothesis/Research/exponent_seven_and_grh_transfers/README.md) |
+| `grh_nonabelian_transfer_2026-11-25.zip` | `48efe71a72` | [Research/grh_nonabelian_transfer_2026-11-25](../../Analysis/GeneralizedRiemannHypothesis/Research/grh_nonabelian_transfer_2026-11-25/README.md) |
+| `grh_beyond_dirichlet_2026-11-25.zip` | `1667e16cee` | [Research/grh_beyond_dirichlet_2026-11-25](../../Analysis/GeneralizedRiemannHypothesis/Research/grh_beyond_dirichlet_2026-11-25/README.txt) |
+| `grh_method_transfers_graph_towers_and_finite_rings.zip` | `1667e16cee` | [Research/grh_method_transfers_graph_towers_and_finite_rings](../../Analysis/GeneralizedRiemannHypothesis/Research/grh_method_transfers_graph_towers_and_finite_rings/README.txt) |
+| `grh_transfer_bridges_2026-11-25.zip` | `1667e16cee` | [Research/grh_transfer_bridges_2026-11-25](../../Analysis/GeneralizedRiemannHypothesis/Research/grh_transfer_bridges_2026-11-25/README.md) |
+| `grh_transfers_cycle_signings_and_lubin_tate.zip` | `1667e16cee` | [Research/grh_transfers_cycle_signings_and_lubin_tate](../../Analysis/GeneralizedRiemannHypothesis/Research/grh_transfers_cycle_signings_and_lubin_tate/README.md) |
+| `grh_transfers_density_gaps_and_zero_tests.zip` | `1667e16cee` | [Research/grh_transfers_density_gaps_and_zero_tests](../../Analysis/GeneralizedRiemannHypothesis/Research/grh_transfers_density_gaps_and_zero_tests/README.md) |
+| `grh_dihedral_47_71.zip` | `6799d49abd` | [Research/grh_dihedral_47_71](../../Analysis/GeneralizedRiemannHypothesis/Research/grh_dihedral_47_71/README.md) |
+| `grh_method_transfers_2026-11-26.zip` | `6799d49abd` | [Research/grh_method_transfers_2026-11-26](../../Analysis/GeneralizedRiemannHypothesis/Research/grh_method_transfers_2026-11-26/README.md) |
+| `mcnew_density_and_grh_transfers.zip` | `6799d49abd` | [Research/mcnew_density_and_grh_transfers](../../Analysis/GeneralizedRiemannHypothesis/Research/mcnew_density_and_grh_transfers/README.md) |
+| `grh_arithmetic_transfers_2026-11-26.zip` | `d80526e421` | [Research/grh_arithmetic_transfers_2026-11-26](../../Analysis/GeneralizedRiemannHypothesis/Research/grh_arithmetic_transfers_2026-11-26/README.txt) |
+| `grh_ideal_densities_and_transfer_conditions_2026-11-26.zip` | `d80526e421` | [Research/grh_ideal_densities_and_transfer_conditions_2026-11-26](../../Analysis/GeneralizedRiemannHypothesis/Research/grh_ideal_densities_and_transfer_conditions_2026-11-26/README.md) |
+| `grh_transfer_advances_2026-11-26.zip` | `d80526e421` | [Research/grh_transfer_advances_2026-11-26](../../Analysis/GeneralizedRiemannHypothesis/Research/grh_transfer_advances_2026-11-26/README.txt) |
+| `Effective_Graph_Towers.zip` | `28bcd392fe` | [Research/Effective_Graph_Towers](../../Analysis/GeneralizedRiemannHypothesis/Research/Effective_Graph_Towers/README.txt) |
+| `mcnew-density-and-dirichlet-grh.zip` | `28bcd392fe` | [Research/mcnew-density-and-dirichlet-grh](../../Analysis/GeneralizedRiemannHypothesis/Research/mcnew-density-and-dirichlet-grh/README.md) |
+| `mcnew_counterexample_and_grh_transfers.zip` | `bd8864aa31` | [Research/mcnew_counterexample_and_grh_transfers](../../Analysis/GeneralizedRiemannHypothesis/Research/mcnew_counterexample_and_grh_transfers/README.md) |
+| `grh_method_transfers.zip` | `de7b92e9c3` | [Research/grh_method_transfers](../../Analysis/GeneralizedRiemannHypothesis/Research/grh_method_transfers/README.md) |
+| `grh_method_transfers_orthogonal_jets_2026-11-26.zip` | `de7b92e9c3` | [Research/grh_method_transfers_orthogonal_jets_2026-11-26](../../Analysis/GeneralizedRiemannHypothesis/Research/grh_method_transfers_orthogonal_jets_2026-11-26/README.md) |
+| `grh_prime_patterns_and_branch_precision.zip` | `de7b92e9c3` | [Research/grh_prime_patterns_and_branch_precision](../../Analysis/GeneralizedRiemannHypothesis/Research/grh_prime_patterns_and_branch_precision/README.md) |
+| `grh_spanning_and_s5_2026-11-26.zip` | `de7b92e9c3` | [Research/grh_spanning_and_s5_2026-11-26](../../Analysis/GeneralizedRiemannHypothesis/Research/grh_spanning_and_s5_2026-11-26/README.md) |
+| `grh_transfer_extensions_2026-11-26.zip` | `de7b92e9c3` | [Research/grh_transfer_extensions_2026-11-26](../../Analysis/GeneralizedRiemannHypothesis/Research/grh_transfer_extensions_2026-11-26/README.md) |
+| `grh_transfers_lubin_tate_and_graph_towers.zip` | `de7b92e9c3` | [Research/grh_transfers_lubin_tate_and_graph_towers](../../Analysis/GeneralizedRiemannHypothesis/Research/grh_transfers_lubin_tate_and_graph_towers/README.md) |
+
 ## Current Lean proof checkpoint
 
 The [fifteenth simplification checkpoint](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase15/README.md)

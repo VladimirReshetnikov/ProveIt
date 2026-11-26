@@ -1,0 +1,250 @@
+\section{A concrete conjecture disproof, revalidated}\label{sec:density}
+
+Let \(q\) be a prime power. A set \(E\subseteq\F_q[x]\setminus\{0\}\)
+is polynomial-ratio progression-free if it contains no three elements
+\[
+ f,\quad rf,\quad r^2f
+ \qquad(f\ne0,\quad r\in\F_q[x],\quad \deg r>0).
+\]
+The upper density is
+\[
+ \overline d(E)=\limsup_{N\to\infty}
+       \frac{|\{f\in E:\deg f\le N\}|}{q^{N+1}}.
+\]
+Write \(\beta_q\) for the supremum of these upper densities and put
+\[
+ A=\{a\ge0:\text{every ternary digit of }a\text{ is }0\text{ or }1\},
+ \qquad
+ m_q=(1-q^{-1})\sum_{a\in A}q^{-a}.
+\]
+Since \(\sum_{a\in A}t^a=\prod_{j\ge0}(1+t^{3^j})\),
+\begin{equation}\label{eq:mq}
+ m_q=(1-q^{-2})\prod_{j\ge1}(1+q^{-3^j}).
+\end{equation}
+The original Conjecture~6.3 asserts \(\beta_q=m_q\)
+\cite{asada}. It concerns polynomial ratios. Rational-function ratios are
+a separate problem in that paper; the argument below does not solve it.
+
+\begin{theorem}[Inherited ProveIt counterexample]\label{th:density}
+For every prime power \(q\), there is one infinite polynomial-ratio
+progression-free set \(E\subseteq\F_q[x]\) with
+\[
+ \overline d(E)>m_q.
+\]
+Consequently \(\beta_q>m_q\), contradicting the proposed value in
+Conjecture~6.3.
+\end{theorem}
+
+The result and the construction are already in
+\path{grh-methods-polynomial-density.zip} \cite{priorDensity}.
+We supply the proof because a claimed resolution in a prior report should
+be checked rather than repeated on its authority.
+
+\subsection{The finite-replacement principle}
+
+The ternary set \(A\) has no nonconstant three-term arithmetic progression.
+Indeed, in an equality \(a+c=2b\) with all three in \(A\), neither side
+has base-three carries. At each digit the only possibilities are
+\(0+0=2\cdot0\) and \(1+1=2\cdot1\), so \(a=b=c\).
+
+\begin{lemma}[Replacing degree deficits within rough-factor classes]
+\label{lem:replacement}
+Suppose \(D\subseteq\N\) is three-term arithmetic-progression-free and
+\(D\setminus A\subseteq[0,L]\) for some integer \(L\ge1\).
+Let \(\mathcal P\) be all monic irreducibles of degree at most \(L\), and let
+\[
+ H(u)=\prod_{P\in\mathcal P}(1-u^{\deg P})^{-1}
+     =\sum_{n\ge0}H_nu^n.
+\]
+If, for some \(0<z<1\),
+\[
+ J(z):=\sum_{d\in D}z^d-\sum_{a\in A}z^a>0,
+\]
+then some integer \(R\ge0\) satisfies
+\[
+ \Delta_R=[u^R]H(u)J(u)\ge1.
+\]
+Moreover,
+\begin{equation}\label{eq:delta}
+ \beta_q\ge m_q+(q-1)\Delta_Rq^{-R-1}c_q,
+ \qquad
+ c_q=(1-q^{-1})\prod_{P\in\mathcal P}(1+q^{-\deg P})^{-1}>0.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+All series converge absolutely at \(z\). Their product has integer
+coefficients, and \(H(z)J(z)>0\). If every coefficient were nonpositive,
+the value at \(z\) would be nonpositive. Thus a coefficient
+\(\Delta_R\ge1\) exists.
+
+Call a monic polynomial \emph{smooth} if all its irreducible factors belong
+to \(\mathcal P\), and \emph{rough} if none do. Every nonzero polynomial has
+a unique expression
+\[
+ f=cgh,\qquad c\in\F_q^\times,\quad g\text{ monic rough},\quad
+ h\text{ monic smooth}.
+\]
+At degree cutoff \(N\ge R\), the baseline construction includes the
+polynomials with deficit \(d=N-\deg f\) in \(A\). It is progression-free
+because degrees, and hence reversed deficits, would otherwise form a
+nonconstant arithmetic progression.
+
+For each squarefree rough monic \(g\) of degree \(N-R\), change the rule
+on the entire class \(\{cgh\}\) to the deficit rule \(d\in D\).
+Denote the resulting finite set by \(E_N\). A polynomial in this class
+with deficit \(d\) has \(\deg h=R-d\). Consequently each \(g\) changes
+the number of selected polynomials by exactly
+\((q-1)\Delta_R\).
+
+We check the delicate point: \emph{a new progression cannot escape the
+modified class}. Any new progression contains an added polynomial
+\(f=cgh\), whose deficit is in \(D\setminus A\), hence at most \(L\).
+If this added polynomial is the first or middle term, a later term is
+still inside the degree-\(N\) ball. Therefore the ratio has degree at most
+\(L\), and every irreducible factor of the ratio is smooth. If the added
+polynomial is the last term, the square of the ratio divides it.
+Its rough part \(g\) is squarefree, so again every irreducible factor
+of the ratio is smooth. In either case all three terms have the same
+monic rough part \(g\), and their distinct deficits lie in \(D\).
+That contradicts the progression-free property of \(D\).
+
+Let \(G_n\) count squarefree rough monic polynomials of degree \(n\).
+Unique factorization gives
+\[
+ \sum_{n\ge0}G_nu^n
+   =\frac{1-qu^2}{1-qu}
+      \prod_{P\in\mathcal P}(1+u^{\deg P})^{-1}.
+\]
+Subtracting its pole part at \(u=1/q\) leaves a rational function analytic
+on \(|u|<1\). It follows by coefficient comparison that
+\(G_n/q^n\to c_q\). The exact density of \(E_N\) is
+\[
+ \frac{|E_N|}{q^{N+1}}
+  =(1-q^{-1})\sum_{\substack{a\in A\\a\le N}}q^{-a}
+      +(q-1)\Delta_R\,\frac{G_{N-R}}{q^{N+1}}.
+\]
+It tends to the right side of \eqref{eq:delta}.
+
+It remains to obtain a single infinite set, rather than a different set
+for each cutoff. Choose rapidly increasing integers \(N_j\) such that
+\[
+ N_j-j>2N_{j-1},\qquad N_j-2j>N_{j-1}.
+\]
+From \(E_{N_j}\) keep only degrees in \([N_j-j,N_j]\), and take the
+union over \(j\). A progression using two earlier terms has last degree
+at most \(2N_{j-1}\). A progression using two terms in the latest block
+has first degree at least \(N_j-2j\). Both possibilities contradict
+the displayed separations. Progressions within one block were already
+excluded. The deleted lower degrees have density at most \(q^{-j-1}\)
+at cutoff \(N_j\), which tends to zero. This proves \eqref{eq:delta}
+for one infinite set.
+\end{proof}
+
+\subsection{An explicit 74-point witness}
+
+For the smallest inherited certificate used here, take \(D=B\), where
+\[
+\begin{split}
+B=\{&
+0,1,4,5,11,13,14,16,20,30,37,38,41,42,48,50,51,53,57,67,\\
+&111,112,115,116,122,124,125,127,131,141,148,149,152,153,\\
+&159,161,162,164,168,178,333,334,337,338,344,346,347,349,\\
+&353,363,370,371,374,375,381,383,384,386,390,437,440,441,\\
+&444,449,450,453,455,464,467,468,471,476,477,480\}.
+\end{split}
+\]
+This is the translated \(878,\ldots,1358\) slice of Gavin Theobald's
+\(a(143)\le1360\) record in Wroblewski's database, already selected by the
+prior report \cite{wroblewski,priorDensity}. The present audit matched the
+record against the primary database. More importantly, correctness
+requires only the displayed list: all \(\binom{74}{2}=2701\) midpoint
+tests were checked exactly. No assertion that this list is optimal is
+used.
+
+At \(z=127/128\), let
+\[
+ A_7=\left\{\sum_{j=0}^{6}\epsilon_j3^j:\epsilon_j\in\{0,1\}\right\}.
+\]
+It has 128 elements and maximum 1093. Clearing the denominator \(128^{1093}\)
+proves the exact integer inequality
+\begin{equation}\label{eq:finitegain}
+ \sum_{b\in B}z^b-\sum_{a\in A_7}z^a>\frac{16}{1000}.
+\end{equation}
+Every omitted exponent in \(A\) is at least \(3^7=2187\), so
+\[
+ \sum_{a\in A\setminus A_7}z^a
+ \le \frac{z^{2187}}{1-z}
+ =128z^{2187}<\frac1{100000}.
+\]
+The last inequality was also checked by integer multiplication. Hence
+\begin{equation}\label{eq:Jpositive}
+ J(127/128)>\frac{3}{200}.
+\end{equation}
+Lemma~\ref{lem:replacement}, with \(L=480\), proves
+Theorem~\ref{th:density}. The accompanying program
+\path{code/check_density_certificate.py} verifies these exact inputs.
+The asymptotic and infinite-set parts are the mathematical argument
+above, not consequences of running a finite search.
+
+\subsection{A database-free Behrend witness}
+
+There is also a fully elementary alternative certificate, which displays
+the connection with the Lean proof's combinatorial ingredient. Put
+\(M=3^{20}\). For \(u\in\{0,1,\ldots,5\}^9\), define
+\[
+ b(u)=\sum_{i=0}^{8}u_i11^i,\qquad
+ B_0=\left\{b(u):\sum_{i=0}^{8}(2u_i-5)^2=105\right\}.
+\]
+Each squared coordinate is \(1,9,\) or \(25\), with multiplicity two.
+If the three counts are \(i,j,k\), then \(i+j+k=9\) and \(j+3k=12\).
+Thus
+\[
+ |B_0|=2^9\left(
+ \frac{9!}{1!\,6!\,2!}+\frac{9!}{3!\,3!\,3!}
+                    +\frac{9!}{5!\,0!\,4!}\right)
+ =1{,}053{,}696>2^{20}.
+\]
+No sum or doubled digit exceeds 10. A midpoint relation in base 11
+therefore holds coordinatewise. Three points on a Euclidean sphere cannot
+have one as the midpoint of the other two unless they coincide.
+Consequently \(B_0\) is progression-free. Moreover,
+\[
+ \max B_0\le(11^9-1)/2<M/2.
+\]
+
+Set \(D=B_0\cup(A\cap[M,\infty))\). This remains progression-free.
+Two low terms cannot reach a high term because \(2\max B_0<M\).
+For a possible progression \(a<b<c\) with one low and two high terms,
+let \(S=3^j\) be the largest ternary place of \(c\). If \(b<S\),
+then \(2b\le S-1<c\). If \(b\ge S\), then
+\[
+ 2b-c\ge(S+1)/2\ge(M+1)/2>a.
+\]
+Both alternatives exclude \(a+c=2b\). The difference
+\[
+ J(u)=\sum_{b\in B_0}u^b-\sum_{\substack{a\in A\\a<M}}u^a
+\]
+is a polynomial with \(J(1)=1{,}053{,}696-2^{20}>0\).
+It is positive for some real \(z<1\) sufficiently close to 1, so
+Lemma~\ref{lem:replacement} applies with \(L=M\).
+
+The Lean source's \path{exists_three_term_free} uses the same carry-free
+sphere idea to choose sparse embeddings in a CM-field construction
+\cite{behrend,repo}. Here it selects polynomial degree deficits.
+This is a transfer of a tool within the proof. The sphere method itself
+predates the RH development by decades.
+
+\subsection{What has and has not been resolved}
+
+The strict inequality \(\beta_q>m_q\) answers the precise conjectured value
+in Conjecture~6.3 in the negative. It does not determine \(\beta_q\), give a
+large decimal improvement, or produce a natural-density result. The
+construction deliberately uses separated blocks and a limsup. It also
+does not treat arbitrary rational-function ratios, because the confinement
+argument uses a polynomial ratio dividing the last term twice.
+
+The proof has been reviewed in this session and its finite inputs were
+rerun. It is not represented as independently published, peer reviewed,
+or Lean formalized. Targeted searches did not locate a separate earlier
+resolution, but the report does not assert a priority theorem.

@@ -1,0 +1,119 @@
+\documentclass[11pt]{article}
+\input{style}
+\hypersetup{pdftitle={Three density questions about geometric progressions in polynomial rings}}
+\title{\color{ink}\textbf{Three density questions about geometric progressions in $\F_q[x]$}}
+\author{Research note on exponent methods in \texttt{grh-lean}}
+\date{25 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+For every prime power $q$, we answer three questions posed by Asada, Fourakis, Manski, McNew, Miller and Moreland. A finite change in the allowed joint valuations produces a set of natural density strictly larger than the greedy set while avoiding every nonconstant polynomial-ratio three-term geometric progression. Coupling two linear valuations sharpens their upper bound for the extremal upper density by at least $(1-1/q)^2(q^{-8}+q^{-19}+q^{-29})$. For nonconstant rational-function ratios we construct a different set whose upper density strictly exceeds the greedy density. We give the exact extremum with the greedy condition retained outside one linear prime. The arguments use unique factorization and finite additive combinatorics. The connection to the Lean proof is its use of additive constraints on exponents to exclude multiplicative patterns.
+\end{abstract}
+
+\section{The questions and the transfer}
+A triple in this note is $f,rf,r^2f$, all three nonzero polynomials. For the first two questions $r$ is a nonconstant polynomial. For the third $r$ is any nonconstant rational function, including functions of degree zero such as $x/(x+1)$. Constant units are ignored, as in the original problem. Write $B_N=\{f:\deg f\le N\}$, including zero, so $|B_N|=q^{N+1}$. Natural density is the limit of $|S\cap B_N|/|B_N|$ and upper density its limsup. Working with monic polynomials and then taking all nonzero scalar multiples gives the same limiting densities.
+
+Let $A$ consist of the nonnegative integers with only 0 and 1 as ternary digits, and let $\G$ consist of the nonzero polynomials with $v_P(f)\in A$ at every monic irreducible $P$. Asada et al. identify $\G$ with their greedy set \cite[Thm.~2.2]{asada}. Its exponents contain no nonconstant three-term arithmetic progression. Indeed, $a+c=2b$ for $a,b,c\in A$ has no ternary carries on either side, so the three digits coincide in each position. This argument allows signed common differences.
+\begin{center}
+\begin{tabular}{@{}lll@{}}\toprule
+Published question & Statistic & Answer here, for every $q$\\\midrule
+6.1 & Natural density, polynomial ratio & Strict gain over $\G$\\
+6.2 & Upper bound, polynomial ratio & Strict two-prime improvement\\
+6.4, existence clause & Upper density, rational ratio & Strict gain over $\G$\\\bottomrule
+\end{tabular}
+\end{center}
+
+In the readable Lean edition the lemma
+\src{grh/src/New/Reduction/Data/Existence.lean}{\texttt{modEq\_orderOf\_of\_div\_pow\_eq}}
+turns a multiplicative identity on powers of an element into a weighted additive congruence on the exponents.
+The neighboring \texttt{exists\_three\_term\_free} uses carry-free digits and strict convexity to avoid many such relations. The proof applies this construction to selected infinite places of a CM field. In $\F_q[x]$ the exponent map is the entire vector of prime valuations, with exact equality in place of a congruence. Its signs record whether the ratio is polynomial. This simpler setting allows modifications which preserve avoidance and change the density. The exponent principle has a long history. The specific precedent for the first construction is McNew's exchange at $2,3,5$ over the integers \cite[Thm.~3.3]{mcnew}. The next two arguments also have antecedents in his finite-prime decomposition and cutoff methods. We compare throughout with the questions and bounds in the authors' paper \cite{asada}. The proofs below use no hypothesis on complex zeros.
+
+\section{An exchange with positive natural-density gain}
+For $S$ a finite nonempty set of distinct monic irreducibles, put $k=|S|$. Retain the constraint $v_P(f)\in A$ at every $P\notin S$. For the coordinates indexed by $S$, replace $A^k$ by
+\[
+ D=\{u\in A^k:\min_i u_i=0\}\ \cup\
+ \bigl(\{1,2\}^k\setminus\{(1,\ldots,1)\}\bigr).
+\]
+Call the resulting set $E_S$. The deletion of the entire positive part of $A^k$ makes it possible to account for every higher-power conflict in one step.
+
+\begin{lemma}
+$E_S$ avoids every nonconstant polynomial-ratio progression.
+\end{lemma}
+\begin{proof}
+The common valuation step of a polynomial ratio is nonnegative at each prime. All its coordinates outside $S$ vanish since $A$ is progression free. Inside $S$ write the three vectors as $u,u+h,u+2h$, with $h\ge0$, $h\ne0$. If the final point has a zero coordinate, all three points have a zero and belong to $A^k$, which is impossible. Otherwise the final point is in the new cube. At every moving coordinate its final value is 2, its initial value 0 and its middle value 1. The initial point therefore belongs to $A^k$. Any fixed coordinate must be 1, since its value is in both $A$ and $\{1,2\}$. The middle point is now the deleted all-ones vector.
+\end{proof}
+
+\paragraph{Counting valuations.}
+Set $w_P=q^{-\deg P}$ and $p_P=(1-w_P)\sum_{a\in A}w_P^a$. Among monic polynomials of exact degree $n$, a fixed list of valuations has limiting independent geometric laws $\Pr(v_P=a)=(1-w_P)w_P^a$. This follows by counting multiples of products of powers and then excluding the next powers. Unbounded valuations at any fixed finite list can be truncated with error tending to zero. Restrictions $v_P\in A$ at primes of degree $>D$ can fail only if $P^2\mid f$. Their total failure probability is uniformly at most $\sum_{d>D}q^d q^{-2d}$, using the number of monic polynomials of degree $d$ as an upper bound for the number of primes. Thus the exact-degree limiting proportions exist; summing geometrically weighted degree layers gives the same ball density. In particular $\dens(\G)=\prod_Pp_P$ and $C_S=\prod_{P\notin S}p_P>0$. For later numeric bounds,
+\[
+ C_S\ge\prod_P(1-w_P^2)=1-1/q.
+\]
+Here $0,1\in A$, and the last identity follows by unique factorization from $\prod_P(1-u^{\deg P})^{-1}=(1-qu)^{-1}$ at $u=q^{-2}$.
+
+\begin{theorem}
+For every prime power $q$ an explicit finite set $S$ gives $\dens(E_S)>\dens(\G)$.
+\end{theorem}
+\begin{proof}
+With $T(w)=\sum_{a\in A,\ a\ge1}w^{a-1}$, the exact gain equals
+\begin{equation}
+ C_S\prod_{P\in S}(1-w_P)w_P
+ \left[\prod_{P\in S}(1+w_P)-1-\prod_{P\in S}T(w_P)\right].
+ \label{eq:gain}
+\end{equation}
+Indeed the two terms inside the brackets are the weights of the positive cube with its all-ones point omitted and the old positive orthant, after dividing by the weight of the all-ones point.
+
+For $q\ge4$ take all $q$ monic linears. Since the first two positive members of $A$ are 1 and 3, $T(w)\le1+w^2/(1-w)$. Hence
+\[
+ T(1/q)^q\le e^{1/(q-1)}\le e^{1/3}<1.4,\qquad
+ (1+1/q)^q-1\ge (5/4)^4-1>1.44.
+\]
+The lower bound follows also by expanding the binomial, since each fixed-degree term of $(1+1/q)^q$ increases with $q$. For $q=2,3$ use the degree multisets in the table. The sharper bound
+$T(w)\le 1+w^2+w^3+w^8/(1-w)$ follows from $A\cap[1,8]=\{1,3,4\}$. Substitution in \eqref{eq:gain} gives the strict lower bounds shown, rounded down. The line for $q=4$ illustrates the size of the improvement.
+\begin{center}
+\begin{tabular}{@{}clll@{}}\toprule
+$q$ & Degrees in $S$ & Bracket in \eqref{eq:gain} exceeds & Density gain exceeds\\\midrule
+2 & $1,1,2,3$ & $0.06622$ & $0.00004244$\\
+3 & $1,1,1,2$ & $0.09852$ & $0.00007119$\\
+4 & $1,1,1,1$ & $0.09023$ & $0.00008364$\\\bottomrule
+\end{tabular}
+\end{center}
+In characteristic two use $x,x+1,x^2+x+1,x^3+x+1$ over $\F_2$. Over $\F_3$ use all three linears and $x^2+1$. The displayed quadratic and cubic polynomials have no root in their respective ground fields. The script \texttt{check\_density.py} reproduces the table with rational arithmetic.
+\end{proof}
+The monotonicity of the valuation step is essential. For two selected coordinates the three points $(0,3),(1,2),(2,1)$ all obey the new local rule and have mixed common step $(1,-1)$. In larger dimension append coordinates constantly equal to 1. This explains why the rational-ratio problem calls for a separate construction.
+
+\input{triangle}
+
+\section{A strict gain even for rational-function ratios}
+Fix a monic linear $P$. Every nonzero polynomial has a unique expression $c gP^e$ with $c\in\F_q^\times$, $g$ monic, $P\nmid g$, and $e\ge0$. Call $g$ admissible when all its valuations belong to $A$. Let $g_n$ be the number of admissible cofactors of degree $n$. The counting argument above gives
+\[
+ g_n/q^n\longrightarrow c_P=(1-q^{-1})\prod_{Q\ne P}p_Q>0.
+\]
+Use all scalar multiples. For every admissible $g$ choose any three-term-AP-free set $I_g\subset\NN$, and allow exactly $e\in I_g$. This entire set is rational-ratio free. Indeed a rational-function ratio has signed valuation steps. The restrictions outside $P$ force all of those steps to be zero. Thus the three terms have the same monic cofactor $g$. A nonconstant ratio would have to change the $P$-exponent by a nonzero step, also impossible.
+
+\begin{theorem}
+Let $s(t)=r(t+1)$ be the largest size of a three-term-AP-free subset of $\{0,\ldots,t\}$, and $a(t)=|A\cap[0,t]|$. In the family just described, the maximum attainable upper density is
+\[
+ c_P(1-q^{-1})\sum_{t\ge0}q^{-t}s(t).
+\]
+Consequently the supremum over all rational-ratio-free sets exceeds $\dens(\G)$ by at least $c_P(1-q^{-1})q^{-8}$.
+\end{theorem}
+\begin{proof}
+At cutoff $N$ any admissible $g$ of degree $N-t$ permits at most $s(t)$ exponents. The normalized count is at most $(q-1)q^{-N-1}\sum_{t\le N}g_{N-t}s(t)$. For fixed $t$ the summand including its factor tends to $c_P(1-q^{-1})q^{-t}s(t)$. The terms are dominated by $(1-q^{-1})q^{-t}(t+1)$, which is summable. This proves the upper bound.
+
+To realize it in a single infinite set, choose $N_j=2^{j+4}$ for $j\ge1$ and $N_0=-1$. For each cofactor with $N_{j-1}<\deg g\le N_j$, set $I_g$ equal to an AP-free maximizer in $[0,N_j-\deg g]$, choosing any tie by lexicographic order. This defines each fiber just once. At the cutoff $N_j$ the current block attains the upper bound term by term for $0\le t<N_j-N_{j-1}$. The bound on the omitted normalized tail tends to zero. Therefore the upper density equals the claimed maximum.
+
+For the greedy set the same counting identity holds with $a(t)$ in place of $s(t)$, since every fiber is $A$. All differences are nonnegative. At $t=8$, $A$ selects only $0,1,3,4$, whereas $\{0,1,3,7,8\}$ is AP-free of size five. The single summand gives the stated gain. In particular it is at least $(1-1/q)^3 q^{-8}$, since $\prod_{Q\ne P}p_Q\ge1-1/q$.
+\end{proof}
+For $q=2$ this last guaranteed gain is $1/2048$. The limits taken in this construction are upper densities along cutoffs. The first construction above gives a natural density for polynomial ratios. These are distinct questions in the source paper.
+
+\section{What remains open}
+The upper bound in the two-prime argument and the lower bound $m_q$ leave a gap for the full polynomial-ratio Conjecture 6.3. Can successively coupling more valuation rows or more distinct primes close that gap? For rational ratios, the theorem computes the optimum with all coordinates but one subject to the greedy restrictions. Optimizing two free valuation coordinates would require avoiding collinear midpoint triples also in mixed directions. The natural-density version for rational ratios requires a construction with controlled proportions at every cutoff.
+
+The source paper explicitly poses the three questions treated here. A search by title, authors and question terminology located the stated constructions' integer precedents and no subsequent resolution of these precise polynomial questions. The proofs address the published formulations; priority is provisional. The proofs in this note are mathematical arguments with small reproducible finite checks. They have not been formalized in Lean.
+
+\begin{thebibliography}{9}
+\bibitem{asada} M. Asada, E. Fourakis, S. Manski, N. McNew, S. J. Miller and G. Moreland, \emph{Subsets of $\F_q[x]$ free of 3-term geometric progressions}, Finite Fields Appl. 44 (2017), 135--147. \href{https://doi.org/10.1016/j.ffa.2016.10.002}{Published paper}; \href{https://www.nathanmcnew.com/fqxramsey.pdf}{authors' version}, especially Thms.~2.2, 3.7, 4.3 and Questions 6.1--6.4.
+\bibitem{mcnew} N. McNew, \emph{On sets of integers which contain no three terms in geometric progression}, Math. Comp. 84 (2015), 2893--2910. \href{https://arxiv.org/abs/1310.2277}{arXiv:1310.2277}. See Thm.~3.3 and the finite-prime methods of Sect.~4.
+\bibitem{lean} L. Sernau and collaborators, \emph{GRH for Dirichlet $L$-functions, in Lean 4}, based on work of L. Alp\"oge with Claude. \src{grh/GUIDE.md}{Pinned reading guide} and \src{grh/src/New/Reduction/Data/Existence.lean}{construction of sparse places}.
+\end{thebibliography}
+\end{document}

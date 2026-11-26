@@ -1,0 +1,101 @@
+\section{What can actually be transferred from the Lean argument}
+\label{sec:source}
+
+\subsection{A comparison of two estimates for the same object}
+The main argument constructs a large space of automorphic forms, many short integral vectors, and a family of twisted lifts. It then bounds the same covolume in opposite directions. A large common term cancels. The surviving inequality controls a centered prime sum from above.
+
+The source has three essential inputs. Short integral source forms span; a small collection of their translates spans at least a \((1-4/b^2)\)-fraction of the target dimension; and every sufficiently large independent family satisfies a lower determinant bound. Schematically, if \(d\) is the target dimension, \(c\) a logarithmic covolume, and \(\delta\) an index loss, the last input is
+\[
+ c+2\delta\ \ge\
+ d\bigl(\mathrm{mainAmount}-3fa\log^4 b\bigr).
+\]
+The upper comparison contains the same main amount. In
+\src{New/Reduction/MainInequality.lean}{\texttt{New.star\_inequality}},
+their cancellation gives
+\[
+ m\,\mathrm{totalRemainder}\le fa\log^5 b.
+\]
+The parameter \(m\) is subsequently taken on the scale \(\sqrt{x}\). A single nonzero determinant at fixed rank would not supply the required spanning proportion or the square-root exponent.
+
+\subsection{The analytic quantity and the cancellation issue}
+Write \(\chi_d\) for the quadratic character attached to the auxiliary imaginary quadratic field, and let \(q\) be the progression modulus. The centered sum is
+\[
+ R_{d,q}(x)=
+ \sum_{\substack{n\le x\\n\equiv1\pmod q}}
+ \Lambda(n)(1-\chi_d(n))
+ \left(\frac1n-\frac1x\right)
+ -\frac{\log x}{\varphi(q)}-c_{d,q}.
+\]
+The coefficients before centering are nonnegative. The source proves, for each sufficiently small \(\varepsilon>0\), an eventual bound
+\[
+ R_{d,q}(x)\le (64\varphi(q)+3)x^{-1/2+6\varepsilon}.
+\]
+Its transform has a residue proportional to
+\[
+ \frac{
+ \sum_\chi\ord_s E_\chi-\sum_\chi\ord_s E_{\chi\chi_d}
+ }{\varphi(q)s(1-s)},
+\]
+where \(E_\chi\) removes the principal pole. Thus nonnegative prime coefficients alone do not prevent zero cancellation: the transform contains a \emph{difference} of multiplicities.
+
+The auxiliary quadratic twist is selected to be zero-free in a rectangle containing a hypothetical offending zero. This removes the second contribution there. The resulting real-axis residues have the sign required by the one-sided Landau argument, which rules out the pole.
+
+The quantifiers matter. The final criterion assumes the prime-sum bound for all auxiliary primes in a specified progression, and then uses the one selected by a zero-density argument. It does not assume that an arbitrary chosen twist separates the zeros.
+
+\subsection{Source map}
+Paths below are relative to \path{grh/src/} at the frozen commit. The full names, source hashes, and detailed assumptions are in the audit.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.27\textwidth}>{\raggedright\arraybackslash}p{.68\textwidth}@{}}
+\toprule
+Interface & File and declaration\\
+\midrule
+\endhead
+Short vectors and index &
+\path{New/Reduction/ShortAndEnough.lean}:
+\texttt{span\_short\_integralRamified\_eq\_top},
+\texttt{indexLe\_normalizedPoincare}.\\[3pt]
+Almost-full span &
+Same file: \texttt{enough\_forms}.\\[3pt]
+Lower determinant &
+\path{New/Determinant/Twist/LongForms.lean}:
+\texttt{integral\_forms\_long}.\\[3pt]
+Main-term cancellation &
+\path{New/Reduction/MainInequality.lean}:
+\texttt{star\_inequality}.\\[3pt]
+Prime remainder &
+\path{New/Reduction/OneSidedBound.lean}:
+\texttt{primeRemainder\_le},
+\texttt{eventually\_primeRemainder\_natCast\_le}.\\[3pt]
+Pole dictionary &
+\path{New/Reduction/Zeros/PrimeError.lean}:
+\texttt{isPolar\_primeRemainder}.\\[3pt]
+Zero-separating twist &
+\path{Lib/Analytic/QuadraticTwist.lean}:
+\texttt{exists\_entireL\_quadTwist\_ne\_zero}.\\[3pt]
+Landau principle &
+\path{Lib/Analytic/Landau.lean}:
+\texttt{IsPolar.landau}.\\[3pt]
+Final analytic reduction &
+\path{New/Reduction/Zeros/Criterion.lean}:
+\texttt{LFunction\_ne\_zero\_of\_primeRemainder\_le}.\\[3pt]
+Torsion selector &
+\path{New/Congruences/Selmer/RootsOfUnity.lean}:
+\texttt{exists\_rootsOfUnity\_ellVal\_eval\_le\_add}.\\
+\bottomrule
+\end{longtable}
+
+\subsection{The local ingredient isolated here}
+The upstream torsion lemma fixes a dimension ceiling, a positive interior radius, an aggregate witness budget, and a positive tolerance. It chooses a torsion-order ceiling \emph{before} the polynomial family and witnesses are supplied. One common torsion tuple then approximates every individual witness value within the tolerance.
+
+The preceding exact-torsion report changed the objective to a fixed aggregate comparison and removed the tolerance. Its endpoint was
+\[
+ H_{\mathrm{old}}
+ =h_0+\ceil{p^{h_0}B(h_0+B+2)}.
+\]
+The new theorem determines the optimum for that aggregate objective. It does not supersede the upstream individual inequalities: those are different requirements, and a counterexample below shows why their distinction is necessary.
+
+\subsection{Proof-checking evidence}
+The repository reports successful kernel and independent-checker runs. This session inspected the source and performed a reproducible lexical audit, but did not reproduce those builds. The readable edition contains 803 source files and 477,124 physical lines; the compact edition contains 794 files and 112,827 lines. After removing nested comments and strings, the supplied scanner finds no explicit \texttt{sorry}, \texttt{axiom}, \texttt{admit}, unsafe/native proof escapes, or custom elaborator/macro tokens in either source directory.
+
+The five intentional holes in each \path{Challenge.lean} are outside the default target and are not imported by \path{Main.lean}. A lexical audit is useful evidence about the source; it is not a replacement for proof-term checking, nor a declaration-level dependency analysis.
+

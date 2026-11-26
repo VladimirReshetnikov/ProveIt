@@ -1,0 +1,363 @@
+# Independent endpoint, source, and analytic-interface audit
+
+Audited snapshot: `lsernau/grh-lean`, commit
+`72fead102f663d5c7a407964a13dc0cf9d977207` (2026-11-25).
+
+This audit reads source and reconstructs the final analytic reasoning. It does
+**not** report a Lean build, kernel replay, or independent-checker execution by
+this reviewer. The source scan is reproducible with `audit_artifacts/static_audit.py`;
+its recorded output is `audit_artifacts/static_audit.json`.
+
+## 1. Endpoint scope is genuine and unambiguous in source
+
+`grh/src/Statements.lean` imports only `Mathlib`. It defines:
+
+- `RiemannZetaZerosOnLine`: every zero `s` of the actual Mathlib `riemannZeta`
+  other than `s = 1` or `s = -2(n+1)` has `s.re = 1/2`.
+- `DirichletLNonvanishingRightOfHalf`: for every positive modulus `N`, every
+  `DirichletCharacter ℂ N`, and every complex `s` with `s.re > 1/2`, Mathlib's
+  `DirichletCharacter.LFunction χ s` is nonzero, with the exception of the
+  principal character at `s = 1` (the pole).
+- `DirichletLZerosOnLine`: all zeros of those L-functions in `0 < Re(s) < 1`
+  have real part `1/2`.
+- `PrimitiveDirichletLZerosOnLine`: the same conclusion restricted to primitive
+  characters; logically weaker than the preceding endpoint.
+
+There are no project-specific L-function definitions, implicit arithmetic
+hypotheses, a presumed GRH, or new logical axioms in these endpoint definitions.
+`NeZero N` means modulus at least 1, not some exceptional restricted family.
+The scope includes all primitive and imprimitive Dirichlet characters, with all
+conductors; it does not include arbitrary number-field Hecke or automorphic
+L-functions.
+
+`grh/src/Main.lean` exports five **unparameterized theorem constants**:
+
+```lean
+theorem riemannHypothesis : RiemannHypothesis := New.zeta_zeros_on_line New.grh
+theorem riemannZeta_eq_zero_re : RiemannZetaZerosOnLine := riemannHypothesis
+theorem LFunction_ne_zero_of_half_lt_re : DirichletLNonvanishingRightOfHalf := New.grh
+theorem LFunction_eq_zero_re : DirichletLZerosOnLine := New.zeros_on_line New.grh
+theorem LFunction_eq_zero_re_of_isPrimitive : PrimitiveDirichletLZerosOnLine :=
+  fun N _ χ _ ↦ LFunction_eq_zero_re N χ
+```
+
+If checked, the second assignment in particular establishes definitional
+compatibility between the project's expanded zeta statement and Mathlib's
+`RiemannHypothesis`. There is no theorem-statement substitution apparent in
+these files. `Statements.lean` is byte-identical across the two editions; their
+`Main.lean` code is identical after removing comments and whitespace.
+
+The final conversion in `grh/src/New/Main.lean` (lines 24-41 and 46-68) uses
+functional-equation reflection. A zero in the open strip produces a reflected
+zero for the inverse character. Both must have real part at most one half,
+forcing equality. Imprimitive Euler factors have no zero with nonzero real
+part (`Lib/Analytic/ZeroSymmetry.lean`), so they do not obstruct reflection of
+zeros within the strip. At zeta's trivial zeros the gamma factor issue is
+explicitly excluded; `s = 0` is excluded by the actual value of zeta at zero.
+
+## 2. What the checks do and do not establish
+
+The README at `grh/README.md`, lines 24-30, **reports**:
+
+1. Lean v4.35.0 and Mathlib commit
+   `56a005855ea17e0b0958f73ec801ae140b0a1679` compile every source file.
+2. The five endpoints depend only on `propext`, `Classical.choice`, and
+   `Quot.sound`.
+3. Complete exports including dependencies were accepted by nanoda, con-leche,
+   and con-ron.
+4. Comparator accepted theorem matching and the proofs with those permitted
+   axioms. Its described run used a stand-in for the sandbox and an unlimited
+   stack.
+
+The script `scripts/PrintAxioms.lean` really contains `import Main` and five
+ordinary `#print axioms` commands. `comparator.json` lists the same five theorem
+names, the three usual axioms, and enables nanoda. These are evidence of a
+well-designed verification interface, rather than a substitute for running it.
+The root README also says the proof has had machine checks only and no complete
+human read-through. Do not silently convert an upstream verification report
+into a local reproduction claim.
+
+`Challenge.lean`, outside `src`, deliberately contains five `sorry` placeholders.
+It is the problem statement for Comparator. No source module imports it and the
+default build targets are `Lib`, `New`, and `Main`; these placeholders therefore
+are not by themselves a hole in the advertised proof. A naked repository-wide
+search for `sorry` would misleadingly count them.
+
+The lexical audit strips nested block comments, line comments, and quoted
+strings, then screens explicit admissions and trust-extending constructs. It
+found **no code occurrences** of the following tokens in either `src` tree:
+`sorry`, `admit`, `axiom`, `unsafe`, `native_decide`, `run_tac`, `run_cmd`, `elab`,
+`macro`, `implemented_by`, `extern`, `sorryAx`, `partial`, `opaque`, `#eval`,
+`#check`, `#print`, `Lean.ofReduceBool`. A number of ordinary English occurrences
+of “admit” and “axiom” are comments; they were not counted.
+
+| Edition | `.lean` files in `src` | Physical lines | Approximate declarations |
+| --- | ---: | ---: | ---: |
+| readable `grh` | 803 | 477,124 | 23,698 |
+| compact `grh-compact` | 794 | 112,827 | 9,833 |
+
+The declaration counts are regular-expression counts, not Lean environment
+counts. All local modules are transitively reachable from `Main` in the import
+graph. That does not mean every declaration is used by the final proof term.
+No `Lib` module imports a `New` module. No `src` module imports `Challenge`.
+Per-file SHA256 hashes are recorded in the JSON audit.
+
+The scanner is not a complete Lean parser and does not prove correctness or
+consistency. Ordinary imported tactics can build complex terms, and only the
+kernel or a sound independent checker can validate those terms. Conversely,
+instance-priority and `simp` changes in `Lib/Speed.lean` are elaboration aids;
+if the fixed endpoints and proof terms check under the ordinary axioms, a
+private internal notation or a clever instance does not invalidate the theorem.
+
+## 3. The narrow, reusable analytic interface
+
+The principal analytic interface is
+`New.LFunction_ne_zero_of_primeRemainder_le`, in
+`grh/src/New/Reduction/Zeros/Criterion.lean`, lines 37-91.
+
+Fix a positive modulus `q` divisible by 8, a reduced residue class `d0` modulo
+`q` with `d0 ≡ 7 (mod 8)`, and a real `β > 1/2`. For each prime
+`d ≡ d0 (mod q)`, put `χ_d(n) = (n/d)` and
+
+\[
+ R_{d,q}(x)=
+ \sum_{\substack{n\le x\\n\equiv1\pmod q}}
+ \Lambda(n)(1-\chi_d(n))\left(\frac1n-\frac1x\right)
+ -\frac{\log x}{\varphi(q)}-c_{d,q}.
+\]
+
+The constant is defined as the real part of `logDerivMean d q 1`, and the
+project separately proves that it is the constant making the remainder tend
+to zero. The criterion says:
+
+> If, for every such auxiliary prime `d`, one has
+> `R_{d,q}(x) ≤ x^(β−1)` for all sufficiently large real `x`, then every
+> Dirichlet L-function modulo `q` is nonzero at every `ρ ≠ 1` with
+> `Re(ρ) > β`.
+
+The threshold in “sufficiently large” may depend on `d`, `q`, and `β`. Uniformity
+in the auxiliary discriminant is not needed for this qualitative conclusion.
+
+This is not an assertion that a small numerical experiment controls all zeros.
+The hypothesis is an asymptotic theorem, for every auxiliary prime of the
+class. The construction producing the estimate uses very large scales.
+
+### 3.1 Transform and residues
+
+Write `Eχ(s)` for `L(s,χ)`, with the principal-character pole removed by its
+holomorphic factor `(s−1)L(s,χ)`. Let
+
+\[
+ m(s)=\sum_{\chi\bmod q}\operatorname{ord}_s E_\chi,
+ \qquad
+ m_d(s)=\sum_{\chi\bmod q}\operatorname{ord}_s E_{\chi\chi_d}.
+\]
+
+`isPolar_primeRemainder`, in `PrimeError.lean` lines 405-441, proves that
+
+\[
+ \Phi_{d,q}(s)=\int_0^\infty R_{d,q}(e^v)e^{(1-s)v}\,dv
+             =\int_1^\infty R_{d,q}(x)x^{-s}\,dx
+\]
+
+continues meromorphically and has residue
+
+\[
+ r_{d,q}(\rho)=\frac{m(\rho)-m_d(\rho)}
+ {\varphi(q)\rho(1-\rho)}
+\]
+
+at `ρ ≠ 0,1`. The singularity at 1 is removable and its residue is zero.
+
+The difference of multiplicities is essential: a zero of the target product
+can cancel against a zero of the auxiliary product. Thus a bound on this
+remainder is not automatically a bound for zeros of either factor separately.
+
+### 3.2 How auxiliary twists prevent cancellation
+
+`exists_entireL_quadTwist_ne_zero`, in
+`Lib/Analytic/QuadraticTwist.lean` lines 789-835, chooses one prime `d` in the
+specified class such that **all** its quadratic twists are zero-free in any
+specified box
+
+\[
+ \operatorname{Re}(s)\ge\beta,\qquad |\operatorname{Im}(s)|\le H.
+\]
+
+The proof supplies a weak zero-density estimate
+`# bad primes up to X = O(X^(1−δ/2))` for `β=1/2+9δ`, based on smoothed theta
+sums and Pólya–Vinogradov. This is compared with the divergence of
+`∑ log(p)/p` over the reduced residue class. This auxiliary result is explicitly
+classed as known, with sources Jutila and Heath-Brown, although the formulation
+and proof route are tailored to the repository.
+
+For a putative zero `ρ`, take `H=|Im(ρ)|`. Then `m_d(ρ)=0`; also `m_d(x)=0` for
+all real `x≥β`. In the real interval `(β,1)`, the transform residue is
+nonnegative because `m(x)≥0` and `x(1−x)>0`. For `x≥1`, the relevant entire
+L-functions are already nonzero. This is precisely the sign condition needed
+by the next lemma.
+
+### 3.3 The general Landau lemma
+
+`New.IsPolar.landau`, in `Lib/Analytic/Landau.lean` lines 212-273, says:
+
+> Suppose `E` is measurable, has at most exponential growth
+> `|E(v)|≤C e^v` for `v≥0`, and its transform
+> `Φ(s)=∫_0^∞ E(v)e^((1−s)v)dv` continues meromorphically with at most simple
+> poles in `Re(s)>0`, of residues `r(s)`. If `β>0`,
+> `E(v)≤e^((β−1)v)` eventually, and `Re(r(x))≥0` for every real `x>β`, then
+> `r(ρ)=0` whenever `Re(ρ)>β`.
+
+(The source's `IsPolar` asks for a global meromorphic function; only the stated
+half-plane is needed in the argument.)
+
+Proof idea with all crucial signs: enlarge a constant `K` so that
+`A(v)=K e^(βv)−E(v)e^v≥0` on `v≥0`. Its Laplace transform equals
+`K/(s−β)−Φ(s)` far to the right. A nonnegative measure's Laplace transform has
+a singularity at its finite abscissa of convergence (Landau). If that abscissa
+were a real number `a>β`, the meromorphic continuation could have at most a
+simple pole there, of residue `−r(a)≤0`. Positivity as `s` approaches `a` from
+the right forces that residue to be nonnegative too. It is therefore zero,
+so the singularity is removable, contradicting Landau. The abscissa is at most
+`β`; the transform, and hence `Φ`, is holomorphic to its right.
+
+This is the independently reusable analytic component. The serious arithmetic
+work is proving the bound and the required sign/noncancellation hypotheses in
+a new setting.
+
+## 4. A derived zero-divisor rigidity proposition
+
+The following is a transparent deduction from the preceding interface. It is
+not claimed as a new theorem in the literature.
+
+**Proposition (one-sided remainder forces equality of zero divisors).**
+Let `0<β<1` and `c>0`. Let `F_1,…,F_r` and `G_1,…,G_t` be holomorphic functions
+on `Re(s)>0`, not identically zero, and nonzero on `Re(s)≥1`. Write `m_F(s)` and
+`m_G(s)` for the respective sums of their zero multiplicities. Suppose a real,
+measurable function `E(v)` has growth `|E(v)|≤C e^v` for `v≥0` and its transform
+continues meromorphically to `Re(s)>0`, with at most simple poles, removable
+singularity at 1, and residues
+
+\[
+ r(s)=\frac{m_F(s)-m_G(s)}{c s(1-s)}\quad(s\ne1).
+\]
+
+Assume `E(v)≤exp((β−1)v)` eventually and
+`m_F(x)≥m_G(x)` for all real `β<x<1`. Then
+
+\[
+ m_F(s)=m_G(s)\qquad(\operatorname{Re}(s)>\beta).
+\]
+
+**Proof.** For real `β<x<1`, the displayed residue has nonnegative real part,
+since `c x(1−x)>0`. For `x≥1`, both multiplicities vanish and the residue is
+zero (including the removable point 1). The Landau lemma forces all residues
+to vanish on `Re(s)>β`. At every such `s≠1`, the denominator `c s(1−s)` is
+nonzero, since `Re(s)>β>0`; hence the two multiplicities agree. At `s=1` they
+both vanish by hypothesis. This proves the assertion.
+
+**Useful refinement of the repository interface.** To rule out one target
+zero `ρ`, it is enough to find one auxiliary family with no real zero in
+`(β,1)` and no zero at `ρ`, and for which the one-sided bound holds. There is no
+need for this auxiliary family to be zero-free at every complex point in the
+entire half-plane. The repository establishes the stronger finite-box witness
+using a zero-density argument. This refines the design specification for a
+transfer to number-field or automorphic L-functions.
+
+**Why a noncancellation hypothesis remains necessary.** Take `F_1=G_1=s−ρ`
+with `β<Re(ρ)<1`, and `E=0`. All residues vanish and the one-sided bound holds,
+yet both functions have the zero `ρ`. The conclusion is equality of divisors,
+not absence of either divisor.
+
+**Why the real-residue sign remains necessary.** Fix `0<β<α<1` and set
+
+\[
+ E(v)=-e^{(\alpha-1)v},\qquad
+ \Phi(s)=-\frac1{s-\alpha}.
+\]
+
+Then `|E(v)|≤e^v`, and `E(v)≤e^((β−1)v)` for every `v≥0`, but `Φ` has a pole at
+`α>β` with residue `−1`. Thus an upper bound alone cannot force a zero-free
+half-plane. This explicitly prevents an erroneous generalization in which the
+arithmetic sign mechanism is discarded.
+
+## 5. Where the difficult arithmetic estimate enters
+
+`New/Reduction/MainInequality.lean` combines three ingredients:
+
+- A: enough short integral source forms, and controlled index of their images.
+- B: translates of the Poincare map fill a positive fraction of the target
+  space, by a second-moment estimate.
+- C: independent integral target forms cannot all be too short, from a
+  covolume lower bound obtained by twisting locally and controlling determinant
+  ratios globally.
+
+A common main term cancels, leaving
+
+\[
+ m\,\mathrm{remainder}\le f a (\log b)^5.
+\]
+
+At lines 132-156 one can literally see the comparison, cancellation, and
+division by a family of size at least half the target dimension. This is a
+useful abstraction of the proof, but the cancellation is backed by the
+specific theta-lift, congruence, integrality, and arithmetic-height lemmas.
+It is not a free numerical inequality for arbitrary prime-counting functions.
+
+In `OneSidedBound.lean`, lines 28-67 and 124-149, the chosen number of lifts is
+`m ≍ sqrt(x)`, while `log b ≤ 2 x^ε`; this produces
+
+\[
+ R_{d,q}(x)\le(64\varphi(q)+3)x^{-1/2+6\varepsilon}
+\]
+
+for all large integer `x`, and then the desired real-variable bound with any
+positive exponent slack. The two much larger scales `x1` and `b` let ordinary
+prime-number-theorem estimates make the extra remainder terms negligible.
+This is a scale-separation mechanism, not a direct numerical evaluation of the
+zeta zeros.
+
+Finally, `OneSidedBound.lean` lines 239-267 chooses `q0=18480q`, proves that the
+auxiliary class `d0=9240q−1` is coprime to it, supplies the one-sided bound,
+applies the analytic criterion, and descends along change of conductor. Thus
+the concluding theorem is not conditional on an uninhabited `Data` structure:
+`Data/Existence.lean` proves `eventually_exists_data` (line 898), and the final
+proof explicitly uses it through the bounds.
+
+## 6. Consequences for transfer assessment
+
+1. A direct use of `New.grh` can discharge the Dirichlet-GRH hypothesis in an
+   already known implication. This is a valid potential consequence of an
+   accepted proof, but is not a new proof method or a newly discovered
+   conditional implication.
+2. Arithmetic methods for Hecke L-functions over imaginary quadratic fields
+   are a plausible first genuine extension, because the construction already
+   uses CM fields, theta lifts, and anticyclotomic twists. One must still supply
+   the new remainder identity and the analogues of A, B, C with exactly the
+   requisite main-term cancellation and losses.
+3. Arbitrary number-field GRH or automorphic GRH does not follow merely by
+   renaming Dirichlet characters. Euler products, zero-density witnesses,
+   local integrality, determinant formulas, and denominator control all need
+   new theorems in the new setting.
+4. Universal positivity-of-measures and determinant-comparison components are
+   reusable even if no new conjecture is resolved. The read-through can
+   motivate a precise target theorem with a clear missing inequality, rather
+   than an unsupported announcement.
+
+## Stable source URLs
+
+All paths above are relative to
+`https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/`.
+Most relevant paths:
+
+- `grh/src/Statements.lean`
+- `grh/src/Main.lean`
+- `grh/src/New/Main.lean`
+- `grh/src/New/Reduction/Zeros/Criterion.lean`
+- `grh/src/New/Reduction/Zeros/PrimeError.lean`
+- `grh/src/Lib/Analytic/Landau.lean`
+- `grh/src/Lib/Analytic/QuadraticTwist.lean`
+- `grh/src/New/Reduction/MainInequality.lean`
+- `grh/src/New/Reduction/OneSidedBound.lean`
+- `grh/src/New/Reduction/Data/Existence.lean`
+- `grh/README.md`, `grh/comparator.json`, `grh/scripts/PrintAxioms.lean`.

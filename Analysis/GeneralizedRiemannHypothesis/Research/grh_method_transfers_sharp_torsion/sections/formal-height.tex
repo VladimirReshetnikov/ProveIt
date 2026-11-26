@@ -1,0 +1,164 @@
+\section{The exact threshold at arbitrary finite formal height}
+\label{sec:height}
+
+The interpolation proof has an elliptic analogue. This matters at a
+supersingular prime, where torsion in the formal parameter has a
+different distribution from roots of unity. Let $K$ be a finite
+unramified extension of $\mathbb Q_p$, let $F$ be a one-dimensional
+commutative formal group law over $\mathcal O_K$, and assume its
+reduction has finite height $d$. Set $q=p^d$. We use a fixed integral
+formal coordinate, work on the open unit disc of $\mathbb C_p$, normalize
+$v(p)=1$, and denote multiplication by $p^k$ by $[p^k]$. In this
+section $F[p^j]$ denotes its geometric torsion in this disc.
+
+\paragraph{Theorem (finite height).}
+Put $s_j=1/((q-1)q^{j-1})$ for $j\ge1$. Fix $h_0\ge1$,
+$\rho\ge s_{h_0}$ and $B\ge0$. For every nonzero
+$g\in\mathcal O_{\mathbb C_p}[T]$ with $G_\rho(g)\le B$ there is a
+point $z$ of exact order $p^h$ with $v(g(z))\le G_\rho(g)$ and
+\[
+          h_0\le h\le h_0+\lfloor q^{h_0-1}B\rfloor.
+\]
+The upper exponent is the smallest possible universal choice.
+One entire coset of $F[p^{h_0-1}]$ consists of such points of the same
+order. These assertions hold also for nonzero power series with integral
+coefficients. The coefficients of the tested function can be ramified
+even though the formal group has an unramified field of definition.
+
+\paragraph{The torsion metric.}
+In $[p](T)$ the coefficient of $T$ is $p$, the coefficients of
+degrees $2,\ldots,q-1$ belong to $p\mathcal O_K$, and the coefficient of
+$T^q$ is a unit. The last two facts follow from the definition of height
+and the unramified base. For $t=v(z)>0$, the unique lowest term has
+valuation $qt$ if $t<s_1$, and $1+t$ if $t>s_1$. In the latter
+region repeated application increases the valuation by one and cannot
+give zero. At $t=s_1$, the image has valuation at least $1+s_1$.
+Thus a nonzero point killed by $p$ has valuation exactly $s_1$, and
+induction shows a point of exact order $p^j$ has valuation $s_j$.
+The first unit coefficient of $[p^j](T)$ occurs in degree $q^j$ by
+composition after reduction. Weierstrass preparation gives $q^j$ roots
+in the open disc counted with multiplicity. They are simple, since
+translation by a torsion point identifies the local zero with the
+zero at the origin, where the derivative is $p^j\ne0$.
+It follows that there are $(q-1)q^{j-1}$ points of exact order $p^j$.
+The series $F(X,[-1](Y))$ is $(X-Y)$ times a series with unit constant
+term. Hence $v(x-y)=v(x\mathbin{\ominus_F}y)$ for torsion parameters.
+An integral change of formal coordinate with unit linear coefficient
+preserves these distances. For the elliptic facts about height see
+Boxall and Grant, \emph{Singular torsion points on elliptic curves},
+\S4, Lemma 4.1.
+
+\paragraph{Interpolation and the matching obstruction.}
+Write $k=h_0-1$, $L=H-k$, and $M=q^k$, with $H\ge h_0$.
+The map $[p^k]:F[p^H]\longrightarrow U=F[p^L]$ is onto by the kernel
+count above. The allowed points form the inverse image of
+$U\setminus\{0\}$. Choose one lift $x_u$ for each nonzero $u\in U$.
+A lift of a point of order $p^j$ has order $p^{j+k}$. For different
+nonzero $u,w$ this gives
+\[
+ v(x_u)=v(u)/M,\qquad v(x_u-x_w)=v(u\mathbin{\ominus_F}w)/M.
+\]
+Each shell in $U$ has total valuation one. Translation permutes $U$,
+so for $P(T)=\prod_{u\ne0}(T-x_u)$ we obtain
+\[
+ G_\rho(P)=L/M,\qquad v(P'(x_u))=L/M-v(x_u).
+\]
+Indeed the nonzero differences from $u$, after omitting the index
+$0$, range over all nonzero group elements except $u$. Since every
+$v(x_u)\le\rho$, every Lagrange basis polynomial
+$P(T)/((T-x_u)P'(x_u))$ has Gauss valuation zero.
+
+Divide $g$ by $P$. The quotient is integral because $P$ is monic and
+integral. If $G_\rho(g)<L/M$, the remainder has the same Gauss
+valuation as $g$. Lagrange interpolation then gives
+$\min_{u\ne0}v(g(x_u))\le G_\rho(g)$. If every fibre contained a point
+where the inequality failed, choosing those points as lifts would
+contradict this conclusion. For a bounded integral series, truncate at
+degree $D$ with $(D+1)s_H>G_\rho(g)$ and $(D+1)\rho>G_\rho(g)$.
+The tail changes neither the Gauss valuation nor the comparison at
+any of the finitely many tested points.
+
+Conversely use $g=P$. At a different lift $z$ of the same $u$,
+all factors except $T-x_u$ retain their valuations at $x_u$.
+For $k>0$, the difference $z\mathbin{\ominus_F}x_u$ is a nonzero element
+of $F[p^k]$ and has valuation at least $s_k>s_{k+1}$, larger than
+all the inter-fibre valuations. Therefore
+$v(P(z))=L/M-v(x_u)+v(z-x_u)>L/M$. At $x_u$ the value is zero.
+For $k=0$ every tested point is a root already.
+Consequently a full interval of $L$ shells can be blocked at cost
+exactly $L/M$. The first integer $L$ with $L/M>B$ gives the asserted
+floor and sharp endpoint. For several independent formal coordinates of
+the same height the coordinatewise Gauss-minimizer argument gives the
+same bound on each exponent; the one-variable example proves sharpness.
+
+\paragraph{A supersingular example.}
+The smooth reduction of $E:y^2=x^3-x$ at $3$ has four
+$\mathbb F_3$-points. Its trace is zero and its formal group has height
+two. With $h_0=2$, $B=1$, and $\rho\ge1/72$, one has $q=9$ and
+$H_{\rm opt}=11$. A whole coset of nine torsion points works, with
+order between $3^2$ and $3^{11}$. At $H=10$ the extremal polynomial
+uses one lift for each of the $9^9-1$ nonzero points of $F[3^9]$.
+The comparison concerns functions integral in the local parameter at the
+identity. Applying it to a global rational function requires checking that
+its expansion has the stipulated integrality and Gauss bound.
+
+\paragraph{Exact tradeoff between degree and valuation budget.}
+There is a second sharp parameter that the same interpolation identity
+settles at once. Impose $\deg g\le D_0$ as well as $G_\rho(g)\le B$.
+A window of $L$ shells works for every such polynomial precisely when
+\[
+ L>q^{h_0-1}B\qquad\text{or}\qquad q^L-1>D_0 .
+\]
+Indeed, below the node count the interpolated remainder is $g$ itself,
+whatever its Gauss valuation is. When both inequalities fail, $P$
+meets both constraints and blocks every point. Equivalently the optimal
+upper exponent is
+\[
+ h_0+\min\bigl(\lfloor q^{h_0-1}B\rfloor,
+                    \lfloor\log_q(D_0+1)\rfloor\bigr).
+\]
+Thus the same polynomial attains the minimal degree and minimal budget of
+an obstruction simultaneously. For instance at $p=3$, height one,
+$h_0=2$, the degree-26 obstruction in the first theorem is of minimum
+degree even if its budget constraint is removed. Degree at most 25
+guarantees a good point through exponent 4 at every budget.
+
+\subsection{A valuation cutoff over ramified base fields}
+Uniform shell radii were used to express the answer in terms of $d$
+and $h_0$. There is an exact replacement when the base $K/\mathbb Q_p$
+is ramified. Keep finite reduction height and take $G=F[p^H]$.
+For a fixed positive $\rho$, let
+\[
+ N=\{z\in G:v(z)>\rho\},\qquad
+ A_*=\frac{H-\sum_{z\in N,\ z\ne0}v(z)}{|N|}.
+\]
+Assume $G\setminus N$ is nonempty. Among integral polynomials
+that satisfy $v(g(z))>G_\rho(g)$ for every $z\in G\setminus N$, the
+minimum possible $G_\rho(g)$ is $A_*$, and the minimum possible degree
+is $[G:N]-1$. One polynomial attains both. Below either threshold
+there is an entire good coset of $N$.
+
+\emph{Proof.} The formal group law and inverse preserve the condition
+$v(z)>\rho$, so $N$ is a subgroup. On each nonidentity coset the
+valuation is constant. Adding an element of $N$ changes a parameter by
+an amount of valuation greater than $\rho$. For the distinguished
+Weierstrass polynomial of $[p^H]$, the product of its nonzero roots
+has valuation $H$, by the derivative $p^H$ at zero and the
+unit factor of preparation. The total valuation of one representative
+from each nonidentity coset is therefore $A_*$. The valuation of
+differences between two such representatives depends only on their
+difference coset. Translation in $G/N$ now gives
+$v(P'(x_u))=A_*-v(x_u)$ for the product $P$ of their linear factors.
+The interpolation, arbitrary-representative argument and matching
+example above apply verbatim.\hfill$\square$
+
+This formula only needs the multiset of torsion valuations, available
+from the Newton polygon; coset counts and the sum over $N$ follow by
+counting the slopes. In particular, if the comparison radius includes
+all nonzero torsion valuations, $N=\{0\}$ and the obstruction budget
+is exactly $H$ over every base. It suffices here to take
+$\rho\ge\max_{0\ne z\in F[p]}v(z)$, since multiplication by $p$ strictly
+increases the valuation of a nonzero point in the disc until it reaches
+zero. This also explains why the closed formula for the unrestricted
+height-$d$ order window can change over ramified bases: cutting by
+valuation need no longer cut precisely between two orders.

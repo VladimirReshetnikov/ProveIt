@@ -1,0 +1,116 @@
+\section{Which proof ingredients can actually transfer?}
+\label{sec:architecture}
+
+\subsection{One arithmetic object, two incompatible-looking bounds}
+
+The core construction produces algebraic modular forms and chains of
+theta lifts with integral structures. Divisibility at finite places
+reduces their effective size, while archimedean estimates control their
+norms. A second-moment argument ensures that enough of the resulting
+vectors are independent. A separate argument using determinants,
+congruences, local Galois cohomology, and auxiliary twists gives a
+lower bound on the \emph{same} corrected covolume.
+
+The mathematical point is the cancellation of matching main terms.
+Writing \(D\) for target dimension, \(n\) for the number of independent
+vectors, \(V\) for a logarithmic squared covolume bound, and \(\delta\)
+for the index loss, the comparison has the schematic form
+\[
+ H-\mathrm{err}_{\rm low}
+ \ \leq\ \frac{V+2\delta}{D}
+ \ \leq\ H-\frac nD\,mR+\mathrm{err}_{\rm up}.
+\]
+Subtracting \(H\) leaves an upper bound for a weighted prime remainder
+\(R\). In the actual source, the result is
+\begin{equation}
+\label{eq:star}
+ m\,\mathrm{totalRemainder}\leq f a(\log b)^5.
+\end{equation}
+This is \texttt{star\_inequality}.\cite{mainineq}
+
+\begin{center}
+\small
+\begin{tabular}{p{0.19\linewidth}p{0.34\linewidth}p{0.37\linewidth}}
+\toprule
+Input & Mathematical role & What a new target must supply\\
+\midrule
+Short forms & Divisibility and norm estimates for a spanning source
+family & A local divisibility mechanism encoding its prime weights\\[3pt]
+Enough forms & Near-full target span at controlled translate cost
+& A quantitative second moment with compatible integral structures\\[3pt]
+Long integral forms & Lower bound for covolume plus index
+& Determinant identities, manageable congruence denominators,
+and a common height bound\\[3pt]
+Analytic step & One-sided remainder bounds exclude zeros
+& The correct Euler product and control of possible pole cancellation\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The source names the first three stages Theorems A, B, and C.
+Theorem B supplies a proportion at least \(1-4/b^2\) of the target
+dimension. A fixed positive proportion is not interchangeable with
+that statement, because the vectors used to complete a basis can be
+expensive.\cite{shortenough,longforms}
+
+\subsection{Quantifiers that must survive a transfer}
+
+The lower bound does not require one globally favorable twist at every
+coefficient prime. It permits a different twist at each \(p\)-adic
+embedding. However, the determinant ratios for the selected family must
+have a \emph{compatible height bound}. Likewise, the integral matrices
+entering the index estimate must work uniformly over the allowed twists
+at that place. Local existence without these simultaneous compatibility
+conditions is insufficient.\cite{twistedlattice,heights}
+
+The source's abstract product-formula lemma gives, schematically,
+\[
+ 0\leq c+2\delta+
+ n'\bigl(b_{\rm auxiliary}+b_{\rm scalar}\bigr)+b_{\rm determinant}.
+\]
+Here \(n'\) counts completion vectors, \(c\) bounds the covolume, and the
+other terms pay for their lengths and for heights.
+The exact interfaces are already useful outside the final Dirichlet
+application. What is difficult is constructing a new family for which
+all four terms match with the required asymptotic precision.
+
+The Selmer quantity refined in this report belongs to the denominator
+part of this comparison. Improving it is therefore relevant even though
+the global prime-sum comparison is not yet available for a new target.
+No statement below asserts that removing a rank factor in this one
+term removes the rank factors in the entire proof.
+
+\subsection{Why the final analytic criterion is the easier part}
+
+The final scale selection takes the number of lifts \(m\) on the order
+of \(\sqrt{x}\) while the logarithmic losses grow slower than arbitrarily
+small positive powers of \(x\). The result is an eventual one-sided
+remainder estimate at square-root scale. The zero-exclusion step then
+uses a transform with prescribed poles and a favorable quadratic
+twist for the zero under consideration.\cite{onesided,criterion}
+
+This explains why generalizations to other prime-weight functions are
+plausible. It also explains why writing such a criterion alone is not a
+solution. A nonabelian character can be inserted into a formal Euler
+sum, but its arithmetic divisibility interpretation and determinant
+comparison must still be proved. The supplied corpus already contains
+many such analytic reductions.
+
+\subsection{Other independently reusable upstream arithmetic}
+
+The background and internal lemmas include more than zero detectors.
+For example, a local Kummer-chart theorem bounds a crystalline
+orthogonality defect by
+\[
+ 11f\bigl[m(a+1)+\operatorname{rank}(L)(W+1)\bigr]
+       \operatorname{length}_O(O/pO).
+\]
+The parameter \(m\) counts low Hodge--Tate jumps; it is not automatically
+the rank. Its hypotheses include an unramified Kummer chart, opposite
+weight windows, a large gap, and a restriction excluding nearby
+multiples. A companion result makes the defect zero under stronger
+window assumptions.\cite{localdefect}
+This is a local input potentially relevant to other integral Selmer
+comparisons. It is not a proof of global Bloch--Kato vanishing.
+The attached source notes retain its exact hypotheses instead of
+promoting its conclusion to a more general statement.

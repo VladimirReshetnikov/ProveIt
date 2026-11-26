@@ -1,0 +1,233 @@
+\section{An extension of the exponent-six exclusions}
+\label{sec:genus-extension}
+
+The earlier packet \texttt{grh\_transfers.zip} ends by asking whether
+smaller subfields of a genus field, together with ramified ideals of
+small norm, can improve its exponent-six exclusions. The following
+argument answers that specific question. It uses the exported Dirichlet
+GRH and an explicit prime bound; it does not extend the theta-lift
+construction to a new family of $L$-functions. The mathematical deduction
+is new relative to the five packets reviewed here. No publication
+priority or Lean verification is claimed.
+
+\subsection{A general certificate}
+
+Let $D<-4$ be a negative fundamental discriminant, put $x=|D|$, and write
+$K=\mathbb Q(\sqrt D)$ and $A=\operatorname{Cl}(K)$. A ramified ideal
+will mean a squarefree product of the unique prime ideals above rational
+primes dividing $D$. Let $t=\omega(x)$, the number of those rational primes.
+The genus field $G$ satisfies
+\[
+ [G:\mathbb Q]=2^t,\qquad
+ \operatorname{Gal}(G/K)\simeq A/A^2.
+\]
+It is multiquadratic over $\mathbb Q$ and unramified over $K$ at every
+finite prime. These are the standard genus-field facts used in the
+previous packet.
+
+\begin{theorem}[Intermediate genus-field certificate]
+\label{thm:genus-intermediate}
+Suppose the exponent of $A$ divides $2m$, where $m$ is a positive odd
+integer. Let $H\subseteq A[2]$ have dimension $k$ over $\mathbb F_2$.
+Assume that each class in $H$ has a ramified ideal representative of norm
+at most $R$. There is an abelian field $F/\mathbb Q$ containing $K$, of
+degree $n=2^{t-k}$ and absolute discriminant $x^{n/2}$, such that every
+unramified rational prime $p$ splitting completely in $F$ satisfies
+\begin{equation}\label{eq:genus-norm}
+                         x\le 4R p^m.
+\end{equation}
+Consequently the repository's Dirichlet GRH implies
+\begin{equation}\label{eq:genus-universal}
+ x\le 4R\bigl(2n\log x+\tfrac52n+5\bigr)^{2m}.
+\end{equation}
+Any sharper valid upper bound for the least completely split prime in
+$F$ may replace the bound used in \eqref{eq:genus-universal}.
+\end{theorem}
+
+\begin{proof}
+The map $A[2]\to A/A^2$ is an isomorphism. Indeed, $A^2$ has exponent
+dividing the odd integer $m$, so it intersects $A[2]$ trivially. For
+surjectivity, $a^m\in A[2]$ and $a^{1-m}$ is a square for every $a\in A$.
+Regard $H$ as a subgroup of the genus Galois group, and put $F=G^H$.
+Then $K\subseteq F$, $[F:\mathbb Q]=n$, and $F/K$ is unramified.
+The discriminant tower formula gives
+\[
+                   |\Delta_F|=|D|^{[F:K]}=x^{n/2}.
+\]
+Moreover $F/\mathbb Q$ is abelian because $G/\mathbb Q$ is.
+
+Let $p$ be as stated. Since $F$ contains $K$, the prime $p$ splits in
+$K$ and is prime to $D$. Choose one prime $\mathfrak p$ of $K$ above $p$.
+Its Artin symbol in $\operatorname{Gal}(G/K)$ lies in $H$, so
+$[\mathfrak p]=h a^2$ for some $h\in H$ and $a\in A$. Raising to the
+$m$th power gives $[\mathfrak p]^m=h$. Choose a ramified ideal $J$ in
+class $h$ with $N(J)\le R$. Because $h^2=1$, the integral ideal
+$\mathfrak p^mJ$ is principal, say $(\alpha)$.
+
+The valuations of $(\alpha)$ at $\mathfrak p$ and
+$\overline{\mathfrak p}$ are $m$ and zero: $J$ is supported only at
+primes above $D$. Hence $\alpha\notin\mathbb Q$. Write
+$\alpha=(a+b\sqrt D)/2$ with integers $a,b$ and $b\ne0$. Norms give
+\[
+ p^mN(J)=N_{K/\mathbb Q}(\alpha)
+        =\frac{a^2+xb^2}{4}\ge\frac x4,
+\]
+proving \eqref{eq:genus-norm}. Notice that the norm cost is $R$, not
+$R^m$: the ramified ideal is inserted \emph{after} taking the $m$th power.
+
+The Dedekind zeta function of the abelian field $F$ factors into
+Dirichlet $L$-functions, so the exported theorem supplies its RH.
+Theorem 5.1 of Bach--Sorenson gives an unramified prime with identity
+Frobenius and
+\[
+ p\le\bigl(4\log|\Delta_F|+\tfrac52n+5\bigr)^2.
+\]
+Substitution proves \eqref{eq:genus-universal}.
+\end{proof}
+
+The explicit prime theorem is in E. Bach and J. Sorenson,
+\href{https://doi.org/10.1090/S0025-5718-96-00763-6}{\emph{Explicit bounds
+for primes in residue classes}}, Math. Comp. 65 (1996), Theorem 5.1
+and Table 3. Here it is used only for an abelian extension of
+$\mathbb Q$, so no additional nonabelian GRH assumption is involved.
+
+One may optimize the theorem by replacing $R$ with
+\[
+ R(H)=\max_{h\in H}\min\{N(J):J\text{ ramified and }[J]=h\},
+\]
+then varying $H$. The following explicit choice already gives a useful
+improvement and avoids any search over subgroups.
+
+\subsection{The rank issue, including the prime two}
+
+Let $q_1<\cdots<q_t$ be the rational primes dividing $D$, with
+ramified prime ideals $\mathfrak q_i$, and write
+$P_j=q_1\cdots q_j$, with $P_0=1$.
+
+\begin{lemma}\label{lem:ramified-independent}
+Under the exponent hypothesis of Theorem~\ref{thm:genus-intermediate},
+any selection of at most $t-2$ ramified prime classes is independent in
+$A[2]$ and in $A/A^2$. Thus for $0\le k\le t-2$ the subgroup generated
+by $[\mathfrak q_1],\ldots,[\mathfrak q_k]$ has dimension $k$ and has
+ramified representatives of norm at most $P_k$.
+\end{lemma}
+
+\begin{proof}
+Each ramified class has order dividing two. Suppose a nonempty
+squarefree product $J$ of ramified ideals is principal, say $(\alpha)$.
+Conjugation fixes $J$, so $\overline\alpha/\alpha$ is a unit of $K$.
+Since $D<-4$, the units are $\{1,-1\}$. If
+$\overline\alpha=\alpha$, then $\alpha$ is rational and its valuations
+at all ramified primes are even, contrary to the definition of $J$.
+Otherwise $\alpha$ is a rational multiple of $\sqrt D$.
+
+Multiplication by a rational number changes every ramified valuation by
+an even integer. At each odd prime dividing $D$, the valuation of
+$\sqrt D$ is odd. At the prime above two its parity is the parity of
+$v_2(D)$. A fundamental even discriminant has $v_2(D)=2$ or $3$.
+Therefore a nonempty relation has support all $t$ ramified primes when
+$D$ is odd or $v_2(D)=3$, and all $t-1$ odd ramified primes when
+$v_2(D)=2$. No selection of at most $t-2$ can support a relation.
+Finally, a class of order dividing two that lies in $A^2$ is trivial,
+since $A^2$ has odd exponent. This proves independence also in the genus
+quotient. Every class of the stated subgroup has a representative formed
+from a subset of the first $k$ prime ideals, of norm at most $P_k$.
+\end{proof}
+
+\subsection{Four certificates in the unresolved exponent-six window}
+
+\begin{theorem}[Additional necessary conditions in the census window]
+\label{thm:genus-four}
+Assume the repository's Dirichlet GRH. Let $D<-4$ be fundamental, let
+$\operatorname{Cl}(\mathbb Q(\sqrt D))$ have exponent six, and suppose
+\[
+ 3.1\cdot10^{20}<x=|D|\le2.5\cdot10^{25},\qquad t=\omega(x)\ge7.
+\]
+Then, with the products $P_j$ defined above,
+\begin{equation}\label{eq:genus-four}
+ P_{t-2}>1{,}200{,}000,\qquad
+ P_{t-3}>75{,}000,\qquad
+ P_{t-4}>850,\qquad
+ P_{t-5}>14.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Put $y=\log x$, so $47<y<59$. Apply
+Theorem~\ref{thm:genus-intermediate} with $m=3$ and
+$k=t-\log_2 n$, for $n=4,8,16,32$. The preceding lemma verifies the
+rank in all four cases. Table 3 of Bach--Sorenson supplies
+$\sqrt p\le M_n(y)$ with the following affine upper bounds:
+\begin{center}
+\begin{tabular}{rrrrr}
+\toprule
+$n$ & $k$ & $M_n(y)$ & Test value $R$ & Ratio at $y=47.2$\\
+\midrule
+4 & $t-2$ & $4.070y+6.38$ & $1{,}200{,}000$ & $<0.946745$\\
+8 & $t-3$ & $6.516y+6.98$ & $75{,}000$ & $<0.937077$\\
+16 & $t-4$ & $13.960y+6.44$ & $850$ & $<0.951538$\\
+32 & $t-5$ & $27.920y+7.08$ & $14$ & $<0.977087$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The last column bounds $4R M_n(47.2)^6/(3.1\cdot10^{20})$ and is
+displayed only for readability; the decisive comparisons use rational
+arithmetic.
+
+For $n=8,16,32$, the logarithm of the field discriminant is
+$(n/2)y$, lying respectively in $(188,236)$, $(376,472)$, and
+$(752,944)$. The applicable Table-3 triples $(A,B,C)$ in
+$\sqrt p\le A\log|\Delta_F|+Bn+C$ are
+$(1.629,0.11,6.1)$ for $n=8$, and $(1.745,0.04,5.8)$ for $n=16,32$.
+For $n=4$ and $2y\le100$, the triple is $(2.035,0.27,5.3)$.
+For $2y\ge100$, the triple is $(1.527,0.17,6.4)$; its bound
+$3.054y+7.08$ is below the displayed $4.070y+6.38$ when $y\ge50$.
+Thus the stated envelopes cover the entire window.
+
+For every row, $4R(ay+b)^6e^{-y}$ decreases when $y>6-b/a$, in
+particular when $y>47$. Write $X_0=3.1\cdot10^{20}$. Since
+$\log X_0<236/5$, the exact checks
+\[
+                        4R M_n(236/5)^6<X_0
+\]
+give $4R M_n(y)^6<x$ throughout $x>X_0$. If the corresponding $P_k$
+were at most $R$, equation~\eqref{eq:genus-norm} would imply the reverse
+inequality. This proves all four necessary conditions.
+\end{proof}
+
+The published EKN census and global bound are independent inputs to its
+classification interpretation: Elsenhans--Kl\"uners--Nicolae,
+\href{https://arxiv.org/pdf/1803.02056}{\emph{Imaginary quadratic number
+fields with class groups of small exponent}}, Theorems 1 and 3,
+Tables 1 and 2. They give 432 exponent-six fields through $X_0$ and,
+under the quadratic RH supplied here, no exponent-six field above
+$2.5\cdot10^{25}$. The preceding packet excludes the remaining cases
+with $t\le6$ and those with $x/P^+(x)\le10^8$.
+Theorem~\ref{thm:genus-four} therefore excludes additional families
+from the remaining window. It does not enumerate all survivors or prove
+completeness of the 432-field list without a family restriction.
+
+\paragraph{A strict improvement over those stated conditions.}
+The fundamental discriminant
+\[
+\begin{split}
+D&=-8\cdot3\cdot5\cdot7\cdot11\cdot1000000007\cdot1000000009\\
+ &=-9240000147840000582120
+\end{split}
+\]
+has seven distinct ramified primes. It satisfies
+$X_0<|D|<2.1\cdot10^{22}$ and
+$|D|/P^+(|D|)=9240000064680>10^8$, so it passes the earlier packet's
+stated numerical necessary conditions. But $P_5=2310<1{,}200{,}000$;
+the new theorem rules out exponent six. This demonstrates a strict
+enlargement of those exclusion families, not a claim that this individual
+discriminant was previously difficult or unknown.
+
+\paragraph{Verification.}
+The accompanying \texttt{genus\_certificate.py} uses exact rational
+arithmetic to verify all four endpoint comparisons and exponential-series
+bounds for $47<\log X_0<47.2$ and $\log(2.5\cdot10^{25})<59$.
+It certifies the two large example primes by trial division, and checks
+fundamentality, the products and the prior numerical conditions.
+The JSON output records the exact ratios. It does not replace the
+mathematical proof or independently recheck the published census.

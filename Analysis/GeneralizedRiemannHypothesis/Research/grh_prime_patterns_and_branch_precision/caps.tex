@@ -1,0 +1,70 @@
+\section{A counterexample using one ternary digit}\label{sec:cap}
+A set of positive integers avoids rational-ratio geometric progressions if $ac=b^2$ with $a,b,c$ in the set forces $a=b=c$. Let $J$ be the nonnegative integers whose base-three digits are all zero or one. Rankin's set $R$ consists of the integers with $v_p(n)\in J$ for every prime $p$. The equation $a+c=2b$ in $J$ forces equality: neither side has carries, and each digit of $2b$ is zero or two. Applying this at each prime proves the required property of $R$. McNew's Conjecture 7.2 asserts that its natural density, approximately $0.71974$, is optimal \cite{mcnew}. A manuscript already in the incoming collection disproves this by altering exact valuations at finitely many primes \cite{incomingmc}. Here the modification is periodic in the lowest ternary digits. This permits an exact classification of the smallest possible number of deleted digit patterns.
+
+\subsection{The construction}
+Fix a finite list of distinct primes, one called the marker and $k$ called satellites. Write $w$ for the reciprocal of the marker and $u_1,\ldots,u_k$ for the reciprocal satellite primes. A \emph{cap} is a subset of $\mathbb F_3^{k+1}$ in which $x+y+z=0$ implies $x=y=z$. Use representatives $0,1,2$. The binary cube $C=\{0,1\}^{k+1}$ is a cap. Write $b=(1,\ldots,1)$ for the satellite vector, and $b_i$ for the vector obtained by replacing its $i$th entry by 2. Form
+\[
+ C'=\bigl(C\setminus\{(0,b),(1,b)\}\bigr)\ \cup \{(2,b),(2,b_1),\ldots,(2,b_k)\}.
+\]
+\textbf{Claim.} $C'$ is a cap. Three old points lie in $C$. Two new points force the marker of the third to equal 2; all three then have satellite digits in $\{1,2\}$, which is itself a cap in each coordinate. If there is exactly one new point, every satellite coordinate where it equals 1 forces both old digits to be 1. At its possible exceptional position, the old digits must be 0 and 1. Thus at least one old point has satellite vector $b$, and both such old points were removed. This covers all configurations.
+
+Define $E$ as follows. At the selected primes write the exponent vector as $3h+c$, with each coordinate of $c$ in $\{0,1,2\}$. Require $c\in C'$ and $h\in J^{k+1}$. Use Rankin's rule at all other primes. In a progression the three residue vectors sum to zero modulo three, even when some valuation steps are negative. The cap property makes them equal. Subtract the common vector, divide by three and use the progression-freeness of $J$ coordinate by coordinate. The unselected valuations are constant for the same reason. Hence $E$ avoids every nonconstant rational-ratio progression.
+
+Give a digit vector $c$ mass $W(c)=w^{c_0}\prod_i u_i^{c_i}$. The exact unnormalized mass change is
+\begin{equation}\label{eq:gain}
+ W(C')-W(C)=\left(\prod_i u_i\right)
+ \left[w^2\left(1+\sum_i u_i\right)-(1+w)\right].
+\end{equation}
+Here $W$ on sets denotes a sum. To obtain the change in natural density multiply by the positive factor
+\[
+ \prod_{p\in S}\left[(1-p^{-1})\sum_{h\in J}p^{-3h}\right]
+ \prod_{p\notin S}\left[(1-p^{-1})\sum_{e\in J}p^{-e}\right].
+\]
+Indeed, at finitely many primes the Chinese remainder theorem gives the independent geometric laws $(1-1/p)p^{-e}$. Large exponents at any fixed prime have a vanishing geometric tail. Outside $S$, a violation at $p>Y$ requires $p^2\mid n$, costing at most $\sum_{p>Y}p^{-2}$ uniformly in the counting cutoff. The infinite product is positive because each full local factor is at least $1-p^{-2}$.
+
+\begin{theorem}\label{th:rankin}
+Use marker $2$ and take the first odd primes until their reciprocals sum to more than $5$. Then $d(E)>d(R)$. Only the units digits in base three at finitely many primes differ from Rankin's rule.
+\end{theorem}
+Euler's divergence of $\sum_p1/p$ ensures termination. With $w=1/2$, the bracket in \eqref{eq:gain} is $(\sum_i u_i-5)/4$. This proves strict gain in the ordinary limiting density and refutes the published conjecture. One may even take all odd primes up to $Y=\lceil\exp(\exp(7))\rceil$. The finite Euler product over $p\le Y$ exceeds $\sum_{n\le Y}1/n\ge\log Y$. In its logarithm the contribution of prime powers of degree at least two is bounded by $\sum_{n\ge2}1/(n(n-1))=1$. Subtracting the contribution $1/2$ of the prime 2 leaves at least $7-1-1/2>5$. The earlier certificate in \cite{incomingmc} uses only 224 odd primes up to 1427 and an exact-valuation rule. The point of the digit construction is its short proof and its optimality under the following restriction.
+
+\section{Exactly which two deletions can help?}\label{sec:classification}
+Let $C=\{0,1\}^n\subset\mathbb F_3^n$ carry the weights $W(x)=\prod_i w_i^{x_i}$, with $0<w_i\le1/2$. Require that a replacement cap keep all cube vertices except a specified set $D$ and omit every vertex of $D$. The question is how much outside weight it can add.
+
+\begin{theorem}\label{th:edge}
+Deleting zero or one vertex, or two vertices at Hamming distance at least two, cannot yield a net gain. For two adjacent deleted vertices, call their varying coordinate the marker, of weight $w$, and their common remaining vector $b$. For a satellite $i$ put $s_i=w_i^{2-b_i}$. The maximum possible added weight equals
+\[
+ W(b)\max\!\left\{(1+w)\max_i s_i,\;
+               w^2\Big(1+\sum_i s_i\Big)\right\},\qquad
+ W(b)=\prod_{i\ne\mathrm{marker}} w_i^{b_i}.
+\]
+Use zero for an empty maximum. The deleted weight equals $(1+w)W(b)$.
+\end{theorem}
+
+\begin{proof}
+An outside point with $h$ entries equal to 2 lies on exactly $2^{h-1}$ lines through pairs of cube points. At a 2 the two binary digits are opposite, and everywhere else both equal the digit of the outside point. These pairs are disjoint. Thus $h\le2$ after two deletions. For $h=2$, both deletions must belong to its square face and must meet different opposite pairs. In a binary square this means that they are adjacent. For $h=1$ at least one endpoint of the associated cube edge must have been deleted.
+
+For a single missing vertex $v$, the allowed additions therefore arise by changing a single digit of $v$ to 2. Two different such changes have as third point the cube vertex obtained by flipping both of those binary digits in $v$. It survives. Thus at most one point can be added, of weight at most $W(v)/2$. For two nonadjacent missing vertices, each possible addition is incident to exactly one of them. Two different additions incident to $v$ require that their two-digit flip equal the other missing vertex. At most two additions can therefore be incident to $v$. Each weighs at most $W(v)/2$, which proves the claim by summing charges. With no deletion the secant argument excludes every outside point.
+
+Now delete an edge. The available points consist of the center $(2,b)$ and, for each $i$, the three marker choices above the satellite vector $b_i$ obtained by changing its $i$th digit to 2. Call that triple column $i$. The preceding face argument gives this entire list and shows that each individual candidate is compatible with all pairs of retained points.
+
+Suppose different columns $i,j$ use marker digits $a,c$. Their satellite completion has $b$ flipped at $i$ and $j$ and is binary. Its marker $-a-c$ must be 2 or else it is a retained cube vertex. Thus $a+c=1$ modulo three. A center and a column point give a one-flip binary completion by the same calculation, forcing the column marker to be 2. Three or more occupied columns force every marker to be 2. Two occupied columns without the center can have only the pairs $(0,1),(1,0),(2,2)$, each column containing a single point. In one occupied column there are at most two points, of combined relative marker weight at most $1+w$. The two mixed-marker cases also cost at most $(1+w)\max_i s_i$ in units of $W(b)$. All cases with only marker 2 cost at most the second term of the maximum.
+
+Both bounds are attained whenever the corresponding candidates exist. In a maximizing column use markers 0 and 1. Their completion is the third point in that same column and is absent. Alternatively use the center and all columns with marker 2. The satellite digits then belong to the cap $\prod_i\{b_i,2\}$. With only one new point, a pair of retained points cannot complete it. This proves the formula, including the no-satellite case.
+\end{proof}
+Since $s_i\le w_i$, for a fixed marker the most favorable sign of the change occurs at the all-ones satellite vector. The marker giving the easiest threshold is one of largest weight. Indeed with $S_0=\sum_iw_i$ fixed, the ratio $w^2(1+S_0-w)/(1+w)$ increases for $0<w\le1/2$: its logarithmic derivative is $2/w-1/(1+S_0-w)-1/(1+w)>0$. Consequently the threshold of $5$ odd-prime reciprocal mass is sharp for a two-deletion digit exchange with marker 2. For a prime list containing 2, no choice of another marker can lower the threshold. Theorem~\ref{th:rankin} also shows that two is the smallest possible number of deleted cube vertices in a profitable one-digit exchange. The restriction concerns the residue cap, and permits arbitrarily many added patterns.
+
+\subsection{Natural density for rational functions and fractional ideals}
+The same proof works for monic polynomials over every $\mathbb F_Q$. A prime $P$ has weight $Q^{-\deg P}$. Among monics of degree exactly $n$, simultaneous divisibility by any fixed monic $D$ has probability $Q^{-\deg D}$ once $n\ge\deg D$. The finite valuation laws follow by inclusion--exclusion. An omitted high-degree square condition costs at most $\sum_{j>J_0}Q^jQ^{-2j}$. Thus the modified set has an exact-degree limit, which is also its degree-ball density. The reciprocal sum over irreducibles diverges: for $s>1$ the Euler product is $(1-Q^{1-s})^{-1}$, while the powers of exponent at least two contribute a bounded amount to its logarithm as $s\downarrow1$. Choose a linear marker and enough satellites to make $\sum_i u_i>Q^2+Q-1$. Equation~\eqref{eq:gain} gives a strict gain over the greedy set even for ratios in $\mathbb F_Q(x)\setminus\mathbb F_Q$. Allowing all nonzero scalar multiples preserves the result. Asada et al. asked for an example with greater upper density in Question~6.4 \cite{asada}; this construction has a limiting density. Their Conjecture~6.3 uses a different benchmark $m_Q$ for polynomial ratios.
+
+For the nonzero integral ideals of any number field, put $w_{\mathfrak p}=1/N\mathfrak p$. A progression may have an arbitrary nonidentity fractional ideal as ratio as long as its three terms are integral. The equality of valuations covers this signed-step convention. Counting all ideals of norm $\le X$ gives $A_K(X)\sim c_KX$, $c_K>0$ \cite{idealcount}. Hence $A_K(X/NJ)/A_K(X)\to 1/NJ$ for any fixed ideal $J$, and the same quotient is $O_K(1/NJ)$ uniformly for $X$ large. This proves the geometric valuation laws and controls the square tail by $O_K(\sum_{N\mathfrak p>Y}(N\mathfrak p)^{-2})=o(1)$. The simple pole of the Dedekind zeta function at 1 and the bounded higher prime-power contribution again give $\sum_{\mathfrak p}(N\mathfrak p)^{-1}=\infty$. One finite edge exchange therefore beats the natural density of the greedy ideals in every field under this stronger ratio convention. The quadratic-field questions and the previous integral-ideal exchange are described in \cite{best,priorideal}.
+
+\paragraph{A sharp small example for ideals.}
+Within this two-deletion class, at least 12 prime coordinates are needed in any number field. In fact $w\le1/2$ and $\sum_i u_i> w^{-2}+w^{-1}-1\ge5$ requires at least 11 satellites. With exactly 12 coordinates the smallest possible field degree is 10. A field of degree at most 9 has at most nine norm-2 prime ideals, by the degree formula for primes over 2. If a norm-2 prime is present, use the most favorable marker of weight $1/2$. At most eight of the eleven satellites then have weight $1/2$, so their total is at most $8/2+3/3=5$. Without such a prime the bound is even smaller.
+
+For equality of the dimension and degree thresholds, take the unique degree-10 subfield of $\mathbb Q(\zeta_{431})$. The integer 431 is prime, its cyclotomic Galois group is cyclic of order 430, and the kernel defining this subfield has order 43. Repeated squaring gives $2^{43}\equiv3^{43}\equiv1\pmod {431}$. Both primes therefore split completely. Take ten norm-2 primes and two norm-3 primes. For a norm-2 marker the eleven satellite weights sum to $9/2+2/3=31/6$. Formula~\eqref{eq:gain} gives an added unnormalized mass of $1/110592$. Dividing by the original cube mass $(3/2)^{10}(4/3)^2$ gives the exact relative result
+\[
+                 d(E)=d(R_K)\left(1+\frac1{11337408}\right).
+\]
+Here $R_K$ denotes the greedy ideal set of this field. The small degree assertion concerns the stated 12-coordinate, two-deletion problem.
+
+There is also no field-independent upper bound for the ratio of the achievable density to the greedy ideal density. Choose $L$ distinct rational primes congruent to 1 modulo 8 and adjoin their square roots. Independent square classes give degree $2^L$, and all radicands are squares in $\mathbb Q_2$, so 2 splits completely. In disjoint groups of twelve norm-2 prime ideals apply the same exchange. Each group multiplies the density by exactly $1+1/2125764$, since its added mass is $1/16384$ and its original mass is $(3/2)^{12}$. Independent groups multiply the gains, giving the relative factor $(1+1/2125764)^{\lfloor 2^L/12\rfloor}$. This compares each field with its own greedy density.

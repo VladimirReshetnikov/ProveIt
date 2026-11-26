@@ -1,0 +1,24 @@
+\subsection{Exhausting the intermediate discriminants}
+For $10^7\le D<10^{11}$ an integer sieve proves $s(-D)\ge5$ for every order discriminant. Let $a<b$ be two leading coefficients of reduced primitive forms. The following conditions suffice for the absolute values of the corresponding conjugates, in decreasing order, to differ by a factor greater than sixteen:
+\[
+       D\ge16a^2,\qquad 9D(b-a)^2\ge16a^2b^2.
+\]
+Indeed $U=\exp(\pi\sqrt D/a)$ then exceeds $34\cdot2079$, and
+$U/V\ge e^{4\pi/3}>32$ for $V=\exp(\pi\sqrt D/b)$. Thus
+$U-2079>16(V+2079)$. The absolute error bound for $|j|$ proves the claim.
+
+In a bin $L\le D<\min(2L,10^{11})$, consider any odd prime $q$ with $4q^6\le L$. If $-D$ is a nonzero square modulo $q$, the four leading coefficients $1,q,q^2,q^3$ are available. To see this, lift the square root modulo the required odd power, impose the correct parity, and reduce the middle coefficient to absolute value at most the leading coefficient. The constant coefficient is at least the leading coefficient because $4q^6\le D$, and the form is primitive because the middle coefficient is a unit modulo $q$. The consecutive pairs satisfy both integer separation tests. The same four powers of $2$ work whenever $D\equiv7\pmod8$, since an odd number congruent to one modulo eight is a square modulo every power of two. The required size inequalities hold throughout this range.
+
+The checker counts entire residue classes certified by these tests using the Chinese remainder theorem. For the remaining individual discriminants it finds three odd split primes below 1000 which, together with $1$, pass the same tests. Counts are disjoint, and the checker balances each bin against the exact number of $D\equiv0,3\pmod4$ therein.
+\[
+\begin{array}{l|r}
+\toprule
+\text{Reason for four separated conjugates}&\text{Discriminants}\\ \midrule
+2\text{ splits}&12{,}498{,}750{,}000\\
+\text{An odd split prime certifies its first three powers}&37{,}449{,}133{,}804\\
+\text{Three separately checked odd split primes}&47{,}116{,}196\\ \midrule
+\text{Total}&49{,}995{,}000{,}000\\
+\bottomrule
+\end{array}
+\]
+The enumeration and the per-bin counts are in \texttt{checks/cm\_range.cpp} and \texttt{checks/cm\_range.out}. These finite exclusions use no hypothesis about zeros.

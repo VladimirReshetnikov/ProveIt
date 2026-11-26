@@ -1,0 +1,54 @@
+\section{Verification, provenance, and reproduction}
+\label{sec:reproduction}
+
+\subsection{What was actually checked}
+
+The readable upstream source was inspected at commit
+\nolinkurl{72fead102f663d5c7a407964a13dc0cf9d977207}; the incoming reports were read at ProveIt commit
+\nolinkurl{6fe2c1bd450aa7f19eab17fb9a6e76170b4fce00}. The archive inventory records all 26 ZIP files, their hashes, and the extracted text files. Selected upstream files are bundled with a manifest containing SHA-256 and Git-blob hashes. The source checker verifies those snapshots; it does not recompile the upstream project.
+
+\begin{longtable}{@{}p{0.25\textwidth}p{0.67\textwidth}@{}}
+\toprule
+Component & Evidence and exact scope\\
+\midrule
+\endhead
+Exponent-six exclusion & Mathematical proof review; rational explicit-formula enclosures; complete Python and C++ paired-norm searches, each testing 9,393,302 relevant values and finding zero survivors.\\[4pt]
+Field and order lists & Distinctness, counts, largest discriminants, original order-table Git blob, and exact matching of the 432 fundamental entries. The published initial field census and the conductor classification are inputs.\\[4pt]
+Nonabelian local frame & Exact trace matrices, Gram diagonalization, frame weights, compatible-embedding and finite-group identities, and two explicit prime examples. General statements also have written proofs in Section~\ref{sec:nonabelian-frame}.\\[4pt]
+Joint filters & Written Mellin/Landau proof; exact polynomial and reconstruction identities; a counterexample explaining individual-filter blindness.\\[4pt]
+Positive-ramp moments & Written proof, exact rational derivative and bump-area checks, a discrete bounded-coefficient example, and a separate independent review of all constants and continuation statements.\\[4pt]
+Elementary Lean components & Seven lemmas compiled with Lean 4.35.0 and Mathlib \texttt{56a005855ea17e0b0958f73ec801ae140b0a1679}. The printed dependency lists contain only standard axioms.\\[4pt]
+Other incoming claims & Claim-by-claim inventory and overlap review. Selected sparse-CM inputs were independently checked; the complete large CM sieves were not replayed.\\
+\bottomrule
+\end{longtable}
+
+The seven Lean lemmas concern the polynomial B\'ezout identity, absence of a common filter zero, pointwise filter reconstruction, convexity of one hinge, its weighted version, finite positive-ramp convexity, and algebraic cancellation in a rank/covolume inequality. They certify useful exact pieces. They do not formalize the analytic continuation theorem, the complete moment theorem, the class-group census, or a new RH assertion. The file contains no \texttt{sorry} or additional axioms.
+
+\subsection{How to reproduce the package}
+
+From the extracted archive root, run
+\begin{verbatim}
+python3 code/reproduce.py
+python3 code/reproduce.py --full-census
+python3 code/build_pdf.py
+\end{verbatim}
+The first command reruns the short exact certificates. The second also compiles and executes the two complete residual-interval searches and the rational test, comparing their deterministic results with the delivered logs. Python~3, SymPy, and a C++17 compiler are needed for the complete arithmetic replay. Matplotlib is needed only to regenerate the illustrative figure. The PDF requires a LaTeX installation with the packages listed in \texttt{report.tex}; the build helper includes a fallback for incomplete TeX path configuration.
+
+For the separate Lean file, with \texttt{elan}/\texttt{lake} installed and network access to the pinned dependencies, run
+\begin{verbatim}
+cd formalization
+lake update
+lake exe cache get
+lake env lean TransferCore.lean
+\end{verbatim}
+Alternatively, \texttt{code/reproduce.py --lean} runs the compilation in the supplied formalization project after its dependencies have been prepared. The delivered log records this session's actual successful compilation. Dependency caches and compiled Lean objects are not bundled.
+
+The fresh replay workspace is kept under \texttt{validation/replay/}; it does not overwrite the supplied certificates. The earlier exponent-six programs and tables are retained unchanged under \texttt{prior/exponent\_six/}. Their origin and unchanged-file comparisons are recorded separately from the new checkers. The root \texttt{SHA256SUMS} covers the final package's files, excluding itself.
+
+\subsection{Limits that matter mathematically}
+
+The exponent-six proof still depends on the correctness of EKN's published exhaustive census through $3.1\cdot10^{20}$ and the cited conductor theorem. The exact searches here close the residual interval; they are not a recomputation of every class group in the original census. Likewise, the source snapshots and external kernel-check reports should not be confused with a fresh full rebuild by this investigation.
+
+The frame and averaging results are proved mathematical interfaces. Their usefulness for a new zero problem depends on a missing global arithmetic estimate, identified explicitly in Sections~\ref{sec:nonabelian-frame} and~\ref{sec:joint-filters}. No new nonabelian RH, general Artin holomorphy, Vandiver assertion, Bloch--Kato assertion, or fixed algebraic $K$-group vanishing theorem is claimed.
+
+The comparison with prior reports is relative to the supplied 26-archive corpus and the cited primary literature. It establishes what was reused and what was added in this synthesis; it does not establish worldwide priority for the elementary analytic or trace-form ingredients.

@@ -1,0 +1,175 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=22mm,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,tabularx,longtable,array}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{needspace}
+\definecolor{ink}{HTML}{17334B}
+\definecolor{accent}{HTML}{176C72}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=accent,urlcolor=accent,
+ pdftitle={Beyond the Dirichlet GRH endpoint: methods and further targets},
+ pdfauthor={Research analysis prepared for Vladimir Reshetnikov},
+ pdfsubject={Audit and transfer analysis of grh-lean with complete derived proofs and certificates},
+ bookmarksnumbered=true,hypertexnames=false}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Beyond the Dirichlet GRH endpoint}
+\fancyhead[R]{\small 25 November 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt,leftmargin=*}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\newcommand{\repo}{\texttt{grh-lean}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\numberwithin{equation}{section}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+{\color{accent}\large RESEARCH REPORT \hfill 25 November 2026\par}
+\vspace{20mm}
+{\color{ink}\Huge\bfseries Beyond the Dirichlet\\[3pt] GRH endpoint\par}
+\vspace{8mm}
+{\LARGE Transferable arithmetic, a nonabelian certificate,\\[4pt]
+and additional class-group exclusions\par}
+\vspace{12mm}
+{\large Analysis of \href{https://github.com/lsernau/grh-lean}{\texttt{lsernau/grh-lean}}\\
+and five preceding reports in \texttt{ProveIt/docs/incoming}\par}
+\vspace{8mm}
+Prepared for Vladimir Reshetnikov
+
+\vspace{9mm}
+\begin{abstract}
+The repository proves RH and GRH for Dirichlet \(L\)-functions. Its internal
+arithmetic is more reusable than that endpoint alone suggests. We extract
+a uniform torsion-selection theorem and extend it, with a proof, to arbitrary
+families of bounded power series over \(\mathcal O_{\C_p}\) with finite total
+valuation budget. A single finite torsion grid controls every determinant
+simultaneously, independently of degrees and coefficient fields.
+
+For a genuinely nonabelian target, we construct an explicit positive
+\(A_5\) character detector. A fully normalized one-sided prime-sum estimate
+would imply RH for a specified degree-60 splitting field and three subfields;
+the required arithmetic estimate remains unproved. We quantify why fixed
+abelian congruence weights cannot supply these coefficients.
+
+Finally, an intermediate genus-field argument answers an unfinished question
+in a prior report and gives four additional exclusion families for imaginary
+quadratic class groups of exponent six. These are partial classification
+results, not a complete census theorem. Full mathematical proofs, exact
+finite certificates, pinned source evidence, and explicit limitations
+accompany the analysis. No new Lean verification or worldwide novelty claim
+is made.
+\end{abstract}
+\vfill
+{\small\color{ink}
+Source revision: \file{72fead102f663d5c7a407964a13dc0cf9d977207}\\
+Prior-report repository revision: \file{a92443f00663b1b8b3c233d17df0ad49dc4f2b2c}\\
+Assessment date uses America/Los\_Angeles. All external sources were consulted
+during this analysis.}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+
+\section*{Results at a glance}
+\addcontentsline{toc}{section}{Results at a glance}
+The ideas do yield a proved reusable extension and new partial exclusions
+beyond the usual consequences of RH. The present analysis does not prove
+a further major named conjecture in full. The distinction between a
+completed deduction and a missing arithmetic input is essential to
+interpreting the results.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{31mm}YY@{}}
+\toprule
+Direction & Completed here & Remaining requirement\\
+\midrule
+Bounded \(p\)-adic analytic families &
+A single bounded-order torsion tuple controls total positive valuation
+loss for any family with finite witness budget; matrix and normalized-length
+corollaries. &
+To settle a Selmer or Iwasawa question, construct the relevant integral
+analytic presentation and prove the witness budget.\\
+\addlinespace
+Nonabelian \(A_5\) RH &
+Positive mean-one detector, exact treatment of inertia and prime powers,
+one-sided analytic implication, explicit field, and a mean-square
+obstruction to fixed congruence substitution. &
+Prove the new detector's square-root-scale one-sided prime-sum estimate.\\
+\addlinespace
+Exponent-six quadratic class groups &
+An intermediate genus-field certificate and four stronger necessary
+conditions in the remaining census window. &
+Enumerate or eliminate every surviving discriminant to prove the full
+432-field classification.\\
+\addlinespace
+Proposed stronger torsion rules &
+An exact counterexample to a maximal-order, no-loss principle with
+arbitrary ramified coefficients. &
+Any successful replacement must retain the appropriate conductor,
+ramification, or error hypotheses.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The first direction genuinely transfers an internal ingredient without
+using the final RH theorem. The second transfers the analytic architecture
+to a problem outside the exported Dirichlet statements. The third is a
+new refinement of an application in the earlier reports: it uses the
+exported theorem, so it is labeled separately rather than presented as
+an extension of the theta construction.
+
+The main mathematical sections are self-contained:
+Section~\ref{sec:torsion-transfer} proves the torsion theorem;
+Section~\ref{sec:a5-transfer} proves the nonabelian reduction;
+Section~\ref{sec:genus-extension} proves the class-group exclusions.
+Section~\ref{sec:priorities} identifies the precise next research gates.
+The supporting Python programs certify finite computations; they do not
+substitute for the proofs of the infinite statements.
+
+\clearpage
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+
+\input{sections/audit_and_method.tex}
+\clearpage
+\input{sections/torsion_transfer.tex}
+\input{sections/torsion_literature.tex}
+\clearpage
+\input{sections/a5_transfer.tex}
+\clearpage
+\input{sections/genus_transfer.tex}
+\input{sections/counterexample.tex}
+\input{sections/research_and_verification.tex}
+\begingroup
+\small
+\input{sections/references.tex}
+\endgroup
+\end{document}
+

@@ -1,0 +1,163 @@
+\section{A quadratic Jensen theorem for a nonabelian Artin factor}
+\label{sec:eta-jensen}
+Let $F=\mathbb Q(\alpha)$ with $\alpha^3-\alpha-1=0$. The polynomial is
+irreducible over $\mathbb Q$ and has discriminant $-23$. Its splitting
+field has group $S_3$. Write $\rho$ for the two-dimensional summand of its
+three-letter permutation representation. The classical weight-one identity is
+\[
+ L(s,\rho)=\frac{\zeta_F(s)}{\zeta(s)}=L(s,f),
+ \qquad f(z)=\eta(z)\eta(23z).
+\]
+Here $L(s,f)$ uses the Fourier coefficients of the normalized cusp form.
+See van der Blij's result in D. Zagier, \emph{Elliptic Modular Forms and
+Their Applications}, Proposition 14 and the discussion following it,
+\href{https://www.its.caltech.edu/~matilde/Zagier123ModularForms.pdf}{pp.~43--44}.
+In particular the trace at an unramified prime is the number of roots of
+$X^3-X-1$ in $\mathbb F_p$ minus one.
+Put
+\[
+ \Lambda_f(s)=\left(\frac{\sqrt{23}}{2\pi}\right)^s\Gamma(s)L(s,f),
+ \qquad
+ \Lambda_f(1/2+z)=\sum_{n\ge0}\frac{\gamma_n}{n!}z^{2n}.
+\]
+\textbf{Theorem.} For every $n\ge0$, the polynomial
+$\gamma_n+2\gamma_{n+1}X+\gamma_{n+2}X^2$ has two distinct negative
+real roots. The conclusion holds independently of Dirichlet GRH.
+
+\textit{Proof.}
+After the change of variables $y=e^u/\sqrt{23}$ in the Mellin integral
+of $f(iy)$, we obtain
+\[
+ \Lambda_f(1/2+z)=\int_{\mathbb R}e^{zu}K(u)\,du,
+ \qquad K(u)=e^{u/2}\eta(ie^u/\sqrt{23})\eta(i\sqrt{23}e^u).
+\]
+The integral agrees with the completed Dirichlet series in its initial
+half-plane, then gives its entire continuation by the decay below.
+Write $h(v)=v/4+\log\eta(ie^v)$ and $a=\frac12\log23$. Then
+$\log K(u)=h(u-a)+h(u+a)$. Eta inversion shows that $h$ is even.
+For $v\ge0$, the product for $\eta$ gives, with $Y=2\pi e^v$,
+\[
+ h(v)=\frac v4-\frac Y{24}
+       -\sum_{m\ge1}\sigma_{-1}(m)e^{-mY},\qquad
+ \sigma_{-1}(m)=\sum_{d\mid m}d^{-1}.
+\]
+The series and its first four derivatives converge locally uniformly.
+The fourth derivative in $v$ of $e^{-mY}$ equals
+$e^{-q}q((q-6)q^2+7q-1)$ with $q=mY\ge 2\pi>6$. Consequently
+$h^{(4)}(v)<0$ for all real $v$, using evenness for $v<0$.
+
+More generally, let $g(u)=\sum_j r_j[h(u-a_j)+h(u+a_j)]$ for any
+nonempty finite list of $a_j\in\mathbb R$, $r_j>0$, and put $K=e^g$.
+Then $g$ is even and $g^{(4)}<0$. Thus $g'''(u)<0$ for $u>0$ and
+$(u g''-g')'=u g'''<0$. Since $g'(0)=0$,
+\[
+ \left(\log K(\sqrt{x})\right)''
+ =\frac{u g''(u)-g'(u)}{4u^3}<0,\qquad u=\sqrt x>0 .
+\]
+At both infinities $K$ decays at least as fast as $\exp(-c e^{|u|})$
+for some $c>0$, by the same product and symmetry. The preceding
+calculation follows the eta-kernel curvature argument of J. B. Conrey
+and A. Ghosh, \emph{Tur\'an inequalities and zeros of Dirichlet series
+associated with certain cusp forms}, Trans. AMS 342 (1994), 407--419,
+\href{https://aimath.org/~kaur/publications/29.pdf}{Secs.~4--7}.
+The symmetry of the translations preserves the fourth-derivative sign
+for unequal eta dilations.
+
+For completeness, write $V(x)=-\log K(\sqrt{x})$ and
+$M(p)=\int_0^\infty x^{p-1}e^{-V(x)}\,dx$ for $p>0$. Under probability
+density $x^{p-1}e^{-V(x)}/M(p)$ denote expectation by $E_p$.
+Integration by parts gives
+$E_{p+1}[V']=p M(p)/M(p+1)$. Since $V'$ is strictly increasing,
+\[
+ E_{p+2}[V']-E_{p+1}[V']
+ =\frac{\operatorname{Cov}_{p+1}(x,V'(x))}{E_{p+1}[x]}>0.
+\]
+The last sign follows by using two independent draws and averaging
+$(x-y)(V'(x)-V'(y))/2$. Hence the consecutive ratios of $M(p)/\Gamma(p)$
+strictly decrease as $p$ increases by one. Since
+\[
+ \gamma_n=\frac{n!}{(2n)!}M(n+1/2)
+ =\frac{\sqrt\pi}{4^n}\frac{M(n+1/2)}{\Gamma(n+1/2)},
+\]
+we have $\gamma_{n+1}^2>\gamma_n\gamma_{n+2}$. All coefficients are
+positive. This proves the quadratic assertion.\hfill$\square$
+
+The same calculation applies to every positive eta product with
+exponents paired under $d\leftrightarrow N/d$, on centering its
+Mellin kernel at weight divided by two. In general this kernel need not
+come from an eigenform. For the conductor-$23$ form, the open critical-line
+statement would imply real-rootedness in every Jensen degree:
+$w\mapsto\Lambda_f(1/2+\sqrt w)$ has order at most $1/2$, and critical-line
+zeros correspond to negative real $w$. Hadamard factorization and Jensen's
+criterion then give this implication and its converse. The theorem proves
+the degree-two part for all shifts. The kernel argument supplements the
+prime-sum reduction. It makes no use of its arithmetic estimate.
+
+\subsection{A counterexample to the general cubic kernel criterion}
+A possible next step would apply Theorem~1 of D. K. Dimitrov and
+F. R. Lucas, \emph{Higher order Tur\'an inequalities for the Riemann
+$\xi$-function}, Proc. AMS 139 (2011), 1013--1022,
+\href{https://doi.org/10.1090/S0002-9939-2010-10515-4}{p.~1017}.
+Together with their normalization and Lemma~1, the printed theorem implies
+that every cubic Jensen polynomial is hyperbolic for an admissible
+kernel with $(\log K(\sqrt{x}))''<0$ for $x>0$. The following counterexample
+addresses this general assertion. It leaves the individual questions for
+the Riemann and conductor-$23$ kernels separate.
+
+\textbf{Counterexample.} Put $K_\delta(u)=\exp(-u^2-\delta u^6)$ with
+$\delta=10^{-8}$. Its first cubic Jensen polynomial has a nonreal
+conjugate pair. This kernel is positive, even and entire, decreases
+strictly for $u>0$, and every derivative is a polynomial times $K_\delta$,
+hence $O(e^{-|u|^3})$ at infinity. Moreover
+$(\log K_\delta(\sqrt{x}))''=-6\delta x<0$.
+
+\textit{Proof.} Use the coefficients $\gamma_n$ above with this new
+kernel and put $c_n=4^n\gamma_n/\sqrt\pi$. If $p=n+1/2$ and
+$X$ has gamma density $x^{p-1}e^{-x}/\Gamma(p)$, then
+$c_n=\mathbb E e^{-\delta X^3}$. With $(p)_m=p(p+1)\cdots(p+m-1)$,
+Taylor's inequalities for $e^{-y}$ on $y\ge0$ give
+\[
+ 1-\delta(p)_3\le c_n\le1-\delta(p)_3+
+                   \tfrac12\delta^2(p)_6 .
+\]
+The rescaled Jensen polynomial is
+$P(Z)=c_0+3c_1Z+3c_2 Z^2+c_3 Z^3$. These rescalings preserve
+real-rootedness. Since $(n+1/2)_3$ is monic cubic in $n$,
+its third forward difference is $6$, and $P(-1)=6\delta+O(\delta^2)$.
+In $P(W-1)$ the respective coefficients of $W^3,W^2,W,1$ are
+$1+O(\delta),O(\delta),O(\delta),6\delta+O(\delta^2)$. The discriminant
+is therefore $-972\delta^2+O(\delta^3)$ as $\delta\downarrow0$.
+For the stated rational value the accompanying checker uses the displayed
+rational endpoints to certify
+\[
+                 -975<\operatorname{disc}(P)/\delta^2<-969.
+\]
+Explicitly it encloses $T_1=c_1^2-c_0c_2$, $T_2=c_2^2-c_1c_3$, and
+$U=c_1c_2-c_0c_3$ by subtraction of endpoint products. All three lower
+endpoints are positive. The final enclosure follows from
+$\operatorname{disc}(P)=27(4T_1T_2-U^2)$. \hfill$\square$
+
+One can locate a difficulty in the mean-value argument immediately
+before equation (14) on pp.~1020--1021. There
+$A(y,z)=(z^2-y^2)K(y)K(z)[B(y)-B(z)]$ with
+$B(y)=K'(y)/(yK(y))$. For $y>0$ and $B'(y)<0$, $A(y,z)$ vanishes
+quadratically as $z\to y$. Hence $\partial_y A(y,z)/A(y,z)$ has a
+simple pole at $z=y$. Its derivative on either open side cannot justify
+the mean-value step for an interval with $z_1<y<z_2$.
+An argument for the cubic inequalities of a particular arithmetic
+kernel must use additional information. The counterexample is a
+Mellin-moment calculation and makes no assertion about zeros of a
+particular number-theoretic $L$-function.
+
+The obstruction persists with globally strict fourth-derivative curvature.
+Take $\widehat K_\delta(u)=\exp[-u^2-\delta(u^4+u^6)]$. Its log has fourth
+derivative $-24\delta-360\delta u^2<0$, as does the log of the symmetric
+eta kernel above. In the gamma expectation the perturbing polynomial is now
+$X^2+X^3$, so the first-order correction to $c_n$ is
+$-\delta[(p)_2+(p)_3]$. Its third forward difference is again $-6\delta$.
+For every fixed shift $n$ the same translated-cubic calculation gives
+discriminant $-972\delta^2+O_n(\delta^3)$ in the $c_n$ normalization.
+A single sufficiently small $\delta>0$ therefore violates the cubic
+inequalities at any prescribed finite set of shifts. This distinguishes
+the information provided by the eta curvature estimate from what a
+degree-three argument requires.

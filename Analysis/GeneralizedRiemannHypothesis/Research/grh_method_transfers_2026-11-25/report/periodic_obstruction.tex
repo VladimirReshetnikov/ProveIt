@@ -1,0 +1,232 @@
+% Fragment for inclusion in the main report.
+% Requires amsmath, amssymb, amsthm and theorem/corollary environments.
+\section{The exact information lost by fixed congruence weights}
+\label{sec:periodic-obstruction}
+
+The earlier reports establish a mean-square obstruction for the standard
+character of an $S_3$ cubic field. The same obstruction holds for every
+nonlinear irreducible character of every finite Galois group. More generally,
+one can compute the optimal periodic approximation to any Frobenius class
+function exactly. This is an application of character theory and the classical
+Chebotarev theorem; it is a diagnostic for proposed extensions, not a claim
+to solve another open conjecture.
+
+Let $M/\mathbb Q$ be a finite Galois extension with group $G$. Fix an integer
+$q\ge1$ and put
+\[
+ A_q=(\mathbb Z/q\mathbb Z)^\times,\qquad
+ E_q=M\cap\mathbb Q(\zeta_q),\qquad
+ H_q=\operatorname{Gal}(M/E_q).
+\]
+For $q=1$, interpret $A_q$ as the trivial group. Since $E_q/\mathbb Q$ is
+abelian, $H_q$ is normal and contains the commutator subgroup $[G,G]$.
+Let $S$ be any fixed finite set containing the primes ramifying in $M$ and
+the primes dividing $q$. At every $p\notin S$, choose a representative
+$g_p\in G$ of the arithmetic Frobenius conjugacy class. If $f:G\to\mathbb C$ is a class
+function, its value $f(g_p)$ is independent of this choice.
+
+The restriction of $b\in A_q=\operatorname{Gal}(\mathbb Q(\zeta_q)/\mathbb Q)$
+to $E_q$ determines one coset of $H_q$ in $G$. Define
+\begin{equation}\label{eq:periodic-best}
+ m_q(b)=\frac1{|H_q|}
+   \sum_{\substack{g\in G\\g|_{E_q}=b|_{E_q}}}f(g).
+\end{equation}
+Thus $m_q$ is a finite, explicitly specified function on the reduced residue
+classes. Write
+\[
+ \|f\|_G^2=\frac1{|G|}\sum_{g\in G}|f(g)|^2,
+ \qquad
+ \|a\|_{A_q}^2=\frac1{\varphi(q)}\sum_{b\in A_q}|a(b)|^2.
+\]
+
+\begin{theorem}[Optimal approximation by a fixed modulus]
+\label{thm:periodic-projection}
+For every class function $f:G\to\mathbb C$ and every function
+$a:A_q\to\mathbb C$, both of the following limits exist and have the same
+value:
+\begin{align}
+ \lim_{X\to\infty}\frac1{\pi(X)}
+   \sum_{\substack{p\le X\\p\notin S}}
+       |f(g_p)-a(p\bmod q)|^2
+ &\;=\;\mathcal E_q(f,a),\label{eq:unweighted-mse}\\
+ \lim_{X\to\infty}\frac1X
+   \sum_{\substack{p\le X\\p\notin S}}
+       (\log p)|f(g_p)-a(p\bmod q)|^2
+ &\;=\;\mathcal E_q(f,a),\label{eq:weighted-mse}
+ \intertext{where}
+ \mathcal E_q(f,a)
+ &=\|f\|_G^2-\|m_q\|_{A_q}^2
+                  +\|a-m_q\|_{A_q}^2.\label{eq:mse-decomposition}
+\end{align}
+Consequently $m_q$ is the unique optimal approximation on $A_q$, and the
+minimum error is $\|f\|_G^2-\|m_q\|_{A_q}^2$.
+
+Let $f=\sum_{\chi\in\operatorname{Irr}(G)}c_\chi\chi$ be its expansion in
+irreducible characters, with the usual normalized character inner product.
+Then the minimum has the equivalent expression
+\begin{equation}\label{eq:mse-character-energy}
+ \min_a\mathcal E_q(f,a)
+ =\sum_{\substack{\chi\in\operatorname{Irr}(G)\\
+                    H_q\not\subseteq\ker\chi}}|c_\chi|^2.
+\end{equation}
+Here $H_q\subseteq\ker\chi$ means that the representation affording
+$\chi$ is trivial on $H_q$.
+\end{theorem}
+
+\begin{proof}
+Put $N=M\mathbb Q(\zeta_q)$. Restriction identifies its Galois group with
+the fiber product
+\[
+ \Gamma=\{(g,b)\in G\times A_q:
+                  g|_{E_q}=b|_{E_q}\}.
+\]
+Its projection onto $A_q$ is surjective and has fibers of size $|H_q|$,
+so $|\Gamma|=\varphi(q)|H_q|$. The function
+$F(g,b)=|f(g)-a(b)|^2$ is constant on conjugacy classes of $\Gamma$:
+$f$ is a class function and $A_q$ is abelian. Chebotarev's density theorem,
+summed over the finitely many conjugacy classes, gives
+\begin{equation}\label{eq:fiber-product-average}
+ \lim_{X\to\infty}\frac1{\pi(X)}
+    \sum_{\substack{p\le X\\p\notin S}}F(g_p,p\bmod q)
+ =\frac1{\varphi(q)|H_q|}
+    \sum_{b\in A_q}
+    \sum_{g|_{E_q}=b|_{E_q}}|f(g)-a(b)|^2.
+\end{equation}
+This is the unconditional fixed-field Chebotarev theorem. No GRH, effective
+error estimate, or uniformity in $M$ or $q$ is being used.
+
+For a fixed $b$, the mean of $f$ over the indicated coset is $m_q(b)$.
+Expanding the square and using the vanishing of the mean of $f-m_q(b)$
+on that coset gives the orthogonal decomposition
+\[
+ \frac1{|H_q|}\sum_{g|_{E_q}=b|_{E_q}}|f(g)-a(b)|^2
+ =\frac1{|H_q|}\sum_{g|_{E_q}=b|_{E_q}}|f(g)-m_q(b)|^2
+      +|m_q(b)-a(b)|^2.
+\]
+Average over $b$. Every $g\in G$ is counted the same number of times,
+because the restriction $A_q\to\operatorname{Gal}(E_q/\mathbb Q)$ is
+surjective. This proves \eqref{eq:mse-decomposition} and uniqueness of the
+minimum, since every residue class has the positive weight
+$1/\varphi(q)$.
+
+For completeness the logarithmic prime weight does not change the limit.
+Write $U(X)$ for the unweighted numerator in
+\eqref{eq:unweighted-mse}. Chebotarev and the ordinary prime number theorem
+give
+$U(X)=\mathcal E_q(f,a)\operatorname{Li}(X)+o(X/\log X)$.
+Partial summation yields
+\[
+ \sum_{\substack{p\le X\\p\notin S}}(\log p)F(g_p,p\bmod q)
+ =U(X)\log X-\int_2^X\frac{U(t)}t\,dt
+ =\mathcal E_q(f,a)X+o(X).
+\]
+Changing the fixed lower endpoint alters only a constant. This proves
+\eqref{eq:weighted-mse}. Equivalently one may normalize the two sums by
+the number of retained primes and by their sum of logarithms, respectively:
+those denominators are asymptotic to $\pi(X)$ and $X$. Deleting or adding
+finitely many unramified primes does not affect either limit.
+
+It remains to identify the character components retained by the coset
+average. Let $\rho$ be an irreducible representation of $G$ with character
+$\chi$, and set
+\[
+ P_H=\frac1{|H_q|}\sum_{h\in H_q}\rho(h).
+\]
+This is projection onto the subspace fixed by $H_q$. Because $H_q$ is
+normal, that subspace is $G$-invariant; by irreducibility it is either
+zero or the whole representation. Therefore
+\[
+ \frac1{|H_q|}\sum_{h\in H_q}\chi(gh)
+ =\operatorname{tr}(\rho(g)P_H)
+ =\begin{cases}
+   \chi(g),&H_q\subseteq\ker\chi,\\
+   0,&H_q\not\subseteq\ker\chi.
+  \end{cases}
+\]
+The characters in the first case factor through the abelian quotient
+$G/H_q$ and hence have degree one. Irreducible-character orthogonality
+now makes the squared norm lost by this projection exactly the sum in
+\eqref{eq:mse-character-energy}.
+\end{proof}
+
+\begin{corollary}[Every nonlinear irreducible trace is invisible to fixed congruences]
+\label{cor:nonlinear-periodic}
+If $\chi$ is an irreducible character of $G$ of degree greater than one,
+then for every fixed $q$ and every $a:A_q\to\mathbb C$,
+\begin{equation}\label{eq:nonlinear-mse}
+ \mathcal E_q(\chi,a)
+ =1+\frac1{\varphi(q)}\sum_{b\in A_q}|a(b)|^2.
+\end{equation}
+In particular the unique optimal fixed-periodic approximation is zero,
+and the minimum mean-square error is exactly one in both
+\eqref{eq:unweighted-mse} and \eqref{eq:weighted-mse}.
+\end{corollary}
+
+\begin{proof}
+Since $G/H_q$ is abelian, the nonlinear irreducible representation cannot
+be trivial on $H_q$. The character average in the proof of
+Theorem~\ref{thm:periodic-projection} is consequently zero on every coset,
+so $m_q=0$. Character orthogonality gives $\|\chi\|_G^2=1$.
+\end{proof}
+
+The normalization here is the ordinary trace character. If the trace is
+divided by the representation dimension $d$, its minimum mean-square
+error is instead $1/d^2$.
+
+\paragraph{What the best fixed modulus can retain.}
+Let $M^{\mathrm{ab}}=M^{[G,G]}$ be the maximal abelian subextension.
+By Kronecker--Weber, it is contained in $\mathbb Q(\zeta_Q)$ for some
+integer $Q$. For every multiple $q$ of $Q$ we have
+$E_q=M^{\mathrm{ab}}$ and $H_q=[G,G]$. Indeed every abelian subextension
+of $M$ lies in $M^{\mathrm{ab}}$, while the assumed divisibility gives
+the reverse containment for $E_q$. Thus for such $q$,
+\begin{equation}\label{eq:all-fixed-periodic}
+ \min_a\mathcal E_q(f,a)
+   =\sum_{\substack{\chi\in\operatorname{Irr}(G)\\\chi(1)>1}}
+       |c_\chi|^2.
+\end{equation}
+The right side is also the infimum over all fixed moduli and all periodic
+approximations. An arbitrary class function is exactly recoverable from
+some fixed residue modulus in prime mean square if and only if it factors
+through the abelianization of $G$. For smaller moduli one can additionally
+lose one-dimensional character components whose abelian subextensions
+are not contained in the cyclotomic field chosen.
+
+\paragraph{The cubic example.}
+For an irreducible cubic polynomial with Galois group $S_3$, the trace of
+the standard two-dimensional representation is the number of roots
+modulo an unramified prime minus one. Its values and frequencies are
+\[
+\begin{array}{c|ccc}
+\text{Frobenius type}&\text{identity}&\text{transposition}&\text{three-cycle}\\
+\hline
+\chi(g)&2&0&-1\\
+\text{prime density}&1/6&1/2&1/3
+\end{array}
+\]
+and its mean square is $4/6+1/3=1$. Even after the sign of Frobenius is
+known, the conditional mean trace is zero: on $A_3$ it is
+$(2-1-1)/3=0$, and on the odd coset every trace is zero. The general
+theorem proves that no finer fixed congruence system improves this
+approximation. It applies both to $X^3-X-1$ and to $X^3-2$, whose
+particular instances were treated in the earlier reports.
+
+\paragraph{Implication for a proposed transfer.}
+Every function of a fixed residue class is a finite linear combination of
+Dirichlet characters, by Fourier expansion on $A_q$. Consequently a
+construction whose new prime weight is obtained solely by a fixed finite
+combination of Dirichlet-character weights cannot reproduce a nonlinear
+irreducible Frobenius trace, even in the mean-square sense above. A
+successful extension must use some additional arithmetic information or
+a different limiting mechanism.
+
+The quantifier \emph{fixed} is essential. The theorem first fixes $q$ and
+$a$ and then lets $X$ tend to infinity. It makes no uniform assertion
+when $q=q(X)$ grows or when the residue weight is adaptively chosen from
+the primes up to $X$. In fact, if $q>X$ is prime, each prime $p\le X$
+occupies its own residue class, so an artificially chosen function can
+interpolate all of those finitely many traces exactly. Such interpolation
+supplies neither useful analytic control nor an arithmetic construction,
+but it shows why one must not advertise \eqref{eq:nonlinear-mse} as an
+obstruction to every possible use of growing moduli. Nor does the result
+prove logical independence of Artin or Hecke GRH from Dirichlet GRH.

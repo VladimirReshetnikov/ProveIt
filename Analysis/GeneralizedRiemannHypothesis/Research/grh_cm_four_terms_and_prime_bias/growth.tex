@@ -1,0 +1,153 @@
+\section{How the minimum support grows}
+
+Let $D=|\Delta|$, $h=h(\Delta)$, and let $s(\Delta)$ denote the minimum
+number of terms of a nonzero rational polynomial vanishing at a singular
+modulus of discriminant $\Delta$. Write $\Delta=f^2 d$, where $d$ is a
+fundamental discriminant. We obtain two uniform bounds as $D\to\infty$:
+\[
+ s(\Delta)\gg_{\epsilon}D^{1/4-\epsilon}\quad(\epsilon>0),
+ \qquad
+ s(\Delta)\gg\sqrt h\gg\frac{D^{1/4}}{\sqrt{\log\log(3D)}}
+ \quad\text{using Dirichlet GRH}.
+\]
+The first bound uses Siegel's ineffective constant. The second improves the
+$D^{1/4}/\sqrt{\log D}$ bound in the preceding ProveIt manuscript. Both
+include nonmaximal orders.
+
+\paragraph{Class numbers and reduction.}
+The ring class number formula (Cox, \emph{Primes of the Form
+$x^2+ny^2$}, Thm.~7.24) gives
+\[
+ h=\frac{h(d)f}{[\mathcal O_K^\times:\mathcal O_f^\times]}
+       \prod_{\ell\mid f}\left(1-\frac{\chi_d(\ell)}\ell\right)
+   \ge \tfrac13 h(d)\varphi(f),
+\]
+where $K=\mathbb Q(\sqrt d)$ and $\chi_d=(d/\cdot)$.
+The totient bound $\varphi(f)\gg f/\log\log(3f)$
+(Rosser--Schoenfeld, \emph{Illinois J. Math.} 6 (1962), Thm.~15)
+and $h(d)\gg_\epsilon |d|^{1/2-\epsilon}$ give
+$h\gg_\epsilon D^{1/2-\epsilon}$. For the field
+bound see \href{https://doi.org/10.4064/aa-1-1-83-86}{Siegel (1935)}.
+
+Under Dirichlet GRH the conductor factors can be retained in the analytic
+class number formula. Put $y=(\log(3D))^6$. The usual GRH estimate
+$\sum_{p\le t}\chi_d(p)\log p\ll\sqrt t\log^2(3Dt)$, followed by
+partial summation, gives
+\[
+ \left|\sum_{p>y}\frac{\chi_d(p)}p\right|
+ \ll \frac{\log^2(3Dy)}{\sqrt y\log y}
+       +\int_y^\infty\frac{\log^2(3Dt)}{t^{3/2}\log t}\,dt
+ \ll 1 .
+\]
+For the last inequality split $\log^2(3Dt)\le
+2\log^2(3D)+2\log^2 t$ and use this choice of $y$.
+In the logarithm of the Euler product the terms of prime-power exponent at
+least two have bounded absolute sum. Also
+$\sum_{p\mid f,\,p>y}1/p\le\log(2f)/(y\log y)$. Hence
+\[
+ \log\!\left(L(1,\chi_d)\prod_{p\mid f}
+       (1-\chi_d(p)/p)\right)
+ =\sum_{\substack{p\le y\\p\nmid f}}\frac{\chi_d(p)}p+O(1)
+ \ge-\log\log y-O(1)
+\]
+by Mertens' prime reciprocal sum. The Euler expansion at $1$ follows by
+taking the limit from the right, justified by the displayed tail estimate.
+The class number formula now gives $h\gg\sqrt D/\log\log(3D)$ for all
+orders. This combines the finite Euler factors before estimating the
+$L$-value; for explicit bounds on the primitive value see
+\href{https://arxiv.org/abs/1309.3595}{Lamzouri--Li--Soundararajan,
+Thm.~1.5}.
+
+At an inert $p\nmid f$ all $h$ conjugates reduce to supersingular
+invariants, and the ring class field is unramified at $p$.
+There are $O(p)$ supersingular invariants. For example, every elliptic curve
+in characteristic $p>3$ has a Legendre model over the algebraic closure, and
+its supersingular parameter is a root of the nonzero Hasse polynomial
+$\sum_{i=0}^{(p-1)/2}\binom{(p-1)/2}{i}^{\!2}\lambda^i$.
+For $p\equiv1\pmod3$, the invariant $0$ is ordinary: the coefficient of
+$x^{p-1}$ in $(x^3+1)^{(p-1)/2}$ is
+$\binom{(p-1)/2}{(p-1)/3}\not\equiv0\pmod p$.
+If $M$ conjugates have the same nonzero reduction, divide them all by one
+of these conjugates. The scaled points $z$ satisfy $v_p(z-1)\ge1$.
+For $m=\min(M,\lfloor p/2\rfloor)$ with $m\ge2$ and $p\ge7$, the
+local determinant estimate applies to any $m$ of them, since
+$1/(p-m+1)<1$. Thus $s(\Delta)>m$. Common scaling multiplies each
+power column by a nonzero scalar.
+
+\paragraph{A bound independent of zero-location theorems.}
+Set $X=D^{1/4}$. Among the primes $X/2<p\le X$, those congruent to $1$
+modulo $12$ and coprime to $D$ number $\gg X/\log X$. This is the
+unconditional prime number theorem in the fixed progression, with at most
+$\log D/\log 2$ primes removed; see
+\href{https://arxiv.org/abs/1802.00085}{Bennett--Martin--O'Bryant--Rechnitzer}.
+If one is inert, at least $h/O(X)$ conjugates have one common nonzero
+reduction. The disk bound gives $s(\Delta)\gg\min(X,h/X)$, which
+suffices by the class number estimate above.
+
+Otherwise all the indicated primes split. Each gives a primitive reduced
+form of leading coefficient $p$: choose $|b|\le p$ with
+$b^2\equiv \Delta\pmod{4p}$, and take $c=(b^2+D)/(4p)>p$.
+The corresponding conjugate satisfies
+$\log |j|=\pi\sqrt D/p+o(1)$ uniformly by the cusp bound
+$\big||j|-\exp(\pi\sqrt D/p)\big|\le2079$.
+Two different such primes give exponents separated by at least
+$\pi\sqrt D/X^2=\pi$. Hence consecutive moduli, in increasing order,
+have ratio $>16$ for large $D$. To see that $t$ such conjugates exclude
+every $t$-term relation, order the moduli $r_i$ and exponents $e_j$
+increasingly. Scale column $j$ of the power matrix by $c_j>0$ with
+$c_{j+1}/c_j=(r_jr_{j+1})^{-(e_{j+1}-e_j)/2}$. Moving away from the
+diagonal in each row decreases absolute entries by factors of at least
+four. The off-diagonal sum is at most $2/3$ of the diagonal entry.
+Strict diagonal dominance gives independence. Thus
+$s(\Delta)\gg X/\log X$ in this case.
+
+\paragraph{A sharper bound using the proved Dirichlet GRH.}
+Take $Y=\sqrt h$. We seek an inert prime $Y<p\le 2Y$, coprime to $f$,
+where at least half the conjugates are units. Dirichlet GRH gives
+\[
+ \sum_{\substack{Y<p\le 2Y\\\chi_d(p)=-1,\ p\nmid f}}\log p
+  = Y/2+O\big(\sqrt Y\log^2(3DY)+\log(3D)\big)\gg Y.
+\]
+Indeed, subtract the weighted sums for $\chi_d$ from the ordinary prime
+sums and divide by two. The ramified and conductor primes cost $O(\log D)$.
+The standard GRH error also follows by subtracting the quadratic prime
+ideal estimate of
+\href{https://arxiv.org/abs/1312.4463}{Greni\'e--Molteni, Cor.~1.2}
+from twice the rational prime estimate and halving, with
+$O(\sqrt{Y}\log^2(3Y)+\log D)$ for prime powers and ramification.
+Here $Y\gg D^{1/4}/\sqrt{\log\log(3D)}$, so the error is $o(Y)$.
+In particular this selection works for $d=-3$ as well.
+
+Write $N=|H_\Delta(0)|$, the absolute product of the conjugates.
+For large $D$, $N$ is a nonzero integer. We claim that for every $\eta>0$,
+\[
+                         \log N\ll_\eta D^{1/2+\eta}.             \tag{*}
+\]
+For a reduced form $[a,b,c]$, we have $a\le\sqrt{D/3}$ and
+$\log^+ |j|\ll1+\sqrt D/a\ll\sqrt D/a$. The number of possible
+$b$ with $|b|\le a$ is $\ll 2^{\omega(a)}\sqrt{\gcd(a,D)}$.
+Indeed, modulo an odd prime power $\ell^k$, a square congruence to $\Delta$
+has at most $2\sqrt{\gcd(\ell^k,D)}$ solutions: extract the largest common
+even valuation and count unit square roots, or count multiples of
+$\ell^{\lceil k/2\rceil}$ when $\ell^k\mid D$. At $2$ there are at most
+four unit square roots. Replacing $a$ by $4a$ costs an absolute factor.
+Apply the Chinese remainder theorem and sum the resulting upper bound:
+\[
+ \sum_{a\le\sqrt D}\frac{2^{\omega(a)}\sqrt{\gcd(a,D)}}a
+ \le \sum_{r\mid D}\frac{2^{\omega(r)}}{\sqrt r}
+            \sum_{n\le\sqrt D}\frac{2^{\omega(n)}}n
+ \ll \tau(D)^2\log^2(3D).
+\]
+Here $\tau$ counts divisors, $2^{\omega(n)}\le\tau(n)$, and
+$\tau(D)\ll_\eta D^\eta$ for every $\eta>0$. This proves $(*)$.
+
+At the chosen inert primes the normalized valuations of the integral
+conjugates are nonnegative integers. Each conjugate reducing to zero
+contributes at least one to $v_p(N)$. If more than half reduced to
+zero at each such prime, we would have $\log N\gg hY=h^{3/2}$,
+contrary to $(*)$ and the lower bound for $h$ (take, for example,
+$\eta=1/16$). At some prime, therefore, at least $h/2$ conjugates
+are units. Among its $O(p)$ supersingular invariants, one nonzero
+invariant receives $\gg h/p\gg\sqrt h$ of the conjugates. Since
+$p\asymp\sqrt h$, the disk estimate gives $s(\Delta)\gg\sqrt h$,
+as asserted.

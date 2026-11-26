@@ -1,0 +1,262 @@
+% Contribution for inclusion in the main report.
+% Requires amsmath, amssymb, amsthm; environments theorem, proposition, corollary, remark.
+% Author: source-transfer audit agent. No Lean build of the new extension was performed.
+
+\section{From polynomial specialization to bounded analytic families}
+\label{sec:series-specialization}
+
+The cleanest reusable analytic statement in the repository is a simultaneous
+specialization result for integral polynomials.  Its bound on the orders of the
+roots of unity is chosen before the polynomials and is independent of their
+degrees.  This order of quantifiers permits an extension to bounded formal
+power series with the \emph{same} order bound.  We give the extension explicitly;
+it is a deduction from a source theorem, not a claim that a named open conjecture
+has thereby been settled.
+
+Fix a prime $p$.  Write $\mathbb C_p$ for the completion of an algebraic closure
+of $\mathbb Q_p$, $\mathcal O_{\mathbb C_p}=\{a:v(a)\geq0\}$, and
+$v(p)=1$, $v(0)=+\infty$.  For a positive integer $h$ put
+\[
+  \rho_h=\frac1{\varphi(p^h)}=\frac1{p^{h-1}(p-1)}.
+\]
+A primitive $p^h$-th root of unity $\zeta$ satisfies
+$v(\zeta-1)=\rho_h$.  Every series in
+$\mathcal O_{\mathbb C_p}[[T_1,\ldots,T_s]]$ converges when all
+$v(T_a)>0$: its coefficients are integral and terms of total degree $n$
+have valuations tending uniformly to infinity as $n\to\infty$.
+
+\paragraph{The exact polynomial input.}
+The source theorem is
+\path{New.Selmer.exists_rootsOfUnity_ellVal_eval_le}, in
+\path{grh/src/New/Congruences/Selmer/GeneralTheorem.lean}~\cite{roots,general}.
+Fix $s_0\in\mathbb N$, $m\geq1$, $r\in\mathbb Q_{>0}$, a finite
+index set $I$, finite bounds $\beta_i\geq0$, and $\varepsilon>0$.
+There is an integer $H$, depending only on these parameters, such that for
+$s\leq s_0$, integral polynomials $P_i$ over $\overline{\mathbb Q}_p$,
+and algebraic integral points $x_i$ satisfying
+\[
+ v(x_{ia})\geq r,\qquad v(P_i(x_i))\leq\beta_i,
+\]
+there is a tuple of roots of unity with
+\begin{align}
+ \zeta_a^{p^H}&=1,& v(\zeta_a-1)&\leq r/m,\label{eq:torsion-radius}\\
+ v\bigl(P_i(\zeta_1^j-1,\ldots,\zeta_s^j-1)\bigr)
+   &\leq v(P_i(x_i))+\varepsilon
+ &&(i\in I, 1\leq j\leq m).\label{eq:polynomial-torsion}
+\end{align}
+The coefficient ring in this Lean theorem is the ring of integers in
+$\overline{\mathbb Q}_p$, \emph{not} the completed ring
+$\mathcal O_{\mathbb C_p}$.  The approximation in the following proof accounts
+for this distinction.
+
+The proof in \texttt{RootsOfUnity.lean} also supplies a sufficient explicit
+criterion.  Put
+\[
+ B=\sum_{i\in I}\beta_i,\qquad
+ \delta=\frac{\min(\varepsilon,1)}{s_0+2},\qquad
+ h_* =\min\{h\geq1:\rho_h\leq r/m\}.
+\]
+It is sufficient to take $H\geq h_*$ with
+\begin{equation}
+ mB+1<\delta\sum_{h=h_*}^{H}\frac1{h+1}.
+ \label{eq:harmonic-bound}
+\end{equation}
+Indeed, the source passes from $P_i$ to the $m$ polynomials obtained by the
+substitutions $T_a\mapsto(1+T_a)^j-1$, uses reference points with valuations
+at least $r/m$, and applies its one-exponent theorem with total budget $mB$.
+The harmonic criterion is then precisely the criterion used in that theorem's
+proof.  One convenient, deliberately coarse choice is
+\begin{equation}
+ H=\left\lceil(h_*+1)\exp\!\left(\frac{mB+1}{\delta}\right)\right\rceil.
+ \label{eq:explicit-harmonic-depth}
+\end{equation}
+For this choice the harmonic sum is at least
+$\log((H+2)/(h_*+1))$, making the inequality strict.
+This estimate controls valuation losses; it should not be confused with the
+much smaller bound available when only nonvanishing is required.
+
+\begin{theorem}[The same torsion bound for integral formal power series]
+\label{thm:series-same-bound}
+Keep the parameters above and let $H\geq1$ be any bound having the polynomial
+property \eqref{eq:torsion-radius}--\eqref{eq:polynomial-torsion}.
+For $s\leq s_0$, suppose
+\[
+ F_i\in\mathcal O_{\mathbb C_p}[[T_1,\ldots,T_s]],\qquad
+ x_i\in\mathbb C_p^s,\qquad
+ v(x_{ia})\geq r,\qquad v(F_i(x_i))\leq\beta_i.
+\]
+Then there is a tuple $\zeta$ satisfying \eqref{eq:torsion-radius} and
+\begin{equation}
+ v\bigl(F_i(\zeta_1^j-1,\ldots,\zeta_s^j-1)\bigr)
+ \leq v(F_i(x_i))+\varepsilon
+ \qquad(i\in I, 1\leq j\leq m).
+ \label{eq:series-torsion}
+\end{equation}
+The bound $H$ is unchanged: it has no new dependence on truncation degrees,
+coefficients, reference points, or convergence rates of the series.
+\end{theorem}
+
+\begin{proof}
+The empty family is immediate from the polynomial property, so assume $I$ is
+nonempty.  Choose a real number
+\[
+ A>\max\bigl(r,\max_{i\in I}(\beta_i+\varepsilon)\bigr).
+\]
+Every nonzero coordinate of a point
+\[
+ t_j(\zeta)=(\zeta_1^j-1,\ldots,\zeta_s^j-1),\quad
+ \zeta_a^{p^H}=1,\quad1\leq j\leq m,
+\]
+has valuation at least $\rho_H>0$.  If $\zeta_a^j=1$, the coordinate is zero
+and its valuation is $+\infty$, so the same lower bound still holds.  Choose
+$N$ so large that
+\[
+ (N+1)\min(r,\rho_H)>A.
+\]
+Let $P_i$ be the total-degree-$N$ truncation of $F_i$.  The ultrametric
+inequality and completeness give
+\begin{equation}
+ v\bigl(F_i(x_i)-P_i(x_i)\bigr)>A,\qquad
+ v\bigl(F_i(t_j(\zeta))-P_i(t_j(\zeta))\bigr)>A
+ \label{eq:uniform-series-tail}
+\end{equation}
+for \emph{every} tuple of roots of order dividing $p^H$ and every indicated
+$j$.  Thus truncation is uniform across the entire finite torsion grid,
+before the source theorem chooses its tuple.
+
+There are only finitely many coefficients in the $P_i$.  By density of
+$\overline{\mathbb Q}_p$ in $\mathbb C_p$, approximate each coefficient by
+an algebraic coefficient with error of valuation greater than $A$, obtaining
+$Q_i\in\mathcal O_{\overline{\mathbb Q}_p}[T_1,\ldots,T_s]$.
+Similarly choose algebraic $y_{ia}$ with
+$v(y_{ia}-x_{ia})>A$.  Since $A>r>0$, all $y_{ia}$ remain integral and have
+valuation at least $r$.
+
+Integral polynomials are nonexpanding on integral polydiscs: by telescoping
+monomials, if every coordinate changes by an amount of valuation greater
+than $A$, then the polynomial value changes by an amount of valuation
+greater than $A$.  Coefficient approximation has the same property, at
+\emph{every} integral point.  Consequently
+\[
+ v\bigl(Q_i(y_i)-F_i(x_i)\bigr)>A,\qquad
+ v\bigl(Q_i(t_j(\zeta))-F_i(t_j(\zeta))\bigr)>A
+\]
+on the same full torsion grid.  The first inequality and
+$v(F_i(x_i))\leq\beta_i<A$ imply the exact equality
+\[
+ v(Q_i(y_i))=v(F_i(x_i))\leq\beta_i.
+\]
+Apply the polynomial theorem to $Q_i,y_i$ with the original parameters
+and the original bound $H$.  It gives a tuple satisfying
+\[
+ v(Q_i(t_j(\zeta)))\leq v(F_i(x_i))+\varepsilon
+ \leq\beta_i+\varepsilon<A.
+\]
+The second approximation inequality therefore gives
+$v(F_i(t_j(\zeta)))=v(Q_i(t_j(\zeta)))$, which proves
+\eqref{eq:series-torsion}.
+\end{proof}
+
+\begin{remark}[Why the hypotheses matter]
+No restricted-series assumption is needed: integral coefficients and
+strictly positive valuations of all arguments give convergence.  This would
+be false for unrestricted substitution at the units $\zeta_a$ themselves;
+the arguments here are $\zeta_a^j-1$.
+Integrality of the coefficients is also substantive.  Without a uniform
+lower bound on their valuations, no order bound can depend only on reference
+values.  For a proposed $H$ and $x=p^R$ with $R\geq r$, the polynomial
+\[
+ \frac{(1+T)^{p^H}-1}{(1+x)^{p^H}-1}
+\]
+has value $1$ at $x$ but vanishes at every $\zeta-1$ with
+$\zeta^{p^H}=1$.  Its denominator destroys the required integrality.
+\end{remark}
+
+\subsection{Simultaneous determinantal and Fitting profiles}
+\label{subsec:fitting-profiles}
+
+Let $A_a(T)$, for $a$ in a finite set, be matrices of possibly different
+sizes $u_a\times v_a$ with entries in
+$\mathcal O_{\mathbb C_p}[[T_1,\ldots,T_s]]$.  For
+$1\leq k\leq\min(u_a,v_a)$ define
+\[
+ \mu_{a,k}(x)=\min_{\substack{I\subseteq\{1,\ldots,u_a\},\ |I|=k\\
+                             J\subseteq\{1,\ldots,v_a\},\ |J|=k}}
+                 v\bigl(\det A_a(x)_{I,J}\bigr).
+\]
+The minimum is $+\infty$ if every such minor vanishes.  If finite, it is
+attained by at least one minor.  Evaluation on the open unit polydisc is a
+ring homomorphism, so evaluating a formal determinant agrees with taking
+the determinant after evaluation.
+
+\begin{corollary}[One torsion tuple controls finitely many Fitting profiles]
+\label{cor:fitting-torsion}
+Choose a finite set $\mathcal K$ of matrix-size pairs $(a,k)$, reference
+points $x_{a,k}$ with coordinate valuations at least $r>0$, and finite bounds
+\[
+ \mu_{a,k}(x_{a,k})\leq\beta_{a,k}.
+\]
+For every $m\geq1$ and $\varepsilon>0$, the bound $H$ in
+Theorem~\ref{thm:series-same-bound}, with
+$B=\sum_{(a,k)\in\mathcal K}\beta_{a,k}$, yields a single tuple $\zeta$
+such that for all $(a,k)\in\mathcal K$ and all $1\leq j\leq m$,
+\begin{equation}
+ \mu_{a,k}(t_j(\zeta))
+ \leq\mu_{a,k}(x_{a,k})+\varepsilon.
+ \label{eq:fitting-profile-bound}
+\end{equation}
+Each selected Fitting ideal thus remains nonzero with a controlled valuation
+at all these torsion specializations.  The reference point may differ for
+each selected matrix and each selected minor size.
+\end{corollary}
+
+\begin{proof}
+For each $(a,k)$ choose one formal $k$-minor $F_{a,k}$ attaining the finite
+minimum at $x_{a,k}$.  Apply Theorem~\ref{thm:series-same-bound} to this
+finite family.  At every output point, the minimum over all $k$-minors is
+at most the valuation of the chosen witness minor.  This gives
+\eqref{eq:fitting-profile-bound}.
+\end{proof}
+
+For the presented module
+$M_a(x)=\operatorname{coker}(A_a(x):\mathcal O_{\mathbb C_p}^{v_a}
+\to\mathcal O_{\mathbb C_p}^{u_a})$,
+$\operatorname{Fitt}_{u_a-k}(M_a(x))$ is the ideal generated by the
+$k$-minors.  A finite set of elements of a valuation ring generates the
+principal ideal of its member of least valuation, so $\mu_{a,k}$ is exactly
+the valuation of that Fitting ideal.  The statement is meaningful for these
+finite presentations without any Noetherian assumption on
+$\mathcal O_{\mathbb C_p}$.
+
+Equivalently, at each specialization one can diagonalize a finite matrix
+over the valuation ring by choosing a nonzero entry of smallest valuation
+and eliminating its row and column, repeatedly.  If the resulting nonzero
+diagonal entries have valuations
+$\lambda_1\leq\cdots\leq\lambda_q$, then
+\[
+ \mu_{a,k}=\lambda_1+\cdots+\lambda_k\qquad(1\leq k\leq q).
+\]
+Thus the result controls cumulative invariant-factor valuations.  It does
+\emph{not} give a separate upper bound for every $\lambda_k$: the lists
+$(1,3)$ and $(0,4)$ have the second list's partial sums no larger, while its
+last entry is larger.  Nor is $\mu$ a usual module length over the
+nondiscrete ring $\mathcal O_{\mathbb C_p}$; the assertion is about
+valuations of finitely generated determinantal ideals.
+
+For a square matrix with a nonzero determinant at a reference point, the
+case of its full determinant also bounds inverse denominators.  If
+$v(\det A(x))\leq\beta$, then the selected torsion specializations have
+nonzero determinant of valuation at most $\beta+\varepsilon$.
+Their adjugate matrices remain integral, so every entry of their inverses
+has valuation at least $-(\beta+\varepsilon)$.
+
+\paragraph{Scope of the transfer.}
+This is a concrete theorem for bounded analytic families and finite
+presentations.  It can be applied to matrices presenting arithmetic modules
+only after those matrices, their coefficient integrality, and their
+reference minors have been supplied.  An Iwasawa-theoretic or Selmer-theoretic
+interpretation is additional mathematical work.  In particular, the
+corollary does not assert the existence of an arithmetic presentation that
+has not been constructed, and it does not establish density statements or
+bounded-conductor results for the auxiliary prime sets in the repository's
+global twisting theorem.

@@ -1,0 +1,10 @@
+Repository reading at commit 72fead102f663d5c7a407964a13dc0cf9d977207.
+
+* grh/src/Main.lean and grh/src/Statements.lean, read in full. Mathlib RH; zeta zeros other than negative even integers and pole; half-plane nonvanishing for all Dirichlet characters and nonzero modulus (principal pole excepted); strip zeros on line; primitive specialization.
+* grh/src/New/Reduction/MainInequality.lean:87, star_inequality. Three geometric inputs compare an upper and lower bound on one corrected covolume. D.m * D.totalRemainder <= D.f * D.a * D.logB^5.
+* grh/src/New/Reduction/OneSidedBound.lean:33,200,239. m at least sqrt x; control errors at much larger x1 by PNT, use all sufficiently large x to derive one-sided prime remainder bound. Parameters q0 divisible by 18480.
+* grh/src/New/Reduction/Zeros/PrimeError.lean:293,414: Mellin/Laplace transform of ramp-weighted prime sum with nonnegative arithmetic weights Λ(n)(1−χd(n)) on 1 mod q. Residues equal (sum of multiplicities of untwisted L's minus corresponding twisted multiplicities)/(φ(q)s(1−s)).
+* grh/src/New/Reduction/Zeros/Criterion.lean:37. For q0 divisible by 8 and eligible aux prime class, for each candidate zero with Re>β>1/2, pick d so all characters' twists avoid a finite-height right strip. Landau via positivity of real-axis residues eliminates candidate.
+* grh/README.md reports Lean 4.35.0, mathlib 56a005855ea17e0b0958f73ec801ae140b0a1679 and independent kernel replay by nanoda, con-leche, con-ron plus Comparator. Reviewed source and statements, did not run full build in this work. Challenge.lean uses sorry deliberately for comparator statements, not imported in proofs.
+
+Local interpolation input: grh/src/New/Congruences/Selmer/RootsOfUnity.lean, in namespace New.Selmer. The source lemmas use finitely many polynomials, a positive comparison radius, positive tolerance, and a common tuple of bounded-order twists. The new fixed-radius optimality theorem is proved in torsion-window.pdf. Repository links in the PDFs use the pinned revisions.

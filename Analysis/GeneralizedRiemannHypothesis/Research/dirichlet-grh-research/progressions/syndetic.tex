@@ -1,0 +1,186 @@
+\documentclass[11pt]{article}
+\usepackage[margin=.92in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,lmodern,microtype}
+\usepackage[colorlinks=true,urlcolor=blue,linkcolor=black,citecolor=black]{hyperref}
+\newcommand{\Fp}{\mathbb F_p}
+\newcommand{\N}{\mathbb N}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{.48em}
+\pagestyle{plain}
+\begin{document}
+\begin{center}
+{\small\sffamily TECHNICAL APPENDIX}\par\vspace{3pt}
+{\LARGE\bfseries Which ratios can occur in a periodic set?}\par\vspace{5pt}
+{\large Weighted Behrend sets and geometric progressions}
+\end{center}
+
+Beiglb\"ock, Bergelson, Hindman and Strauss asked whether every set of positive
+integers with bounded gaps contains arbitrarily long geometric progressions
+\cite{bbhs}. Even three terms with an integral common ratio $r\ge2$ are at issue
+\cite{nath}. We consider the finite restriction in which a prime modulus $p$
+is fixed and ratios outside a prescribed residue class are excluded. The
+construction gives the exact permissible ratios for many exponent pairs at
+once, together with separate estimates for density and maximum gap.
+
+Write $G(A)$ for the largest difference between successive elements of a
+nonempty periodic set $A\subset\N$. Its natural density is $d(A)$. For a
+positive rational $r=u/v$ in lowest terms, its residue $\bar r=u/v$ in
+$\Fp^\times$ is defined when $p\nmid uv$.
+
+\begin{theorem}\label{main}
+Let $p$ run through primes, and let $2\le L=L(p)$ be integers with
+$\log L=o(\log p)$. Put $E=\sqrt{\log p\,\log(2L)}$. For all sufficiently
+large $p$ there exists a $p$-periodic $A\subset\N$, all of whose members
+are coprime to $p$, with
+\[
+          d(A)\ge \exp(-C E),\qquad G(A)\le\sqrt p\,\exp(C E)
+\]
+for an absolute constant $C$. For every $1\le i<j\le L$ and every positive
+rational $r$, some integer $a$ satisfies $a,ar^i,ar^j\in A$ if and only if
+\[
+               p\nmid uv\qquad\text{and}\qquad \bar r^{\gcd(i,j)}=1.
+\]
+Whenever a ratio occurs, infinitely many choices of $a$ realize it.
+\end{theorem}
+
+In particular the ordinary triple $a,ar,ar^2$ occurs exactly for $r\equiv1
+\pmod p$ among rational $p$-units. The least integral ratio greater than one
+is $p+1$. A single occupied residue class would have the same ratio spectrum.
+The theorem gives $p^{1-o(1)}$ occupied classes and an additive gap of at most
+$p^{1/2+o(1)}$, simultaneously for all the specified shapes.
+
+\section*{The exponent set}
+The lemma \texttt{New.exists\_three\_term\_free} in the Lean development
+\cite{lean} is used there to select places in a cyclotomic field. Its weighted
+congruence is exactly the relation between the three discrete logarithms in
+Theorem~\ref{main}. Here is the finite estimate with all digit losses retained.
+
+\begin{lemma}\label{digits}
+For positive integers $n,H,L,q$ with $(LH)^n\le q$, there is
+$S\subset\{0,\ldots,q-1\}$, $|S|\ge H^n/(nH^2)$, such that for all
+$u,v,w\in S$ and all positive $b,c$ with $b+c\le L$,
+\[
+          (b+c)v\equiv bu+cw\pmod q\quad\Longrightarrow\quad u=v=w .
+\]
+\end{lemma}
+
+\newpage
+\begin{proof}
+The digit vectors $z\in\{0,\ldots,H-1\}^n$ lie on at most
+$n(H-1)^2+1\le nH^2$ spheres centered at zero. Encode a largest sphere in
+base $LH$. For any weighted sum in the lemma, each digit of either side is
+at most $L(H-1)<LH$. Both sides lie in $[0,(LH)^n)$, so the congruence
+gives digit-by-digit equality. On a sphere a strict convex combination of
+two different vectors has smaller squared norm. The three vectors agree.
+(The trivial case $LH=1$ uses the singleton $\{0\}$.)
+\end{proof}
+
+Apply Lemma~\ref{digits} with $q=p-1$ and
+\[
+  n=\left\lfloor\sqrt{\frac{\log q}{\log(2L)}}\right\rfloor,
+  \qquad H=\left\lfloor\frac{q^{1/n}}{L}\right\rfloor .
+\]
+Since $\log L=o(\log q)$, $n\to\infty$ and $q^{1/n}/L\to\infty$.
+Eventually $q^{1/n}/(2L)\le H\le q^{1/n}$ and $(LH)^n\le q$. The number
+$m=|S|$ therefore satisfies
+\[
+ m\ge\frac{q}{n(2L)^n q^{2/n}}\ge q\exp\bigl(-O(\sqrt{\log q\,\log(2L)})\bigr).
+\]
+Indeed the logarithm of the first denominator is
+$\log n+n\log(2L)+2(\log q)/n$.
+
+Choose a generator $g$ of $\Fp^\times$ and write $B=\{g^e:e\in S\}$. We may
+use any multiplicative dilate $tB$. If $a,ar^i,ar^j$ lie in its periodic
+inverse image, their $p$-adic valuations vanish and $r$ is a $p$-unit. Write
+their residues as $tg^{e_0},tg^{e_i},tg^{e_j}$. Then
+\[
+                  j e_i\equiv (j-i)e_0+i e_j\pmod q.
+\]
+The lemma forces all three exponents to agree. Thus $\bar r^i=\bar r^j=1$,
+which is equivalent to $\bar r^{\gcd(i,j)}=1$. Conversely, under these
+conditions choose $a$ divisible by $v^j$ in any class of $tB$. The Chinese
+remainder theorem gives infinitely many choices, and all three integers
+have the same residue modulo $p$.
+
+\section*{Controlling the additive gaps}
+\begin{lemma}
+Every $m$-element $B\subset\Fp$, $m\ge1$, has a nonzero multiplicative
+dilate with maximum circular gap at most $2(\lfloor p/\sqrt m\rfloor+1)$.
+\end{lemma}
+\begin{proof}
+Set $h=\lfloor p/\sqrt m\rfloor+1$. If $2h\ge p$ the assertion is automatic.
+Otherwise take independent uniform $x\in\Fp$ and $t\in\Fp^\times$ and let
+$Z$ count the points of $tB+x$ in $I=\{0,\ldots,h-1\}$. Each image is
+uniform, and any two distinct images are uniformly distributed as an ordered
+pair of distinct points. Consequently $\mu=\mathbb EZ=mh/p$ and
+$\operatorname{Var}(Z)\le\mu$, since the hit indicators have nonpositive
+pairwise covariance. Chebyshev's inequality gives $\Pr(Z=0)\le1/\mu$.
+Averaging in $t$, some dilate has at most $p/\mu=p^2/(mh)<h$ empty
+intervals of length $h$ among the $p$ cyclic starting positions. A run of
+$2h-1$ vacant points would contain $h$ such intervals. This proves the
+gap bound.
+\end{proof}
+Using that dilate in the preceding construction yields $d(A)=m/p$ and
+$G(A)\ll p/\sqrt m$. This completes the proof of Theorem~\ref{main}.
+
+\newpage
+\section*{The obstruction to a fixed gap bound}
+For any nonempty $p$-periodic set, all positive integral ratios
+$r\equiv1\pmod p$ occur in progressions of arbitrary length. Moreover,
+any $p$-periodic set in which all integral ratios of ordinary triples are
+$1\pmod p$ must omit the residue zero: otherwise the multiples of $p$ in
+the set realize every integral ratio. The discrete logarithms of its
+occupied residues, represented in $[0,p-2]$, contain no nonconstant
+ordinary three-term arithmetic progression. Indeed, exponents $e,e+d,e+2d$
+give a triple of residues with ratio $g^d\ne1$, and a positive integer
+representative of this ratio gives a triple in the periodic set.
+
+It follows from Bloom and Sisask's bound \cite{bloom} that the density of
+any such set is at most $\exp(-c(\log p)^{1/9})$ for large $p$ and an
+absolute $c>0$. Its maximum gap is at least its mean gap, hence
+\[
+                        G(A)\ge \exp(c(\log p)^{1/9}).
+\]
+There is a further elementary restriction for the simultaneous spectra in
+Theorem~\ref{main}. In any $L+1$ consecutive cyclic exponents, three occupied
+exponents would give a forbidden triple with ratio $g$ and $j\le L<p-1$.
+Counting occupied exponents over all intervals shows
+$m(L+1)\le 2(p-1)$ and $G(A)\ge p(L+1)/(2(p-1))$.
+Thus increasing the prime period cannot yield a fixed gap bound by this method.
+
+McNew already treated geometric progressions in modular unit groups through
+arithmetic progressions in a finite abelian group \cite[Section~2]{mcnew}.
+The weighted Behrend construction itself is classical and the upstream
+source describes it as such. The deduction here combines its simultaneous
+shape control, an additive-gap estimate, and exact realization of every
+admissible rational ratio. It uses no zero theorem. The question for an
+arbitrary syndetic set and unrestricted integral ratios remains open.
+
+\section*{An exhaustive example}
+For $p=65\,537$, $g=3$, $L=4$, $n=4$ and $H=4$, a largest digit sphere
+has squared radius $14$ and $24$ vectors. Searching all dilations gives
+$t=18\,054$ and largest circular gap $4\,555$. Among the six pairs
+$1\le i<j\le4$, the shape $(0,2,4)$ admits $1$ and $-1$ modulo $p$.
+Each of the other five admits only $1$. The supplied Python program checks
+all $393\,222$ combinations of exponent pair and residue ratio, including
+zero. Its text output records the occupied residues.
+
+\begin{thebibliography}{9}\small
+\bibitem{bbhs} M. Beiglb\"ock, V. Bergelson, N. Hindman and D. Strauss,
+\href{https://www.sciencedirect.com/science/article/pii/S0097316505002141}{Multiplicative structures in additively large sets},
+\emph{J. Combin. Theory Ser. A} 113 (2006), 1219--1242.
+\bibitem{nath} M. B. Nathanson,
+\href{https://arxiv.org/abs/2003.12016}{Geometric progressions in syndetic sets},
+\emph{Arch. Math.} 115 (2020), 413--417.
+\bibitem{lean} \texttt{lsernau/grh-lean},
+\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/New/Reduction/Data/Existence.lean\#L57-L117}{Existence.lean, lines 57--117},
+commit \texttt{72fead1}.
+\bibitem{bloom} T. F. Bloom and O. Sisask,
+\href{https://arxiv.org/abs/2309.02353}{An improvement to the Kelley--Meka bounds on three-term arithmetic progressions} (2023).
+\bibitem{mcnew} N. McNew,
+\href{https://arxiv.org/abs/1310.2277}{On sets of integers which contain no three terms in geometric progression},
+\emph{Math. Comp.} 84 (2015), 2893--2910.
+\end{thebibliography}
+\end{document}

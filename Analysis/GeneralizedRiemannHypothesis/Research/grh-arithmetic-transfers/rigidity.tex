@@ -1,0 +1,164 @@
+\section{How much splitting information can congruences recover?}
+\label{sec:rigidity}
+
+A common route from Dirichlet GRH to arithmetic over number fields is to
+express a Dedekind zeta function as a product of Dirichlet $L$-functions.
+There is an exact obstruction to applying this route to a nonabelian normal
+closure. It can be measured either by the frequency of incorrect splitting
+predictions or by the mean squared error in the first Euler coefficients.
+The formulas below follow from Chebotarev and Kronecker--Weber. We claim
+no priority for them. For the classical splitting problem, see
+\href{https://arxiv.org/abs/2208.11381}{Rosen, Takeyama, Tasaka and Yamamoto};
+for the input theorems see
+\href{https://www.jmilne.org/math/CourseNotes/cft.html}{Milne, \emph{Class Field Theory}}.
+
+\paragraph{Best possible congruence test.}
+Let $L/\mathbb Q$ be finite Galois with group $G$, let $D=[G,G]$, and let
+$C\subseteq G$ be a union of conjugacy classes. One wants to decide whether
+$\operatorname{Frob}_p\in C$ from a fixed residue $p\bmod m$. Allow
+\emph{any} fixed modulus $m$ and \emph{any} choice of acceptable residue
+classes. The minimum natural density, relative to all primes, of incorrect
+decisions is exactly
+\[
+ \boxed{\displaystyle
+  \frac{1}{|G|}\sum_{T\in G/D}\min\{\,|T\cap C|,\ |T\setminus C|\,\}.}
+\]
+The minimum is attained. Ramified primes and primes dividing the modulus
+form a finite exceptional set.
+
+\emph{Proof.} Put $M=\mathbb Q(\zeta_m)$ and $E=L\cap M$.
+The Galois group of $LM$ consists of the compatible pairs in
+$G\times\operatorname{Gal}(M/\mathbb Q)$ with equal restriction to $E$.
+By Chebotarev, prime densities for any conjugacy-invariant test on these
+pairs are uniform element counts. Fixing the second coordinate leaves the
+first uniformly distributed, for such tests, in a coset of
+$\operatorname{Gal}(L/E)$. Since $E$ is abelian, this coset is a union
+of $D$-cosets. Even if one learns the individual $D$-coset, the majority
+decision on it still makes at least the displayed number of errors.
+Kronecker--Weber supplies an $m$ for which $L^D\subseteq M$. Then
+$E=L^D$ and the residue reveals exactly the required coset. Choosing its
+majority value attains the bound.\hfill$\square$
+
+For example, let $K$ be any number field and take $L$ to be its normal closure.
+A prime splits completely in $K$ precisely when its Frobenius acts trivially
+on all embeddings of $K$. This action is faithful, so $C=\{1\}$. The minimum
+error density equals $0$ for abelian $G$ and $1/|G|$ for nonabelian $G$.
+In the second case the rule declaring that no prime splits completely attains
+the minimum. In particular, even the best rule for complete splitting in
+$\mathbb Q(\sqrt[3]{2})$ makes errors on a set of density at least $1/6$.
+The splitting field has group $S_3$, since $X^3-2$ is irreducible by Eisenstein
+and has nonsquare discriminant $-108$.
+
+\paragraph{Best approximation to the Euler coefficient.}
+Write $H=\operatorname{Gal}(L/K)$ and $F=L^{HD}$, the largest subfield of $K$
+abelian over $\mathbb Q$. For an unramified prime $p$, write $a_K(p)$ for the
+number of degree-one primes of $K$ above $p$. The optimum over all
+complex-valued periodic functions $b$ is
+\[
+ \boxed{\displaystyle
+ \min_b\lim_{x\to\infty}\frac{1}{\pi(x)}\sum_{p\le x}
+          |a_K(p)-b(p)|^2
+      = |H\backslash G/H|-[F:\mathbb Q].}
+\]
+An optimal $b$ equals $a_F(p)$ away from the finite exceptional set.
+
+\emph{Proof.} Let $u(g)$ count the fixed points of $g$ on $G/H$. At every
+unramified $p$ this is $a_K(p)$ for $g=\operatorname{Frob}_p$. By the
+same compatible-pair argument, the sharpest available conditional mean
+is the average of $u$ on each $D$-coset, attained at a modulus containing
+$L^D$ in its cyclotomic field. Indeed a squared error on a finite set is
+minimized by its mean, and a coarser partition cannot reduce the minimum.
+The coset average is the character of the $D$-invariants of the permutation
+representation on $G/H$, because averaging the $D$-action projects onto
+this subspace. A basis is indexed by $D$-orbits, which form the
+$G$-set $G/HD$. Its character is precisely $a_F$ on Frobenii. This
+character is $[G:HD]$ on $HD$ and zero elsewhere, since $HD$ is normal.
+Its squared norm for normalized counting measure on $G$ equals $[G:HD]$.
+The squared norm of $u$ counts $G$-orbits on $(G/H)^2$ by Burnside's lemma.
+Those orbits correspond to the $H$-double cosets in $G$. Subtracting
+the norm of the orthogonal projection gives the formula.\hfill$\square$
+
+For $\mathbb Q(\sqrt[3]{2})$ the best approximation is the constant $1$.
+The values $3,1,0$ occur with densities $1/6,1/2,1/3$, giving squared
+error $4/6+1/3=1$. The sign of Frobenius, which gives the quadratic
+resolvent, distinguishes odd from even permutations but does not improve
+this squared error. The file \texttt{checks/rigidity.py} checks these
+finite group calculations and the corresponding ones for cyclic quartic,
+dihedral quartic and $S_4$ quartic permutation actions.
+
+\paragraph{Consequence for direct transfer.}
+Suppose $\zeta_K$ agrees in $\Re s>1$ with a finite product of integer powers
+of ordinary Dirichlet $L$-functions up to Euler factors at finitely many primes.
+By uniqueness of Dirichlet coefficients, its coefficient at almost every $p$
+equals a fixed linear combination of values $\chi(p)$. This is periodic in $p$,
+so the condition $a_K(p)=[K:\mathbb Q]$ would predict complete splitting
+with zero error density. The first formula forces $G$ to be abelian.
+Conversely, abelian fields over $\mathbb Q$ have precisely such a
+factorization via their primitive Dirichlet characters. Thus any attempt
+to establish GRH for the zeta function of a nonabelian normal closure,
+or of its nonnormal generating subfield, needs an argument beyond a
+finite Dirichlet product or quotient. This obstruction concerns that
+particular proof strategy. Zeros of distinct analytic functions can still
+be related by other means.
+
+\paragraph{A one-sided criterion for the missing zeros.}
+There is a concrete use for the optimal predictor $a_F$. Put
+\[
+ U_K(x)=\sum_{p\le x,\ p\text{ unramified in }L}
+       (a_K(p)-a_F(p))\log p\,(1-p/x).
+\]
+With the repository's Dirichlet GRH as input, the following are equivalent:
+\[
+ \mathrm{RH}(\zeta_K)
+ \quad\Longleftrightarrow\quad
+ \exists C_K\ \ \forall n\in\mathbb Z,\ n\ge2:\quad
+ U_K(n)\ge-C_K\sqrt n .
+\]
+This works for nonnormal $K$ as well. In the primitive $A_5$ sextic
+case, $F=\mathbb Q$ since $A_5$ is perfect. The weights $a_K(p)-1$
+are respectively $5,1,-1,0$ at Frobenius elements of orders
+$1,2,3,5$. Thus the missing inequality is a single lower bound for a
+sum over rational primes with four explicit weights.
+
+\emph{Proof.} Write $V_J(x)=\sum_{N\mathfrak p^r\le x}\log N\mathfrak p
+(1-N\mathfrak p^r/x)$, summing over prime ideals of a field $J$ and
+integers $r\ge1$. Then $V_J=x^{-1}\int_1^x\psi_J(u)\,du$. Under field RH
+the integrated explicit formula yields $V_J=x/2+O_J(\sqrt x)$: the
+nontrivial zero sum after division by $x$ is bounded by
+$\sqrt{x}\sum_\rho |\rho(\rho+1)|^{-1}$, a convergent sum.
+See \href{https://arxiv.org/abs/1312.4465}{Greni\'e--Molteni,
+formula (1.3a)}. Prime powers of rational exponent at least two
+make a contribution $O_J(\sqrt x)$, by bounding their log coefficients
+by $[J:\mathbb Q]\log p$ and using the ordinary Chebyshev bound,
+first for squares and then for exponents at least three. The finitely many
+ramified primes cost $O_J(\log x)$. Thus $U_K=V_K-V_F+O_L(\sqrt x)$.
+Here $F$ satisfies RH by abelian factorization. This proves necessity.
+
+For sufficiency extend the integer lower bound to all real $x\ge2$.
+Between primes $|U_K'(x)|\ll_K x^{-2}\sum_{p\le x}p\log p\ll_K 1$,
+and $U_K$ is continuous. Write $W=V_K-V_F$. For $\Re s>1$,
+\[
+ \int_1^\infty W(x)x^{-s-1}\,dx
+ =\frac{-\zeta'_K(s)/\zeta_K(s)+\zeta'_F(s)/\zeta_F(s)}{s(s+1)} .
+\]
+The pole terms at $1$ cancel. Suppose $\zeta_K$ has a zero $\rho$ with
+$\Re\rho>1/2$. It gives a genuine pole since $\zeta_F$ is zero-free there.
+Add $C\sqrt x$ to $W$ to make it nonnegative, increasing $C$ on a compact
+interval if necessary. This adds $C/(s-1/2)$ to the transform and preserves
+the pole at $\rho$. The integral's real abscissa of convergence $b$
+therefore satisfies $\Re\rho\le b\le1$. Landau's theorem forces a
+singularity at the real point $b$: Taylor expansion from the right has
+nonnegative moments of $\log x$ as coefficients in the direction of
+decreasing $s$, so analyticity at $b$ would give convergence across $b$.
+At $b=1$ the transform is regular. At any real zero $b\in(1/2,1)$ of
+multiplicity $h$, its residue is $-h/[b(b+1)]<0$, inconsistent with the
+nonnegative integral to the right. These exhaust the possible real
+singularities. The functional equation gives the other half of the
+critical strip.\hfill$\square$
+
+The incoming reports apply a related sign argument to completely split
+primes in a Galois field and to individual cubic examples. The conditional
+mean here selects the abelian contribution for every field and the smoothing
+removes the pole without a field-dependent centering constant. Proving the
+displayed bound for the primitive sextic family still requires control of
+the nonabelian weights.

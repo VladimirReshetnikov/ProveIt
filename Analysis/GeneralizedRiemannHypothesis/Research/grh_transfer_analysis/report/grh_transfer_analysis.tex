@@ -1,0 +1,966 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=0.88in,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage{xcolor,booktabs,longtable,array,enumitem,graphicx}
+\usepackage{fancyhdr,listings,xurl}
+\usepackage[colorlinks=true,linkcolor=navy,citecolor=teal,urlcolor=teal]{hyperref}
+\definecolor{navy}{HTML}{18344B}
+\definecolor{teal}{HTML}{007C83}
+\definecolor{pale}{HTML}{EDF5F5}
+\definecolor{graytext}{HTML}{506171}
+\hypersetup{pdftitle={Beyond Dirichlet GRH: transferable methods and concrete targets},
+ pdfauthor={Research analysis prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}\fancyhf{}
+\lhead{\small\textcolor{graytext}{Beyond Dirichlet GRH}}
+\rhead{\small\textcolor{graytext}{25 November 2026}}
+\cfoot{\small\thepage}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5.5pt}
+\setlength{\emergencystretch}{3em}
+\setcounter{tocdepth}{2}
+\setlist[itemize]{topsep=3pt,itemsep=3pt,leftmargin=1.4em}
+\setlist[enumerate]{topsep=3pt,itemsep=4pt,leftmargin=1.6em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Q}{\mathbb Q}\newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}
+\newcommand{\Z}{\mathbb Z}\newcommand{\N}{\mathbb N}
+\newcommand{\re}{\operatorname{Re}}\newcommand{\im}{\operatorname{Im}}
+\newcommand{\Gal}{\operatorname{Gal}}\newcommand{\Cl}{\operatorname{Cl}}
+\newcommand{\ord}{\operatorname{ord}}\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\one}{\mathbf 1}\newcommand{\code}[1]{\texttt{\small #1}}
+\newcommand{\src}[1]{\nolinkurl{#1}}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcommand{\sha}{72fead102f663d5c7a407964a13dc0cf9d977207}
+\newcommand{\keybox}[1]{\par\smallskip\noindent\colorbox{pale}{\parbox{\dimexpr\linewidth-2\fboxsep}{#1}}\par\smallskip}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,
+ frame=single,rulecolor=\color{graytext},showstringspaces=false,aboveskip=8pt,belowskip=8pt}
+
+\begin{document}
+\begin{center}
+{\small\textcolor{teal}{REPOSITORY ANALYSIS AND RESEARCH PROGRAM}}\\[8pt]
+{\LARGE\bfseries\textcolor{navy}{Beyond Dirichlet GRH}}\\[6pt]
+{\large Transferable methods, established consequences,\\
+and a concrete first Hecke target}\\[12pt]
+{Prepared for Vladimir Reshetnikov}\quad\textbar\quad 25 November 2026\\[6pt]
+{\small Repository: \url{https://github.com/lsernau/grh-lean}}\\
+{\footnotesize Snapshot: \texttt{\sha}}
+\end{center}
+
+\section*{Executive assessment}
+\addcontentsline{toc}{section}{Executive assessment}
+\textbf{Yes: the result can resolve other questions by established implications, and its
+internal method gives a concrete program for going further. These are different kinds of reuse.}
+The clearest named consequence is Vinogradov's conjecture on the least quadratic nonresidue.
+The repository supplies Dirichlet GRH; an existing theorem of Lamzouri, Li and Soundararajan
+then gives $n(p)<(\log p)^2$ for every prime $p\ge5$. This implies
+$n(p)\ll_\varepsilon p^\varepsilon$ with an explicit constant given below.
+No new analytic proof of that implication is claimed here.
+
+The most useful next target for the \emph{method} is the degree-two Hecke $L$-function attached
+to a nontrivial order-three ideal-class character of $\Q(\sqrt{-23})$. Equivalently, after using
+the inspected Dirichlet theorem, it is RH for the cubic field
+$\Q(\alpha)$ with $\alpha^3-\alpha-1=0$. This target is outside the five exported statements.
+We give a complete reduction to one precise one-sided principal-ideal prime-sum inequality.
+The analytic reduction is proved in this report; the needed arithmetic inequality is not.
+
+The proof architecture worth extracting is the combination of:
+\begin{itemize}
+\item many short integral vectors, with a quantitative bound on the dimension they span;
+\item a lower bound for the same determinant, using different auxiliary twists at different primes;
+\item cancellation of the common main term, leaving an error divided by the number of theta lifts;
+\item a one-sided Mellin-transform criterion with a crucial sign condition on real residues.
+\end{itemize}
+The most important obstruction is equally specific: the current prime detector uses rational
+residue classes and an auxiliary quadratic splitting character. It does not already distinguish
+the order-three ideal classes required by the cubic example.
+
+\keybox{\textbf{What this report establishes.} Exact scope of the selected release; an explicit
+Vinogradov consequence; the abelian-number-field consequence; abstract transfer lemmas;
+an exact reduction for the cubic target; and reproducible source, arithmetic and small Lean checks.
+It does \emph{not} claim a new proof of Hecke GRH, Vandiver, Artin's full density conjecture,
+or another conjecture beyond the stated consequences of Dirichlet GRH.}
+
+\textbf{Verification basis.} The pinned source was inspected and its archive hash matched the
+independent verification record. Sutherland's separate page for this exact short release reports
+successful builds, statement comparisons and multiple kernel checks for both editions.
+The full GRH project was not rebuilt in this workspace. Seven elementary transfer lemmas were
+separately checked here with Lean~4.35.0 and the same pinned Mathlib; they use only the three
+standard axioms. This distinction is maintained throughout.\cite{repo,shortchecks}
+
+\clearpage
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\clearpage
+
+\section{What the selected repository actually proves}
+\subsection{Snapshot and evidence}
+The analysis concerns the single commit \texttt{\sha}, dated 25 November 2026,
+in Luke Sernau's \code{lsernau/grh-lean}. The repository describes itself as a shorter rewriting
+of Levent Alp\"oge's argument developed with Claude. It contains independent Lake projects
+\code{grh/} and \code{grh-compact/}. Both pin Lean~4.35.0 and Mathlib commit
+\texttt{56a005855ea17e0b0958f73ec801ae140b0a1679}.\cite{repo,readme}
+
+The exact source archive produced locally by \code{git archive HEAD} has SHA-256
+\begin{center}\footnotesize\texttt{9138cf2f5862e64f823ed676e8d37333c0717e1a13cd8f74f6b735ab2d1ba57c}.
+\end{center}
+It agrees with the archive fingerprint published on Sutherland's short-release verification page.
+That page was updated at 02:50 UTC on 26 November, which is 18:50 Pacific time on
+25 November, the date used for this report. It reports successful sandboxed builds and
+independent checking of the five theorem statements for \emph{this commit}, not only for the
+earlier, much larger release. A stopped check on a smaller machine is identified there as a
+memory-related interruption; the corresponding check completed on the larger machine.
+These are independent reports consulted here, not local rerun results.\cite{shortchecks}
+
+\begin{center}\small
+\begin{tabular}{lrr}
+\toprule
+Local source audit & Readable edition & Compact edition\\
+\midrule
+Lean files under \code{src/} & 803 & 794\\
+Physical source lines, including comments & 477,124 & 112,827\\
+Approximate declarations, lexical count & 23,698 & 9,833\\
+Flagged admissions/trust-extension tokens in code & 0 & 0\\
+Local source modules reachable from \code{Main} & 803 & 794\\
+\bottomrule
+\end{tabular}
+\end{center}
+The audit removes nested comments and quoted strings before screening. It checks imports and
+records per-file SHA-256 hashes. It is deliberately not a Lean parser or proof checker.
+All modules being imported does not mean every declaration in them occurs in the final proof term.
+The source itself notes that some declarations are unused.\cite{readme}
+
+\subsection{The mathematical endpoints}
+The crucial file is \src{grh/src/Statements.lean}. It imports only Mathlib. Its names refer to
+Mathlib's actual Riemann zeta function, Dirichlet characters and analytically continued Dirichlet
+$L$-functions. The five theorems in \src{grh/src/Main.lean} have the following meanings.
+
+\begin{center}\small
+\begin{tabular}{p{0.32\linewidth}p{0.62\linewidth}}
+\toprule
+Lean theorem & Mathematical assertion\\
+\midrule
+\src{riemannHypothesis} & Mathlib's standard RH statement.\\[3pt]
+\src{riemannZeta_eq_zero_re} & A zero of $\zeta$ other than a negative even integer, with $s\ne1$, has real part $1/2$.\\[3pt]
+\src{LFunction_ne_zero_of_half_lt_re} & For every $N\ge1$ and Dirichlet character $\chi\bmod N$, $L(s,\chi)\ne0$ if $\re s>1/2$, except for the principal character at $s=1$.\\[3pt]
+\src{LFunction_eq_zero_re} & Every zero of every such $L$-function in $0<\re s<1$ lies on $\re s=1/2$.\\[3pt]
+\src{LFunction_eq_zero_re_of_isPrimitive} & The same assertion restricted to primitive characters.\\
+\bottomrule
+\end{tabular}
+\end{center}
+The condition at $s=1$ handles the pole, where a totalized formal function needs a conventional
+value. It is not an exemption for an ordinary zero. Imprimitive characters are covered, but
+their additional finite Euler factors can have zeros on $\re s=0$; the strip statement is
+therefore the appropriate endpoint.\cite{statements,main}
+
+The pinned Mathlib was also inspected. Its zeta function agrees with the usual Dirichlet series
+on $\re s>1$ and continues analytically away from~1. The function
+\code{DirichletCharacter.LFunction} is defined by a Hurwitz-zeta continuation; it is not the
+default value that a formal infinite sum may receive outside its convergence region.
+The statement files of the two editions are byte-identical, and their final \code{Main.lean}
+code is identical after ignoring comments and whitespace.
+
+\textbf{Scope boundary.} Here ``GRH'' means \emph{Dirichlet} GRH. It does not, merely by its name,
+assert RH for every Dedekind zeta function, every Hecke character over every number field,
+or every automorphic $L$-function. Conversely, it is too dismissive to treat this as merely
+a conjecture restated as an axiom: the inspected endpoint is unconditional, the source scan found
+no such axiom, and the exact release has substantial independently reported kernel verification.
+
+\subsection{What was and was not checked here}
+The local work comprised source inspection, the lexical/import audit, comparison of the source
+archive fingerprint, inspection of the pinned Mathlib definitions, exact finite arithmetic
+checks, and a separate Lean check of the elementary lemmas supplied with this report.
+The local Lean command for those lemmas exited successfully and printed only
+\code{propext}, \code{Classical.choice} and \code{Quot.sound} for all seven declarations.
+
+The full source-to-proof build and the large exported GRH proof were not rerun here.
+An attempted download of the published export returned HTTP~403; it did not produce a local
+proof-checker result. The report uses the published independent verification for that layer.
+In particular, the small accompanying Lean file does not certify the deep theta-lift argument.
+This is a mathematical transfer analysis with reproducible supporting checks, rather than
+a claim to have personally read or rebuilt every proof in the development.
+
+\section{Questions already settled by transferring the result}
+\subsection{Vinogradov's least quadratic nonresidue conjecture}
+For an odd prime $p$, let $n(p)$ be the smallest positive integer which is not congruent to a
+nonzero square modulo~$p$. The familiar conjecture is
+\begin{equation}\label{eq:vinogradov}
+  \forall\varepsilon>0\quad n(p)\ll_\varepsilon p^\varepsilon.
+\end{equation}
+Tao's paper identifies this precise conjecture and recalls its implication from GRH.
+Lamzouri--Li--Soundararajan, Corollary~1.1, give the explicit conditional bound
+\begin{equation}\label{eq:lls}
+  n(p)<(\log p)^2\qquad(p\ge5\text{ prime}).
+\end{equation}
+Their required Dirichlet-GRH hypothesis is supplied by the selected repository.
+Thus the formerly conditional argument becomes a theorem once that verified result is used.
+This is an immediate, substantive positive answer to the question about other conjectures;
+the implication itself is classical, not a new discovery of this report.\cite{tao,lls}
+
+\begin{corollary}[Explicit form of the Vinogradov consequence]\label{cor:vinogradov}
+Using the repository's Dirichlet-GRH theorem and the Lamzouri--Li--Soundararajan bound, for every
+$\varepsilon>0$ and every odd prime $p$,
+\[
+ n(p)\le C_\varepsilon p^\varepsilon,
+ \qquad C_\varepsilon=
+ \max\left\{2\,3^{-\varepsilon},\frac{4}{e^2\varepsilon^2}\right\}.
+\]
+\end{corollary}
+\begin{proof}
+For $u\ge0$, differentiating $u^2e^{-\varepsilon u}$ shows that its maximum is reached at
+$u=2/\varepsilon$, with value $4/(e^2\varepsilon^2)$. Hence
+$(\log p)^2\le4p^\varepsilon/(e^2\varepsilon^2)$. Apply \eqref{eq:lls} for $p\ge5$.
+For $p=3$, the exact value $n(3)=2$ is covered by the other term in $C_\varepsilon$.
+\end{proof}
+
+This separates three pieces of evidence: the new GRH theorem, an existing published implication,
+and the elementary maximization just proved. The accompanying script additionally checks the
+small-prime range in \eqref{eq:lls}: all 428 primes $5\le p<3000$. It uses Euler's criterion and
+exact rational lower bounds for $\log p$, so floating-point rounding is not a proof step.
+That finite computation is useful corroboration; it does not establish the infinite assertion.
+
+There are two different primitive-root questions that should not be confused with
+\eqref{eq:vinogradov}. Bounding the \emph{least} primitive root as the prime modulus varies is
+one problem. Proving a prescribed integer is a primitive root for a positive density of primes
+is Artin's problem. The latter requires a different family of number-field $L$-functions in
+Hooley's conditional argument; see Section~\ref{sec:limits}.
+
+\subsection{Dedekind RH for every abelian extension of \texorpdfstring{$\Q$}{Q}}
+\begin{theorem}[Abelian-number-field consequence]\label{thm:abelian}
+For every finite abelian extension $K/\Q$, every zero of $\zeta_K(s)$ in $0<\re s<1$ has
+real part~$1/2$, once the selected Dirichlet-GRH theorem is used.
+\end{theorem}
+\begin{proof}
+By Kronecker--Weber and the standard character factorization,
+\begin{equation}\label{eq:abelian}
+ \zeta_K(s)=\prod_{\chi\in X_K}L(s,\chi),
+\end{equation}
+where $X_K$ is the finite family of primitive Dirichlet characters corresponding to $K$.
+Each factor is holomorphic in the open critical strip. A zero of the product is a zero of at
+least one factor. Dirichlet GRH gives its real part as $1/2$.\cite{kw}
+\end{proof}
+
+This includes quadratic and cyclotomic fields and all their subfields. The relevant word is
+``abelian \emph{over $\Q$}.'' An extension abelian over a different number field can lead to
+Hecke functions outside the selected theorem.
+
+The primitive inducing characters in \eqref{eq:abelian} are important: replacing them indiscriminately
+by imprimitive characters at a common modulus removes Euler factors and changes the exact identity.
+The finite-product zero-transfer lemma in the accompanying Lean file formalizes the elementary
+last step, with the analytic factorization explicitly assumed. It does not formalize
+Kronecker--Weber or manufacture a missing Hecke factorization.
+
+\subsection{Other useful consequences and their novelty status}
+Two further precise consequences deserve a place in an applications project.
+First, Lamzouri--Li--Soundararajan, Corollary~1.2, give for $q>3$ and $(a,q)=1$
+\[
+ P(a,q)\le\bigl(\varphi(q)\log q\bigr)^2,
+\]
+where $P(a,q)$ is the least prime congruent to $a\pmod q$. Second, the repository's
+half-plane theorem directly eliminates real Dirichlet zeros in $(1/2,1)$; it does not assert
+nonvanishing at the central point.\cite{lls,statements}
+
+These consequences differ from proving Linnik's conjectural nearly linear bound in the modulus.
+The displayed least-prime bound is roughly quadratic in $q$, with logarithmic factors.
+The result is powerful but its exponent should not be silently improved.
+
+Robin's and Lagarias's divisor-sum inequalities are also consequences of RH, but they are
+especially poor candidates for a novelty claim here: the original verification project has
+already combined its RH proof with an independent formalization and checked those arithmetic
+statements, as well as a corrected cyclotomic ideal inequality.\cite{originalchecks}
+
+The appropriate deliverable for these immediate consequences would be an independently
+stated applications library: explicit hypotheses, standard mathematical definitions, and checked
+bridges from the exported Dirichlet theorem. That is useful formalization work even when
+the mathematical implication has been known for decades.
+
+\section{The internal mechanism that may transfer}
+\subsection{The arithmetic statistic}
+The analytic end of the proof studies a smoothed prime-power remainder of the form
+\begin{equation}\label{eq:primeR}
+ R_{d,q}(x)=
+ \sum_{\substack{n\le x\\n\equiv1\pmod q}}
+ \Lambda(n)(1-\chi_d(n))\left(\frac1n-\frac1x\right)
+ -\frac{\log x}{\varphi(q)}-c_{d,q}.
+\end{equation}
+Here $d$ is an auxiliary prime, $\chi_d$ is its quadratic character in the conventions of the
+source, and $c_{d,q}$ is the normalizing constant. In the admissible setting $d\equiv7\pmod8$,
+the corresponding quadratic field is $\Q(\sqrt{-d})$.
+The coefficients are nonnegative. The smoothing factor vanishes at $n=x$ and yields the
+denominator $s(s-1)$ in a Mellin transform; it is part of the proof mechanism, not cosmetic.
+See \src{New/Reduction/Zeros/PrimeError.lean}.\cite{primeerror,criterion}
+
+The geometric part first works with special moduli $q_0$ divisible by $18480$ and primes
+$d\equiv q_0/2-1\pmod{q_0}$. The final reduction covers arbitrary Dirichlet characters.
+The intermediate restrictions therefore should neither be mistaken for restrictions on the
+final theorem nor ignored when trying to reuse the intermediate construction.
+
+\subsection{Three estimates for one arithmetic lattice}
+Let $D$ be the dimension of the target space, $n$ the number of independent forms selected,
+$m$ the number of theta lifts, and $M$ the common main contribution. A finite-dimensional
+arithmetic lattice comes with ordinary archimedean lengths and integrality conditions at finite
+primes. Its squared covolume is a Gram determinant. The source compares that determinant
+in two ways, while charging the denominators needed to make vectors integral.
+
+\begin{enumerate}
+\item \textbf{Short forms (Theorem A).} High derivatives of CM theta functions have
+large prime divisibility. After the prescribed normalization this yields short archimedean
+vectors and bounds on their denominators.
+\item \textbf{Enough forms (Theorem B).} A second-moment argument gives translates spanning
+at least $(1-4/b^2)D$ dimensions. A single nonzero lift would not provide this quantitative input.
+\item \textbf{Integral forms are long (Theorem C).} Product-formula and determinant estimates
+give a lower bound for the same covolume plus twice its index cost.
+\end{enumerate}
+These are connected in \src{New/Reduction/ShortAndEnough.lean},
+\src{New/Determinant/Twist/LongForms.lean}, and
+\src{New/Reduction/MainInequality.lean}.\cite{shortenough,longforms,mainineq}
+
+Writing $V$ for a logarithmic squared-covolume bound and $\delta$ for an index bound,
+the comparison has the schematic form
+\begin{equation}\label{eq:sandwich}
+ D(M-B)\ \le\ V+2\delta\ \le\ n(M-mR+A)+2DI,
+ \qquad \theta D\le n\le D.
+\end{equation}
+All quantities refer to compatible objects. Cancellation of $M$ leaves a bound for $R$
+with a gain of $m$. The rigorous algebraic form is proved in Section~\ref{sec:abstract}.
+
+In the actual data the source obtains
+\begin{equation}\label{eq:star}
+ m\,\mathrm{totalRemainder}\le f a(\log b)^5,
+\end{equation}
+where $f$ counts infinite places and $a=xb$ is a derivative order. The calculation keeps track
+of the fraction of the target spanned, the doubled index cost, the error in the long-form bound,
+and the sign $M\ge0$. Each is needed for the cancellation.\cite{mainineq}
+
+\subsection{Why the chain has square-root length}
+After changing from the total remainder to \eqref{eq:primeR}, the source proves
+\begin{equation}\label{eq:cutoffs}
+ R_{d,q_0}(x)\le
+ \frac{\varphi(q_0)(\log b)^6}{m}
+ +|R_{d,q_0}(x_1)|+(\log b)|R_{d,1}(x_1)|.
+\end{equation}
+The admissible scales include $m\in[\sqrt{x},2\sqrt{x}]$. For a small fixed $\eta>0$ they can
+be chosen so that $\log b\le2x^\eta$ and the two remote-cutoff errors are at most $x^{-2}$.
+Consequently
+\[
+ R_{d,q_0}(x)\le(64\varphi(q_0)+3)x^{-1/2+6\eta}
+\]
+for sufficiently large integers $x$, followed by a controlled passage to real $x$.
+This becomes an eventual one-sided $x^{-1/2+\varepsilon}$ bound.
+The threshold depends on the fixed parameters; the construction does not by itself print
+an explicit uniform onset for every modulus.\cite{onesided}
+
+Alp\"oge's announcement explains the guiding analogy: each additional theta lift plays a role
+like extra multiplicity in Stepanov's method over function fields. The square-root number
+of lifts then supplies the desired square-root saving. That analogy is useful, but the
+existence of compatible data and control of the errors are the substance of the argument.
+One cannot increase $m$ arbitrarily and infer a stronger zero-free region.\cite{announcement}
+
+\subsection{A different auxiliary twist at each prime}
+The lower-bound interface is more flexible than choosing one globally favorable twist.
+For each prime and each relevant embedding into an algebraic closure of a $p$-adic field,
+it permits a suitable twist. Archimedean size is still measured using one fixed untwisted
+determinant. Ratios between the twisted and untwisted determinants are bounded through
+a height construction and congruence-denominator estimates.
+
+The definition \code{HeightLe} includes a \emph{common nonzero multiplier} and bounds at all
+archimedean conjugates and finite places. This is what makes the product formula usable.
+One cannot assign unrelated local quantities at different primes and call the result a
+global lattice. The compatibility is an explicit mathematical requirement. The generic
+objects are in \src{New/Reduction/Lattices/Heights.lean} and
+\src{New/Reduction/Lattices/TwistedLattice.lean}; existence of the required regular families
+is proved for the specialized data in \src{New/Congruences/FitTwistsExist.lean}.
+\cite{heights,twisted,regulartwists}
+
+This suggests a reusable technique for arithmetic inequalities where no single twist makes
+every congruence favorable. It does not yet give a theorem about arbitrary Selmer groups or
+arbitrary $L$-functions. The determinant comparison and the arithmetic construction must
+both survive an extension.
+
+\section{Two transfer principles, with proofs}\label{sec:abstract}
+\subsection{The quantitative determinant comparison}
+\begin{proposition}[Determinant amplification]\label{prop:comparison}
+Let $D,m,\theta>0$, $\theta D\le n\le D$, and $M,B,I\ge0$.
+Let $A,R,V,\delta\in\R$, where $A$ and $\delta$ need not be nonnegative.
+Suppose
+\[
+ V\le n(M-mR+A),\qquad \delta\le DI,\qquad
+ D(M-B)\le V+2\delta.
+\]
+Then
+\begin{equation}\label{eq:sharp}
+ R\le\frac{A+(B+2I)/\theta}{m}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+The hypotheses give
+\[
+ nmR\le(n-D)M+nA+D(B+2I)\le nA+D(B+2I),
+\]
+because $n\le D$ and $M\ge0$. Also $n\ge\theta D>0$, so division by $nm>0$ yields
+\[
+ R\le\frac{A+(D/n)(B+2I)}m
+ \le\frac{A+(B+2I)/\theta}m.
+\]
+The final inequality uses $D/n\le1/\theta$ and $B+2I\ge0$.
+\end{proof}
+This proposition is independently formalized as
+\code{GrhTransfer.sharp\_determinant\_sandwich} in the accompanying Lean file.
+The statement makes the reusable part exact: the same main term, a positive fraction of
+the target dimension, and error controlled relative to the number of lifts.
+No theta-theoretic assertion is hidden in this lemma.
+
+\begin{corollary}[Completion cost]
+Suppose the last lower bound is replaced by
+\[
+ D(M-B_0)-(D-n)K\le V+2\delta,
+\]
+where $B_0,K\ge0$, and $n\ge(1-\eta)D$ for $0\le\eta<1$. Then
+\[
+ R\le\frac{A+(B_0+2I+\eta K)/(1-\eta)}m.
+\]
+\end{corollary}
+\begin{proof}
+Use $D-n\le\eta D$, so $B=B_0+\eta K$ is an admissible loss in
+Proposition~\ref{prop:comparison}, and set $\theta=1-\eta$.
+\end{proof}
+Thus ``almost spanning'' is useful only together with an affordable cost for the missing
+dimensions. Its rate cannot be discarded when transplanting the argument.
+
+If the numerator of \eqref{eq:sharp} is $O_\varepsilon(X^\varepsilon)$ and
+$m\ge cX^\mu$ with $0<\mu<1$, the conclusion is
+$R(X)\le O_\varepsilon(X^{-\mu+\varepsilon})$.
+With the analytic assumptions below, this is a route to a zero-free half-plane
+$\re s>1-\mu$. Full square-root amplification corresponds to $\mu=1/2$.
+This is a specification of what an extension must prove, not an assertion that those
+inputs already exist for another family. The Lean file checks the real-power bookkeeping
+with the amplification and error estimates left as explicit hypotheses.
+
+\subsection{The one-sided analytic criterion}
+\begin{proposition}[One-sided pole exclusion]\label{prop:landau}
+Let $E:[0,\infty)\to\R$ be measurable, locally bounded and of at most exponential growth.
+Suppose
+\[
+ \mathcal H(s)=\int_0^\infty E(v)e^{(1-s)v}\,dv
+\]
+initially converges in some right half-plane and has a meromorphic continuation to
+$\re s>0$ with at most simple poles. Fix $\beta>0$. Assume
+\begin{enumerate}
+\item $E(v)\le C e^{(\beta-1)v}$ for all sufficiently large $v$;
+\item the residue of $\mathcal H$ at every real point $u>\beta$ is nonnegative,
+where the residue is zero at a regular point.
+\end{enumerate}
+Then $\mathcal H$ is holomorphic throughout $\re s>\beta$.
+\end{proposition}
+\begin{proof}
+By enlarging a nonnegative constant $K$, local boundedness and the eventual estimate give
+$K e^{(\beta-1)v}-E(v)\ge0$ for every $v\ge0$. Consequently
+\[
+ \mathcal F(s)=\frac K{s-\beta}-\mathcal H(s)
+ =\int_0^\infty\bigl(K e^{\beta v}-e^v E(v)\bigr)e^{-sv}\,dv
+\]
+is a Laplace transform of a nonnegative function. Let $\sigma_c$ be its abscissa of
+convergence; it is bounded above. If $\sigma_c>\beta$, Landau's theorem says that the
+real point $\sigma_c$ is a singularity. Meromorphic continuation and the simple-pole
+assumption make it a genuine simple pole. Since $\mathcal F(x)\ge0$ for real
+$x>\sigma_c$, its residue there is positive. But the term $K/(s-\beta)$ is regular
+there, so the residue is minus that of $\mathcal H$, hence nonpositive. This is impossible.
+Thus $\sigma_c\le\beta$ (including the entire-transform possibility), and
+$\mathcal F$, hence $\mathcal H$, is holomorphic for $\re s>\beta$.
+\end{proof}
+This is the classical Landau positivity mechanism in a transfer-friendly form, not a new
+analytic theorem. The source proves an appropriate version in
+\src{Lib/Analytic/Landau.lean}. Its application to the prime remainder is in
+\src{New/Reduction/Zeros/Criterion.lean}.\cite{landau,criterion}
+
+\subsection{Two hypotheses that cannot be omitted}
+An upper bound alone does not exclude poles. For $0<\beta<\alpha<1$, take
+\[
+ E(v)=-e^{(\alpha-1)v}.
+\]
+Then $E(v)\le e^{(\beta-1)v}$ for every $v\ge0$, but
+\[
+ \mathcal H(s)=-\frac1{s-\alpha}
+\]
+has a pole to the right of $\beta$. Its real residue is negative, exactly the prohibited case.
+
+There is a separate cancellation problem. A difference of logarithmic derivatives can fail
+to see a zero shared by its two factors: if $F(s)=G(s)=s-\rho$, then
+$F'/F-G'/G=0$, although both functions vanish at $\rho$.
+This is why a theorem about a remainder must identify its residues and prevent cancellation,
+rather than merely exhibit a meromorphic transform.
+
+In the repository the residues have the shape
+\begin{equation}\label{eq:resdifference}
+ \frac{m(\rho)-m_d(\rho)}{\varphi(q)\rho(1-\rho)},
+\end{equation}
+where $m$ sums zero orders in an untwisted Dirichlet family and $m_d$ sums orders in its
+quadratic twists. A zero-density argument selects an auxiliary $d$ for which the twisted
+family has no zero in the finite region relevant to a putative zero $\rho$.
+The real residues are then nonnegative, and the numerator at $\rho$ cannot cancel.
+Proposition~\ref{prop:landau} forces it to be zero.\cite{criterion}
+
+For this application, the geometric estimate and the auxiliary nonvanishing theorem are
+separate ingredients. A transfer using a difference such as \eqref{eq:resdifference} needs
+both. The direct ideal-class selector in the next section has a different residue structure
+and avoids the auxiliary zero-avoidance step altogether.
+
+\section{A concrete next target: the cubic field of discriminant \texorpdfstring{$-23$}{-23}}
+\subsection{Why this is a useful first extension}
+Set
+\[
+ F=\Q(\alpha),\quad\alpha^3-\alpha-1=0,\qquad
+ K=\Q(\sqrt{-23}),\qquad H=KF.
+\]
+The class group of $K$ has order three. Let $\psi$ be either of its two nontrivial characters.
+The target is the Hecke $L$-function $L_K(s,\psi)$, whose Euler product is over prime
+\emph{ideals} of $K$, rather than rational residue classes. This is a degree-two
+dihedral $L$-function over $\Q$.
+
+There are exact factorizations
+\begin{align}
+ \zeta_F(s)&=\zeta(s)L_K(s,\psi),\label{eq:cubicfactor}\\
+ \zeta_H(s)&=\zeta(s)L(s,\chi_{-23})L_K(s,\psi)^2.\label{eq:hilbertfactor}
+\end{align}
+Thus, after using the repository's RH and Dirichlet GRH, the three assertions
+\begin{enumerate}
+\item GRH for $L_K(s,\psi)$,
+\item RH for $\zeta_F$,
+\item RH for $\zeta_H$
+\end{enumerate}
+are equivalent in the open critical strip. None is among the five exported theorems.
+The Hilbert-class-field identification is recorded in the classical literature; we give
+the algebraic verification and the factorization argument explicitly.\cite{morishita}
+
+\subsection{Algebraic verification}
+The polynomial $x^3-x-1$ has no rational root and has discriminant
+$-4(-1)^3-27(-1)^2=-23$. Therefore its normal closure has Galois group $S_3$, with
+quadratic subfield $K$. The discriminant is squarefree, so $\Z[\alpha]$ is the full ring
+of integers of~$F$.
+
+The reduced positive definite binary quadratic forms of discriminant $-23$ are
+\[
+ (1,1,6),\qquad (2,1,3),\qquad (2,-1,3).
+\]
+Indeed the reduction bound is $3a^2\le23$, so $a=1$ or~2, and
+$b^2-4ac=-23$ together with the reduction conditions gives exactly that list.
+The usual form-class correspondence yields $h_K=3$.
+
+Only the prime~23 can ramify in the normal closure, and
+\[
+ x^3-x-1\equiv(x-10)^2(x-3)\pmod{23}.
+\]
+The ramification is tame, with inertia a transposition in $S_3$.
+Its intersection with $A_3=\Gal(H/K)$ is trivial, so $H/K$ is unramified at finite
+places. There are no real places of~$K$. Hence $H/K$ is an unramified cyclic cubic
+extension; because $h_K=3$, it is the Hilbert class field.
+
+Let $\rho$ be the standard two-dimensional representation of $S_3$.
+The permutation representation on the three embeddings of $F$ is $1\oplus\rho$, and
+the regular representation is $1\oplus\mathrm{sgn}\oplus2\rho$.
+Moreover $\rho=\operatorname{Ind}_{A_3}^{S_3}\psi$.
+Artin formalism and induction of Euler products give \eqref{eq:cubicfactor} and
+\eqref{eq:hilbertfactor}. No unproved general Artin holomorphy conjecture is being used:
+this induced representation corresponds to the classical entire Hecke function of the
+nontrivial ideal-class character. Complex conjugation of ideals preserves norms and inverts
+classes, so $L_K(s,\psi^{-1})=L_K(s,\psi)$.
+
+The following local table makes the distinction from a product of Dirichlet factors visible.
+For an unramified rational prime put $T=p^{-s}$.
+\begin{center}\small
+\begin{tabular}{llll}
+\toprule
+Frobenius in $S_3$ & $\operatorname{tr}\rho$ & Denominator for $L(s,\rho)$ & Denominator for $\zeta_F$\\
+\midrule
+Identity & $2$ & $(1-T)^2$ & $(1-T)^3$\\
+Transposition & $0$ & $1-T^2$ & $(1-T)(1-T^2)$\\
+Three-cycle & $-1$ & $1+T+T^2$ & $1-T^3$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The accompanying exact-arithmetic script checks these polynomial identities, the character
+decompositions and the ramified factor at~23. It also computes the first hundred coefficients
+of the explicit theta-series difference
+\[
+ \frac12\left(\sum_{u,v\in\Z}q^{u^2+uv+6v^2}
+                 -\sum_{u,v\in\Z}q^{2u^2+uv+3v^2}\right).
+\]
+The tested prime coefficients agree with
+$\#\{x\bmod p:x^3-x-1=0\}-1$ for all 24 unramified primes through~97.
+This finite agreement is a consistency check, not a proof of an analytic continuation
+or a zero-location statement.
+
+\subsection{An exact positive selector}
+For a nonzero integral ideal $\mathfrak a$ of~$K$, write $N\mathfrak a$ for its norm and
+$[\mathfrak a]$ for its ideal class. Character orthogonality gives
+\begin{equation}\label{eq:selector}
+ \one_{[\mathfrak a]=1}
+ =\frac{1+\psi(\mathfrak a)+\psi(\mathfrak a)^2}{3}.
+\end{equation}
+The left side is zero or one, despite the complex characters on the right.
+Let $\Lambda_K(\mathfrak p^j)=\log N\mathfrak p$ for a prime ideal $\mathfrak p$ and
+$j\ge1$, and let $\Lambda_K$ vanish on other ideals. Define
+\[
+ \mathcal A(s)=\sum_{\mathfrak a}
+ \frac{\Lambda_K(\mathfrak a)\one_{[\mathfrak a]=1}}{(N\mathfrak a)^s}.
+\]
+Then, for $\re s>1$,
+\begin{equation}\label{eq:logderivative}
+ \mathcal A(s)=-\frac13\frac{\zeta_H'(s)}{\zeta_H(s)}.
+\end{equation}
+
+Here is a direct local proof, which also checks prime powers. If the class of a prime ideal
+$\mathfrak p$ has order $f\in\{1,3\}$, then $\mathfrak p$ splits into $3/f$ primes of
+norm $(N\mathfrak p)^f$ in~$H$. Dividing the logarithmic derivative by~3 gives
+coefficient $\log N\mathfrak p$ at exactly the powers $\mathfrak p^j$ with $f\mid j$.
+Those are exactly the principal powers. Since $H/K$ is unramified, no finite Euler factor
+needs removal. The same argument works with $1/h$ for any unramified abelian extension
+of degree~$h$, using its trivial Artin-symbol selector.
+
+\subsection{A fully specified one-sided inequality}
+Define the Euler--Kronecker constant of $H$ by
+\[
+ \zeta_H(s)=\frac{\kappa_H}{s-1}+\kappa_H\gamma_H+O(s-1).
+\]
+The exact target remainder is
+\begin{equation}\label{eq:targetR}
+ \boxed{\displaystyle
+ \mathcal R(X)=
+ \sum_{N\mathfrak a\le X}\Lambda_K(\mathfrak a)\one_{[\mathfrak a]=1}
+ \left(\frac1{N\mathfrak a}-\frac1X\right)
+ -\frac{\log X}{3}+\frac{1+\gamma_H}{3}.}
+\end{equation}
+The sign and constant are fixed by the Laurent expansion; an arbitrary additive constant
+would destroy the desired decaying bound.
+
+\begin{theorem}[Principal-class criterion for the cubic target]\label{thm:cubiccriterion}
+If, for every $\varepsilon>0$, there are constants $C_\varepsilon$ and $X_\varepsilon$ such that
+\begin{equation}\label{eq:missing}
+ \mathcal R(X)\le C_\varepsilon X^{-1/2+\varepsilon}
+ \qquad(X\ge X_\varepsilon),
+\end{equation}
+then RH holds for $\zeta_H$. Consequently GRH holds for $L_K(s,\psi)$ and RH holds for
+$\zeta_F$, once the repository's Dirichlet theorem is supplied.
+\end{theorem}
+\begin{proof}
+For $\re s>1$, termwise integration of the absolutely convergent prime-power sum yields
+\begin{align}
+ \mathcal M(s)
+ &:=\int_1^\infty\mathcal R(X)X^{-s}\,dX\\
+ &=\frac{\mathcal A(s)}{s(s-1)}
+   -\frac1{3(s-1)^2}+\frac{1+\gamma_H}{3(s-1)}.\label{eq:targetM}
+\end{align}
+Indeed, a term of norm $n$ contributes
+\[
+ \int_n^\infty\left(\frac1n-\frac1X\right)X^{-s}\,dX
+ =\frac{n^{-s}}{s(s-1)}.
+\]
+From \eqref{eq:logderivative},
+$\mathcal A(s)=1/(3(s-1))-\gamma_H/3+O(s-1)$.
+Substitution into \eqref{eq:targetM} cancels both poles at~1.
+Elsewhere in $\re s>0$, its only possible poles occur at zeros $\rho$ of $\zeta_H$.
+If the multiplicity is $m_H(\rho)$, the residue is
+\begin{equation}\label{eq:targetres}
+ \Res_{s=\rho}\mathcal M(s)
+ =\frac{m_H(\rho)}{3\rho(1-\rho)}.
+\end{equation}
+These poles are simple even if the zeta zero is multiple. Every real residue with
+$0<\rho<1$ is positive; there are no zeros on or to the right of $\re s=1$.
+
+Set $E(v)=\mathcal R(e^v)$. It is locally bounded and of at most exponential growth.
+For example, the norm-$n$ coefficient of the selected ideal von Mangoldt sum is bounded
+by $2\Lambda(n)$, since $K$ is quadratic, so even a crude bound suffices.
+The substitution $X=e^v$ identifies $\mathcal M(s)$ with the transform in
+Proposition~\ref{prop:landau}. For $1/2<\beta<1$, apply \eqref{eq:missing} with
+$\varepsilon=\beta-1/2$. The proposition makes $\mathcal M$ holomorphic in $\re s>\beta$.
+Equation~\eqref{eq:targetres} then excludes every zeta zero there.
+Let $\beta\downarrow1/2$ and use the Dedekind-zeta functional equation to exclude zeros
+to the left of the line within the critical strip. The factorizations
+\eqref{eq:cubicfactor}--\eqref{eq:hilbertfactor} give the remaining conclusions.
+\end{proof}
+
+\keybox{\textbf{The open work in this proposed transfer is \eqref{eq:missing}.}
+The theorem above proves the analytic bridge. It does not prove the one-sided estimate,
+and it is not presented as a new equivalent formulation unknown to the literature.
+Its value is to give an exact mathematical target for extending the repository's construction.}
+
+Unlike the difference-of-orders construction in \eqref{eq:resdifference}, this direct selector
+has positive real residues automatically. It therefore requires no auxiliary zero-avoidance
+theorem. If a geometric construction instead produces
+$(1-\eta(\mathfrak a))\one_{[\mathfrak a]=1}$ for a quadratic Hecke character $\eta$,
+the transform again contains a difference of zero multiplicities, and a separate
+noncancellation argument becomes necessary. Those two routes should be kept distinct.
+
+\subsection{The specific arithmetic obstruction}
+Why not simply replace Dirichlet characters by ideal-class characters in the existing files?
+The new information occurs at different primes. If a rational prime $p$ is inert in
+$K=\Q(\sqrt{-23})$, the unique prime ideal above it is $(p)$ itself, which is principal,
+and has norm $p^2$. Thus $\psi((p))=1$. The distinction between the two nontrivial class
+characters and the trivial one comes from split prime ideals.
+
+The current local divisibility construction is organized around primes where the auxiliary
+quadratic character is not~1, especially inert primes, together with rational Frobenius actions
+on cyclotomic embeddings. It does not already detect which nontrivial ideal class a split
+prime of $K$ occupies. Moreover the existing global parameters require
+$q_0\ge18480$ and $q_0\mid2(d+1)$, so setting $d=23$ is not even admissible.
+See the data definitions and the divisibility-count theorem.\cite{fields,divisibility}
+
+This is a limitation of the \emph{naive specialization}, not an impossibility theorem.
+A new construction could use a separate auxiliary CM field, or an ideal-class-sensitive
+family of CM periods. It would need to recover a nonnegative Gram construction, compatible
+integral structures, the principal-class divisibility count and the quantitative error budget.
+The proximity of CM theta theory makes this target plausible; none of those requirements
+is discharged by the existence of a Hecke $L$-value somewhere inside the current norm formulas.
+
+\section{A practical research program}
+\subsection{Ranked tasks and stopping criteria}
+\begin{longtable}{P{0.05\linewidth}P{0.26\linewidth}P{0.43\linewidth}P{0.16\linewidth}}
+\toprule
+ & Task & Concrete success criterion & Assessment\\
+\midrule\endfirsthead
+\toprule & Task & Concrete success criterion & Assessment\\\midrule\endhead
+1 & Extract generic height, lattice and pole interfaces & Independent definitions, documented hypotheses, theorem-level dependency cuts, and exact comparison bounds & High value; bounded scope\\[5pt]
+2 & Formalize direct applications & Vinogradov and least-prime bounds from the exported theorem and explicit published implications & Mathematically settled implication; formal work remains\\[5pt]
+3 & Build the discriminant-$-23$ detector & A local divisibility theorem whose weighted count is the principal-class sum in \eqref{eq:targetR} & First serious new mathematical hurdle\\[5pt]
+4 & Rebuild quantitative A/B/C for that detector & Almost-spanning forms, affordable completion, compatible denominator clearing and matching norm main terms & Substantial research\\[5pt]
+5 & Prove \eqref{eq:missing} and assemble & Square-root amplification with losses $X^{o(1)}$, then Theorem~\ref{thm:cubiccriterion} & Would settle the chosen Hecke instance\\[5pt]
+6 & Extend to fixed-field ray-class families & Control ramification and constants uniformly enough for the intended application & Later family-level goal\\
+\bottomrule
+\end{longtable}
+
+The third task is the best early test of feasibility. If the required ideal-class-sensitive
+divisibility does not materialize, polishing a huge higher-rank extension is premature.
+Conversely, a successful local detector would justify serious work on spanning and lower bounds.
+
+\subsection{What partial progress would count}
+A first extension need not deliver $m\asymp\sqrt X$. If it proves a compatible comparison with
+$m\gg X^\mu$ for some fixed $0<\mu<1/2$, losses $X^{o(1)}$, and the residue conditions of
+Proposition~\ref{prop:landau}, it would give a zero-free region
+$\re s>1-\mu$ for the target. Whether that would be new must be checked against current
+results for the precise family. A correct weaker strip is not automatically novel.
+
+A useful intermediate theorem could instead bound the denominator cost of a projection to a
+theta-lift subspace independently of troublesome even Selmer classes. Such a result might
+improve an arithmetic application without changing any zero-free region. Here too the
+representation, local conditions, quantifiers and dependence on the twist must be retained.
+An existence theorem for a favorable twist does not imply a bound for every member of a family.
+
+The generic infrastructure is valuable even if the new detector fails. The source contains
+specialized constructions for class field theory, Galois representations, theta correspondences,
+comparison theory and trace formulas. Some are deliberately weaker than their standard full
+versions. Their extraction should begin with precise semantic comparisons, rather than treating
+every declaration under \code{Lib} as an interchangeable formalization of an entire theory.
+The guide explicitly treats its literature classification as provisional and makes no novelty
+claim based on the namespace \code{New}.\cite{guide}
+
+\section{Questions not resolved by the identified transfers}\label{sec:limits}
+\subsection{Artin's primitive-root density problem}
+Hooley's conditional route uses Dedekind RH for the fields
+\[
+ \Q(\zeta_k,a^{1/k}),\qquad k\text{ squarefree},
+\]
+with estimates as $k$ varies. These fields are generally nonabelian over~$\Q$.
+The inspected theorem therefore does not discharge those hypotheses by substitution.
+Proving one cubic Hecke instance would still be far from controlling the full Kummer family.
+This is a precise gap in this route, not a claimed theorem of logical independence between
+Dirichlet GRH and Artin's conjecture. Separate contemporary progress on weaker infinitude
+statements would not by itself establish the full density asymptotic.\cite{perucca}
+
+\subsection{Class numbers versus class-group generators}
+For an imaginary quadratic field, the class-number formula involves
+$L(1,\chi_D)$, which is a Dirichlet function; GRH-derived class-number estimates are therefore
+within reach. Bounds for very small prime-ideal generators of a class group normally use
+nontrivial class-character Hecke functions. These are not all products of rational Dirichlet
+functions. The order-three character of $\Q(\sqrt{-23})$ makes the distinction concrete.
+For order-two genus characters additional factorizations can occur, which is one reason
+to choose order three as the first diagnostic example.
+
+\subsection{Elliott--Halberstam, Goldbach and twin primes}
+The usual Dirichlet-GRH error estimate has the shape
+\[
+ \psi(x;q,a)-\frac{x}{\varphi(q)}
+ =O\!\left(\sqrt x\log^2(qx)\right).
+\]
+Summing this bound over $q\le Q$ yields only
+$O(Q\sqrt x\log^2(xQ))$. It cannot by this operation provide the nearly $x$-sized modulus
+ranges of Elliott--Halberstam. That requires additional average cancellation.
+Likewise the construction controls single prime sums, not the two-prime correlations needed
+for binary Goldbach or twin-prime asymptotics. This identifies what is absent; it does not
+assert that no imaginative use of GRH could ever contribute to those problems.
+Tao's account makes the distinction between the distributional hypothesis and the least
+nonresidue consequence especially useful.\cite{tao}
+
+\subsection{Vandiver, algebraic \texorpdfstring{$K$}{K}-groups, and BSD}
+The original announcement mentions a weakened Vandiver-type input and speculative
+$K$-group consequences. The selected rewriting must be read on its own terms.
+In \src{New/Congruences/FirstOrder/DenominatorBound.lean}, the explanation of the denominator
+bound expressly says that the even classes, where Vandiver's conjecture lives, do not enter.
+The cyclotomic bound \code{exists\_length\_shaOdd\_le} is an upper bound for particular
+odd cocycle modules, with specified parity and local conditions; it is not a vanishing theorem
+for all even class-group components.\cite{announcement,denominators,oddsha}
+
+This distinction is mathematically decisive. A bound on a module's length by a valuation of
+a large integer does not force the module to vanish at primes dividing that integer. Nor does
+finiteness imply cyclicity. The rewrite's success in \emph{avoiding} certain classes is not a
+proof that those classes are zero. Claims about the original release or additional
+$K$-theory arguments need a separate audit of their exact inputs.
+
+The same caution applies to BSD. The proof constructs favorable twists with small Selmer
+groups for a particular denominator budget. It does not equate the analytic rank of an arbitrary
+elliptic curve with its Mordell--Weil rank, determine a regulator, or establish the full leading-term
+formula. Zero localization also allows central zeros and multiple zeros. Simplicity of zeta
+zeros and central nonvanishing need an additional mechanism not supplied by the five endpoints.
+
+\section{Deliverables, reproducibility and precise claim boundaries}
+The archive contains the complete \LaTeX{} source and compiled report, a pinned small Lean
+project, exact-arithmetic scripts and their JSON outputs, the static source-audit script and
+its per-file hashes, selected unchanged source files for inspection, upstream licensing notices,
+and instructions for reproducing the checks.
+
+\begin{center}\small
+\begin{tabular}{p{0.31\linewidth}p{0.61\linewidth}}
+\toprule
+Artifact & What it establishes\\
+\midrule
+\src{scripts/static_audit.py} & Repeatable source-token and import checks for the pinned repository; no kernel verification.\\[4pt]
+\src{scripts/nonresidue_checks.py} & Exact finite verification of $n(p)<\log^2p$ for all 428 primes $5\le p<3000$.\\[4pt]
+\src{scripts/arithmetic_checks.py} & Exact finite algebra behind the discriminant-$-23$ example, Euler factors and tested theta coefficients.\\[4pt]
+\src{lean/Transfer.lean} & Seven elementary comparison, scaling and finite-factorization lemmas checked in Lean; all deep arithmetic hypotheses explicit.\\[4pt]
+\src{evidence/lean_transfer_check.log} & The local Lean check output and printed axiom dependencies.\\[4pt]
+\src{evidence/provenance.json} & Source commit, archive fingerprint, pinned versions and verification scope.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The accompanying proofs in Sections~\ref{sec:abstract} and~5 are human-readable mathematical
+arguments. The full Landau argument and the Hecke-target criterion have not been formalized
+in the small Lean supplement. No experiment on finitely many primes or zeros is being used
+as proof of an infinite zero-location claim.
+
+For a research project built around this material, the recommended first mathematical goal is
+the principal-class detector for discriminant $-23$, followed by its quantitative A/B/C
+estimates. For an immediate useful applications project, formalizing the Vinogradov and
+abelian-Dedekind bridges is the natural starting point. The report supplies both a firm
+positive consequence and a testable extension program, while locating the unsolved step
+in a single explicit inequality.
+
+\appendix
+\section{Source map}
+All paths in this table are relative to \src{grh/src/} at the pinned commit. The table is a
+reading map, not a claim that the short listed files contain all transitive dependencies.
+\begin{longtable}{P{0.54\linewidth}P{0.40\linewidth}}
+\toprule Source path & Reason to read it\\\midrule\endfirsthead
+\toprule Source path & Reason to read it\\\midrule\endhead
+\src{Statements.lean}, \src{Main.lean} & Exact mathematical endpoints.\\[4pt]
+\src{New/Reduction/MainInequality.lean} & Cancellation of main terms and complete error budget.\\[4pt]
+\src{New/Reduction/ShortAndEnough.lean} & Short forms, index control, almost-spanning statement.\\[4pt]
+\src{New/Determinant/Twist/LongForms.lean} & Lower covolume/index bound.\\[4pt]
+\src{New/Reduction/Lattices/Heights.lean} & Common-multiplier height formalism.\\[4pt]
+\src{New/Reduction/Lattices/TwistedLattice.lean} & Prime-dependent twists with a fixed determinant.\\[4pt]
+\src{New/Congruences/FitTwistsExist.lean} & Existence of twists with controlled denominators.\\[4pt]
+\src{New/Reduction/OneSidedBound.lean} & Square-root scales and the final prime-remainder estimate.\\[4pt]
+\src{New/Reduction/Zeros/PrimeError.lean} & Arithmetic sum, Mellin transform and zero residues.\\[4pt]
+\src{New/Reduction/Zeros/Criterion.lean} & Auxiliary zero avoidance plus Landau.\\[4pt]
+\src{Lib/Analytic/Landau.lean} & General analytic sign criterion.\\[4pt]
+\src{New/Reduction/Data/FieldsAndPlaces.lean} & Specialized quadratic/cyclotomic setting.\\[4pt]
+\src{New/Derivatives/Divisibility/Count.lean} & The prime detector that would need extension.\\[4pt]
+\src{New/Congruences/FirstOrder/DenominatorBound.lean} & Why the rewritten denominator bound avoids Vandiver's even classes.\\[4pt]
+\src{Lib/Cyclotomic/OddSha.lean} & Exact odd-component bound and its limitations.\\
+\bottomrule
+\end{longtable}
+
+\section{Reproduction commands}
+The scripts use the Python standard library. The Lean supplement uses the official toolchain
+and the pinned Mathlib specified in its Lake files.
+\begin{lstlisting}
+python3 scripts/nonresidue_checks.py > data/nonresidue_checks.json
+python3 scripts/arithmetic_checks.py --output data/arithmetic_checks.json
+
+git clone https://github.com/lsernau/grh-lean.git upstream
+git -C upstream checkout 72fead102f663d5c7a407964a13dc0cf9d977207
+python3 scripts/static_audit.py upstream > static_audit.json
+git -C upstream archive HEAD | sha256sum
+
+cd lean
+lake exe cache get Mathlib.Tactic.Linarith Mathlib.Tactic.Ring \
+  Mathlib.Analysis.SpecialFunctions.Pow.Real
+lake env lean Transfer.lean
+\end{lstlisting}
+To rebuild the \emph{upstream} project, follow its own README in either edition:
+\code{lake exe cache get}, \code{lake build}, and
+\code{lake env lean scripts/PrintAxioms.lean}. Resource requirements and the more extensive
+external-checker commands are documented in the upstream verification record. The archive's
+default reproduction script does not silently launch that much larger task.
+
+\clearpage
+\begin{thebibliography}{99}\small
+\bibitem{repo} L. Sernau et al., \emph{grh-lean}, selected source snapshot,
+commit \texttt{72fead10}, 25 November 2026.
+\url{https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207}.
+\bibitem{shortchecks} A. Sutherland, \emph{Verification files for the shorter Lean proof of RH and GRH},
+updated 26 November 2026, 02:50 UTC; consulted 25 November Pacific time.
+\url{https://math.mit.edu/~drew/shortgrh/}.
+\bibitem{originalchecks} A. Sutherland, \emph{Verification files for the Lean proof of the Riemann Hypothesis},
+including independently checked arithmetic consequences.
+\url{https://math.mit.edu/~drew/grh/}.
+\bibitem{readme} Selected repository, readable-edition README.
+\url{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/README.md}.
+\bibitem{guide} Selected repository, reading guide.
+\url{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/GUIDE.md}.
+\bibitem{statements} Selected repository, \emph{Statements.lean}.
+\url{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/Statements.lean}.
+\bibitem{main} Selected repository, \emph{Main.lean}.
+\url{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/Main.lean}.
+\bibitem{announcement} L. Alp\"oge, announcement and remarks on the RH formalization, November 2026.
+\url{https://alpo.ge/remark.pdf}.
+\bibitem{lls} Y. Lamzouri, X. Li and K. Soundararajan, \emph{Conditional bounds for the least
+quadratic non-residue and related problems}, Mathematics of Computation 84 (2015), 2391--2412;
+arXiv version 3, 8 December 2016. Corollaries 1.1 and 1.2.
+\url{https://arxiv.org/pdf/1309.3595}.
+\bibitem{tao} T. Tao, \emph{The Elliott--Halberstam conjecture implies the Vinogradov least quadratic
+nonresidue conjecture}, Algebra \& Number Theory 9 (2015), 1005--1034.
+\url{https://msp.org/ant/2015/9-4/ant-v9-n4-p09-s.pdf}.
+\bibitem{kw} A. Sutherland, \emph{The Kronecker--Weber theorem}, MIT 18.785, Lecture 20,
+17 November 2021, including the primitive-character zeta factorization.
+\url{https://math.mit.edu/classes/18.785/2021fa/LectureNotes20.pdf}.
+\bibitem{morishita} M. Morishita, \emph{Integral representations of unramified Galois groups and matrix
+divisors over number fields}, Osaka Journal of Mathematics 32 (1995), 565--575; example on p.~573.
+\url{https://ir.library.osaka-u.ac.jp/repo/ouka/all/10928/ojm32_03_03.pdf}.
+\bibitem{perucca} A. Perucca, \emph{A closed formula for the density in Artin's primitive root
+conjecture over number fields}, discussion of Hooley's conditional theorem and its Kummer-field
+hypotheses. \url{https://orbilu.uni.lu/bitstream/10993/66409/1/Perucca-Artin_formula.pdf}.
+\bibitem{mainineq} Selected repository, \emph{The main inequality}.
+\url{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/New/Reduction/MainInequality.lean}.
+\bibitem{shortenough} Selected repository, \emph{Short and enough forms}.
+\url{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/New/Reduction/ShortAndEnough.lean}.
+\bibitem{longforms} Selected repository, \emph{Long integral forms}.
+\url{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/New/Determinant/Twist/LongForms.lean}.
+\bibitem{heights} Selected repository, \emph{Heights}.
+\url{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/New/Reduction/Lattices/Heights.lean}.
+\bibitem{twisted} Selected repository, \emph{Twisted lattices}.
+\url{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/New/Reduction/Lattices/TwistedLattice.lean}.
+\bibitem{regulartwists} Selected repository, \emph{Existence of regular twists}.
+\url{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/New/Congruences/FitTwistsExist.lean}.
+\bibitem{onesided} Selected repository, \emph{One-sided bound}.
+\url{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/New/Reduction/OneSidedBound.lean}.
+\bibitem{primeerror} Selected repository, \emph{Prime error}.
+\url{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/New/Reduction/Zeros/PrimeError.lean}.
+\bibitem{criterion} Selected repository, \emph{One-sided zero-free criterion}.
+\url{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/New/Reduction/Zeros/Criterion.lean}.
+\bibitem{landau} Selected repository, \emph{Landau's analytic criterion}, implementing the
+classical positivity argument.
+\url{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/Lib/Analytic/Landau.lean}.
+\bibitem{fields} Selected repository, \emph{Fields and places}.
+\url{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/New/Reduction/Data/FieldsAndPlaces.lean}.
+\bibitem{divisibility} Selected repository, \emph{Divisibility count}.
+\url{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/New/Derivatives/Divisibility/Count.lean}.
+\bibitem{denominators} Selected repository, \emph{Denominator bound}.
+\url{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/New/Congruences/FirstOrder/DenominatorBound.lean}.
+\bibitem{oddsha} Selected repository, \emph{Odd cocycle bounds}.
+\url{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/Lib/Cyclotomic/OddSha.lean}.
+\end{thebibliography}
+\end{document}

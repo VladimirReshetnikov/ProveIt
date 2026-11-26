@@ -1,0 +1,128 @@
+\section{Answer to the research question}
+\label{sec:assessment}
+
+Yes: the proof's methods have meaningful applications beyond familiar
+consequences of the truth of RH and Dirichlet GRH. There are, however, three
+different kinds of result to distinguish.
+
+First, the original Alp\"oge--Claude proof contains a strict Selmer estimate
+that recent authors have used to claim new finite-range algebraic
+\(K\)-group vanishings. This is a genuine transfer of an internal arithmetic
+argument, rather than an implication of the statement of RH. The relevant
+term belongs to the original large archive; it is not the
+\src{exists\_length\_shaOdd\_le} term in the shortened repository.
+Mok--Zheng's 24 November preprint claims vanishing through degree \(120\),
+and explicitly records an incomplete rebuild of its modified Lean entry
+point \cite{mokzheng}. This report does not independently certify that result.
+
+Second, the shortened proof's torsion-selection mechanism yields a concrete
+result proved in this report. Let \(v(p)=1\), let \(\mathcal O\) be the
+valuation ring of \(\C_p\), and write
+\[
+ \G_\rho(F)=\min_\nu\{v(a_\nu)+\rho|\nu|\}
+ \quad\text{for }F=\sum_\nu a_\nu \mathbf T^\nu.
+\]
+Choose \(h_0\ge1\) with \(1/\varphi(p^{h_0})\le\rho\).
+If \(F\ne0\), its coefficients are integral, and
+\(\G_\rho(F)\le B\), then some tuple of roots of unity satisfies
+\[
+ \boxed{\begin{gathered}
+ v(F(\zeta_1-1,\ldots,\zeta_s-1))\le\G_\rho(F),\\
+ \operatorname{ord}(\zeta_j)=p^{h_j},\qquad
+ h_0\le h_j\le h_0+\left\lceil p^{h_0}B(h_0+B+2)\right\rceil.
+ \end{gathered}}
+\]
+The bound is independent of polynomial
+degree, coefficient field, and number of variables. The statement also
+holds for bounded integral formal power series. Applying it to a product
+controls the \emph{sum} of valuations of many functions at one common point,
+without a positive error tolerance. Sections~\ref{sec:exact-torsion}
+and~\ref{sec:applications} prove the theorem and describe its uses.
+
+Third, the covolume method suggests serious further targets, particularly
+Dedekind and automorphic RH, but the existing one-sided analytic criteria
+do not prove the required arithmetic inequalities. The prior reports already
+supply many such criteria. We retain one concrete cubic-field benchmark and
+identify precisely what would have to be constructed.
+
+\subsection{What is added relative to the earlier reports}
+
+The 26 archives at the pinned ProveIt revision were downloaded, checked
+against their Git blob hashes, safely extracted, and compared at the level
+of abstracts and selected relevant proofs. This was a targeted mathematical
+review, not a complete independent validation of every result or finite
+certificate. The exact inventory is supplied with this report.
+
+The corpus already contains power-series extensions, countable families
+under finite valuation budgets, matrix-minor applications, averaged
+Mellin criteria, numerous finite-group detectors, and detailed distinctions
+between the original and shortened Selmer inputs. None is presented here
+as newly discovered. The quantitative predecessor
+\cite{priorquant} proves, for one constraint, a sufficient bound of shape
+\[
+ H\ll (h_0+B+\delta+1)
+       \left(1+(1-1/p)B/\delta\right)^{1/(1-1/p)}.
+\]
+For packets it also supplies a positive fraction of good points and
+individual tolerance bounds.
+
+Our addition retains the \emph{exact} decay of contributions from earlier
+cyclotomic shells. This gives a linear inverse-tolerance bound in the
+single-function case and, more substantially, the zero-tolerance theorem
+above. A nonempty first bad shell has a discrete minimum root mass.
+That seed forces continuing bad shells to consume more than the allowed
+valuation budget. The theorem's aggregate scope is necessary:
+Proposition~\ref{prop:individual-obstruction} gives an explicit obstruction
+to uniform exact individual bounds under only a total budget.
+
+\subsection{Status of the principal directions}
+
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}p{0.20\linewidth}XX@{}}
+\toprule
+Direction & What is available & What remains\\
+\midrule
+Exact torsion specialization & Complete proof here, explicit finite bound,
+series and aggregate extensions & Formal Lean port; optimal constants;
+arithmetic interpolation for a selected application\\
+Algebraic \(K\)-theory & Original Step-17 estimate; recent claims through
+degree \(120\) & Replayed bridge with all local hypotheses; new exact
+Hecke certificates beyond located range\\
+Nonabelian Dedekind RH & Precise one-sided prime-sum detectors & New
+arithmetic-geometric inequality for nonabelian Frobenius data\\
+Automorphic RH & Similar analytic detectors under stated continuation
+and local bounds & Integral lifts, spanning, and denominator estimates
+for the new representation\\
+Goldfeld / BSD / prime tuples & Some auxiliary nonvanishing or Selmer
+tools have relevance & Average rank, central-order, or prime-correlation
+information not supplied by this analysis\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The claims in the last column are research obligations, not conclusions.
+In particular, controlling zeros' locations does not determine their
+multiplicities at the center, and a one-variable prime statistic does not
+by itself estimate correlations of two or more shifted primes.
+
+\subsection{Provenance and verification level}
+
+The repository snapshots used are
+\[
+\begin{array}{ll}
+\texttt{lsernau/grh-lean}:&
+\texttt{72fead102f663d5c7a407964a13dc0cf9d977207},\\
+\texttt{VladimirReshetnikov/ProveIt}:&
+\texttt{6fe2c1bd450aa7f19eab17fb9a6e76170b4fce00}.
+\end{array}
+\]
+The original archive is separately pinned at
+\texttt{7cbf7a0c32fca1badf05931879a37c3f8a2b03b4}.
+The source README reports Lean \texttt{4.35.0} and standard-axiom
+checks \cite{repo}. Its Mathlib commit is
+\path{56a005855ea17e0b0958f73ec801ae140b0a1679}.
+We inspected source and theorem types; a local Lean
+executable was unavailable, and we did not rebuild either development.
+The exact computations supplied here are independent finite checks of the
+new argument, not a substitute for a Lean kernel check.
+

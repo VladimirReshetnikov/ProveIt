@@ -1,0 +1,32 @@
+name = "GRH"
+srcDir = "src"
+defaultTargets = ["Lib", "New", "Main"]
+moreLeanArgs = ["--tstack=400000"]
+
+[leanOptions]
+autoImplicit = false
+relaxedAutoImplicit = false
+maxSynthPendingDepth = 3
+pp.unicode.fun = true
+maxHeartbeats = 4000000
+
+[[require]]
+name = "mathlib"
+git = "https://github.com/leanprover-community/mathlib4"
+rev = "56a005855ea17e0b0958f73ec801ae140b0a1679"
+
+[[lean_lib]]
+name = "Lib"
+globs = ["Lib.+"]
+
+[[lean_lib]]
+name = "New"
+globs = ["New.+"]
+
+[[lean_lib]]
+name = "Main"
+roots = ["Statements", "Main"]
+
+[[lean_lib]]
+name = "Challenge"
+srcDir = ".."

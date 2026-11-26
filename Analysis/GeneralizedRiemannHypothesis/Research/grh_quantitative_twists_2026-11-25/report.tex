@@ -1,0 +1,705 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{url}
+\definecolor{ink}{RGB}{24,47,72}
+\definecolor{link}{RGB}{31,91,139}
+\hypersetup{colorlinks=true,linkcolor=link,urlcolor=link,citecolor=link}
+\pagestyle{fancy}\fancyhf{}\lhead{\small Quantitative GRH-method transfers}\rhead{\small Research note}\cfoot{\thepage}\setlength{\headheight}{14pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Q}{\mathbf Q}\newcommand{\Z}{\mathbf Z}\newcommand{\C}{\mathbf C}\newcommand{\Ocal}{\mathcal O}\newcommand{\eps}{\varepsilon}\newcommand{\vp}{v_p}\newcommand{\rh}{r_h}\newcommand{\Gauss}{\mathsf G}\newcommand{\pbar}{\overline{\Q}_p}
+\title{\color{ink}\bfseries Beyond Dirichlet GRH:\\ Polynomial Order-Exponent Bounds for\\ Simultaneous \(p\)-adic Twisting}
+\author{Research analysis and proposed extension of \texttt{lsernau/grh-lean}}
+\date{25 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The Alp\"oge--Claude proof of RH and Dirichlet GRH, as rewritten in
+\texttt{lsernau/grh-lean}, uses a simultaneous torsion-point selection
+lemma to construct anticyclotomic twists with small Selmer lengths and
+controlled special values. Its proof chooses an upper order exponent via
+a divergent harmonic sum. We prove a different quantitative estimate:
+for a fixed finite packet of integral polynomials, a sufficient upper
+exponent is polynomial in inverse valuation tolerance and the valuation
+budgets, independently of polynomial degrees. We also prove that a
+positive fraction of the primitive roots in at least one admissible shell
+can satisfy the entire packet. The mechanism is a Gauss-valuation saving
+from roots on earlier shells, used in a multiplicative potential argument.
+We transfer the estimate to multivariate polynomials, bounded power
+series, and the repository's arithmetic twisting construction, obtaining
+arbitrarily large simultaneous packets of characters of a common tame
+conductor, with an explicit order-exponent bound. This is a mathematical
+strengthening of the method, not a standard consequence of the final GRH
+theorem. No priority claim or resolution of a named major open conjecture
+is made; the arithmetic conclusions are restricted to the hypotheses of
+the existing twisting theorem.
+\end{abstract}
+\tableofcontents
+\newpage
+\section{Source audit and research target}
+
+The repository's top-level README describes two editions of the proof,
+with a common set of five conclusions and a machine-checking history. At
+upstream commit \texttt{72fead102f66} (full hash in the source audit), the
+statements are written using Mathlib's Riemann zeta and Dirichlet
+$L$-functions. In particular, the half-plane theorem quantifies over
+Dirichlet characters of every positive modulus, not just primitive
+characters; the principal pole is excluded. The readable edition has
+approximately 300,000 lines and the compact edition about 76,000 lines
+of code, as reported by their README files. The repository reports kernel
+replay and checks with only \texttt{propext}, \texttt{Classical.choice}
+and \texttt{Quot.sound}. We did not independently build or replay that
+proof. The result taken as input here is a specific intermediate twisting
+construction, not a claim that all automorphic, Artin or Dedekind
+$L$-functions satisfy GRH.\footnote{Repository: \url{https://github.com/lsernau/grh-lean}. See
+\texttt{README.md}, \texttt{grh-compact/README.md}, and
+\texttt{grh/src/Statements.lean}.}
+
+The compact proof guide and \texttt{grh-compact/src/New/Main.lean}
+describe an arithmetic-to-analytic chain: short integral forms, a
+spanning argument, a lower height bound for integral forms, and a
+comparison of corrected covolumes. A common main height cancels, giving
+an inequality for a prime remainder; an analytic one-sided criterion then
+excludes off-line Dirichlet zeros. The Selmer twisting argument is part of
+the lower height bound and is logically useful independently of the
+prime-remainder conclusion.
+
+\paragraph{The selected interface.}
+The readable edition's \path{New/Congruences/Selmer/RootsOfUnity.lean}
+constructs roots of unity simultaneously controlling polynomial
+valuations. The general arithmetic theorem in
+\path{New/Congruences/Selmer/GeneralTheorem.lean} controls Selmer lengths,
+Stickelberger values, and local tame-generator valuations for the first
+$m$ powers of one anticyclotomic character. The proof first bounds the
+number of variables, then chooses an order exponent before the
+polynomials are supplied. Keeping this quantifier order is essential:
+choosing a conductor after seeing the polynomials is not a replacement
+for the upstream selection step.
+
+\paragraph{Relationship to earlier ProveIt reports.}
+We listed the 21 entries in \path{docs/incoming} through GitHub and
+inspected the LaTeX of two particularly relevant archives:
+\path{grh_method_transfers_2026-11-25(1).zip}, sections
+\path{torsion_transfer.tex} and \path{torsion_literature.tex}; and
+\path{grh_method_transfers_2026-11-25.zip}, section
+\path{ramification_budget.tex}. The former extends the harmonic-sum
+selector to bounded analytic data, including infinite families subject
+to a total budget. The latter identifies the growing ramification index
+as an obstruction to rounding small normalized Selmer lengths to zero,
+and extracts bounded support size from the arithmetic construction.
+We also inspected the manuscript inventory of three other archives.
+These are not claimed to be an exhaustive survey of every archive or
+of the literature. The present contribution is a different conductor-order
+estimate, with a density refinement for a fixed finite packet; it
+complements rather than supersedes the cardinality-free results of the
+prior report. See \texttt{SOURCE\_AUDIT.md} for pinned references.
+
+\paragraph{Related open problems.}
+Quantitative simultaneous central-value nonvanishing for finite-order
+twists (including the higher-order twist problem of David--Fearnley--Kisilevsky),
+control of Selmer groups in character families, and specialization of
+Iwasawa-theoretic determinant ideals are natural targets. Horizontal
+$p$-adic $L$-functions already give important simultaneous nonvanishing
+results \cite{KN}. The theorem below supplies an improved quantitative
+local ingredient for a finite packet of integral interpolation
+polynomials or bounded power series. It does not supply an interpolation
+identity or an initial nonzero witness for a specific arithmetic family.
+
+\section{A degree-independent polynomial exponent bound}
+
+Fix a prime $p$, and use the valuation $v$ on $\pbar$ normalized by
+$v(p)=1$, with $v(0)=+\infty$. Let $\Ocal$ denote its ring of integers.
+For $h\ge1$, define
+\[
+ e_h=\varphi(p^h)=(p-1)p^{h-1},\qquad r_h=e_h^{-1},\qquad
+ \mathcal U_h=\{\zeta:\operatorname{ord}(\zeta)=p^h\}.
+\]
+Each element of $\mathcal U_h$ has $v(\zeta-1)=r_h$. Write
+$c=1-1/p\in(0,1)$. For a nonzero polynomial $g(T)=\sum_j a_jT^j$,
+let
+\[
+ \Gauss_\rho(g)=\min_j\{v(a_j)+j\rho\}\quad (\rho\ge0).
+\]
+For integral coefficients, $\Gauss_\rho(g)\ge0$. For $v(y)\ge\rho$,
+$v(g(y))\ge\Gauss_\rho(g)$. Multiplicativity of the Gauss valuation
+and factorization give, if $g=a\prod_{\alpha}(T-\alpha)$ with roots
+counted with multiplicity,
+\begin{equation}\label{eq:gauss}
+ \Gauss_\rho(g)=v(a)+\sum_{\alpha}\min\{\rho,v(\alpha)\}.
+\end{equation}
+The formula remains valid for roots of negative valuation and roots
+at zero. For completeness, multiplicativity follows by choosing, in
+each factor, the smallest index attaining the minimum weighted
+coefficient valuation. Their sum index in the product has a unique
+term of minimal weighted valuation: any other pair with the same sum
+index has an index below one of the chosen minima, or a strictly larger
+weighted valuation. Thus that coefficient cannot cancel. Apply this to
+the linear factors, for which the formula is immediate.
+
+\begin{theorem}[Polynomial shell bound and simultaneous good fraction]\label{thm:one}
+Let $g_1,\ldots,g_n\in\Ocal[T]$ be nonzero, $n\ge1$, let $\rho>0$,
+and let $B_i\ge0$, $\delta_i>0$ satisfy
+\[
+ A_i:=\Gauss_\rho(g_i)\le B_i.
+\]
+Let $h_0\ge1$ satisfy $r_{h_0}\le\rho$, and let $0<\eta\le1$. Define
+\begin{equation}\label{eq:constants}
+ C=1+\max_i(B_i+\delta_i),\qquad
+ P=\prod_{i=1}^n\left(1+\frac{cB_i}{\delta_i}\right).
+\end{equation}
+Choose an integer $H\ge h_0$ such that
+\begin{equation}\label{eq:Hcondition}
+ \left(\frac{H+C+1}{h_0+C}\right)^{c\eta}\ge P.
+\end{equation}
+Then there exists $h_0\le h\le H$ such that strictly more than a fraction
+$1-\eta$ of $\zeta\in\mathcal U_h$ satisfy \emph{all} the inequalities
+\begin{equation}\label{eq:desired}
+ v(g_i(\zeta-1))\le A_i+\delta_i\qquad(1\le i\le n).
+\end{equation}
+In particular, all these values are nonzero. One explicit sufficient
+choice is
+\begin{equation}\label{eq:H}
+ H=\left\lceil (h_0+C)P^{1/(c\eta)}\right\rceil.
+\end{equation}
+The bound does not depend on degrees, roots, or coefficient fields.
+\end{theorem}
+
+When $\eta=1$ the assertion is existence; when $\eta=1/2$ more than
+half of the primitive roots in the selected shell work. It is important
+that we compare with $\Gauss_\rho$, not with $\Gauss_{r_h}$. The latter
+is a stronger requirement; the upstream harmonic-sum lemma establishes
+that stronger comparison. Its strength is unnecessary for the subsequent
+witness-based twisting theorem.
+
+\subsection{Capped shell averaging}
+\begin{lemma}[Nearest primitive root]\label{lem:nearest}
+For $v(\alpha)=r_h$ and $C>0$, put
+\[
+ E_\alpha(\zeta)=v(\zeta-1-\alpha)-r_h\in[0,+\infty].
+\]
+Then
+\[
+ \frac1{e_h}\sum_{\zeta\in\mathcal U_h}\min\{E_\alpha(\zeta),C\}
+ \le r_h(h+C).
+\]
+\end{lemma}
+\begin{proof}
+Choose $\zeta_*\in\mathcal U_h$ maximizing $v(\zeta-(1+\alpha))$.
+For $\zeta\ne\zeta_*$, the ultrametric inequality gives
+\[
+ v(\zeta-(1+\alpha))\le v(\zeta-\zeta_*).
+\]
+Indeed the valuation of the difference of $\zeta-(1+\alpha)$ and
+$\zeta_*-(1+\alpha)$ is at least the smaller valuation. The summand at
+$\zeta_*$ is at most $C$; every other summand is at most
+$v(\zeta-\zeta_*)$. Since
+\[
+ \prod_{\zeta\in\mathcal U_h\setminus\{\zeta_*\}}(\zeta_*-\zeta)
+ =\Phi'_{p^h}(\zeta_*),
+\]
+we obtain a sum bounded by $C+v(\Phi'_{p^h}(\zeta_*))$. From
+$\Phi_{p^h}(X)=(X^{p^h}-1)/(X^{p^{h-1}}-1)$, its derivative at a
+primitive root has valuation $h-1/(p-1)\le h$.
+The valuation of a primitive $p$-th root minus one is $1/(p-1)$, by
+$\Phi_p(1)=p$ and equality of the valuations of all its factors.
+The same argument with $\Phi_{p^h}(1)=p$ gives $r_h$ for the primitive
+$p^h$-th roots. Dividing by $e_h$ completes the proof. The argument
+includes $p=2,h=1$, where the derivative valuation is zero.
+\end{proof}
+
+\subsection{The saving from earlier shells}
+For polynomial $g_i$, let $R_{ih}$ denote the multiset of roots of
+valuation $r_h$, and define
+\[
+ w_{ih}=r_h\#R_{ih},\qquad
+ W_{i,h}=\sum_{k=h_0}^h w_{ik},\qquad W_{i,h_0-1}=0.
+\]
+By subtracting the formula \eqref{eq:gauss} at radius zero from the
+formula at $\rho$, we get
+\begin{equation}\label{eq:total}
+ W_{i,H}\le \Gauss_\rho(g_i)-\Gauss_0(g_i)\le A_i\le B_i.
+\end{equation}
+At shell $h$, define the slack $s_{ih}=A_i-\Gauss_{r_h}(g_i)$. All
+contributions to this difference are nonnegative, even from nonintegral
+roots. Every root on an earlier admissible shell $k<h$ contributes
+$r_k-r_h\ge c r_k$. Consequently
+\begin{equation}\label{eq:slack}
+ 0\le c W_{i,h-1}\le s_{ih}\le B_i.
+\end{equation}
+For $\zeta\in\mathcal U_h$, all roots not on shell $h$ contribute
+exactly their Gauss-valuation term, since their valuations differ from
+$v(\zeta-1)$. Thus, including the case of a zero evaluation,
+\begin{equation}\label{eq:exact}
+ v(g_i(\zeta-1))=\Gauss_{r_h}(g_i)+\sum_{\alpha\in R_{ih}}E_\alpha(\zeta).
+\end{equation}
+A root on an earlier shell has not simply used up part of the budget;
+its contribution is now smaller by a definite proportion. This is the
+extra information discarded by the harmonic-sum comparison.
+
+\subsection{Multiplicative potential proof of Theorem \ref{thm:one}}
+Let $D_{ih}(\zeta)=\sum_{\alpha\in R_{ih}}\min(E_\alpha(\zeta),C)$.
+If inequality \eqref{eq:desired} fails for $i$, formula \eqref{eq:exact}
+implies that the uncapped excess exceeds $s_{ih}+\delta_i$. Since
+$C>B_i+\delta_i\ge s_{ih}+\delta_i$, the capped sum still exceeds it:
+either one term reaches the cap, or no term changes. In particular,
+\[
+ \frac{D_{ih}(\zeta)}{\delta_i+cW_{i,h-1}}>1
+ \quad\text{whenever constraint $i$ fails.}
+\]
+If a fraction at least $\eta$ of the shell fails at least one constraint,
+then the average over the shell of the sum of these nonnegative ratios
+is strictly greater than $\eta$. Lemma \ref{lem:nearest} bounds that
+average from above, yielding
+\begin{equation}\label{eq:bad}
+ \sum_i\frac{w_{ih}}{\delta_i+cW_{i,h-1}}>
+ \frac{\eta}{h+C}.
+\end{equation}
+The strict inequality is valid also at $\eta=1$ because every bad
+point has a ratio sum strictly greater than one. Set
+\[
+ \mathcal P_h=\prod_i(1+cW_{i,h}/\delta_i).
+\]
+If shell $h$ has bad fraction at least $\eta$, then
+\begin{align*}
+ \frac{\mathcal P_h}{\mathcal P_{h-1}}
+ &=\prod_i\left(1+\frac{cw_{ih}}{\delta_i+cW_{i,h-1}}\right)\\
+ &\ge1+\sum_i\frac{cw_{ih}}{\delta_i+cW_{i,h-1}}
+ >1+\frac{c\eta}{h+C}.
+\end{align*}
+Suppose all shells $h_0,\ldots,H$ have bad fraction at least $\eta$.
+Since $\mathcal P_{h_0-1}=1$, and $0<c\eta\le1$, concavity of
+$u\mapsto u^{c\eta}$ gives
+\[
+ \mathcal P_H>\prod_{h=h_0}^{H}\left(1+\frac{c\eta}{h+C}\right)
+ \ge\left(\prod_{h=h_0}^H\frac{h+C+1}{h+C}\right)^{c\eta}
+ =\left(\frac{H+C+1}{h_0+C}\right)^{c\eta}.
+\]
+But \eqref{eq:total} implies $\mathcal P_H\le P$, contradicting
+\eqref{eq:Hcondition}. Thus there is a shell with bad fraction less
+than $\eta$, as claimed. \qed
+
+\subsection{Comparison with the harmonic estimate}
+The upstream one-polynomial sufficient condition is
+\[
+ B<\delta\sum_{h=h_0}^H(h+1)^{-1},\qquad 0<\delta<1.
+\]
+Here we can take $B$ to be the total budget for the product of a finite
+packet, using multiplicativity and then controlling each individual
+loss relative to its own witness. Because the sum is at most
+$\log((H+1)/h_0)$, this sufficient condition requires
+$H+1>h_0\exp(B/\delta)$. It proves a comparison to the smaller
+$\Gauss_{r_h}$; hence it is not an inferior proof of the exact same
+stronger assertion. Our estimate addresses the weaker comparison which
+is sufficient for the arithmetic application.
+
+For equal budgets $B_i\le B_*$ and tolerances $\delta_i=\delta$, our
+bound is of size
+\[
+ H=O\big((h_0+B_*+\delta+1)
+              (1+cB_*/\delta)^{n/(c\eta)}\big).
+\]
+This is polynomial in $1/\delta$ for a fixed finite packet and fixed
+$p,\eta,h_0,B_*$. The character order itself is bounded by $p^H$,
+not by a polynomial. In the small tolerance regime this changes the
+available estimate from a double-exponential order bound to a
+single exponential of a polynomial. It is not a uniform improvement
+when $n$ grows, so retaining both selection lemmas is prudent.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{rrrrrrr}
+\toprule
+$p$ & $n$ & $B_*$ & $\delta$ & $\eta$ & $H$ new & $\log_{10}(H_{\rm old}+1)>$\\
+\midrule
+2&1&1&0.1&1&145&4.64\\
+3&1&1&0.01&1&2,230&43.73\\
+3&1&1&0.01&1/2&1,242,418&43.73\\
+5&2&1&0.01&1&236,784&87.15\\
+3&3&2&0.001&1&$6.949\cdot10^{14}$&2606.24\\
+\bottomrule
+\end{tabular}
+\caption{Exact new upper exponents from \eqref{eq:Hcondition}, with
+$h_0=2$ except $h_0=3$ in the last row. The old column is a rounded-down
+lower bound on the exponent needed to satisfy the harmonic condition for
+$B=nB_*$; it is not a lower bound on the true optimal order. The
+$\eta=1/2$ comparison is with old existence, not old density.}
+\end{table}
+
+\begin{proposition}[A necessary budget dependence]\label{prop:lower}
+For any $h_0\le L$, there is an integral polynomial with
+$\Gauss_\rho=L-h_0+1$ (if $\rho\ge r_{h_0}$) that vanishes at all
+primitive torsion points in shells $h_0,\ldots,L$.
+\end{proposition}
+\begin{proof}
+Take $g(T)=\prod_{h=h_0}^{L}\Phi_{p^h}(1+T)$. Each factor has
+$e_h$ roots all of valuation $r_h$, and is monic. Its Gauss valuation
+at $\rho$ is $e_hr_h=1$. The vanishing is immediate. In fact
+$v(g(0))=L-h_0+1$, so a finite witness of that valuation exists.
+\end{proof}
+This shows a linear dependence on the budget is unavoidable in some
+regimes. We make no claim that the new polynomial exponents are sharp.
+\section{Multivariate and analytic transfers}
+
+\begin{theorem}[Finite-packet specialization]\label{thm:multi}
+Let $F_i\in\Ocal[T_1,\ldots,T_s]$, $1\le i\le n$, and suppose that
+for each $i$ there is a witness $x_i=(x_{i1},\ldots,x_{is})$ with
+$v(x_{ij})\ge\rho>0$ and
+\[
+ t_i=v(F_i(x_i))\le B_i<\infty.
+\]
+Fix $s_0\ge s\ge1$ and tolerances $\epsilon_i>0$. For
+Theorem \ref{thm:one}, use the uniform one-coordinate budgets
+$B'_i=B_i+\epsilon_i$, $\delta_i=\epsilon_i/s_0$ and the same
+$h_0,\eta$ at every step. Let $H$ satisfy \eqref{eq:Hcondition} for
+these parameters. Then there are at least
+\[
+ K^s\ \text{distinct tuples},\qquad
+ K=\lfloor(1-\eta)e_{h_0}\rfloor+1,
+\]
+of primitive roots $\zeta_j$ of orders $p^{h_j}$ with $h_0\le h_j\le H$
+such that
+\[
+ v(F_i(\zeta_1-1,\ldots,\zeta_s-1))\le t_i+\epsilon_i
+ \quad\text{for all $i$.}
+\]
+\end{theorem}
+\begin{proof}
+Replace coordinates one at a time. At any common prefix of replacements,
+freeze all coordinates except the next in each polynomial at its own
+current witness (the prefix is common). This gives integral univariate
+polynomials $g_i$ whose values at the next witness coordinates have
+valuation at most $t_i+(j-1)\delta_i$, so $g_i\ne0$ and
+$\Gauss_\rho(g_i)\le B_i+\epsilon_i$. Theorem \ref{thm:one} finds
+at least $K$ distinct common choices for the next coordinate, each
+increasing the current witness valuation by at most $\delta_i$.
+Keep those branches. After $s$ steps each has loss at most
+$s\delta_i\le\epsilon_i$, and distinct prefixes produce distinct
+complete tuples. Every chosen coordinate is nontrivial and lies in
+the claimed range. The bound was chosen before seeing any polynomial.
+\end{proof}
+
+In particular, to obtain total positive excess at most $\epsilon$ for a
+fixed packet one can choose $\epsilon_i=\epsilon/n$. The earlier
+ProveIt report obtains this with an exponential exponent bound that is
+independent of packet cardinality and even allows an infinite family.
+Our improvement has a different trade-off: the polynomial estimate has
+an exponent depending on $n$. Neither result subsumes the other.
+
+\begin{corollary}[Bounded power series]\label{cor:series}
+Theorem \ref{thm:multi} remains true for
+$F_i\in\Ocal_{\C_p}[[T_1,\ldots,T_s]]$ and witnesses in $\C_p^s$,
+with the same $H$ and count $K^s$.
+\end{corollary}
+\begin{proof}
+The candidate torsion grid is finite; every coordinate in the grid has
+valuation at least $r_H>0$. Choose $M>\max(\rho,\max_i(B_i+\epsilon_i))$.
+Truncate the power series at total degree $d$ where $(d+1)r_H>M$.
+The omitted tails have valuation $>M$ on the grid and at every witness.
+Approximate the finitely many integral coefficients and witness
+coordinates by algebraic integral numbers to valuation precision $>M$.
+The witnesses retain coordinate valuations at least $\rho$. Evaluating
+integral polynomials on integral points is $1$-Lipschitz for the maximum
+$p$-adic norm (telescope monomials), so these changes have valuation
+$>M$ in the values. The witness valuations are unchanged, and the
+polynomial theorem gives $K^s$ tuples with selected valuations $<M$.
+The original series have exactly those valuations at each selected
+tuple by the strong triangle inequality. This proves the assertion.
+\end{proof}
+
+\begin{corollary}[Presentation matrices]\label{cor:matrix}
+For finitely many matrices of bounded integral power series with full-row-rank
+minors at witnesses, the same grid yields at least $K^s$ simultaneous
+specializations where the chosen minors remain nonzero and satisfy the
+valuation bounds of Theorem \ref{thm:multi}. If their coefficients lie
+in a fixed finite extension $L/\Q_p$, the normalized lengths of the
+corresponding cokernels over $L(\mu_{p^H})$ are bounded above by the
+valuation of the chosen minors.
+\end{corollary}
+\begin{proof}
+Apply Corollary \ref{cor:series} to the selected determinants. For a
+square matrix of full rank over a discrete valuation ring, Smith normal
+form identifies normalized cokernel length with determinant valuation.
+The full rectangular presentation has cokernel a quotient of that of
+the selected square submatrix, so its length is no larger. Here length
+is normalized by dividing by the absolute ramification index.
+\end{proof}
+
+These statements concern bounded coefficients. The unbounded series
+$\log(1+T)$ vanishes at every $p$-power torsion point but not at $p^2$;
+there is no such selection rule for arbitrary analytic functions. Compare
+the rigidity questions in \cite{Serban18,Serban22}, which concern torsion
+zero sets and do not imply the finite budget estimate above by their
+stated conclusions.
+
+\section{Simultaneous powers and the arithmetic theorem}
+\subsection{Controlling powers of one twist}
+Suppose the $F_i$ and witnesses satisfy the hypotheses of Theorem
+\ref{thm:multi}, with witness depth $r>0$. Let $m\ge1$. Apply that
+theorem to the $nm$ polynomials
+\[
+ F_{i,j}(T)=F_i\big((1+T_1)^j-1,\ldots,(1+T_s)^j-1\big),
+ \qquad 1\le j\le m.
+\]
+For each coordinate $x$ of a witness and integer $j\ge1$, there is an
+algebraic $y$ satisfying $(1+y)^j-1=x$ and $v(y)\ge r/j$. To see this,
+if $x=0$ take $y=0$; otherwise the polynomial
+$(1+Y)^j-1-x$ is monic integral, so its roots are integral, and their
+valuations sum to $v(x)\ge r$. At least one is at least $r/j$.
+The new witnesses thus have depth $\rho=r/m$ and their values have
+exactly the original valuations $t_i$. We take the same budgets
+$B_i$ and tolerances $\epsilon_i$ for all $j$ copies of $i$.
+
+Choose $h_0$ with $r_{h_0}\le r/m$ and $p^{h_0}>m$.
+For every selected component $\zeta$ and every $1\le j\le m$,
+\[
+ v(\zeta^j-1)=p^{\vp(j)}v(\zeta-1)\le m r_{h_0}\le r,
+\]
+and no $\zeta^j$ equals one. The resulting $K^s$ tuples satisfy
+$v(F_i((\zeta_u^j-1)_u))\le t_i+\epsilon_i$ for every $i,j$.
+The bound $H$ is polynomial in inverse error tolerance for fixed $n,m,s_0$;
+its exponent increases with $m$. This is the quantifier order used by
+\texttt{exists\_rootsOfUnity\_ellVal\_eval\_le} in the source.
+
+\subsection{Arithmetic strengthening under the source hypotheses}
+We now use the following input from the pinned readable edition (see
+\path{Line.lean}, lines 630--687, and \path{GeneralTheorem.lean},
+lines 392--457). We state it in words to avoid misidentifying the
+source's precise local hypotheses.
+
+Fix the CM field $E$, prime $p$, set $S_0$ including the places above
+$p$, inertia element $g_0$ at a place of $S_0$ away from $p$, coefficient
+ring, Selmer data $T_i$, and Stickelberger systems $Y_k$ of the source.
+Assume \texttt{IsTorsionLevel} at its required torsion level $M$ and all
+fields of the \texttt{SelmerDatum} and \texttt{StickelbergerSystem}
+structures. Write $\beta_a$ for their finite normalized valuation
+budgets, including the global and local terms in the source. In
+particular the source Selmer datum has special scalar inertia,
+local cohomological conditions, and representation hypotheses; these
+are not automatic for arbitrary elliptic curves.
+
+The source constructs an integer $s_0\ge1$, depending only on the fixed
+data, such that for all rational $r>0$ with $s_0r<1$ and all sufficiently
+large $N$ there exist the following data:
+\begin{itemize}
+\item An auxiliary set $Q$ of degree-one primes, disjoint from its
+conjugate $\overline Q$ and the prescribed bad sets, with
+$2|Q|\le s_0$. In the proof $Q=J$ contains the designated first prime
+$P_0$, so $Q$ can be chosen nonempty.
+\item Characters $\lambda_u:G_E\to\Z/p^N\Z$ for $u\in Q$, unramified
+outside $u,\bar u$ and trivial above $p$, whose restrictions to inertia
+at $u$ are onto. At inertia at $u$, every other $\lambda_v$ is zero.
+\item One integral polynomial $F_a$ per datum or system and a witness
+of depth $r$ at which its valuation is at most $\beta_a+s_0r$.
+\end{itemize}
+For $p^N$-th roots of unity $(\zeta_u)_u$, the character
+$\psi=\prod_u\zeta_u^{\lambda_u}$ is anticyclotomic. Polynomial
+values at $(\zeta_u-1)_u$ evaluate the relevant group-ring elements or
+bound the normalized twisted Selmer length, the latter when the
+valuation is strictly less than $\beta_a+1$. This description is exactly
+the source's \texttt{TwistPolynomials} construction. The finishing
+lemma \texttt{isSmallTwist\_twist} gives the local and global conclusions
+from the polynomial valuations and the coordinate bound.
+
+\begin{theorem}[Bounded-order packets on one support]\label{thm:arith}
+Under the source hypotheses just specified, fix $m\ge1$, $\epsilon>0$,
+and a desired number $A\ge1$ of distinct characters. There is an
+explicit upper exponent $H$ in terms of $p,m,\epsilon,s_0$ and the
+finite budgets $\beta_a$, and $A$, with the following property.
+One can choose a single nonempty auxiliary set $Q$ as above and at least
+$A$ distinct anticyclotomic characters $\psi$ such that:
+\begin{enumerate}
+\item each $\psi$ has order dividing $p^H$;
+\item every power $\psi^j$, $1\le j\le m$, is ramified at every
+prime of $Q\cup\overline Q$ and unramified outside it, trivial at the
+places above $p$, and has the same tame conductor
+$\prod_{u\in Q\cup\overline Q}u$;
+\item every one of those powers satisfies the source's
+\texttt{IsSmallTwist} inequalities with tolerance $\epsilon$: normalized
+Selmer lengths $\le\beta_i+\epsilon$, Stickelberger valuations
+$\le\beta_k+\epsilon$, and the sum over the tame-generator valuations
+$\le\epsilon$.
+\end{enumerate}
+For fixed arithmetic data and fixed $m,A$, the exponent $H$ can be
+chosen polynomially bounded in $1/\epsilon$ as $\epsilon\downarrow0$.
+There is no asserted bound here on the norms of the primes in $Q$.
+\end{theorem}
+\begin{proof}
+Choose a rational $0<e\le\min(\epsilon,1/2)$ with
+$e\ge\tfrac12\min(\epsilon,1/2)$, and rational $r=e/(4s_0)$.
+Use the powered-polynomial construction with $B_a=\beta_a+1$,
+$\epsilon_a=e/2$, $\rho=r/m$, $\eta=1/2$, and $s_0$ as the coordinate
+bound. For all $m$ copies use the same budgets. Choose $h_0$ large enough
+that $r_{h_0}\le r/m$, $p^{h_0}>m$, and
+$K=\lfloor e_{h_0}/2\rfloor+1\ge A$. Choose $H$ by
+\eqref{eq:Hcondition} or \eqref{eq:H} with the increased intermediate
+budgets $B_a+e/2$ and losses $e/(2s_0)$. All these choices precede the
+actual polynomials. If the packet has no constraints, the same selection
+argument works trivially using arbitrary roots (or append $F=1$).
+
+Next choose $N\ge H$ sufficiently large that the source construction
+exists, with its designated first prime. This is possible by the
+``all sufficiently large $N$'' conclusion. The polynomials $F_a$ have
+witnesses with valuations $t_a\le\beta_a+s_0r<\beta_a+1$.
+The multivariate theorem for powers now gives at least
+$K^{|Q|}\ge A$ tuples whose every power has coordinate valuations
+$\le r$ and polynomial valuations
+\[
+ v(F_a((\zeta_u^j-1)_u))\le t_a+e/2
+ \le\beta_a+3e/4\le\beta_a+e<\beta_a+1.
+\]
+The source's finishing lemma applies with tolerance $e$, since
+$s_0r=e/4\le e<1$; monotonicity increases the tolerance to $\epsilon$.
+Every $\zeta_u$ is a $p^H$-th root and hence a $p^N$-th root. Thus
+$\psi^{p^H}=1$, even if the internal auxiliary level $N$ is much larger
+than $H$.
+
+For injectivity, for each $u\in Q$ fix $g_u$ in inertia above $u$ with
+$\lambda_u(g_u)=1$ and $\lambda_v(g_u)=0$ for $v\ne u$. Such an
+element is chosen independently of the tuple. Then $\psi(g_u)=\zeta_u$,
+so different tuples give different characters. In fact their orders
+are exactly the maximum component order. Since each power has nontrivial
+inertia at each $u$ and anticyclotomic conjugate inertia has the inverse
+value, each power is also ramified at $\bar u$. Outside these primes
+it is unramified; all these primes are away from $p$ and the characters
+have $p$-power order, hence are tame. A nontrivial tame one-dimensional
+character has conductor exponent one. This proves the common conductor
+assertion. The polynomial asymptotic follows from the fixed number of
+polynomials and the fact that $h_0$ grows only logarithmically with
+$1/e$ for fixed $A,m$.
+\end{proof}
+
+\paragraph{Interpretation.}
+The new count is for a common support (and hence a common conductor
+ideal) chosen after specifying the packet size. It is not a positive
+density statement as conductors are ordered by norm. The proof uses
+one common auxiliary $N$, one common set $Q$, and one fixed character
+parametrization for all successful tuples. The result adds an explicit
+order cap and branching multiplicity to the source's qualitative
+existence theorem. The existence of many characters alone can also be
+approached through Galois orbits in particular arithmetic settings;
+no novelty claim is made for such qualitative multiplicity in isolation.
+
+\section{Implications, limits, and further research}
+
+\paragraph{Central-value nonvanishing.}
+Kriz--Nordentoft's horizontal $p$-adic $L$-function work \cite{KN}
+relates integral measures and twisted central values and proves
+simultaneous nonvanishing results. If a finite packet of central values
+in a horizontal family is represented by bounded integral interpolation
+functions times nonzero factors, and each function has a witness of
+known depth and bounded valuation, Corollary \ref{cor:series} supplies
+simultaneous nonvanishing and a finite grid with explicit order cap.
+The theorem even yields a good fraction on a one-variable shell.
+This is a concrete local reduction for quantitative questions of
+higher-order twisted nonvanishing. It does not prove the
+David--Fearnley--Kisilevsky prediction (or Goldfeld's conjecture):
+fixed-order twists, density in conductor, functional-equation signs,
+and arithmetic interpolation must be handled separately. In particular,
+the selected order can vary within the grid. Proposition \ref{prop:lower}
+explains why prescribing it in advance for arbitrary data is impossible.
+
+\paragraph{Selmer and Iwasawa questions.}
+Corollary \ref{cor:matrix} can control multiple presentation minors and
+normalized lengths at the same finite-order specializations. To apply
+it to a particular Iwasawa main conjecture one still needs the relevant
+arithmetic presentation, control of local conditions under specialization,
+and a nonzero witness; determinant identities are not a formal
+consequence of the selector. The source's scalar-inertia restriction
+also blocks direct application to the ordinary rank-two elliptic Tate
+module: its determinant is cyclotomic, hence trivial on inertia away
+from $p$; a scalar $\xi I_2$ there would satisfy $\xi^2=1$, contrary to
+requiring $\xi^2-1$ to be a unit. A preliminary twist or a different
+representation would require a new comparison argument.
+
+\paragraph{Normalized length is not vanishing.}
+If a coefficient field has absolute ramification index $e_L$, a
+nonzero finite-length module has normalized length at least $1/e_L$,
+not at least one. In a nonempty ramification packet with all powers up
+to $m$, let $k=\lfloor\log_p m\rfloor$. The local sum constraint forces
+$\epsilon e_L\ge2|Q|p^k$ by evaluating at the allowed power $p^k$ and
+using $v(\zeta^{p^k}-1)\ge p^k/e_L$ on each nontrivial inertia value.
+This is the prior report's ramification obstruction. Improving $H$
+does not remove it. To deduce vanishing of a fixed ordinary Selmer
+module, a descent comparison to the twisted modules with normalized
+length preserved would be needed.
+
+\paragraph{Research questions.}
+(i) Can the exponent $n/(c\eta)$ be reduced, perhaps by accounting for
+the exact saving $1-p^{-(h-k)}$ rather than its uniform lower bound $c$?
+(ii) Is there a degree-free bound with polynomial dependence on the
+total budget and tolerance, independent of the packet size, while
+retaining total positive excess? (iii) Can one convert the shell density
+into conductor-norm density by bounding the norms of the auxiliary primes
+and tracking how the character parameter space varies? (iv) For a
+specific horizontal interpolation system, can the local bound combine
+with a witness and uniform Euler-factor estimates to improve a published
+arithmetic nonvanishing theorem? (v) Can the small-twist argument be
+reworked to admit rank-two representations without the special scalar
+inertia? (vi) The source's compact height comparison is another possible
+transfer route for nonabelian $L$-functions, but it needs analogues of its
+short, spanning and long form inputs and is not resolved by the present
+method.
+
+\section{Reproducibility and formalization plan}
+
+\texttt{verify.py} uses Python's standard library and exact rational
+arithmetic. It checks the cyclotomic derivative identity and capped
+averaging in small shells, tests actual products of linear factors at
+primitive roots (including full-shell vanishing and random non-Galois
+invariant multisets), checks each bad-shell potential inequality, and
+calculates the least integer $H$ satisfying the displayed sufficient
+condition for rational parameters. Valuations of pairwise differences
+are exact: $v(\zeta_a-\zeta_b)=r_{h-v_p(a-b)}$ for distinct primitive
+roots of the same order. No floating-point values enter the theorem
+checks or the computation of $H$; floating point is used only to display
+a logarithmic comparison in the table. \texttt{verification.txt}
+contains the actual recorded run. The tests are not a proof of the
+universal result; the mathematical proofs above supply that argument.
+
+A Lean port can reuse \texttt{rootRadius} and \texttt{rootsOfValuation},\\
+plus the identities \texttt{gaussVal\_eq\_add\_sum\_roots} and\\
+\texttt{ellVal\_eval\_add\_card\_mul}. The new lemmas are (1) capped
+excess averaging, (2) the slack lower bound from preceding shells,
+(3) the finite bad-fraction implication, and (4) the product potential
+contradiction. To avoid real powers in the core finite theorem, a
+sufficient assumption is directly
+$\prod_{h=h_0}^H(1+c\eta/(h+C))\ge P$, then prove the closed form by a
+separate concavity lemma. Use the existing coordinate induction and
+power-substitution arguments after replacing the univariate selection
+step; preserve the fact that $H$ is chosen before the polynomials.
+The arithmetic wrapper also needs to expose the designated first prime
+and use \texttt{exists\_eq\_ofAdd\_one} to prove injectivity. See
+\texttt{LEAN\_PORT.md} for a more explicit dependency map.
+No new Lean file has been compiled; Lean and Lake are absent from this
+execution environment. The source audit is based on retrieved GitHub
+files, not a local checkout. The report therefore distinguishes the
+human mathematical extension from a machine-checked extension.
+
+\begin{thebibliography}{9}
+\bibitem{upstream} L. Sernau and collaborators, \emph{GRH for Dirichlet
+L-functions, in Lean 4}, repository based on the proof of L. Alp\"oge
+with Claude (2026). \url{https://github.com/lsernau/grh-lean}.
+Pinned commit \texttt{72fead102f663d5c7a407964a13dc0cf9d977207}.
+\bibitem{KN} D. Kriz and A. C. Nordentoft, \emph{Horizontal $p$-adic
+$L$-functions}, arXiv:2310.20678 (2023, revised 2024).
+\url{https://arxiv.org/abs/2310.20678}.
+\bibitem{Serban18} V. Serban, \emph{An infinitesimal $p$-adic
+multiplicative Manin--Mumford conjecture}, J. Th\'eor. Nombres Bordeaux
+30 (2018), 393--408. \url{https://doi.org/10.5802/jtnb.1030}.
+\bibitem{Serban22} V. Serban, \emph{On $p$-adic versions of the
+Manin--Mumford conjecture}, IMRN (2022), 10279--10301.
+\url{https://doi.org/10.1093/imrn/rnab136}.
+\bibitem{prior} ProveIt, incoming reports,
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/docs/incoming}.
+In particular the two archives identified in Section 1; they are
+research drafts rather than independently verified published work.
+\end{thebibliography}
+\end{document}

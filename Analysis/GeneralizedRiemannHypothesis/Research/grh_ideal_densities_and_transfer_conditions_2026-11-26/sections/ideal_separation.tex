@@ -1,0 +1,273 @@
+\section{Natural and upper densities separate in every number field}
+\label{sec:ideal-separation}
+
+This section extends the smooth-factor optimization in the incoming
+\path{grh_transfers_density_gaps_and_zero_tests.zip}~\cite{prior-density-gaps} from integers
+and polynomials to ideals of an arbitrary number field.  Its additional
+ingredient is a single prime-power obstruction that works in every field,
+including when distinct ideals have the same norm.  All assertions in this
+section are unconditional.
+
+Let $K$ be a number field of degree $d$, and let $\mathcal I_K$ be its
+nonzero integral ideals.  Put
+\[
+ A_K(X)=\#\{\mathfrak a\in\mathcal I_K:N\mathfrak a\le X\}.
+\]
+We use the classical ideal-counting theorem
+$A_K(X)=\kappa_K X+o(X)$, where $\kappa_K>0$; see
+\cite{murty-vanorder}.  Natural density means a limit of the
+proportion in this norm ball, and upper density means its limsup.
+
+Fix either of two conventions.  In the \emph{integral} convention the
+forbidden triples are
+$\mathfrak a,\mathfrak a\mathfrak r,
+\mathfrak a\mathfrak r^2$ with integral
+$\mathfrak r\ne\mathcal O_K$.  In the \emph{fractional} convention
+$\mathfrak r\ne\mathcal O_K$ may be any nonzero fractional ideal, as long
+as all three terms are integral.  The latter includes nontrivial ratios
+of norm one.  In valuation coordinates these are, respectively,
+nonconstant arithmetic progressions with a nonnegative step and with an
+arbitrary integral step.  Write $b_K$ for the supremum of natural
+densities of admissible sets, and $u_K$ for the supremum of upper
+densities, using the same fixed convention in both definitions.
+
+\begin{theorem}[Separation and finite approximation]
+\label{thm:ideal-separation}
+For every number field and for either convention,
+\[
+                         u_K>b_K.
+\]
+Both numbers are computable from an explicit presentation of $K$.
+More precisely, fix a prime ideal $\mathfrak p$, put
+$Q=N\mathfrak p$ and $M=Q^8$.  For every integer $Y\ge Q$, define
+\[
+ c_Y=\prod_{N\mathfrak q\le Y}(1-(N\mathfrak q)^{-1}).
+\]
+Then
+\begin{equation}\label{eq:ideal-gap}
+ u_K-b_K\ \ge\ \frac{c_Y}{M(M+1)}-\frac{d}{Y}.
+\end{equation}
+The right side is positive for every sufficiently large $Y$.
+\end{theorem}
+
+\subsection{The two local optimization problems}
+
+Let $S$ be the prime ideals of norm at most $Y$.  An ideal is
+$S$-smooth if it has no prime factor outside $S$, and $S$-rough if it
+has none in $S$.  Every ideal has a unique factorization
+$\mathfrak a=\mathfrak g\mathfrak h$ with rough $\mathfrak g$ and
+smooth $\mathfrak h$.  Set
+\[
+ c=\prod_{\mathfrak q\in S}(1-(N\mathfrak q)^{-1}),\qquad
+ v=\prod_{\mathfrak q\notin S}(1-(N\mathfrak q)^{-2}).
+\]
+For admissible subsets $D$ of the smooth ideals, and for $t\ge1$, put
+\begin{align}
+ B&=c\sup_D\sum_{\mathfrak h\in D}\frac1{N\mathfrak h},\\
+ J(t)&=\max\{\#D:D\text{ admissible},\ N\mathfrak h\le t
+                         \text{ for all }\mathfrak h\in D\},\\
+ U&=c\int_1^\infty J(t)\,\frac{dt}{t^2}.
+\end{align}
+The smooth reciprocal sum is exactly $1/c$.  In particular all these
+expressions converge, $B\le U\le1$, and the weighted supremum defining
+$B$ is attained.  For the latter assertion one may use compactness of
+the space of subsets of the countable smooth monoid: admissibility is
+closed and the summable weighted objective is continuous.
+
+\begin{lemma}[Local optimization bounds]\label{lem:BU}
+For either ratio convention,
+\[
+                  vB\le b_K\le B,\qquad vU\le u_K\le U.
+\]
+\end{lemma}
+\begin{proof}
+Finite inclusion--exclusion and ideal counting give rough ideals
+relative density $c$.  Squarefree rough ideals have relative density
+$cv$.  Indeed, impose squarefreeness at finitely many further primes
+and then let that finite set increase.  The omitted-square error is
+bounded by a constant times $\sum(N\mathfrak q)^{-2}$, uniformly as
+$X\to\infty$, since $A_K(t)\ll_K t$.  This convergent bound justifies
+passage to the infinite product.
+
+For the upper bound on $b_K$, let $E$ have natural density $b$.  Partial
+summation yields
+\[
+ \sum_{\substack{\mathfrak a\in E\\N\mathfrak a\le X}}
+       \frac1{N\mathfrak a}
+   =(b\kappa_K+o(1))\log X.
+\]
+Each rough fiber $D_{\mathfrak g}$ is admissible.  Consequently its
+smooth reciprocal sum is at most $B/c$, and the full sum is bounded by
+\[
+ \frac Bc\sum_{\substack{\mathfrak g\text{ rough}\\N\mathfrak g\le X}}
+          \frac1{N\mathfrak g}
+   =(B\kappa_K+o(1))\log X.
+\]
+Thus $b\le B$.
+
+For the upper bound on $u_K$, count in each rough fiber at cutoff $X$:
+\[
+ \#\{\mathfrak a\in E:N\mathfrak a\le X\}
+ \le \sum_{\substack{\mathfrak g\text{ rough}\\N\mathfrak g\le X}}
+                  J(X/N\mathfrak g).
+\]
+Rough ideal counting, first on a bounded interval $1\le t\le T$, gives
+limit $c\int_1^T J(t)t^{-2}\,dt$ after division by $A_K(X)$.
+The tail is uniformly controlled by the corresponding smooth counting
+function $H(t)$: $H(t)=O_S((1+\log t)^{|S|})$ and
+$\int_1^\infty H(t)t^{-2}\,dt=1/c$.  Equivalently, expand by smooth
+ideals and dominate each term by $O_K(1/N\mathfrak h)$.
+Letting $T\to\infty$ proves the upper bound.
+
+For both lower bounds retain only squarefree rough parts.  In any
+progression, each valuation outside $S$ would form an arithmetic
+progression in $\{0,1\}$, so it is constant.  All three terms must
+therefore lie in a single rough fiber.  Using the same admissible
+smooth set $D$ in every such fiber gives natural density
+$cv\sum_{\mathfrak h\in D}1/N\mathfrak h$.  Taking the supremum
+proves $b_K\ge vB$.
+
+To attain the lower upper-density bound, choose $X_j$ with
+$X_j/X_{j-1}\to\infty$.  For every squarefree rough $\mathfrak g$
+with $X_{j-1}<N\mathfrak g\le X_j$, permanently assign a maximizing
+smooth set through $X_j/N\mathfrak g$.  This is one infinite admissible
+set, since each fiber is assigned once.  At cutoff $X_j$ and fixed
+$T$, its newly assigned fibers with $X_j/T<N\mathfrak g\le X_j$
+give limiting proportion $cv\int_1^T J(t)t^{-2}\,dt$.
+Let $T\to\infty$ to obtain upper density at least $vU$.
+\end{proof}
+
+\subsection{A uniform obstruction to compatible prefix optima}
+
+Let $A$ be the nonnegative integers with ternary digits only $0,1$.
+The greedy smooth set $G$ consists of ideals all of whose prime
+exponents lie in $A$.  The following proof also resolves the issue of
+equal norms: a norm layer need not be either entirely included or
+entirely excluded.
+
+For $n=\sum_j d_j3^j$, define
+\[
+ a(n)=\sum_{d_j=1}3^j,\qquad
+ b(n)=\sum_{d_j\in\{1,2\}}3^j.
+\]
+Then $a(n),b(n)\in A$ and $n=2b(n)-a(n)$.  If $n\in A$ both equal
+$n$; otherwise $0\le a(n)<b(n)<n$.  Applying this coordinatewise
+shows that every nongreedy ideal is the final term of a progression
+whose first two terms are greedy ideals of strictly smaller norm.
+The ratio is integral.  Meanwhile all greedy ideals coexist without
+any progression, even with fractional ratios.
+
+It follows by induction on integer norm that any admissible set
+simultaneously maximizing the number of ideals at \emph{every} cutoff
+$1,2,\ldots,M$ must equal $G$ through $M$.  At a new norm layer every
+nongreedy candidate is already blocked, and all greedy candidates can
+be included together.  To achieve even the greedy count one must
+include every such candidate.  This argument does not choose an
+ordering within a norm layer.
+
+Now change only the pure powers of the selected prime $\mathfrak p$
+at cutoff $M=Q^8$.  Replace exponent set
+\[
+                    \{0,1,3,4\}\quad\text{by}\quad
+                    \{0,1,3,7,8\}.
+\]
+The latter is arithmetic-progression-free and has one additional
+element.  The resulting smooth set is admissible even for fractional
+ratios.  To check this, any new progression has an added pure
+$\mathfrak p$-power as one term.  At every other prime one of its
+three valuations is zero; the other two belong to $A$ (or are also
+zero).  Since $0\in A$ and $A$ is progression-free, all three are
+zero.  The progression is confined to pure $\mathfrak p$-powers,
+where the new exponent set forbids it.
+
+Thus $G$ is not cardinality-optimal through $M$.  No admissible set
+can optimize all prefixes through $M$.  For every admissible smooth
+$D$ there is some integer $1\le k\le M$ with
+$J(k)-\#\{\mathfrak h\in D:N\mathfrak h\le k\}\ge1$.
+That deficit persists throughout $[k,k+1)$, giving
+\[
+ \int_1^\infty
+ \bigl[J(t)-\#\{\mathfrak h\in D:N\mathfrak h\le t\}\bigr]
+          \frac{dt}{t^2}
+ \ge\frac1{k(k+1)}\ge\frac1{M(M+1)}.
+\]
+Taking the infimum over $D$ proves
+\begin{equation}\label{eq:BUgap}
+                         U-B\ge\frac{c}{M(M+1)}.
+\end{equation}
+
+\subsection{Passing to the global densities}
+
+There are at most $d$ prime ideals of any specified integer norm:
+that norm must be a power of a unique rational prime, and at most $d$
+primes lie over it.  Therefore
+\[
+ 1-v\le\sum_{N\mathfrak q>Y}(N\mathfrak q)^{-2}
+       \le d\sum_{n>Y}n^{-2}\le d/Y.
+\]
+Equations~\eqref{eq:BUgap} and Lemma~\ref{lem:BU} now give
+\[
+ u_K-b_K\ge vU-B\ge U-B-(1-v)
+                     \ge c_Y/[M(M+1)]-d/Y.
+\]
+Finally
+\[
+ c_Y\ge\prod_{p\le Y}(1-p^{-1})^d\gg_d(\log Y)^{-d}
+\]
+by the classical Mertens product theorem.  This decreases more slowly
+than $d/Y$, proving strict positivity.  One could instead use the
+number-field Mertens theorem, but it is unnecessary here.
+
+For computability choose $Y$ with $d/Y$ below the desired tolerance.
+The finite smooth reciprocal sum through $H$ approaches $1/c$, with
+explicit rational tail
+$1/c-\sum_{N\mathfrak h\le H}1/N\mathfrak h$.
+Finite weighted independent-set optimization through $H$ approximates
+$B$ with at most $c$ times this tail.  Optimizing cardinalities at
+each norm through $H$ and integrating the resulting step function
+approximates $U$; the tail is bounded by
+$c\int_H^\infty H(t)t^{-2}\,dt$.  Writing $H_S(t)$ for the smooth
+counting function to avoid confusion with the cutoff, this integral is
+the computable rational number
+\[
+ c\left(\frac{H_S(H)}{H}+\frac1c
+             -\sum_{N\mathfrak h\le H}\frac1{N\mathfrak h}\right).
+\]
+It tends to zero as $H$ increases. Lemma~\ref{lem:BU} then
+computes $b_K$ and $u_K$.  This is an existence-of-algorithm result;
+the exact independent-set problems can be expensive.
+
+\subsection{An explicit certificate in the conductor-23 field}
+
+For $K=\mathbb Q(\sqrt{-23})$, choose a prime of norm $2$, so $M=256$.
+The script \path{code/check_ideal_density.py} computes $c_Y$ at
+$Y=10^7$ using only integer arithmetic.  For each rational prime,
+the splitting test is its quadratic-residue class modulo $23$;
+$23$ ramifies, split primes contribute two factors, and inert primes
+contribute one factor when $p^2\le Y$.
+
+After each Euler factor the script rounds \emph{down} on the grid
+$10^{-40}\mathbb Z$.  Its certified lower bound is
+\[
+ c_{10^7}\ge
+ \frac{11078476589752147709803027083658225201}
+      {625000000000000000000000000000000000000}.
+\]
+There are $664449$ factors.  Using the exact tail bound $2/10^7$
+in~\eqref{eq:ideal-gap} proves, under either convention,
+\begin{equation}\label{eq:ideal-explicit-gap}
+                         u_K-b_K>\frac1{20000000}.
+\end{equation}
+The sharper rational lower bound is stored in the JSON certificate.
+This computation checks a finite numerical part of the theorem; the
+norm-counting limits and infinite construction are established by the
+proof above.
+
+For fractional ratios, the theorem implies upper density strictly
+larger than greedy density, since the greedy set has a natural
+density at most $b_K$.  It does \emph{not} show that the fractional-ratio
+natural-density supremum exceeds greedy density.  Thus it contributes
+to the extensions requested in Questions 5.3 and 5.5 of
+Best et al.~\cite{best}, while their Question 5.4 remains unresolved
+by this report.  No assertion of priority for the general separation
+theorem is made.

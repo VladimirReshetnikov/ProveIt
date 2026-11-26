@@ -1,0 +1,169 @@
+\section{One prime-splitting test for six Dedekind zeta functions}\label{sec:joint-test}
+
+Fix $D=-12451$ or $-37363$. Let $K_1,\ldots,K_6$ be the six reflected
+quintic fields for this $D$. At an unramified prime $p$, choose any two
+distinct fields $K_i,K_j$ and record whether $p$ splits completely in
+both. The same primes pass this test for every choice of the pair.
+Together with a residue-class condition, this single bit gives a
+one-sided criterion for RH in all six fields.
+
+\paragraph{Joint Galois group.}
+Choose virtual units $\alpha_1,\alpha_2$ representing a basis of
+$\operatorname{Cl}(E)[5]$. Over $B=E(\zeta_5)$ their radical classes
+are independent by restriction and norm. Adjoining both fifth roots
+gives $M/B$ with translation group $V=\mathbb F_5^2$ by Kummer theory.
+Choose the cyclotomic automorphisms fixing $E$ and both radicals,
+and let $c$ be complex conjugation. As in the single-line case $c$ is
+central. The six line evaluations of $V$ separate points, and each
+quintic splitting field detects the full scalar group. Thus the joint
+normal closure $T$ is $M^{\langle c\rangle}$ and
+\[
+ \operatorname{Gal}(T/\mathbb Q)
+   = V\rtimes\mathbb F_5^\times,\qquad
+ H=T^V=B^{\langle c\rangle}.
+\]
+The scalar group multiplies both coordinates. On the five embeddings
+of the field associated with a radical line, a group element $(v,a)$
+acts by $j\mapsto aj+\lambda(v)$, where $\lambda$ is a representative of the corresponding
+line in the dual space. Its scalar at $p\nmid5D$ is
+$\mu(p)=\chi_D(p)(p\bmod 5)\in\mathbb F_5^\times$.
+Indeed Frobenius acts on $\zeta_5$ by raising to $p$ and on $E$ via
+$\chi_D$. Simultaneous complex conjugation induces the identity on $H$.
+
+For $a\ne1$ the affine map is conjugate to multiplication by $a$.
+For $a=1$ a nonzero translation acts as a five-cycle. Of the six
+functional lines, exactly one vanishes on a specified $v\ne0$.
+Chebotarev gives the following natural densities; the second column
+describes residue degrees.
+\[
+\begin{array}{lll}
+ (v,a) & \text{splitting across the six fields} & \text{density}\\
+ \hline
+ v=0,\ a=1 & (1,1,1,1,1)\text{ in all six} & 1/100\\
+ v\ne0,\ a=1 & (1,1,1,1,1)\text{ in one, }(5)\text{ in five}
+      & 24/100\\
+ a=-1 & (1,2,2)\text{ in all six} & 25/100\\
+ a=2\text{ or }3 & (1,4)\text{ in all six} & 50/100
+\end{array}
+\]
+Each of the six choices of the uniquely splitting quintic in the
+second row occurs with density $4/100$. These densities hold
+unconditionally for the two specified $D$.
+
+\paragraph{The test.}
+Let $S$ be a fixed finite set of excluded primes, containing those
+dividing $5D$. When using reductions of defining polynomials one may
+also exclude primes dividing their polynomial discriminants. Put
+\[
+ W(p)=25\,\mathbf1_{\{p\text{ splits completely in }K_i,K_j\}}
+               -\mathbf1_{\{\mu(p)=1\}}, \qquad
+ S_W(x)=\sum_{\substack{p\le x\\p\notin S}}
+           W(p)\log p\,(p^{-1}-x^{-1}).
+\]
+The values of $W$ in the four rows are $24,-1,0,0$. There exists a
+constant $c_W=\lim_{x\to\infty}S_W(x)$. Given Dirichlet GRH, the
+following statements are equivalent.
+\begin{enumerate}
+\item All six $\zeta_{K_i}$ satisfy RH.
+\item $\zeta_T$ satisfies RH.
+\item For every $\epsilon>0$ there exists $C_\epsilon>0$ such that
+$S_W(x)-c_W\le C_\epsilon x^{-1/2+\epsilon}$ for all sufficiently large $x$.
+\end{enumerate}
+Under these conditions, $|S_W(x)-c_W|\ll_{D,S} x^{-1/2}\log^2(2x)$.
+
+\paragraph{Factorization and forward bound.}
+Let $\tau_i$ be the character of the permutation representation on
+the five embeddings of $K_i$ with one trivial character removed.
+The table gives $W=\sum_i\tau_i$ on all Frobenius classes.
+The regular character of $\operatorname{Gal}(T/\mathbb Q)$ equals the
+inflated regular character of $\operatorname{Gal}(H/\mathbb Q)$ plus
+$4\sum_i\tau_i$. Indeed their sum has value $100$ at the identity and
+zero elsewhere. Artin formalism for permutation characters gives
+\[
+ \zeta_T(s)=\zeta_H(s)F(s)^4,\qquad
+ F(s)=\prod_{i=1}^{6}\frac{\zeta_{K_i}(s)}{\zeta(s)}.
+\]
+Since $H/\mathbb Q$ is abelian, its zeta function factors into Dirichlet
+$L$-functions. Dirichlet GRH makes each ratio in $F$ holomorphic on
+$\Re s>1/2$, with a nonzero removable value at one, and gives the needed
+zero-free region for $\zeta_H$ away from its pole. Zeros of the six
+numerators in the right half of the strip therefore contribute positive
+multiplicities to the product. The Dedekind functional equations give
+the equivalence of the first two assertions.
+
+Write $\theta_W(t)=\sum_{p\le t,\ p\notin S}W(p)\log p$. For each
+$K_i$ the permutation trace counts degree-one prime ideals above $p$.
+The fixed-field prime ideal theorem, applied to these six fields and
+$\mathbb Q$, yields $\theta_W(t)=O(t\exp(-b\sqrt{\log t}))$ for some
+$b>0$. The six main terms cancel. Higher residue degrees and prime
+powers contribute $O_{D,S}(\sqrt t\log^2(2t))$, by summing over
+$p^j\le t$, $j\ge2$. A possible real exceptional zero of a fixed field
+is absorbed in the displayed asymptotic error. Under the first assertion,
+the resulting bound is $\theta_W(t)=O_{D,S}(\sqrt t\log^2(2t))$.
+Termwise integration gives
+\[
+ c_W=\int_1^\infty \theta_W(t)t^{-2}\,dt,\qquad
+ R(x):=S_W(x)-c_W=-\int_x^\infty\theta_W(t)t^{-2}\,dt.
+\]
+This proves existence and the asserted two-sided estimate.
+\href{https://arxiv.org/abs/1312.4463}{Greni\'e and Molteni,
+\emph{Explicit versions of the prime ideal theorem for Dedekind zeta functions under GRH}}.
+
+\paragraph{Converse from an upper bound.}
+For $\Re s>1$ let $A(s)=\sum_{p\notin S}W(p)(\log p)p^{-s}$.
+Euler factors give $A=-F'/F-J$ with $J$ holomorphic on $\Re s>1/2$.
+At good primes the terms with powers $p^j$, $j\ge2$, are bounded by
+$24(\log p)p^{-j\Re s}$ and converge locally uniformly.
+The local factors at the finitely many excluded primes have inverse
+roots of absolute value at most one, so their corrections are
+holomorphic on $\Re s>0$. The prime ideal theorem gives $A(1)=c_W$
+by partial summation. The Mellin transform of the centered sum is
+\[
+ P(s)=\int_1^\infty R(x)x^{-s}\,dx
+     =\frac{A(s)}{s(s-1)}-\frac{c_W}{s-1}\qquad(\Re s>1).
+\]
+It is regular at one. For $\Re s>1/2$, any zero $\rho$ of $F$ of order
+$m$ gives a simple pole of $P$ with residue $m/(\rho(1-\rho))$.
+All its real poles in this region have positive residue, since a real
+zero there lies below one.
+
+Assume the third assertion and fix $1/2<\gamma<1$. Choose $C,X$
+so $U(x)=Cx^{\gamma-1}-R(x)\ge0$ for $x\ge X$.
+The Mellin integral $\int_X^\infty U(x)x^{-s}\,dx$ agrees with
+$C/(s-\gamma)-P(s)$ up to an entire function, and its abscissa of
+convergence is at most one. If that abscissa exceeded $\gamma$,
+Landau's lemma for a nonnegative Mellin integrand would force a
+singularity at the real abscissa. The meromorphic continuation permits
+only a simple pole of negative residue there. Approaching the pole
+from the right would make the integral negative. This contradiction
+puts the abscissa at most at $\gamma$, so the integral is holomorphic
+throughout $\Re s>\gamma$, where $P$ has no poles. Taking all
+$\gamma>1/2$ proves zero-freeness of $F$ there. This proves the
+converse. The prime estimate itself remains to be proved for these
+nonabelian fields.
+
+\paragraph{The information missing from residue classes.}
+For every positive integer $m$ and every complex-valued function $h$
+on $(\mathbb Z/m\mathbb Z)^\times$, Chebotarev gives
+\[
+ \lim_{x\to\infty}\frac1{\pi(x)}
+ \sum_{\substack{p\le x\\p\notin S,\ p\nmid m}}
+       |W(p)-h(p\bmod m)|^2
+  =6+\frac1{\varphi(m)}
+           \sum_{a\in(\mathbb Z/m\mathbb Z)^\times}|h(a)|^2 .
+\]
+Indeed $[V\rtimes\mathbb F_5^\times,V\rtimes\mathbb F_5^\times]=V$,
+since the commutators with scalar $2$ give every translation. Thus
+$T\cap\mathbb Q(\zeta_m)$ is contained in $H$. Conditional on a
+cyclotomic Frobenius, the compatible elements of $\operatorname{Gal}(T/\mathbb Q)$
+are uniformly counted on a union of full translation cosets. The mean
+of $W$ on each coset is zero: on $V$ its sum is $24-24=0$, and on
+the other three cosets $W$ vanishes. The mixed term in the square
+therefore has zero mean. The first two rows of the table give the
+unconditional mean square $(24^2+24)/100=6$.
+
+The cubic case appears in
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/1e1728ad221d69e48fea09bf754b73422af44943/docs/incoming}
+{the incoming cubic-field report}. The Mellin argument above uses
+\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh-compact/src/New/Endgame/OneSidedCriterion.lean}
+{the Lean repository's Landau criterion}.

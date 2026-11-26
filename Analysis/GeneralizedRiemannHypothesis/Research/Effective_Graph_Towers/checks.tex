@@ -1,0 +1,47 @@
+\section{Five complete computations}
+The five examples in DuBose--Vallières \S7 provide a check against published computations. The prior ProveIt packet proves the five formulas by separate arguments. Supplying only the prime and voltages to the same program in all five cases gives the following output. Write $X=p^n$. The two right-hand columns give the least start including level zero and the total dimension of the integer linear representation.
+\begin{center}\small
+\begin{tabular}{@{}ccp{.31\linewidth}lrr@{}}
+\toprule
+Case & $p$ & Steps & $P(X,n)$ & $N$ & Dim.\\
+\midrule
+1&2&$e_1,e_2$&$(2n+4)X-6n-1$ &1&25\\
+2&2&$e_1,e_1,e_2,e_2$&$X^2+(2n+4)X-6n-2$ &1&25\\
+3&2&$(1,5),(0,3),(1,2),(0,1)$&$(n+33/4)X-4n-1$ &4&32\\
+4&3&$e_1,e_2$&$4X-2n-4$ &0&8\\
+5&3&$(1,0),(2,3),(1,1)$&$(20/3)X-2n-8$ &1&16\\
+\bottomrule
+\end{tabular}
+\end{center}
+In case 3, the four initial values including level zero are $0,5,19,65$. The finite correction is
+\[
+ E(z)=-29/4-(17/2)z-13z^2-12z^3.
+\]
+For example, the stable polynomial predicts $77$ at level three. The exact value is $65$. The degree-three correction proves that level four is the first stable level; its derivation uses all future conductors through the transfer matrix.
+
+The file \texttt{dv\_examples.json} records each input, rational generating function, tail polynomial, finite correction, and the values through level ten.
+The program \texttt{check\_resultants.py} reruns all five examples and checks small Laurent polynomials at $p=2,3,5$ against exact cyclotomic resultants. Other checks in the archive use integer Laplacian cofactors and determinants of Grover transition matrices. The proofs here are ordinary mathematical proofs. The programs supply reproducible exact calculations, and the new theorems have not been formalized in Lean.
+
+\subsection*{A two-vertex example for every prime}
+Consider the three-edge graph in \texttt{honeycomb.json}. Its two vertices are joined by edges of voltages $0,e_1,e_2$. Its covers are the periodic honeycomb graphs. The base has three spanning trees. The determinant of its two-by-two twisted Laplacian is
+\[
+ F(X,Y)=9-(1+X+Y)(1+X^{-1}+Y^{-1})
+        =H(X)+H(Y)+H(X/Y),\qquad H(X)=2-X-X^{-1}.
+\]
+At $p=2,3$ the program yields, respectively, the following all-level formulas, with zero finite correction in both cases:
+\[
+ T_n=(3n+9)2^n-8n-9,\qquad T_n=5\cdot3^n-2n-4 .
+\]
+The register dimensions are 44 and 12. In particular the ternary constant term takes account of the base tree count.
+
+For $p\ge5$ a short calculation gives the full family. At every level,
+\[
+ T_n=A_p\,\frac{p^n-1}{p-1}-2n,\qquad
+ A_p=\begin{cases}
+ 2(p+5),&p\equiv1\pmod3,\\
+ 2(p+1),&p\equiv2\pmod3 .
+ \end{cases}
+\]
+Here is a direct proof. In a primitive direction $(a,b)$ modulo $p$, the first even moment is $a^2+b^2+(a-b)^2=2(a^2-ab+b^2)$. If it is nonzero, the first unit degree is two. Otherwise $ab\ne0$ and $b/a$ is a primitive sixth root. The three squared projections $a^2,b^2,(a-b)^2$ are $a^2$ times the three cube roots of unity. Their first two power sums vanish and their third is $3a^6\ne0$. There are two such projective directions for $p\equiv1\bmod3$ and none for $p\equiv2\bmod3$.
+
+To identify the first unit degree in the exceptional directions, use $X=\exp(az),Y=\exp(bz)$ formally through degree six modulo $p$; here $p\ge7$, so all factorials in this expansion are units. The coefficients at even degree $2j$ are $-2/(2j)!$ times the $j$th power sum of the squared projections. The change from $z$ to $\exp(z)-1$ preserves the order, so the first unit degree is six. In a cyclotomic specialization, the integral Laurent expansion in $T=\zeta-1$ has its first two coefficients identically zero. Thus even at $p=7,h=1$, when degree six equals the ramification index, every lower nonzero term divisible by $p$ has normalized order at least $e+2>6$. These unit degrees are exactly the orbit orders at every conductor. Each projective direction has $p^{h-1}$ normalized lifts at level $h$. Summing them gives $A_p$ per direction set at level one and the formula above by geometric summation. This proof specializes the moment method already present in the ProveIt packet~\cite{incoming}.

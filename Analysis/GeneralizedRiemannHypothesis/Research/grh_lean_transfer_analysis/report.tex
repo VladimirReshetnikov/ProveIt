@@ -1,0 +1,92 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{booktabs,longtable,array,enumitem}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\usepackage{xcolor,graphicx,tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\usepackage{microtype,fancyhdr}
+\usepackage[unicode,colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black]{hyperref}
+\usepackage{bookmark}
+\definecolor{ink}{HTML}{17334D}
+\definecolor{accent}{HTML}{087E8B}
+\definecolor{light}{HTML}{EDF4F7}
+\setlength{\parskip}{0.42em}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2.5em}
+\setlist{itemsep=0.25em,topsep=0.3em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{ink}{GRH Lean: consequences and extensions}}
+\fancyhead[R]{\small 25 November 2026}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Cl}{\operatorname{Cl}}
+\newcommand{\Gal}{\operatorname{Gal}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Nm}{\mathrm{N}}
+\newcommand{\Rea}{\operatorname{Re}}
+\newcommand{\Ima}{\operatorname{Im}}
+\newcommand{\src}[1]{\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/#1}{\nolinkurl{#1}}}
+\newcommand{\code}[1]{\nolinkurl{#1}}
+\newcommand{\statusbox}[1]{\begin{center}\fcolorbox{accent}{light}{\begin{minipage}{0.92\linewidth}#1\end{minipage}}\end{center}}
+\hypersetup{pdftitle={What can be transferred from grh-lean?},pdfauthor={Research analysis},pdfsubject={Source audit, mathematical consequences, and concrete routes beyond Dirichlet GRH}}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{0.8cm}
+{\large\bfseries\color{accent} MATHEMATICAL RESEARCH REVIEW\par}
+\vspace{1.0cm}
+{\Huge\bfseries\color{ink} What can be transferred\\[0.15em] from \texttt{grh-lean}?\par}
+\vspace{0.7cm}
+{\Large A source audit, proved consequences,\\and a concrete route beyond Dirichlet GRH\par}
+\vspace{1.0cm}
+{\large Repository and mathematical transfer analysis\\25 November 2026 (Pacific time)\par}
+\vspace{0.9cm}
+\statusbox{\textbf{Finding.} The repository provides a substantial basis for further work. Its exported theorem covers Dirichlet \(L\)-functions over \(\Q\). Existing implications immediately reach abelian Dedekind zeta functions, Lindel\"of bounds, small quadratic nonresidues, and other classical targets. A genuine extension to a nonabelian field needs a new arithmetic estimate. This report isolates one such estimate explicitly.}
+\vspace{0.5cm}
+\textbf{Reviewed source}\\
+\url{https://github.com/lsernau/grh-lean}\\
+Commit \nolinkurl{72fead102f663d5c7a407964a13dc0cf9d977207}.
+
+\textbf{Validation boundary}\\
+Local source and hash audits were completed. Published independent checker logs for the exact snapshot were inspected and matched to their manifests. No full Lean build or kernel replay was run in this workspace. The added Lean interfaces are explicitly marked as uncompiled drafts.
+
+\vfill
+{\small The mathematical reductions proved here are explanatory or extracted consequences. No claim of a new proof of a further open conjecture, or of priority for an extracted lemma, is made.}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+\pagenumbering{arabic}
+\input{sections/01_assessment}
+\input{sections/02_mechanism}
+\input{sections/03_transfer_lemmas}
+\input{sections/04_consequences}
+\input{sections/05_cubic_target}
+\input{sections/06_program}
+\input{sections/07_artifacts}
+\input{sections/references}
+\end{document}

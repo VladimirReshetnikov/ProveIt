@@ -1,0 +1,172 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}\usepackage{amsmath,amssymb,amsthm,microtype,hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue}
+\newtheorem{theorem}{Theorem}\newtheorem{lemma}[theorem]{Lemma}
+\title{Exceptional cutoffs for the central Euler product\\at the boundary of short logarithmic intervals}
+\author{Research note on a question in the ProveIt archive}\date{}
+\begin{document}\maketitle
+\begin{abstract}
+For a fixed primitive nonprincipal Dirichlet character, the
+deep Riemann hypothesis predicts an asymptotic for every sharp prime cutoff.
+Using Dirichlet GRH and a frequency split in the explicit formula, we bound
+the logarithmic measure of cutoffs with fixed canonical-log error greater
+than $\epsilon$ in each interval $[e^U,e^{U+1}]$ by
+$O_{\chi,\epsilon}(\exp[-\sqrt{2\pi\epsilon U}])$. The bound gives a
+quantified response to the earlier ProveIt question about windows of
+logarithmic length $\exp(-a\sqrt U)$. No independence or simplicity
+assumption on the zeros is used.
+\end{abstract}
+\section{Statement}
+Let $\chi$ be primitive and nonprincipal, $m=\operatorname{ord}_{1/2}L(s,\chi)$,
+and $\delta=1$ if $\chi^2$ is principal, $0$ otherwise. The canonical
+logarithm of the sharp product $P_x=\prod_{p\le x}(1-\chi(p)/\sqrt p)^{-1}$ is
+\[
+ \ell(x)=\sum_{p\le x}\sum_{k\ge1}\frac{\chi(p)^k}{k p^{k/2}} .
+\]
+There is a constant $C_\chi$ with
+\[
+ \exp C_\chi=2^{\delta/2}e^{-m\gamma_{\rm E}}L^{(m)}(1/2,\chi)/m!.
+\]
+Its imaginary part is fixed by the continued Euler logarithm from the right,
+as in the proof below. Define $B(v)=\ell(e^v)+m\log v-C_\chi$.
+\begin{theorem}\label{th:main}
+For each fixed $\epsilon>0$ and every $U\ge2$,
+\[
+ \big|\{v\in[U,U+1]:|B(v)|>\epsilon\}\big|
+ \ll_{\chi,\epsilon}\exp(-\sqrt{2\pi\epsilon U}).
+\]
+Thus the set of exceptional $x\ge e^2$ has finite measure for
+$e^{b\sqrt{\log x}}\,dx/x$ whenever $b<\sqrt{2\pi\epsilon}$. In each
+interval $[U,U+h]$ with $h=\exp(-a\sqrt U)$, $a>0$, the fraction with
+$|B|>\epsilon$ is
+$O_{\chi,\epsilon}(\exp[-(\sqrt{2\pi\epsilon}-a)\sqrt U])$.
+\end{theorem}
+At the boundary window scale the exceptional fraction therefore vanishes
+for every fixed tolerance $\epsilon>a^2/(2\pi)$. This does not give
+convergence for every tolerance in each such window at fixed $a$, or
+a pointwise DRH theorem. For example, taking $a=1$ allows every tolerance
+greater than $1/(2\pi)$ in the canonical logarithm. These estimates also
+bound relative product discrepancies: $|B|\le\epsilon$ implies
+$|(\log x)^m P_x e^{-C_\chi}-1|\le e^\epsilon-1$ at $x=e^v$.
+\section{Reduction to an explicit formula}
+Write $\Psi_\chi(x)=\sum_{n\le x}\chi(n)\Lambda(n)$ and
+$E(v)=e^{-v/2}\Psi_\chi(e^v)$. We need the endpoint formula
+\begin{equation}\label{eq:ep}
+ B(v)=E(v)/v+O_\chi(1/v),\qquad v\ge2 .
+\end{equation}
+It is the fixed-center case of the archived endpoint calculation \cite{in};
+here are the details. The von Mangoldt explicit formula on $v\ge1$, in
+distributions, gives
+\[
+ E(v)=-\sum_{\rho=1/2+i\gamma}\frac{e^{i\gamma v}}{\rho}
+           +O_\chi((1+v)e^{-v/2}).
+\]
+The last term is an ordinary function coming from the pole of the Perron
+kernel and the trivial zeros. The $m$ central zeros give $-2m$. The
+primitive of $E(v)+2m$ on $[1,\infty)$ is bounded, since integration
+over a finite interval costs at most $2/|\rho\gamma|$ per nonzero
+ordinate and the sum converges. Let
+$H(v)=\sum_{2\le n\le e^v}\chi(n)\Lambda(n)/(n^{1/2}\log n)$.
+Stieltjes summation gives an endpoint $E(v)/v$ and an integral with
+integrand $E(w)(1/(2w)+1/w^2)$. The constant part yields
+$-m\log v$ plus a constant and an $O(1/v)$ endpoint. Integration by
+parts with the bounded primitive of the remaining part bounds its
+integral from $v$ to infinity by $O_\chi(1/v)$. Consequently
+$H(v)=c_\chi-m\log v+E(v)/v+O_\chi(1/v)$.
+For $\sigma>0$, its Abel mean
+$\sigma\int_0^\infty e^{-\sigma v}H(v)\,dv$ equals
+$\log L(1/2+\sigma,\chi)$ by partial summation and continuation of the
+Euler logarithm. In fact GRH gives $\Psi_\chi(x)\ll_\chi\sqrt{x}\log^2(2x)$,
+ensuring convergence in this half-plane. The bounded primitive controls
+the Abel mean of $(E(v)+2m)/v$ on $v\ge1$, and bounded lower intervals
+contribute $o(1)$. Hence
+$\log L(1/2+\sigma,\chi)=c_\chi+m\log\sigma+m\gamma_{\rm E}+o(1)$.
+
+The ordinary prime cutoff adds
+$\tfrac12\sum_{\sqrt x<p\le x}\chi^2(p)/p=\tfrac\delta2\log2+
+O_\chi(1/\log x)$ by fixed-modulus prime number theory and partial
+summation. Higher powers contribute $O(x^{-1/6})$ in absolute value:
+for $p>x^{1/3}$ sum $O(p^{-3/2})$, and for smaller $p$ the first
+omitted power contributes $O(x^{-1/2})$ per prime including its tail.
+Thus $C_\chi=c_\chi+\tfrac\delta2\log2$ and \eqref{eq:ep} follows.
+The canonical choice of $c_\chi$ is the constant in the displayed
+expansion of $H$, before exponentiation.
+\section{A tail bound uniform in the interval location}
+\begin{lemma}\label{lem:tail}
+For every real $\lambda\ge1$ and every $U\ge2$,
+\[
+ |\{v\in[U,U+1]: |E(v)|>\lambda\}|
+       \ll_\chi e^{-\sqrt{2\pi\lambda}} .
+\]
+\end{lemma}
+\begin{proof}
+Count both signs with multiplicity. The Dirichlet zero count \cite{count}
+gives $N(T)=(T/\pi)\log T+O_\chi(T)$ and
+$N(t+1)-N(t)\ll_\chi\log(2+t)$. Partial summation gives, for $T\ge2$,
+\[
+ \sum_{|\gamma|\le T}|\rho|^{-1}
+ \le \frac{(\log T)^2}{2\pi}+O_\chi(\log(2T)).
+\]
+Indeed one can replace $1/|\rho|$ by $1/|\gamma|$ above height one
+at bounded total cost and integrate $N(t)/t^2$. The smooth remainder in
+the explicit formula is uniformly bounded on $v\ge2$.
+
+For the tail $S_T(v)=\sum_{|\gamma|>T} e^{i\gamma v}/\rho$,
+\[
+ \int_U^{U+1}|S_T(v)|^2\,dv\ll_\chi\frac{\log^2(2T)}{T}.
+\]
+For a finite subseries first majorize the unit interval by a constant
+times a Gaussian centered at $U+1/2$. If $b_j$ is the sum of the absolute
+coefficients in the bin $[j,j+1)$, Fourier transformation bounds the
+integral by a constant times $\sum b_j^2$. Indeed the interaction of bins
+$j,k$ has a bound $C e^{-c(\max\{|j-k|-1,0\})^2} b_jb_k$.
+Now $b_j\ll_\chi\log(2+|j|)/(1+|j|)$ in the tail, which yields the
+estimate by summing squares. The same bound makes the infinite series
+converge in local $L^2$, and its distributional limit is the explicit
+formula's tail.
+
+For large $\lambda$ choose $\log T=\sqrt{2\pi\lambda}-D_\chi$, where the
+fixed $D_\chi$ is large enough that the low-ordinate sum plus the smooth
+remainder is at most $\lambda-\sqrt{\lambda}$. Expanding the square in
+the low-ordinate bound proves this choice works. Chebyshev's inequality
+then bounds the exceptional measure by
+$O_\chi(\log^2(2T)/(\lambda T))=O_\chi(e^{-\sqrt{2\pi\lambda}})$.
+Enlarge the constant for bounded $\lambda$.
+\end{proof}
+Apply the lemma at $\lambda=\epsilon U-O_\chi(1)$ using \eqref{eq:ep}.
+This proves the first assertion of Theorem~\ref{th:main}. Sum over
+integer $U$ with weight $e^{b\sqrt{U+1}}$ for the second, and divide
+the unit-interval bound by $h$ for the third. No claim of optimality
+for $2\pi$ is made; it comes from the two-sided zero count and the
+cutoff used in this proof.
+
+\section{Scope}
+Sheth proves the central Euler-product prediction outside a set of finite
+logarithmic measure for a broad automorphic class \cite{sheth}. The
+archived Dirichlet analysis proves a local root-mean-square bound
+$O_\chi(\log^2(2/h)/U)$ for $B$ and asks what happens at
+$h=\exp(-a\sqrt U)$ \cite{in}. With Chebyshev's inequality that estimate
+alone gives $O_\chi(a^4/\epsilon^2)$ there, without decay in $U$.
+Theorem~\ref{th:main} gives decay for the tolerance range stated above.
+The proof refines the familiar zero-truncation argument by matching its
+cutoff to the error threshold and retaining the leading coefficient of the
+zero count. The upstream Lean result supplies Dirichlet GRH; this tail
+bound is an analytic deduction, with a classical proof. An independent
+publication-priority claim would require a broader literature review.
+\begin{thebibliography}{9}
+\bibitem{in} V. Reshetnikov, ProveIt incoming collection,
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/d31039a48d963692e5a5176f47b6603fc9e9d9cf/docs/incoming/dirichlet-grh-research.zip}{\texttt{dirichlet-grh-research.zip}},
+\texttt{critical-line/critical-line.tex}, local mean square and research question 2.
+\bibitem{count} M. A. Bennett, G. Martin, K. O'Bryant and A. Rechnitzer,
+\href{https://doi.org/10.1090/mcom/3599}{Counting zeros of Dirichlet
+$L$-functions}, Math. Comp. 90 (2021).
+\bibitem{sheth} A. Sheth,
+\href{https://doi.org/10.1017/S0305004125000234}{Euler products at the
+centre and applications to Chebyshev's bias}, Math. Proc. Camb. Phil.
+Soc. 179 (2025), 331--349, Theorems 3.2, 3.5 and 3.9.
+\bibitem{conrad} K. Conrad,
+\href{https://doi.org/10.4153/CJM-2005-012-6}{Partial Euler products
+on the critical line}, Canad. J. Math. 57 (2005), 267--297.
+\bibitem{lean} L. Sernau and collaborators,
+\href{https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207}{\emph{GRH for Dirichlet $L$-functions, in Lean 4}}.
+\end{thebibliography}\end{document}

@@ -1,0 +1,148 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,booktabs,xcolor}
+\usepackage[letterpaper,margin=0.91in,top=0.85in,bottom=0.90in,headheight=14pt]{geometry}
+\usepackage{fancyhdr,hyperref}
+\definecolor{ink}{HTML}{192C40}
+\definecolor{teal}{HTML}{096662}
+\hypersetup{colorlinks=true,urlcolor=teal,linkcolor=teal,pdftitle={Three transfers from the Dirichlet GRH proof},pdfauthor={Research note prepared for Vladimir Reshetnikov}}
+\urlstyle{same}
+\setlength{\emergencystretch}{3em}
+\newtheorem{theorem}{Theorem}[section]
+\pagestyle{fancy}\fancyhf{}
+\lhead{\small\sffamily\color{ink}METHODS FROM THE DIRICHLET GRH PROOF}
+\rhead{\small\sffamily\color{ink}RESEARCH NOTE}
+\cfoot{\small\sffamily\thepage}
+\setlength{\parindent}{1.2em}
+\setlength{\parskip}{2pt}
+\raggedbottom
+\newcommand{\ghsource}[2]{\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/#1}{#2}}
+\begin{document}
+\thispagestyle{plain}
+\noindent{\color{teal}\sffamily\bfseries MATHEMATICAL RESEARCH NOTE}\hfill
+{\sffamily\small 25 November 2026}\par
+\vspace{0.55em}
+\noindent{\raggedright\color{ink}\sffamily\bfseries\fontsize{25}{29}\selectfont
+Three transfers from the proof\\of Dirichlet GRH\par}
+\vspace{0.45em}
+\noindent{\large Finite-ring progressions, ramified torsion, and sparse zeta data}\par
+\vspace{0.65em}
+\noindent\textcolor{teal}{\rule{\linewidth}{0.8pt}}
+\paragraph{Results.}
+For the dual numbers $R=\mathbb F_2[\epsilon]/(\epsilon^2)$ we construct
+a progression-free subset of $R[x]$ of upper density $15/16$.
+Every progression-free subset with a natural density has density at most
+$119/128$. This gives a strict separation for the full three-term problem
+in a case of Asada et al.'s published Question~6.5. We determine the leading
+constants for a family of finite rings and both exact extrema for the
+stronger condition of avoiding square-ratio endpoint pairs.
+
+For a question posed in the incoming reports, we compute the precise cost
+and least degree of a polynomial that blocks every torsion point in a
+prescribed order interval on a one-dimensional formal group. Ramification
+can put points of different orders at the same distance from zero. The
+computation accounts for the distances between points as well. On an
+explicit elliptic curve a degree-five obstruction of budget $15/32$ at
+order four attains both bounds. We also give formulas along its torsion tower.
+
+Finally we show how sparse data on Li coefficients distinguish Dedekind
+zeta functions of arbitrary number fields. Bounded mean absolute discrepancy on even one sequence of increasingly long windows forces their zeta functions to agree. Sparse positivity gives a separate
+criterion for the Riemann hypothesis of an individual field; proving the
+required signs for a new nonabelian example remains an arithmetic problem.
+
+\paragraph{Reading the source.}
+We inspected the shortened Alp\"oge--Claude proof in Luke Sernau's
+repository at commit \texttt{72fead102f66}. It proves RH and GRH for Dirichlet
+characters of all positive moduli. In the critical strip every zero has
+real part $1/2$; in the right half of the strip the equivalent
+nonvanishing formulation also extends beyond the strip, with the principal
+character at $s=1$ excepted. Its central inequality compares the same
+covolume through short integral forms, enough independent forms and a
+lower bound from long forms. A one-sided bound on a smoothed prime sum
+and a Mellin--Landau argument then exclude off-line zeros.
+\ghsource{grh/src/Statements.lean}{Statements};
+\ghsource{grh/src/Main.lean}{five theorems};
+\ghsource{grh/src/New/Reduction/MainInequality.lean}{covolume};
+\ghsource{grh/src/New/Reduction/Zeros/Criterion.lean}{zero criterion}.
+
+The finite-ring argument adapts the source's use of prime exponents to
+exclude multiplicative patterns. The formal-group argument takes up its
+choice of torsion twists with controlled valuation. The analytic argument
+uses the smoothed prime remainder, then transfers the question of what
+sampling detects to Li coefficients. The new theorems are paper proofs.
+The accompanying computations use exact arithmetic for the finite
+examples. We relied on the independent kernel checks for the upstream Lean
+result. \href{https://math.mit.edu/~drew/shortgrh/}{Sutherland's verification of both editions}.
+
+\medskip
+\noindent\begin{tabular*}{\linewidth}{@{}l@{\extracolsep{\fill}}r@{}}\toprule
+\textsf{Results and proofs} & \textsf{Page}\\\midrule
+Finite rings and the two density extrema & \pageref{sec:finite-rings}\\
+The torsion algorithm and its sharpness proof & \pageref{sec:threshold}\\
+A ramified elliptic curve and exact scaling & \pageref{sec:ramified-example}\\
+Prime sums, Li coefficients and arithmetic equivalence & \pageref{sec:sampling}\\\bottomrule
+\end{tabular*}
+\clearpage
+\input{rings}
+\input{torsion}
+\input{elliptic}
+\input{scaling}
+\input{sampling}
+\input{li}
+\input{rigidity}
+\input{absolute}
+
+\clearpage
+\section{Further research questions and evidence}
+\paragraph{Finite rings.}
+For the dual numbers over $\mathbb F_2$, the full progression problem
+still leaves an interval for each optimum. Does allowing both endpoints
+of a square-ratio pair increase the achievable upper density beyond
+$15/16$? In odd characteristic the product in \eqref{eq:local-ring-odd}
+gives an explicit construction. Determining the leading constant in
+that setting would clarify the role of the mixed term in $(a+c)^2$.
+The field conjecture numbered 6.3 by Asada et al. concerns
+$\mathbb F_q[x]$ and remains separate from their finite-ring question.
+
+\paragraph{Torsion.}
+The extremizing roots in Theorem~\ref{th:exact} lie among the tested
+geometric points. If the polynomial must have coefficients in the
+elliptic curve's field of definition, which of the exact thresholds can
+still be attained? The unrestricted construction allows individual
+points to be selected even when their Galois conjugates are omitted.
+For simultaneous tests on several polynomials an additional choice is
+whether to bound a sum of valuations or each positive increase individually.
+
+\paragraph{Sparse analytic data.}
+The positivity criterion supplies a definite target for
+$K=\mathbb Q(\sqrt[3]{2})$. The original covolume calculation is tied to
+Dirichlet twists and a specific family of theta lifts; this report does
+not supply the corresponding arithmetic inequality for $K$.
+The inverse theorem asks for infinitely many samples in windows of
+growing length. Effective finite bounds would require quantitative
+control of zero ordinates, separation and tails as the fields vary.
+
+\paragraph{Provenance and reproduction.}
+The included inventory identifies all 35 ZIPs in the incoming directory
+at ProveIt commit \texttt{d31039a48d96}. The closest antecedents are the
+progression-density paper, the sharp-torsion reports, and the paper on
+torsion and prime sampling. Their specialized conclusions are identified
+where used. The published fixed-divisor, formal-group, explicit-formula
+and Li-coefficient ingredients are cited in the proofs. Priority for the
+precise combinations established here is provisional.
+The archive README gives the build commands and the inputs and outputs
+of the finite checks.
+\begin{center}
+\begin{tabular}{@{}p{0.32\linewidth}p{0.58\linewidth}@{}}\toprule
+\textsf{Check} & \textsf{What was compared}\\\midrule
+Finite-ring arithmetic & Direct enumeration of gcds, local square multiples,
+collections of disjoint triples and pairs across degree layers.\\[3pt]
+One-part torsion minima & Greedy fixed divisors against exhaustive multisets
+allowing repeated roots in the small example.\\[3pt]
+Torsion windows & Coordinate differences in an elliptic basis against a
+tree reconstructed from subgroup counts in 20 parameter choices.\\[3pt]
+Two-level obstruction & An explicit list of 23 roots and the five intermediate
+thresholds at orders eight and sixteen.\\\bottomrule
+\end{tabular}
+\end{center}
+\end{document}

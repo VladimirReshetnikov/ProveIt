@@ -1,0 +1,99 @@
+\section{What a further global conjecture still needs}
+\label{sec:global}
+
+\subsection{The cost of missing dimensions}
+The source's last comparison uses only $n\ge D/2$ when dividing by the number of chosen vectors. Reading that inequality alone can obscure the stronger hypothesis already used to establish the lower bound. The declaration
+\up{grh/src/New/Determinant/Twist/LongForms.lean}{\file{integral_forms_long}}
+requires
+\begin{equation}
+n\ge(1-4/b^2)D.
+\label{eq:near-full}
+\end{equation}
+Each missing basis vector has completion cost
+\[
+ K_{\mathrm{comp}}=2x_1^2b^2+b.
+\]
+The source lemma \file{mul_completion_cost_le} combines this expensive cost with the very small rank deficit. It is not enough to transplant a statement saying that a fixed positive fraction of target forms is spanned.
+
+The general determinant principle gives an exact way to track the tradeoff.
+\begin{proposition}[Rank deficit versus completion cost]
+\label{prop:rank}
+Suppose $D=n+r$, $n>0$, $m>0$, and an upper bound and a lower determinant estimate take the forms
+\[
+ c\le n(A-mR+U),\qquad
+ 0\le c+2I+rK-DA+V.
+\]
+Then
+\[
+ nmR\le nU+2I+V+r(K-A).
+\]
+If $A\ge0$, this implies
+\[
+ R\le\frac{U+(2I+V)/n+(r/n)K}{m}.
+\]
+\end{proposition}
+\begin{proof}
+Substitute the upper bound for $c$ in the second inequality, expand $D=n+r$, and cancel $nA$. For the second conclusion, discard the nonpositive term $-rA$ and divide by $nm$.
+\end{proof}
+The proposition is an elementary deduction once the source-compatible estimates are available. Its value is diagnostic: an extension must achieve a small rank deficit, cheaper completion vectors, or a compensating estimate for the negative $rA$ term. Merely improving the torsion selector does not pay a large archimedean completion bill.
+
+\subsection{Only selected twists need injective lifts}
+In the generic
+\up{grh/src/New/Reduction/Lattices/TwistedLattice.lean}{\file{covolume_add_index_nonneg}},
+injectivity of the lift $\Theta_\xi$ is assumed for every twist. The proof uses it only at the trivial twist and at each twist selected for a finite-place embedding. Those are the instances needed to make the reference Gram determinant and selected determinant ratios nonzero.
+
+Thus the proof admits a weaker injectivity hypothesis: it suffices to have injectivity at those selected twists. A family may contain bad twists if the arithmetic selection avoids them. This is a source-derived simplification, not a newly compiled Lean refactor.
+
+The essential compatibility requirements remain:
+\begin{itemize}
+\item one reference Gram determinant and one basis;
+\item index matrices that give integrality for the required local twists;
+\item integrality at an embedding and its conjugate;
+\item a height bound using a common global multiplier.
+\end{itemize}
+Independent favorable choices at different primes do not by themselves satisfy this global height statement. The source's \file{HeightLe} explicitly includes the common multiplier.
+
+\subsection{A concrete nonabelian benchmark}
+The splitting field of $X^3-X-1$ remains an economical test case. The polynomial has no rational root and has discriminant $-23$, hence its Galois group is $S_3$. Its two-dimensional irreducible representation has character values $2,0,-1$ on the identity, transpositions, and $3$-cycles. The associated degree-two Artin factor is beyond the exported Dirichlet theorem.
+
+The previous reports already reduce the desired zero location to a class-sensitive or Frobenius-sensitive one-sided prime estimate. Repeating that analytic reduction would not prove the estimate. The decisive next object would be a family of integral forms whose local divisibility records this nonabelian information and whose global norms, span, and denominators admit compatible bounds.
+
+For this benchmark the required tasks are now precise:
+\begin{enumerate}
+\item Define the global lattice, its integral structures, and the statistic recorded by its local divisibility. Congruence information alone cannot be substituted for nonabelian Frobenius data without a proof that it retains the relevant classes.
+\item Produce sufficiently many short independent vectors, with an explicit rank-deficit bound and completion cost satisfying Proposition~\ref{prop:rank}.
+\item Prove the lower determinant estimate and a uniform total denominator budget. If a fixed coefficient field is available, the present exact specialization theorem can improve this step.
+\item Check compatibility of the same twists with divisibility, nonvanishing, paired integrality, and global heights.
+\item Apply the already-developed analytic zero-exclusion criterion, retaining its conditions that prevent cancellation of zero contributions.
+\end{enumerate}
+No such new lattice construction is supplied by this report or by the inspected nonabelian detector reports.
+
+\subsection{Selmer groups and other proposed targets}
+The general twisting theorem in
+\up{grh/src/New/Congruences/Selmer/GeneralTheorem.lean}{\file{GeneralTheorem.lean}}
+has substantial representation-theoretic hypotheses. The actual
+\up{grh/src/New/Congruences/Selmer/Line.lean}{\file{TwistedLengthLe}}
+bounds a divisible-coefficient Selmer module, not merely one finite torsion level. Finite length therefore rules out a positive divisible corank for the selected object. It does not force its finite torsion subgroup to vanish.
+
+The distinction is concrete: a nonzero residue module over a coefficient ring of ramification index $e'$ has normalized length $1/e'$. Such lengths can tend to zero while the modules remain nonzero. Furthermore, changing the twist or its ramified primes changes the Selmer problem. A comparison to one fixed arithmetic group must be proved before a family of small bounds yields its vanishing.
+
+\begin{center}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.25\linewidth}>{\raggedright\arraybackslash}p{.66\linewidth}@{}}
+\toprule
+Target & Present obstruction\\
+\midrule
+General Hecke/Artin RH & No compatible global construction giving the new Frobenius-sensitive divisibility and determinant inequality.\\
+Modular and symmetric-power RH & The required Hecke-coefficient analogue of the arithmetic comparison is not established.\\
+BSD-type finiteness or vanishing & Conventional local conditions must be identified; conjugate self-duality and scalar-inertia hypotheses can exclude the intended representation.\\
+Vandiver-type assertions & Parity, exceptional coefficient primes, and changes of field remain; exact local selection alone does not supply the required class-group comparison.\\
+Candidate $K$-group vanishing & The strict-Selmer-to-Hecke bridge and a valid finite certificate for the exact arithmetic object remain separate obligations.\\
+Twin primes, Goldbach, Elliott--Halberstam & The source's one-variable weighted prime sums do not provide the needed correlations or uniformity.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The prior corpus includes further downstream arithmetic classifications and sparse CM results. They are recorded as claims of those reports in Appendix~A. They do not replace the missing global construction, and this report does not recertify them as additional new results.
+
+\subsection{Assessment}
+The local question has advanced: the coefficient-field obstruction is exact at zero tolerance, and the multivariable field-extension tower is unnecessary. The major global question is still an arithmetic one. The most useful next step is a complete construction for one small nonabelian target, with all four cost components recorded: divisibility gain, rank deficit, completion cost, and denominator loss. Another analytic detector can be useful only after it changes one of these obligations.
+

@@ -1,0 +1,48 @@
+\section{How much of a Lubin--Tate branch determines a jet?}
+\label{sec:lubin}
+Berger and Sprang use evaluations on finitely many formal curves to recover a bivariate Taylor coefficient in their study of bounded functions on the Schneider--Teitelbaum character variety. Their Lemma~4.2 gives a finite truncation by compactness; Proposition~4.4 uses it to extract coefficients \cite{BS}. We compute the least possible truncation, including the restriction on directions required in their multiplication argument. The connection with the Lean development is methodological. In \texttt{New.Derivatives.Sharpness.OneCurve}, the proof of \texttt{exists\_isGreatest\_norm\_deriv} realizes a jet bound on a monomial. Here the extremizer is a product vanishing on all but one branch. The argument uses local interpolation and requires no zeta zero estimate.
+
+Let $K/\mathbb Q_p$ be finite, $\mathcal O$ its integers, $\pi$ a uniformizer, $k$ its residue field of size $q$, and $v(\pi)=1$. Fix a Lubin--Tate formal group for $\pi$ in a coordinate $X$. Write $u_b(X)$ for the reduction of its endomorphism $[b](X)$ over $k$. For distinct $b,c\in\mathcal O$ the branches meet to order
+\[
+ s_{bc}=\operatorname{ord}_X(u_b-u_c)=q^{v(b-c)}.
+\]
+Indeed, $[b]=\mathcal F([c],[b-c])$ and $\mathcal F(U,V)-U$ is $V$ times a unit. A unit endomorphism has linear term a unit, and reduction of $[\pi]$ has order $q$. Orders multiply under composition.
+
+\begin{theorem}[Sharp branch precision]\label{thm:branch}
+Let $B\subset\mathcal O$ have $d\ge1$ elements and $\omega_b=\sum_{c\ne b}s_{bc}$, with $c\in B$. Evaluation modulo $X^{n_b}$ on branch $b$ for all $b\in B$ determines every coefficient of total degree $<d$ in $H\in k[[X,Y]]$ if and only if $n_b\ge 1+\omega_b$ for every $b$. In particular the smallest common precision is $1+\max_b\omega_b$. Precision $n$ retains exactly the powers $0,\ldots,n-1$.
+\end{theorem}
+\begin{proof}
+Put $P_b=\prod_{c\ne b}(Y-u_c)$, $P=\prod_c(Y-u_c)$ and $\Delta_b=P_b(X,u_b)$. Division by the monic distinguished polynomial $P$ over $k[[X]]$ gives a remainder $R$ of $Y$-degree $<d$. Since $P\in(X,Y)^d$, $H$ and $R$ have the same target coefficients. Over $k((X))$, interpolation gives
+\[
+ R=\sum_{b\in B}\frac{H(X,u_b)}{\Delta_b}P_b.
+\]
+If all observations vanish, the quotients belong to $Xk[[X]]$, and $P_b\in(X,Y)^{d-1}$. Thus $R\in(X,Y)^d$. Conversely $P_b$ has coefficient $1$ at $Y^{d-1}$, vanishes on each other branch, and has order $\omega_b$ on branch $b$. This witnesses necessity at each branch independently.
+\end{proof}
+
+\begin{corollary}[Optimal choice of directions]\label{cor:branch-opt}
+Among $d$ directions in any coset of $\pi^a\mathcal O$, $a\ge0$, the least common precision is $1+q^a W_q(d)$, where
+\[
+ W_q(d)=d-1+(q-1)\sum_{h\ge1} q^{h-1}\left\lfloor\frac{d-1}{q^h}\right\rfloor.
+\]
+For $d=q^t$, $t\ge1$, this becomes $1+q^a t(q-1)q^{t-1}$.
+\end{corollary}
+\begin{proof}
+Translation and rescaling multiply all contacts by $q^a$, so take $a=0$. If $c_h(b)$ counts the directions in the residue class of $b$ modulo $\pi^h$, then
+$\omega_b=d-1+\sum_{h\ge1}(q^h-q^{h-1})(c_h(b)-1)$.
+Starting with $B$, repeatedly follow a most populous child residue class. On this path $c_h\ge\lceil d/q^h\rceil$ at every depth, proving the lower bound. To attain it, identify the base-$q$ digits of $0,\ldots,d-1$ with a system of representatives of $k$ and use the corresponding $\pi$-adic digit expansions. Each class then has at most $\lceil d/q^h\rceil$ elements at depth $h$. When $d=q^t$, precisely $(q-1)q^{t-h-1}$ other directions have valuation $h$ relative to a given one, for $0\le h<t$.
+\end{proof}
+
+In \cite[Theorem 4.6]{BS}, $B$ must lie in $\pi\mathcal O$ to preserve the kernel of the trace operator $\psi$. For example, $q=2$, $d=8$ gives precision $25$ in that ball and $13$ with unrestricted directions. The former recovers all bivariate coefficients of total degree at most seven from branch coefficients through degree $24$. These residue-class optimizations are related to Bhargava's $P$-orderings \cite{Bhargava}. The specialization to this jet and its matching extremizers are the claims made here; priority over the interpolation literature has not been established.
+
+\begin{proposition}[Precision modulo powers of the uniformizer]\label{prop:integralbranch}
+Fix $r\ge1$, put $A=\mathcal O/\pi^r$, and now write $u_b=[b](X)\bmod\pi^r$. In $A((X))$ let $t_b$ be the least integer $t$ such that $X^t/\Delta_b\in A[[X]]$. The exact componentwise thresholds for recovering all total degrees $<d$ over $A$ are $1+t_b$. For $d\ge2$ they satisfy
+\[
+ t_b\le \omega_b+(r-1)\max_{c\ne b}(s_{bc}-1).
+\]
+\end{proposition}
+\begin{proof}
+Each $u_b-u_c$ has the form $X^{s_{bc}}U+\pi XV$ with $U$ a unit. Factoring off $X^{s_{bc}}U$ and expanding a finite geometric series in the remaining nilpotent term gives an inverse in $A((X))$. In the product of these inverses only terms of total $\pi$-degree $\le r-1$ survive. Their pole orders give the displayed bound. Weierstrass division over $A[[X]]$ and interpolation over $A((X))$ still apply since each difference is now invertible in the latter ring. If all observations vanish at the stated precision, each summand lies in $(X,Y)^d$. Conversely $H=(X^{t_b}/\Delta_b)P_b$ has a nonzero coefficient at $Y^{d-1}X^0$ by minimality of $t_b$, and evaluates to $X^{t_b}$ at $b$ and zero elsewhere.
+\end{proof}
+For two directions with $v(b-c)=1$, the bound is exact for every $r$. The linear coefficient of $u_b-u_c$ lifts to $b-c$. In the geometric expansion the term of $\pi$-degree $r-1$ therefore contributes a nonzero coefficient at $X^{-q-(r-1)(q-1)}$, and all lower powers of $\pi$ have smaller pole order. Thus the necessary branch depth grows with $r$ even for two directions.
+
+The local computation answers a finite precision question inside a published argument. In November 2026 Berger, Sprang and Steingart reported the bounded-functions conjecture for all quadratic extensions \cite{BSS}; Colovi\'c subsequently announced it for all finite extensions \cite{Colovic}. Those claims have independent proofs in the cited preprints. The interpolation formulas above furnish explicit local data irrespective of their status.

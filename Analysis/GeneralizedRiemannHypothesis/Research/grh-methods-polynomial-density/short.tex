@@ -1,0 +1,165 @@
+\section{Multiplicity differences in intervals of triple-logarithmic length}
+\label{sec:short}
+For distinct primitive Dirichlet characters $\chi_1,\ldots,\chi_s$ of conductors
+$q_1,\ldots,q_s$, let $m_j(t)$ be the order of $L(s',\chi_j)$ at $s'=1/2+it$.
+The conductor-one character gives the Riemann zeta function. Fix $s\ge2$.
+For $c\in\mathbb R^s$ put $z_c(t)=\sum_jc_jm_j(t)$ and
+$z_{c,\pm}=\max(\pm z_c,0)$. Write $\log_3 T=\log\log\log T$.
+Sums below count each ordinate once.
+
+\begin{theorem}\label{th:short}
+Fix $\epsilon>0$ and the characters. For all sufficiently large $T$, every
+\[
+ (2/\pi+\epsilon)\log_3 T\le H\le T
+\]
+satisfies, simultaneously for both signs and every $c$ with
+$\sum_jc_j=0$, $\|c\|_2=1$,
+\[
+ \sum_{T<t\le T+H}z_{c,\pm}(t)\ \gg_{\epsilon,\chi_1,\ldots,\chi_s}\ H\log\log H .
+\]
+\end{theorem}
+For two characters take $c=(1,-1)/\sqrt2$. Each interval contains both an
+ordinate where the first multiplicity is greater and one where the second is
+greater. The constant $2/\pi$ is sufficient as a limiting coefficient in
+this construction. Its optimality is open here.
+
+\paragraph{Comparison.}
+Srinivas proved that for distinct functions in the Selberg class of
+equal degree, each direction of excess occurs within distance
+$O(\log\log T)$ of every large $T$, using a kernel of double-exponential
+decay. Our use of real critical-line ordinates gives a smaller interval for
+fixed Dirichlet families and a lower bound for the mass in it.
+Banks gives bounds uniform in the character modulus.
+Fujii and Bombieri--Perelli obtain much larger total multiplicity counts in
+global ranges. Banks and Loftus detect genuinely unshared zeros in longer
+windows. In particular, if the multiplicities at a common zero are 2 and
+1, our sum counts one unit there. The conjectural scarcity of common zeros
+remains open. See \href{https://doi.org/10.4064/aa103-3-1}{Srinivas},
+\href{https://arxiv.org/abs/2302.07073}{Banks},
+\href{https://matwbn.icm.edu.pl/ksiazki/aa/aa28/aa2847.pdf}{Fujii},
+\href{https://doi.org/10.4064/aa-83-3-271-281}{Bombieri--Perelli}, and
+\href{https://arxiv.org/abs/2607.22930}{Banks--Loftus}.
+
+\subsection{A positive weight and its prime frequencies}
+Let $Q$ be the least common multiple of the conductors and
+$C(n)=\sum_jc_j\chi_j(n)$. The induced characters of
+$(\mathbb Z/Q\mathbb Z)^\times$ are distinct by uniqueness of the primitive
+inducer. Character orthogonality gives the mean square of $C(v)$ over the
+group as $1$. Choose $v$ with $|C(v)|\ge1$, and choose $\theta$ with
+$e^{i\theta}C(v)=|C(v)|$. Put $Y=\lambda\log H$ for a sufficiently
+small fixed $\lambda>0$. Take all primes $p\le Y$ congruent to $v$ modulo
+$Q$ and write
+\[
+ w_p=\frac{\log p}{\sqrt p},\qquad V^2=\sum w_p^2
+       \sim \frac{(\log Y)^2}{2\varphi(Q)}.
+\]
+The asymptotic follows by partial summation from the prime number theorem
+in the finitely many fixed progressions. Form the real trigonometric sums
+\[
+ A(t)=\Im\prod_p(1+i(w_p/V)\cos(t\log p+\theta)),\qquad
+ P_\pm(t)=1\pm e^{-1/2} A(t).
+\]
+On the real axis $|A|\le\prod_p\exp(w_p^2/(2V^2))=\sqrt e$, so
+$0\le P_\pm\le2$. Extend their finite exponential expansions to complex
+$t$. Write any one of these two as $P(t)=\sum_R b_R e^{it\log R}$,
+where the positive rationals $R$ are in lowest terms.
+Unique factorization gives $b_1=1$ and
+$b_p=\pm e^{-1/2}e^{i\theta}w_p/(2V)$ at the chosen primes.
+Every other nonconstant frequency, apart from their reciprocals, has at
+least two different primes with nonzero exponents and cannot be a prime
+power or its reciprocal. Also $b_{1/R}=\overline{b_R}$. Both the numerator
+and denominator of $R$ are at most $D=\prod_{p\le Y}p\le e^{2Y}$ for
+large $Y$. Expanding the product and using Cauchy--Schwarz gives
+$\sum_R|b_R|\le 1+\prod_p(1+w_p/V)\le1+\exp(\sqrt{\pi(Y)})$.
+
+\subsection{An explicit-formula test localized in height}
+Choose $0<a<\pi$ and $0<\kappa<1/2$ such that
+$a(1/2-\kappa)(2/\pi+\epsilon)>1$. Set $B=\kappa H$, $X=T+H/2$.
+Let $k(t)$ be $e^{-\cosh(at)}$ divided by its real integral, and put
+\[
+ K_B(t)=\frac{1}{2B}\int_{-B}^{B}k(t-y)\,dy,\qquad
+ h(t)=P(t)K_B(t-X).
+\]
+Thus $0\le h(t)\le1/B$ on $\mathbb R$. Use the Fourier convention
+$\widehat h(u)=\int_{\mathbb R}h(t)e^{-itu}\,dt$.
+For fixed $b$ with $1/2<b<\pi/(2a)$, shifting the contour to $\Im t=\pm b$
+gives $|\widehat k(u)|\ll_{a,b}e^{-b|u|}$ since
+$|e^{-\cosh(a(t+ib))}|=e^{-\cos(ab)\cosh(at)}$.
+Consequently
+\[
+ \widehat h(u)=\sum_R b_R e^{-iX(u-\log R)}
+       \widehat k(u-\log R)\operatorname{sinc}(B(u-\log R)),
+ \qquad \operatorname{sinc}(w)=\sin(w)/w,
+\]
+with value $1$ at zero. Resonant frequencies $u=\log R$ contribute exactly
+$b_R$ independently of the center $X$.
+
+For a primitive $\chi_j$ write $a_j=(1-\chi_j(-1))/2$ and
+$\psi=\Gamma'/\Gamma$. Under Dirichlet GRH the standard Guinand--Weil
+formula in this normalization reads
+\begin{align*}
+ 2\pi\sum_t m_j(t)h(t)
+   ={}& 2\pi\mathbf1_{q_j=1}\{h(i/2)+h(-i/2)\}\\
+ &+\int_{\mathbb R}h(t)\left[\log(q_j/\pi)+
+       \Re\psi\big((1/2+a_j+it)/2\big)\right]dt\\
+ &-2\Re\sum_{n\ge2}\frac{\Lambda(n)\chi_j(n)}{\sqrt n}\widehat h(\log n).
+\end{align*}
+The real-valued test need not be even. The formula follows by integrating the
+completed logarithmic derivative on the two sides of the critical strip,
+using its functional equation on the left. The strip of decay just proved
+justifies both contour shifts and absolute summation on the prime side.
+For the explicit-formula convention see
+\href{https://doi.org/10.1093/qmath/haab041}{\emph{Fourier optimization and quadratic forms}, section 5}.
+
+After multiplication by $c_j$ and summation, the archimedean contribution
+is $O(1)$ uniformly. Indeed, the common $\log(|t|/2)$ from Stirling's
+formula cancels since $\sum c_j=0$, the combined density is bounded near
+zero, and $\int |h|\le2$. The pole contribution is $o(1)$: on
+$\Im t=\pm1/2$, $|P(t)|\le D^{1/2}\sum|b_R|$, whereas each translated kernel
+in $h(\pm i/2)$ has real displacement at least $X-B\ge T$.
+
+On the prime side the total of the off-diagonal terms is
+$O(e^{C Y}/B)$ for a fixed $C$. Here are bounds also covering rational
+frequencies close to an integer. For $n\le 2D$ and $n\ne R$, the numerator
+of $n-R$ in the common denominator is a nonzero integer, hence
+$|\log n-\log R|\ge 1/(2D^2)$. The sinc factor costs at most $2D^2/B$,
+and $\sum_{n\le2D}(\log n)/\sqrt n\ll D^{1/2}\log(2D)$.
+For $n>2D$ the logarithmic difference exceeds $\log2$ and the Fourier
+bound gives $O(B^{-1}D^b n^{-b})$; the resulting sum converges since
+$b>1/2$. Summing these bounds with $|b_R|$ proves the assertion, uniformly
+in the phases and the vector $c$. Choose $\lambda$ so that $C\lambda<1/2$.
+The prime diagonal now gives
+\[
+ 2\pi\sum_t z_c(t)P_\pm(t)K_B(t-X)
+    =\mp e^{-1/2}|C(v)|V+O(1).
+\]
+In particular the two positive test functions have signed integrals of
+opposite signs and size $\gg\log\log H$.
+
+\subsection{Removing the tails}
+The number of zeros of any fixed primitive function in a unit interval
+at height $u$, with multiplicity, is $O(\log(2+|u|))$ by the
+Riemann--von Mangoldt formula (see also
+\href{https://doi.org/10.1090/mcom/3599}{\emph{Counting zeros of Dirichlet
+$L$-functions}}). Put $L=H/2-B$. In the $j$th unit interval outside either
+end of $(T,T+H]$, the maximal kernel value is
+$O(\exp(-c_a e^{a(L+j)}))$, $j\ge0$. This bound also covers a zero
+exactly at the excluded endpoint $T$. Summing the unit-interval bounds,
+using $H\le T$, gives a tail of size
+\[
+ O\!\left(\log(2+T)\exp(-c'_a e^{aL})\right)=o(1).
+\]
+Indeed $e^{aL}\ge(\log\log T)^{1+\eta}$ for some $\eta>0$.
+The same estimates apply to negative ordinates. Since $0\le h\le1/B$,
+each sign inside the interval has mass $\gg B V$. This proves
+Theorem~\ref{th:short}.\hfill$\square$
+
+\paragraph{A single-prime illustration.}
+For $\zeta$ and the Dirichlet beta function $L(s,\chi_{-4})$, use the
+unnormalized difference of their multiplicities. The unamplified conductor
+term is $-\log 4$. Using $P=1\pm\cos(t\log7)$, the two limiting
+signed readings after multiplication by $2\pi$ are
+$-\log4\mp 2\log7/\sqrt7$. The absolute prime term exceeds $\log4$,
+so this one prime already certifies both signs for sufficiently large
+windows of the stated length. The growing family of primes in the proof
+supplies the factor $\log\log H$.

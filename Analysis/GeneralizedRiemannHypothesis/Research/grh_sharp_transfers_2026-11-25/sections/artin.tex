@@ -1,0 +1,243 @@
+% Standalone section fragment; theorem environments supplied by parent manuscript.
+\section{A cancellation-resistant tensor detector for icosahedral fields}
+\label{sec:artin}
+
+This section supplies a separate transfer interface. It does not improve the
+smallest detector already in the incoming corpus: the $q=4$ case of the prior
+$\mathrm{PSL}_2(q)$ report already has a degree-$16$ detector. The additional calculation
+here is the exact first tensor power of a specified three-dimensional
+representation for which proper-subgroup information alone certifies
+holomorphy and detects every Dedekind zero, together with an optimal
+multiplicity certificate. No literature-priority claim is made for these
+finite-character identities.
+
+\subsection{The general tensor construction}
+Let $E/K$ be finite Galois with group $G$. At a point $s_0\ne1$, put
+\[
+ n_\psi=\operatorname{ord}_{s_0}L(s,\psi,E/K),\qquad
+ \Theta=\sum_{\psi\in\operatorname{Irr}(G)}n_\psi\psi,\qquad
+ d=\Theta(1)=\operatorname{ord}_{s_0}\zeta_E.
+\]
+The orders exist by Brauer's meromorphic continuation theorem; poles have
+negative order. Classical Artin formalism gives
+\[
+ \langle\operatorname{Res}_C\Theta,\lambda\rangle
+ =\operatorname{ord}_{s_0}L(s,\lambda,E/E^C)
+ \quad(C\le G,\ \lambda\in\operatorname{Irr}(C)).
+\]
+When $C$ is cyclic the right side is nonnegative: its factors are finite-order
+Hecke functions, with the sole possible pole at $1$. Hence
+$\operatorname{Res}_C\Theta$ is a genuine character, $d\ge0$, and
+$|\Theta(g)|\le d$ for every $g\in G$. Moreover $d=0$ forces $\Theta=0$.
+These are classical Heilbronn-character facts, not consequences of the
+proposed RH proof; see Foote--Ginsberg--Murty and Gun--Hazra--Sahu \cite{heilbronn,gun}.
+
+Assume $G$ is nontrivial; the trivial case is immediate.
+Let $\rho$ be a faithful complex representation of dimension $r$, and set
+$\tau=1\oplus\rho$, $D=r+1$. Its character has
+$|\chi_\tau(g)|<D$ for $g\ne1$: equality in the triangle inequality would
+force every eigenvalue, including the distinguished eigenvalue $1$, to be
+$1$, contradicting faithfulness. Define
+\[
+ F_m(g)=|\chi_\tau(g)|^{2m},\quad
+ q=\max_{g\ne1}\frac{|\chi_\tau(g)|^2}{D^2}<1,
+ \quad
+ \kappa_m=\frac{F_m(1)-\sum_{g\ne1}F_m(g)}{|G|}.
+\]
+Here $F_m$ is the genuine character of
+$(\tau\otimes\overline\tau)^{\otimes m}$ and is nonnegative pointwise.
+If $(|G|-1)q^m<1$, then $\kappa_m>0$ and
+\begin{equation}\label{eq:generic-tensor-domination}
+ \kappa_m d\le\operatorname{ord}_{s_0}L(s,F_m,E/K)
+ \le\langle F_m,1\rangle d.
+\end{equation}
+Indeed the inner product with $\Theta$ is real, its identity contribution is
+$F_m(1)d/|G|$, and all other terms have absolute value at most
+$F_m(g)d/|G|$. The upper bound follows by summing the same pointwise bound.
+Consequently $L(s,F_m)$ is holomorphic away from $1$ and has precisely the
+same zero support as $\zeta_E$ away from $1$. Its pole order at $1$ is
+$\langle F_m,1\rangle$. This establishes holomorphy for an aggregate tensor
+representation, not for the individual constituents of $\rho$.
+
+For an explicit group-only sufficient exponent, if $e$ is the exponent of
+$G$ then
+\[
+ q\le1-\frac{4\sin^2(\pi/e)}{D^2}.
+\]
+To prove this, diagonalize $\rho(g)$ unitarily. At least one eigenvalue
+$\lambda\ne1$ is an $e$th root of unity, and
+$D^2-|\chi_\tau(g)|^2$ is the sum of the squared pairwise distances among
+all $D$ eigenvalues. The pair $1,\lambda$ contributes at least
+$4\sin^2(\pi/e)$. This bound is deliberately crude. The character-table
+certificate below is much sharper. Tensor generation itself is classical;
+compare the Burnside--Brauer discussion in Steinberg \cite{steinberg}.
+
+\subsection{An exact fourth-tensor certificate for \texorpdfstring{$A_5$}{A5}}
+Write $\chi,\chi',\eta,\nu$ for the irreducible characters of degrees
+$3,3,4,5$. Let $\phi=(1+\sqrt5)/2$, $\phi'=(1-\sqrt5)/2$. The table is
+\[
+\begin{array}{c|rrrrr}
+ &1&2A&3A&5A&5B\\\hline
+\text{class size}&1&15&20&12&12\\
+1&1&1&1&1&1\\
+\chi&3&-1&0&\phi&\phi'\\
+\chi'&3&-1&0&\phi'&\phi\\
+\eta&4&0&1&-1&-1\\
+\nu&5&1&-1&0&0
+\end{array}
+\]
+Let $D_5$ denote a dihedral subgroup of order $10$, with nontrivial sign
+character $\epsilon$ trivial on its rotations. Choose $C_5\le D_5$ and a
+nontrivial character $\lambda$ corresponding to the eigenvalues of $\chi$.
+Let $\omega$ be either nontrivial character of $A_4/V_4$. Frobenius
+reciprocity, or the explicit induction calculation supplied with the
+archive, gives
+\[
+ A=\operatorname{Ind}_{D_5}^{A_5}\epsilon=\chi+\chi',\qquad
+ B=\operatorname{Ind}_{C_5}^{A_5}\lambda=\chi+\eta+\nu,\qquad
+ C=\operatorname{Ind}_{A_4}^{A_5}\omega=\nu.
+\]
+The tensor powers decompose as
+\[
+ \chi^2=1+\chi+\nu,\qquad
+ \chi^3=1+3\chi+\chi'+\eta+2\nu,\qquad
+ F=\chi^4=3+6\chi+3\chi'+4\eta+7\nu.
+\]
+The decisive positive identity is
+\begin{equation}\label{eq:a5-fourth-certificate}
+ \boxed{\ 4F=\operatorname{Reg}_{A_5}+11\cdot1+9A+12B+11C.\ }
+\end{equation}
+All coefficients on the right are nonnegative. For every $A_5$ extension
+$E/\mathbb Q$, Artin formalism therefore gives the exact meromorphic identity
+\begin{equation}\label{eq:a5-artin-product}
+ L(s,F)^4=\zeta_E(s)\zeta_{\mathbb Q}(s)^{11}
+ L(s,\epsilon,E/E^{D_5})^9
+ L(s,\lambda,E/E^{C_5})^{12}
+ L(s,\omega,E/E^{A_4})^{11}.
+\end{equation}
+The three displayed nontrivial one-dimensional factors are entire Hecke
+functions and are nonzero at $s=1$. The right-hand side therefore has
+pole order $12$ there. Since $L(s,F)$ is already meromorphic, its fourth power being
+holomorphic away from $1$ implies that it too is holomorphic there.
+It has pole order $3$ at $1$, the multiplicity of the trivial character.
+
+At any $s_0\ne1$, set $e_F=\operatorname{ord}_{s_0}L(s,F)$ and
+$d=\operatorname{ord}_{s_0}\zeta_E$. Equation
+\eqref{eq:a5-artin-product} proves $e_F\ge d/4$.
+Since $F(g)=\chi(g)^4\ge0$ and $|\Theta(g)|\le d$,
+\[
+ e_F=\frac1{60}\sum_gF(g)\overline{\Theta(g)}
+ \le\frac d{60}\sum_gF(g)=3d.
+\]
+Thus
+\begin{equation}\label{eq:a5-multiplicities}
+ \boxed{\quad d/4\le e_F\le3d.\quad}
+\end{equation}
+This proves identical zero support, even when individual Artin factors
+might have poles. It is stronger than merely observing that every
+irreducible occurs in $F$; positive constituent multiplicities by
+ themselves do not prevent cancellation of meromorphic orders.
+
+\subsection{Exact scope of the optimality statement}
+Consider the integral virtual character
+\[
+ \Theta_*=-\chi+\chi'+\eta.
+\]
+Its degree is $4$, and its restrictions to representatives of all three
+maximal-subgroup types are genuine:
+\[
+\begin{array}{c|l}
+ A_4&1+\text{the three-dimensional irreducible}\\
+ D_5&2\cdot\text{one two-dimensional irreducible}\\
+ S_3&1+\operatorname{sgn}+\text{the two-dimensional irreducible}.
+\end{array}
+\]
+Each of these maximal subgroups is monomial: its irreducible characters
+are induced from linear characters, so Artin--Hecke theory really does
+impose these nonnegative restriction orders at an arithmetic point.
+Every proper subgroup is contained in one of these maximal subgroups.
+The included permutation enumeration verifies the $59$ subgroups of $A_5$
+and its maximal subgroup counts: ten of order $6$, six of order $10$, and
+five of order $12$. Hence $\Theta_*$ satisfies all necessary
+proper-subgroup holomorphy constraints, including every cyclic restriction.
+However
+\[
+ \langle\chi^j,\Theta_*\rangle=-1\ (j=1,2,3),\qquad
+ \langle\chi^4,\Theta_*\rangle=1.
+\]
+Therefore the first three tensor powers cannot be certified by those
+constraints, and no inequality $d\le k e_F$ valid throughout that cone can
+have $k<4$. The identity \eqref{eq:a5-fourth-certificate} attains $k=4$.
+This proves optimality for the algebraic cone of necessary character
+conditions. It does not assert that an actual zero of any number field
+realizes $\Theta_*$, nor that the first three tensor functions have poles.
+
+For a complete small cone computation, write
+$\Theta=n_0\cdot1+x\chi+y\chi'+z\eta+w\nu$ and suppose $n_0=0$.
+The genuine restrictions to $A_4,D_5,S_3$ are equivalent to
+\[
+ z\ge0,\quad w\ge0,\quad x+y\ge0,\quad x+z+w\ge0,\quad y+z+w\ge0.
+\]
+Its six extreme rays in coordinates $(x,y,z,w)$ are
+\[
+ (1,0,0,0),\ (0,1,0,0),\ (-1,1,1,0),\ (1,-1,1,0),\
+ (-1,1,0,1),\ (1,-1,0,1).
+\]
+To see completeness, put $s=x+y\ge0$ and
+$t=(x+z+w)/(s+2z+2w)\in[0,1]$ for a nonzero vector. The vector is the
+convex combination, with coefficients $t,1-t$, of
+$s(1,0,0,0)+z(1,-1,1,0)+w(1,-1,0,1)$ and
+$s(0,1,0,0)+z(-1,1,1,0)+w(-1,1,0,1)$.
+The ratios $e_F/d$ on these rays are respectively
+$2,1,1/4,7/4,4/5,2$. Thus the exact bounds in this cone are
+$d/4\le e_F\le2d$. Under ordinary RH, they apply throughout
+$1/2<\Re s_0<1$.
+
+The prior degree-$16$ detector is $F_0=1+\chi+\chi'+\eta+\nu$,
+with class values $(16,0,1,1,1)$ \cite{pslprior}. It can also be written
+$1+\operatorname{Ind}_{V_4}^{A_5}\lambda_0$ for a nontrivial linear
+character $\lambda_0$ of $V_4$. This is a more economical detector when
+degree is the objective; it was already present in the inspected corpus.
+
+For comparison, the crude pointwise dominance test fails for $\chi^4$:
+its identity value is $81$, while its nonidentity sum is
+$15+12(\phi^4+\phi'^4)=99$. It first succeeds among the even powers at
+$\chi^6$, where $729>15+12(\phi^6+\phi'^6)=231$.
+The proper-subgroup certificate therefore removes one tensor-square
+amplification step; it does not improve the prior degree-$16$ detector.
+
+\subsection{The analytic estimate still needed}
+For a ramified prime, let $I$ be inertia and let $g$ be a Frobenius lift in
+the decomposition group. Averaging the inertia projector gives
+\[
+ \operatorname{tr}\bigl(g^k\mid(\rho^{\otimes4})^I\bigr)
+ =\frac1{|I|}\sum_{h\in I}\chi(g^kh)^4\ge0.
+\]
+Consequently the coefficients $b(p^k)$ of $D_F=-L'/L(s,F)$ are real,
+nonnegative, and at most $81\log p$, including ramified primes. Let
+\[
+ D_F(s)=\frac3{s-1}+a_0+O(s-1)
+\]
+and define
+\[
+ T_F(x)=\sum_{n\le x}b(n)(x/n-1)-3x\log x-(a_0-3)x.
+\]
+For $\Re s>1$, direct integration gives
+\[
+ \int_1^\infty T_F(x)x^{-s-1}\,dx
+ =\frac{D_F(s)}{s(s-1)}-\frac3{(s-1)^2}-\frac{a_0-3}{s-1}.
+\]
+The singularity at $1$ cancels. A zero $\rho$ of $L(s,F)$ contributes
+residue $e_F/[\rho(1-\rho)]$, strictly positive for a real zero
+$0<\rho<1$. Thus the same one-sided Mellin--Landau principle used in the
+source would imply Dedekind RH for $E$ from
+\[
+ T_F(x)\le C_{E,\varepsilon}x^{1/2+\varepsilon}
+ \quad\text{for every }\varepsilon>0\text{ and all sufficiently large }x.
+\]
+No such arithmetic bound is established here. The new burden is to build
+short and sufficiently spanning integral sections whose long-vector
+estimate encodes this tensor trace, with compatible twist and
+ramification bounds. Character identities and holomorphy alone do not
+supply that construction. In particular, this section does not solve
+individual Artin holomorphy or establish a new case of Dedekind RH.

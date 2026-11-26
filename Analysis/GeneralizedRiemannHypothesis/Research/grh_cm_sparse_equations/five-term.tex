@@ -1,0 +1,50 @@
+\section{Five terms leave at most five discriminants}\label{sec:five}
+\begin{theorem}\label{th:five}
+Every singular modulus of degree at most four satisfies an equation with at most five nonzero rational coefficients. Among higher degrees, such an equation can occur only at the order discriminants
+\[
+              -87,\quad -131,\quad -348,\quad -432,\quad -675.
+\]
+The degree is five at $-131$ and six at the other four. In particular, every singular modulus of degree at least seven requires at least six terms. These assertions use no hypothesis about zeros.
+\end{theorem}
+The low-degree assertion follows from $s\le h+1$. The certificates in Section~\ref{sec:cert} handle $h=5$. We now treat $h\ge6$. Write $\Delta=f^2d_K=-D$ and put $A=4\cdot2401^2=23{,}059{,}204$.
+
+\heading{Nonsplit primes.} For $p\equiv1\pmod3$, $p\nmid f$ nonsplit in $K$, all conjugates reduce to nonzero supersingular residues. The ring class field is unramified over $K$ at $p$, so the absolute ramification index is at most two even when $p\mid d_K$. Conjugates with a common residue have relative depth at least $1/2$. If their number is at least five and $p\ge7$, (1) applies since $1/(p-4)<1/2$. The numbers of supersingular residues for $p=7,13,19,31$ are respectively $1,1,2,3$. In general for primes $p\equiv1\pmod3$, the number $S_p$ equals $(p-1)/12$ if $p\equiv1\pmod{12}$ and $(p+5)/12$ otherwise \cite{deuring}. Thus $h>4S_p$ suffices.
+
+\heading{Split and conductor primes.} If $p\nmid f$ splits in $K$, every $a=p^j$ with $4a^2\le D$ occurs as a leading coefficient: lift a nonzero root of $b^2\equiv-D\pmod p$ to $p^j$, choose the parity of $b$, and take $|b|\le a$. Then $[a,b,(b^2+D)/(4a)]$ is integral, primitive and reduced, up to the boundary sign convention. For an odd prime $p\mid f$, the coefficient $a=p^2$ is available when $D\ge4p^4$. Take $b=pv$ of suitable parity and avoid the at most two residues for which $v^2+D/p^2\equiv0\pmod p$. Choose $|v|\le p$ by CRT. This makes $c=(v^2+D/p^2)/4$ coprime to $p$ and $c\ge p^2$.
+
+For $D\ge A$, try $7,13,19,31$ in order until a prime does not divide $f$. If it is nonsplit, the preceding disk test applies. In the last two rows involving a prime, $91\mid f$ gives $h\ge\varphi(f)/3\ge\varphi(91)/3=24$ by the conductor formula, enough for both 19 and 31. In the split case, or if all four divide $f$, use the leading coefficients in the table below.
+\begin{center}\small
+\begin{tabular}{@{}ll@{}}\toprule
+First prime coprime to $f$, if split & Five leading coefficients \\ \midrule
+7 & $1,7,49,343,2401$ \\
+13 & $1,13,49,169,2197$ \\
+19 & $1,19,49,169,361$ \\
+31 & $1,31,49,169,361$ \\
+All four divide $f$ & $1,49,169,361,961$ \\ \bottomrule
+\end{tabular}
+\end{center}
+Each row satisfies $4a_{\max}^2\le A$ and (2) at $D=A$ for every adjacent pair; both tests persist for larger $D$. This gives five separated complex conjugates and completes the large-discriminant proof.
+
+\clearpage
+\heading{The remaining finite interval.} We checked all $D\equiv0,3\pmod4$ with $3\le D<A$. The following disjoint counts are the output of \texttt{five/five\_sieve.cpp}.
+\begin{center}\small
+\begin{tabular}{@{}lr@{}}\toprule
+First applicable certificate or reason for discharge & Discriminants \\ \midrule
+Nonsplit at 7 or 13 away from the conductor & $9{,}109{,}793$ \\
+Five complex moduli separated using (2) & $2{,}419{,}666$ \\
+Complete enumeration gives $h<6$ & $25$ \\
+Nonsplit at a larger prime and $h>4 S_p$ & $51$ \\
+Individual class-polynomial test needed & $66$ \\ \midrule
+Total & $11{,}529{,}601$ \\ \bottomrule
+\end{tabular}
+\end{center}
+For odd $p$, the test for a conductor prime is $p\mid f$ iff $p^2\mid D$, since the odd part of $d_K$ is squarefree. The first pass discharges orders satisfying $h\ge6$ whenever the indicated congruence holds. The second searches reduced primitive forms with $a\le160$ for a chain passing (2). On survivors we count all reduced primitive forms up to $a\le\sqrt{D/3}$, counting both signs of $b$ except on the fundamental-domain boundary. For the fourth row we use $p=19,31,37,43,61,67,73,79,97,103$.
+
+The $66$ residual polynomials, with $D\le4563$, have degrees from 6 through 12. A single disk certificate eliminates 62 of them for five terms. The target in (1) is $t=5$ regardless of the degree of the class polynomial. The archive includes an additional check on all orders of class number six, seven or eight using Watkins's fundamental-discriminant bounds. A five-root disk exists for 97 of 101 sextic orders, all 38 septic orders and all 208 octic orders. Including the residual list, this gives 367 disk witnesses among 371 distinct polynomials. Some certificate tables use larger depth thresholds than (1); they imply the stated test. The four possible exceptions are the sextics in the theorem. They each exclude \emph{four} terms directly: at $-87,-348$ use $(p,v,r)=(19,0,7)$ and at $-432,-675$ use $(11,0,1)$. The coefficient valuations of $H(p^v(r+Z))$ are $(4,3,2,1,0,0,0)$ in all four tests. Together with the independent quartic and quintic census, this also proves Theorem~\ref{th:four} without the earlier GRH cutoff or its $10^{11}$ sieve. No five-term witness is asserted for any of the five candidates.
+
+\heading{Why another prime alone will not settle the five cases.}
+For each remaining order, no five conjugates lie in a common multiplicative disk of depth strictly greater than $\kappa(p,5)$ at \emph{any} rational prime, even allowing algebraic centers. Five such roots would give 20 ordered pairs with $v_p(\alpha_j/\alpha_i-1)>\kappa(p,5)$. Such a pair implies $p\mid\mathrm{disc}(H)$, since the $\alpha_i$ are integral and $v_p(\alpha_j-\alpha_i)>0$. The roots of
+\[
+   Y^{-h}\operatorname{Res}_X\!\big(H(X),H((1+Y)X)\big)
+\]
+are the required ratios minus one, with the $h$ diagonal pairs removed. The bundled integer checker factors $|\mathrm{disc}(H)|$ by trial division and uses the least minimizing index at every candidate prime. In discriminant order $-87,-131,-348,-432,-675$, the maximum numbers of pairs are respectively $14,12,14,12,14$. This exhausts the particular sufficient condition (1) across all primes and centers. The width argument later in the paper uses four clustered units and an additional root of positive valuation.

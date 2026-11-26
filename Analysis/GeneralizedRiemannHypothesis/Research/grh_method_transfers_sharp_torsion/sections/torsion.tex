@@ -1,0 +1,78 @@
+\section{The least possible order for exact torsion specialization}
+\label{sec:optimal-torsion}
+A twisting step in the Lean proof seeks characters of controlled prime-power order at which polynomial valuations stay small. The incoming report \incominglink{grh_exact_torsion_transfer_2026-11-25.zip}{on exact torsion selection} proved existence at zero tolerance relative to a fixed Gauss valuation. Its uniform exact specialization theorem gave the sufficient upper exponent
+\[
+  h_0+\left\lceil p^{h_0}B(h_0+B+2)\right\rceil .
+\]
+The choice of coefficient field affects the best possible exponent. We determine it exactly for unrestricted integral coefficients. For comparison we give the unramified optimum from the earlier reports.
+
+Let $p$ be prime, $v(p)=1$ on $\mathbb C_p$, $v(0)=+\infty$, and $\mathcal O=\mathcal O_{\mathbb C_p}$. Write $U_h$ for the primitive $p^h$-th roots of unity, $e_h=(p-1)p^{h-1}$ and $r_h=1/e_h$. Thus $v(\zeta-1)=r_h$ for $\zeta\in U_h$. Fix $h_0\ge1$, $\rho\ge r_{h_0}$ and $B\ge0$. For nonzero $g(T)=\sum a_jT^j\in\mathcal O[T]$ use
+\[
+       G_u(g)=\min_j\{v(a_j)+ju\},\qquad A=G_\rho(g).
+\]
+A root $\zeta$ is good for $g$ if $v(g(\zeta-1))\le A$. The radius $\rho$ is fixed while the order varies. Let $H_{\rm opt}$ be the smallest $H\ge h_0$ guaranteeing a good root on some shell $h_0\le h\le H$ for every $g$ with $A\le B$.
+
+\subsection{An exact threshold, with a full coset of good roots}
+\noindent\textbf{Theorem.}
+For unrestricted coefficients in $\mathcal O$,
+\[
+                   \boxed{H_{\rm opt}=h_0+\lfloor p^{h_0-1}B\rfloor.}
+\]
+More precisely, put $m=p^{h_0-1}$ and $L=H-h_0+1$. If $A-G_0(g)<L/m$, an entire coset of $\mu_m$ consists of good roots of the same order in the prescribed window. The threshold is sharp even for monic polynomials with coefficients in the integers of a finite cyclotomic extension.
+
+\medskip\noindent\emph{Proof.}
+Write $n=p^L$, so $mn=p^H$. Fix a primitive $mn$-th root $\xi$ and a primitive $n$-th root $\eta$. The admissible exponents $b$ modulo $mn$ are exactly those with $b\not\equiv0\pmod n$. For each $1\le a<n$, choose any $b_a\equiv a\pmod n$, and set $x_a=\xi^{b_a}-1$. For distinct residues $a,c$,
+\[
+ v(x_a)=m^{-1}v(\eta^a-1),\qquad
+ v(x_a-x_c)=m^{-1}v(\eta^a-\eta^c).
+\]
+Indeed $b_a$ and $b_a-b_c$ have the same $p$-adic orders as $a$ and $a-c$, respectively, all below $L$. Passing from an exponent modulo $p^L$ to its lift modulo $p^H$ multiplies the order of the corresponding root of unity by $m$.
+
+Let $P(T)=\prod_{a=1}^{n-1}(T-x_a)$. Each $v(x_a)\le r_{h_0}\le\rho$, so Gauss multiplicativity and $\prod_{a=1}^{n-1}(1-\eta^a)=n$ give
+\[
+          G_\rho(P)=\sum_a v(x_a)=L/m=:D .
+\]
+Differentiating $(X^n-1)/(X-1)$ at $X=\eta^a$ gives
+\[
+          v(P'(x_a))=m^{-1}\bigl(L-v(\eta^a-1)\bigr)
+                       =D-v(x_a).
+\]
+It follows that $\ell_a(T)=P(T)/((T-x_a)P'(x_a))$ has $G_\rho(\ell_a)=0$ for every $a$. In particular, interpolation of any polynomial of degree below $n-1$ from these nodes has no valuation loss on the disc of radius $p^{-\rho}$.
+
+By homogeneity, scale $g$ by the reciprocal of a coefficient of minimal valuation so that $G_0(g)=0$ and its coefficients remain integral. The normalized $A$ is then below $D$. Write $g=P Q+R$ with $\deg R<n-1$. Monic division over $\mathcal O$ leaves $Q,R$ integral. Hence $G_\rho(PQ)\ge D>A$ (using $G_u(0)=+\infty$) and $G_\rho(R)=A$. Interpolation gives
+\[
+               R(T)=\sum_a g(x_a)\ell_a(T),\qquad
+               A\ge\min_a v(g(x_a)).
+\]
+This holds for every choice of the representatives. If each of the $n-1$ residue classes had a bad representative, we could select one from each, contradicting this inequality. At least one class therefore consists entirely of good roots. It is a coset of $\mu_m$ and contains $m$ roots of a common order.
+
+For sharpness take $b_a=a$ and $g=P$. It has $A=D$, $G_0(P)=0$. At a selected node its value is zero. At another admissible root $\xi^b$ let $b\equiv a\pmod n$. Then $v(\xi^b-\xi^a)> r_{h_0}$, since their quotient is a nontrivial $m$-th root of unity. If $m=1$ there are no such extra points. The remaining factors have the same valuations as at $x_a$, since $v(x_a-x_c)\le r_{h_0}$ for $c\ne a$. Thus
+\[
+        v(P(\xi^b-1))=D-v(x_a)+v(\xi^b-\xi^a)>D .
+\]
+All roots in the window are bad. Consequently a window of $L$ shells works for every $A\le B$ exactly when $L>mB$. The asserted formula follows, including its integer endpoints.\hfill$\square$
+
+\medskip
+For instance, $p=3$, $h_0=2$, $B=1$ gives the optimal upper exponent $5$ in place of the earlier sufficient value $47$. At endpoint $H=4$, the witness polynomial uses $3^3-1=26$ nodes at a primitive $81$st root and has budget exactly $1$. Extending to $H=5$ guarantees three good roots forming a coset. The comparison concerns the order \emph{exponent}; the actual order is $p^h$.
+
+\subsection{Comparison with the known unramified coefficient case}
+The incoming manuscripts \incominglink{grh-torsion-and-zero-data.zip}{on torsion and zero data} and \incominglink{grh-torsion-and-prime-sampling.zip}{on torsion and prime sampling} obtained the exceptional-shell count for bounded ramification, the latter giving the precise per-shell divisibility cost below. They treat a stronger simultaneous formulation. We record the scalar specialization and its short proof to clarify the role of the coefficient field.
+\noindent\textbf{Theorem.}
+For coefficients in the ring of integers of $\mathbb Q_p$ or of any finite unramified extension $K/\mathbb Q_p$,
+\[
+                        \boxed{H_{\rm opt}=h_0+\lfloor B\rfloor.}
+\]
+Every primitive root on the selected shell is good. More generally, if $K$ has absolute ramification index $e$, failure on every shell in the window implies
+\[
+ A-G_0(g)\ \ge\ \sum_{h=h_0}^{H}\frac{1}{\gcd(e,e_h)} .
+\]
+
+\medskip\noindent\emph{Proof.}
+If a shell has even one bad point, at least two different coefficient terms attain $G_{r_h}(g)$. Otherwise its unique minimizing term dominates every evaluation on that shell and gives $v(g(\zeta-1))=G_{r_h}(g)\le A$. Let $j_-<j_+$ be the extreme minimizing indices. Their equality gives $(j_+-j_-)/e_h\in e^{-1}\mathbb Z$, hence $j_+-j_-$ is divisible by $e_h/\gcd(e,e_h)$. By the Newton polygon theorem the polynomial has exactly $j_+-j_-$ roots of valuation $r_h$, counted with multiplicity. Equivalently, this number is the drop in slope of the concave function $u\mapsto G_u(g)$ at $r_h$, as follows by factoring $g=b\prod_\alpha(T-\alpha)$ and using
+\[
+                 G_u(g)=v(b)+\sum_\alpha\min(u,v(\alpha)).
+\]
+Each such root contributes exactly $r_h$ to $G_\rho(g)-G_0(g)$, and different shells use disjoint roots. Every root contributes nonnegatively. Summation proves the necessary inequality. In fact if the right side exceeds the budget, at least one shell has no bad point at all. For $e=1$ this costs one unit per shell. Conversely the polynomial $\prod_{h=h_0}^H\Phi_{p^h}(1+T)$ lies in $\mathbb Z[T]$, vanishes on the entire window, and has $G_\rho=L$, by its roots. This proves optimality.\hfill$\square$
+
+\subsection{Power series, several variables, and determinant packets}
+For $s\ge1$ and $F=\sum_{\nu}a_\nu\mathbf T^\nu\in\mathcal O[[T_1,\ldots,T_s]]$ use $G_\rho(F)=\min_\nu(v(a_\nu)+\rho|\nu|)$. The minimum exists for nonzero $F$. With $G_\rho(F)\le B$, the unrestricted optimal upper exponent above applies to each coordinate. There exist $\zeta_j$ of orders in the window with $v(F(\boldsymbol\zeta-\mathbf1))\le G_\rho(F)$. To see this first treat a polynomial. Expand in the last $s-1$ variables and choose a coefficient $f_\beta(T_1)$ with $G_\rho(f_\beta)+\rho|\beta|=G_\rho(F)$. Specialize $T_1$ at a good root for $f_\beta$. The remaining polynomial has integral coefficients and Gauss valuation no greater than the former value. Continue one variable at a time. For a series, truncate to total degree $d$ with $(d+1)\min(\rho,r_H)>B$. The omitted terms have valuation strictly above $B$ at every admissible tuple and in the weighted Gauss valuation. The same tuple therefore works. Sharpness already occurs in one variable. For a finite packet of nonzero series, including determinants, apply the result to their product to control the \emph{sum} of the specialized valuations by the sum of their fixed-radius Gauss valuations. This conclusion requires a budget on that sum. After a torsion coordinate is substituted the coefficient field may become ramified, so this coordinatewise argument uses the unrestricted exponent.

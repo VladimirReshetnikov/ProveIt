@@ -1,0 +1,28 @@
+# Sources and relation to earlier work
+
+The readable Lean project was inspected at commit `72fead102f663d5c7a407964a13dc0cf9d977207`. Its toolchain is Lean 4.35.0 with Mathlib at `56a005855ea17e0b0958f73ec801ae140b0a1679`. The machine verification cited below belongs to the upstream theorems. The two papers in this archive provide mathematical proofs in prose.
+
+| Source | Role in these papers |
+|---|---|
+| [Statements.lean](https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/Statements.lean) and [Main.lean](https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/Main.lean) | Exact public statements and their proofs. The zero-free half-plane statements include imprimitive Dirichlet characters. |
+| [Reading guide](https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/GUIDE.md), [MainInequality.lean](https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/New/Reduction/MainInequality.lean), [OneSidedBound.lean](https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/New/Reduction/OneSidedBound.lean) | The comparison of short, spanning, and long forms yields a one-sided prime-remainder bound. |
+| [RootsOfUnity.lean](https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/New/Congruences/Selmer/RootsOfUnity.lean) and [GeneralTheorem.lean](https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/New/Congruences/Selmer/GeneralTheorem.lean) | The local polynomial specialization and its use for simultaneous anticyclotomic twisting. |
+| [Landau.lean](https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/Lib/Analytic/Landau.lean) and [PrimeError.lean](https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/New/Reduction/Zeros/PrimeError.lean) | Mellin transform of the smoothed prime sum, positivity and the sign of residues. |
+| [A. Sutherland, independent check of the shorter proof](https://math.mit.edu/~drew/shortgrh/) | Records compilation, axiom checks, kernel replays, and the comparison of the five exported statements for both editions. |
+| [M. Bhargava, P-orderings and polynomial functions on arbitrary subsets of Dedekind rings](https://doi.org/10.1515/crll.1997.490.101) | Classical fixed-divisor and valuation-minimization background for counting occupancies in the residue tree. |
+| [Y. Ihara, On the Euler–Kronecker constants of global fields and primes with small norms](https://www.kurims.kyoto-u.ac.jp/~kenkyubu/emeritus/ihara/Publications-and-Recent-Preprints/RecentArticles/pdf-files/1A.pdf) | The uncentered smoothed sum equals (1−1/x)Φ_K(x). See (1.1.1), (1.2.1), (1.2.6), (1.3.11), and (1.5.8) for the explicit formula. |
+| [H. Weyl, Über die Gleichverteilung von Zahlen mod. Eins](https://doi.org/10.1007/BF01475864) | Polynomial equidistribution separates frequencies on the prescribed sparse sequence. |
+| [J. B. Conrey, A. Ghosh and S. M. Gonek, Simple zeros of the Riemann zeta-function](https://www.sas.rochester.edu/mth/people/faculty/gonek-steve/assets/pdf/simplezeros.pdf) | Classical simplicity conjecture and known partial results. |
+| [D. Platt and T. Trudgian, §2](https://arxiv.org/pdf/2004.09765) and [E. Hasanalizade, Q. Shen and P.-J. Wong](https://arxiv.org/abs/2107.06506) | Independent finite simplicity verification via sign changes and the full multiplicity count, and an explicit bound on the higher zero count. |
+
+## The ProveIt comparison
+
+The accompanying prior_reports.tsv records names, subjects, sizes, Git blob hashes and links for 26 GRH-related archives in [the pinned incoming directory](https://github.com/VladimirReshetnikov/ProveIt/tree/6fe2c1bd450aa7f19eab17fb9a6e76170b4fce00/docs/incoming). The subject index is based on their manuscript text. This is a targeted comparison. A verified blob identity says nothing about correctness of the mathematical claims in the earlier reports.
+
+- The question answered in the first paper is item (ii) in the “Research questions” paragraph of [the quantitative-twists report](https://github.com/VladimirReshetnikov/ProveIt/blob/6fe2c1bd450aa7f19eab17fb9a6e76170b4fce00/docs/incoming/grh_quantitative_twists_2026-11-25.zip). That draft proves a polynomial exponent bound for a fixed number of constraints. Its tolerance is evaluated relative to an initial Gauss valuation or witness.
+- The report whose filename ends in “(1).zip” contains a cardinality-independent simultaneous positive-excess estimate in torsion_transfer.tex. Its harmonic argument supplies an upper bound. The unrestricted minimax formula here also supplies matching extremizers.
+- The report grh_beyond_dirichlet_grh_2026-11-25.zip proves sharp linear depth for simultaneous nonvanishing. Valuations at nonzero specializations may be arbitrarily large, so that theorem addresses a different objective.
+- The unsuffixed grh_method_transfers_2026-11-25.zip includes sparse_sampling.tex on a fourth-power grid derived by convexity. The prime-sampling paper treats arbitrarily large fixed powers by using the spectral modulus of continuity. The earlier section attributes the fourth-power scale to Sandi Setiawan.
+- The prior grh_cm_four_terms_and_prime_bias.zip uses an unsmoothed continuous mean square in a prime-bias problem. Our discrete mean-square identity uses an absolutely convergent expansion and a prescribed sequence to separate every pair of distinct zero ordinates.
+
+The resolved question originated in the earlier research draft. No claim of bibliographic priority over every formulation in the literature is made.

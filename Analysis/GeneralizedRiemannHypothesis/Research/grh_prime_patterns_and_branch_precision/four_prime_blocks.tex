@@ -1,0 +1,89 @@
+\subsection{The exact optimum through block size four}
+Write $R$ for Rankin's set. In the notation of the preceding theorem,
+\[
+       \alpha_1=\alpha_2=\alpha_3=\alpha_4
+       =d(R)=\prod_p\left[(1-1/p)\prod_{j\ge0}(1+p^{-3^j})\right],
+\]
+where the outer product runs over primes.
+In particular, any progression-free product rule of density strictly
+greater than $d(R)$ must couple at least five primes in some block.
+An incoming manuscript had established local optimality at the single
+four-tuple $(2,3,5,7)$. To pass from one tuple to all tuples we certify
+a family of rectangular prefixes, then change the four prime weights by
+summation by parts. This quantifier change matters because a product
+partition can pair even the smallest prime with an arbitrarily large one.
+
+It suffices to prove optimality on each four-prime block: one can pad a
+smaller block with extra primes bearing independent Rankin rules and
+divide by their positive local probabilities. Order the primes as
+$q_1<q_2<q_3<q_4$. If $q_1\ge5$, then
+$\prod q_i/(q_i-1)\le(5/4)(7/6)(11/10)(13/12)<2$, and the light-block
+bound applies. Otherwise select the following base tuple $b$.
+The first $f$ entries are fixed at $q_i=b_i$; all others obey $q_i\ge b_i$.
+\begin{center}\small
+\begin{tabular}{lrrrr}
+Condition & Base tuple & $f$ & Prefixes & Search nodes\\ \hline
+$q_1=2,\ q_2=3$ & $(2,3,5,7)$ & 2 & 9 & 5,537,385\\
+$q_1=2,\ q_2\ge5$ & $(2,5,7,11)$ & 1 & 81 & 221,071\\
+$q_1=3$ & $(3,5,7,11)$ & 1 & 81 & 29,307
+\end{tabular}
+\end{center}
+
+Use the box $D=\prod_i\{0,\ldots,m_i-1\}$ with
+$m=(9,9,3,3)$, corresponding to low ternary digit depths
+$k=(2,2,1,1)$. Write $G^4$ for the good vectors,
+$W_b(J)=\sum_{a\in J}\prod_i b_i^{-a_i}$ and $\lambda=21/20$.
+For every rectangular prefix $D'$ of $D$ with the first $f$ axes
+untruncated, the program \texttt{check\_four\_prime\_blocks.py}
+certifies that any progression-free $I\subset D'$ satisfies
+\[
+       \lambda W_b(I\setminus G^4)\le W_b((G^4\cap D')\setminus I).
+       \tag{*}
+\]
+The test orders the box by $n=\prod b_i^{a_i}$ and branches on including
+or omitting the least undecided value. Inclusion of the midpoint $v$,
+with an already chosen $u<v$, forbids $v^2/u$ whenever this is in the
+box. The upper bound on the objective is the summed weight of all chosen
+and undecided values, with the factor $\lambda$ on bad values. A branch
+is complete as soon as this bound is at most $W_b(G^4\cap D')$.
+The objective is scaled to integers. Every independent subset follows
+one branch, proving that a successful traversal certifies the inequality.
+
+For an arbitrary ratio $t_i=b_i/q_i\le1$, the function
+$t_i^{a_i}$ on $0\le a_i<m_i$ is a nonnegative linear combination
+of prefix indicators. The coefficient of $\mathbf1_{a_i\le j}$ is
+$t_i^j-t_i^{j+1}$ for $j<m_i-1$ and $t_i^{m_i-1}$ for the last
+prefix. A fixed coordinate uses just the last prefix.
+Multiply the four expansions, apply (*) to $I\cap D'$ on each prefix
+and sum. This gives (*) on the full box with every $b_i$ replaced by
+$q_i$.
+
+For completeness, the low-box margin propagates to unbounded exponents
+as follows. Let $F$ be a progression-free subset of the four-prime
+semigroup and put $M=W_q(C\setminus F)$, where $C$ is its Rankin set.
+Split exponents into low digits and a high part divisible in each
+coordinate by $m_i$. In each fixed good high part, (*)
+bounds the mass of points in $F$ with a bad low digit by the missing
+good mass divided by $\lambda$. Summing gives at most $M/\lambda$.
+For a point in $F$ with a bad high digit, replace every digit two by
+zero, respectively one. As in the light-block proof, one of the two
+resulting Rankin points must be missing. Relative to a missing point
+the charged reciprocal weight is a product of factors $q_i^{-e3^j}$
+for a subset of digits, with $e=1$ for the one replacement and $e=2$
+for the zero replacement. At least one changed digit is high.
+The total charge is at most $M T(q)$, where
+\[
+ T(q)=\sum_{e=1,2}\left[\prod_i\prod_{0\le j<k_i}
+       (1+q_i^{-e3^j})\right]
+       \left[\prod_i(1-q_i^{-e m_i})^{-1}-1\right].
+\]
+The second bracket bounds all nonempty high-digit changes by geometric
+series; ternary subset sums have distinct exponents. The bound decreases
+when a prime increases. For each base tuple the program checks
+$1-1/\lambda-T(b)>1/200$ in rational arithmetic. Therefore
+$W_q(C)-W_q(F)\ge M(1-1/\lambda-T(q))\ge0$.
+This proves the claimed local optimum and, by the finite-block
+upper bounds proved above, the global result. The base-box
+branching and high-digit charge adapt the incoming
+\incoming{mcnew_density_and_grh_transfers.zip}{four-prime density manuscript}. Its three
+fixed-prime certificates alone do not imply the prefix inequalities.

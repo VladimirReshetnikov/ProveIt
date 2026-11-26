@@ -1,0 +1,49 @@
+\subsection*{Defining polynomials and exact checks}
+The class-number-five rows below use
+\[
+             P_{p,a}(X)=X^5-5pX^3+5p^2X-a .
+\]
+Here $D_E=-q$, $p$ is the norm of a nonprincipal split prime ideal, and
+$4p^5=a^2+qb^2$. The integer $(a+b\sqrt{-q})/2$ generates a fifth
+power of one of the two prime ideals over $p$. Indeed it has the
+required norm and $p\nmid a$, so its two conjugates cannot both be divisible by the
+same prime over $p$. Changing the sign of the trace sends the root to its
+negative and gives the same field up to isomorphism.
+\begin{center}
+\begin{tabular}{rrrr@{\hspace{2.5em}}rrrr}
+\toprule
+$q$ & $p$ & $a$ & $b$ & $q$ & $p$ & $a$ & $b$\\
+\midrule
+47 & 2 & 9 & 1 & 691 & 5 & 38 & 4 \\
+79 & 2 & 7 & 1 & 739 & 5 & 26 & 4 \\
+103 & 2 & 5 & 1 & 787 & 7 & 59 & 9 \\
+127 & 2 & 1 & 1 & 947 & 3 & 5 & 1 \\
+131 & 3 & 29 & 1 & 1051 & 5 & 107 & 1 \\
+179 & 3 & 16 & 2 & 1123 & 7 & 239 & 3 \\
+227 & 3 & 8 & 2 & 1723 & 11 & 149 & 19 \\
+347 & 3 & 25 & 1 & 1747 & 17 & 1565 & 43 \\
+443 & 3 & 23 & 1 & 1867 & 7 & 4 & 6 \\
+523 & 7 & 220 & 6 & 2203 & 7 & 255 & 1 \\
+571 & 5 & 58 & 4 & 2347 & 17 & 1810 & 32 \\
+619 & 5 & 109 & 1 & 2683 & 11 & 344 & 14 \\
+683 & 3 & 17 & 1 &  &  &  &  \\
+\bottomrule
+\end{tabular}
+\end{center}
+The remaining field has defining polynomial
+$X^5+X^4-4X^3-3X^2+3X+1$, obtained by writing
+$1+\zeta+\cdots+\zeta^{10}=0$ in terms of $X=\zeta+\zeta^{-1}$ for
+a primitive eleventh root. The first row of the table, for example,
+gives $X^5-10X^3+20X-9$ for $D_E=-47$.
+
+The program \texttt{checks/quintic\_fields.py} counts reduced primitive
+binary quadratic forms through Watkins's discriminant bound, finds the
+displayed norm identities, and checks every polynomial modulo primes.
+For each of the 26 polynomials the archive gives a prime of irreducible
+reduction. For each of the $\binom{26}{2}=325$ pairs it gives a prime
+where both reductions are squarefree and the factor degrees disagree.
+A squarefree reduction ensures the prime does not divide the polynomial
+discriminant, hence does not divide the order index. Its factor degrees
+therefore give the residue degrees in the field; unequal patterns certify
+nonisomorphism. These checks verify the list and its distinctness.
+The proof in Section~\ref{sec:quintic} establishes completeness over all levels.

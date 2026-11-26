@@ -1,0 +1,358 @@
+\section{A sharp spanning interface}
+\label{sec:sharp-spanning}
+\subsection{The exact source hypotheses}
+
+Let \(S,T\) be finite-dimensional complex Hilbert spaces, with
+\(s=\dim S>0\). Let a finite group \(G\) act unitarily on \(T\), by
+\(\rho\), and let \(P\) be the orthogonal projection onto a
+\(G\)-stable subspace \(W\), of dimension \(d>0\). Thus
+\(P\rho(g)=\rho(g)P\). Fix a linear map \(B:S\to T\) and write
+\(C_g=P\rho(g)B:S\to W\).
+
+The following are the two quantitative hypotheses underlying
+\texttt{isSpread\_of\_second\_moment}, in
+\src{New/Spanning/SecondMoment/FewTranslates.lean}{\texttt{FewTranslates.lean}}:
+for every subspace \(U\le S\),
+\begin{equation}\label{eq:near}
+ \|PB P_U\|_\HS^2\ge \dim U-u s,
+\end{equation}
+and
+\begin{equation}\label{eq:moment}
+ \frac d{|G|}\sum_{g\in G}\|B^*\rho(g)B\|_\HS^2
+ \le (1+v)s^2.
+\end{equation}
+Here \(P_U\) denotes orthogonal projection onto \(U\), and
+\(0\le u<1\) and \(v\ge0\). The source's \texttt{IsNearIsometry} is
+\eqref{eq:near}; it is a statement on every source subspace, not merely
+one lower bound on the total Hilbert--Schmidt norm.
+
+\begin{lemma}[The square-root estimate]\label{lem:sqrt}
+For every subspace \(F\le W\), of relative dimension
+\(\alpha=\dim F/d\), some \(g\in G\) satisfies
+\begin{equation}\label{eq:sqrt}
+ \dim C_g^{-1}(F)
+ \le s\bigl[u+\sqrt{(1+v)\alpha}\bigr].
+\end{equation}
+In particular, \(s\le d/(1-u)\).
+\end{lemma}
+
+\begin{proof}
+Put
+\(M=|G|^{-1}\sum_g\rho(g)BB^*\rho(g)^*\).
+Unitarity and a change of variables in the double sum give
+\[
+ \tr(M^2)=\frac1{|G|}\sum_g\|B^*\rho(g)B\|_\HS^2.
+\]
+The Hilbert--Schmidt Cauchy--Schwarz inequality therefore gives
+\[
+ \frac1{|G|}\sum_g\|P_F\rho(g)B\|_\HS^2
+ =\tr(P_FM)
+ \le\sqrt{\dim F\,\tr(M^2)}
+ \le s\sqrt{\alpha(1+v)}.
+\]
+Choose \(g\) with its summand at most this average and put
+\(U=C_g^{-1}(F)\). On \(U\), the maps \(C_g\) and
+\(P_F\rho(g)B\) agree. Because \(C_g=\rho(g)PB\), and
+right-composition by an orthogonal projection does not increase the
+Hilbert--Schmidt norm, \eqref{eq:near} yields
+\[
+ \dim U-u s
+ \le\|PB P_U\|_\HS^2
+ =\|C_gP_U\|_\HS^2
+ \le\|P_F\rho(g)B\|_\HS^2.
+\]
+This proves \eqref{eq:sqrt}. For the last assertion, apply
+\eqref{eq:near} to \(\ker(PB)\). It gives
+\(\dim\ker(PB)\le u s\), hence
+\((1-u)s\le\operatorname{rank}(PB)\le d\).
+\end{proof}
+
+The source first replaces both errors by a common \(\varepsilon\), then applies
+\(\sqrt{\alpha(1+\varepsilon)}\le(\alpha+1+\varepsilon)/2\)
+before proceeding to the greedy argument. Keeping the square root
+retains useful information near the limiting dimension.
+
+\subsection{Sharp total span and a finite selection bound}
+
+Set
+\begin{equation}\label{eq:parameters}
+\begin{gathered}
+ a=1-u,\qquad z=1+v,\qquad
+ \alpha_*=\frac{a^2}{z},\\[3pt]
+ \delta_*=1-\alpha_*=
+ \frac{2u+v-u^2}{1+v},
+ \qquad h=\frac{s z}{2ad},\qquad q=\max\{0,1-h\}.
+\end{gathered}
+\end{equation}
+Thus \(a,z,\alpha_*,h>0\), \(0\le\delta_*<1\), and
+\(0\le q<1\).
+
+\begin{theorem}[Greedy selection with the sharp limiting loss]\label{thm:greedy}
+For every integer \(t\ge0\), there is a set \(A\subseteq G\),
+with \(|A|\le t\), such that
+\begin{equation}\label{eq:greedy}
+ \codim_W\sum_{g\in A}\im C_g
+ \le d\bigl[\delta_*+\alpha_*q^t\bigr].
+\end{equation}
+Consequently, for \(0<\tau<\alpha_*\), a loss of at most
+\((\delta_*+\tau)d\) is achieved with at most
+\begin{equation}\label{eq:count}
+ \left\lceil\frac{2ad}{sz}\log\frac{\alpha_*}{\tau}\right\rceil
+\end{equation}
+translates. The span of all the images has codimension at most
+\(\lfloor\delta_*d\rfloor\).
+\end{theorem}
+
+\begin{proof}
+Let the current span be \(F\), with codimension \(c\). Rank-nullity
+for \(S\to W/F\) gives
+\[
+ \dim(F+\im C_g)-\dim F=s-\dim C_g^{-1}(F).
+\]
+By Lemma~\ref{lem:sqrt}, some \(g\) therefore adds at least
+\begin{equation}\label{eq:gain}
+ s\left[a-\sqrt{z(1-c/d)}\right]
+\end{equation}
+dimensions. Suppose \(c>\delta_*d\), and put
+\(e=c-\delta_*d>0\). The bracket in \eqref{eq:gain} is
+\[
+ a-\sqrt{a^2-ze/d}
+ =\frac{ze/d}{a+\sqrt{a^2-ze/d}}
+ \ge\frac{ze}{2ad}.
+\]
+The square root is real because \(c\le d\). Thus, after the
+selected step, the new excess codimension is at most \((1-h)e\),
+and hence at most \(qe\). If \(c\le\delta_*d\), keep the
+existing set of indices. Induction from the empty span,
+\(c_0=d=\delta_*d+\alpha_*d\), proves \eqref{eq:greedy}.
+Taking a set of indices accommodates repetitions automatically.
+
+Since \(q\le e^{-h}\), the number in \eqref{eq:count} suffices.
+This also covers \(q=0\), as the displayed ceiling is at least one.
+Finally, take \(F=\sum_{g\in G}\im C_g\) in
+\eqref{eq:sqrt}. Every preimage is all of \(S\), so
+\(1\le u+\sqrt{z\dim F/d}\), whence
+\(\dim F\ge\alpha_*d\). Integrality gives the stated floor.
+\end{proof}
+
+\begin{proposition}[Sharpness under the moment hypotheses]\label{prop:sharp}
+For every rational pair \(0\le u<1\), \(v\ge0\), examples
+satisfying \eqref{eq:near} and \eqref{eq:moment} have total span of
+dimension exactly \(\alpha_*d\). Thus \(\delta_*\) cannot be
+decreased as a universal bound under these hypotheses.
+\end{proposition}
+
+\begin{proof}
+Since \(\alpha_*\) is positive and rational, choose positive integers
+\(d,r\) with \(r/d=\alpha_*\). Take \(S=\C\),
+\(W=T=\C^d\), and \(P=I\). Let the cyclic group of order \(r\)
+rotate the first \(r\) coordinate vectors, fixing the other
+\(d-r\) vectors. Put \(B(1)=\sqrt{1-u}\,e_1\).
+The only subspaces of \(S\) are zero and \(S\), so
+\eqref{eq:near} holds, with equality for \(S\). Moreover
+\[
+ \frac1{|G|}\sum_g\|B^*\rho(g)B\|_\HS^2
+ =\frac{(1-u)^2}{r},\qquad
+ \frac{d(1-u)^2}{r}=1+v.
+\]
+Thus \eqref{eq:moment} is also an equality. The orbit images span
+exactly the first \(r\) coordinate directions.
+The example also has \(\|B^*B-I\|_\HS^2=u^2s\).
+\end{proof}
+
+\begin{corollary}[Equal errors]
+When \(u=v=\varepsilon\), the sharp limiting deficit is
+\[
+ \delta_*=\frac{3\varepsilon-\varepsilon^2}{1+\varepsilon}.
+\]
+For \(\varepsilon=p/v_0\), with integers \(0\le p<v_0\),
+one explicit equality example has
+\(d=v_0(v_0+p)\) and \(r=(v_0-p)^2\).
+\end{corollary}
+
+The total-rank argument is an instance of the classical
+second-moment, or effective-rank, inequality \cite{welch,mixon}.
+Greedy rank accumulation is likewise a classical technique; see, for example,
+the submodular-cover analysis in \cite{wolsey}. The contribution here
+is the exact sharp threshold extracted from the source hypotheses,
+the explicit selection schedule, and its application with all of
+the source's rank-loss and translate-count terms preserved.
+
+\subsection{Restriction of the source and its cost}
+
+\begin{lemma}[Restriction loss]\label{lem:restriction}
+Let \(S_0\le S\) have codimension \(r_0\). The same selected
+set in Theorem~\ref{thm:greedy} satisfies
+\begin{equation}\label{eq:restricted}
+ \codim_W\sum_{g\in A}C_g(S_0)
+ \le d\bigl[\delta_*+\alpha_*q^t\bigr]+t r_0.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The direct sum of \(|A|\) copies of \(S/S_0\) surjects onto
+\((\sum_{g\in A}C_g(S))/(\sum_{g\in A}C_g(S_0))\).
+Thus the difference of the two span dimensions is at most
+\(|A|r_0\le t r_0\). Apply \eqref{eq:greedy}.
+\end{proof}
+
+For an arbitrary application, \eqref{eq:restricted} explicitly
+balances the benefit of selecting more translates against the
+cost of restricting the source. If \(r_0/s=\theta>0\) and
+\(2\theta<a\), taking
+\[
+ t=\left\lceil h^{-1}\log\frac{a}{2\theta}\right\rceil
+\]
+gives the further bound
+\[
+ \frac1d\codim_W\sum_{g\in A}C_g(S_0)
+ \le\delta_*+
+ \frac{2a\theta}{z}\left(1+\log\frac{a}{2\theta}\right)
+ +\frac{\theta s}{d}
+ \le\delta_*+
+ \frac{2a\theta}{z}\left(1+\log\frac{a}{2\theta}\right)
+ +\frac{\theta}{a}.
+\]
+Indeed, \(d\alpha_*h=as/2\), and rounding up increases the
+linear loss by at most \(r_0\). This optimized choice is optional;
+the next theorem improves the original source's count budget.
+
+\section{Improving the source theorem at its original constants}
+\label{sec:source-improvement}
+
+The parameter called \(b\) here is the large weight in the source,
+not the moment factor \(z=1+v\). The raw estimates in
+\src{New/Spanning/SecondMoment/SpanningTheorem.lean}{\texttt{SpanningTheorem.lean}}
+are
+\[
+ u=\frac5{b^4},\qquad v=\frac9{b^4}.
+\]
+They occur in the following declarations, respectively:
+\begin{itemize}
+\item \code{isNearIsometry_e}\textsubscript{0}\code{_comp_scaledPoincare};
+\item \code{targetDim_mul_sum_hilbertSchmidtNorm_sq_le}.
+\end{itemize}
+The proof of \texttt{isSpread\_goodPoincare} later replaces both
+by \(\varepsilon=(8b^2)^{-1}\); that enlargement is unnecessary
+for the argument here. Its source-restriction argument in
+\src{New/Reduction/ShortAndEnough.lean}{\texttt{ShortAndEnough.lean}}
+has \(r_0/s\le b^{-8}\). The maps are identified through
+\texttt{sourceFormCoords}; the nonzero scalar normalizations in
+\texttt{goodPoincare} and \texttt{normalizedPoincare} do not change
+these image subspaces.
+
+\begin{theorem}[Fourth-order loss and fewer translates]\label{thm:source}
+Assume \eqref{eq:near} and \eqref{eq:moment} with
+\(u=5b^{-4}\), \(v=9b^{-4}\), and \(b\ge6\).
+Let \(S_0\le S\) satisfy \(r_0=s-\dim S_0\le b^{-8}s\).
+Then some set \(A\subseteq G\) satisfies
+\begin{align}
+ |A|\dim S_0&\le 4d\log(1+2b^2),\label{eq:sourcecount}\\
+ \dim\sum_{g\in A}C_g(S_0)&\ge
+ \left(1-\frac{20}{b^4}\right)d.\label{eq:sourcerank}
+\end{align}
+In fact \(|A|s\le4d\log(1+2b^2)\).
+\end{theorem}
+
+\begin{proof}
+Write \(L=\log(1+2b^2)\), and choose
+\[
+ t=\left\lfloor\frac{4dL}{s}\right\rfloor.
+\]
+Lemma~\ref{lem:sqrt} gives \(s/d\le1/a\). Since
+\(u\le5/256\) and \(v\le9/256\), we have
+\(a\ge251/256\), \(z\le265/256\), and
+\[
+ 0<h=\frac{s z}{2ad}\le\frac{z}{2a^2}
+ \le\frac{33920}{63001}<1.
+\]
+Also \(4dL/s\ge4aL>1\), so \(t\ge1\).
+In particular \(q=1-h\), and
+\begin{align*}
+ q^t&\le e^{-ht}
+ \le \exp\left(\frac{s z}{2ad}\right)
+       (1+2b^2)^{-2z/a}\\
+ &\le \exp\left(\frac{z}{2a^2}\right)
+       (1+2b^2)^{-2z/a}.
+\end{align*}
+The second inequality uses \(t\ge4dL/s-1\); this retains the
+entire cost of the floor. Applying Lemma~\ref{lem:restriction}
+and dividing by \(d\), the missing share is at most
+\begin{equation}\label{eq:exactsource}
+ \delta_*+
+ \alpha_*\exp\left(\frac{z}{2a^2}\right)
+       (1+2b^2)^{-2z/a}
+ +4b^{-8}\log(1+2b^2).
+\end{equation}
+Bound the three terms separately. First,
+\[
+ \delta_*=\frac{2u+v-u^2}{1+v}\le2u+v=\frac{19}{b^4}.
+\]
+Second, \(\alpha_*\le1\), \(z/(2a^2)<1\), \(e<3\),
+and \(z/a\ge1\), so the middle term is at most
+\[
+ 3(1+2b^2)^{-2}\le\frac3{4b^4}.
+\]
+Third, \(\log(1+2b^2)\le2b^2\), so the final term is at most
+\(8b^{-6}\). For \(b\ge6\),
+\[
+ \frac{19}{b^4}+\frac3{4b^4}+\frac8{b^6}
+ \le\frac1{b^4}\left(19+\frac34+\frac8{36}\right)
+ =\frac{719}{36b^4}<\frac{20}{b^4}.
+\]
+This proves \eqref{eq:sourcerank}. Finally,
+\(|A|\dim S_0\le |A|s\le ts\le4dL\), proving
+\eqref{eq:sourcecount}.
+\end{proof}
+
+\begin{corollary}[Original budget, smaller minimum weight]\label{cor:five}
+For \(b\ge4\), the conclusion \eqref{eq:sourcerank} holds with
+\(|A|s\le5d\log(1+2b^2)\).
+\end{corollary}
+\begin{proof}
+Take \(t=\lfloor5dL/s\rfloor\). The middle term in
+\eqref{eq:exactsource} becomes at most
+\(3(1+2b^2)^{-5/2}\le b^{-5}\), and the restriction term is
+at most \(10b^{-6}\). The total is at most
+\(b^{-4}(19+1/4+10/16)=159/(8b^4)<20/b^4\).
+\end{proof}
+
+\begin{proposition}[The fourth-order scale and leading coefficient are optimal]
+For every integer \(b\ge2\), the raw error bounds
+\(u=5b^{-4}\), \(v=9b^{-4}\), with \(S_0=S\), admit an
+example whose missing share even after all translates is
+\[
+ \frac{19b^4-25}{b^4(b^4+9)}
+ =\frac{19}{b^4}-\frac{196}{b^4(b^4+9)}.
+\]
+Consequently no \(o(b^{-4})\) universal deficit bound, or
+universal leading coefficient below \(19\), follows from these
+raw moment and near-isometry inequalities alone.
+\end{proposition}
+\begin{proof}
+Use Proposition~\ref{prop:sharp} with
+\(d=b^4(b^4+9)\), \(r=(b^4-5)^2\), and \(S=\C\).
+Then \(d-r=19b^4-25\) and \(r/d=(1-u)^2/(1+v)\).
+The unrestricted source meets the ramification-loss bound with
+zero loss. The stated asymptotic follows by division.
+\end{proof}
+
+\begin{remark}[Precise status and significance]
+The existing \texttt{enough\_forms} in the pinned source has
+\((1-4/b^2)d\) in place of \eqref{eq:sourcerank}, with the count constant five in place of four in \eqref{eq:sourcecount}. The source imposes much
+larger lower bounds on \(b\) than \(b\ge6\), so this is an
+improvement throughout its admissible parameter range. Theorem~\ref{thm:source}
+uses the original moment and ramification estimates; it requires no
+new arithmetic input. All three errors, the floor, and the restriction
+of the source have been retained. The count constant is reduced from five to four; Corollary~\ref{cor:five} retains five when only \(b\ge4\) is assumed.
+
+This is an ordinary mathematical proof of the strengthened statement.
+The upstream code has not been modified, and the new statement has not
+been executed through Lean. It improves the tolerance for completing
+an almost-full span to a basis: with \(O(b^{-4})\) missing dimensions,
+the per-missing-vector completion cost can be much larger for a fixed
+total budget than with \(O(b^{-2})\) missing dimensions. It does not
+by itself change the \(x^{-1/2+o(1)}\) prime-sum exponent or establish
+another arithmetic RH.
+\end{remark}
+

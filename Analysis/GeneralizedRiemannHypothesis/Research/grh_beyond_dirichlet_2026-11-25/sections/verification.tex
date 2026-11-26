@@ -1,0 +1,135 @@
+\section{Reproducibility and research decisions}\label{sec:verification}
+
+\subsection{What the computations establish}
+
+The package contains three standalone Python programs. They use only
+the Python standard library and make no network requests. Their outputs
+are already included as JSON and CSV. The scripts certify finite
+identities and examples; the general theorems are justified by the
+proofs in this report.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{@{}p{0.27\textwidth}YY@{}}
+\toprule
+Program & Checks performed & Scope\\
+\midrule
+\path{check_density_certificate.py} &
+All 2701 midpoint tests for the 74-point set; exact rational weight and
+tail inequalities; sphere cardinality and range; integer irreducible
+counts and variance cutoffs. &
+Certifies the finite inputs, including \(R_2^*+13<2^{476}\).
+The infinite-set proof is in Sections~\ref{sec:density}--\ref{sec:refinement}.\\
+\addlinespace
+\path{verify_rank_moments.py} &
+Enumerates \(\GL_4(\F_2)\) and its \(\Sp_4(\F_2)\) subgroup;
+tests uniform and nonuniform positive-type laws, frame coefficients,
+moments, and tails with exact arithmetic. &
+1277 checks pass, including 636 frame-coefficient checks.
+Large-\(\GL\) examples use exact orbit counts, not enumeration.\\
+\addlinespace
+\path{conductor23_benchmark.py} &
+Compares the eta product with the cubic-splitting Euler product
+through \(n=2000\), plus prime-power selector coefficients. &
+303 primes and 3636 selector checks. Does not test or prove zero
+locations.\\
+\bottomrule
+\end{tabularx}
+\caption{Reproducible finite verification.}
+\end{table}
+
+The prior density checkers were also rerun. In addition to the sphere
+and weighted certificates, the inherited finite binary-polynomial
+confinement test examined 64,770 triples; all passed. That test does not
+replace the confinement proof for arbitrary degrees.
+
+\subsection{Formalization boundary and proposed Lean decomposition}
+
+The original repository is a Lean development. The additional results
+in this report have not been formalized or compiled in Lean during this
+session. The package includes a formalization plan rather than a file
+with placeholders presented as a completed proof.
+
+A useful decomposition is the following.
+
+\begin{enumerate}
+\item \textbf{Finite witness certificates.} Define the 74-element finset,
+the absence of nonconstant midpoints, and the two integer inequalities
+obtained after clearing denominators. Use kernel-checked arithmetic for
+the certificates.
+\item \textbf{Replacement theorem.} Isolate unique smooth/rough
+factorization, the squarefree confinement lemma, and the construction
+of separated degree bands. This theorem should be independent of the
+analytic number theory in \path{grh-lean}.
+\item \textbf{Coefficient concentration.} Formalize the tilted
+coefficient distribution, the mean and variance of a finite sum of
+geometric variables, the signed-tail inequality, and the exact
+ceiling bounds. Keep the probability argument separate from the
+polynomial-ring application.
+\item \textbf{Kernel moments.} Extract the positive-type coefficient
+bound as an independent lemma. Add rectangular character
+orthogonality, rank factorization, the frame count, and the
+nonnegative-moment tail step.
+\item \textbf{Hecke interface.} State the ideal-class logarithmic
+derivative and the one-sided bound as separate interfaces. Prove the
+Landau bridge before attempting the missing arithmetic construction.
+The hypothesis \eqref{eq:hecke-missing-bound} must remain visibly a
+hypothesis until it is actually supplied.
+\end{enumerate}
+
+This separation makes each prospective formal theorem reviewable and
+prevents numerical certificates, inherited Lean theorems, and new
+unformalized arguments from being confused.
+
+\subsection{Recommended order of further work}
+
+The polynomial counterexample is the nearest complete deliverable:
+write it as a short independent paper, preserve the distinction between
+the old counterexample and the new cutoff, and formalize its finite
+certificates and confinement lemma. The present upper-density result
+is already mathematically complete at the paper-proof level.
+
+For a new analytic-number-theory theorem, the conductor-\(23\) function
+is a focused test. The first substantial milestone is not another
+zero computation. It is a construction whose valuations count the
+principal ideal-class prime powers in \eqref{eq:class-selector}, with
+short, nearly spanning forms and a matching lower covolume estimate.
+The benchmark and analytic bridge specify exactly what success would
+have to produce.
+
+The matrix-moment result is suitable for a separate reusable lemma
+library. Its value is clearest for group actions or positive-type
+weights where stabilizers are accessible but the full compression law
+is not. Specialized uniform \(\GL_n\) laws already admit better exact
+answers; the report's example explicitly acknowledges this.
+
+Broad claims about all automorphic GRH, simplicity of zeros, pair
+correlation, central leading terms, or fixed integral Selmer groups
+would need additional inputs absent from the transferred interfaces.
+The determinant comparison controls a particular one-sided
+prime-sum remainder. It supplies no automatic estimate for these
+different observables. The correct next theorem should be stated
+with its own arithmetic quantity and budget before attempting a
+large formalization.
+
+\subsection{Files and provenance}
+
+\path{report.tex} and the files in \path{sections/} contain the complete
+editable manuscript. \path{report.pdf} is the rendered version.
+\path{build.sh} reproduces it using \path{latexmk}; \path{run_checks.sh}
+runs the three exact verification programs.
+
+\path{sources/prior_archives.csv} lists all 39 inspected archive
+identities at the pinned ProveIt commit. The associated verification
+JSON records the byte-size and Git-blob checks. Selected upstream
+source snapshots are in \path{sources/lean_snapshots/}; they are
+provided for source inspection, not as a complete buildable copy of the
+original Lean project. Their source map, SHA-256 hashes, Apache license,
+and notice are included. A package-level SHA-256 manifest makes
+accidental changes to any shipped artifact detectable.
+
+The review establishes a concrete negative answer to the cited
+polynomial-density conjecture, together with an improved explicit
+margin and two further transfer tools. It does not assert a proof
+of a new Hecke RH instance or a general resolution of the other
+arithmetic conjectures discussed here.

@@ -1,0 +1,62 @@
+\subsection{Exact scaling in the deep torsion tower}
+Suppose the coefficient of $T^Q$ in $[p](T)=\sum_{i\ge1} a_iT^i$ is a unit, where $Q=p^h$, and all earlier coefficients are in the maximal ideal. Put
+\[
+ c=\min_{1\le i<Q}\frac{v(a_i)}{Q-i}, \qquad D=Qc.
+\]
+For $z$ in the maximal ideal one has the exact identity
+\[
+         \min\{v([p](z)),D\}=Q\min\{v(z),c\}.
+\]
+Indeed, for $v(z)<c$ the term $a_Q z^Q$ has strictly smaller valuation than every other term. For $v(z)\ge c$ every term has valuation at least $D$. This holds also at zero. Formal subtraction therefore gives
+\[
+ \min\{v(t(x)-t(y)),c\}
+  =\frac1Q\min\{v(t([p]x)-t([p]y)),D\}.
+\]
+Here and below $t(x)$ denotes the coordinate of the formal group point $x$.
+
+Let $S$ be a finite set of nonzero formal torsion points with all $v(t(s))<D$, and let $S'=[p]^{-1}S$. Write $B$ for the optimal obstruction cost on $S$ at tolerance $\delta$ with benchmark $\rho$. If $B+\delta<D$, then the optimal cost on $S'$ at tolerance $\delta/Q$ and benchmark $\rho/Q$ is exactly $B/Q$. The least degree among cost-minimizing obstructions remains the same. When the benchmark exceeds every valuation of $S$, both benchmarks may instead be replaced by one sufficiently large fixed benchmark.
+
+To prove this, use the reduction to multisets of target points. A multiset of marks of cost $b$ defeats a target $s$ exactly when its sum of pair valuations against $s$ exceeds $b+\delta$. For $b\le B$ each valuation in this sum may be capped at $D$ without changing the answer: any summand reaching $D$ already suffices, since all other summands are nonnegative. Every lift has the weight of its parent divided by $Q$, by the first identity above. On $S'$ use the cap $c=D/Q$. The second identity identifies every capped comparison on $S'$ with the corresponding comparison on $S$, divided by $Q$. Sending marks to their parents preserves multiplicities; conversely choose any lift of each occurrence of a mark. Testing the target at all lifts repeats its parent test. Thus both the optimum and the degree comparison follow. Iteration divides cost and tolerance by $Q$ at each step.
+
+For the elliptic curve above, $c=1/8$ and $D=1/2$. At tolerance zero, the exact-order-four cost $15/32$ lies below $D$, so at every exact order $2^n$, $n\ge2$, the cost is $15/(32\cdot4^{n-2})$ with five marks. This argument also applies to overlapping levels. For the union of exact orders $8$ and $16$ the following table gives the shell excesses immediately before and at the first successful mark count $m$. In coordinates $(a,b)\in(\mathbb Z/16)^2$, choose compatible lifts of the closest nonzero $2$-torsion point and of a second independent $2$-torsion point, always taking a lift of maximal valuation. They form a basis as their images under $[8]$ are independent. The valuations of their multiples of order $2^j$ are respectively $(3/4,1/4,1/16,1/64)_j$ and $(1/8,1/32,1/128,1/512)_j$. Multiplication by an odd integer preserves valuation. The lists are disjoint, so the valuation of a sum of the two coordinates is their minimum. In descending order the five shells have congruence descriptions
+\[
+ (a\equiv2\bmod4,\ b\equiv0\bmod8),\quad
+ (a\equiv2\bmod4,\ b\equiv4\bmod8),\quad
+ (a\text{ odd},\ 4\mid b),\quad b\equiv2\bmod4,\quad b\text{ odd}.
+\]
+Each is a translate of a subgroup.
+\[
+\begin{array}{c|r|c|r|cc}
+w& \#S_w& \text{threshold}&m&E_w(m-1)&E_w(m)\\\hline
+1/16 &8&0&1&0&1/16\\
+1/32 &8&1/32&1&0&3/32\\
+1/64 &32&1/16&3&1/16&5/64\\
+1/128 &64&13/128&6&13/128&1/8\\
+1/512 &128&85/512&12&85/512&25/128
+\end{array}
+\]
+To reproduce the excesses by hand, begin each row at $r_0=w$. For each successive attained finite pair valuation $r_j>w$, let $d_j$ be the number of cosets in that row at threshold $r_j$. At each of these thresholds the balls have equal size. Splitting a prefix evenly among descendants gives $E_w(k)=\sum_{j\ge1}(r_j-r_{j-1})\lfloor k/d_j\rfloor$ for $k<\#S_w$. The values $r_1,r_2,\ldots$ for the first two rows are $1/8,1/4,3/4$. For the third, fourth and fifth rows prepend respectively $(1/32,1/16)$, $(1/64,1/32,1/16)$ and $(1/128,1/64,1/32,1/16)$. In all five cases $d_j=2^{j-1}$. Summing $mw$ gives $27/128$, attained with 23 marks. Its preimages give, for all $N\ge4$, cost $27/(128\cdot4^{N-4})$ with 23 marks on the union of exact orders $2^{N-1}$ and $2^N$.
+
+\paragraph{Eventual scaling for every fixed pattern.}
+Fix a benchmark $\rho>0$ and any finite nonempty pattern of $k$ distinct positive exact-order exponents. Translate all these exponents upward by the same integer and take tolerance zero. From an explicit level onward, each unit translation divides the optimal budget by $Q$ and preserves the least degree of a cost-minimizing obstruction. In particular, the budgets are eventually an exact geometric sequence. One sufficient starting condition, writing $j_{\min}$ for the smallest exponent in the translated pattern, is
+\[
+ D_* = \min(D,\rho),\qquad
+ L=1+\left\lfloor\frac{1}{\min(1,D_*)}\right\rfloor,\qquad
+ j_{\min}\ \ge\ L+k+2+r,\quad Q^r>k/D_*,\ r\ge0.
+\]
+
+To see this, write $H_j=F[p^j]$ and $S_j=H_j\setminus H_{j-1}$. The prepared factorization of $[p^j](T)$ is a unit times $\prod_{y\in H_j}(T-t(y))$. Its coefficient of $T$ has valuation $j$, since $[p^j]'(0)=p^j$. It follows that $\sum_{y\in H_j\setminus\{0\}}v(t(y))=j$, and subtracting successive levels gives $\sum_{y\in S_j}v(t(y))=1$. For any $x\in S_j$ the product of differences against all $y\in H_j$ other than $x$ again has valuation $j$, by translation invariance of the coordinate-distance valuation. Equivalently $[p^j]'(t(x))=p^j$ times a unit, by the invariant differential. Evaluating the prepared factorization of $[p^{j-1}]$ at $x$ then gives the row identity
+\[
+ \sum_{y\in S_j,\ y\ne x}v(t(x)-t(y))
+       =j-v\bigl(t([p^{j-1}]x)\bigr)\ \ge j-1 .
+\]
+The inequality uses that each nonzero point of $H_1$ has valuation at most its shell's total, namely one.
+
+Every torsion point of valuation at least $D_*$ belongs to $H_L$. Indeed, for a point of valuation $v_0\ge D_*$, a nonzero multiple by $p$ has valuation at least $v_0+\min(1,D_*)$, by the integral multiplication series and its linear term $pT$. Iterating to the last nonzero multiple, which has valuation at most one, gives the stated order bound. Therefore capping all off-diagonal pair valuations in any one row at $D_*$ costs at most $L$ in total: the formal differences are distinct nonzero torsion points, and those whose valuations exceed $D_*$ belong to $H_L$, where the sum of all nonzero valuations is $L$.
+
+Choose a parent pattern whose smallest exponent is at least $L+k+2$. All its point valuations are strictly below $D_*$. Mark every parent point once; the cost is $k$. At any parent target, just its own exact-order shell contributes off-diagonal capped row sum at least $j-1-L>k$. Now lift the pattern by $r$ exponents and choose one arbitrary lift under $[p^r]$ for each marked parent. Iterating the capped identity (which also holds with $D$ replaced by any smaller positive cap) gives, for all points $x,y$,
+\[
+ \min\{v(t([p^r]x)-t([p^r]y)),D_*\}
+ =Q^r\min\{v(t(x)-t(y)),D_*/Q^r\}.
+\]
+Each chosen mark has weight equal to its parent's weight divided by $Q^r$. Every target in the lifted pattern lies over a parent target, so its capped row sum exceeds $k/Q^r$. This constructs an obstruction of cost $k/Q^r<D_*$. Its optimal cost is also below $D_*$, and the exact scaling result now applies at each further level. All these target and mark valuations stay below $\rho$, as required for the fixed benchmark.

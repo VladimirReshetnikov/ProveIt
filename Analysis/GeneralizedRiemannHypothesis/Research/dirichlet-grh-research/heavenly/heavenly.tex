@@ -1,0 +1,397 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,booktabs,geometry,microtype}
+\usepackage[colorlinks,allcolors=blue]{hyperref}
+\geometry{left=0.94in,right=0.94in,top=0.85in,bottom=0.85in}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\F}{\mathbb F}
+\newcommand{\Gal}{\operatorname{Gal}}
+\newcommand{\GL}{\operatorname{GL}}
+\newcommand{\PSL}{\operatorname{PSL}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\A}{\mathcal A}
+\setlength{\emergencystretch}{2em}
+\raggedbottom
+\title{Uniform Rasmussen--Tamagawa bounds over two families of sextic fields}
+\author{}
+\date{November 25, 2026}
+\hypersetup{pdftitle={Uniform Rasmussen--Tamagawa bounds over two families of sextic fields}}
+\begin{document}
+\maketitle
+\begin{abstract}
+For every dimension $g$, there is one bound on the primes at which a
+$g$-dimensional abelian variety over any $A_4$-sextic or $A_5$-sextic
+field can be heavenly. The bound is independent of the discriminant, the
+variety and its endomorphisms. For elliptic curves, $4{,}027$ suffices and only 29 primes pass the necessary tests.
+The argument combines the odd residue degrees in two permutation
+actions with the small-prime obstruction of Rasmussen and Tamagawa.
+Dirichlet GRH supplies the entire analytic input, even when the
+normal closure is nonsolvable.
+\end{abstract}
+
+\section{The uniformity question}
+
+Call $A/K$ \emph{heavenly at $\ell$} if $K(A[\ell^\infty])$ lies in the
+maximal pro-$\ell$ extension of $K(\mu_{\ell^\infty})$ unramified
+outside $\ell$. Equivalently, $A$ has good reduction away from
+$\ell$ and the mod-$\ell$ torsion extension over $K(\mu_\ell)$ has
+$\ell$-power degree. Write $\A(K,g,\ell)$ for the set of
+$K$-isomorphism classes of such varieties of dimension $g$.
+Rasmussen and Tamagawa's uniform Conjecture~2 asks for emptiness for
+$\ell>B(g,d)$ over all fields $K$ of degree $d$.
+Their Theorem~5.1 assumes suitable Dedekind zeta hypotheses and treats
+each fixed $K$. Their Theorem~5.2 proves uniformity in odd degree under
+GRH. The comparison here uses the numbering of their author manuscript
+\cite{rt}. Lombardo established uniformity in any degree for CM
+abelian varieties \cite{lombardo}. McLeman and Rasmussen's later
+quadratic work includes finiteness at fixed $\ell$ and results on
+elliptic curves \cite{mcr}.
+
+\begin{theorem}\label{main}
+For every positive integer $g$ there is an effective $B(g)$ such that
+$\A(K,g,\ell)=\varnothing$ whenever $[K:\Q]=6$, the normal closure
+has group $A_4$ or $A_5$, and $\ell>B(g)$. One may take $B(1)=4{,}027$.
+\end{theorem}
+The two groups have unique transitive actions on six points up to
+equivalence. For $A_4$ the stabilizer has order two and all such
+subgroups are conjugate. In $A_5$ a subgroup of order ten has a unique
+Sylow $5$-subgroup, hence is its normalizer. All these normalizers are
+conjugate. Concrete fields occur at LMFDB labels
+\href{https://www.lmfdb.org/NumberField/6.6.284124736.1}{6.6.284124736.1}
+and \href{https://www.lmfdb.org/NumberField/6.2.27071209.2}{6.2.27071209.2}.
+
+The earlier ProveIt report \cite{prior} already identifies these two
+actions, proves the residue-degree argument including ramification, and
+uses them to bound Momose type~2 isogeny primes. We apply that
+arithmetic observation to a different obstruction, valid for every
+dimension. The resulting theorem allows every endomorphism algebra and
+includes primes dividing the discriminant of $K$. We found no earlier
+statement of this uniform heavenly result for the two sextic families
+in the sources reviewed. This is a paper proof using the upstream
+Dirichlet nonvanishing theorem and published arithmetic inputs. The
+downstream deductions have not been formalized in Lean.
+
+\section{Two local inputs}
+
+\begin{lemma}[Odd residue degree, following the earlier report]\label{cycles}
+Suppose the normal closure $N/\Q$ of $K$ acts on the embeddings
+$X=G/H$ of $K$, with $G=\Gal(N/\Q)$ and $H=\Gal(N/K)$.
+If each element of $G$ has an odd cycle of length at most $r$ on $X$,
+then each rational prime $p$ has a place $v$ of $K$ above it
+of odd residue degree $f_v\le r$.
+\end{lemma}
+\begin{proof}
+Choose a place of $N$ above $p$, its decomposition group $D$, its
+inertia group $I$, and a lift $u\in D$ of residue-field Frobenius.
+Places of $K$ above $p$ correspond to $D$-orbits on $X$.
+In the orbit of $x$, with stabilizer $D_x$, the inertia orbits are
+permuted transitively by $u$. Their number is $[D:I D_x]=f_v$.
+Indeed the local degrees for $N_w/\Q_p$ and its subfield fixed by
+$D_x$ give this index upon dividing the degree $[D:D_x]$ by its
+ramification index $[I:I\cap D_x]$.
+Thus the length of the $u$-cycle through $x$ is a multiple of $f_v$.
+Choose $x$ on the asserted odd cycle. This argument also applies when
+$I$ is nontrivial.
+\end{proof}
+
+\begin{lemma}[Rasmussen--Tamagawa's obstruction]\label{RT}
+For fixed $g,d$ there exist an effective threshold $C_7(g,d)$
+and a finite effective set of integers $\mathcal M(g,d)$ with the
+following property. If $[K:\Q]=d$, $A$ is heavenly at
+$\ell>C_7(g,d)$, then there is $m\in\mathcal M(g,d)$ dividing
+$\ell-1$ such that for every $v\mid p\ne\ell$,
+\[
+  f_v\ \text{odd},\qquad p^{f_v}<\ell/(4g)
+   \quad\Longrightarrow\quad
+   p^{f_v}\bmod\ell\ \notin(\F_\ell^\times)^m .
+\]
+\end{lemma}
+\begin{proof}
+Use \cite[Cor.~3.2, (3.4), Lem.~3.5, \S4.1, Prop.~4.2]{rt}.
+Their hypothesis (A1) is heavenliness. The displayed $C_7$ in
+(3.4) suffices for (A2) uniformly in the degree. If $e$ is the
+gcd of their local indices $e_\lambda$, then
+$m=m_{\Q}\mid e/2$ and $e\mid M'(2g)d$. Thus the positive divisors
+of $M'(2g)d$ give a finite set. Here $M'(a)$ is the integer in their
+Lemma~3.1, the gcd of the orders of $\GL_a(\F_{\ell'})$ over odd
+primes $\ell'\ne\ell$. Their valuation formula attains each minimum at infinitely many odd primes, so removing $\ell$ preserves the gcd. For $p\ne\ell$ the cyclotomic character
+on arithmetic Frobenius at $v$ is $p^{f_v}\bmod\ell$.
+
+To see the sign of the obstruction, triviality modulo $m$-th powers
+would make all of the residual characters
+$\chi^{i_j+i_k-1}$ trivial on this Frobenius, where
+$\chi^{i_1},\dots,\chi^{i_{2g}}$ are the diagonal characters of
+$A[\ell]$. If $Q=p^{f_v}$ and $a_j$ is the integral trace of the
+$j$-th power of Frobenius, this gives $a_2\equiv 2gQ\pmod\ell$.
+Weil's bound $|a_2|\le2gQ$ and $4gQ<\ell$ force equality.
+Every Frobenius eigenvalue is therefore $+\sqrt Q$ or $-\sqrt Q$.
+Since $Q$ is a nonsquare and $a_1$ an integer, $a_1=0$.
+The same residual characters give $a_1^2\equiv4g^2Q\pmod\ell$,
+a contradiction. No condition on ramification of $p$ or $\ell$ in
+$K$ was used.
+\end{proof}
+
+\section{Uniform transfer and the two actions}
+
+\begin{theorem}\label{general}
+Fix $g,d,r\ge1$. Over all fields $K$ of degree $d$ satisfying the
+cycle hypothesis of Lemma~\ref{cycles}, a single effective bound
+$B(g,d,r)$ excludes heavenliness for larger $\ell$.
+\end{theorem}
+\begin{proof}
+Take the maximum of $C_7(g,d)$ and the constants
+$C_6(m,g,r,\Q)$ from \cite[Prop.~2.7]{rt} over
+$m\in\mathcal M(g,d)$. For $m\mid\ell-1$, let $L_{m,\ell}$
+be the unique degree-$m$ subfield of $\Q(\zeta_\ell)$.
+The only zeta hypothesis of that proposition here is RH for
+$\zeta_{L_{m,\ell}}$. Its factorization into primitive Dirichlet
+$L$-functions supplies it from the five public Lean exports
+\cite{lean}; the zeta factor is covered by the ordinary RH export.
+Apply the proposition to the identity automorphism. It yields
+a rational prime $p\ne\ell$ with
+\[
+               p<(\ell/(4g))^{1/r},\qquad
+               p\bmod\ell\in(\F_\ell^\times)^m .
+\]
+The residue condition expresses complete splitting in $L_{m,\ell}$.
+For $m=1$ one may simply take $p=2$ for large enough $\ell$.
+Lemma~\ref{cycles} supplies $v$ with odd $f_v\le r$,
+so $p^{f_v}<\ell/(4g)$ and $p^{f_v}$ is still an $m$-th power.
+Lemma~\ref{RT} gives the contradiction. All fields used for the
+analytic estimate are cyclotomic subfields, with bounded degree.
+\end{proof}
+
+For the sextic actions, the counts of elements of each cycle shape are
+\[
+\begin{array}{c|rrrr}
+ &1^6&1^2 2^2&3^2&1\,5\\ \hline
+ A_4&1&3&8&0\\
+ A_5&1&15&20&24
+\end{array}
+\]
+The three double transpositions in $A_4$ each fix two edges of a
+tetrahedron. A $3$-cycle has two orbits of length three on its edges.
+For $A_5$, each of the six point stabilizers has order ten and
+contains five involutions. The fifteen involutions are conjugate, so
+each fixes $6\cdot5/15=2$ points. An element of order five fixes its
+unique Sylow subgroup, and one of order three fixes none.
+Thus $r=3$ works for both families. Theorem~\ref{general} proves
+the first assertion of Theorem~\ref{main}. The same argument on
+inertia orbits explains why the field discriminant never enters
+the answer. The companion script exhausts the sixteen transitive
+sextic actions. These two are exactly the ones in which \emph{every}
+element has an odd cycle. This is a classification of the sufficient
+group condition. Other actions require an additional argument.
+
+\section{An explicit bound in dimension one}
+
+Let $E/K$ be a heavenly elliptic curve in either family. First take
+$\ell>5$. Its mod-$\ell$ representation on $G_K$ has semisimple
+characters $\chi^i,\chi^{1-i}$ for some integer $0\le i<\ell-1$
+by \cite[Lem.~3.3]{rt} and the Weil pairing. These exponents describe
+the characters on $G_K$ even if the image of $\chi|_{G_K}$ is proper.
+Since $\ell\nmid|G|$, the inertia group above $\ell$ in $N$ is tame
+and cyclic. The lengths of the cycles of an inertia generator on the
+embeddings equal the ramification indices on their inertia orbits.
+The cycle table therefore gives a place $\lambda\mid\ell$ with
+$e(\lambda/\ell)=1$ or $3$. This use of inertia at the torsion prime
+is separate from the Frobenius argument at auxiliary primes.
+
+At any $\lambda\mid\ell$, an elliptic curve
+acquires semistable reduction over an extension of ramification index
+at most six. For completeness, take a short integral equation
+$y^2=x^3+ax+b$ over the local field, with discriminant $\Delta$.
+Write $v(0)=+\infty$. If $v(j)\ge0$, then $s=v(\Delta)\le3v(a)$.
+From $\Delta=-16(4a^3+27b^2)$ it follows that
+$s=3v(a)$ or $s=2v(b)$, since $\ell>3$.
+Also $s\le2v(b)$. Scale the equation by a parameter of valuation
+$s/12$. Such a parameter exists in a totally ramified extension of
+degree $12/\gcd(s,12)\le6$. The new coefficients are integral and
+the new discriminant a unit. If $v(j)<0$, then
+$3v(a)=2v(b)<v(\Delta)$. Write $v(a)=2t$ and $v(b)=3t$.
+Scaling by a parameter of valuation $t/2$ yields integral unit
+coefficients, unit $c_4$ and discriminant of positive valuation.
+The resulting reduction is multiplicative. The case $j=0$ belongs
+to the first alternative.
+
+In the good-reduction case the index just exhibited is a divisor of
+$12$ other than $12$. In the multiplicative case it divides two.
+The minimal semistability index divides any successful index by
+\cite[\S3.1]{rt}. At our chosen place we consequently have
+\[
+ e=e_{E,K_\lambda}\,e(\lambda/\ell)
+       \in\{1,2,3,4,6,9,12,18\}.
+\]
+The Tate--Oort relation in \cite[(3.1)]{rt}, valid before their
+large-prime assumption (A2), supplies weights $0\le j,j'\le e$
+with $ei\equiv j$ and $e(1-i)\equiv j'\pmod{\ell-1}$.
+For $\ell>211$ their sum must equal $e$, since $2e<\ell-1$.
+Interchanging the two characters permits $j\le e/2$.
+
+\paragraph{A finite test that forces equal inertia weights.}
+O'Hara uses powers of auxiliary Frobenius traces to test local
+weights over cubic fields \cite[\S2.3]{ohara}. We use the same
+trace identity, retaining both possible odd residue degrees and
+combining the products below by a gcd.
+Fix a prime $p\in\{2,3,5,7,11,13\}$. The residue field at some
+$v\mid p$ has size $Q=p$ or $p^3$. At this place $E$ has good
+reduction. Let $a$ be its Frobenius trace, with $a^2\le4Q$.
+The traces of powers satisfy
+\[
+ S_0=2,\quad S_1=a,\quad S_k=aS_{k-1}-Q S_{k-2}.
+\]
+Reduction of the two eigenvalues mod $\ell$ and the two inertia
+congruences give
+\[
+   S_e(a,Q)\equiv Q^j+Q^{e-j}\pmod\ell.
+\]
+For $j<e/2$ the positive right-hand integer is strictly larger
+than $2Q^{e/2}$ by strict arithmetic--geometric mean, whereas
+$|S_e|\le2Q^{e/2}$. Define
+\[
+ D_{e,j}=\gcd_{p\in\{2,3,5,7,11,13\}}
+     \ \prod_{Q\in\{p,p^3\}}
+     \prod_{a^2\le4Q}\bigl(Q^j+Q^{e-j}-S_e(a,Q)\bigr),
+\]
+where $a$ runs over rational integers. For unbalanced weights $\ell$
+must divide this positive gcd. The largest prime divisor across
+$0\le j<e/2$, for each possible $e$, is
+\[
+ \begin{array}{c|rrrrrrrr}
+ e&1&2&3&4&6&9&12&18\\ \hline
+ \text{largest prime}&13&13&109&37&109&211&109&211 .
+ \end{array}
+\]
+The exact checker multiplies the positive terms and uses Euclid's
+algorithm. It divides each gcd by primes through $211$ to exhaustion
+and checks that the remainder equals one. This proves $j=e/2$ for
+every candidate $\ell>211$.
+
+\paragraph{What balance forces at a good prime.}
+Now $(e/2)(2i-1)\equiv0\pmod{\ell-1}$. Hence $4\mid e$, as
+$2i-1$ is odd, leaving $e=4$ or $12$. It also follows that
+$\ell\equiv3\pmod4$ and
+\[
+                    6(2i-1)\equiv0\pmod{\ell-1}.
+\]
+If $p\bmod\ell$ is a nonzero square, so is $Q=p^f$. Therefore
+$u=Q^{2i-1}$ has order dividing three: write $Q=b^2$ and use the
+last congruence. The residual trace square is
+\[
+      a^2\equiv Q(2+u+u^{-1})\equiv Q\ \text{or }4Q\pmod\ell.
+\]
+If $4p^3<\ell$, then $0\le a^2\le4Q<\ell$, forcing equality
+over the integers. Both $Q$ and $4Q$ are nonsquares since $f=1$ or
+$3$. Consequently a candidate $\ell>211$ must have \emph{no} prime
+$p$ with $4p^3<\ell$ that is a quadratic residue mod $\ell$.
+
+\paragraph{Covering all large torsion primes.}
+For $\ell\equiv3\pmod4$, quadratic reciprocity identifies such
+residues with rational primes splitting in $\Q(\sqrt{-\ell})$,
+including the supplementary law at two. Its absolute discriminant
+is $\ell$. Bach and Sorenson \cite[Thm.~5.1]{bs} bound the least split
+prime by $(4\log\ell+10)^2$ under the relevant quadratic zeta
+hypothesis, available from Dirichlet GRH. Put $H=3\cdot10^{13}$.
+For $y\ge\log H$, $4(4y+10)^6e^{-y}$ decreases because
+$24/(4y+10)<1$. At $y=\log H<32$ its numerator is below
+$4\cdot138^6<H$. Thus every $\ell>H$ has a forbidden prime.
+
+From $253{,}507$ to $H$ we replayed the earlier report's
+\texttt{cubic\_tail.cpp} extending only its upper endpoint.
+It checks the stronger strict split-prime condition with two
+additional nondivisibilities. Through $4\cdot127^3$ it tests
+264,911 primes directly. Above this, the eligible primes
+$2,3,5,7,11,13,17$ restrict the unsieved candidates to 1,440 classes
+modulo $2{,}042{,}040$. The nonsquare and nonzero residue conditions
+at primes $19$ to $127$ then give periodic bit masks on these
+progressions. The code handles prime divisors of the extra
+polynomials separately, so its reductions preserve every exception.
+Of 782 integers surviving the masks, 246 are prime; each has a
+witness. The eight higher exceptional primes were also checked.
+The code and rerun transcript accompany this paper. Trial of
+$4p^3<\ell$ directly through $253{,}507$ leaves 52 candidates
+larger than 211, listed in \texttt{check\_elliptic.txt}.
+
+\paragraph{Keeping the same diagonal character at every prime.}
+For each remaining $\ell>211$ retain the exponents $0\le i<\ell-1$
+with $6(2i-1)\equiv0\pmod{\ell-1}$. For $\ell\le211$ begin with
+all exponents, imposing only for $\ell>5$ the necessary condition
+that $ei\bmod(\ell-1)\le e$ for at least one admissible $e$.
+For each prime $p\ne\ell$, discard $i$ if for \emph{both}
+$Q=p,p^3$ the least absolute residue of
+$Q^i+Q^{1-i}\pmod\ell$ exceeds $\lfloor2\sqrt{Q}\rfloor$.
+For an actual curve its fixed exponent must survive every prime.
+We may stop as soon as $\lfloor2\sqrt{p^3}\rfloor\ge\lfloor
+\ell/2\rfloor$, since the $p^3$ option alone allows every residue
+from then on. The Python checker yields the following necessary list:
+\[
+\begin{gathered}
+ 2,3,5,7,11,13,19,23,29,31,37,43,59,67,83,107,139,163,211,\\
+ 283,307,331,379,499,547,643,883,907,4027 .
+\end{gathered}
+\]
+This completes the proof of the numerical part of
+Theorem~\ref{main}. The tests permit the locally chosen places to
+vary with $p$ and impose only necessary congruences. Existence of a
+heavenly elliptic curve at a listed prime, especially at $4027$,
+requires additional evidence.
+
+\paragraph{Corollary for cubic fields.}
+The same 29-prime necessary list holds for heavenly elliptic curves
+over \emph{every} cubic number field. At any rational prime the
+identity $\sum e_vf_v=3$ guarantees a place with odd $f_v=1$ or $3$.
+If $\ell>5$, inertia in the normal closure is cyclic since its group
+embeds in $S_3$, and its action on three points has an orbit of size
+one or three. Thus the two local inputs to every numerical test
+are identical. This supplies a numerical version of the uniform
+cubic elliptic finiteness in \cite[Prop.~7.5]{rt}. For related
+balance criteria and computational sieves in this very family,
+see O'Hara \cite{ohara}.
+
+\section{An infinite family of permutation actions}
+
+Let $q\equiv1\pmod4$ be an odd prime power. In the natural action
+of $\PSL_2(\F_q)$ on its $q+1$ projective lines, an element whose
+eigenline belongs to $\mathbb P^1(\F_q)$ fixes a point.
+In the other case, a determinant-one lift has eigenvalues
+$\alpha,\alpha^q=\alpha^{-1}$ in $\F_{q^2}$. Therefore
+$\alpha^{(q+1)/2}=\pm1$ and the corresponding projective element
+has order dividing the odd integer $(q+1)/2$. Every one of its
+cycles then has odd length at most $(q+1)/2$.
+Theorem~\ref{general} proves the uniform heavenly bound in this
+family for any fixed $g,q$, over every number field realizing this
+action. The $q=5$ case recovers the $A_5$ sextic theorem. A further
+extension follows from the tower identity $\sum_{w\mid v} e_wf_w=n$.
+If a family already supplies an odd absolute residue degree at most
+$r$ above every rational prime, any tower of fixed odd relative degree
+$n$ supplies one at most $rn$. The proof of Theorem~\ref{general}
+therefore applies uniformly to these towers as well.
+
+\begin{thebibliography}{9}
+\bibitem{rt} C. Rasmussen and A. Tamagawa,
+\emph{Arithmetic of abelian varieties with constrained torsion},
+Trans. Amer. Math. Soc. 369 (2017), 2395--2424.
+\href{https://arxiv.org/abs/1302.1477}{Author manuscript, arXiv:1302.1477v1}.
+\href{https://doi.org/10.1090/tran/6790}{Journal article}.
+\bibitem{prior} ProveIt, \emph{Arithmetic transfers}, section on
+uniform isogeny bounds for sextic fields, file \texttt{isogenies.tex}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/b65aa6229415bdb66d9ce52decc4e997793cd07d/docs/incoming/grh-arithmetic-transfers.zip}{Pinned archive}.
+\bibitem{lean} L. Sernau and collaborators, \emph{GRH for Dirichlet
+$L$-functions, in Lean 4}, based on the work of L. Alp\"oge with Claude.
+\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/Main.lean}{Pinned public theorems}.
+\bibitem{bs} E. Bach and J. Sorenson, \emph{Explicit bounds for primes
+in residue classes}, Math. Comp. 65 (1996), 1717--1735.
+\href{https://doi.org/10.1090/S0025-5718-96-00763-6}{Journal article}.
+\bibitem{lombardo} D. Lombardo, \emph{On the uniform
+Rasmussen--Tamagawa conjecture in the CM case}, Math. Res. Lett. 25
+(2018). \href{https://arxiv.org/abs/1511.09019}{Author manuscript}.
+\bibitem{mcr} C. McLeman and C. Rasmussen, \emph{Heavenly elliptic
+curves over quadratic fields}, Res. Number Theory 12 (2026), 79.
+\href{https://doi.org/10.1007/s40993-026-00757-8}{Journal article}.
+\bibitem{ohara} S. O'Hara, \emph{Heavenly elliptic curves over cubic
+number fields} (2026). \href{https://arxiv.org/abs/2609.35642}{Author manuscript}.
+\end{thebibliography}
+\end{document}

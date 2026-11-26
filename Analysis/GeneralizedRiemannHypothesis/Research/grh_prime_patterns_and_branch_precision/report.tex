@@ -1,0 +1,72 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,booktabs,tabularx,array}
+\usepackage[letterpaper,margin=1in,top=.9in,bottom=.92in]{geometry}
+\usepackage{xcolor,fancyhdr,enumitem}
+\definecolor{inkblue}{HTML}{193E56}
+\usepackage[colorlinks=true,allcolors=inkblue,bookmarksnumbered=true,pdfauthor={Research analysis},pdftitle={Prime-exponent patterns and p-adic branch precision}]{hyperref}
+\newtheorem{theorem}{Theorem}[section]
+\newcommand{\upstream}[2]{\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/#1}{#2}}
+\newcommand{\incoming}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/1677488425e45c3df14149c804014133798136a5/docs/incoming/#1}{#2}}
+\pagestyle{fancy}\fancyhf{}\lhead{\small\textcolor{inkblue}{Prime-exponent patterns and branch precision}}\rhead{\small Research note}\cfoot{\thepage}
+\setlength{\headheight}{15pt}\setlength{\emergencystretch}{2.5em}
+\setlist{nosep}\setcounter{tocdepth}{1}
+\begin{document}
+\thispagestyle{plain}
+{\small\sffamily\color{inkblue} MATHEMATICAL RESEARCH NOTE\hfill 26 NOVEMBER 2026}\par\vspace{.5em}
+{\Huge\bfseries Prime-exponent patterns and\par $p$-adic branch precision}\par\vspace{.6em}
+{\Large Two transfers from the Dirichlet GRH development}\par\vspace{.7em}
+\noindent\rule{\linewidth}{.65pt}
+\paragraph{Results.}
+McNew conjectured that Rankin's set has the greatest natural density among sets of integers avoiding three-term geometric progressions of rational ratio. An incoming ProveIt manuscript supplied a counterexample. We give a different proof that changes only the lowest ternary digit of each selected prime exponent. Removing two vertices of a binary cube suffices; we classify every profitable replacement with at most two removals. In a degree-ten number field a twelve-prime example gives an exact relative gain of $1/11337408$. For the integers, the supremal density under arbitrary independent rules on blocks of at most $d$ primes is attained, computable, and strictly below the unrestricted optimum for every fixed $d$. These optima tend to the unrestricted optimum. For every block size up through four, the optimum equals Rankin's density exactly.
+
+A second question in the incoming collection asks when a pole bound is sharp in reconstructing a Taylor polynomial from finitely many Lubin--Tate branches. We give a necessary and sufficient base-$p$ carry test, prove eventual periodicity of the bounded error about its linear growth, and determine the optimal sampling directions at every modulus. Over $\mathbb Q_p$ the result gives the exact simultaneous vanishing threshold for a family of weighted binomial sums and the full vector of residues one step before vanishing.
+
+\paragraph{Scope and provenance.}
+The two arguments use internal methods of the Lean project and earlier mathematical constructions. Their proofs require no hypothesis about zeros. We read pinned source and selected incoming manuscripts; the accompanying Python checks reproduce finite cases independently of Lean. The upstream authors report kernel checks of their five exported theorems. This study did not rebuild their project or formalize the extensions. We identify antecedents below; historical priority has not been established for the refinements.
+
+\tableofcontents
+\newpage
+\section{From the formal proof to two concrete questions}
+The readable edition of \texttt{lsernau/grh-lean} at commit \texttt{72fead102f66} ends in five theorems. They give mathlib's Riemann hypothesis, an explicit zeta zero-line statement, nonvanishing of every Dirichlet $L$-function for $\Re s>1/2$ with the principal pole excepted, a zero-line statement for its open critical strip, and the primitive-character specialization. The modulus may be any positive integer, and the statement includes imprimitive characters. The statements use Dirichlet characters over $\mathbb Q$. The proof is attributed upstream to Levent Alp\"oge's work with Claude, with a shorter formal development by Sernau and collaborators. See the \upstream{README.md}{repository description}, \upstream{grh/src/Statements.lean}{definitions}, \upstream{grh/src/Main.lean}{five exports}, and \upstream{grh/README.md}{verification record}.
+
+The mechanism behind the zero theorem matters for deciding what transfers. The proof constructs integral automorphic forms and estimates a lattice from two directions. Short forms supply upper bounds, a second moment ensures sufficiently many independent images, and a lower bound for the determinant restricts how short the forms can simultaneously be. In the readable edition the comparison yields
+\[
+        m\,\mathrm{totalRemainder}\ \le\ f\,a\,(\log b)^5.
+\]
+Here $m$ is the number of lifts, $a$ is a derivative order and $f$ counts infinite places. The proof takes $m$ of order $\sqrt{x}$ and can take $\log b\le2x^\epsilon$. After normalization and control of the auxiliary scale it bounds a smoothed, centered prime sum from above at order $x^{-1/2+6\epsilon}$ for integer $x$ with fixed arithmetic data. The sum uses $\Lambda(n)(1-\chi_K(n))$ in a residue class. A one-sided analytic criterion converts these bounds to zero exclusion. See the \upstream{grh/GUIDE.md}{reading guide}, \upstream{grh/src/New/Reduction/MainInequality.lean}{main inequality}, and \upstream{grh/src/New/Reduction/OneSidedBound.lean}{one-sided estimate}.
+
+Two smaller components admit independent tests.
+\begin{itemize}
+\item In \upstream{grh/src/New/Reduction/Data/Existence.lean}{\texttt{exists\_three\_term\_free}}, base expansion and a sphere give a large set avoiding weighted linear relations. A later lemma uses exponents to turn simultaneous multiplicative restrictions on places into additive restrictions. The source credits Behrend and Shapira. Our density argument also passes from multiplicative progressions to digit vectors. Its new ingredient is a weighted modification of a cap and an exact analysis of its secants; it uses neither the sphere count nor the tower parameters.
+\item In \upstream{grh/src/New/Derivatives/Sharpness/OneCurve.lean}{\texttt{OneCurve.lean}}, ultrametric bounds on coefficients are attained by a selected monomial. The one-curve derivative extremum is attained at a power of a local coordinate. The incoming interpolation report applied the idea of exhibiting an extremizer to intersecting branches. We compute the extremal pole after cancellation modulo every $\pi^r$. The extremizer here is a polynomial vanishing on the other branches.
+\end{itemize}
+\paragraph{A limit of direct analytic transfer.}
+Take the splitting field of $x^3-x-1$. The polynomial is irreducible by the rational-root test and has discriminant $-23$, so its Galois group is $S_3$. At unramified primes the identity and a three-cycle have the same sign, while their traces in the two-dimensional standard representation are $2$ and $-1$. In fact, for any cyclotomic field $C$, its intersection with the splitting field is abelian and lies in the quadratic subfield. Both even classes can therefore lift with identity on $C$ in the compositum. Chebotarev gives primes of each type with this identical congruence information. A proof for the degree-two Artin factor would need arithmetic estimates that see this difference and a compatible determinant comparison. The terminal zero criterion alone supplies neither estimate. The cubic example was already highlighted in the incoming reports \cite{priorideal}.
+\input{caps}
+\input{field_thresholds}
+\input{prime_blocks}
+\input{four_prime_blocks}
+\input{branch_poles}
+\input{periodicity}
+\input{fleck}
+\section{What remains open}
+\paragraph{Density.}
+The counterexample settles the proposed equality $\alpha=d(R)$. The proofs give computable approximations to $\alpha$. Its exact numerical value remains undetermined. The smallest width $d$ giving $\alpha_d>d(R)$ lies between $5$ and $225$, inclusive: the four-prime theorem supplies the lower bound, and the 224 odd primes plus the marker in \cite{incomingmc} give the upper bound. The two-deletion theorem identifies the first profitable change in number of deleted residue patterns, a different measure of complexity. Can three or more deletions give a comparably explicit classification, or an appreciable density gain using few ordinary primes? The polynomial construction beats the greedy set for rational-function ratios. The best upper density for \emph{polynomial} ratios in Asada et al.'s Conjecture 6.3 remains a separate target.
+\paragraph{Interpolation.}
+The saturation criterion uses only the deepest contact and its multiplicity. At nonsaturating levels the other contacts can affect the precise loss. A minimal period in terms of the contacts, or a closed form for the full loss over ramified fields, would improve the finite recurrence. Berger and Sprang's Lemma 4.2 gives a finite residue-field observation in their character-variety argument \cite{bs}; the result here concerns the exact cost of measurements over thicker coefficient rings. Colovi\'c has separately announced the global bounded-functions equality for finite extensions \cite{colovic}.
+\paragraph{Formalization.}
+The cap argument first needs only a ternary vector space, the third-point map $(x,y)\mapsto-x-y$, and a finite measure. A Lean implementation can prove line exclusion for the explicit replacement before introducing prime valuations or density limits. For the interpolation result, first formalize the reversed iterates $f_h$ over a discrete valuation ring and their weighted degree bound. Then prove the leading coefficient identity over the quotient by $\pi^r$ and the monic-division description of the pole. This isolates two finite algebraic cores that admit comparison with the included exact checkers.
+\begin{thebibliography}{99}
+\bibitem{mcnew} N. McNew, \emph{On sets of integers which contain no three terms in geometric progression}, Math. Comp. 84 (2015), 2893--2910. \href{https://www.nathanmcnew.com/GPFsets.pdf}{Author's text}, especially Theorem 6.1 and Conjecture 7.2.
+\bibitem{incomingmc} ProveIt, \incoming{mcnew_counterexample_and_grh_transfers.zip}{counterexample and GRH transfers}. The files \texttt{rankin.tex} and \texttt{finite\_rankin.tex} prove a strict natural-density improvement by exact-valuation exchanges.
+\bibitem{asada} M. Asada, E. Fourakis, S. Manski, N. McNew, S. J. Miller, G. Moreland, \emph{Subsets of $\mathbb F_q[x]$ free of 3-term geometric progressions}, Finite Fields Appl. 44 (2017), 135--147. \href{https://www.nathanmcnew.com/fqxramsey.pdf}{Author's text}. See also the \incoming{grh-progression-densities-and-cubic-prime-race.zip}{incoming polynomial-density report} and \incoming{grh_transfers_density_gaps_and_zero_tests.zip}{density gaps and zero tests}.
+\bibitem{best} A. Best et al., \emph{Geometric-progression-free sets over quadratic number fields}. \href{https://arxiv.org/abs/1412.0999}{arXiv:1412.0999}.
+\bibitem{idealcount} M. R. Murty and J. Van Order, \emph{Counting integral ideals in a number field}, Expo. Math. 25 (2007), 53--66. \href{https://doi.org/10.1016/j.exmath.2006.08.001}{DOI}.
+\bibitem{priorideal} ProveIt, \incoming{grh_ideal_densities_and_transfer_conditions_2026-11-26.zip}{ideal densities and transfer conditions}, sections on integral-ideal density and the $S_3$ transfer problem.
+\bibitem{priorlt} ProveIt, \incoming{grh_transfers_cycle_signings_and_lubin_tate.zip}{cycle signings and Lubin--Tate interpolation}, \texttt{lubin\_tate.tex} and Question 3 in \texttt{report.tex}. The present pole calculation answers that question.
+\bibitem{lt} J. Lubin and J. Tate, \emph{Formal complex multiplication in local fields}, Ann. of Math. 81 (1965), 380--387. \href{https://doi.org/10.2307/1970622}{DOI}.
+\bibitem{bs} L. Berger and J. Sprang, \emph{Integer-valued polynomials and $p$-adic Fourier theory}, \href{https://perso.ens-lyon.fr/laurent.berger/articles/POLINT.pdf}{author's text}.
+\bibitem{colovic} U. A. Colovi\'c, \emph{On the ring of bounded functions on the character variety}, 2026 preprint. \href{https://arxiv.org/abs/2611.25162}{arXiv:2611.25162}.
+\end{thebibliography}
+\end{document}

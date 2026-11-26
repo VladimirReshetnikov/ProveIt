@@ -1,0 +1,41 @@
+\section{Reproducibility, evidence, and formalization boundary}
+
+\subsection{Contents of the archive}
+
+The package contains the complete \texttt{report.tex} and its section files, the compiled PDF, exact frame certificates, a standard-library Python checker, a symbolic-coefficient checker for the polarization and semigroup identities, a source manifest, selected unmodified upstream files with their license notices, and the prior-archive inventory. A concise Lean porting plan records the declarations to extract and the mathematical interfaces to formalize.
+
+The exact frame checker performs the following computations from explicit integer input:
+\begin{enumerate}
+\item it verifies primality of $229$ by trial division and the reduction $(X-29)^2(X+58)$ modulo $229$;
+\item it regenerates the cubic Newton sums and both trace Gram matrices;
+\item it verifies the determinants $229$ and $229^3$ in rational arithmetic;
+\item it checks every entry of the rank-one decomposition and $GC=229I$;
+\item it verifies positive definiteness by exact leading principal minors, multiplicities, squared norms, and the minimal-denominator witness.
+\end{enumerate}
+These computations check a finite certificate whose mathematical interpretation is proved in Section~\ref{sec:frames}. They do not numerically approximate zeros or assume GRH.
+
+The companion algebra checker expands the trace-one polarization identity over a quadratic ring, verifies the matrix identity for projective dual generators in a nontrivial rational example, and checks the exact threshold construction on signed/reserve certificates. These checks supplement the general proofs. They are not a formal proof of the number-field or projective-module theorems.
+
+\subsection{Commands}
+
+From the archive root:
+\begin{verbatim}
+python3 code/check_frames.py
+python3 code/check_algebra.py
+python3 code/check_source_manifest.py
+python3 code/reproduce.py
+latexmk -pdf -interaction=nonstopmode -halt-on-error report.tex
+\end{verbatim}
+The Python checks require only the standard library. The last command requires a LaTeX installation with the packages listed in the preamble. The PDF was actually compiled from the supplied TeX and rendered for visual inspection; it is not a separately generated substitute.
+
+\subsection{What was not verified in this session}
+
+No full upstream Lean rebuild, kernel replay, Comparator run, or independent-checker replay was performed. No new Lean proof is claimed. No exhaustive class-group or singular-modulus enumeration from the earlier archive was rerun. The current result does not rely on claiming those earlier computations as newly verified. The copied source excerpts are evidence of the inspected declarations; their import dependencies remain in the pinned upstream repository.
+
+The exact certificates and self-contained arguments do establish the finite-frame and algebraic results stated here. The proposed nonabelian prime-sum estimate, tower-uniform frame bounds, and new odd-cocycle bound are clearly designated remaining work.
+
+\subsection{A practical Lean implementation order}
+
+First formalize the finite matrix certificates over $\Q$ or $\Z$ and the frame/Gram equivalence. Next isolate the projective dual-family polarization lemma, using an explicitly stated trace-one scalar. Formalize the positive-reserve and eventual-bound lemmas separately; the latter is elementary arithmetic once the two finite certificates are supplied. Then instantiate trace-dual ideals and unramified different transitivity in the concrete field tower.
+
+The source's existing Weil-data extension theorem should be reused rather than reproved. Preserve the period-root choice explicitly or state only the norm equality that is needed. Finally expose the uniform estimates as theorem hypotheses. A formalized existence theorem must not be silently substituted for the stronger quantitative frame theorem required by the main inequality.

@@ -1,0 +1,82 @@
+\section{The largest spanning-tree valuation in a rank-two graph tower}
+\label{sec:graph-extreme}
+
+How divisible by $p$ can the spanning-tree count of a connected abelian Cayley graph be, if the number of steps is fixed? Question 2 in the earlier graph-tower report asks for the largest coefficient $A$ when the quadratic moment vanishes identically. We determine the exact maximum for four steps at every prime $p>8$. For every even number of steps we give a sharp upper bound and characterize the primes where equality is possible. The earlier report treats the case of a nonzero quadratic moment \cite{oldgraphs}. DuBose and Valli\`eres prove the eventual-polynomial theorem for these towers; Dion, Lei, Ray and Valli\`eres study related extremal orders in one-variable towers \cite{dv,dlrv}. The companion \emph{Effective Graph Towers} report addresses the starting level of the polynomial \cite{effective}.
+
+\subsection{The cyclotomic calculation}
+Let $p>2m$ be prime. The $m$ integral step vectors $s_i$ span $\mathbb F_p^2$ after reduction. Repetitions are allowed. At level $n\ge1$ the vertices are $(\mathbb Z/p^n)^2$ and each pair $(v,i)$ supplies an undirected edge from $v$ to $v+s_i$. Write $T_n$ for the $p$-adic valuation of the spanning-tree count, normalized by $v_p(p)=1$. Define binary forms and a projective depth by
+\[
+ M_j(u)=\sum_{i=1}^m\langle u,s_i\rangle^{2j},
+ \qquad r(L)=\min\{j\ge1: M_j(u)\ne0\},\qquad L=[u]\in\mathbb P^1(\mathbb F_p).
+\]
+Here $M_1$ is the quadratic moment, and the forms have coefficients in $\mathbb F_p$. Newton's identities give $r(L)\le m$. If the first $m$ power sums of the squared projections vanished, every projection would be zero, contradicting spanning. The prior packet proves
+\begin{equation}
+ A=2\sum_L r(L),\qquad T_n=A(1+p+\cdots+p^{n-1})-2n.       \label{eq:graph-coeff}
+\end{equation}
+We recall its derivation to identify where torsion specialization enters. On a character of conductor $p^h$, with primitive covector $u$ modulo $p^h$, the Laplacian eigenvalue is $\sum_i(2-Z^{a_i}-Z^{-a_i})$, where $a_i=\langle u,s_i\rangle$ and $Z=\zeta_{p^h}$. Write $Z=1+T$. In characteristic $p$ the truncated substitution $T=\exp(z)-1$ is invertible through degree $2m<p$. The coefficient of $z^{2j}$ is $-2M_j(u)/(2j)!$, with odd coefficients zero. The first unit coefficient in the original integral $T$-series is therefore at $k=2r([\bar u])$. At $T=\zeta_{p^h}-1$, the valuation is $k/e$, $e=\varphi(p^h)$. Indeed $k\le p-1\le e$, the constant coefficient is zero, and every earlier nonzero coefficient is divisible by $p$. Thus the term of order $k$ is the unique term of least valuation. This uses the torsion radius in \src{New/Congruences/Selmer/RootsOfUnity.lean\#L58}{\texttt{ellVal\_sub\_one\_eq\_rootRadius}}.
+
+For each residual direction $L$, normalize one unit coordinate to one. There are $p^{h-1}$ projective lifts to conductor $p^h$, each with $e$ conjugate characters. This direction contributes $2r(L)p^{h-1}$ to the valuation of the product. The matrix-tree theorem divides the nonzero-eigenvalue product by the vertex count $p^{2n}$, proving \eqref{eq:graph-coeff}.
+
+\subsection{An interpolation bound and an attaining configuration}
+Put $s=\lfloor m/2\rfloor$. For every spanning list,
+\begin{equation}
+ A\le 2s(p+1)+4s(m-s).                                      \label{eq:graph-bound}
+\end{equation}
+For even $m=2s$, equality is attainable exactly at primes $2m\mid p-1$. The maximizing construction has $M_1=0$ whenever $m\ge4$.
+
+\emph{Proof.} Let $t$ be the first $j$ with $M_j$ a nonzero polynomial. Its degree is $2t\le 2m<p$. We prove $t\le s$. Discard residue-zero steps and let $m'$ be the remaining count. If a line through the origin contains more than half of these steps, take a nonzero linear functional annihilating the line. Its list has at most $\lfloor m'/2\rfloor$ nonzero projections and at least one, by spanning. Newton's identities applied to the shorter list prove the bound.
+
+Otherwise, arrange the $2m'$ signed occurrences $\pm s_i$ in contiguous blocks according to the line through the origin that they occupy. Every block has size at most $m'$. Pair occurrence $j$ with occurrence $j+m'$ for $1\le j\le m'$. Each pair has two distinct radial directions. Its affine line avoids the origin. Multiplying the equations of these $m'$ affine lines produces a polynomial $H$ of degree $m'$ that vanishes on every signed occurrence and satisfies $H(0)\ne0$.
+
+If $t>\lfloor m'/2\rfloor$, then $m'\le2t-1$. For every polynomial $P$ of degree at most $2t-1$, we have
+\[
+ \sum_{i:s_i\ne0}\big(P(s_i)+P(-s_i)\big)=2m'P(0).
+\]
+Odd homogeneous degrees cancel. For degree $2j<2t$, $j\ge1$, the vanishing coefficients of $M_j$ say that each mixed monomial of that degree sums to zero, since all binomial coefficients $\binom{2j}{k}$ are units. Applying the identity to $H$ contradicts $p>2m$. This proves $t\le s$ in both cases.
+
+A nonzero binary form of degree $2t$ has at most $2t$ projective roots. The other directions have depth $t$, and each exceptional direction has depth at most $m$. Hence $A/2\le t(p+1)+2t(m-t)$. The right side increases strictly for integers $1\le t\le s$, which proves \eqref{eq:graph-bound}.
+
+For even $m=2s$, equality requires $2s$ exceptional directions of depth $m$. In any direction of depth $m$, Newton's identities give $\prod_i (X-\langle u,s_i\rangle^2)=X^m-c$, $c\ne0$. The roots are distinct nonzero squares. Dividing by one root shows that all $m$th roots of unity belong to the square subgroup, and hence $2m\mid p-1$.
+
+Conversely, assume $4s\mid p-1$ and choose $g$ of order $2s$. Use the $s$ steps $(g^j,0)$ and the $s$ steps $(0,g^j)$, $0\le j<s$, lifting residues to integers. Every moment of index $k$ with $s\nmid k$ vanishes identically by a geometric sum. The moment $M_s$ is $s(a^{2s}+b^{2s})$ in direction $[a:b]$. Exactly $2s$ rational directions solve $a^{2s}=-b^{2s}$ because $-1$ is a $2s$th power. In each, $M_{2s}=2s b^{4s}\ne0$, so their depth is $2s=m$. All others have depth $s$. Substitution proves equality.\hfill$\square$
+
+For $p=13$ take three steps on each axis with coordinate sizes $1,4,3$. The eight ordinary directions have depth three, and the six exceptional directions have depth six. Thus $A=120$, $T_1=118$, and $T_2=1676$. For this same prime and step count the earlier nonvanishing-quadratic maximum was $48$. The included program evaluates the $168\times168$ reduced integral Laplacian determinant directly and recovers $T_1=118$.
+
+\subsection{Four steps at every prime}
+For $m=4$ and every prime $p>8$, the unrestricted maximum, also the maximum with $M_1=0$, is
+\begin{equation}
+ A_{\max}=4(p+1)+
+ \begin{cases}
+  16,&p\equiv1\pmod8,\\
+  0,&p\in\{11,23,29,47,53,83,149\},\\
+  8,&\text{otherwise}.
+ \end{cases}                                                    \label{eq:graph-four}
+\end{equation}
+
+\emph{Proof.} The primes $p\equiv1\pmod8$ are covered by the extremal construction. If $M_1$ is nonzero, the at-most-two exceptional directions give $A\le2(p+1)+12<4(p+1)$. It remains to optimize over lists with $M_1=0$ at the other primes. Relabel two independent steps and make them $e_1,e_2$ by a change of basis. The two rows of the remaining $2\times2$ block must be perpendicular, both with sum of squared coordinates $-1$. The first row $(a,b)$ determines the second up to sign. Changing the sign of the second basis coordinate, followed by a sign change of the second step, if needed, puts the block in the form
+\[
+ B=\begin{pmatrix}a&b\\b&-a\end{pmatrix},\quad a^2+b^2=-1,
+ \qquad J=\begin{pmatrix}0&-1\\1&0\end{pmatrix}.
+\]
+Such $a,b$ exist for every odd prime because the squares and $-1$ minus the squares each have $(p+1)/2$ elements. The bound on $t$ gives $t=2$.
+
+Both $B$ and $J$ permute the signed steps $\{\pm e_i,\pm Be_i:i=1,2\}$, with multiplicities. They satisfy $J^2=B^2=(JB)^2=-I$ and $JB=-BJ$. Their projective transformations on covectors generate a group of order four with three involutions. Indeed $B$ is symmetric and nonscalar, $J$ is skew-symmetric and invertible, and $JB$ is projectively different from both. Every $M_j$ is invariant under the corresponding transpose matrices. A direction fixed by any nonidentity element has eigenvalue $\lambda$ with $\lambda^2=-1$ for that representative. Then $M_3(u)=\lambda^6M_3(u)=-M_3(u)$. If such a direction were a root of the quartic $M_2$, it would have depth four, which requires $8\mid p-1$. Thus all rational roots of $M_2$ are in orbits of four. Since $M_2$ is a nonzero quartic, it has either zero or four rational roots, and each has depth three. This contributes precisely zero or eight above $4(p+1)$.
+
+Existence of at least one such root, allowing the step list to vary, is equivalent to a rational point on the projective curve
+\[
+ C:\quad x_1^2+x_2^2+x_3^2+x_4^2
+       =x_1^4+x_2^4+x_3^4+x_4^4=0 .
+\]
+The four projections in an exceptional direction give such a point. Conversely, take a nonzero representative $x$ of a point of $C(\mathbb F_p)$ and put $D=\operatorname{diag}(J,J)$. The vectors $x,Dx$ are perpendicular and isotropic in $\mathbb F_p^4$. If $Dx=\lambda x$, invariance under $D$ gives $\sum x_i^6=0$ as well, since $\lambda^2=-1$. The Newton argument for the four squares $x_i^2$ then forces $8\mid p-1$. For the primes under consideration the rows $x,Dx$ are therefore independent. Their four columns supply spanning steps with identically zero quadratic moment, and the first coordinate functional gives the required quartic root.
+
+Over an algebraic closure $C$ is a smooth complete intersection. Dependence of its two gradients would force all nonzero $x_i^2$ to coincide with one common nonzero $c$. The quadratic equation would give $kc=0$ for some $1\le k\le4<p$. The quartic does not vanish identically on the smooth quadric, as the point $(1,\sqrt{-1},0,0)$ shows. On this quadric, isomorphic over the algebraic closure to $\mathbb P^1\times\mathbb P^1$, the curve has bidegree $(4,4)$. It is connected. If two nonempty effective divisors of classes $(a,b)$, $(4-a,4-b)$ partitioned it disjointly, their intersection number $a(4-b)+b(4-a)$ would be positive. Smoothness then gives geometric irreducibility. Adjunction gives $g=(4-1)(4-1)=9$. The classical Hasse--Weil theorem \cite{weil} yields
+\[
+ \#C(\mathbb F_p)\ge p+1-18\sqrt p>0\qquad (p>322).
+\]
+This use of the finite-field theorem is independent of Dirichlet GRH.
+
+For the 49 remaining primes $8<p\le322$, $p\not\equiv1\pmod8$, normalize a nonzero coordinate to one using permutation and scaling. Loop through $y,z\in\mathbb F_p$. Set $c=-1-y^2-z^2$ and test whether $c$ is a square and $1+y^4+z^4+c^2=0$. This exhausts $C(\mathbb F_p)$ for the existence test. The seven failures are exactly those in \eqref{eq:graph-four}. The accompanying code records a witness for every successful prime and independently enumerates all plane normal forms at eleven small primes.\hfill$\square$
+
+\paragraph{Simple graphs.} The four-step maximum is also attained among simple eight-regular Cayley graphs. The row plane $W\subset\FF_p^4$ of a spanning list with $M_1=0$ is totally isotropic for the dot product. A zero step or equality of two steps up to sign would put $W$ in the orthogonal complement of $e_i$ or $e_i\pm e_j$. Each complement is a nondegenerate three-space, in which a totally isotropic plane would violate $\dim W+\dim W^\perp=3$. Distinct nonzero steps up to sign modulo $p$ give a simple graph at every level.
+
+The interpolation bound leaves open the exact maxima for odd $m\ge5$ and for even $m\ge6$ with $2m\nmid p-1$. Simultaneous projective roots of several moment forms determine which exceptional depths can coexist on a single plane.

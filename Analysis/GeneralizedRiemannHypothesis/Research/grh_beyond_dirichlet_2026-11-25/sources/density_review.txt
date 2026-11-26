@@ -1,0 +1,148 @@
+DENSITY CONJECTURE: INHERITED PROOF AUDIT AND NEW CUTOFF CHECK
+
+The original construction and the new quantitative refinement have different
+provenance. Part I audits the construction already present in ProveIt. Part II
+independently verifies the variance-based refinement developed in this report.
+The checks are mathematical review and exact arithmetic, not Lean certification.
+
+Archive source:
+https://github.com/VladimirReshetnikov/ProveIt/blob/7af2d6e471b198372a2825f502c44c0de8ef4415/docs/incoming/grh-methods-polynomial-density.zip
+
+Internal sources: grh-methods/polynomials.tex, small_pattern.tex, tilted.tex,
+counterexample.tex; the four check_*.py files named in Part I.
+
+PART I: INHERITED PROOF
+
+# Independent audit of the inherited polynomial-density counterexample
+
+## Verdict and provenance
+
+The main counterexample argument in `grh-methods-polynomial-density.zip` is mathematically sound as a paper proof for nonconstant polynomial ratios. It proves strict improvement of **upper** density over the value in Asada et al. Conjecture 6.3, for every prime power q. This is a revalidation of an earlier ProveIt manuscript, not a new discovery in the present session. No Lean formalization or independent community acceptance is claimed.
+
+The source archive, retrieved at ProveIt commit `7af2d6e471b198372a2825f502c44c0de8ef4415`, was checked against Git blob `8e768fb8613781183d0b673f3d2b4650dd92dd12` and its recorded length of 739761 bytes.
+
+The exact original conjecture appears on page 11 of the author-hosted primary paper https://www.nathanmcnew.com/fqxramsey.pdf ; arXiv:1512.01932 is the correct identifier. The convention in the introduction is non-unit polynomial ratios; rational-function ratios are expressly deferred to Question 6.4. Omitting zero and allowing all nonzero scalar associates changes no density and fits this convention.
+
+## Step-by-step proof audit
+
+### 1. The degree-only reference family
+
+Let A consist of the nonnegative integers whose ternary digits lie in {0,1}. It has no nonconstant three-term arithmetic progression: for a+c=2b neither side has base-three carries, and coordinatewise equality forces equal binary digits. At cutoff N select nonzero polynomials f with N-deg(f) in A. Their density is `(1-1/q)*sum_{a in A,a<=N}q^(-a)`, tending to `m_q`. Polynomial geometric progressions have strictly increasing, equally spaced degrees, so these finite sets are progression-free.
+
+This reference value is also the conjectured optimum; it is not the quite smaller density of the prime-exponent greedy family. Confusing these two numbers would invalidate an alleged counterexample, but the prior manuscript uses the correct one.
+
+### 2. A compatible better finite additive family
+
+For M=3^20 and digit vectors u in {0,...,5}^9, encode b(u)=sum u_i*11^i and retain sum(2u_i-5)^2=105. Base 11 prevents carries in midpoint equations because both a digit sum and doubled digit are at most 10. Strict convexity of the squared Euclidean norm then excludes every nonconstant midpoint on the fixed sphere.
+
+The counts of squared digits 1,9,25 must be (1,6,2), (3,3,3), or (5,0,4), so the cardinality is `2^9*(9!/(1!6!2!)+9!/(3!3!3!)+9!/(5!0!4!))=1053696`, exceeding `2^20=1048576`. The maximum over the entire digit box is `(11^9-1)/2=1178973845`, below M/2=1743392200.5. These exact inequalities were freshly rerun.
+
+Let B be the retained encodings and D=B union (A intersect [M,infinity)). Mixed midpoint triples cannot occur. If two low terms occur, their potential last term is less than M. If one low term a and two high terms b<c occur, put S=3^j for the leading ternary place of c. For b<S, 2b<=S-1<c; for b>=S, 2b-c>=(S+1)/2>=M/2>a. Hence D is progression-free.
+
+### 3. Positive smooth-factor gain
+
+Take all monic irreducibles P of degree at most M as a finite set S. Its smooth-polynomial generating function is `H(z)=product_{P in S}(1-z^deg(P))^(-1)`. Set `J(z)=sum_{d in B}z^d-sum_{d in A,d<M}z^d`. The strict cardinality inequality gives J(1)>0, hence H(z)J(z)>0 for some real z<1. Both power series converge absolutely there, so at least one integral coefficient Delta=[z^R]H(z)J(z) is strictly positive. This is an existence argument for one fixed R, independent of the later degree cutoff N; it is not a large unperformed finite computation disguised as a proof.
+
+The manuscript's explicit bound R<=M*(1+2^20*|S|) is also valid. It chooses z=1-1/(1024M), bounds the mean smooth degree by 1024M|S|, and applies Markov. The truncated positive terms retain at least (1023/1024)^2 of their cardinality while the subtracted terms each cost at most 1. The exact integer inequality `1023^2*1053696 > 1024^2*1048576` confirms the margin.
+
+### 4. Modification by squarefree rough part
+
+Every nonzero polynomial has a unique decomposition c*g*h with c a nonzero scalar, g monic rough (all prime factors outside S), and h monic S-smooth. At cutoff N modify precisely the fibers with squarefree g of degree N-R, replacing the deficit rule A by D. Each fiber changes in size by exactly `(q-1)*Delta`.
+
+Any newly created progression must contain an added polynomial f. Its deficit is in B, hence below M/2. If f is the first or middle term, the degree bound forces the ratio r to have degree <M, so r is S-smooth. If f is the last term, r^2 divides f; squarefreeness of the rough part forbids every outside-S prime from dividing r. Thus again r is S-smooth. Consequently every term has exactly the same monic rough part and remains in the same modified fiber. Its deficits would be a nonconstant arithmetic progression in D, impossible. Scalars do not obstruct this argument because all associates in each selected fiber are treated identically.
+
+This is the decisive step distinguishing polynomial ratios from unrestricted rational-function ratios. It is correct with the stated convention and should not be generalized silently.
+
+### 5. Strict density gain
+
+If G_n counts squarefree rough monic polynomials of degree n, the generating function is `(1-q*z^2)/(1-q*z)*product_{P in S}(1+z^deg(P))^(-1)`. Its unique pole inside the unit disk is at z=1/q, with limiting coefficient `G_n/q^n -> c_q=(1-1/q)*product_{P in S}(1+q^(-deg(P)))^(-1)>0`. Removing the pole gives a rational function analytic on the disk; alternatively partial fractions give the same limit.
+
+The modified finite sets therefore have density tending to `m_q+(q-1)*Delta*q^(-R-1)*c_q`, a fixed strictly positive gain. The positive constant need not be numerically practical to disprove equality.
+
+### 6. One infinite set, not only many finite examples
+
+Choose increasingly separated cutoffs N_j with `N_j-j>2*N_(j-1)` and `N_j-2*j>N_(j-1)`, and retain only degree layers [N_j-j,N_j] from the jth finite construction. A degree arithmetic progression spanning blocks cannot have two earlier terms (its last degree would be at most 2*N_(j-1)) or two latest terms (its first degree would be at least N_j-2j). A triple with only one latest term is included in the former case, even if its other terms lie in different older blocks. Thus the union is progression-free. At its selected cutoff the discarded density is at most q^(-j-1), which tends to zero. This establishes the required limsup of one infinite set.
+
+## Smaller witnesses and reproducibility
+
+All four actual reruns are recorded in `data/prior_density_rerun_results.json` with script SHA256s, exit codes and stdout:
+
+- `check_sphere.py`: exact 9-digit radius count and truncation margin.
+- `check_small_pattern.py`: AP-free sets of 106 and 151 points combine into 257 points in [0,3275], with twice the largest point below 3^8.
+- `check_tilted.py`: 74 points in [0,480], every midpoint checked, exact rational weighted gain >0.016 at z=127/128, ternary tail <0.00001, and truncation loss <0.005.
+- `check_polynomial_fibers.py`: 64770 actual binary-polynomial triples at degree cutoff 15, with 3564 touching an added polynomial; all were confined as required and no prohibited triple survived. This toy modification has negative gain (-10 per fiber), as the prior report candidly states. It checks confinement and counting, not the strict asymptotic improvement.
+
+The database-dependent witnesses were additionally checked against a fresh download of the primary Wroblewski database. The exact a(106)<=795 and a(151)<=1241 rows, translated to start at zero, match the encoded sets. The a(143)<=1360 row tagged 1092044464 Gavin Theobald matches all 74 cited entries in [878,1358]. The database SHA256 and matches are in `data/prior_density_database_checks.json`. The large sphere proof is independent of this database.
+
+For q=2 the displayed bound `beta_2 > m_2+2^(-2^494)` follows from the tilted witness and the verified cutoff. It is deliberately extremely small. The proof establishes an exact strict inequality, not a visible improvement in the printed decimal expansion of m_2.
+
+## Literature and limits
+
+Two independent web-search systems were queried for the exact paper, Conjecture 6.3, and polynomial/geometric-progression density counterexamples. They returned the original paper and related integer/quaternion results; no separate earlier disproof was located. This does not establish worldwide novelty. The contribution should be attributed to the inspected prior ProveIt report and called independently revalidated here.
+
+The manuscript's further computability theorem for the supremum, finite-ring results in other archives, analytic transfers, and claimed sharp numerical upper bound were not required for the main counterexample audit. They should not acquire an implied full verification status from this review.
+
+
+PART II: NEW VARIANCE-BASED CUTOFF
+
+# Independent verification of the new variance-based cutoff
+
+This note checks the quantitative refinement developed in the present report. The underlying 74-deficit set and the density construction are inherited from `grh-methods-polynomial-density.zip`; the variance-based truncation cutoff below is the proposed new increment. No external novelty claim is being made for Chebyshev's inequality or the generating-function probability method.
+
+## Distribution and moments
+
+Fix z=127/128 and let I_d be the number of monic irreducibles of degree d over F_q, for 1<=d<=480. The smooth-polynomial generating function is H(u)=product_d(1-u^d)^(-I_d). Giving degree X=n probability H_n*z^n/H(z) makes X a sum of independent random variables d*G_P, one for each smooth irreducible P of degree d, where P(G_P=k)=(1-z^d)*(z^d)^k for k>=0.
+
+Consequently
+
+`mu = E X = sum_d I_d*d*z^d/(1-z^d)`,
+
+`v = Var X = sum_d I_d*d^2*z^d/(1-z^d)^2`.
+
+The formula is valid because the set of irreducibles is finite and every geometric distribution has finite second moment. There is no asymptotic interchange or hidden truncation of the probability distribution.
+
+With integer ceiling applied separately to each degree term, define
+
+`U=sum_d ceil(I_d*d*127^d/(128^d-127^d))`,
+
+`V=sum_d ceil(I_d*d^2*127^d*128^d/(128^d-127^d)^2)`.
+
+Then mu<=U and v<=V. Let S=ceil(sqrt(7400*V)), T=U+S, and R_star=480+T. The exact integer square root is adequate: choose the least integer S with S^2>=7400V.
+
+## Tail and normalization
+
+Since T-mu>=S>0, Chebyshev gives
+
+`P(X>T) <= v/(T-mu)^2 <= 1/7400`.
+
+The strict-versus-weak event makes no problem: `{X>T}` is contained in the event whose deviation exceeds T-mu, and either the ordinary weak or strict Chebyshev bound gives the stated upper estimate. V is positive because there are q degree-one irreducibles.
+
+Write J(u)=sum_{b in B}u^b-sum_{a in A}u^a, where B is the inherited 74-element AP-free set in [0,480], and A is the ternary {0,1}-digit set. The earlier exact checks establish J(z)>3/200. The normalized partial sum of HJ through R_star is
+
+`sum_{n<=R_star} [u^n](H(u)J(u))*z^n/H(z)`
+
+`= sum_{b in B} z^b P(X<=R_star-b) - sum_{a in A} z^a P(X<=R_star-a)`.
+
+For every b in B, R_star-b>=T. The removed positive contribution is therefore at most
+
+`sum_{b in B}z^b P(X>R_star-b) <= 74/7400 = 1/100`.
+
+Removing negative contributions can only increase the partial sum. Thus the partial sum exceeds 3/200-1/100=1/200. At least one coefficient Delta_R is positive for R<=R_star. All coefficients are integers, so Delta_R>=1. This proves exactly the hypothesis needed by the unchanged factorization-fiber construction.
+
+## Exact q=2 calculation
+
+I independently recomputed I_d for d<=480 from `d*I_d=2^d-sum_{k|d,k<d}k*I_k`, then performed all ceilings with integer arithmetic and checked `(S-1)^2<7400V<=S^2`. The result matches the proposed R_star exactly:
+
+`149323313230765150144018272271602691735965957113297512270439977191173494626290056106035344506094657698429655284082117452824668452354378286162187`.
+
+Its bit length is 476. The prior cutoff `480+2000000*sum I_d` has bit length 494; their ratio is approximately 174581.64796072006. Exact U, V, S and both cutoffs are saved in `data/prior_density_refinement_independent_check.json`.
+
+The resulting density increment is at least `c_2*2^(-R_star-1)`, with `c_2=(1/2)*product_{d<=480}(1+2^(-d))^(-I_d)>2^(-12)`. For the latter inequality, use I_d<=2^d/d, log(1+x)<=x, and H_480<=1+log480<11log2 (e<3 and 1440<2048 suffice for the last inequality). Since R_star+13<2^476, the new displayed bound is
+
+`beta_2 > m_2 + 2^(-2^476)`.
+
+This is stronger than the inherited `m_2+2^(-2^494)`. Both are extremely small numerical margins. The improvement concerns a rigorous explicit witness cutoff and guaranteed gain; it does not compute the actual extremal density or an ordinary decimal-visible improvement.
+
+## Verdict
+
+The proposed refinement is correct. The probability normalization, geometric variance, tail cutoff, signed coefficient truncation, and positive-integer coefficient inference all check out. The exact numerical constant was reproduced independently.

@@ -1,0 +1,178 @@
+\section{Research priorities and conjectures not yet resolved}
+\label{sec:priorities}
+
+\subsection{First priority: extract and formalize the analytic selector}
+
+The strongest completed transfer is Theorem~\ref{thm:analytic-torsion-selector}.
+It relies on a local root-counting argument and has a tractable
+formalization path:
+\begin{enumerate}
+\item Strengthen the one-coordinate update lemma to retain
+\(\sum_i(a_i-c_i)_+\), then telescope across coordinates.
+\item Formalize uniform total-degree tails on a fixed torsion grid and
+algebraic approximation of finitely many coefficients and witnesses.
+\item Apply the finite-intersection argument on the finite grid.
+\item Package determinant, maximal-minor, and normalized-length corollaries
+as a reusable specialization API.
+\end{enumerate}
+No new global RH machinery is needed. The current 103-module import
+closure is an engineering starting point; reducing incidental imports
+would improve portability.
+
+The result's explicit order bound is poor for computation. For
+\(p=2,s_0=1,\rho=1/2,B=1,\epsilon=1/4\), the displayed sufficient
+choice is
+\[
+ H=\lceil3e^{24}\rceil,\qquad \text{maximum torsion order }2^H.
+\]
+This is roughly \(H=7.95\cdot10^{10}\), before exponentiating again.
+It proves uniform existence, not a feasible enumeration algorithm.
+Improving the harmonic-pigeonhole bound for particular coefficient
+classes or determinant structures is a concrete secondary problem.
+
+\subsection{Second priority: attack the \texorpdfstring{\(A_5\)}{A5} arithmetic estimate}
+
+The exact proposed nonabelian target is
+\[
+ R_W(x)\le C_\epsilon x^{-1/2+\epsilon},
+ \qquad W=(21,1,0,1,1).
+\]
+The positive detector includes all prime powers and handles inertia.
+The analytic conclusion, the pole normalization, the real residue signs,
+the chosen field, and the limited character optimization have been proved.
+They should be treated as finished infrastructure.
+
+The unresolved task is to construct arithmetic objects whose index or
+determinant encodes this \(W\), with matching main terms and errors
+small enough to preserve the square-root saving. A reasonable first
+attempt would make the degree-5, degree-6, and degree-12 permutation
+realizations interact with a common lattice comparison. It would need
+to prove integrality, sufficient rank, a compatible long-form estimate,
+and local twist control. This is a proposed research route, not an
+existing construction.
+
+The mean-square lower bound \(7\) in
+Theorem~\ref{thm:a5-blindness} gives a useful early failure test:
+any proposal that uses only finitely many fixed congruence classes to
+represent \(W\) exactly cannot work. A growing-modulus proposal must
+supply new uniform estimates and explain how it retains the source's
+scale. One cannot infer failure of every RH-based argument from this
+limited obstruction.
+
+The author announcement itself identifies extended RH as a possible
+further direction~\cite{alpoge-remark}. It provides motivation, not
+the missing nonabelian construction. Approximate Artin holomorphy
+and zero-free results for families are also substantial existing work,
+but they do not provide the fixed-field, full-critical-line statement
+required by this target~\cite{ltz2024}.
+
+\subsection{Third priority: finish a finite class-group classification}
+
+Theorem~\ref{thm:genus-four} strengthens a specific gap in the prior
+analysis. It is the closest direction to a complete further
+classification theorem because a published finite global range and an
+existing census are already available. A next computation should apply
+the actual inequality
+\[
+ x\le4R(H)\,M_{2^{t-\dim H}}(\log x)^6
+\]
+for useful subgroups \(H\), rather than only the four rounded thresholds.
+Optimizing ramified representatives can reduce \(R(H)\).
+The remaining discriminants would then need a complete, independently
+checkable enumeration or a further theoretical exclusion.
+
+The present report does not count that remaining set, estimate its
+computational cost, or verify all 432 published entries. Any claim that
+the classification has now been completed would go beyond both the
+proofs and the computations supplied here.
+
+\subsection{Why BSD, Goldfeld, Vandiver, and general Iwasawa claims do not follow}
+
+For BSD or Goldfeld-type nonvanishing, a selector must be connected to
+the correct analytic or algebraic object. A nonzero initial witness,
+integral interpolation or a presentation, compatibility of local
+conditions, and any required density statement remain independent
+inputs. The scalar-inertia obstruction shows that even the source's
+packaged Selmer hypothesis fails for the unmodified elliptic Tate module.
+A selector cannot remove a forced sign zero or create a nonzero
+Euler-system class from an identically zero input.
+
+For Vandiver-type or higher \(K\)-group vanishing statements, controlling
+a denominator at varying ramified twists does not show that the desired
+fixed component vanishes. Normalized lengths can decrease simply
+because the coefficient-field ramification increases. One would need
+a fixed-component comparison and a uniform positive lower gap for
+nonzero lengths, or a different argument proving exact vanishing.
+The previous reports already identify related barriers~\cite{prior}.
+
+Thus these are candidate domains for the determinant machinery, not
+conjectures resolved here. A useful follow-up should name one exact
+representation, module, and specialization problem and verify its
+hypotheses before claiming a new arithmetic consequence.
+
+\section{Verification record and use of the archive}
+\label{sec:repro}
+
+\subsection{Claim and evidence ledger}
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}p{49mm}YY@{}}
+\toprule
+Claim & Evidence supplied & Limit\\
+\midrule
+Scope of upstream theorem &
+Pinned \file{Main.lean}, \file{Statements.lean}, source hashes,
+reported independent checking pages. &
+No new local Lean build or kernel replay.\\
+\addlinespace
+Analytic torsion theorem &
+Complete proof including positive excess, approximation, uniform tails,
+and the finite-intersection step. &
+Finite Python examples do not certify the infinite theorem.\\
+\addlinespace
+\(A_5\) transfer criterion &
+Complete transform/residue proof and exact finite-group and polynomial
+certificate. &
+The prime-sum inequality remains a hypothesis.\\
+\addlinespace
+Genus-field exclusion theorem &
+Complete class-group/norm proof, original prime-bound constants, exact
+rational endpoint checks. &
+Published census is an external input; no full survivor enumeration.\\
+\addlinespace
+Novelty relative to packets &
+Inspection of all five prior archives, pinned manifest, detailed
+comparison notes. &
+No exhaustive literature-priority determination.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The exact finite checks have distinct purposes. The \(A_5\) program
+constructs the group and coset actions, verifies the character identities,
+local cycle factors, variance and the Galois certificate. The genus
+program checks rational inequalities, table ranges, the demonstration
+primes and discriminant. The torsion program checks illustrative finite
+valuation computations and a harmonic bound. All decisive arithmetic in
+the first two programs is exact. Approximate decimals in the JSON are
+display aids, not the basis of comparisons.
+
+\subsection{Contents and commands}
+
+The archive contains \file{report.tex}, \file{report.pdf}, the included
+section files, Python certificates, their JSON/CSV results,
+source-audit and prior-report manifests, review notes, and a small
+selection of upstream source files with their license notices.
+The upstream excerpt is evidence, not a standalone buildable copy of
+\repo.
+
+Run \texttt{bash code/reproduce.sh} from the archive root to regenerate
+the finite certificates and rebuild the PDF when the dependencies are
+available. Python 3 is sufficient for the \(A_5\) and genus scripts;
+the torsion illustrations also require SymPy. A standard LaTeX installation
+with \file{latexmk} and \file{pdflatex} builds the report. The source audit
+accepts the path to a separately cloned repository at the pinned revision.
+The included SHA-256 manifest checks archive members; it does not attest
+to their mathematical correctness.
+

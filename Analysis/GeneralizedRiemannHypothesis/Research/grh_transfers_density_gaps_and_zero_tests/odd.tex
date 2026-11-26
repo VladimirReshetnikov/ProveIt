@@ -1,0 +1,44 @@
+\section{The least degree for odd projective special linear groups}
+\label{sec:oddpsl}
+The earlier \texttt{psl2\_grh\_transfer.zip} studies $\mathrm{PSL}_2$ in characteristic two. Its third further question asks for the least dimension of a nonnegative character containing every nontrivial irreducible in odd characteristic and for optimal subfield degrees. Nonnegativity here means nonnegativity as a function on group elements. We answer the first question for every odd prime power $q\ge5$ and the single-subfield spectral question for every prime $q\ge127$.
+
+\paragraph{The least dimension.}
+Let $G=\mathrm{PSL}_2(\mathbb F_q)$ and $S=\sum_{\chi\in\mathrm{Irr}(G)}\chi$, the classical Gelfand character. The unique minimizer is $S$. Set $D=q(q+1)/2$. The complete set of weights is
+\[
+\begin{array}{c|cccc}
+q\bmod4 &\text{identity}&\text{nontrivial unipotent}
+ &\text{nonidentity split }t&\text{nonidentity nonsplit }t\\ \hline
+1&D+1&1&1+\delta(t)&1\\
+3&D&0&1&1-\delta(t).
+\end{array}
+\]
+Here $\delta$ denotes the quadratic character of whichever projective torus has even order. The split and nonsplit projective tori $T_s,T_n$ have orders $a=(q-1)/2,b=(q+1)/2$, respectively. Toral involutions are included.
+
+\paragraph{Proof.}
+Use the ordinary character table in B. B\"ohmler, N. Farrell and C. Lassueur, \emph{Trivial source character tables of $\mathrm{SL}_2(q)$}, Table~1, restricting to rows trivial on $-I$ (\href{https://doi.org/10.14760/OWP-2022-02}{Oberwolfach preprint}). Besides $1$ and the Steinberg character of degree $q$, the principal series is indexed by nontrivial characters $\alpha$ of $T_s$ up to inversion. An inverse pair contributes one degree-$q+1$ row, with values $1$, $\alpha(t)+\alpha(t)^{-1}$ and $0$ on the three nonidentity types above. For the cuspidal series use nontrivial characters $\beta$ of $T_n$ up to inversion. A pair contributes one row of degree $q-1$ with values $-1$, $0$ and $-\beta(t)-\beta(t)^{-1}$. A quadratic parameter contributes two exceptional rows of half the corresponding degree. Their sum has exactly the displayed series values for this parameter. Steinberg has values $0,1,-1$.
+
+If $q=4k+1$ the numbers of ordinary inverse pairs in the two series are $k-1,k$, and the exceptional pair is principal. If $q=4k+3$ the numbers are $k,k$, and the exceptional pair is cuspidal. Summing the degrees and the unipotent values gives the first two columns. For nontrivial $t$ the sum of all nontrivial characters of its cyclic torus is $-1$. A quadratic parameter, when present, contributes twice its value to the parameter sum in the character table, hence one extra copy beyond this $-1$. Adding the trivial and Steinberg terms gives the remaining columns. In particular $S(g)\ge0$ everywhere. Every nonzero, pointwise-nonnegative genuine character has strictly positive mean, since its value at the identity is its dimension. Its trivial multiplicity is therefore at least one. Covering all nontrivial irreducibles then forces degree at least $S(1)$, with equality exactly for $S$.
+
+\paragraph{A Hecke realization when $q\equiv1\pmod4$.}
+Let $N=T_s\rtimes\langle w\rangle$ be the dihedral normalizer, with $w$ acting by inversion. Extend $\delta$ to $\lambda$ on $N$ by $\lambda(w)=1$. Then
+\[
+ S=1+\operatorname{Ind}_N^G\lambda .
+\]
+Indeed the induced character has degree $D$ and vanishes on unipotents and nonsplit elements. All reflections in $N$ are involutions, which are split in this congruence class. Their total $\lambda$-sum is zero. At a split noninvolution the class intersects $T_s$ in $t,t^{-1}$ and its centralizer has order $a$. At the split involution the intersection with $T_s$ is a singleton and its centralizer has order $2a$. In both cases the induction formula gives $\delta(t)$. Thus for a $G$-extension $M/\mathbb Q$, $L(s,S)$ is the product of $\zeta_{\mathbb Q}(s)$ and a nontrivial quadratic Hecke $L$-function over $M^N$. This gives unconditional holomorphy in the open critical strip and a concrete nonabelian Frobenius weight for the one-sided analytic approach. A critical-line theorem for that Hecke function would still require new arithmetic estimates.
+
+\paragraph{The smallest spectrally detecting single subfield.}
+A subgroup $H$ is \emph{rich} if $\operatorname{Ind}_H^G1$ contains every irreducible, equivalently every irreducible has an $H$-fixed vector. In the terminology of the prior report, $M^H$ is then spectrally detecting. For every prime $q\ge127$,
+\[
+ \min_{H\ \mathrm{rich}} [G:H]=q(q-1).
+\]
+The nonsplit torus attains this minimum. To see that it is rich for every odd $q\ge5$, average each row of the ordinary table over $T_n$. The trivial, Steinberg, and each exceptional row have exactly one fixed dimension (on the nonsplit torus a cuspidal exceptional row has values $-\delta(t)$ away from the identity). Each ordinary principal or cuspidal row has two fixed dimensions. The latter computation uses $\sum_{t\ne1}\beta(t)=-1$.
+
+Conversely, the dimension bound forces $|H|\le q-1$, since $|G|=(q-1)D$. Equality is impossible for $q\equiv1\pmod4$ since the least dimension is $D+1$. For $q\equiv3\pmod4$ equality would imply $\operatorname{Ind}_H^G1=S$. At a generator $t$ of $T_n$, $S(t)=2$, so $H$ would contain a conjugate of $t$. But $b=(q+1)/2$ fails to divide $q-1=2b-2$ for $b>2$. Thus $|H|<q-1$ in either case.
+
+For prime $q\ge127$, Dickson's subgroup classification (Guralnick and Zieve, \emph{Polynomials with PSL(2) monodromy}, Appendix~A, \href{https://annals.math.princeton.edu/wp-content/uploads/annals-v172-n2-p11-p.pdf}{Theorem~A.1}) now leaves few possibilities. Since $|H|<q$, it has order prime to the defining characteristic. There are no proper subfield groups at prime $q$. The cyclic possibilities have order at most $b$. A dihedral group of order $2d$ has $d\mid a$ or $d\mid b$. The full normalizers have order $q-1$ or $q+1$, already excluded. Every smaller dihedral subgroup has order at most $b$. The exceptional groups $A_4,S_4,A_5$ have order at most $60<b$. These bounds prove the minimum. The restriction on $q$ matters. For example $\mathrm{PSL}_2(109)$ has a rich $A_5$ subgroup of order $60>55$.
+
+\paragraph{Relation to earlier work and to zeros.}
+Rich subgroups, their degree-sum bound, and finite examples are studied by Breuer, H\'ethelyi, Horv\'ath and K\"ulshammer, \emph{On Frobenius graphs of diameter 3 for finite groups}, Corollary~2.8 and Tables~2--3 (\href{https://doi.org/10.1016/j.jalgebra.2024.11.014}{J. Algebra 666 (2025), 507--529}). The large-prime formula above answers the optimization posed by the incoming report. No historical priority is claimed. Spectral coverage concerns which factors occur in the Artin factorization. Under Artin holomorphy in the open strip it gives an equivalence between RH for $\zeta_{M^{T_n}}$ and RH for $\zeta_M$, because all local zero orders are then nonnegative. Without that input a meromorphic constituent may have a negative order. The finite-group optimality proof supplies no sign control on those orders and no bound on the smoothed sum over primes.
+
+\paragraph{Independent finite check.}
+\texttt{check\_odd\_psl2.py} verifies the full weight for $q=5,7,11,13,17,19$ by exact arithmetic on projective matrices, independently of the character table. Writing $S=\sum m_\chi\chi$ for the proposed class function and taking unnormalized convolution, character orthogonality gives $(S*S)(g)=|G|\sum m_\chi^2\chi(g)/\chi(1)$. The classical commutator-count formula has the same right hand side with every $m_\chi^2$ replaced by one: average each conjugate of an irreducible matrix over $G$, obtaining the scalar trace divided by degree, and apply character orthogonality. The checker counts commutators and verifies this convolution equality on every class. It checks positive definiteness of convolution by $S$ on class functions by rational elimination of the Gram matrix on conjugacy-class indicators. Its eigenvalues on irreducible characters are $|G|m_\chi/\chi(1)$, hence every $m_\chi=+1$. It also verifies the induced-character identity in each applicable example. The degree minima there for the class-function problem are respectively $16,28,66,92,154,190$.

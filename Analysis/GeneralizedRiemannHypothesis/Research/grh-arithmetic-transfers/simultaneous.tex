@@ -1,0 +1,24 @@
+\paragraph{A single explicit tetrahedral field for all 66 primes.}
+The preceding construction permits simultaneous prescriptions. Take
+$S$ to be the union, over the $66$ candidates $p$, of all split primes
+$q<p/4$ in $\mathbb Q(\sqrt{-p})$. The union comprises $5{,}093$ primes
+and omits $r=9{,}343$. Require inertness in $C$ at the primes of $S$
+and take $t\equiv0\pmod{r^2}$. The polynomial $X^3-3X-1$ has simple
+roots $755,8688,9243$ modulo $r$, and its value at $755$ has $r$-adic
+valuation one. Thus $\beta=\alpha-755$ gives the required independent
+square classes. With the two integers in
+\path{checks/simultaneous_parameter.txt}, set
+\[
+ t=A/B,\quad u_t(\alpha)=0,\qquad
+ K=\mathbb Q\!\left(\alpha,
+    \sqrt{(\alpha-755)/(-1/(\alpha+1)-755)}\right).
+\]
+The largest absolute coefficient of $B u_t(X)$ has $10{,}797$ decimal
+digits. For this one field, (CC) holds for precisely the $66$ candidates
+among primes $p\equiv3\pmod4$. Indeed each relevant $q$ is inert in $C$,
+and the finite check gives $4q^3\ge p$ for every such pair $(p,q)$.
+The first alternative in (CC) therefore suffices whenever the residue
+degree in $K$ is odd. Section~\ref{sec:strict-cc} and the sextic bound
+exclude all other primes in the specified congruence class. The verifier
+\path{checks/simultaneous_witness.py} rebuilds the union and checks the
+parameter at each of its primes, including $2$.

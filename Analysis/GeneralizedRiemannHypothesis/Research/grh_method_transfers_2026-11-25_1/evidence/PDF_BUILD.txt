@@ -1,0 +1,39 @@
+PDF BUILD RECORD
+================
+
+The report was built with latexmk and pdfTeX 1.40.26 (TeX Live 2025/dev/Debian),
+using the installed LaTeX2e 2024-11-01 patch level 2 sources. The resulting
+report.pdf has 23 A4 pages. The final report.log has no overfull or underfull
+boxes, undefined references/citations, LaTeX/package warnings, or duplicate
+PDF destination warnings. pdffonts reports every used font as embedded,
+subsetted Type 1, with a Unicode mapping.
+
+All nine included .tex files passed a byte scan for unexpected control
+characters (only tab, LF and CR were permitted below ASCII 32).
+
+Environment repair was necessary because the workspace's Debian TeX tree
+contained dangling generated-data symlinks into /var/lib/texmf. All required
+TeX sources, fonts and packages were already installed. No download or system
+package modification was needed. A temporary workspace-local TeX tree supplied:
+
+- fmtutil.cnf with the standard pdflatex/pdftex format entry;
+- language.dat selecting the installed English hyphenation patterns;
+- a pdftex font map assembled from the installed Latin Modern and AMS maps;
+- a freshly generated pdflatex.fmt, produced with fmtutil --user --byfmt pdflatex.
+
+The TEXMF search path included this temporary tree, /usr/share/texmf and
+/usr/share/texlive/texmf-dist without database-only (!!) prefixes. TEXMFCONFIG,
+TEXMFVAR and TEXMFHOME selected temporary writable subdirectories. The format
+and font-map cache is an environment artifact and is not redistributed here.
+A normal complete TeX Live installation does not require this repair.
+
+The report was then compiled until latexmk reported all targets up to date:
+
+    latexmk -pdf -interaction=nonstopmode -halt-on-error report.tex
+
+Final visual review: all 23 pages were rendered with Poppler and reviewed as
+contact sheets. Dense theorem, table, and reference pages were also inspected
+at higher resolution. The two pages changed in the final command-spacing fix
+were rendered and inspected again. No clipping, overlap, missing glyphs or
+unresolved references were observed. The contents and references layout was
+compacted from the initial 25-page build to the delivered 23-page version.

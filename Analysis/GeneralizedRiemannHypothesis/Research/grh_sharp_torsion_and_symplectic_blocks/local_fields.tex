@@ -1,0 +1,106 @@
+\section{The exact price over a finite coefficient field}
+\label{sec:field}
+Let $K/\mathbb Q_p$ be finite, with integer ring $\mathcal O_K$, absolute ramification index $e$ and finite residue field $k$. Continue to normalize $v(p)=1$. Put $N_h=\varphi(p^h)$ and $r_h=1/N_h$. A finite packet consists of nonzero $g_i\in\mathcal O_K[T]$ and witnesses $x_i$ in $\mathbf C_p$ with $v(x_i)\ge\rho>0$ and $t_i=v(g_i(x_i))<\infty$. Its budget is $\sum_i t_i$. At a point $z=\zeta-1$, measure the loss by
+\[
+                   \sum_i \max(0,v(g_i(z))-t_i).
+\]
+A packet blocks a shell if this loss exceeds $\epsilon$ at \emph{every} primitive point on it. Write $C_K(S,\epsilon)$ for the minimum budget to block a nonempty finite set $S$ of shells, all with $r_h\le\rho$. Each polynomial has its own witness. This is the simultaneous selection problem in the earlier reports \cite{packet,fieldprior}. The use of the positive part is essential because a saving on one polynomial cannot offset a loss on another.
+
+\begin{theorem}\label{th:ram}
+For every finite $K/\mathbb Q_p$ and every eligible $S$,
+\[
+ \boxed{\quad C_K(S,0)=\sum_{h\in S}p^{-\min(v_p(e),\,h-1)}.\quad}
+\]
+All the extremizing witnesses may be taken to be zero. In particular, on shells $h\ge1+v_p(e)$ a unit of obstruction costs exactly $p^{-v_p(e)}$ per shell. For an interval starting at such an $h_0$, the least endpoint guaranteeing some specialization with zero positive excess for every packet of budget at most $B$ is $h_0+\lfloor p^{v_p(e)}B\rfloor$.
+\end{theorem}
+
+\paragraph{How a shell is charged.}
+For $g=b\prod_\alpha(T-\alpha)$, write $G_u(g)=v(b)+\sum_\alpha\min(u,v(\alpha))$. This follows from multiplicativity of the Gauss valuation. At a point $z$ of valuation $r$, the number $v(g(z))-G_r(g)$ is a sum of nonnegative terms; only roots of valuation $r$ can contribute. Since $t_i\ge G_\rho(g_i)\ge G_r(g_i)$, this sum dominates each individual positive loss. Collect the matching roots for the whole packet, including multiplicities. Their monic product $P_h\in\mathcal O_K[T]$ is defined over $K$ because the multiset is Galois-stable. Put $m_h=\deg P_h$. Then
+\begin{align}
+ &\sum_i\max(0,v(g_i(z))-t_i)\ \le\ v(P_h(z))-m_h r_h, \label{eq:reduce}\\
+ &\sum_{h\in S}m_h r_h
+ \ \le\ \sum_i\bigl(G_\rho(g_i)-G_0(g_i)\bigr)\ \le\ \sum_i t_i. \label{eq:cost}
+\end{align}
+A root at valuation $r_h$ contributes exactly $r_h$ to the first difference in \eqref{eq:cost}; all other contributions are nonnegative, including those of roots of negative valuation. Conversely, monic polynomials with all roots on their designated radius have $v(P_h(0))=m_hr_h$. Using one per shell and taking witnesses at zero attains the sum of the individual costs whenever each designated shell is blocked. This proves additivity for any tolerance.
+
+\paragraph{Why only the wild part of $e$ survives.}
+Fix $h$ and abbreviate $N=N_h$, $r=1/N$, $g=\gcd(N,e)$ and $d=N/g$. Set $\pi=\xi-1$ for a primitive $p^h$th root $\xi$. If $P(T)=\sum_{j=0}^m c_jT^j$ is monic with all its roots of valuation $r$, then $\pi^{-m}P(\pi X)$ is integral with monic reduction over the algebraic closure of the residue field. Its constant term is a unit. A coefficient can survive reduction only if $v(c_j)=(m-j)/N$. Since $v(K^\times)=e^{-1}\mathbb Z$, this forces $d\mid m-j$. The constant term gives $d\mid m$. The reduction is therefore $Q(X^d)$, where $Q$ is monic of degree $m/d$.
+
+For each exponent $a$ prime to $p$, the geometric series gives
+$\overline{(\xi^a-1)/\pi}=\bar a$. If $P$ blocks the shell relative to $mr$, the reduction must vanish on $\mathbb F_p^\times$. The $d$th powers of this group have size $(p-1)/\gcd(p-1,d)=\gcd(p-1,e)$. Thus $m/d\ge\gcd(p-1,e)$. Writing $s=\min(v_p(e),h-1)$, this says $m/N\ge p^{-s}$. Equations \eqref{eq:reduce} and \eqref{eq:cost} apply the bound to every packet.
+
+For the matching binomial choose $m=N/p^s$. The shifted cyclotomic polynomial $\Phi_{p^h}(1+T)$ is Eisenstein with constant coefficient $p$, so $\overline{\pi^N/p}=-1$. This holds at every primitive point. There is $c\in K$ with $v(c)=p^{-s}$ and $\overline{c^{p^s}/p}=-1$. Indeed, start with a uniformizer to the power $e/p^s$ and adjust by a unit; the $p^s$th-power map is bijective on $k$. For every $z=\xi^a-1$ the unit $z^m/c$ reduces to $1$, since its $p^s$th power does. All roots of $T^m-c$ have valuation $r$, and
+\[
+                   v(z^m-c)>p^{-s}=v(c).
+\]
+This polynomial and the witness zero attain the lower bound. The strict inequality also explains why equality of the total budget with the obstruction cost allows failure of selection. \hfill$\square$
+
+\subsection{An exact finite calculation at every tolerance}
+\label{sec:algorithm}
+For positive rational $\epsilon$, the following gives a finite computation of $C_K(S,\epsilon)$ over an explicitly presented local field. It also works at $\epsilon=0$. It avoids enumeration of packet sizes, degrees of arbitrary input polynomials, or possible witnesses.
+
+\begin{proposition}\label{prop:mod}
+For shell $h$ set $L=K(\xi)$, $E=e(L/\mathbb Q_p)$, and choose a uniformizer $\varpi$ of $L$. For each $m=1,\ldots,N_h$ form
+\[
+ t=\big\lfloor E(mr_h+\epsilon)\big\rfloor+1,\qquad
+ R=\operatorname{image}(\mathcal O_K\longrightarrow\mathcal O_L/(\varpi^t)).
+\]
+Let $V_j=((\xi^a-1)^j)_a$ in $(\mathcal O_L/(\varpi^t))^{N_h}$, with $a$ ranging over the units modulo $p^h$. Take the first $m=m_h^*$ satisfying
+\[
+                 -V_m\ \in\ R V_0+\cdots+R V_{m-1}.
+\]
+Then $C_K(S,\epsilon)=\sum_{h\in S}m_h^*/N_h$.
+\end{proposition}
+\begin{proof}
+Membership asserts precisely the existence of a monic integral polynomial $P$ of degree $m$ with $v(P(z))>mr_h+\epsilon$ at every test point. The full cyclotomic polynomial shifted by one succeeds at $m=N_h$. If some root of $P$ has a valuation different from $r_h$, its contribution $v(z-\alpha)-r_h$ is either zero or negative at every test point. Removing all such roots leaves a monic integral polynomial over $K$ which still passes its own strict test. Hence a first successful polynomial has all roots on the radius. The reduction \eqref{eq:reduce} implies that every blocking packet has at least $m_h^*$ matching roots at this radius (trivially so if its count exceeds $N_h$). The budget inequality gives necessity, and the successful polynomials used separately with witness zero give attainment.
+\end{proof}
+Only finite rings and linear membership occur here. The coefficient ring is $\mathcal O_K/\mathfrak p_K^{\,\lceil t/e(L/K)\rceil}$. Enumeration of its $m$-tuples is sufficient; linear algebra over a discrete valuation ring is often cheaper. Checking a single representative per $\operatorname{Gal}(L/K)$-orbit gives the same answer. The complexity can grow rapidly with $h$. Section~\ref{sec:dyadic} evaluates the test in closed form for a shell where the arithmetic of $K$ already matters.
+
+\paragraph{One fixed polynomial over the specified field.}
+Proposition~\ref{prop:mod} also makes the recurrence in Section~2 exact over $K$. Let $d_h(t)$ be the first successful degree in the congruence test at tolerance $t$. For $h\in S$ in increasing order set
+\[
+ n_h=d_h\!\left(\epsilon+\sum_{\substack{j\in S\\j<h}}
+                         n_j(r_j-r_h)\right).
+\]
+The least $G_\rho$ of a \emph{single} polynomial over $\mathcal O_K$ blocking all $S$ relative to the common fixed value $G_\rho+\epsilon$ is $\sum_h n_hr_h$. To see necessity, extract the same-radius monic factor at each shell. The savings already accumulated on earlier shells are at least the sum in the recurrence, by induction and $r_j>r_h$. The extracted factor must therefore pass the local test at that effective tolerance, so it has degree at least $n_h$. Conversely take the product of the local extremizers found by the tests. Their roots all have the designated radii, giving exactly those savings and the claimed fixed Gauss valuation. The finite computation thus covers both conventions for adding the losses.
+
+\subsection{Primitive fourth roots and the quadratic defect of \texorpdfstring{$-1$}{-1}}
+\label{sec:dyadic}
+Take $p=2$, $h=2$, $r=1/2$, and any finite extension $K/\mathbb Q_2$. Define the truncated quadratic defect
+\[
+             d_K=\max_{a\in\mathcal O_K}\min\{2,v(a^2+1)\},
+             \qquad \eta_K=(d_K-1)/2 .
+\]
+The maximum exists since only finitely many residues modulo $4\mathcal O_K$ matter; $a=1$ gives $d_K\ge1$.
+
+\begin{theorem}\label{th:fourth}
+For all $\epsilon\ge0$ the minimum blocking budget on this shell equals
+\[
+ C_K(\{2\},\epsilon)=
+ \begin{cases}
+   1/2,&0\le\epsilon<\eta_K,\\
+   1,&\epsilon\ge\eta_K.
+ \end{cases}
+\]
+\end{theorem}
+\begin{proof}
+The two points are $i-1$ and $-i-1$. Write a potential linear center as $a-1$. The distances have valuations $v(a-i)$ and $v(a+i)$. Their sum is $v(a^2+1)$ and their minimum is at most $1$, as the two targets differ by $2i$. If the minimum is less than $1$ the two valuations are equal. Thus their minimum is exactly $\tfrac12\min(2,v(a^2+1))$, including $a=\pm i$. A monic linear polynomial succeeds in Proposition~\ref{prop:mod} precisely for $\epsilon<\eta_K$. A monic quadratic with both targets as roots always succeeds. These are all possible first successful degrees.
+\end{proof}
+
+\begin{center}
+\begin{tabular}{@{}lccc@{}}\toprule
+$K=\mathbb Q_2(\sqrt D)$, by radicand & $d_K$ & $\eta_K$ & $C_K(\{2\},1/4)$\\\midrule
+$D=5$ & $1$ & $0$ & $1$\\
+$D=2,-2,10,-10$ & $3/2$ & $1/4$ & $1$\\
+$D=-1,3$ & $2$ & $1/2$ & $1/2$\\\bottomrule
+\end{tabular}
+\end{center}
+\noindent These are representatives of all seven quadratic extensions of $\mathbb Q_2$ (the square class of $3$ is that of $-5$). The table can be verified in sixteen residues per field. For even $D$ the basis is $1,\sqrt D$; for $D=-1,3$ use $1,\sqrt D-1$. In both cases the second basis element $\lambda$ is an Eisenstein uniformizer, giving $v(b+c\lambda)=\min(v_2(b),v_2(c)+1/2)$. For $D=5$ use $\lambda=(1+\sqrt5)/2$. Its irreducible reduction gives the minimum of the two coefficient valuations. Thus computing $a^2+1$ with both basis coefficients of $a$ in $\{0,1,2,3\}$ proves the table by finite arithmetic.
+
+\paragraph{Why the cyclotomic intersection loses information.}
+The two fields $K_1=\mathbb Q_2(\sqrt3)$ and $K_2=\mathbb Q_2(\sqrt{10})$ have the same residue field and value group. Both meet $\mathbb Q_2(\mu_{2^\infty})$ only in $\mathbb Q_2$. Indeed the three quadratic subfields of the tower correspond to $-1,2,-2$: for $n\ge3$ the group $(\mathbb Z/2^n)^\times$ has exactly three index-two subgroups and all three fields already lie at level $8$. Their square classes differ from those of $3$ and $10$. Nevertheless the strict tolerance $1/4$ separates the two fields. In $K_1$ the center $\sqrt3-1$ has distance valuation $1$ from both targets. In $K_2$ the center $\sqrt{10}$ has distance valuation $3/4$ from both since
+\[
+ v\big((1+\sqrt{10})^2+1\big)=v(12+2\sqrt{10})=3/2 .
+\]
+No element of $K_2$ can improve this: its difference from $\sqrt{10}$ has valuation in $\tfrac12\mathbb Z$ or is zero. The ultrametric inequality with unequal valuations then bounds its proximity to each target by $3/4$. The pair answers the question in \cite{packet} about whether the cyclotomic intersection and allowed coefficient valuations determine the cost at positive tolerance.
+

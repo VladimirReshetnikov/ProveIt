@@ -1,0 +1,40 @@
+\documentclass[11pt]{article}
+\newcommand{\runningtitle}{Geometric progressions over finite fields}
+\input{style}
+\hypersetup{pdftitle={A counterexample to the geometric-progression density conjecture over finite fields}}
+\title{A counterexample to the geometric-progression density conjecture over finite fields}
+\begin{document}
+\maketitle
+\begin{abstract}
+For every prime power $q$, we construct a subset of $\mathbb F_q[x]$ free of three-term geometric progressions with nonconstant polynomial ratio whose upper density exceeds the value proposed by Asada, Fourakis, Manski, McNew, Miller and Moreland. The proof combines a carry-free sphere of digit vectors with a change in the allowed degrees for polynomials having a specified rough part. A generating function converts an additive gain into a strict density gain. We also give finite optimization problems converging to the true supremum with an explicit error bound.
+\end{abstract}
+
+\input{polynomials}
+\input{small_pattern}
+\input{tilted}
+\input{growth}
+\input{supremum}
+\section{How large can the improvement be?}
+For $q=2$, let $\beta_2$ denote the true supremum. The earlier two-prime calculation and the counterexample together give
+\[
+  m_2+2^{-2^{494}} < \beta_2 \le \frac{907739729}{1073741824}
+       <0.845398501494, \qquad m_2=0.8453979555\ldots .
+\]
+For the explicit lower endpoint, let $I_n$ count the monic binary irreducibles of degree $n$. The factorization of $x^{2^n}-x$ gives $\sum_{d\mid n}d I_d=2^n$. The integer recurrence through $n=480$ gives $R_0+13<2^{494}$ in Section~\ref{sec:tilted}. Moreover
+\[
+ c_2=\tfrac12\prod_{n\le480}(1+2^{-n})^{-I_n}
+ \ge \tfrac12\exp\left(-\sum_{n\le480}1/n\right)>2^{-12},
+\]
+since $I_n\le2^n/n$. The lower-bound formula for the weighted example proves the displayed inequality.
+
+Thus the gain is strictly positive and smaller than $5.46\times10^{-7}$. The upper endpoint comes from the two-prime obstruction in \emph{Three density questions about geometric progressions in polynomial rings}. We reran that report's exact enumeration through interval length 32. The strict lower inequality is the contribution here. Computing the actual gain to the first decimal at which it differs from $m_2$ remains a specific numerical problem. A smaller degree substitution or a sharper optimized smooth part could improve the constructive lower bound.
+
+The degree bands used in the infinite construction have large gaps. The theorem concerns the limsup of densities in degree balls. Establishing an improvement on a prescribed natural density would require a construction that also controls the intervening cutoffs.
+
+\paragraph{Sources and verification.}
+The fixed-radius argument is visible in the readable
+\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/New/Reduction/Data/Existence.lean\#L80-L116}{source of \texttt{exists\_three\_term\_free}}. The
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/d31039a48d963692e5a5176f47b6603fc9e9d9cf/docs/incoming/grh-progression-densities-and-cubic-prime-race.zip}{earlier ProveIt report} discusses Questions 6.1, 6.2 and 6.4 in the same paper.
+\href{https://arxiv.org/pdf/1512.01932}{The original conjecture} is in section 6.
+The present disproof is a mathematical argument with finite integer checks. It uses no hypothesis on zeros of $L$-functions. The supplementary analysis explains two transfers of the analytic part of the Lean development.
+\end{document}

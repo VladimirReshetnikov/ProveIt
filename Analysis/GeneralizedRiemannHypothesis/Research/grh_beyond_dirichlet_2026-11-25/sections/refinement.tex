@@ -1,0 +1,172 @@
+\section{A sharper quantitative certificate}\label{sec:refinement}
+
+The inherited weighted construction used a Markov bound for a smooth
+polynomial's degree. Its explicit search cutoff was
+\[
+ R_{\mathrm{old}}=480+2{,}000{,}000\,s_q,\qquad
+ s_q=|\mathcal P|,\quad \mathcal P=\{P:\deg P\le480\}.
+\]
+The new refinement uses the variance of that degree. It keeps the
+74-point witness and the same proof of progression avoidance.
+
+\subsection{A general concentration lemma}
+
+\begin{lemma}[Positive coefficient from a concentrated generating function]
+\label{lem:concentration}
+Let \(H(u)=\sum_{n\ge0}H_nu^n\) have nonnegative coefficients and
+\(0<H(z)<\infty\) for \(0<z<1\). Define a random variable \(X\) by
+\[
+ \Prob(X=n)=\frac{H_nz^n}{H(z)}.
+\]
+Suppose \(J(u)=P(u)-Q(u)\), where \(P,Q\) have nonnegative coefficients,
+all exponents in \(P\) are at most \(L\), and
+\[
+ J(z)>\gamma>0,\qquad P(z)\le C.
+\]
+If \(\E X\le U\), \(\Var X\le V\), and \(t>0\) satisfies
+\(CV/t^2<\gamma\), then for every integer \(R\ge L+U+t\),
+\[
+ \sum_{n=0}^R[u^n](H(u)J(u))\frac{z^n}{H(z)}>0.
+\]
+In particular, some coefficient through \(R\) is positive. If the
+coefficients are integers, some coefficient is at least one.
+\end{lemma}
+
+\begin{proof}
+The positive contribution omitted beyond \(R\) is
+\[
+ \sum_{d\le L}[u^d]P(u)\,z^d\,\Prob(X>R-d)
+ \le P(z)\Prob(X>U+t)
+ \le \frac{CV}{t^2}
+\]
+by Chebyshev's inequality, since \(\E X\le U\).
+Omitting the negative tail can only increase the truncated signed sum.
+Its normalized value therefore exceeds \(\gamma-CV/t^2>0\).
+\end{proof}
+
+This is an elementary concentration argument. The contribution here is
+its explicit application and certified numerical effect on the existing
+polynomial-ring counterexample, not a claim that Chebyshev's inequality
+or coefficient extraction is new.
+
+\subsection{Exact integer formulas for all prime powers}
+
+Take \(z=127/128\) and \(L=480\). Write \(I_q(d)\) for the number of monic
+irreducibles of degree \(d\) over \(\F_q\), computed recursively by
+\begin{equation}\label{eq:irreducibles}
+ dI_q(d)=q^d-\sum_{\substack{e\mid d\\e<d}}eI_q(e).
+\end{equation}
+For the smooth generating function in
+Lemma~\ref{lem:replacement}, the exponents of the different irreducibles
+are independent geometric random variables with ratios \(z^d\).
+Consequently
+\begin{align}
+ \mu_q:=\E X
+   &=\sum_{d=1}^{480}I_q(d)\frac{d z^d}{1-z^d},\\
+ v_q:=\Var X
+   &=\sum_{d=1}^{480}I_q(d)\frac{d^2 z^d}{(1-z^d)^2}.
+\end{align}
+No numerical probability calculation is necessary. Define the integers
+\begin{align}
+ U_q&=\sum_{d=1}^{480}
+ \left\lceil\frac{I_q(d)d\,127^d}{128^d-127^d}\right\rceil,\\
+ V_q&=\sum_{d=1}^{480}
+ \left\lceil\frac{I_q(d)d^2\,127^d128^d}
+ {(128^d-127^d)^2}\right\rceil,\\
+ R_q^*&=480+U_q+\left\lceil\sqrt{7400V_q}\right\rceil.
+ \label{eq:Rstar}
+\end{align}
+Termwise ceilings give \(\mu_q\le U_q\) and \(v_q\le V_q\).
+
+\begin{theorem}[Improved finite search cutoff]\label{th:cutoff}
+For the 74-point witness, an integer \(R\le R_q^*\) satisfies
+\([u^R]H(u)J(u)\ge1\). In particular
+\begin{equation}\label{eq:explicitgap}
+ \beta_q\ge m_q+(q-1)c_q q^{-R_q^*-1}>m_q.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Use \(P(u)=\sum_{b\in B}u^b\) and
+\(Q(u)=\sum_{a\in A}u^a\).
+Equation~\eqref{eq:Jpositive} gives \(\gamma=3/200\), and
+\(P(z)\le74\). Put \(t=\lceil\sqrt{7400V_q}\rceil\).
+Then
+\[
+ \frac{74V_q}{t^2}\le\frac{74}{7400}=\frac1{100}.
+\]
+The normalized truncated sum is greater than
+\[
+ \frac3{200}-\frac1{100}=\frac1{200}>0.
+\]
+Lemma~\ref{lem:concentration} provides the positive integer coefficient.
+Equation~\eqref{eq:delta} and \(R\le R_q^*\) prove
+\eqref{eq:explicitgap}.
+\end{proof}
+
+\subsection{The binary case}
+
+Exact integer arithmetic gives the following value. It is shown in four
+concatenated blocks to preserve legibility:
+\[
+\begin{array}{l}
+R_2^*={}1493233132307651501440182722716026917359\\[-2pt]
+\phantom{R_2^*={}}6595711329751227043997719117349462629005\\[-2pt]
+\phantom{R_2^*={}}6106035344506094657698429655284082117452\\[-2pt]
+\phantom{R_2^*={}}824668452354378286162187 .
+\end{array}
+\]
+The line breaks are concatenations, not sums. The machine-readable exact
+integer is also in \path{data/density_certificate.json}.
+Its bit length is 476, and the stronger inequality
+\begin{equation}\label{eq:Rbinary}
+ R_2^*+13<2^{476}
+\end{equation}
+was checked exactly. The inherited cutoff is about \(174{,}581.648\)
+times larger.
+
+To obtain a simple rigorous lower bound for \(c_2\), use
+\(I_2(d)\le2^d/d\) and \(\log(1+t)\le t\):
+\[
+ c_2=\frac12\prod_{d=1}^{480}(1+2^{-d})^{-I_2(d)}
+ \ge\frac12\exp\left(-\sum_{d=1}^{480}\frac1d\right)
+ \ge\frac1{960e}>\frac1{2880}>2^{-12}.
+\]
+Here \(\sum_{d\le480}1/d\le1+\log480\) and \(e<3\).
+
+\begin{corollary}[Explicit strict margin]\label{cor:binary}
+\[
+ \boxed{\displaystyle \beta_2>m_2+2^{-2^{476}}.}
+\]
+More sharply, \(\beta_2>m_2+2^{-R_2^*-13}\).
+\end{corollary}
+
+\begin{proof}
+The additional density in \eqref{eq:explicitgap} is
+\(c_2\,2^{-R_2^*-1}>2^{-R_2^*-13}\).
+Now use \eqref{eq:Rbinary}.
+\end{proof}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+\(q\) & \(R_q^*<2^b\) & \(R_{\mathrm{old}}<2^{b_{\mathrm{old}}}\)
+ & \(R_{\mathrm{old}}/R_q^*\)\\
+\midrule
+2 & \(b=476\) & \(b_{\mathrm{old}}=494\) & \(174{,}581.65\)\\
+3 & \(756\) & \(774\) & \(175{,}107.59\)\\
+4 & \(956\) & \(973\) & \(175{,}282.72\)\\
+5 & \(1110\) & \(1127\) & \(175{,}370.25\)\\
+7 & \(1343\) & \(1360\) & \(175{,}457.75\)\\
+\bottomrule
+\end{tabular}
+\caption{Certified integer cutoffs. The last column is rounded for display;
+all underlying cutoff calculations use integers.}
+\end{table}
+
+The new margin remains extraordinarily small. The proof does not exhibit
+the first positive coefficient \(R\), because searching up to this cutoff
+is infeasible. It proves that such an \(R\) exists within an explicit range.
+Thus the improvement is a stronger quantitative theorem, not a practical
+enumeration of an extremal polynomial set.

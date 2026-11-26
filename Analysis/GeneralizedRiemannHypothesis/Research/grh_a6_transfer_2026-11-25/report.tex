@@ -1,0 +1,436 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,array,tabularx,geometry,microtype,xcolor,enumitem,hyperref,xurl,fancyhdr}
+\geometry{margin=.91in,headheight=15pt}
+\definecolor{ink}{HTML}{17334A}
+\definecolor{accent}{HTML}{176D76}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=accent,urlcolor=accent,pdftitle={Two-pattern detectors for nonabelian Riemann hypotheses}}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small\textsc{Beyond Dirichlet GRH}}\fancyhead[R]{\small $A_6$ transfer}\fancyfoot[C]{\thepage}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}\setlength{\emergencystretch}{2em}
+\setlist{topsep=4pt,itemsep=2pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Q}{\mathbb Q}\newcommand{\C}{\mathbb C}\newcommand{\R}{\mathbb R}
+\newcommand{\Ind}{\operatorname{Ind}}\newcommand{\Res}{\operatorname{Res}}\newcommand{\ord}{\operatorname{ord}}\newcommand{\reg}{\operatorname{reg}}\newcommand{\Gal}{\operatorname{Gal}}\newcommand{\Frob}{\operatorname{Frob}}\newcommand{\one}{\mathbf1}\newcommand{\RH}{\mathrm{RH}}
+\newcommand{\code}[1]{\nolinkurl{#1}}
+\title{\color{ink}\bfseries Two-pattern detectors for nonabelian Riemann hypotheses\\[5pt]\large An $A_6$ transfer of the Alp\"oge--Claude one-sided method}
+\author{Research report for ProveIt}
+\date{25 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The Lean project \code{lsernau/grh-lean} proves RH and Dirichlet GRH by a theta-lift covolume comparison and a one-sided Mellin--Landau argument. We develop an explicit next nonabelian target that goes beyond the cubic, $S_4$, $A_5$ and $\mathrm{PSL}_2(7)$ examples in earlier ProveIt reports. For every $A_6$-Galois extension $L/\Q$, we construct two entire monomial Artin factors of degrees 90 and 45, and a degree-90 subfield zeta function. Under ordinary RH, each alone detects every off-line zero of $\zeta_L$. The degree-90 monomial factor uses only complete splitting and the type $1^2 2^2$; the degree-45 factor uses one additional type $2\,4$. The first detector has optimal degree among integer-valued, mean-zero, two-cycle-pattern character detectors, and the second has optimal degree among all single genuine nontrivial detectors containing every nontrivial irreducible constituent. Exact local multiplicity inequalities and a positive-coefficient alternative follow from three character identities. We prove equivalence with constant-free one-sided inequalities on integer dyadic scales, and provide an exact certificate for a specific sextic. The required new prime inequalities are \emph{not} proved: this is a reduction and an arithmetic research program, not a proof of nonabelian GRH. Priority of the new formulations in the full literature is not established.
+\end{abstract}
+
+\tableofcontents
+
+\section{Scope, result, and prior work}
+The premise used throughout is ordinary RH (and, when relevant, Dirichlet GRH) as supplied by the stated theorem of the upstream repository \cite{upstream}. The upstream endpoint, as written in \code{grh-compact/src/Statements.lean}, quantifies over Dirichlet characters modulo positive integers. It does not quantify over Hecke characters of arbitrary number fields or over nonabelian Artin representations. We distinguish the following open extension: if $L/\Q$ is finite Galois with group $A_6$, show that every nontrivial zero of the Dedekind zeta function $\zeta_L$ lies on $\Re s=1/2$. By Brauer's theory and a local order argument below, this would in particular exclude zeros and poles of its Artin factors in the open right half of the critical strip. It does not by itself settle Artin holomorphy on the critical line.
+
+\paragraph{Main result in arithmetic form.}
+Let $f$ be a separable irreducible sextic over $\Q$ with Galois group $A_6$ in its natural action. At primes not dividing its discriminant (take $f$ monic integral), let $c(p)$ denote the multiset of degrees of irreducible factors of $f\bmod p$. Define
+\[
+ w(p)=45\,\one_{c(p)=1^6}-\one_{c(p)=1^2 2^2},
+ \qquad S(x)=\sum_{p\le x}w(p)\log p\left(\frac1p-\frac1x\right),
+\]
+where the excluded primes are omitted. Under ordinary RH, the following single family of estimates is equivalent to RH for the splitting field of $f$:
+\begin{equation}\label{eq:headline}
+  \forall\epsilon>0\ \exists C_\epsilon,N_\epsilon\quad
+  S(n)-S(2n)\le C_\epsilon n^{-1/2+\epsilon}
+  \quad(n\in\mathbb N,\ n\ge N_\epsilon).
+\end{equation}
+There is no unknown limiting constant in \eqref{eq:headline}, and only two unramified prime patterns enter. We also give a positive-weight version with weights $15$ and $1$ on the same two patterns, after centering its known logarithmic main term, and a smaller-degree three-pattern version.
+
+\paragraph{What has been verified.}
+The three character identities are exact identities of genuine characters and hold on every group element. We prove the analytic reduction using standard Artin formalism, Hecke analytic continuation, Chebotarev estimates and a version of Landau's lemma. We do not verify the missing upper bounds in \eqref{eq:headline}, and a finite prime sample cannot establish them. We read the relevant source files at commit \nolinkurl{72fead102f663d5c7a407964a13dc0cf9d977207}. The upstream README reports successful builds, kernel replay and Comparator checks with Lean 4.35.0 and Mathlib commit \nolinkurl{56a005855ea17e0b0958f73ec801ae140b0a1679}, and only the three standard axioms. The README also states that no mathematician has read through the proof. We did not perform a full local Lean build or recheck its axioms; we rely on the theorem as the requested input and do a source-level audit of its transfer mechanism.
+
+\paragraph{Relationship to earlier work.}
+We retrieved the incoming-directory listing and inspected selected TeX excerpts of five earlier ZIP archives using the GitHub connector (see \code{prior-audit.md} and \cite{prior}). One earlier note treats relative zeta functions and an $S_4$ prime race; another treats Sylow-induced Hecke detectors and $\mathrm{PSL}_2(7)$; an $A_5$ packet uses degree 5, 6 and 12 subfields; other notes cover cubic targets, sparse sampling, and Selmer obstructions. The general analytic detector and centering ideas are not claimed new here. The explicit $A_6$ certificates, tradeoff between support and degree, sharp multiplicity bound and the single-class obstruction below are developed in this report. We did not read all archives in full or perform an exhaustive priority search. Booker \cite{booker} gives earlier important group-theoretic criteria for Artin holomorphy and nonabelian RH verification, and the tools of Artin induction and Heilbronn characters are classical.
+
+\section{The upstream proof mechanism and its transferable boundary}
+The compact guide and the actual code in \code{New/Main.lean} give the following architecture (paths here are relative to \code{grh-compact/src/}). Put $d=\texttt{rowDim}$, $m=\texttt{D.m}$, $h=\texttt{mainHeight}$, $R=\texttt{remainder}$, $\mathcal B=fa\log^3 b$, and $H=\mathcal B\log b$. In the proof of \code{star_inequality}, short forms and enough forms yield a family of $n$ independent target forms with small squared covolume (logarithmic upper bound $V$) and small integral index (logarithmic bound $\delta$). The long-form inequality bounds the same expression below. Schematically, and with the constants used in the source,
+\begin{align*}
+ d(h-3H)&\le n(h-mR+H)+2\delta,\\
+ d-n&\le 4d/b^2, & \delta&\le 5d\log(1+b^2)\mathcal B,\\
+ -(h-mR+H)&\le b^2x^{99}.&&
+\end{align*}
+After substituting $n=d-(d-n)$, dividing by $d>0$, and canceling $h$, the final estimate is
+\[
+ mR\le 4H+4x^{99}+10\log(1+b^2)\mathcal B
+ \le \log^2 b\,\mathcal B.
+\]
+The cancellation is arithmetic, not a generic property of an arbitrary prime count. The input theorems are \code{Data.short_forms}, \code{Data.enough_forms} in \code{New/Endgame/ShortAndEnough.lean}, and \code{Data.integral_forms_long} in \code{New/Endgame/LongForms.lean}. They depend on theta jets and their divisibility, nearly full span, twisted-volume height comparisons, and the product formula. The parameter $m$ is of order $\sqrt x$; division by $m$ produces the square-root saving.
+
+In \code{New/Endgame/PrimeError.lean}, for an auxiliary prime $d_0\equiv7\bmod 8$ and a fixed modulus $M$, the actual coefficient is
+\[
+ \lambda_{d_0,M}(n)=\Lambda(n)\one_{n\equiv1\pmod M}\bigl(1-\chi_{d_0}(n)\bigr),
+\]
+with the quadratic symbol of the auxiliary field, and the remainder has the form
+\[
+ R_M(x)=\sum_{n\le x}\lambda_{d_0,M}(n)(n^{-1}-x^{-1})
+        -\frac{\log x}{\varphi(M)}-c_{d_0,M}.
+\]
+The source derives a Mellin transform whose residues are differences of zero multiplicities for Dirichlet factors and their quadratic twists. The auxiliary-scale choice uses \code{IsPolar.exists_window_sub_mul_le}; the eventual estimate is \code{eventually_primeError_le_rpow}. The one-sided endgame, \code{entireL_ne_zero_of_primeError_le}, uses an auxiliary twist without relevant zeros, so the residues at real possible poles have the correct sign. The analytic lemma \code{IsPolar.landau} is in \code{Lib/Analytic/Landau/PolarLandau.lean}. Its sign mechanism is the part reused below. Our detector is instead a single entire Hecke factor (or a Dedekind zeta function), so no auxiliary zero-free twist is needed to establish the required sign. This removes an analytic obligation, not the hard arithmetic estimate.
+
+\begin{center}
+\begin{tabularx}{\linewidth}{@{}lX@{}}
+\toprule
+Source declaration & Role in the proposed transfer\\\midrule
+\code{star_inequality} & Template: compare the same covolume from both sides, with controlled loss of span and denominator cost.\\
+\code{primeError} & Keep the ramp kernel; replace the actual abelian prime coefficient by a specified nonabelian trace.\\
+\code{IsPolar.landau} & Transfer the real-residue sign argument. We give a self-contained analytic proof below.\\
+\code{New.grh} & Dirichlet theorem only. Does not prove the new trace estimate.\\\bottomrule
+\end{tabularx}
+\end{center}
+Exact Git blob identifiers and line references are included in \code{source-audit.tsv}.
+
+\section{Exact \texorpdfstring{$A_6$}{A6} certificates}\label{sec:group}
+Use the natural action of $G=A_6$ on $\{1,\dots,6\}$. Permutations multiply right-to-left. The possible cycle patterns, merging the two conjugacy classes of 5-cycles, are
+\[
+\begin{array}{c|rrrrrr}
+ &1^6&1^3 3&1^2 2^2&1\,5&2\,4&3^2\\\hline
+ \text{size}&1&40&45&144&90&40.
+\end{array}
+\]
+These are counted by the usual cycle enumeration in $S_6$; all permutations of the listed types are even. The 5-cycle type splits into two classes of size 72 in $A_6$, and no other type splits: a 5-cycle has only even elements in its centralizer in $S_6$, while every other type has an odd centralizer element. Hence $G$ has seven conjugacy classes. All characters we construct are constant on each of the six merged patterns.
+
+\subsection{Four explicit subgroups and nine characters}
+The following generators specify subgroups and linear characters without relying on a precomputed character table. An unmentioned generator of a listed character has value $+1$.
+\begin{itemize}
+\item $H_4=\langle v_1,v_2\rangle$, where $v_1=(34)(56)$ and $v_2=(12)(56)$. This is a Klein four group. Let $W=\Ind_{H_4}^G\lambda_W$ with $\lambda_W(v_2)=-1$, and $P=\Ind_{H_4}^G\one$.
+\item $H_8=\langle r,s\rangle$, where $r=(1234)(56)$ and $s=(24)(56)$. This is the dihedral group of order 8: $r^4=s^2=1$ and $srs=r^{-1}$. Set $Y=\Ind_{H_8}^G\lambda_Y$ with $\lambda_Y(r)=-1$, $Z=\Ind_{H_8}^G\lambda_Z$ with $\lambda_Z(s)=-1$, and $C=\Ind_{H_8}^G\one$.
+\item $H_{10}=\langle c,d\rangle$, where $c=(12345)$ and $d=(25)(34)$. This is dihedral of order 10. Let $V=\Ind_{H_{10}}^G\lambda_V$ with $\lambda_V(d)=-1$, and $B=\Ind_{H_{10}}^G\one$.
+\item $H_{36}=\langle a,b,t\rangle$, where $a=(123)$, $b=(456)$ and $t=(14)(2536)$. It is $(C_3\times C_3)\rtimes C_4$, with $t^2$ acting by inversion on $\langle a,b\rangle$. Let $U=\Ind_{H_{36}}^G\lambda_U$ with $\lambda_U(t)=i$, and $A=\Ind_{H_{36}}^G\lambda_A$ with $\lambda_A(t)=-1$. Both are trivial on $\langle a,b\rangle$. The characters are well defined by the indicated cyclic quotient.
+\end{itemize}
+We use capital letters for characters; their Artin $L$-functions are denoted $L(s,W)$, etc., with the extension understood. All nine are genuine characters, induced from explicitly specified degree-one characters.
+
+\begin{lemma}[Exact character table for the detectors]\label{lem:rows}
+The following values hold on the six patterns. The group average (last column) is the multiplicity of the trivial character.
+\begin{center}
+\begin{tabular}{@{}lrrrrrrr@{}}
+\toprule
+ & $1^6$ & $1^3 3$ & $1^2 2^2$ & $1\,5$ & $2\,4$ & $3^2$ & mean\\\midrule
+$W$&90&0&$-2$&0&0&0&0\\
+$Y$&45&0&1&0&$-1$&0&0\\
+$P$&90&0&6&0&0&0&1\\\midrule
+$U$&10&1&$-2$&0&0&1&0\\
+$A$&10&1&2&0&$-2$&1&0\\
+$V$&36&0&$-4$&1&0&0&0\\
+$B$&36&0&4&1&0&0&1\\
+$Z$&45&0&$-3$&0&1&0&0\\
+$C$&45&0&5&0&1&0&1\\\bottomrule
+\end{tabular}
+\end{center}
+\end{lemma}
+\begin{proof}
+For a subgroup $H$ and linear character $\lambda$, induction gives
+\[
+ (\Ind_H^G\lambda)(g)=\frac1{|H|}\sum_{x\in G:x^{-1}gx\in H}\lambda(x^{-1}gx)
+ =\frac{|C_G(g)|}{|H|}\sum_{h\in H\cap g^G}\lambda(h).
+\]
+For $H_4$, the three nonidentity elements are double transpositions; the sum of a nontrivial linear character on these three elements is $-1$ and that of the trivial character is 3. For $H_8$, $r^2$ and the four reflections are double transpositions; $r$ and $r^3$ have type $2\,4$. Their respective character sums are $(1,-2)$ for $\lambda_Y$, $(-3,2)$ for $\lambda_Z$, and $(5,2)$ for $\one$. For $H_{10}$, the four nonidentity rotations are 5-cycles and the five reflections are double transpositions. In each of the two 5-cycle classes there are two rotations (the cycle and its inverse lie in one class, and the square and its inverse in the other); hence the values on the two classes coincide. For $H_{36}$, $\langle a,b\rangle$ has four single 3-cycles and four double 3-cycles. The nine elements of $\langle a,b\rangle t^2$ are involutions and the eighteen elements of the $t$ and $t^3$ cosets have order four and therefore type $2\,4$. The contributions of the last two cosets cancel for $\lambda_U$ and sum to $-18$ for $\lambda_A$. Substitution in the induction formula yields every entry. Averaging the rows with the class sizes, or using Frobenius reciprocity, gives the last column.
+\end{proof}
+
+\begin{theorem}[Three positive character identities]\label{thm:identities}
+Let $\reg$ be the regular character of $A_6$. Then
+\begin{align}
+ 5W+\one&=\reg+U+V+Z,\label{eq:W}\\
+ 12Y+4\one&=\reg+4A+V+3B,\label{eq:Y}\\
+ 10P+3\one&=\reg+3A+3B+9C.\label{eq:P}
+\end{align}
+\end{theorem}
+\begin{proof}
+Each equality follows entry-by-entry from Lemma~\ref{lem:rows}, since the regular character has value 360 at the identity and zero elsewhere. The accompanying dependency-free Python verifier independently enumerates the 360 even permutations, constructs every subgroup and linear character by closure, checks the homomorphism laws, evaluates the induction formula on every element, and checks these identities with integer arithmetic. The source and exact outputs are in \code{verify_characters.py}, \code{character_certificate.json}, and \code{character_check.txt}.
+\end{proof}
+
+\subsection{Sharpness and a genuine degree/support tradeoff}
+\begin{proposition}[Optimality in explicitly defined classes]\label{prop:opt}
+\begin{enumerate}[label=(\alph*)]
+\item $Y$ is the sum of all six nontrivial irreducible characters of $A_6$, each with multiplicity one. Thus 45 is the least degree of a genuine character containing every nontrivial irreducible constituent.
+\item Among integer-valued genuine characters of mean zero that are supported on at most two of the six cycle patterns and contain every nontrivial irreducible, the minimum degree is 90, attained by $W$.
+\item The coefficient 5 in the order domination from \eqref{eq:W} is sharp at the level of all genuine-character order functionals that vanish on $\one$. It is not a claim that the extreme functional is realized by actual Artin zeros.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+Take the inner product of \eqref{eq:Y} with a nontrivial irreducible $\eta$. The right side has coefficient at least $\eta(1)>0$, so $\langle Y,\eta\rangle\ge1$. Its trivial coefficient is zero, and direct calculation gives
+\[
+ \langle Y,Y\rangle=\frac{45^2+45+90}{360}=6.
+\]
+There are six nontrivial irreducibles because there are seven conjugacy classes. All six multiplicities must therefore be exactly one. Since $Y(1)=45$, the sum of their degrees is 45. This proves (a) without importing the character table.
+
+For (b), the same argument using \eqref{eq:W} shows that $W$ contains every nontrivial irreducible. A nonzero genuine character $\xi$ has positive degree $D=\xi(1)\ge45$ if it contains all six. If its mean is zero and its support contains only one other pattern of size $M$, the other value is $-D/M$ (a negative integer). Consequently $M\mid D$ and
+\[
+ \langle\xi,\xi\rangle=\frac{D^2+D^2/M}{360}\in\mathbb Z.
+\]
+Here $M\in\{40,45,144,90,40\}$. In the range $45\le D<90$, the only possibilities are $D=80,M=40$ or $D=45,M=45$. The squared norms are $164/9$ and $23/4$, respectively, neither an integer. A one-pattern nonzero character of mean zero is impossible. Thus 90 is optimal within the stated class, and $W$ realizes it.
+
+For (c), the degree-five standard representation $\sigma$ is the natural permutation representation less the trivial representation. It is irreducible: its character, number of fixed points minus one, has squared norm one (or use 2-transitivity). Its value on $1^2 2^2$ is 1. Hence
+\[
+ \langle W,\sigma\rangle=(90\cdot5-2\cdot45\cdot1)/360=1,
+ \qquad \langle\reg,\sigma\rangle=5.
+\]
+The functional $\xi\mapsto\langle\xi,\sigma\rangle$ is nonnegative on every genuine character, vanishes on $\one$, and attains the ratio 5. No smaller universal constant follows from these positivity constraints alone.
+\end{proof}
+
+The optimality statements do not rule out different techniques involving virtual characters, several test functions simultaneously, different kernels, or arithmetic information about actual zero coincidences. The point is that a single positive character detector cannot be made arbitrarily small simply by a better subgroup choice.
+
+\section{Artin and Hecke zero detectors}\label{sec:artin}
+Let $L/\Q$ be Galois with group $G\simeq A_6$. We recall standard Artin formalism \cite{artin,booker}: characters add under direct sum, their $L$-functions multiply, induction to $G$ corresponds to the $L$-function over the fixed field, and the regular and trivial characters correspond to $\zeta_L$ and $\zeta_{\Q}$. A character induced from a nontrivial one-dimensional character gives an entire finite-order Hecke $L$-function, by abelian reciprocity and Hecke theory; induction of a trivial character gives a Dedekind zeta function, holomorphic except for its simple pole at 1. No assumption of general Artin holomorphy is needed.
+
+For example, $W$ corresponds to a quadratic character of the extension
+\[
+ L^{\ker\lambda_W}/L^{H_4},\qquad [L^{H_4}:\Q]=90,
+ \quad [L^{\ker\lambda_W}:\Q]=180,
+\]
+so $L(s,W)=\zeta_{L^{\ker\lambda_W}}(s)/\zeta_{L^{H_4}}(s)$ is entire. Likewise $Y$ is the quadratic relative factor of degrees 90 and 45, and $P$ is $\zeta_{L^{H_4}}$. The character $U$ comes from a cyclic quartic character over the degree-ten fixed field; its induced character is real-valued (the cancellation of the $i,-i$ contributions was explicit in the table). The norms of its row show it is itself irreducible: $\langle U,U\rangle=(100+40+180+40)/360=1$. This is a familiar kind of monomial holomorphy, not a new general Artin theorem.
+
+\begin{theorem}[Local multiplicity domination]\label{thm:orders}
+For any $\rho\ne1$, write $m_J(\rho)=\ord_{s=\rho}L(s,J)$, using positive order for a zero and negative for a pole. Write $m_L=\ord_\rho\zeta_L$ and $m_0=\ord_\rho\zeta_{\Q}$. Then
+\begin{align*}
+ 0\le m_L&\le 5m_W+m_0,\\
+ 0\le m_L&\le 12m_Y+4m_0,\\
+ 0\le m_L&\le 10m_P+3m_0.
+\end{align*}
+All inequalities hold unconditionally. Assuming ordinary RH, in $1/2<\Re\rho<1$ one has $m_0=0$. Thus zero-freeness of any one of $W,Y,P$ in that region implies zero-freeness of $\zeta_L$ there.
+\end{theorem}
+\begin{proof}
+By Artin formalism, \eqref{eq:W}--\eqref{eq:P} give identities of meromorphic functions, e.g.
+\[
+ L(s,W)^5\zeta_{\Q}(s)=\zeta_L(s)L(s,U)L(s,V)L(s,Z).
+\]
+The analogous two equations follow from the other rows. Taking orders and dropping the nonnegative orders of the auxiliary Hecke or Dedekind functions gives the displayed inequalities. None of these functions has a pole at $\rho\ne1$. Ordinary RH then gives the last assertion.
+\end{proof}
+
+The reverse direction does not require Artin holomorphy. Here is the exact local argument that prevents pole-zero cancellation from invalidating it.
+\begin{lemma}[Heilbronn restriction argument]\label{lem:heilbronn}
+For a finite Galois extension $E/F$ of number fields, at a point $\rho\ne1$ at which $\zeta_E$ is nonzero, every irreducible Artin $L$-function for $E/F$ is holomorphic and nonzero at $\rho$.
+\end{lemma}
+\begin{proof}
+By Brauer induction, every Artin $L$-function is meromorphic. Let $n_\chi$ be its order at $\rho$ for each irreducible $\chi$ and let $\Theta=\sum_\chi n_\chi\chi$ be the virtual order character. Its degree equals $\ord_\rho\zeta_E=0$ by the regular character identity. For every cyclic subgroup $H$ and linear character $\lambda$ of $H$, Frobenius reciprocity gives
+\[
+ \langle\Res_H\Theta,\lambda\rangle=\langle\Theta,\Ind_H\lambda\rangle
+   =\ord_\rho L(s,\lambda,E/E^H)\ge0.
+\]
+The last inequality is Hecke entireness, or Dedekind holomorphy for the trivial character. Since $H$ is cyclic, all its irreducibles are linear, so $\Res_H\Theta$ is a genuine character of degree zero and vanishes. Every element lies in some cyclic subgroup. Hence $\Theta=0$ and all $n_\chi=0$ by orthogonality.
+\end{proof}
+
+\begin{corollary}[Equivalent analytic targets]\label{cor:targets}
+Assume ordinary RH. For $A_6$-Galois $L/\Q$, each of the following is equivalent to RH for $\zeta_L$: absence of zeros in $1/2<\Re s<1$ of $L(s,W)$; of $L(s,Y)$; or of $L(s,P)$. A positive solution would also exclude all Artin zeros and poles for $L/\Q$ in that open half-strip.
+\end{corollary}
+\begin{proof}
+The forward implications to $\zeta_L$ are Theorem~\ref{thm:orders}, followed by the Dedekind functional equation and the standard nonvanishing on $\Re s\ge1$ away from the pole. The converse follows from Lemma~\ref{lem:heilbronn}, since each detector is a genuine character. The last statement is the same lemma.
+\end{proof}
+
+\section{The one-sided Mellin--Landau transfer}\label{sec:analytic}
+We now turn the analytic targets into prime-only inequalities, adapting the upstream analytic endgame. The argument treats the positive detector and the signed detectors uniformly. It is given in detail so that the analytic step is not a new black box. The standard inputs are the classical fixed-field effective Chebotarev prime number theorem (including a possible exceptional real zero, which for a fixed field is absorbed into the error), its GRH version \cite{lo}, and Hecke analytic continuation and nonvanishing on $\Re s\ge1$ for nontrivial finite-order characters.
+
+Let $J\in\{W,Y,P\}$, let $a_J=\langle J,\one\rangle\in\{0,1\}$, and exclude a fixed finite set of rational primes containing the ramified primes of $L$. Define for $x\ge1$,
+\begin{align*}
+ \Theta_J(x)&=\sum_{p\le x\ \mathrm{not\ excluded}}J(\Frob_p)\log p,\\
+ S_J(x)&=\sum_{p\le x\ \mathrm{not\ excluded}}J(\Frob_p)\log p(1/p-1/x),\\
+ T_J(x)&=S_J(x)-a_J\log x.
+\end{align*}
+Each $J$ is real-valued. All functions here are real-valued. The usual fixed-field Chebotarev estimate gives, for some $c>0$,
+\[
+ \Theta_J(x)=a_J x+O_L(xe^{-c\sqrt{\log x}}).
+\]
+For a fixed exceptional real zero $\beta_0<1$, a term $O_L(x^{\beta_0})$ is absorbed by this error as $x\to\infty$. The identity $S_J(x)=\int_1^x\Theta_J(t)t^{-2}dt$ follows by integrating each prime contribution. Therefore
+\[
+ C_J=\lim_{x\to\infty}T_J(x)=\int_1^\infty\frac{\Theta_J(t)-a_Jt}{t^2}\,dt
+\]
+exists, and the centered remainder
+\[
+ R_J(x)=T_J(x)-C_J=-\int_x^\infty\frac{\Theta_J(t)-a_Jt}{t^2}\,dt
+\]
+is $O_L((1+\sqrt{\log x})e^{-c\sqrt{\log x}})$ after adjusting constants. In particular $R_J$ is continuous and bounded on $[1,\infty)$ and $\int_1^\infty |R_J(x)|dx/x<\infty$.
+
+\subsection{Exact transform and residue sign}
+For $\Re s>1$, put
+\[
+ F_J(s)=\sum_{p\ \mathrm{not\ excluded}}\frac{J(\Frob_p)\log p}{p^s}.
+\]
+The logarithmic derivative of the full Artin function is
+\[
+ -\frac{L'(s,J)}{L(s,J)}=\sum_p\sum_{k\ge1}
+   \frac{\log p}{p^{ks}}\operatorname{tr}(g_p^k\mid V_J^{I_p}),
+\]
+where $I_p$ is inertia, $g_p$ is a Frobenius lift, and $V_J$ is a finite-image representation with character $J$. For unramified $p$, the trace is $J(\Frob_p^k)$. The trace has modulus at most $J(1)$, since all eigenvalues are roots of unity. The $k\ge2$ terms are normally convergent on $\Re s>1/2$ by comparison with $\sum_p (\log p)p^{-2\sigma}/(1-p^{-\sigma})$ on compact subsets $\sigma>1/2$. The finitely many excluded local series converge normally on $\Re s>0$. Consequently
+\begin{equation}\label{eq:F}
+ F_J(s)=-L'(s,J)/L(s,J)-H_J(s),\qquad H_J\text{ holomorphic on }\Re s>1/2.
+\end{equation}
+This proves that discarding prime powers and ramification does not affect the relevant poles. No Artin conjecture is used: $L(s,J)$ is already known to be entire for $W,Y$, or a Dedekind zeta function for $P$.
+
+For $\Re s>1$ the Mellin transform of $R_J$ is
+\begin{equation}\label{eq:mellin}
+ E_J(s)=\int_1^\infty R_J(x)x^{-s}\,dx
+ =\frac{F_J(s)}{s(s-1)}-\frac{a_J}{(s-1)^2}-\frac{C_J}{s-1}.
+\end{equation}
+Indeed, absolute convergence permits termwise integration and
+\[
+ \int_p^\infty (p^{-1}-x^{-1})x^{-s}\,dx=\frac{p^{-s}}{s(s-1)}.
+\]
+Also $\int_1^\infty x^{-s}\log x\,dx=(s-1)^{-2}$. Equation \eqref{eq:mellin} meromorphically continues $E_J$ to $\Re s>1/2$. The apparent pole at 1 is removable: $E_J(\sigma)$ tends to a finite real limit as $\sigma\downarrow1$ by dominated convergence and the integrability above. Elsewhere the only possible poles in $\Re s>1/2$ are simple poles at zeros of $L(s,J)$, of residue
+\begin{equation}\label{eq:res}
+ \operatorname{Res}_{s=\rho}E_J(s)=-\frac{m_J(\rho)}{\rho(\rho-1)}.
+\end{equation}
+At a real zero $\rho\in(1/2,1)$ this residue is strictly positive. This is the sign needed by the upstream Landau mechanism. It is guaranteed here by the monomial or Dedekind nature of the detector, not by an assumption about arbitrary Artin factors.
+
+\subsection{One-sided analytic criterion}
+\begin{lemma}[Landau's lemma with the required sign]\label{lem:landau}
+Fix $1/2<\beta<1$. Suppose $E(s)$ has the structure of \eqref{eq:mellin} in $\Re s>1/2$, with at most simple poles, nonnegative real residues at real poles in $(\beta,1)$, and no poles at real $s\ge1$. If $R(x)\le K x^{\beta-1}$ for all sufficiently large $x$, where $R$ is the continuous bounded function whose transform is $E(s)$ on $\Re s>1$, then $E$ has no poles in $\Re s>\beta$.
+\end{lemma}
+\begin{proof}
+Increase $K\ge0$ so that the bound holds for all $x\ge1$ (continuity on a compact interval suffices). For $v\ge0$ put
+\[
+ h(v)=Ke^{\beta v}-e^vR(e^v)\ge0,
+ \qquad G(s)=\int_0^\infty h(v)e^{-sv}\,dv=\frac{K}{s-\beta}-E(s)
+\]
+initially on $\Re s>1$. The integrals over finite intervals are finite. The integral of a nonnegative density has an abscissa of convergence $\alpha\le1$ (possibly $-\infty$) and is holomorphic in $\Re s>\alpha$, by normal convergence on compact subsets. We recall the needed elementary form of Landau's principle: if $\alpha$ is finite, the Laplace transform cannot be analytically continued across $\alpha$ as a holomorphic function in a neighborhood of the real point $\alpha$.
+
+To see this, suppose such a continuation exists in a disk of radius $r>0$ centered at $\alpha$. Choose $s_0=\alpha+\delta$ with $0<\delta<r/4$. The Taylor series of the continuation at $s_0$ converges at $s_0-2\delta<\alpha$. Its terms there are
+\[
+ \frac{(2\delta)^k}{k!}\int_0^\infty v^kh(v)e^{-s_0v}\,dv\ge0.
+\]
+Differentiation under the integral is valid at $s_0$ since polynomial moments are dominated by an exponential with a smaller real exponent still larger than $\alpha$. Monotone convergence of the nonnegative Taylor series implies convergence of the original integral at $s_0-2\delta$, a contradiction.
+
+Now if $\alpha>\beta$, the meromorphic continuation $K/(s-\beta)-E(s)$ is either regular at $\alpha$ or has a simple pole. The first case violates the principle just proved. In the second case its residue is nonpositive, by the real-residue hypothesis (or it is regular if $\alpha=1$). A negative residue would make $G(\sigma)<0$ for real $\sigma\downarrow\alpha$, contradicting the nonnegative integral. A simple pole of residue zero is removable, again impossible. Thus $\alpha\le\beta$, and $G$ and hence $E$ are holomorphic on $\Re s>\beta$. The identity of the integral and the meromorphic continuation on their common domain follows by the identity theorem.
+\end{proof}
+
+\begin{theorem}[Single-detector prime criterion]\label{thm:criterion}
+Assume ordinary RH. For each $J=W,Y,P$ separately, the following conditions are equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item $\zeta_L$ satisfies RH.
+\item For every $\epsilon>0$, $R_J(x)=O_{L,\epsilon}(x^{-1/2+\epsilon})$ as $x\to\infty$.
+\item For every $\epsilon>0$, there exists a constant $K_\epsilon$ such that for all sufficiently large real $x$,
+\[
+ R_J(x)\le K_\epsilon x^{-1/2+\epsilon}.
+\]
+\item For every $\epsilon>0$, there exists a constant $K_\epsilon$ such that for all sufficiently large integers $n$,
+\begin{equation}\label{eq:dyadic}
+ S_J(n)-S_J(2n)+a_J\log2\le K_\epsilon n^{-1/2+\epsilon}.
+\end{equation}
+\end{enumerate}
+The finite excluded set of primes may be any fixed superset of the ramified primes. In (iii)--(iv) it suffices to require $0<\epsilon<1/2$.
+\end{theorem}
+\begin{proof}
+If (i) holds, the effective Chebotarev theorem under RH for $\zeta_L$ gives for each fixed conjugacy class and hence each fixed real class function $J$
+\[
+ \Theta_J(x)=a_Jx+O_L(\sqrt x\log^2 x),
+\]
+with an inessential field-dependent constant, after discarding finitely many primes. Partial integration of the tail expression for $R_J$ gives $R_J(x)=O_L(x^{-1/2}\log^2 x)$, proving (ii). Clearly (ii) implies (iii) and (iv), since the latter left-hand side is $R_J(n)-R_J(2n)$.
+
+Assume (iv) and fix $0<\epsilon<1/2$; write $\eta=1/2-\epsilon>0$. For every sufficiently large integer $n$, telescope along $2^j n$:
+\begin{align*}
+ R_J(n)&=\lim_{k\to\infty}\sum_{j=0}^{k-1}\bigl(R_J(2^j n)-R_J(2^{j+1}n)\bigr)\\
+ &\le K_\epsilon n^{-\eta}\sum_{j=0}^\infty 2^{-j\eta}
+ =\frac{K_\epsilon}{1-2^{-\eta}}n^{-\eta}.
+\end{align*}
+Here $R_J(2^kn)\to0$ unconditionally. Between consecutive integers, $S_J'(x)=\Theta_J(x)/x^2$ almost everywhere (the ramps are continuous at prime cutoffs), and the trivial bound $|\Theta_J(x)|\ll_J x\log x$ yields an interpolation error $O_J(\log x/x)$ for $R_J(x)$. This is $o(x^{-\eta})$. Thus (iv) implies (iii).
+
+If (iii) holds, apply Lemma~\ref{lem:landau} with $\beta=1/2+\epsilon$. Equation \eqref{eq:res} shows that $L(s,J)$ has no zeros with $\Re s>\beta$: each such zero gives a nonzero residue, since $\rho\ne0,1$ and $H_J$ is holomorphic there. Taking $\epsilon\downarrow0$ and using Corollary~\ref{cor:targets} proves (i). This completes the equivalence.
+\end{proof}
+
+The constant $C_J$ never enters the numerical inequality \eqref{eq:dyadic}. Direct subtraction exhibits the exact finite statistic
+\[
+ S_J(n)-S_J(2n)=-\frac{\Theta_J(n)}{2n}
+ -\sum_{n<p\le2n}J(\Frob_p)\log p\,(p^{-1}-(2n)^{-1}),
+\]
+with the same exclusions. Thus a proof of the new estimate need not estimate any $L'(1)/L(1)$ value. It must control a signed combination of a cumulative count and a short interval count. Replacing the dyadic inequality by its negative would not automatically imply the same result, because the real-pole residue sign would be reversed.
+
+\section{A fully specified sextic target}\label{sec:example}
+Consider the polynomial
+\begin{equation}\label{eq:f}
+ f(X)=X^6-2X^5-X^4+2X^2-1.
+\end{equation}
+It is listed as an $A_6$ example in GroupNames \cite{groupnames}. Here is an independent finite certification of its Galois group, using only factorization patterns, its discriminant and the classical Jordan theorem about primitive groups containing a prime cycle.
+
+The discriminant is $287296=2^6\cdot67^2$, a nonzero square. The factorization types of its reductions at $3,5,109$ are, respectively, $(1,5)$, $(2,4)$, and $(1,1,1,3)$. Exact factors are
+\begin{center}
+\begin{tabularx}{\linewidth}{@{}rX@{}}
+\toprule
+$p$& Factorization over $\mathbb F_p$\\\midrule
+3& $(X+1)(X^5-X^3+X^2+X-1)$\\
+5& $(X^2-2X-2)(X^4+X^2+2X-2)$\\
+109& $(X+20)(X-48)(X-13)(X^3+39X^2+14X+2)$\\\bottomrule
+\end{tabularx}
+\end{center}
+The factors are irreducible over their respective finite fields. The accompanying \code{verify_field.py} checks them with SymPy (including irreducibility and the resultant-based discriminant). A proper rational factor of a monic integral polynomial can be chosen monic integral. Reduction at 3 would force the degree of such a factor to be 1 or 5; reduction at 5 allows only 2 or 4. Therefore $f$ is irreducible. The Galois group is transitive and lies in $A_6$ by the square discriminant. The factorization at 3 gives a 5-cycle. A transitive subgroup of $S_6$ containing a 5-cycle is primitive: a nontrivial block system would have 2 or 3 blocks, so the 5-cycle acts trivially on the set of blocks, and then trivially on each block of size 3 or 2, impossible. The factorization at 109 gives a 3-cycle. Jordan's theorem (prime cycle length $p\le n-3$ in a primitive group) then gives $A_6\subseteq G$. Hence $G=A_6$. SymPy's independent Galois-group routine also reports order 360 and containment in $A_6$.
+
+For this example exclude 2 and 67. The following table states three equivalent choices for \eqref{eq:dyadic}, now using smaller integral prime weights. The group averages have been scaled accordingly.
+\begin{center}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+ & $1^6$ & $1^2 2^2$ & $2\,4$ & $a$\\\midrule
+Two-pattern signed ($W/2$)&45&$-1$&0&0\\
+Three-pattern signed ($Y$)&45&1&$-1$&0\\
+Two-pattern positive ($P/6$)&15&1&0&$1/6$\\\bottomrule
+\end{tabular}
+\end{center}
+All unlisted types have weight zero. The resulting $S(x)$ uses only factorization modulo $p$, not arithmetic in the degree-360 splitting field. Each row, used by itself in \eqref{eq:dyadic} with the shown $a$, suffices; there is no need to prove all three estimates. In particular the two-pattern signed version is \eqref{eq:headline}.
+
+As a small reproducibility check, here are exact counts for $p\le5000$ (not including 2 and 67), computed by factoring \eqref{eq:f} modulo each prime. They check the class classifier, not an asymptotic claim.
+\begin{center}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Pattern & Count & Group density\\\midrule
+$1^6$&3&$1/360$\\
+$1^3 3$&83&$1/9$\\
+$1^2 2^2$&74&$1/8$\\
+$1\,5$&262&$2/5$\\
+$2\,4$&174&$1/4$\\
+$3^2$&71&$1/9$\\\bottomrule
+\end{tabular}
+\end{center}
+The CSV and complete finite-check output accompany the report. The small number of totally split primes also illustrates why numerical experimentation cannot replace a uniform proof of the estimate.
+
+\section{Where the geometric transfer would have to occur}\label{sec:research}
+\subsection{Positive and signed filters from a single quadratic extension}
+For $F=L^{H_4}$ and $K=L^{\ker\lambda_W}$, $K/F$ is quadratic. For a rational unramified prime $p$, the induction formula has a useful ideal-theoretic interpretation: the value $P(\Frob_p)$ counts degree-one primes of $F$ above $p$, and $W(\Frob_p)$ sums the quadratic character of $K/F$ at those degree-one primes. This follows either from the action of Frobenius on $G/H_4$ and the traces on fixed cosets, or by comparing the $p^{-s}$ term of the induced Euler product with the Hecke Euler product over $F$.
+
+The upstream statistic involves the nonnegative local filter $1-\lambda$. In our setting the corresponding degree-one filter is exactly
+\begin{equation}\label{eq:involution}
+ P-W=8\,\one_{1^2 2^2}.
+\end{equation}
+This is a particularly simple positive count: it selects the nonabelian involution class and nothing else. It suggests trying a version of the divisibility argument over $F$ rather than merely replacing congruences over $\Q$. But a critical caveat is that the induced difference $P-W$ is a virtual character, not an entire Hecke factor. It does not have the real-residue positivity required in Lemma~\ref{lem:landau} for free. The obstruction can be made exact: the standard degree-five irreducible $\sigma$ has $\langle P-W,\sigma\rangle=1$, whereas the irreducible $U$ has $\langle P-W,U\rangle=-2$. The first follows from $\sigma(1^2 2^2)=1$ and the second from $U(1^2 2^2)=-2$. Even the cone of genuine order characters permits both signs for this virtual count. A naive transplantation of the upstream nonsplit-prime endgame is therefore insufficient. In contrast, $P$ itself has positive coefficients and the correct order sign; $W$ has signed coefficients but the correct order sign. The analytic theorem requires only the latter, while the geometric estimate may prefer the former. The auxiliary choice is part of the mathematical work, not a notation change.
+
+\subsection{Why abelian congruences cannot supply the missing inequality}
+An $A_6$-Galois extension is linearly disjoint from every finite abelian extension of $\Q$ because $A_6$ is nonabelian simple. More explicitly, their intersection is Galois over $\Q$ with abelian Galois group, hence gives an abelian quotient of $A_6$ and is $\Q$. In the direct-product Galois group of the compositum, Chebotarev gives primes with any specified pair of conjugacy classes. Thus, within any single allowed residue class modulo a fixed modulus, there are primes of each of the six cycle patterns in our table. No fixed function of finitely many Dirichlet characters at $p$ can equal any nonconstant weight in the table on all unramified primes. This is an elementary obstruction, already related to earlier reports' congruence analysis. It does not disprove the desired analytic estimate; it explains why the current $\Q$-abelian prime-count statement cannot supply the needed coefficients by Fourier expansion alone.
+
+\subsection{A precise sufficient arithmetic milestone}
+Let $J$ be one of the three rows, and suppose one can construct a new admissible family of theta-lift-type spaces depending on $x$, together with a normalized prime remainder $\mathcal R_J(x,x_1)$, such that
+\begin{enumerate}[label=\arabic*.]
+\item \emph{Identification of coefficients.} At unramified rational primes the local contributions of the divisor and height computations combine to $J(\Frob_p)\log p$ (up to a fixed positive scaling), with all prime powers and excluded primes contributing $O_L(x^{-1/2+\epsilon})$ after the ramp normalization. The main term must be the group average $a_J$.
+\item \emph{Covolume comparison.} On both sides there is the same positive-dimensional family and the same leading height $h_J$. There is an upper bound with a saving $m\mathcal R_J$, and a lower bound with error budgets; lost span and index/denominator losses must be small enough that after dividing by dimension and $m\asymp\sqrt x$ the total normalized error is $O_{L,\epsilon}(x^{-1/2+\epsilon})$.
+\item \emph{Second-scale elimination.} The identification expresses $\mathcal R_J$ in terms of $R_J(x)$ and an auxiliary-scale combination. A choice of $x_1$ (or a different centering argument) must make the latter nonpositive or at most the same error. A version of the upstream moment/window lemma may be useful because our transforms are holomorphic at and to the right of 1, but the actual coefficients and constants have to be checked.
+\end{enumerate}
+These three milestones would prove (iii) of Theorem~\ref{thm:criterion}, and thus settle Dedekind RH for the field in \eqref{eq:f}. Alternatively, prove the constant-free finite-window inequality \eqref{eq:dyadic} directly. We do not establish any of these new covolume, span, or arithmetic divisibility estimates. In particular the original construction over a CM field generated by an imaginary quadratic field and roots of unity cannot simply be reused as if the degree-90 field $F$ were abelian, totally real or CM. The requisite geometry, local prime-ideal bookkeeping, and congruence-clearing estimates are genuinely new.
+
+\subsection{Further research questions}
+\begin{enumerate}[label=\textbf{R\arabic*.}]
+\item \textbf{Positive two-pattern target.} Can the theta-jet divisibility or local height formula be organized to measure the permutation trace $P$, i.e. degree-one ideals of $F$ with the appropriate weights? This avoids negative prime coefficients and the auxiliary real-residue obstruction. The challenge is the nonabelian trace, not just a better estimate of an existing abelian remainder.
+\item \textbf{Quadratic relative factor.} Can one adapt the proof to finite-order Hecke characters over an arbitrary fixed number field, beginning with $L^{H_4}$ and $L^{H_8}$? The present theorem requires just one such factor. A zero-free theorem for the degree-ten induced quartic factor $L(s,U)$ alone would not suffice for full-field RH; a detector with all nontrivial constituents is needed in this approach.
+\item \textbf{Smaller representations, other simple groups.} Search for identities $kD+b\one=\reg+\sum_i a_i\Ind_{H_i}^G\lambda_i$ with $a_i\ge0$, then minimize degree, support and multiplicity constant. Use exact rational certificates after any linear programming search. The $A_6$ pair proves a genuine tradeoff; a reduction to small groups alone does not establish arbitrary nonabelian GRH.
+\item \textbf{Artin holomorphy at critical-line zeros.} Given one or more positive monomial detectors, can their exact local zero orders constrain the full Heilbronn character enough to exclude negative irreducible coefficients even on the critical line? The present estimates would control the open right half, but not such coincidences. A proof would require additional information on zero multiplicities or another analytic inequality.
+\item \textbf{Beyond zero-location problems.} The upstream denominator-control and twisting machinery remains a possible route to Selmer or $K$-theoretic problems. A bound averaged over changing twists is not automatically a fixed-module vanishing result; the earlier Selmer and torsion packets already identify this gap. There is no derivation here of BSD, Vandiver, Goldbach, or twin primes. Those need additional arithmetic bridges; Dirichlet GRH alone does not settle them.
+\end{enumerate}
+
+\section{Reproducibility and conclusions}
+The core result consists of exact group identities, the corresponding local orders, and the one-sided analytic transfer. Its scope is every $A_6$-Galois extension over $\Q$ conditional on ordinary RH for the equivalence; the identities and multiplicity bounds themselves are unconditional. The explicit example is not necessary for the general theorem, but fixes a concrete arithmetic target for a successor project.
+
+The archive contains this compilable \LaTeX{} source and PDF, an independently executable finite-group verifier (standard Python library only), an exact sextic verifier and prime-pattern census (SymPy), machine-readable character certificates, execution logs, and upstream/prior source audit manifests. The finite tests were run in this environment. No new Lean proof is asserted or included, since the original proof environment was not available for compilation and the main new analytic estimate is unsolved. The group-check code does not verify Hecke or Chebotarev theory; those are standard mathematical inputs to the human-readable proof. Build and reproduction commands are in \code{README.md}.
+
+\paragraph{Conclusion.} The evidence supports a concrete transfer of the analytic machinery: for the sextic \eqref{eq:f}, one exact, two-pattern inequality equivalent to a nonabelian RH, with no unknown centering constant, has been isolated. The degree-45 and positive alternatives clarify what can be optimized independently of the hard arithmetic. The next breakthrough must be the proof of one of these prime estimates from a class-sensitive geometric or arithmetic argument. It would be incorrect to treat the proven equivalences as a resolution of that remaining conjecture.
+
+\begin{thebibliography}{9}
+\bibitem{upstream} L. Sernau and collaborators, \emph{GRH for Dirichlet L-functions, in Lean 4}, based on the proof of Levent Alp\"oge with Claude, GitHub repository, commit \nolinkurl{72fead102f663d5c7a407964a13dc0cf9d977207}, \url{https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207}. In particular the compact README, GUIDE, and source files itemized in the audit.
+\bibitem{prior} V. Reshetnikov, \emph{ProveIt, incoming research archives}, \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/docs/incoming}; exact inspected archive identifiers and excerpts described in the accompanying \code{prior-audit.md}.
+\bibitem{booker} A. R. Booker, \emph{Artin's conjecture, Turing's method and the Riemann hypothesis}, Experimental Mathematics 15 (2006), 385--407, \url{https://arxiv.org/abs/math/0507502}.
+\bibitem{artin} D. Prasad, \emph{Artin $L$-functions}, expository notes, \url{https://www.math.iitb.ac.in/~dprasad/artin.pdf}. See induction, direct sums and regular and permutation characters. For meromorphic continuation use Brauer's induction theorem; for linear characters use abelian reciprocity and Hecke's theorem.
+\bibitem{lo} J. C. Lagarias and A. M. Odlyzko, \emph{Effective versions of the Chebotarev density theorem}, in \emph{Algebraic Number Fields}, Academic Press, 1977, pp. 409--464. We use only fixed-extension forms of the unconditional and GRH prime-counting estimates.
+\bibitem{groupnames} T. Dokchitser, \emph{GroupNames: $A_6$}, \url{https://people.maths.bris.ac.uk/~matyd/GroupNames/356/A6.html}; polynomial in the natural sextic action. Our finite verification uses the discriminant, reduction patterns and Jordan's theorem, independently of the table.
+\bibitem{mv} H. L. Montgomery and R. C. Vaughan, \emph{Multiplicative Number Theory I: Classical Theory}, Cambridge University Press, 2007, Section 15.1 (Landau's theorem).
+\end{thebibliography}
+\end{document}

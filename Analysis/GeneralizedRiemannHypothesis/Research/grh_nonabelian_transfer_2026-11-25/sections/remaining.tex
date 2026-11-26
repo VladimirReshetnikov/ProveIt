@@ -1,0 +1,131 @@
+\section{The remaining estimates and a concrete new zero problem}
+\label{sec:remaining}
+
+\subsection{Why the qualitative frame theorem does not finish the transfer}
+
+The source's scale hierarchy is unusually demanding. For every fixed sufficiently small $\varepsilon>0$, it takes
+\[
+ m\asymp\sqrt x,\quad r\asymp x^5,\quad t=5r,
+ \quad \log b\asymp x^\varepsilon,
+ \quad f\ge\varphi(q_0)x^{11}.
+\]
+The tower modulus has polynomial growth in $x$ up to logarithmic factors. The construction must work for arbitrarily small positive $\varepsilon$ to reach the critical line.\cite{guide,oneSided}
+
+Theorem~\ref{thm:projective} allows arbitrary dependence on the field, lattice, and prescribed witnesses. If its threshold grew as $\exp(f^c)$ for a fixed $c>0$, it would generally exceed the permitted scale $b=\exp(x^\varepsilon)$ when $\varepsilon$ is small. Choosing $b$ still larger would also change the error in \eqref{eq:star}; the limits cannot be adjusted independently.
+
+The next useful frame theorem must control the reserve denominator, signed coefficients, vector sizes, and threshold uniformly as $q$ grows. A polynomial bound in $q$ with fixed exponents would be a very favorable outcome. A proof of mere finite generation or eventual existence is insufficient. In particular, neither the factor-three field extension nor the improved constant $229$ proves those uniform bounds automatically.
+
+\subsection{The exact odd-cocycle obstruction}
+
+The source theorem
+\src{Lib/Cyclotomic/OddSha}{New.exists_length_shaOdd_le}
+requires the entire CM field to lie in a cyclotomic field $\Q(\mu_N)$. It produces one nonzero integer $X$ with
+\begin{equation}\label{eq:odd-source}
+ X\le 2^{4(N+t+3)^{27}}h_E
+\end{equation}
+whose valuations bound the lengths of all the relevant finite-level modules, uniformly over the indicated weights and coefficient rings.\cite{oddSha}
+
+The enlarged field contains the nonabelian $S_3$ field $F$, so that cyclotomic containment is impossible. Unramifiedness over $E_0$ does not make $E/\Q$ abelian. Further, the module in question is a specifically defined module of raw cocycles with local conditions; for positive weights it is not a quotient by coboundaries. The source explicitly provides no comparison with the customary $\Sha^1$ model. Known Iwasawa or $K$-theoretic finiteness results cannot simply be inserted without proving the comparison and the required quantitative uniformity.\cite{oddSha,selmerModules}
+
+The unramified cyclic cubic structure suggests a sharper organizing strategy. In ordinary cohomology, away from the coefficient prime $3$, restriction and corestriction identify the invariant part with the base-field contribution. After adjoining cubic roots of unity to coefficients, the two other eigenspaces involve the two nontrivial cubic characters of $E/E_0$. Those pieces are not controlled by the invariant part. The natural next question concerns corresponding finite-order character twists over the cyclotomic base, with a separate analysis at $3$. This is an organizing observation for genuine cohomology; its comparison with the source's raw cocycles and local conditions remains to be proved.
+
+\subsection{A weaker sufficient quantitative target}
+
+The source's final denominator budget is
+\begin{equation}\label{eq:budget}
+ \mathcal B=\frac{fa(\log b)^3}{mk}.
+\end{equation}
+The odd-cocycle part contributes $t\log X$ after summing its prime valuations with weights $\log\ell$. The source bounds $\log X$ by $x^{2000}$, but this is stronger than the budget requires.\cite{fitTwists,traceRelations}
+
+\begin{proposition}[Permissible odd-cocycle growth]\label{prop:budget}
+Suppose $x>1$, $b\ge e$, $q_0\ge1$, all of $m,k,r,t,f,a$ are positive, and the transferred data satisfy
+\[
+ t=5r,\quad r\le3x^5,\quad k\le r,\quad m\le2\sqrt x,
+ \quad f\ge\varphi(q_0)x^{11},\quad a=xb.
+\]
+For $X\ge1$,
+\begin{equation}\label{eq:budget-ratio}
+ \frac{t\log X}{\mathcal B}
+ \le \frac{90}{\varphi(q_0)}x^{-3/2}
+ \frac{\log X}{b(\log b)^3}.
+\end{equation}
+In particular, $\log X\le b$ makes this contribution negligible as $x\to\infty$.
+\end{proposition}
+
+\begin{proof}
+The scale inequalities give $tmk\le5r^2m\le90x^{21/2}$ and $fa\ge\varphi(q_0)x^{12}b$. Substitute these in $tmk\log X/[fa(\log b)^3]$. The exponent difference is $21/2-12=-3/2$, proving \eqref{eq:budget-ratio}. Under $\log X\le b$, the right side tends to zero.
+\end{proof}
+
+For every fixed $\varepsilon>0$ with $\log b\asymp x^\varepsilon$, even a uniform bound $\log X\le\exp(x^{o(1)})$ suffices asymptotically for this term. This relaxes the next arithmetic target. It does not bound the new modules, settle the prime $3$, or account for all other denominator terms.
+
+\subsection{The first nonabelian analytic target}
+
+Let $\rho$ denote the standard two-dimensional representation of $S_3$. The regular-representation factorization is
+\begin{equation}\label{eq:zeta-F}
+ \zeta_F(s)=\zeta(s)L(s,\chi_{229})L(s,\rho)^2.
+\end{equation}
+The representation $\rho$ is induced from either nontrivial character of $A_3$. Its $L$-function is a Hecke $L$-function over the real quadratic field $k=\Q(\sqrt{229})$, attached to the unramified cubic extension $F/k$. Its holomorphy is already covered by the classical theory of nontrivial finite-order Hecke characters; this is not a new Artin-holomorphy claim. Its critical-line zero statement is outside the endpoints of the inspected repository.\cite{Milne,source}
+
+For a direct positive statistic write
+\[
+ -\frac{\zeta_F'}{\zeta_F}(s)=\sum_{n\ge1}a_F(n)n^{-s},
+ \qquad
+ \zeta_F(s)=\frac{\kappa_F}{s-1}+\kappa_F\gamma_F+O(s-1).
+\]
+The Euler factors give $0\le a_F(n)\le6\Lambda(n)$. At an unramified prime,
+\[
+ a_F(p^j)=6\log p\;\mathbf1_{\operatorname{Frob}_p^j=1}.
+\]
+Thus these coefficients encode complete nonabelian splitting, not just a congruence class. Define
+\begin{equation}\label{eq:targetR}
+ R_F(x)=\sum_{n\le x}a_F(n)\left(\frac1n-\frac1x\right)
+ -\log x+1+\gamma_F.
+\end{equation}
+The coefficient bound gives $R_F(x)=O((\log x)^2)$, so its initial Mellin transform $\mathcal F(s)=\int_1^\infty R_F(x)x^{-s}\,dx$ converges for $\Re s>1$. Termwise integration gives
+\begin{equation}\label{eq:target-transform}
+ \mathcal F(s)=
+ -\frac{\zeta_F'(s)/\zeta_F(s)}{s(s-1)}
+ -\frac1{(s-1)^2}+\frac{1+\gamma_F}{s-1}.
+\end{equation}
+The singularity at $1$ is removable. At a zero $\omega$ of multiplicity $m_\omega$ in $\Re s>0$, the residue is
+\[
+ \operatorname{Res}_{s=\omega}\mathcal F(s)
+ =\frac{m_\omega}{\omega(1-\omega)}.
+\]
+It is positive at real zeros in $(0,1)$.
+
+\begin{proposition}[A sufficient final arithmetic estimate]\label{prop:target}
+If, for every $\varepsilon>0$ and every sufficiently large dyadic $Y$,
+\begin{equation}\label{eq:target-mean}
+ \int_Y^{2Y}\pos{R_F(x)}\,dx\ll_\varepsilon Y^{1/2+\varepsilon},
+\end{equation}
+then every nontrivial zero of $\zeta_F$ lies on $\Re s=1/2$. Consequently the same is true for the Hecke factor $L(s,\rho)$ in \eqref{eq:zeta-F}.
+\end{proposition}
+
+\begin{proof}
+For every real $\sigma>1/2$, choose $\varepsilon<\sigma-1/2$ and sum \eqref{eq:target-mean} over dyadic intervals. It follows that the Mellin integral of the positive part converges in $\Re s>1/2$.
+
+Here is the positive-part Landau argument already used in the earlier reports. Let $H$ be the holomorphic Mellin transform of $R_F^+$. Initially $H-\mathcal F$ is the Mellin transform $G$ of the nonnegative negative part $R_F^-$. Its convergence abscissa is at most $1$, by the preceding growth bound. If that abscissa $c$ were greater than $1/2$, the meromorphic continuation would have at most a simple real pole there, with residue equal to the negative of the residue of $\mathcal F$, hence nonpositive. At $c=1$ the latter is regular; in $(1/2,1)$ its real residues are nonnegative. But $G(\sigma)\ge0$ for real $\sigma>c$, so a nonzero simple-pole residue there must be positive. The singularity is therefore removable, contradicting Landau's theorem for a nonnegative Mellin transform at its finite convergence abscissa. Thus $G$ also converges in $\Re s>1/2$, making $\mathcal F=H-G$ holomorphic there.
+
+Every zero of $\zeta_F$ to the right of $1/2$ would give a nonzero pole of \eqref{eq:target-transform}; none exists. The functional equation gives the critical line. Since the other factors in \eqref{eq:zeta-F} have no poles in the open critical strip, any off-line zero of $L(s,\rho)$ would be a zero of $\zeta_F$.
+\end{proof}
+
+This is a reused analytic interface, not a new theorem about zeros proved here. The source's local theta construction naturally first produces an auxiliary quadratic-twist difference. Reaching \eqref{eq:target-mean} directly, or proving the required no-cancellation/twist-selection analogue, is another task. The Dirichlet-specific auxiliary twist theorem cannot be transferred by changing notation alone.\cite{priorSynthesis,criterion}
+
+\subsection{Revised research priorities}
+
+\begin{longtable}{@{}L{.26\textwidth}L{.34\textwidth}L{.33\textwidth}@{}}
+\toprule
+Package & What is now available & Exact remaining work\\
+\midrule\endhead
+Different and Weil data & Unramified cubic base change; inherited different, root discriminant, lattice and period norms; upstream extension theorem & Formal Lean instantiation and consistent normalizations throughout the enlarged construction.\\[5pt]
+Frames and local witnesses & Optimal raw frame $229$; projective frames at every sufficiently large integer bound; old unit witnesses included & Bounds uniform in the growing tower, especially $h\le b$, vector norms, and the final prescribed level.\\[5pt]
+Odd cocycles & Exact source module and cost identified; weaker sufficient budget \eqref{eq:budget-ratio} & Uniform integer $X$ for the nonabelian field, with the correct raw local conditions and coefficient-ring quantifiers.\\[5pt]
+Prime levels and local losses & Nonabelian splitting selector and local partner from the earlier report & Actual split/principal primes in the required windows, and crystalline-defect and arithmetic spanning estimates.\\[5pt]
+Final zero argument & Landau interfaces and explicit nonabelian statistic & A new arithmetic bound such as \eqref{eq:target-mean}, or a matched auxiliary-twist version with cancellation excluded.\\
+\bottomrule
+\end{longtable}
+
+The most efficient next attempt is a quantitative frame construction for this unramified cubic tower together with a correctly formulated odd-cocycle comparison. A new detector, another change of sampling scales, or an ordinary integral-frame search cannot replace either estimate.
+
+For other conjectures, the source alone does not establish zero simplicity, pair correlation, BSD, or general Artin holomorphy. The previous archive already supplies criteria and concrete obstacles for several of these. The exponent-seven class-group census remains an attractive separate finite arithmetic project, but the earlier exponent-six collision certificate does not automatically extend to exponent seven. No fresh classification or completion of those projects is asserted here.
