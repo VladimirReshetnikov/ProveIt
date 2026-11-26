@@ -3152,3 +3152,6 @@ At every internal order r≥3 the rational coefficient through the original base
 
 The original Barnes and reciprocal-Gamma evaluators on the actual named unit shift satisfy the cleared functional equation at every regular Gaussian input on a certified disk. The proof aligns their late rational observations and passes the exact rational equation through independent dyadic rate bounds.
 [GaussianBarnesCanonicalNamedFunctionalEquation](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNamedFunctionalEquation.lean)
+
+On certified pole-free regular Gaussian input charts, multiply the cleared Barnes equation by the original named Gamma evaluator. Its exact inverse relation with the original named reciprocal-Gamma yields the usual functional equation.
+[GaussianGammaC7NamedInverse](Lean/IPRADerivations/Analysis/GaussianGammaC7NamedInverse.lean), [GaussianBarnesCanonicalNamedPoleFreeRecurrence](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNamedPoleFreeRecurrence.lean)
