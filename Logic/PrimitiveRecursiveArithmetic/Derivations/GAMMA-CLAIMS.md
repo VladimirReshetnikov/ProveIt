@@ -2939,3 +2939,6 @@ The actual rational first-derivative expression has radius $2R^2/k^2$ and its ex
 
 The original factor equals the exact rational power $(z+m)^m$ times its actual regular exponential multiplier, with a certified positive lower bound.
 [GaussianBarnesCanonicalDeflatedFactor](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDeflatedFactor.lean)
+
+The original ranges on both sides of the isolated index are apart throughout the certified closed half-unit rational neighborhood. The disk guard forces the chosen factor into the fixed initial head.
+[GaussianBarnesCanonicalDeflatedHead](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDeflatedHead.lean)
