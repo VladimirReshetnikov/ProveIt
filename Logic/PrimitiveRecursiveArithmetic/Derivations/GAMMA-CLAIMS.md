@@ -2882,3 +2882,6 @@ The actual fixed interval and regular cofinal logarithm satisfy the exact indepe
 
 The actual cubic logarithm agrees with the original local logarithm after cancellation of its first two terms. On the tail disk this gives an exact independent-clock identification of each exponentiated row with the literal direct Barnes factor.
 [GaussianBarnesCanonicalCubicName](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalCubicName.lean), [GaussianBarnesCanonicalCorrection](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalCorrection.lean), [GaussianBarnesCanonicalLogFactor](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalLogFactor.lean)
+
+An exact Gaussian integer numerator test identifies the original factor base zeros at the corresponding negative integers and supplies a rational lower bound on each nonzero base.
+[GaussianBarnesCanonicalBase](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalBase.lean)
