@@ -2897,3 +2897,6 @@ A nonzero rational base gives an explicit lower bound on the original positive p
 
 The actual finite cubic logarithmic sum exponentiates to the actual literal finite factor product. The internal finite fold includes the empty interval.
 [GaussianNamedFiniteExponentialFold](Lean/IPRADerivations/Analysis/GaussianNamedFiniteExponentialFold.lean), [GaussianBarnesCanonicalFiniteLogRows](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalFiniteLogRows.lean), [GaussianBarnesCanonicalFiniteLogProduct](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalFiniteLogProduct.lean)
+
+At any common cutoff, independent certified disk radii give the same represented finite product. The comparison passes through the original row and prefactor samplers and permits zero factors.
+[GaussianBarnesCanonicalFiniteRadius](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalFiniteRadius.lean)
