@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalTiltedFloorWidth
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUnitSubstitutionTiltedNodes (tilt tiltNumerator tilt_represents)
 open RationalNonnegativeFloor (index quantized quantized_below quantized_upper_error)
 open RationalConvexSecants (nonnegative)
@@ -22,10 +22,6 @@ open RationalSupMetric (numeratorOf denominatorOf)
 open GaussianEuclideanDistanceName (fraction fraction_represents)
 open RationalValueBounds (upper radius)
 open GaussianRationalHorner (positive_product)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -33,11 +29,8 @@ local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
 def difference (a b : PTm n) : PTm n := RationalArithmetic.add b (RationalArithmetic.negative a)
 def width (a b i A B M : PTm n) : PTm n := monus (index (tilt b (succ i) A B) M) (index (tilt a i A B) M)
 
-@[simp] theorem subst_difference {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (difference a b) = difference (Syn.subst σ a) (Syn.subst σ b) := by simp [difference]
-@[simp] theorem subst_width {m : ℕ} (σ : Fin n → PTm m) (a b i A B M : PTm n) :
-    Syn.subst σ (width a b i A B M) = width (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ i)
-      (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ M) := by simp [width]
+ipra_subst difference
+ipra_subst width
 
 theorem original_width_error (a b i A B M : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hM : Γ ⊢[PRAAx] le one M) (ha : Γ ⊢[PRAAx] nonnegative (tilt a i A B))

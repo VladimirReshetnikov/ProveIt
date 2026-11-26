@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaPolygammaPrefix
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianDominantPairAlgebra (radiusPoint)
 open GaussianGammaPolygammaTail (body data tail signedTail signed_C30_tail_bound term_at)
 open GaussianGammaPolygammaTailRows (term)
@@ -23,11 +23,7 @@ open GaussianRationalHorner (qmul qadd qadd_canonical qmul_canonical)
 open GaussianRationalMetric (qnegative qsub distanceBounded)
 open GaussianRationalReciprocal (power qone)
 open GaussianRationalSyntheticDivision (qmul_congr qadd_congr qsub_congr)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 open Products (fact)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -35,18 +31,11 @@ def scale (m x : PTm n) : PTm n := qmul (power (qnegative qone) (succ m)) (qmul 
 def partialSum (z B m N : PTm n) : PTm n :=
   qadd (scale m (term z B zero (succ m))) (signedTail z B m zero N)
 
-@[simp] theorem subst_signedTail {l : ℕ} (σ : Fin n → PTm l) (z B m N r : PTm n) :
-    Syn.subst σ (signedTail z B m N r) =
-      signedTail (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ m) (Syn.subst σ N) (Syn.subst σ r) := by
-  simp [signedTail]
+ipra_subst signedTail
 
-@[simp] theorem subst_scale {l : ℕ} (σ : Fin n → PTm l) (m x : PTm n) :
-    Syn.subst σ (scale m x) = scale (Syn.subst σ m) (Syn.subst σ x) := by
-  simp [scale,Products.fact,one]
+ipra_subst scale [Products.fact, one]
 
-@[simp] theorem subst_partialSum {l : ℕ} (σ : Fin n → PTm l) (z B m N : PTm n) :
-    Syn.subst σ (partialSum z B m N) = partialSum (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ m) (Syn.subst σ N) := by
-  simp [partialSum]
+ipra_subst partialSum
 
 theorem partial_sum_canonical (z B m N : PTm n) : Γ ⊢[PRAAx] GaussianRationalHorner.canonical (partialSum z B m N) :=
   qadd_canonical _ _

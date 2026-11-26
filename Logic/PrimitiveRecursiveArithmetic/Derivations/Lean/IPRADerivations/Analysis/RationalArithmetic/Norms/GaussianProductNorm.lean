@@ -19,16 +19,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianProductNorm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder (re im normSq)
 open LeanProofs.IPRA.Analysis.GaussianRootAlgebra (sub equal equal_of_values re_sub im_sub)
 open LeanProofs.IPRA.Analysis.GaussianRootProduct (coefficients evaluate normFactors)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -36,8 +32,7 @@ def data (R z C : PTm n) : PTm n := pairT (pairT R z) C
 def numeratorBody : PTm 2 := inst2 GaussianRootProduct.normBody (var 0) (fstT (var 1))
 def denominatorBody : PTm 2 := sndT (var 1)*sndT (var 1)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (R z C : PTm n) :
-    Syn.subst σ (data R z C) = data (Syn.subst σ R) (Syn.subst σ z) (Syn.subst σ C) := by simp [data]
+ipra_subst data
 
 theorem numerator_lift (j x : PTm n) : Γ ⊢[PRAAx]
     inst2 numeratorBody j x ≐ inst2 GaussianRootProduct.normBody j (fstT x) := by
@@ -83,9 +78,7 @@ def evaluationBound (R z N A B C : PTm n) : Fm PTm n :=
   le (pw (B*B) N*normSq (evaluate (coefficients R N) z))
     (pw (A*A) N*pw (C*C) N)
 
-@[simp] theorem subst_evaluationBound {m : ℕ} (σ : Fin n → PTm m) (R z N A B C : PTm n) :
-    (evaluationBound R z N A B C).subst σ = evaluationBound (Syn.subst σ R) (Syn.subst σ z)
-      (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ C) := by simp [evaluationBound]
+ipra_subst evaluationBound
 
 theorem product_bound (R z N A B C : PTm n)
     (h : Γ ⊢[PRAAx] evaluationBound R z N A B C) : Γ ⊢[PRAAx]
@@ -97,9 +90,7 @@ theorem product_bound (R z N A B C : PTm n)
 def selected (R z N A B C : PTm n) : PTm n :=
   RationalProductWitness.selected numeratorBody denominatorBody N (A*A) (B*B) (data R z C)
 
-@[simp] theorem subst_selected {m : ℕ} (σ : Fin n → PTm m) (R z N A B C : PTm n) :
-    Syn.subst σ (selected R z N A B C) = selected (Syn.subst σ R) (Syn.subst σ z)
-      (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ C) := by simp [selected]
+ipra_subst selected
 
 theorem selected_range (R z N A B C : PTm n) (hN : Γ ⊢[PRAAx] le one N)
     (h : Γ ⊢[PRAAx] evaluationBound R z N A B C) : Γ ⊢[PRAAx] lt (selected R z N A B C) N :=
@@ -153,9 +144,8 @@ private theorem value_zero_of_abs (u : ZT n)
     (le_congr (.eqRefl _) h (le_add_right _ _)) (zero_le _)
   have right : Γ ⊢[PRAAx] monus u.neg u.pos ≐ zero := le_antisymm
     (le_congr (.eqRefl _) h (le_add_left _ _)) (zero_le _)
-  have same := natEq (le_antisymm left right)
   simp only [ZT.toZ]
-  rw [same]
+  rw [natEq (le_antisymm left right)]
   ring
 
 private theorem square_zero {a : PTm n} (h : Γ ⊢[PRAAx] a*a ≐ zero) : Γ ⊢[PRAAx] a ≐ zero :=
@@ -206,15 +196,8 @@ def selectedF : PR 6 := PTm.toPR (selected (var 0) (var 1) (var 2) (var 3) (var 
 def outputF : PR 6 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5))
 def run (R z N A B C : PTm n) : PTm n := ConciseIPRA.PTm.app outputF ![R,z,N,A,B,C]
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (R z N A B C : PTm n) :
-    Syn.subst σ (output R z N A B C) = output (Syn.subst σ R) (Syn.subst σ z)
-      (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ C) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (R z N A B C : PTm n) :
-    Syn.subst σ (run R z N A B C) = run (Syn.subst σ R) (Syn.subst σ z)
-      (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ C) := by
-  simp [run]
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem selected_at (R z N A B C : PTm n) : Γ ⊢[PRAAx]
     ConciseIPRA.PTm.app selectedF ![R,z,N,A,B,C] ≐ selected R z N A B C := by
@@ -227,20 +210,20 @@ theorem output_at (R z N A B C : PTm n) : Γ ⊢[PRAAx] run R z N A B C ≐ outp
 
 theorem output_index (R z N A B C : PTm n) : Γ ⊢[PRAAx]
     fstT (run R z N A B C) ≐ selected R z N A B C :=
-  (congrFst (output_at R z N A B C)).eqTrans (fst_pair _ _)
+  (output_at R z N A B C).fstE
 theorem output_point (R z N A B C : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run R z N A B C)) ≐ entry R (selected R z N A B C) :=
-  (congrFst ((congrSnd (output_at R z N A B C)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (output_at R z N A B C).sndE.fstE
 theorem output_point_index (R z N A B C : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run R z N A B C)) ≐ entry R (fstT (run R z N A B C)) :=
   (output_point R z N A B C).eqTrans (entry_congr (.eqRefl _) (output_index R z N A B C).eqSymm)
 theorem output_numerator (R z N A B C : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (run R z N A B C))) ≐ normSq (sub z (entry R (selected R z N A B C))) :=
-  (congrFst ((congrSnd ((congrSnd (output_at R z N A B C)).eqTrans (snd_pair _ _))).eqTrans
+  (congrFst ((congrSnd (output_at R z N A B C).sndE).eqTrans
     (snd_pair _ _))).eqTrans (fst_pair _ _)
 theorem output_denominator (R z N A B C : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (sndT (run R z N A B C))) ≐ C*C :=
-  (congrSnd ((congrSnd ((congrSnd (output_at R z N A B C)).eqTrans (snd_pair _ _))).eqTrans
+  (congrSnd ((congrSnd (output_at R z N A B C).sndE).eqTrans
     (snd_pair _ _))).eqTrans (snd_pair _ _)
 
 theorem output_distance (R z N A B C : PTm n) : Γ ⊢[PRAAx]

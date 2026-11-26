@@ -1,7 +1,5 @@
 import IPRADerivations.Analysis.Series.Basel.BaselSquares
 import IPRADerivations.Combinatorics.BellDobinski
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Tail averages of the Basel packet
@@ -28,17 +26,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.BaselAverages
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.BaselFinite (odd_pos tB inst2_t T block_up Ev Od Inc alt_increasing)
 open LeanProofs.IPRA.Analysis.BaselSquares (fact_eq)
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (quo_anti)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Combinatorics.BellDobinski (monus_of_eq)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -15,7 +15,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalHigherMercatorTranspose
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalHigherRows (coefficient degree)
 open GaussianBarnesCanonicalHigherMercatorSum (data)
 open GaussianRationalFiniteSum (sum multiplyBody multiply_body_at sum_multiply)
@@ -24,9 +24,6 @@ open GaussianRationalFubini (row column rowBody columnBody columnSumBody column_
 open GaussianRationalHorner (qmul ofGaussian)
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalReciprocal (power)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

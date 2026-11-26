@@ -15,7 +15,7 @@ set_option maxHeartbeats 1500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalUniformLower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianFactorBudget (power_positive)
 open GaussianGammaNegativeCriticalCorrection (guard)
@@ -36,9 +36,6 @@ open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianRationalSyntheticDivision (qone)
 open GaussianStirlingGammaLogarithm (arg gammaMargin gammaData gamma_regular gammaRealF gamma_real_cross gamma_real_positive)
 open GaussianStirlingMultiplicativeBoundsLog (constant_order fractions_order)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

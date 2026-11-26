@@ -16,7 +16,7 @@ set_option maxHeartbeats 330000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLogCellComparison
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetLogCellGrid (endpoint finite_grid requiredMesh)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
@@ -33,9 +33,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalReciprocal (reciprocal)
 open GaussianRightHalfPlaneLogarithm (source)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -53,16 +50,11 @@ def budget (A D k : PTm n) : PTm n := (A+k*D)*(A+(k+one)*D)
 
 def precisionCost (D : PTm n) : PTm n := num 4*D*D+two
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (A B D neg k : PTm n) :
-    Syn.subst σ (data A B D neg k) = data (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ neg) (Syn.subst σ k) := by
-  simp [data, one]
+ipra_subst data [one]
 
-@[simp] theorem subst_leftValue {m : ℕ} (σ : Fin n → PTm m) (A B D neg k : PTm n) :
-    Syn.subst σ (leftValue A B D neg k) = leftValue (Syn.subst σ A) (Syn.subst σ B)
-      (Syn.subst σ D) (Syn.subst σ neg) (Syn.subst σ k) := by simp [leftValue]
+ipra_subst leftValue
 
-@[simp] theorem subst_budget {m : ℕ} (σ : Fin n → PTm m) (A D k : PTm n) :
-    Syn.subst σ (budget A D k) = budget (Syn.subst σ A) (Syn.subst σ D) (Syn.subst σ k) := by simp [budget, one]
+ipra_subst budget [one]
 
 theorem budget_positive (A D k neg : PTm n) (h : Γ ⊢[PRAAx] source A D neg) : Γ ⊢[PRAAx] le one (budget A D k) :=
   positive_product _ _ (shifted_source k A D neg h).andE₁.andE₁ (shifted_source (k+one) A D neg h).andE₁.andE₁

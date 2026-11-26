@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalQuadratureMean
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetArctangentCosineLaplace (mean)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalCoefficientScaling (qmul_add)
@@ -23,8 +23,6 @@ open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalRiemannRefinement (leftSum weight)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr)
 open GaussianReciprocalHorner (qmul_associative)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -33,8 +31,7 @@ def secondBody (g : PTm 2) : PTm 2 := inst2 g (var 0) (sndT (var 1))
 def body (f g : PTm 2) : PTm 2 := multiplyBody (GaussianRationalFiniteSum.addBody (firstBody f) (secondBody g))
 def data (x y : PTm n) : PTm n := pairT (fraction one two) (pairT x y)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (x y : PTm n) :
-    Syn.subst σ (data x y) = data (Syn.subst σ x) (Syn.subst σ y) := by simp [data,one,two]
+ipra_subst data [one, two]
 
 private theorem first_entry (f : PTm 2) (i x y : PTm n) : Γ ⊢[PRAAx]
     inst2 (firstBody f) i (pairT x y) ≐ inst2 f i x := by

@@ -1,6 +1,5 @@
 import IPRADerivations.Algebra.QuadraticTowerGrowth
 import IPRADerivations.Foundations.BoundedSyntaxInduction
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Bounded height verification for the actual five-call table
@@ -17,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationHeight
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis
 open QuadraticTowerCoefficients (width width_zero width_succ singleton)
 open QuadraticTowerArrayCodec (arrayHeight height_at restored)
@@ -26,10 +25,6 @@ open QuadraticTowerMultiplicationTable (leftHalf rightHalf)
 open LeanProofs.IPRA.Foundations
 open MasterCertificate (entry)
 open SequenceComposition (length append entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -137,9 +132,7 @@ theorem append_height (h A C b : PTm n) (ha : Γ ⊢[PRAAx] arrayHeight h A b)
 
 def radicandsHeight (D h b : PTm n) : Fm PTm n := .all
   (lt (var 0) (Syn.shift h) ⟶ arrayHeight (var 0) (entry (Syn.shift D) (var 0)) (Syn.shift b))
-@[simp] theorem subst_radicandsHeight {k : ℕ} (σ : Fin n → PTm k) (D h b : PTm n) :
-    (radicandsHeight D h b).subst σ = radicandsHeight (Syn.subst σ D) (Syn.subst σ h) (Syn.subst σ b) := by
-  simp [radicandsHeight,Syn.subst_shift,Syn.shift_subst]
+ipra_subst radicandsHeight [Syn.subst_shift, Syn.shift_subst]
 theorem radicand_at (D h b j : PTm n) (hD : Γ ⊢[PRAAx] radicandsHeight D h b)
     (hj : Γ ⊢[PRAAx] lt j h) : Γ ⊢[PRAAx] arrayHeight j (entry D j) b := by
   have gate : Γ ⊢[PRAAx] lt j h ⟶ arrayHeight j (entry D j) b := by simpa [radicandsHeight] using hD.allE j
@@ -180,13 +173,9 @@ def atHeight (h B D T b : PTm n) : Fm PTm n := .all
 def localLaw (h B D T : PTm n) : Fm PTm n := .all
   (lt (var 0) (succ (Syn.shift B)) ⟶ atHeight (Syn.shift h) (Syn.shift B) (Syn.shift D) (Syn.shift T) (var 0))
 
-@[simp] theorem subst_word {k : ℕ} (σ : Fin n → PTm k) (h B u : PTm n) :
-    Syn.subst σ (word h B u) = word (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ u) := by simp [word]
-@[simp] theorem subst_rowIndex {k : ℕ} (σ : Fin n → PTm k) (h B u v : PTm n) :
-    Syn.subst σ (rowIndex h B u v) = rowIndex (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ u) (Syn.subst σ v) := by simp [rowIndex]
-@[simp] theorem subst_rowLaw {k : ℕ} (σ : Fin n → PTm k) (h B D T b u v : PTm n) :
-    (rowLaw h B D T b u v).subst σ = rowLaw (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D)
-      (Syn.subst σ T) (Syn.subst σ b) (Syn.subst σ u) (Syn.subst σ v) := by simp [rowLaw]
+ipra_subst word
+ipra_subst rowIndex
+ipra_subst rowLaw
 @[simp] theorem subst_atWord {k : ℕ} (σ : Fin n → PTm k) (h B D T b u : PTm n) :
     (atWord h B D T b u).subst σ = atWord (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D)
       (Syn.subst σ T) (Syn.subst σ b) (Syn.subst σ u) := by
@@ -197,9 +186,7 @@ def localLaw (h B D T : PTm n) : Fm PTm n := .all
       (Syn.subst σ T) (Syn.subst σ b) := by
   simp [atHeight,Syn.subst_shift,Syn.shift_subst]
   simp only [Syn.shift,QuadraticTowerArrayCodec.subst_horizon,Syn.subst_subst]
-@[simp] theorem subst_localLaw {k : ℕ} (σ : Fin n → PTm k) (h B D T : PTm n) :
-    (localLaw h B D T).subst σ = localLaw (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ T) := by
-  simp [localLaw,Syn.subst_shift,Syn.shift_subst]
+ipra_subst localLaw [Syn.subst_shift, Syn.shift_subst]
 
 def heightSyntax (h A b : PTm n) : BFm n := .all (width h) (.and
   (.le (Foundations.GapDecision.zabs (RationalSupMetric.numeratorOf (entry (Syn.shift A) (var 0)))) (Syn.shift b))
@@ -441,15 +428,9 @@ def state (H B t D : PTm n) : PTm n := DemandRecursion.V demandF baseSchema step
 def forwardLaw (H B D t : PTm n) : Fm PTm n := le t H ⟶ localLaw t (cap H B t D) D (state H B t D)
 def forwardSyntax (H B D t : PTm n) : BFm n := .imp (.le t H)
   (localSyntax t (cap H B t D) D (state H B t D))
-@[simp] theorem subst_cap {k : ℕ} (σ : Fin n → PTm k) (H B t D : PTm n) :
-    Syn.subst σ (cap H B t D) = cap (Syn.subst σ H) (Syn.subst σ B) (Syn.subst σ t) (Syn.subst σ D) := by
-  simp [cap]
-@[simp] theorem subst_state {k : ℕ} (σ : Fin n → PTm k) (H B t D : PTm n) :
-    Syn.subst σ (state H B t D) = state (Syn.subst σ H) (Syn.subst σ B) (Syn.subst σ t) (Syn.subst σ D) := by
-  simp [state]
-@[simp] theorem subst_forwardLaw {k : ℕ} (σ : Fin n → PTm k) (H B D t : PTm n) :
-    (forwardLaw H B D t).subst σ = forwardLaw (Syn.subst σ H) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ t) := by
-  simp [forwardLaw]
+ipra_subst cap
+ipra_subst state
+ipra_subst forwardLaw
 theorem forward_formula (H B D t : PTm n) : formula (forwardSyntax H B D t) = forwardLaw H B D t := by
   simp [forwardSyntax,forwardLaw,formula,local_formula,BFm.le,le]
 

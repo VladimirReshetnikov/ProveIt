@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianScalarSineTaylor
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianArctangentCayleyValues (imaginaryPoint imaginaryCode)
 open GaussianNamedSineFromExponential (multiplier)
 open GaussianScalarExponentialOddTaylor (scalarTerm oddBody oddSum odd_taylor_identity)
@@ -32,9 +32,6 @@ open GaussianReciprocalHorner (qmul_associative)
 open GaussianInverseBinomialRows (negative_congr negative_product)
 open GaussianRootAlgebra (equal equal_of_values equal_refl re_add im_add re_scale im_scale re_neg im_neg re_one im_one)
 open ComplexLogarithmRemainder (code oneCode scale eval_re_code eval_im_code)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,8 +39,7 @@ def signedTerm (z j : PTm n) : PTm n := qmul (parityPoint j) (scalarTerm z (succ
 def signedBody : PTm 2 := signedTerm (var 1) (var 0)
 def signedSum (z K : PTm n) : PTm n := sum signedBody K z
 
-@[simp] theorem subst_signedSum {m : ℕ} (σ : Fin n → PTm m) (z K : PTm n) :
-    Syn.subst σ (signedSum z K) = signedSum (Syn.subst σ z) (Syn.subst σ K) := by simp [signedSum]
+ipra_subst signedSum
 
 private theorem signed_body_at (z j : PTm n) : inst2 signedBody j z = signedTerm z j := by
   simp [signedBody, signedTerm, scalarTerm, inst2]

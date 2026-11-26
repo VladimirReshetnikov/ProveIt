@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Intervals.RationalNestedIntervals
 import IPRADerivations.Analysis.Optimization.Convexity.RationalMultiplicativeConvexity
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Finite secants from the original interval comparisons
@@ -15,8 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalConvexIntervalBounds
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open LeanProofs.IPRA.PTm (monus)
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiCenters (midpoint)
 open RationalArgmin (rationalLE rationalLE_congr transitive reflexive denominator_positive left)
 open RationalArithmetic (add multiply)
@@ -27,8 +25,6 @@ open RationalConvexEndpointBudget (order_of_upper)
 open RationalCubeMidpoint (fraction fraction_represents)
 open GaussianRationalSyntheticBounds (natCode natCode_represents natCode_add add_monotone)
 open RationalAlgebra (add_associative add_commutative add_congr multiply_commutative multiply_congr multiply_add)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔟" t:max => Groth.ι (IPRA.Q.mk _ t)

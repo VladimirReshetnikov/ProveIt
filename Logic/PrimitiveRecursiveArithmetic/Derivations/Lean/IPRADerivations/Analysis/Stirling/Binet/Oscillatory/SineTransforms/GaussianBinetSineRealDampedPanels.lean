@@ -14,7 +14,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetSineRealDampedPanels
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetExponentialIntegralGrid (row exponent)
 open GaussianBinetExponentialPanel (unit_bound)
 open GaussianBinetImaginaryExponentialIntegral (coefficient coefficient_bound exponent_nonpositive)
@@ -30,10 +30,6 @@ open GaussianRationalHorner (positive_product qmul)
 open GaussianRationalMetric (bounded distanceBounded qnegative qsub)
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalReciprocal (bound_congr bounded_negative bounded_product bounded_sum)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

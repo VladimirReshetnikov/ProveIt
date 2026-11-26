@@ -15,7 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalCoefficientScaling
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner
   (qzero qadd qmul horner evaluate canonical represents positive_product
     qadd_represents qmul_represents represents_congr canonical_unique)
@@ -26,9 +26,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalL1
 open LeanProofs.IPRA.Foundations.MasterCertificate
   (entry subst_entry sequence subst_sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -57,8 +54,7 @@ theorem qmul_add (a b c : PTm n) : Γ ⊢[PRAAx]
 def scaleBody : PTm 2 := qmul (fstT (var 1)) (entry (sndT (var 1)) (var 0))
 def scaled (C s : PTm n) : PTm n := sequence scaleBody (length C) (pairT s C)
 
-@[simp] theorem subst_scaled {m : ℕ} (σ : Fin n → PTm m) (C s : PTm n) :
-    Syn.subst σ (scaled C s) = scaled (Syn.subst σ C) (Syn.subst σ s) := by simp [scaled]
+ipra_subst scaled
 
 theorem scale_body_at (C s i : PTm n) : Γ ⊢[PRAAx]
     inst2 scaleBody i (pairT s C) ≐ qmul s (entry C i) := by
@@ -82,9 +78,7 @@ theorem scaled_entry_canonical (C s i : PTm n) (hi : Γ ⊢[PRAAx] lt i (length 
 def prefixLaw (C s z k : PTm n) : Fm PTm n := le k (length C) ⟶
   horner (scaled C s) z k ≐ qmul s (horner C z k)
 
-@[simp] theorem subst_prefixLaw {m : ℕ} (σ : Fin n → PTm m) (C s z k : PTm n) :
-    (prefixLaw C s z k).subst σ = prefixLaw (Syn.subst σ C) (Syn.subst σ s)
-      (Syn.subst σ z) (Syn.subst σ k) := by simp [prefixLaw]
+ipra_subst prefixLaw
 
 theorem prefix_zero (C s z : PTm n) : Γ ⊢[PRAAx]
     horner (scaled C s) z zero ≐ qmul s (horner C z zero) :=
@@ -104,11 +98,9 @@ theorem prefix_step (C s z k : PTm n) (hk : Γ ⊢[PRAAx] lt k (length C))
 theorem horner_linearity (C s z k : PTm n) (hk : Γ ⊢[PRAAx] le k (length C)) : Γ ⊢[PRAAx]
     horner (scaled C s) z k ≐ qmul s (horner C z k) := by
   have all : Γ ⊢[PRAAx] .all (prefixLaw (Syn.shift C) (Syn.shift s) (Syn.shift z) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (prefix_zero C s z)
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_prefixLaw]
+    · exact .impI (prefix_zero C s z)
+    · refine .impI ?_
       let I := prefixLaw (Syn.shift C) (Syn.shift s) (Syn.shift z) (var 0)
       exact prefix_step _ _ _ _ (Prf.hyp0 (Ax := PRAAx) (Γ := I :: Γ.map Fm.shift))
         (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))

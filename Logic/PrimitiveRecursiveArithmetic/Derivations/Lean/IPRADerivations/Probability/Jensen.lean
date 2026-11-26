@@ -27,17 +27,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.Jensen
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.ProductPower (A1 A2 A3 A1_at A2_at A3_at lin3 shift_mul'' shift_zero')
 open LeanProofs.IPRA.Probability.Expectation (inst2_mul')
 open LeanProofs.IPRA.Probability.SignedParts (sbq inst2_sbq)
 open LeanProofs.IPRA.Probability.Lotus (vB inst2_vB)
 open LeanProofs.IPRA.Geometry.HypercubeSplit (le_cancel_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

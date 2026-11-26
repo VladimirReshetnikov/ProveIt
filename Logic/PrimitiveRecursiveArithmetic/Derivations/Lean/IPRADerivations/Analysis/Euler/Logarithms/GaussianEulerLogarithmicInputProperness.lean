@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicInputProperness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLogarithmicCompactName (evaluatorF fixedData sample wrapped_at)
 open GaussianEulerLogarithmicIntervalName (nameF data compact_input)
 open GaussianEulerLogarithmicMultiplier (lipschitz observationCost)
@@ -26,9 +26,6 @@ open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianNameEquivalence (crossEquivalent cross_at)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -84,14 +81,8 @@ def cost (j R S E T : PTm n) : PTm n := observationCost j R E T+observationCost 
 def source (z w R S B D a C E T : PTm n) : Fm PTm n :=
   GaussianEulerCompactAdditivity.intervalSource z R B a C E T ⋏
     (GaussianEulerCompactAdditivity.intervalSource w S D a C E T ⋏ ofGaussian z B ≐ ofGaussian w D)
-@[simp] theorem subst_pointSource {m : ℕ} (σ : Fin n → PTm m) (z w R S B D E T a b : PTm n) :
-    (pointSource z w R S B D E T a b).subst σ = pointSource (Syn.subst σ z) (Syn.subst σ w) (Syn.subst σ R)
-      (Syn.subst σ S) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [pointSource]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z w R S B D a C E T : PTm n) :
-    (source z w R S B D a C E T).subst σ = source (Syn.subst σ z) (Syn.subst σ w) (Syn.subst σ R)
-      (Syn.subst σ S) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by
-  simp [source]
+ipra_subst pointSource
+ipra_subst source
 
 theorem client_slack (p q s j z w R S B D E T a b : PTm n)
     (hs : Γ ⊢[PRAAx] pointSource z w R S B D E T a b) : Γ ⊢[PRAAx]

@@ -1,5 +1,4 @@
 import IPRADerivations.Core.SumReflect
-import IPRADerivations.Core.Tactic
 import IPRADerivations.Core.LinearCombination
 
 /-!
@@ -32,11 +31,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Geometry.PathShoelace
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 
@@ -86,7 +81,7 @@ theorem trX_at (i u v p : PTm k) :
     show Syn.subst ![i, pairT u (pairT v p)] (trX x) = _
     simp [trX]
   rw [e]
-  exact congrAdd (congrInst2 x (.eqRefl _) ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)))
+  exact congrAdd (congrInst2 x (.eqRefl _) (snd_pair _ _).sndE)
     (fst_pair _ _)
 
 theorem trY_at (i u v p : PTm k) :
@@ -96,8 +91,8 @@ theorem trY_at (i u v p : PTm k) :
     show Syn.subst ![i, pairT u (pairT v p)] (trY y) = _
     simp [trY]
   rw [e]
-  exact congrAdd (congrInst2 y (.eqRefl _) ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)))
-    ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
+  exact congrAdd (congrInst2 y (.eqRefl _) (snd_pair _ _).sndE)
+    (snd_pair _ _).fstE
 
 /-- One more edge: the step of the translation law. -/
 theorem translate_step {n u v p : PTm k}

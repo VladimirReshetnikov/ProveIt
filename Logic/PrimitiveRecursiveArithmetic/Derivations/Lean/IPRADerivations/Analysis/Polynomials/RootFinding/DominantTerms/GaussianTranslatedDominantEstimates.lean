@@ -21,7 +21,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianTranslatedDominantEstimates
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (evaluate qadd)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qadd_congr)
 open LeanProofs.IPRA.Analysis.GaussianRationalTranslation (translated)
@@ -30,9 +30,6 @@ open LeanProofs.IPRA.Analysis.GaussianDominantPlateau (winner)
 open LeanProofs.IPRA.Analysis.GaussianDescentClockArithmetic (descentD)
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (fraction)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -55,22 +52,14 @@ def prepared (C N z delta : PTm n) : Fm PTm n :=
   (residual C z ≐ zero ⟶ GaussianTranslatedBalancedRadius.radius C N z ≐ fraction zero one) ⋏
     (le one (residual C z) ⟶ certificate C N z delta)
 
-@[simp] theorem subst_dominant {m : ℕ} (σ : Fin n → PTm m) (C N z delta : PTm n) :
-    Syn.subst σ (dominant C N z delta) = dominant (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z) (Syn.subst σ delta) := by simp [dominant]
-@[simp] theorem subst_otherSum {m : ℕ} (σ : Fin n → PTm m) (C N z delta : PTm n) :
-    Syn.subst σ (otherSum C N z delta) = otherSum (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z) (Syn.subst σ delta) := by simp [otherSum]
-@[simp] theorem subst_score {m : ℕ} (σ : Fin n → PTm m) (C N z : PTm n) :
-    Syn.subst σ (score C N z) = score (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z) := by simp [score]
-@[simp] theorem subst_disk {m : ℕ} (σ : Fin n → PTm m) (C N z delta : PTm n) :
-    (disk C N z delta).subst σ = disk (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z) (Syn.subst σ delta) := by simp [disk]
-@[simp] theorem subst_decomposition {m : ℕ} (σ : Fin n → PTm m) (C N z delta : PTm n) :
-    (decomposition C N z delta).subst σ = decomposition (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z) (Syn.subst σ delta) := by simp [decomposition]
-@[simp] theorem subst_magnitude {m : ℕ} (σ : Fin n → PTm m) (C N z : PTm n) :
-    (magnitude C N z).subst σ = magnitude (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z) := by simp [magnitude]
-@[simp] theorem subst_certificate {m : ℕ} (σ : Fin n → PTm m) (C N z delta : PTm n) :
-    (certificate C N z delta).subst σ = certificate (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z) (Syn.subst σ delta) := by simp [certificate]
-@[simp] theorem subst_prepared {m : ℕ} (σ : Fin n → PTm m) (C N z delta : PTm n) :
-    (prepared C N z delta).subst σ = prepared (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z) (Syn.subst σ delta) := by simp [prepared]
+ipra_subst dominant
+ipra_subst otherSum
+ipra_subst score
+ipra_subst disk
+ipra_subst decomposition
+ipra_subst magnitude
+ipra_subst certificate
+ipra_subst prepared
 
 theorem translated_split (C N z delta k : PTm n) (hLen : Γ ⊢[PRAAx] length C ≐ succ N)
     (hk : Γ ⊢[PRAAx] le one k) (hkN : Γ ⊢[PRAAx] le k N) : Γ ⊢[PRAAx]
@@ -121,29 +110,23 @@ def output (C N z delta : PTm n) : PTm n := pairT (evaluate C (qadd z delta))
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (C N z delta : PTm n) : PTm n := PTm.app outputF ![C,N,z,delta]
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (C N z delta : PTm n) :
-    Syn.subst σ (output C N z delta) = output (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z) (Syn.subst σ delta) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (C N z delta : PTm n) :
-    Syn.subst σ (run C N z delta) = run (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z) (Syn.subst σ delta) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (C N z delta : PTm n) : Γ ⊢[PRAAx] run C N z delta ≐ output C N z delta := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![C,N,z,delta]
 theorem returned_evaluation (C N z delta : PTm n) : Γ ⊢[PRAAx] fstT (run C N z delta) ≐ evaluate C (qadd z delta) :=
-  (congrFst (program_at C N z delta)).eqTrans (fst_pair _ _)
+  (program_at C N z delta).fstE
 theorem returned_constant (C N z delta : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run C N z delta)) ≐ evaluate C z :=
-  (congrFst ((congrSnd (program_at C N z delta)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at C N z delta).sndE.fstE
 theorem returned_dominant (C N z delta : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run C N z delta))) ≐ dominant C N z delta :=
-  (congrFst ((congrSnd ((congrSnd (program_at C N z delta)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at C N z delta).sndE.sndE.fstE
 theorem returned_other (C N z delta : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (run C N z delta)))) ≐ otherSum C N z delta :=
-  (congrFst ((congrSnd ((congrSnd ((congrSnd (program_at C N z delta)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at C N z delta).sndE.sndE.sndE.fstE
 theorem returned_score (C N z delta : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (sndT (run C N z delta))))) ≐ score C N z :=
-  (congrFst ((congrSnd ((congrSnd ((congrSnd ((congrSnd (program_at C N z delta)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at C N z delta).sndE.sndE.sndE.sndE.fstE
 theorem returned_budget (C N z delta : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (sndT (run C N z delta))))) ≐ descentD N :=
-  (congrSnd ((congrSnd ((congrSnd ((congrSnd ((congrSnd (program_at C N z delta)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at C N z delta).sndE.sndE.sndE.sndE.sndE
 
 theorem returned_decomposition (C N z delta : PTm n) (hInput : Γ ⊢[PRAAx] inputContract C N)
     (hPositive : Γ ⊢[PRAAx] le one (residual C z)) : Γ ⊢[PRAAx]

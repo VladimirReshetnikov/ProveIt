@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UpperBounds.GaussianEulerUpperTailNameBudget
 import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaCompactCutoffSplit
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Exact original named Euler upper-tail bound
@@ -17,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerNamedUpperTail
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaCompactCutoffSplit (source upperData upper_regular)
 open GaussianGammaIntegralCutoffs (etaDen top height)
 open GaussianGammaCompactCutoffGeometry (upperWidth)
@@ -31,9 +30,6 @@ open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianRationalHorner (positive_product qzero)
 open GaussianRationalMetric (bounded distanceBounded qsub)
 open GaussianRationalReciprocal (bound_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,17 +39,10 @@ def cofinalNumerator (s k j A R : PTm n) : PTm n := two*majorant R*unit s+cost k
 def cofinalDenominator (s k A R : PTm n) : PTm n := unit (height k A R)*unit s
 def numerator (p k A R : PTm n) : PTm n := two*majorant R*unit p+unit (height k A R)
 def denominator (p k A R : PTm n) : PTm n := unit (height k A R)*unit p
-@[simp] theorem subst_point {m : ℕ} (σ : Fin n → PTm m) (p z R B k j A : PTm n) :
-    Syn.subst σ (point p z R B k j A) = point (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ k) (Syn.subst σ j) (Syn.subst σ A) := by simp [point]
-@[simp] theorem subst_cost {m : ℕ} (σ : Fin n → PTm m) (k j A R : PTm n) :
-    Syn.subst σ (cost k j A R) = cost (Syn.subst σ k) (Syn.subst σ j) (Syn.subst σ A) (Syn.subst σ R) := by simp [cost]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (p k A R : PTm n) :
-    Syn.subst σ (numerator p k A R) = numerator (Syn.subst σ p) (Syn.subst σ k) (Syn.subst σ A) (Syn.subst σ R) := by
-  simp [numerator,height,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (p k A R : PTm n) :
-    Syn.subst σ (denominator p k A R) = denominator (Syn.subst σ p) (Syn.subst σ k) (Syn.subst σ A) (Syn.subst σ R) := by
-  simp [denominator,height,GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst point
+ipra_subst cost
+ipra_subst numerator [height, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst denominator [height, GaussianGammaIntegralCutoffs.tailCoefficient]
 
 theorem quadrature_start_congr (F : PR 3) (p N a a' C E x : PTm n) (ha : Γ ⊢[PRAAx] a ≐ a') : Γ ⊢[PRAAx]
     quadrature F p N a C E x ≐ quadrature F p N a' C E x :=
@@ -156,24 +145,22 @@ def output (p z R B k j A : PTm n) : PTm n := pairT (point p z R B k j A)
   (pairT (numerator p k A R) (pairT (denominator p k A R) (cost k j A R)))
 def outputF : PR 7 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6))
 def run (p z R B k j A : PTm n) : PTm n := PTm.app outputF ![p,z,R,B,k,j,A]
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (p z R B k j A : PTm n) :
-    Syn.subst σ (output p z R B k j A) = output (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ k) (Syn.subst σ j) (Syn.subst σ A) := by simp [output]
+ipra_subst output
 theorem program_at (p z R B k j A : PTm n) : Γ ⊢[PRAAx] run p z R B k j A ≐ output p z R B k j A := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) : PTm 7) ![p,z,R,B,k,j,A]
 theorem returned_point (p z R B k j A : PTm n) : Γ ⊢[PRAAx] fstT (run p z R B k j A) ≐ point p z R B k j A :=
-  (congrFst (program_at p z R B k j A)).eqTrans (fst_pair _ _)
+  (program_at p z R B k j A).fstE
 theorem returned_tail (p z R B k j A : PTm n) : Γ ⊢[PRAAx] sndT (run p z R B k j A) ≐
     pairT (numerator p k A R) (pairT (denominator p k A R) (cost k j A R)) :=
-  (congrSnd (program_at p z R B k j A)).eqTrans (snd_pair _ _)
+  (program_at p z R B k j A).sndE
 theorem returned_numerator (p z R B k j A : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run p z R B k j A)) ≐ numerator p k A R :=
-  (congrFst (returned_tail p z R B k j A)).eqTrans (fst_pair _ _)
+  (returned_tail p z R B k j A).fstE
 theorem returned_last (p z R B k j A : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run p z R B k j A)) ≐ pairT (denominator p k A R) (cost k j A R) :=
-  (congrSnd (returned_tail p z R B k j A)).eqTrans (snd_pair _ _)
+  (returned_tail p z R B k j A).sndE
 theorem returned_denominator (p z R B k j A : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run p z R B k j A))) ≐ denominator p k A R :=
-  (congrFst (returned_last p z R B k j A)).eqTrans (fst_pair _ _)
+  (returned_last p z R B k j A).fstE
 theorem returned_cost (p z R B k j A : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run p z R B k j A))) ≐ cost k j A R :=
-  (congrSnd (returned_last p z R B k j A)).eqTrans (snd_pair _ _)
+  (returned_last p z R B k j A).sndE
 theorem returned_bound (p z R B k j A : PTm n) (h : Γ ⊢[PRAAx] source z R B k j A) : Γ ⊢[PRAAx]
     bounded (fstT (run p z R B k j A)) (fstT (sndT (run p z R B k j A))) (fstT (sndT (sndT (run p z R B k j A)))) :=
   bound_congr (returned_point p z R B k j A).eqSymm (returned_numerator p z R B k j A).eqSymm

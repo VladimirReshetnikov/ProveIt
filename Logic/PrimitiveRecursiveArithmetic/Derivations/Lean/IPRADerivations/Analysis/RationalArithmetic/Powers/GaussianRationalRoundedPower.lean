@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalRoundedPower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qmul qadd qzero)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision
   (qone qmul_congr qadd_congr qmul_zero_left qzero_add qone_canonical)
@@ -28,24 +28,18 @@ open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (fraction)
 open LeanProofs.IPRA.Analysis.GaussianRationalPowerAlgebra
   (power_add power_composition unit_power unit_bounded norm_one)
 open LeanProofs.IPRA.Analysis.GaussianRationalDistanceOrder (distance_congr distance_symmetric)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def oneLaw (j : PTm n) : Fm PTm n := power qone j ≐ qone
-@[simp] theorem subst_oneLaw {m : ℕ} (σ : Fin n → PTm m) (j : PTm n) :
-    (oneLaw j).subst σ = oneLaw (Syn.subst σ j) := by simp [oneLaw]
+ipra_subst oneLaw
 
 /-- The constant unit is preserved by the actual numerical power loop. -/
 theorem qone_power (j : PTm n) : Γ ⊢[PRAAx] power qone j ≐ qone := by
   have all : Γ ⊢[PRAAx] .all (oneLaw (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_oneLaw,Syn.subst_var,Syn.inst_zero]
-      exact power_zero qone
-    · simp only [subst_oneLaw,Syn.subst_var,Syn.repl_zero]
-      exact (power_succ qone (var 0)).eqTrans
+    ipra_qfind [subst_oneLaw]
+    · exact power_zero qone
+    · exact (power_succ qone (var 0)).eqTrans
         ((qmul_congr Prf.hyp0 (.eqRefl _)).eqTrans
           (GaussianReciprocalHorner.qmul_one_right qone qone_canonical))
   change Γ ⊢[PRAAx] oneLaw j
@@ -98,30 +92,22 @@ def output (q k a r P A B : PTm n) : PTm n := pairT (power q a)
 def outputF : PR 7 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6))
 def run (q k a r P A B : PTm n) : PTm n := PTm.app outputF ![q,k,a,r,P,A,B]
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (q k a r P A B : PTm n) :
-    Syn.subst σ (output q k a r P A B) = output (Syn.subst σ q) (Syn.subst σ k) (Syn.subst σ a)
-      (Syn.subst σ r) (Syn.subst σ P) (Syn.subst σ A) (Syn.subst σ B) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (q k a r P A B : PTm n) :
-    Syn.subst σ (run q k a r P A B) = run (Syn.subst σ q) (Syn.subst σ k) (Syn.subst σ a)
-      (Syn.subst σ r) (Syn.subst σ P) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (q k a r P A B : PTm n) : Γ ⊢[PRAAx] run q k a r P A B ≐ output q k a r P A B := by
   simpa [run,outputF] using toPR_eq (Γ := Γ)
     (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) : PTm 7) ![q,k,a,r,P,A,B]
 theorem output_base (q k a r P A B : PTm n) : Γ ⊢[PRAAx] fstT (run q k a r P A B) ≐ power q a :=
-  (congrFst (program_at q k a r P A B)).eqTrans (fst_pair _ _)
+  (program_at q k a r P A B).fstE
 theorem output_rounded (q k a r P A B : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run q k a r P A B)) ≐ power (power q a) k :=
-  (congrFst ((congrSnd (program_at q k a r P A B)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at q k a r P A B).sndE.fstE
 theorem output_full (q k a r P A B : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run q k a r P A B))) ≐ power q P :=
-  (congrFst ((congrSnd ((congrSnd (program_at q k a r P A B)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at q k a r P A B).sndE.sndE.fstE
 theorem output_numerator (q k a r P A B : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (run q k a r P A B)))) ≐ r*A :=
-  (congrFst ((congrSnd ((congrSnd ((congrSnd (program_at q k a r P A B)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at q k a r P A B).sndE.sndE.sndE.fstE
 theorem output_denominator (q k a r P A B : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (run q k a r P A B)))) ≐ B :=
-  (congrSnd ((congrSnd ((congrSnd ((congrSnd (program_at q k a r P A B)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at q k a r P A B).sndE.sndE.sndE.sndE
 
 theorem program_certificate (q k a r P A B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hUnit : Γ ⊢[PRAAx] qnormSq q ≐ fraction one one)

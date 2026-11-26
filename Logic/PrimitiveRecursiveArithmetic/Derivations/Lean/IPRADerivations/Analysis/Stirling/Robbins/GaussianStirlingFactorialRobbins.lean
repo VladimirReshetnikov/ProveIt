@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingFactorialRobbins
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEulerPowerChartTimeOrder (order_trans)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
@@ -28,9 +28,6 @@ open GaussianStirlingMultiplicativeBounds (conventionalUpper upperDen)
 open GaussianStirlingMultiplicativeBoundsCaps (interval integer_interval cap_denominator conventional_le_factor)
 open GaussianStirlingNames (source)
 open GaussianStirlingRationalTelescopers (small_numeral_positive)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPowerChartEnclosingSchedule
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPowerChartEnclosingOrders (contains enclosing_grid_orders)
 open GaussianEulerPowerChartUniformEndpoints (uniform_reference_bounds)
 open GaussianEulerPowerChartUniformRounded (rounded_panel_of_orders)
@@ -26,8 +26,6 @@ open GaussianEulerPositivePowerChartImage (query reciprocalMargin)
 open GaussianEulerPowerScalingParameter (scaled)
 open GaussianGammaIntegralCutoffs (etaDen top)
 open GaussianCoefficientNameBounds (unit)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

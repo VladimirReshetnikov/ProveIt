@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSuperellipticSubspaceFromSpan
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalFiberGrouping (abscissa ordinate)
 open GaussianRationalHorner (evaluate qzero)
 open GaussianRationalPolynomialDegree (degree)
@@ -26,8 +26,6 @@ open GaussianPolynomialMonicCompanion (values)
 open GaussianSuperellipticSubspaceWitness (input points polynomial basisCount zeroWitness)
 open GaussianWeightedMonomialBasis (evaluationVector)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,18 +40,11 @@ def pointMembership (f m c L P A R : PTm n) : Fm PTm n := .all
     (basisCount (Syn.shift f) (Syn.shift m) (Syn.shift c) (Syn.shift L))
     (pointVector (Syn.shift m) (degree (Syn.shift f) (Syn.shift c)) (Syn.shift L) (Syn.shift P) (var 0)))
 
-@[simp] theorem subst_hasCoefficients {l : ℕ} (σ : Fin n → PTm l) (A R N v : PTm n) :
-    (hasCoefficients A R N v).subst σ = hasCoefficients (Syn.subst σ A) (Syn.subst σ R)
-      (Syn.subst σ N) (Syn.subst σ v) := by simp [hasCoefficients,Syn.subst_shift,Syn.shift_subst]
+ipra_subst hasCoefficients [Syn.subst_shift, Syn.shift_subst]
 
-@[simp] theorem subst_pointVector {l : ℕ} (σ : Fin n → PTm l) (m d L P i : PTm n) :
-    Syn.subst σ (pointVector m d L P i) = pointVector (Syn.subst σ m) (Syn.subst σ d)
-      (Syn.subst σ L) (Syn.subst σ P) (Syn.subst σ i) := by simp [pointVector]
+ipra_subst pointVector
 
-@[simp] theorem subst_pointMembership {l : ℕ} (σ : Fin n → PTm l) (f m c L P A R : PTm n) :
-    (pointMembership f m c L P A R).subst σ = pointMembership (Syn.subst σ f) (Syn.subst σ m)
-      (Syn.subst σ c) (Syn.subst σ L) (Syn.subst σ P) (Syn.subst σ A) (Syn.subst σ R) := by
-  simp [pointMembership,Syn.subst_shift,Syn.shift_subst]
+ipra_subst pointMembership [Syn.subst_shift, Syn.shift_subst]
 
 theorem membership_at (f m c L P A R i : PTm n) (h : Γ ⊢[PRAAx] pointMembership f m c L P A R)
     (hi : Γ ⊢[PRAAx] lt i (length P)) : Γ ⊢[PRAAx] hasCoefficients A R (basisCount f m c L)

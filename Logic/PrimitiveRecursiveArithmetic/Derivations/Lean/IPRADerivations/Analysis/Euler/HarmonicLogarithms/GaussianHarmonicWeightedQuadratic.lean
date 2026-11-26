@@ -16,17 +16,13 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianHarmonicWeightedQuadratic
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianGammaEulerRationalHeadConvexity (barycenter weight)
 open GaussianHarmonicQuadraticTangent (tangents upperTangent lowerTangent scale)
 open GaussianRationalHorner (positive_product)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -35,12 +31,9 @@ def squareDen (B r s : PTm n) : PTm n := two*weight r s*B*B
 def gapNumerator (a d r s : PTm n) : PTm n := succ r*s*monus d a*monus d a
 def meshError (a d r s : PTm n) : PTm n := succ r*s*monus d a
 
-@[simp] theorem subst_squareDen {m : ℕ} (σ : Fin n → PTm m) (B r s : PTm n) :
-    Syn.subst σ (squareDen B r s) = squareDen (Syn.subst σ B) (Syn.subst σ r) (Syn.subst σ s) := by simp [squareDen,weight]
-@[simp] theorem subst_gapNumerator {m : ℕ} (σ : Fin n → PTm m) (a d r s : PTm n) :
-    Syn.subst σ (gapNumerator a d r s) = gapNumerator (Syn.subst σ a) (Syn.subst σ d) (Syn.subst σ r) (Syn.subst σ s) := by simp [gapNumerator]
-@[simp] theorem subst_meshError {m : ℕ} (σ : Fin n → PTm m) (a d r s : PTm n) :
-    Syn.subst σ (meshError a d r s) = meshError (Syn.subst σ a) (Syn.subst σ d) (Syn.subst σ r) (Syn.subst σ s) := by simp [meshError]
+ipra_subst squareDen [weight]
+ipra_subst gapNumerator
+ipra_subst meshError
 
 def weightedValue (a d Q L r s : PTm n) : PTm n :=
   succ r*S (Q*(weight r s*a)) (fact L)+s*S (Q*(weight r s*d)) (fact L)

@@ -2,7 +2,6 @@ import IPRADerivations.Analysis.Polynomials.Products.GaussianRationalLowCoeffici
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerExpansion
 import IPRADerivations.Analysis.Polynomials.Interpolation.GaussianRationalGridCoefficientEquality
 import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianRationalConvolutionNorm
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Actual variable dilation and its finite coefficient norm
@@ -20,7 +19,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalPolynomialDilation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qadd qmul qzero hornerF evaluate canonical)
 open GaussianRationalSyntheticDivision (qone qmul_congr qadd_congr canonicalCoefficients)
 open GaussianRationalReciprocal (power powerF)
@@ -31,10 +30,6 @@ open GaussianRationalLowCoefficientConvolution (exponentCoefficient)
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,12 +38,9 @@ def body : PTm 2 := qmul (entry (fstT (var 1)) (var 0))
   (power (sndT (sndT (var 1))) (monus (fstT (sndT (var 1))) (var 0)))
 def dilated (C N t : PTm n) : PTm n := sequence body (succ N) (data C N t)
 def weightedNorm (C N t : PTm n) : PTm n := coefficientNorm (dilated C N t)
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (C N t : PTm n) :
-    Syn.subst σ (data C N t) = data (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ t) := by simp [data]
-@[simp] theorem subst_dilated {l : ℕ} (σ : Fin n → PTm l) (C N t : PTm n) :
-    Syn.subst σ (dilated C N t) = dilated (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ t) := by simp [dilated]
-@[simp] theorem subst_weightedNorm {l : ℕ} (σ : Fin n → PTm l) (C N t : PTm n) :
-    Syn.subst σ (weightedNorm C N t) = weightedNorm (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ t) := by simp [weightedNorm]
+ipra_subst data
+ipra_subst dilated
+ipra_subst weightedNorm
 
 theorem body_at (C N t i : PTm n) : Γ ⊢[PRAAx]
     inst2 body i (data C N t) ≐ qmul (entry C i) (power t (monus N i)) := by
@@ -60,8 +52,8 @@ theorem body_at (C N t i : PTm n) : Γ ⊢[PRAAx]
     (fun j => by
       fin_cases j
       · exact fst_pair _ _
-      · exact (congrFst p).eqTrans (fst_pair _ _)
-      · exact (congrSnd p).eqTrans (snd_pair _ _)
+      · exact p.fstE
+      · exact p.sndE
       · exact .eqRefl _)
   simpa [body,inst2,data] using e
 
@@ -315,33 +307,27 @@ def output (C N t z : PTm n) : PTm n := pairT (dilated C N t)
   (pairT (weightedNorm C N t) (pairT (evaluate (dilated C N t) z) (evaluate C (qmul t z))))
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (C N t z : PTm n) : PTm n := PTm.app outputF ![C,N,t,z]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (C N t z : PTm n) :
-    Syn.subst σ (output C N t z) = output (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ t) (Syn.subst σ z) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (C N t z : PTm n) :
-    Syn.subst σ (run C N t z) = run (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ t) (Syn.subst σ z) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (C N t z : PTm n) : Γ ⊢[PRAAx] run C N t z ≐ output C N t z := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![C,N,t,z]
 theorem returned_dilation (C N t z : PTm n) : Γ ⊢[PRAAx] fstT (run C N t z) ≐ dilated C N t :=
-  (congrFst (program_at _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _).fstE
 theorem returned_tail (C N t z : PTm n) : Γ ⊢[PRAAx] sndT (run C N t z) ≐
     pairT (weightedNorm C N t) (pairT (evaluate (dilated C N t) z) (evaluate C (qmul t z))) :=
-  (congrSnd (program_at _ _ _ _)).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _).sndE
 theorem returned_norm (C N t z : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run C N t z)) ≐ weightedNorm C N t :=
-  (congrFst (returned_tail _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_tail _ _ _ _).fstE
 theorem returned_values (C N t z : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run C N t z)) ≐
     pairT (evaluate (dilated C N t) z) (evaluate C (qmul t z)) :=
-  (congrSnd (returned_tail _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_tail _ _ _ _).sndE
 theorem returned_dilated_value (C N t z : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (run C N t z))) ≐ evaluate (dilated C N t) z :=
-  (congrFst (returned_values _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_values _ _ _ _).fstE
 theorem returned_original_value (C N t z : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (sndT (run C N t z))) ≐ evaluate C (qmul t z) :=
-  (congrSnd (returned_values _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_values _ _ _ _).sndE
 theorem returned_equal (C N t z : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ succ N) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (run C N t z))) ≐ sndT (sndT (sndT (run C N t z))) :=
   (returned_dilated_value _ _ _ _).eqTrans

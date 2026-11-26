@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitSubstitutionDensityPrecision
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUnitSubstitutionDensity (density densityBody power_grid_at density_row_at)
 open GaussianEulerUnitSubstitutionImageGrid (cellBody cell_at node)
 open GaussianEulerIntegrandName (powerF powerData decayF decayData fixedData)
@@ -28,10 +28,6 @@ open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalRiemannRefinement (termsDistance sum_distance)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -40,14 +36,9 @@ def source (z R B a C E T N : PTm n) : Fm PTm n := GaussianEulerUnitSubstitution
 def rowGain (R E T : PTm n) : PTm n := num 26+two*majorant R E T
 def minimumQuery (s R E T N : PTm n) : PTm n := GaussianFastValueCut.exponent (two*N*rowGain R E T) s
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B a C E T N : PTm n) :
-    (source z R B a C E T N).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ N) := by simp [source]
-@[simp] theorem subst_rowGain {m : ℕ} (σ : Fin n → PTm m) (R E T : PTm n) :
-    Syn.subst σ (rowGain R E T) = rowGain (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T) := by simp [rowGain]
-@[simp] theorem subst_minimumQuery {m : ℕ} (σ : Fin n → PTm m) (s R E T N : PTm n) :
-    Syn.subst σ (minimumQuery s R E T N) = minimumQuery (Syn.subst σ s) (Syn.subst σ R)
-      (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ N) := by simp [minimumQuery]
+ipra_subst source
+ipra_subst rowGain
+ipra_subst minimumQuery
 
 theorem geometry_source (z R B a C E T N : PTm n) (hs : Γ ⊢[PRAAx] source z R B a C E T N) : Γ ⊢[PRAAx]
     GaussianEulerUnitSubstitutionImageGrid.source a C E N :=

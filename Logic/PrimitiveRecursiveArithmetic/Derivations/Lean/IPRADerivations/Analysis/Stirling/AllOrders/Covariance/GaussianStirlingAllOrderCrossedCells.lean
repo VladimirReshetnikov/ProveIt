@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderCrossedCells
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (fraction fraction_represents)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalL1 (nonnegative_of_representation)
@@ -33,10 +33,6 @@ open RationalFiniteSum (term subst_term)
 open RationalNormalForm (wellFormed normalize_well_formed)
 open RationalReciprocalPowerTail (add_zero_right)
 open RationalReverseChebyshevCell (rectangle_margin)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -121,17 +117,11 @@ def reflectedBody : PTm 2 :=
   let d := var 1
   weightAt (fstT d) (fstT (sndT d)) (fstT (sndT (sndT d))) (fstT (parameter d)) (sndT (parameter d)+var 0)
 
-@[simp] theorem subst_segmentData {l : ℕ} (σ : Fin n → PTm l) (q A B S t : PTm n) :
-    Syn.subst σ (segmentData q A B S t) =
-      segmentData (Syn.subst σ q) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ S) (Syn.subst σ t) := by
-  simp [segmentData]
+ipra_subst segmentData
 
-@[simp] theorem subst_sampleAt {l : ℕ} (σ : Fin n → PTm l) (m : ℕ) (S p : PTm n) :
-    Syn.subst σ (sampleAt m S p) = sampleAt m (Syn.subst σ S) (Syn.subst σ p) := by simp [sampleAt]
+ipra_subst sampleAt
 
-@[simp] theorem subst_weightAt {l : ℕ} (σ : Fin n → PTm l) (q A B S p : PTm n) :
-    Syn.subst σ (weightAt q A B S p) =
-      weightAt (Syn.subst σ q) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ S) (Syn.subst σ p) := by simp [weightAt,mesh,start]
+ipra_subst weightAt [mesh, start]
 
 private theorem tail_read (q A B S t : PTm n) : Γ ⊢[PRAAx] parameter (segmentData q A B S t) ≐ pairT S t := by
   unfold parameter segmentData panelData

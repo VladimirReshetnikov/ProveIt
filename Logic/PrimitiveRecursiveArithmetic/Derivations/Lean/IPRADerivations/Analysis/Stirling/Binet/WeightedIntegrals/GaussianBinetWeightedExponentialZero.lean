@@ -13,7 +13,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetWeightedExponentialZero
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale oneCode)
 open GaussianBinetWeightedExponentialAlgebra (tagWeight)
 open GaussianBinetWeightedExponentialGrid (value rowValue evaluatorF)
@@ -27,9 +27,6 @@ open GaussianRationalMetric (bounded distanceBounded qsub qsub_represents qsub_c
 open GaussianRationalSyntheticDivision (qmul_congr qsub_congr rescale_to)
 open GaussianRootAlgebra
   (sub equal_refl equal_of_values re_sub im_sub re_scale im_scale re_one im_one)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -37,9 +34,7 @@ def antiderivative (j N : PTm n) : PTm n :=
   qsub (fraction (j*succ N) (two*N)) (fraction (j*j) (two*N))
 def body : PTm 2 := antiderivative (var 0) (var 1)
 
-@[simp] theorem subst_antiderivative {m : ℕ} (σ : Fin n → PTm m) (j N : PTm n) :
-    Syn.subst σ (antiderivative j N) = antiderivative (Syn.subst σ j) (Syn.subst σ N) := by
-  simp [antiderivative,two]
+ipra_subst antiderivative [two]
 
 private theorem represented (j N : PTm n) (h : Γ ⊢[PRAAx] le one (two*N)) :
     Γ ⊢[PRAAx] represents (antiderivative j N)

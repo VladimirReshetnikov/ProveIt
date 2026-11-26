@@ -1,6 +1,5 @@
 import IPRADerivations.Foundations.PartitionRefinement
 import IPRADerivations.Probability.MedianWeighted
-import IPRADerivations.Core.OrderCertificates
 
 /-!
 # Conditional averaging on a finite partition
@@ -28,13 +27,10 @@ Positivity is immediate for natural terms. Ring-level regrouping lemmas are tran
 
 namespace LeanProofs.IPRA.Probability.ConditionalAveraging
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.ErrorBudget (nsum toG_nsum)
 open LeanProofs.IPRA.Probability.Variance (ad)
 open LeanProofs.IPRA.Probability.MedianWeighted (ad_add_le ad_mul ad_le_of)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
 
 variable {n k l m : ℕ} {Γ : List (Fm PTm n)}
 

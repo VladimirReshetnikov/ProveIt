@@ -17,7 +17,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGaussPiPowerSquareRoot
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaGaussReferenceSquare (doubledPiBody doubledPiPowerF doubledPiPowerData
   normalizationF normalizationData)
 open GaussianGammaGaussIndependentSquareRoot (doubled_power_nonnegative reciprocal_fraction positive_reference_observations)
@@ -40,9 +40,6 @@ open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalReciprocal (qone)
 open GaussianCyclicSineProductSquare (data)
 open ComplexLogarithmRemainder (scale oneCode mul)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "A" => GaussianGammaGaussPositiveReference.nameF

@@ -27,10 +27,8 @@ no statement.
 
 namespace LeanProofs.IPRA.Geometry.SphericalNapier
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Geometry.SphericalCore
-open Syn
-open scoped Fm
 
 /-! ## The ring-level certificates -/
 

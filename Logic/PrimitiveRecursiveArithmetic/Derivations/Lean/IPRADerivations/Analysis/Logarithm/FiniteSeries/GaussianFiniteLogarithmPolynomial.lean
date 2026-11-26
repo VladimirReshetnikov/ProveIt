@@ -22,17 +22,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmPolynomial
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero qmul canonical evaluate ofGaussian represents)
 open GaussianRationalSyntheticDivision (qmul_congr qadd_congr qzero_add qzero_canonical canonicalCoefficients)
 open GaussianRationalReciprocal (power)
 open LogarithmExponentialCoefficients (evenBit oddBit)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
-open LeanProofs.IPRA.PTm (pred monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -44,14 +40,10 @@ def sourceCoefficient (e : PTm n) : PTm n :=
 def rowBody : PTm 2 := sourceCoefficient (monus (var 1) (var 0))
 def polynomial (d : PTm n) : PTm n := sequence rowBody (succ d) d
 
-@[simp] theorem subst_signNumerator {m : ℕ} (σ : Fin n → PTm m) (k : PTm n) :
-    Syn.subst σ (signNumerator k) = signNumerator (Syn.subst σ k) := by simp [signNumerator,ZT.subst,ZT.ofNat,evenBit,oddBit]
-@[simp] theorem subst_coefficient {m : ℕ} (σ : Fin n → PTm m) (k : PTm n) :
-    Syn.subst σ (coefficient k) = coefficient (Syn.subst σ k) := by simp [coefficient]
-@[simp] theorem subst_sourceCoefficient {m : ℕ} (σ : Fin n → PTm m) (e : PTm n) :
-    Syn.subst σ (sourceCoefficient e) = sourceCoefficient (Syn.subst σ e) := by simp [sourceCoefficient,Signum.sg]
-@[simp] theorem subst_polynomial {m : ℕ} (σ : Fin n → PTm m) (d : PTm n) :
-    Syn.subst σ (polynomial d) = polynomial (Syn.subst σ d) := by simp [polynomial]
+ipra_subst signNumerator [ZT.subst, ZT.ofNat, evenBit, oddBit]
+ipra_subst coefficient
+ipra_subst sourceCoefficient [Signum.sg]
+ipra_subst polynomial
 
 theorem coefficient_represents (k : PTm n) : Γ ⊢[PRAAx] represents (coefficient k) (signNumerator k) (succ k) :=
   GaussianRationalHorner.ofGaussian_represents _ _ (zero_lt_succ _)
@@ -65,12 +57,8 @@ def kernelNumerator (k : PTm n) : PTm n :=
   ComplexLogarithmRemainder.code (LogarithmExponentialCoefficients.kernel k) (ZT.ofNat zero)
 def kernelCoefficient (k : PTm n) : PTm n :=
   ofGaussian (kernelNumerator k) (Products.fact (succ k))
-@[simp] theorem subst_kernelNumerator {m : ℕ} (σ : Fin n → PTm m) (k : PTm n) :
-    Syn.subst σ (kernelNumerator k) = kernelNumerator (Syn.subst σ k) := by
-  simp [kernelNumerator,LogarithmExponentialCoefficients.kernel,LogarithmExponentialCoefficients.value,ZT.subst,ZT.ofNat]
-@[simp] theorem subst_kernelCoefficient {m : ℕ} (σ : Fin n → PTm m) (k : PTm n) :
-    Syn.subst σ (kernelCoefficient k) = kernelCoefficient (Syn.subst σ k) := by
-  simp [kernelCoefficient,Products.fact]
+ipra_subst kernelNumerator [LogarithmExponentialCoefficients.kernel, LogarithmExponentialCoefficients.value, ZT.subst, ZT.ofNat]
+ipra_subst kernelCoefficient [Products.fact]
 
 theorem coefficient_kernel_cross (k : PTm n) : Γ ⊢[PRAAx] GaussianRootAlgebra.equal
     (ComplexLogarithmRemainder.scale (Products.fact (succ k)) (signNumerator k))
@@ -147,8 +135,7 @@ theorem polynomial_canonical (d : PTm n) : Γ ⊢[PRAAx] canonicalCoefficients (
 def allTerm : PTm 2 := qmul (sourceCoefficient (var 0)) (power (var 1) (var 0))
 def sourceTerm : PTm 2 := qmul (coefficient (var 0)) (power (var 1) (succ (var 0)))
 def value (d w : PTm n) : PTm n := GaussianRationalFiniteSum.sum sourceTerm d w
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (d w : PTm n) :
-    Syn.subst σ (value d w) = value (Syn.subst σ d) (Syn.subst σ w) := by simp [value]
+ipra_subst value
 theorem all_term_at (w e : PTm n) : inst2 allTerm e w = qmul (sourceCoefficient e) (power w e) := by simp [allTerm,inst2]
 theorem source_term_at (w k : PTm n) : inst2 sourceTerm k w = qmul (coefficient k) (power w (succ k)) := by simp [sourceTerm,inst2]
 
@@ -180,8 +167,7 @@ theorem polynomial_evaluation (d w : PTm n) : Γ ⊢[PRAAx] evaluate (polynomial
     ((qadd_congr first tail).eqTrans (qzero_add (value d w) (GaussianRationalFiniteSum.sum_canonical sourceTerm d w))))
 
 def composition (d K : PTm n) : PTm n := GaussianRationalPolynomialExponential.polynomial (polynomial d) d K
-@[simp] theorem subst_composition {m : ℕ} (σ : Fin n → PTm m) (d K : PTm n) :
-    Syn.subst σ (composition d K) = composition (Syn.subst σ d) (Syn.subst σ K) := by simp [composition]
+ipra_subst composition
 theorem composition_length (d K : PTm n) : Γ ⊢[PRAAx] length (composition d K) ≐ succ (K*d) :=
   GaussianRationalPolynomialExponential.polynomial_length (polynomial d) d K
 theorem composition_canonical (d K : PTm n) : Γ ⊢[PRAAx] canonicalCoefficients (composition d K) :=
@@ -198,8 +184,7 @@ def polynomialF : PR 1 := PTm.toPR (polynomial (var 0))
 def compositionF : PR 2 := PTm.toPR (composition (var 0) (var 1))
 def valueF : PR 2 := PTm.toPR (value (var 0) (var 1))
 def run (d K : PTm n) : PTm n := ap2 compositionF d K
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (d K : PTm n) :
-    Syn.subst σ (run d K) = run (Syn.subst σ d) (Syn.subst σ K) := by simp [run]
+ipra_subst run
 
 theorem polynomial_program_at (d : PTm n) : Γ ⊢[PRAAx] ap1 polynomialF d ≐ polynomial d := by
   simpa [polynomialF,ap1] using toPR_eq (Γ := Γ) (polynomial (var 0) : PTm 1) ![d]

@@ -2,7 +2,6 @@ import IPRADerivations.Analysis.Polynomials.CompanionMatrices.GaussianPolynomial
 import IPRADerivations.Analysis.Polynomials.Representation.GaussianRationalPolynomialDegree
 import IPRADerivations.Foundations.WeightedMonomials
 import IPRADerivations.Probability.UnionUtility
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual tagged weighted-degree maximum of the original coefficient rows
@@ -21,17 +20,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialWeightedDegree
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero canonical evaluate)
 open LeanProofs.IPRA.Analysis.GaussianTranslatedNonconstant (recode recode_canonical)
 open LeanProofs.IPRA.Analysis.GaussianPolynomialMonicCompanion (rowShape row_shape_at)
 open LeanProofs.IPRA.Analysis.GaussianPolynomialMultiplicationMatrix (slot slot_range)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -55,45 +50,29 @@ def nonzeroRows (G m a : PTm n) : Fm PTm n := .ex (lt (var 0) (Syn.shift m) ⋏
   GaussianRationalPolynomialDegree.nonzeroCoefficients (row (Syn.shift G) (Syn.shift m) (var 0)) (Syn.shift a))
 def input (G m a : PTm n) : Fm PTm n := le one m ⋏ (rowShape G m a ⋏ nonzeroRows G m a)
 
-@[simp] theorem subst_row {l : ℕ} (σ : Fin n → PTm l) (G m i : PTm n) :
-    Syn.subst σ (row G m i) = row (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ i) := by simp [row]
-@[simp] theorem subst_rowFlag {l : ℕ} (σ : Fin n → PTm l) (G m a i : PTm n) :
-    Syn.subst σ (rowFlag G m a i) = rowFlag (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ i) := by simp [rowFlag]
-@[simp] theorem subst_rowDegree {l : ℕ} (σ : Fin n → PTm l) (G m a i : PTm n) :
-    Syn.subst σ (rowDegree G m a i) = rowDegree (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ i) := by simp [rowDegree]
-@[simp] theorem subst_rowFirst {l : ℕ} (σ : Fin n → PTm l) (G m a i : PTm n) :
-    Syn.subst σ (rowFirst G m a i) = rowFirst (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ i) := by simp [rowFirst]
-@[simp] theorem subst_rowLeading {l : ℕ} (σ : Fin n → PTm l) (G m a i : PTm n) :
-    Syn.subst σ (rowLeading G m a i) = rowLeading (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ i) := by simp [rowLeading]
-@[simp] theorem subst_weight {l : ℕ} (σ : Fin n → PTm l) (G m a d i : PTm n) :
-    Syn.subst σ (weight G m a d i) = weight (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ d) (Syn.subst σ i) := by simp [weight]
-@[simp] theorem subst_score {l : ℕ} (σ : Fin n → PTm l) (G m a d i : PTm n) :
-    Syn.subst σ (score G m a d i) = score (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ d) (Syn.subst σ i) := by simp [score]
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (G m a d : PTm n) :
-    Syn.subst σ (data G m a d) = data (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ d) := by simp [data]
+ipra_subst row
+ipra_subst rowFlag
+ipra_subst rowDegree
+ipra_subst rowFirst
+ipra_subst rowLeading
+ipra_subst weight
+ipra_subst score
+ipra_subst data
 @[simp] theorem subst_fields {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) (i : Fin 4) :
     Syn.subst σ (fields p i) = fields (Syn.subst σ p) i := by fin_cases i <;> simp [fields]
-@[simp] theorem subst_maximumPrefix {l : ℕ} (σ : Fin n → PTm l) (G m a d j : PTm n) :
-    Syn.subst σ (maximumPrefix G m a d j) = maximumPrefix (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ d) (Syn.subst σ j) := by simp [maximumPrefix]
-@[simp] theorem subst_index {l : ℕ} (σ : Fin n → PTm l) (G m a d : PTm n) :
-    Syn.subst σ (index G m a d) = index (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ d) := by simp [index]
-@[simp] theorem subst_weightedDegree {l : ℕ} (σ : Fin n → PTm l) (G m a d : PTm n) :
-    Syn.subst σ (weightedDegree G m a d) = weightedDegree (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ d) := by simp [weightedDegree]
-@[simp] theorem subst_flag {l : ℕ} (σ : Fin n → PTm l) (G m a d : PTm n) :
-    Syn.subst σ (flag G m a d) = flag (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ d) := by simp [flag,Signum.sg]
-@[simp] theorem subst_nonzeroRows {l : ℕ} (σ : Fin n → PTm l) (G m a : PTm n) :
-    (nonzeroRows G m a).subst σ = nonzeroRows (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) := by
-  simp [nonzeroRows,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_input {l : ℕ} (σ : Fin n → PTm l) (G m a : PTm n) :
-    (input G m a).subst σ = input (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) := by simp [input]
+ipra_subst maximumPrefix
+ipra_subst index
+ipra_subst weightedDegree
+ipra_subst flag [Signum.sg]
+ipra_subst nonzeroRows [Syn.subst_shift, Syn.shift_subst]
+ipra_subst input
 
 theorem fields_at (G m a d : PTm n) (i : Fin 4) : Γ ⊢[PRAAx] fields (data G m a d) i ≐ ![G,m,a,d] i := by
   fin_cases i
   · exact fst_pair _ _
-  · exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-  · exact (congrFst ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
-  · exact (congrSnd ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  · exact (snd_pair _ _).fstE
+  · exact (snd_pair _ _).sndE.fstE
+  · exact (snd_pair _ _).sndE.sndE
 theorem score_body_at (G m a d i : PTm n) : Γ ⊢[PRAAx]
     inst2 scoreBody i (data G m a d) ≐ score G m a d i := by
   simp only [scoreBody,inst2,subst_score,subst_fields,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
@@ -263,8 +242,7 @@ def certificate (G m a d : PTm n) : Fm PTm n := lt (index G m a d) m ⋏
       ((weightedDegree G m a d ≐ weight G m a d (index G m a d)) ⋏
         (canonical (rowLeading G m a (index G m a d)) ⋏
           (neg (rowLeading G m a (index G m a d) ≐ qzero) ⋏ le (weightedDegree G m a d) (m*a+d*pred m)))))))
-@[simp] theorem subst_certificate {l : ℕ} (σ : Fin n → PTm l) (G m a d : PTm n) :
-    (certificate G m a d).subst σ = certificate (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ d) := by simp [certificate]
+ipra_subst certificate
 theorem maximum_correct (G m a d : PTm n) (h : Γ ⊢[PRAAx] input G m a) : Γ ⊢[PRAAx] certificate G m a d := by
   have hm := Prf.andE₁ h
   have hn := Prf.andE₂ (Prf.andE₂ h)
@@ -279,23 +257,18 @@ def output (G m a d : PTm n) : PTm n := pairT (flag G m a d)
   (pairT (index G m a d) (pairT (weightedDegree G m a d) (rowLeading G m a (index G m a d))))
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (G m a d : PTm n) : PTm n := app outputF ![G,m,a,d]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (G m a d : PTm n) :
-    Syn.subst σ (output G m a d) = output (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ d) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (G m a d : PTm n) :
-    Syn.subst σ (run G m a d) = run (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ d) := by
-  simp [run]
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 theorem program_at (G m a d : PTm n) : Γ ⊢[PRAAx] run G m a d ≐ output G m a d := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![G,m,a,d]
 theorem returned_flag (G m a d : PTm n) : Γ ⊢[PRAAx] fstT (run G m a d) ≐ flag G m a d :=
-  (congrFst (program_at _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _).fstE
 theorem returned_index (G m a d : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run G m a d)) ≐ index G m a d :=
-  (congrFst ((congrSnd (program_at _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _).sndE.fstE
 theorem returned_weight (G m a d : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run G m a d))) ≐ weightedDegree G m a d :=
-  (congrFst ((congrSnd ((congrSnd (program_at _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _).sndE.sndE.fstE
 theorem returned_leading (G m a d : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run G m a d))) ≐ rowLeading G m a (index G m a d) :=
-  (congrSnd ((congrSnd ((congrSnd (program_at _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _).sndE.sndE.sndE
 theorem returned_flag_one (G m a d : PTm n) (h : Γ ⊢[PRAAx] input G m a) : Γ ⊢[PRAAx] fstT (run G m a d) ≐ one :=
   (returned_flag _ _ _ _).eqTrans (flag_one_of_nonzero _ _ _ _ (.andE₂ (.andE₂ h)))
 theorem returned_index_bound (G m a d : PTm n) (h : Γ ⊢[PRAAx] input G m a) : Γ ⊢[PRAAx] lt (fstT (sndT (run G m a d))) m :=

@@ -24,11 +24,7 @@ are inputs here; they are not derived.
 
 namespace LeanProofs.IPRA.Analysis.NewtonCertificates
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 /-! ## The Halley denominator -/
 

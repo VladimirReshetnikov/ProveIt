@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineProductTailLower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaEulerReflectionHead (body squareFactor square_factor_at)
 open GaussianInverseSquareProductTail (factorBounds sine_factor_bound)
 open GaussianSineProductHeadLower (lower_one)
@@ -35,9 +35,6 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalFiniteProduct (qprod offset_at)
 open GaussianRationalProductAlgebra (multiplyBody multiply_body_at product_multiply oneTerms product_one_of_terms)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

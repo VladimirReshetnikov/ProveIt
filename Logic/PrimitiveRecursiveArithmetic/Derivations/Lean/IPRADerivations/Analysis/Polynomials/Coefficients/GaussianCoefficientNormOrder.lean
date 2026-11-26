@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalLinearProduct
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Nonnegative coefficient norms and actual self-differences
@@ -16,7 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCoefficientNormOrder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianCoefficientL1
   (prefixNorm coefficientNorm subCoefficients prefix_zero prefix_succ qL1_congr)
 open LeanProofs.IPRA.Analysis.GaussianRationalLinearProduct
@@ -31,9 +30,6 @@ open LeanProofs.IPRA.Analysis.RationalArgmin (rationalLE)
 open LeanProofs.IPRA.Analysis.RationalSupMetric (numeratorOf denominatorOf)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -69,14 +65,11 @@ theorem qL1_zero_lower (q : PTm n) : Γ ⊢[PRAAx] rationalLE (natCode zero) (qL
 including the empty prefix and independently denominated coefficients. -/
 theorem prefix_nonnegative (C N : PTm n) : Γ ⊢[PRAAx] rationalLE (natCode zero) (prefixNorm C N) := by
   have all : Γ ⊢[PRAAx] .all (rationalLE (natCode zero) (prefixNorm (Syn.shift C) (var 0))) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [RationalArgmin.subst_rationalLE,GaussianRationalSyntheticBounds.subst_natCode,
-        GaussianCoefficientL1.subst_prefixNorm,ConciseIPRA.PTm.subst_zero,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact RationalArgmin.rationalLE_congr (.eqRefl _)
+    ipra_qfind (le_QF _ _) [RationalArgmin.subst_rationalLE, GaussianRationalSyntheticBounds.subst_natCode,
+        GaussianCoefficientL1.subst_prefixNorm]
+    · exact RationalArgmin.rationalLE_congr (.eqRefl _)
         ((prefix_zero C).eqTrans scalar_zero_code.eqSymm).eqSymm (RationalArgmin.reflexive _)
-    · simp only [RationalArgmin.subst_rationalLE,GaussianRationalSyntheticBounds.subst_natCode,
-        GaussianCoefficientL1.subst_prefixNorm,ConciseIPRA.PTm.subst_zero,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      let I := rationalLE (natCode zero) (prefixNorm (Syn.shift C) (var 0))
+    · let I := rationalLE (natCode zero) (prefixNorm (Syn.shift C) (var 0))
       have step := add_monotone (Γ := I :: Γ.map Fm.shift)
         (natCode zero) (prefixNorm (Syn.shift C) (var 0)) (natCode zero) (qL1 (entry (Syn.shift C) (var 0)))
         Prf.hyp0 (qL1_zero_lower (entry (Syn.shift C) (var 0)))
@@ -112,9 +105,7 @@ theorem qsub_self (q : PTm n) : Γ ⊢[PRAAx] qsub q q ≐ qzero := by
 def selfPrefixLaw (C N k : PTm n) : Fm PTm n := le k N ⟶
   prefixNorm (subCoefficients C C N) k ≐ natCode zero
 
-@[simp] theorem subst_selfPrefixLaw {m : ℕ} (σ : Fin n → PTm m) (C N k : PTm n) :
-    (selfPrefixLaw C N k).subst σ = selfPrefixLaw (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ k) := by
-  simp [selfPrefixLaw]
+ipra_subst selfPrefixLaw
 
 theorem self_prefix_step (C N k : PTm n) (hk : Γ ⊢[PRAAx] lt k N)
     (ih : Γ ⊢[PRAAx] prefixNorm (subCoefficients C C N) k ≐ natCode zero) : Γ ⊢[PRAAx]
@@ -128,11 +119,9 @@ bounded guard is needed solely for the actual sequence lookup. -/
 theorem self_prefix_zero (C N k : PTm n) (hk : Γ ⊢[PRAAx] le k N) : Γ ⊢[PRAAx]
     prefixNorm (subCoefficients C C N) k ≐ natCode zero := by
   have all : Γ ⊢[PRAAx] .all (selfPrefixLaw (Syn.shift C) (Syn.shift N) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_selfPrefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI ((prefix_zero _).eqTrans scalar_zero_code.eqSymm)
-    · simp only [subst_selfPrefixLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_selfPrefixLaw]
+    · exact .impI ((prefix_zero _).eqTrans scalar_zero_code.eqSymm)
+    · refine .impI ?_
       exact self_prefix_step _ _ _ Prf.hyp0 (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
   have rule : Γ ⊢[PRAAx] selfPrefixLaw C N k := by
     simpa only [subst_selfPrefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k

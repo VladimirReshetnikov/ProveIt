@@ -13,23 +13,18 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerSquareMappedInterval
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerCompactAdditivity (intervalSource)
 open GaussianRationalQuadratureSquarePartition (lowerNumerator widthNumerator intervalDenominator)
 open GaussianEulerSquareTimeGeometry (upperEndpoint)
 open GaussianRationalHorner (positive_product)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def source (z R B a C E T c d : PTm n) : Fm PTm n := intervalSource z R B a C E T ⋏ (le one c ⋏ le one d)
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B a C E T c d : PTm n) :
-    (source z R B a C E T c d).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ c) (Syn.subst σ d) := by
-  simp [source]
+ipra_subst source
 
 theorem original_interval (z R B a C E T c d : PTm n) (h : Γ ⊢[PRAAx] source z R B a C E T c d) :
     Γ ⊢[PRAAx] intervalSource z R B (lowerNumerator c a) (widthNumerator c a C) (intervalDenominator d E)

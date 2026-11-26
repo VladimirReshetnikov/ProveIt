@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Series.Basel.BaselUniform
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The rational identification of the Basel constant
@@ -22,16 +21,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.BaselQuadrature
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.BaselCore (Ap Am Ap_succ Am_succ lift3 inst2_lift3 sum_lin)
 open LeanProofs.IPRA.Analysis.BaselAverages (g)
 open LeanProofs.IPRA.Analysis.BaselFinite (tB odd_pos par_sum compl_succ)
 open LeanProofs.IPRA.Analysis.PowerSums (Bq moment)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -54,8 +49,8 @@ theorem inst2_lift4 (K : PTm 4) (i N M L : PTm n) :
     fin_cases j
     · exact .eqRefl _
     · exact fst_pair _ _
-    · exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-    · exact (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
+    · exact (snd_pair _ _).fstE
+    · exact (snd_pair _ _).sndE
 
 /-! ## The quadrature sums -/
 
@@ -283,15 +278,9 @@ private abbrev invF : Fm PTm 3 :=
     Inv (var 0) (succ (var 1)) (var 2)
 
 private theorem inv₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] invF := by
-  refine ind _ ⟨le_QF _ _, le_QF _ _, le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_and, Fm.subst_eq, subst_le, subst_ap2, subst_ap1, subst_pairT,
-      PTm.subst_add, PTm.subst_mul, PTm.subst_monus, Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (.impI (inv_zero _ _))
-  · simp only [Fm.subst_imp, Fm.subst_and, Fm.subst_eq, subst_le, subst_ap2, subst_ap1, subst_pairT,
-      PTm.subst_add, PTm.subst_mul, PTm.subst_monus, Syn.subst_var, Syn.repl_zero, repl_one, repl_two,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (.impI (inv_step Prf.hyp1 (Prf.impE Prf.hyp1.wk Prf.hyp1) Prf.hyp0))
+  ipra_ind (⟨le_QF _ _, le_QF _ _, le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2, subst_ap1, subst_pairT]
+  · exact .impI (.impI (inv_zero _ _))
+  · exact .impI (.impI (inv_step Prf.hyp1 (Prf.impE Prf.hyp1.wk Prf.hyp1) Prf.hyp0))
 
 theorem inv {N M₀ L : PTm n} (hM : Γ ⊢[PRAAx] le (two * (succ M₀ * succ M₀)) L)
     (hN : Γ ⊢[PRAAx] le (succ (two * N)) L) : Γ ⊢[PRAAx] Inv N (succ M₀) L := by

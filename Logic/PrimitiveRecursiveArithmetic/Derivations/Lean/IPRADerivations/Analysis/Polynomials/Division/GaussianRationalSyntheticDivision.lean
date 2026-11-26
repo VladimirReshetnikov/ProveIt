@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Division.GaussianSyntheticDivision
 import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalMetric
 import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalL1
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual canonical Gaussian-rational synthetic division
@@ -19,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner
   (qzero qadd qmul represents canonical qadd_canonical qmul_canonical qadd_represents qmul_represents
     represents_rescale represents_congr canonical_unique zero_represents positive_product)
@@ -30,10 +29,6 @@ open LeanProofs.IPRA.Analysis.GaussianRootAlgebra
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder (re im scale zeroCode oneCode)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode subst_entry subst_sequence)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -157,10 +152,8 @@ def quotientBody : PTm 2 := GaussianRationalHorner.horner
 def quotient (C z N : PTm n) : PTm n := sequence quotientBody N (pairT C z)
 def remainder (C z : PTm n) : PTm n := GaussianRationalHorner.evaluate C z
 
-@[simp] theorem subst_quotient {m : ℕ} (σ : Fin n → PTm m) (C z N : PTm n) :
-    Syn.subst σ (quotient C z N) = quotient (Syn.subst σ C) (Syn.subst σ z) (Syn.subst σ N) := by simp [quotient]
-@[simp] theorem subst_remainder {m : ℕ} (σ : Fin n → PTm m) (C z : PTm n) :
-    Syn.subst σ (remainder C z) = remainder (Syn.subst σ C) (Syn.subst σ z) := by simp [remainder]
+ipra_subst quotient
+ipra_subst remainder
 
 theorem quotient_body_at (C z i : PTm n) : Γ ⊢[PRAAx]
     inst2 quotientBody i (pairT C z) ≐ GaussianRationalHorner.horner C z (succ i) := by
@@ -213,9 +206,7 @@ def prefixLaw (C z y N k : PTm n) : Fm PTm n := le k N ⟶
     qadd (qmul (qsub y z) (GaussianRationalHorner.horner (quotient C z N) y k))
       (GaussianRationalHorner.horner C z (succ k))
 
-@[simp] theorem subst_prefixLaw {m : ℕ} (σ : Fin n → PTm m) (C z y N k : PTm n) :
-    (prefixLaw C z y N k).subst σ = prefixLaw (Syn.subst σ C) (Syn.subst σ z)
-      (Syn.subst σ y) (Syn.subst σ N) (Syn.subst σ k) := by simp [prefixLaw]
+ipra_subst prefixLaw
 
 theorem prefix_zero (C z y N : PTm n) : Γ ⊢[PRAAx]
     GaussianRationalHorner.horner C y (succ zero) ≐
@@ -252,11 +243,9 @@ theorem synthetic_prefix (C z y N k : PTm n) (hk : Γ ⊢[PRAAx] le k N) : Γ �
       qadd (qmul (qsub y z) (GaussianRationalHorner.horner (quotient C z N) y k))
         (GaussianRationalHorner.horner C z (succ k)) := by
   have all : Γ ⊢[PRAAx] .all (prefixLaw (Syn.shift C) (Syn.shift z) (Syn.shift y) (Syn.shift N) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (prefix_zero C z y N)
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_prefixLaw]
+    · exact .impI (prefix_zero C z y N)
+    · refine .impI ?_
       let I := prefixLaw (Syn.shift C) (Syn.shift z) (Syn.shift y) (Syn.shift N) (var 0)
       let Δ := le (succ (var 0)) (Syn.shift N) :: I :: Γ.map Fm.shift
       exact prefix_step _ _ _ _ _ (Prf.hyp0 (Ax := PRAAx) (Γ := I :: Γ.map Fm.shift))
@@ -292,7 +281,7 @@ theorem coefficient_tail (C z N : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ succ N
   (qsub_congr (remainder_recurrence C z N hC hN) (.eqRefl _)).eqTrans (qadd_sub_cancel _ _ hCanonical)
 
 def qone : PTm n := GaussianRationalHorner.ofGaussian oneCode one
-@[simp] theorem subst_qone {m : ℕ} (σ : Fin n → PTm m) : Syn.subst σ (qone : PTm n) = (qone : PTm m) := by simp [qone]
+ipra_subst qone
 
 theorem qone_canonical : Γ ⊢[PRAAx] canonical (qone : PTm n) :=
   GaussianRationalHorner.ofGaussian_canonical oneCode one (le_refl _)
@@ -316,9 +305,7 @@ proved, so the quotient can be passed directly to the next deflation stage. -/
 def canonicalCoefficients (C : PTm n) : Fm PTm n :=
   .all (lt (var 0) (length (Syn.shift C)) ⟶ canonical (entry (Syn.shift C) (var 0)))
 
-@[simp] theorem subst_canonicalCoefficients {m : ℕ} (σ : Fin n → PTm m) (C : PTm n) :
-    (canonicalCoefficients C).subst σ = canonicalCoefficients (Syn.subst σ C) := by
-  simp [canonicalCoefficients,Syn.subst_shift,Syn.shift_subst]
+ipra_subst canonicalCoefficients [Syn.subst_shift, Syn.shift_subst]
 
 theorem canonical_coefficient_at (C i : PTm n) (h : Γ ⊢[PRAAx] canonicalCoefficients C)
     (hi : Γ ⊢[PRAAx] lt i (length C)) : Γ ⊢[PRAAx] canonical (entry C i) := by
@@ -360,17 +347,15 @@ def output (C z N : PTm n) : PTm n := pairT (quotient C z N) (remainder C z)
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (C z N : PTm n) : PTm n := ap3 outputF C z N
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (C z N : PTm n) :
-    Syn.subst σ (output C z N) = output (Syn.subst σ C) (Syn.subst σ z) (Syn.subst σ N) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (C z N : PTm n) :
-    Syn.subst σ (run C z N) = run (Syn.subst σ C) (Syn.subst σ z) (Syn.subst σ N) := by simp [run]
+ipra_subst output
+ipra_subst run
 
 theorem program_at (C z N : PTm n) : Γ ⊢[PRAAx] run C z N ≐ output C z N := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![C,z,N]
 theorem output_quotient (C z N : PTm n) : Γ ⊢[PRAAx] fstT (run C z N) ≐ quotient C z N :=
-  (congrFst (program_at C z N)).eqTrans (fst_pair _ _)
+  (program_at C z N).fstE
 theorem output_remainder (C z N : PTm n) : Γ ⊢[PRAAx] sndT (run C z N) ≐ GaussianRationalHorner.evaluate C z :=
-  (congrSnd (program_at C z N)).eqTrans (snd_pair _ _)
+  (program_at C z N).sndE
 
 theorem rational_synthetic_division_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 4
     (length (var 0) ≐ succ (var 3) ⟶

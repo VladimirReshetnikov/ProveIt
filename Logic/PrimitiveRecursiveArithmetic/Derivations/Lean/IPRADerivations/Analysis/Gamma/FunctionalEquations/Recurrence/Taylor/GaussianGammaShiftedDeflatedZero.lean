@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaShiftedDeflatedZero
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaShiftedDeflatedPolynomial (rawValue)
 open GaussianGammaOriginalC19Prefix (buffer totalDegree stage)
 open GaussianGammaCanonicalExponent (source constantF)
@@ -25,9 +25,6 @@ open GaussianRationalSyntheticDivision (qone qadd_congr)
 open GaussianRootAlgebra (equal equal_of_values)
 open ComplexLogarithmRemainder (zeroCode oneCode scale normSq)
 open GaussianNameEquivalence (crossEquivalent cross_trans)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

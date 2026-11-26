@@ -14,7 +14,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalWeightedTaylorBall
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add)
 open GaussianBarnesCanonicalExponentTaylorBallSchedule
   (buffer buffer_length buffer_zero precision)
@@ -29,10 +29,6 @@ open GaussianNamedInverseRate (independentRate)
 open GaussianRationalHorner (ofGaussian)
 open GaussianRationalPolynomialDilation (dilated weightedNorm)
 open RationalArgmin (rationalLE)
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

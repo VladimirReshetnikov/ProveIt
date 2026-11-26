@@ -15,7 +15,7 @@ set_option maxHeartbeats 1100000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalTaylorCoefficientChart
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalExponentTaylorRetainedCoefficient (cutoff precision)
 open GaussianBarnesCanonicalHigherRows (previous)
 open GaussianBarnesCanonicalLogCofinal (source)
@@ -29,8 +29,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_symmetric)
 open GaussianRationalHorner (ofGaussian)
 open GaussianRationalMetric (distanceBounded)
 open GaussianReconstructionRoots (distance_triangle)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

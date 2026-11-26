@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerDampedTimeRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegrandName (powerF powerData decayF decayData decayPoint)
 open GaussianEulerPositiveScalingIntegrand (dampedF dampedData)
 open GaussianEulerExponentCompactBounds (source)
@@ -28,9 +28,6 @@ open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -45,23 +42,13 @@ def input (z R B E T c d a b u v A D : PTm n) : Fm PTm n :=
   (source z R B E ⋏ (le one c ⋏ le one d)) ⋏
     (domain a b E T ⋏ (domain u v E T ⋏ (le one D ⋏ distanceBounded (fraction a b) (fraction u v) A D)))
 
-@[simp] theorem subst_decayRadius {m : ℕ} (σ : Fin n → PTm m) (T c : PTm n) :
-    Syn.subst σ (decayRadius T c) = decayRadius (Syn.subst σ T) (Syn.subst σ c) := by simp [decayRadius]
-@[simp] theorem subst_decayBound {m : ℕ} (σ : Fin n → PTm m) (T c : PTm n) :
-    Syn.subst σ (decayBound T c) = decayBound (Syn.subst σ T) (Syn.subst σ c) := by simp [decayBound]
-@[simp] theorem subst_decayLipschitz {m : ℕ} (σ : Fin n → PTm m) (T c : PTm n) :
-    Syn.subst σ (decayLipschitz T c) = decayLipschitz (Syn.subst σ T) (Syn.subst σ c) := by simp [decayLipschitz]
-@[simp] theorem subst_lipschitz {m : ℕ} (σ : Fin n → PTm m) (R E T c d : PTm n) :
-    Syn.subst σ (lipschitz R E T c d) = lipschitz (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ c) (Syn.subst σ d) := by
-  simp [lipschitz,GaussianEulerCompactPowerMajorant.majorant,GaussianEulerCompactPowerMajorant.exponentRadius]
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (z R B E T c d a b u v A D : PTm n) :
-    (input z R B E T c d a b u v A D).subst σ = input (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ c) (Syn.subst σ d) (Syn.subst σ a) (Syn.subst σ b)
-      (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ A) (Syn.subst σ D) := by simp [input]
+ipra_subst decayRadius
+ipra_subst decayBound
+ipra_subst decayLipschitz
+ipra_subst lipschitz [GaussianEulerCompactPowerMajorant.majorant, GaussianEulerCompactPowerMajorant.exponentRadius]
+ipra_subst input
 
-@[simp] theorem subst_decayData {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (decayData a b) = decayData (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [decayData,GaussianGammaFiniteApproximantName.exponentialInputData]
+ipra_subst decayData [GaussianGammaFiniteApproximantName.exponentialInputData]
 @[simp] theorem subst_majorant {m : ℕ} (σ : Fin n → PTm m) (R E T : PTm n) :
     Syn.subst σ (GaussianEulerCompactPowerMajorant.majorant R E T) =
       GaussianEulerCompactPowerMajorant.majorant (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T) := by

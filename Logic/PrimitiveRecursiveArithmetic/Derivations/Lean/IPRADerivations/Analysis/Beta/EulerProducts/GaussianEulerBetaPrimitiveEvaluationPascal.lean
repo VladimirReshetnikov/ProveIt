@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerBetaPrimitiveEvaluationPascal
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerBetaPolynomialPrimitive (primitive primitive_length primitive_entry_canonical)
 open GaussianEulerBetaPrimitivePascal (primitiveReader primitive_reader_Pascal primitive_constant_Pascal)
 open GaussianRationalHorner (qzero qmul qadd horner evaluate canonical)
@@ -26,10 +26,6 @@ open GaussianRationalLowCoefficientConvolution (exponent_inside)
 open GaussianGammaEulerHeadShift (shifted)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -77,8 +73,7 @@ theorem horner_first (C t : PTm n) (hc : Γ ⊢[PRAAx] canonical (entry C zero))
 def prefixLaw (z B N t i : PTm n) : Fm PTm n := le i N ⟶
   horner (primitive z B (succ N)) t (succ i) ≐
     qsub (horner (primitive z B N) t i) (horner (primitive (shifted z B) B N) t (succ i))
-@[simp] theorem subst_prefixLaw {m : ℕ} (σ : Fin n → PTm m) (z B N t i : PTm n) :
-    (prefixLaw z B N t i).subst σ = prefixLaw (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) (Syn.subst σ t) (Syn.subst σ i) := by simp [prefixLaw]
+ipra_subst prefixLaw
 
 theorem prefix_zero (z B N t : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx]
     horner (primitive z B (succ N)) t one ≐ qsub (horner (primitive z B N) t zero) (horner (primitive (shifted z B) B N) t one) := by
@@ -104,11 +99,9 @@ theorem horner_prefix (z B N t i : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hi : Γ
       qsub (horner (primitive z B N) t i) (horner (primitive (shifted z B) B N) t (succ i)) := by
   have bs : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift B) := by simpa [Fm.shift,Syn.shift] using hB.shift
   have all : Γ ⊢[PRAAx] .all (prefixLaw (Syn.shift z) (Syn.shift B) (Syn.shift N) (Syn.shift t) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (prefix_zero z B N t hB).wk
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_prefixLaw]
+    · exact .impI (prefix_zero z B N t hB).wk
+    · refine .impI ?_
       let IH := prefixLaw (Syn.shift z) (Syn.shift B) (Syn.shift N) (Syn.shift t) (var 0)
       let Δ := le (succ (var 0)) (Syn.shift N) :: IH :: Γ.map Fm.shift
       exact prefix_step _ _ _ _ _ bs.wk.wk Prf.hyp0 (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
@@ -122,8 +115,7 @@ theorem sub_zero (a : PTm n) (ha : Γ ⊢[PRAAx] canonical a) : Γ ⊢[PRAAx] qs
   (qadd_congr (.eqRefl _) negative_zero).eqTrans (GaussianReciprocalHorner.qadd_zero_right a ha)
 
 def value (z B N : PTm n) : PTm n := evaluate (primitive z B N) qone
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (z B N : PTm n) :
-    Syn.subst σ (value z B N) = value (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by simp [value]
+ipra_subst value
 
 /-- Literal original Horner evaluation, for any raw query code t. -/
 theorem evaluation_Pascal (z B N t : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx]

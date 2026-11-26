@@ -21,7 +21,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalMatrixFiniteSums
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero qadd qmul canonical)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qone qone_canonical qzero_canonical qadd_congr qmul_congr)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qnegative qnegative_canonical qnegative_represents)
@@ -33,9 +33,6 @@ open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_deco
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
 open LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantTerms (cell)
 open LeanProofs.IPRA.Analysis.GaussianRationalFiberVandermonde (delta table table_length table_row_length table_lookup)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -65,9 +62,7 @@ theorem sum_split (f : PTm 2) (A B x : PTm n) : Γ ⊢[PRAAx]
 
 def zeroTerms (f : PTm 2) (N x : PTm n) : Fm PTm n := .all
   (lt (var 0) (Syn.shift N) ⟶ inst2 f (var 0) (Syn.shift x) ≐ qzero)
-@[simp] theorem subst_zeroTerms {l : ℕ} (σ : Fin n → PTm l) (f : PTm 2) (N x : PTm n) :
-    (zeroTerms f N x).subst σ = zeroTerms f (Syn.subst σ N) (Syn.subst σ x) := by
-  simp [zeroTerms,Syn.subst_shift,Syn.shift_subst]
+ipra_subst zeroTerms [Syn.subst_shift, Syn.shift_subst]
 
 theorem zero_term_at (f : PTm 2) (N x i : PTm n) (h : Γ ⊢[PRAAx] zeroTerms f N x)
     (hi : Γ ⊢[PRAAx] lt i N) : Γ ⊢[PRAAx] inst2 f i x ≐ qzero := by
@@ -84,8 +79,7 @@ theorem sum_zero_of_terms (f : PTm 2) (N x : PTm n) (h : Γ ⊢[PRAAx] zeroTerms
 def deltaBody (f : PTm 2) : PTm 2 :=
   qmul (delta (fstT (var 1)) (var 0)) (inst2 f (var 0) (sndT (var 1)))
 def deltaSum (f : PTm 2) (N c x : PTm n) : PTm n := sum (deltaBody f) N (pairT c x)
-@[simp] theorem subst_deltaSum {l : ℕ} (σ : Fin n → PTm l) (f : PTm 2) (N c x : PTm n) :
-    Syn.subst σ (deltaSum f N c x) = deltaSum f (Syn.subst σ N) (Syn.subst σ c) (Syn.subst σ x) := by simp [deltaSum]
+ipra_subst deltaSum
 
 theorem delta_body_at (f : PTm 2) (c i x : PTm n) : Γ ⊢[PRAAx]
     inst2 (deltaBody f) i (pairT c x) ≐ qmul (delta c i) (inst2 f i x) := by
@@ -136,8 +130,7 @@ theorem sum_delta_outside (f : PTm 2) (N c x : PTm n) (hc : Γ ⊢[PRAAx] le N c
   (delta_as_spike_sum _ _ _ _).eqTrans (GaussianRationalPermutationSum.delta_outside _ _ _ _ hc)
 
 def minusOne : PTm n := qnegative qone
-@[simp] theorem subst_minusOne {l : ℕ} (σ : Fin n → PTm l) :
-    Syn.subst σ (minusOne : PTm n) = (minusOne : PTm l) := by simp [minusOne]
+ipra_subst minusOne
 
 theorem negative_recode (q : PTm n) : Γ ⊢[PRAAx] qnegative (recode q) ≐ qnegative q :=
   GaussianRationalHorner.canonical_unique _ _ _ _ (qnegative_canonical _) (qnegative_canonical _)
@@ -175,19 +168,17 @@ def scalarBody : PTm 2 := qmul
   (cell (scalarFields (var 1) 1) (var 0) (scalarFields (var 1) 3))
 def scalarDot (A B m r j : PTm n) : PTm n := sum scalarBody m (scalarData A B r j)
 
-@[simp] theorem subst_scalarData {l : ℕ} (σ : Fin n → PTm l) (A B r j : PTm n) :
-    Syn.subst σ (scalarData A B r j) = scalarData (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ r) (Syn.subst σ j) := by simp [scalarData]
-@[simp] theorem subst_scalarDot {l : ℕ} (σ : Fin n → PTm l) (A B m r j : PTm n) :
-    Syn.subst σ (scalarDot A B m r j) = scalarDot (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ m) (Syn.subst σ r) (Syn.subst σ j) := by simp [scalarDot]
+ipra_subst scalarData
+ipra_subst scalarDot
 
 theorem scalar_fields_at (A B r j : PTm n) (i : Fin 4) : Γ ⊢[PRAAx]
     scalarFields (scalarData A B r j) i ≐ (![A,B,r,j] : Fin 4 → PTm n) i := by
   fin_cases i <;> simp only [scalarFields,scalarData,Matrix.cons_val_zero,Matrix.cons_val_one,
     Matrix.cons_val_two,Matrix.cons_val_three]
   · exact fst_pair _ _
-  · exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-  · exact (congrFst ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
-  · exact (congrSnd ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  · exact (snd_pair _ _).fstE
+  · exact (snd_pair _ _).sndE.fstE
+  · exact (snd_pair _ _).sndE.sndE
 
 @[simp] theorem subst_scalarFields {l : ℕ} (σ : Fin n → PTm l) (x : PTm n) (i : Fin 4) :
     Syn.subst σ (scalarFields x i) = scalarFields (Syn.subst σ x) i := by
@@ -212,10 +203,8 @@ def productData (A B m : PTm n) : PTm n := pairT A (pairT B m)
 def productBody : PTm 3 := scalarDot (fstT (var 2)) (fstT (sndT (var 2)))
   (sndT (sndT (var 2))) (var 0) (var 1)
 def matrixProduct (A B m : PTm n) : PTm n := table productBody m m (productData A B m)
-@[simp] theorem subst_productData {l : ℕ} (σ : Fin n → PTm l) (A B m : PTm n) :
-    Syn.subst σ (productData A B m) = productData (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ m) := by simp [productData]
-@[simp] theorem subst_matrixProduct {l : ℕ} (σ : Fin n → PTm l) (A B m : PTm n) :
-    Syn.subst σ (matrixProduct A B m) = matrixProduct (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ m) := by simp [matrixProduct]
+ipra_subst productData
+ipra_subst matrixProduct
 
 theorem scalar_dot_congr {A A' B B' m m' r r' j j' : PTm n}
     (hA : Γ ⊢[PRAAx] A ≐ A') (hB : Γ ⊢[PRAAx] B ≐ B') (hm : Γ ⊢[PRAAx] m ≐ m')
@@ -227,8 +216,8 @@ theorem product_body_at (A B m r j : PTm n) : Γ ⊢[PRAAx]
     Syn.subst ![r,j,productData A B m] productBody ≐ scalarDot A B m r j := by
   simp only [productBody,subst_scalarDot,subst_fstT,subst_sndT,Syn.subst_var,
     Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two]
-  exact scalar_dot_congr (fst_pair _ _) ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
-    ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)) (.eqRefl _) (.eqRefl _)
+  exact scalar_dot_congr (fst_pair _ _) (snd_pair _ _).fstE
+    (snd_pair _ _).sndE (.eqRefl _) (.eqRefl _)
 
 theorem product_length (A B m : PTm n) : Γ ⊢[PRAAx] length (matrixProduct A B m) ≐ m := table_length _ _ _ _
 theorem product_row_length (A B m r : PTm n) (hr : Γ ⊢[PRAAx] lt r m) : Γ ⊢[PRAAx]
@@ -243,9 +232,7 @@ theorem product_canonical (A B m r j : PTm n) (hr : Γ ⊢[PRAAx] lt r m) (hj : 
 /-- Scalar square-table shape, without the unrelated polynomial cell-width predicate. -/
 def squareShape (A m : PTm n) : Fm PTm n := (length A ≐ m) ⋏
   .all (lt (var 0) (Syn.shift m) ⟶ length (entry (Syn.shift A) (var 0)) ≐ Syn.shift m)
-@[simp] theorem subst_squareShape {l : ℕ} (σ : Fin n → PTm l) (A m : PTm n) :
-    (squareShape A m).subst σ = squareShape (Syn.subst σ A) (Syn.subst σ m) := by
-  simp [squareShape,Syn.subst_shift,Syn.shift_subst]
+ipra_subst squareShape [Syn.subst_shift, Syn.shift_subst]
 
 theorem product_shape (A B m : PTm n) : Γ ⊢[PRAAx] squareShape (matrixProduct A B m) m := by
   refine .andI (product_length _ _ _) (.allI (.impI ?_))
@@ -257,21 +244,16 @@ computed complete table and the selected original dot. -/
 def output (A B m r j : PTm n) : PTm n := pairT (matrixProduct A B m) (scalarDot A B m r j)
 def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (A B m r j : PTm n) : PTm n := app outputF ![A,B,m,r,j]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (A B m r j : PTm n) :
-    Syn.subst σ (output A B m r j) = output (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ m) (Syn.subst σ r) (Syn.subst σ j) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (A B m r j : PTm n) :
-    Syn.subst σ (run A B m r j) = run (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ m) (Syn.subst σ r) (Syn.subst σ j) := by
-  simp [run]
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (A B m r j : PTm n) : Γ ⊢[PRAAx] run A B m r j ≐ output A B m r j := by
   simpa [run,outputF] using toPR_eq (Γ := Γ)
     (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![A,B,m,r,j]
 theorem returned_matrix (A B m r j : PTm n) : Γ ⊢[PRAAx]
-    fstT (run A B m r j) ≐ matrixProduct A B m := (congrFst (program_at _ _ _ _ _)).eqTrans (fst_pair _ _)
+    fstT (run A B m r j) ≐ matrixProduct A B m := (program_at _ _ _ _ _).fstE
 theorem returned_dot (A B m r j : PTm n) : Γ ⊢[PRAAx]
-    sndT (run A B m r j) ≐ scalarDot A B m r j := (congrSnd (program_at _ _ _ _ _)).eqTrans (snd_pair _ _)
+    sndT (run A B m r j) ≐ scalarDot A B m r j := (program_at _ _ _ _ _).sndE
 theorem returned_shape (A B m r j : PTm n) : Γ ⊢[PRAAx] squareShape (fstT (run A B m r j)) m := by
   have transport := Prf.eqSubst (Ax := PRAAx) (Γ := Γ) (squareShape (var 0) (var 1) : Fm PTm 2)
     ![matrixProduct A B m,m] ![fstT (run A B m r j),m] (fun i => by

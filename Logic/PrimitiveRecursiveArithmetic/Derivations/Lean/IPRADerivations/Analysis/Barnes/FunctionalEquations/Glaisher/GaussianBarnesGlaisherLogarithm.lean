@@ -15,7 +15,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesGlaisherLogarithm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (normSq normSq_one oneCode)
 open GaussianFiniteLogarithmTaylorRemainder (numerator denominator denominator_positive)
 open GaussianGammaCanonicalExponent (constantF)
@@ -24,10 +24,6 @@ open GaussianNamedInverseRate (independentRate)
 open GaussianRightHalfPlaneLogarithmOffset (offset signedImag)
 open GaussianPositiveRationalLogarithm (logF data)
 open GaussianLocalLogarithmTaylorRemainder (polynomial)
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

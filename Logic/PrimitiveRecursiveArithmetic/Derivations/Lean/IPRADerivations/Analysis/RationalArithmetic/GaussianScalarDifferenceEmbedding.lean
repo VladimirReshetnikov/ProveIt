@@ -15,13 +15,11 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianScalarDifferenceEmbedding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalGaussianEmbedding (embed canonical_axis_roundtrip axis)
 open GaussianRationalHorner (canonical)
 open GaussianRationalMetric (qsub distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

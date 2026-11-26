@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeCriticalEndpoints
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianGammaNegativeCriticalCorrection
@@ -28,10 +28,6 @@ open GaussianRationalSyntheticDivision (qsub_congr)
 open GaussianStirlingTailComparison (point_add_order point_order_refl)
 open GaussianStirlingMultiplicativeBoundsLog (fractions_order)
 open RationalArgmin (rationalLE rationalLE_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -46,13 +42,9 @@ def rightFloor (N : PTm n) : PTm n := fraction (monus (mesh N) two) one
 def nameF : PR 2 := addF DF constantF
 def nameData (a b N : PTm n) : PTm n := addData (dd (b+a) b) (correction a b N)
 
-@[simp] theorem subst_mesh {k : ℕ} (σ : Fin n → PTm k) (N : PTm n) :
-    Syn.subst σ (mesh N) = mesh (Syn.subst σ N) := by simp [mesh]
-@[simp] theorem subst_rightNumerator {k : ℕ} (σ : Fin n → PTm k) (N : PTm n) :
-    Syn.subst σ (rightNumerator N) = rightNumerator (Syn.subst σ N) := by simp [rightNumerator]
-@[simp] theorem subst_nameData {k : ℕ} (σ : Fin n → PTm k) (a b N : PTm n) :
-    Syn.subst σ (nameData a b N) = nameData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) :=
-  by simp [nameData]
+ipra_subst mesh
+ipra_subst rightNumerator
+ipra_subst nameData
 
 theorem shifted_source (a b : PTm n) (h : Γ ⊢[PRAAx] guard a b) :
     Γ ⊢[PRAAx] GaussianStirlingGammaLogarithm.source (b+a) b := by

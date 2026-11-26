@@ -21,7 +21,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGeometricSumBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalCover (Side original numerators)
 open LeanProofs.IPRA.Analysis.GaussianRationalNormalization (commonD queryNumerator)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (represents evaluate qadd)
@@ -33,9 +33,6 @@ open LeanProofs.IPRA.Analysis.GaussianBalancedRadiusSyntax (unit)
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder (normSq scale add)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -67,29 +64,22 @@ def otherSum (S T : PTm n) : PTm n := qadd (evaluate S qone) (evaluate T qone)
     Syn.subst σ (distance s k i) = distance s (Syn.subst σ k) (Syn.subst σ i) := by cases s <;> simp [distance]
 @[simp] theorem subst_weight {m : ℕ} (σ : Fin n → PTm m) (s : Side) (N k i : PTm n) :
     Syn.subst σ (weight s N k i) = weight s (Syn.subst σ N) (Syn.subst σ k) (Syn.subst σ i) := by cases s <;> simp [weight]
-@[simp] theorem subst_payloadField {m : ℕ} (σ : Fin n → PTm m) (s : Side) (x : PTm n) :
-    Syn.subst σ (payloadField s x) = payloadField s (Syn.subst σ x) := by simp [payloadField]
-@[simp] theorem subst_payload {m : ℕ} (σ : Fin n → PTm m) (S T ref : PTm n) :
-    Syn.subst σ (payload S T ref) = payload (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ ref) := by simp [payload]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (N k S T ref : PTm n) :
-    Syn.subst σ (data N k S T ref) = data (Syn.subst σ N) (Syn.subst σ k)
-      (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ ref) := by simp [data]
-@[simp] theorem subst_sumNumerator {m : ℕ} (σ : Fin n → PTm m) (s : Side) (N k S T ref : PTm n) :
-    Syn.subst σ (sumNumerator s N k S T ref) = sumNumerator s (Syn.subst σ N) (Syn.subst σ k)
-      (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ ref) := by simp [sumNumerator]
-@[simp] theorem subst_otherSum {m : ℕ} (σ : Fin n → PTm m) (S T : PTm n) :
-    Syn.subst σ (otherSum S T) = otherSum (Syn.subst σ S) (Syn.subst σ T) := by simp [otherSum]
+ipra_subst payloadField
+ipra_subst payload
+ipra_subst data
+ipra_subst sumNumerator
+ipra_subst otherSum
 
 theorem scaled_program (s : Side) (N k GL GU i : PTm n) : Γ ⊢[PRAAx]
     ap2 (f s) i (GaussianOffDominantWeights.data N k (pairT GL GU)) ≐
       scale (GaussianOffDominantWeights.C N) (entry (original s GL GU) i) := by
   let x := GaussianOffDominantWeights.data N k (pairT GL GU)
   have tail : Γ ⊢[PRAAx] sndT x ≐ pairT k (pairT GL GU) := snd_pair _ _
-  have pay := (congrSnd tail).eqTrans (snd_pair _ _)
+  have pay := tail.sndE
   have field : Γ ⊢[PRAAx] payloadField s x ≐ original s GL GU := by
     cases s
-    · exact (congrFst pay).eqTrans (fst_pair _ _)
-    · exact (congrSnd pay).eqTrans (snd_pair _ _)
+    · exact pay.fstE
+    · exact pay.sndE
   have fields := Prf.eqCongr (Ax := PRAAx) (Γ := Γ)
     (scale (var 0) (entry (var 1) (var 2)) : PTm 3)
     (σ := ![GaussianOffDominantWeights.C (fstT x),payloadField s x,i])
@@ -113,9 +103,7 @@ def entryBounds (s : Side) (N k S T ref : PTm n) : Fm PTm n := .all
       (weightedNorm (unit (four*distance s (Syn.shift k) (var 0))) (entry (original s (Syn.shift S) (Syn.shift T)) (var 0)))
       (GaussianRationalMetric.qnormSq (Syn.shift ref)))
 
-@[simp] theorem subst_entryBounds {m : ℕ} (σ : Fin n → PTm m) (s : Side) (N k S T ref : PTm n) :
-    (entryBounds s N k S T ref).subst σ = entryBounds s (Syn.subst σ N) (Syn.subst σ k)
-      (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ ref) := by simp [entryBounds,Syn.subst_shift,Syn.shift_subst]
+ipra_subst entryBounds [Syn.subst_shift, Syn.shift_subst]
 
 theorem entry_bound_at (s : Side) (N k S T ref i : PTm n)
     (h : Γ ⊢[PRAAx] entryBounds s N k S T ref) (hi : Γ ⊢[PRAAx] lt i (count s N k)) : Γ ⊢[PRAAx]

@@ -18,7 +18,7 @@ set_option maxHeartbeats 500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalPositiveHeadLogarithmRowDerivative
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Common (mul_le_mul le_of_sq_le add_le_add)
 open LeanProofs.IPRA.Probability.Variance (ad ad_sq)
 open ComplexLogarithmRemainder (bounded normSq)
@@ -42,9 +42,6 @@ open GaussianRationalRoundedPower (multiplication_difference)
 open GaussianRationalSyntheticDivision (qmul_congr qsub_congr)
 open GaussianReciprocalHorner (qmul_associative qmul_one_right)
 open GaussianRootAlgebra (equal equal_of_values sub)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

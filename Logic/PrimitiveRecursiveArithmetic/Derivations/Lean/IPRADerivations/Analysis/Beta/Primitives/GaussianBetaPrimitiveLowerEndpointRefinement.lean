@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaPrimitiveLowerEndpointRefinement
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLowerPowerCoefficients (source)
 open GaussianBetaPrimitiveLowerEndpoint (precision budget rootDen root_den_positive)
 open GaussianBetaPrimitiveEndpointEncoding (clockScaledEndpoint original_clock_scaled_endpoint_bound)
@@ -21,9 +21,6 @@ open GaussianGammaIntegralCutoffs (height)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

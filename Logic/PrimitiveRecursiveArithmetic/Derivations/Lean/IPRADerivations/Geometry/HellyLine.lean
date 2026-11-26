@@ -16,12 +16,10 @@ omitting the second, `c` for the pair omitting the third. Every set contains two
 
 namespace LeanProofs.IPRA.Geometry.HellyLine
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.FiniteObservations.MetricKernel (meet meet_left meet_right meet_le_left
   meet_le_right)
 open LeanProofs.IPRA.Topology.MetricNets (join le_join_left le_join_right join_le)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -30,13 +28,11 @@ theorem le_meet {a b c : PTm n} (ha : Γ ⊢[PRAAx] le c a) (hb : Γ ⊢[PRAAx] 
     Γ ⊢[PRAAx] le c (meet a b) := by
   refine .orE (le_total a b) ?_ ?_
   · have h : (le a b :: Γ) ⊢[PRAAx] le a b := Prf.hyp0
-    have e := natEq (meet_left h)
     have ha' := ha.wk (ψ := le a b)
-    ipra_le sl ha' with e
+    ipra_le sl ha' with natEq (meet_left h)
   · have h : (le b a :: Γ) ⊢[PRAAx] le b a := Prf.hyp0
-    have e := natEq (meet_right h)
     have hb' := hb.wk (ψ := le b a)
-    ipra_le sl hb' with e
+    ipra_le sl hb' with natEq (meet_right h)
 
 /-- The median of three terms. -/
 def med (a b c : PTm n) : PTm n := join (meet a b) (meet (join a b) c)

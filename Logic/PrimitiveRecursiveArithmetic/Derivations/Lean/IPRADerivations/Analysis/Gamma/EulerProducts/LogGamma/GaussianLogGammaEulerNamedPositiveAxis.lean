@@ -17,7 +17,7 @@ set_option maxHeartbeats 400000
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerNamedPositiveAxis
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode scale)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaMinimumFreezeRational (numerator denominator fraction_at frozen_rational_domain frozen_log_rate)
@@ -33,9 +33,6 @@ open GaussianRationalDistanceOrder (distance_radius_mono)
 open GaussianRationalHorner (canonical_congr ofGaussian_canonical)
 open GaussianRationalMetric (distanceBounded)
 open GaussianStirlingGammaLogarithm (gammaLogMargin logGammaF logGammaData)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "source" => GaussianNamedGammaPositiveLower.source

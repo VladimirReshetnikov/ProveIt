@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantCongruence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianPolynomialDeterminantTerms (cell factor stage term stage_zero stage_coefficient_succ term_coefficient)
 open RationalPolynomialDeterminantTermsGaussianEmbedding (entriesEqual entry_equal_at coefficient_left_entries)
 open GaussianRationalMonicReconstruction (paddedEqual coefficient_padded_ext)
@@ -23,9 +23,6 @@ open GaussianRationalSyntheticDivision (qmul_congr)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (entry_congr)
 open LeanProofs.IPRA.Foundations.BoundedSyntax (BFm formula)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -34,13 +31,8 @@ def rowEntries (M P m L r : PTm n) : Fm PTm n := .all (lt (var 0) (Syn.shift m) 
 def matrixEntries (M P m L : PTm n) : Fm PTm n := .all
   (lt (var 0) (Syn.shift m) ⟶ rowEntries (Syn.shift M) (Syn.shift P) (Syn.shift m) (Syn.shift L) (var 0))
 
-@[simp] theorem subst_rowEntries {l : ℕ} (σ : Fin n → PTm l) (M P m L r : PTm n) :
-    (rowEntries M P m L r).subst σ =
-      rowEntries (Syn.subst σ M) (Syn.subst σ P) (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ r) := by
-  simp [rowEntries,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_matrixEntries {l : ℕ} (σ : Fin n → PTm l) (M P m L : PTm n) :
-    (matrixEntries M P m L).subst σ = matrixEntries (Syn.subst σ M) (Syn.subst σ P) (Syn.subst σ m) (Syn.subst σ L) := by
-  simp [matrixEntries,Syn.subst_shift,Syn.shift_subst]
+ipra_subst rowEntries [Syn.subst_shift, Syn.shift_subst]
+ipra_subst matrixEntries [Syn.subst_shift, Syn.shift_subst]
 
 theorem matrix_entries_at (M P m L r j : PTm n) (h : Γ ⊢[PRAAx] matrixEntries M P m L)
     (hr : Γ ⊢[PRAAx] lt r m) (hj : Γ ⊢[PRAAx] lt j m) :
@@ -72,14 +64,8 @@ def stageEntries (M P m L w j : PTm n) : Fm PTm n :=
   entriesEqual (stage M m L w j) (stage P m L w j) (succ (j*L))
 def stageLaw (M P m L w j : PTm n) : Fm PTm n := le j m ⟶ stageEntries M P m L w j
 
-@[simp] theorem subst_stageEntries {l : ℕ} (σ : Fin n → PTm l) (M P m L w j : PTm n) :
-    (stageEntries M P m L w j).subst σ =
-      stageEntries (Syn.subst σ M) (Syn.subst σ P) (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ w) (Syn.subst σ j) := by
-  simp [stageEntries]
-@[simp] theorem subst_stageLaw {l : ℕ} (σ : Fin n → PTm l) (M P m L w j : PTm n) :
-    (stageLaw M P m L w j).subst σ =
-      stageLaw (Syn.subst σ M) (Syn.subst σ P) (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ w) (Syn.subst σ j) := by
-  simp [stageLaw]
+ipra_subst stageEntries
+ipra_subst stageLaw
 
 theorem stage_base (M P m L w : PTm n) : Γ ⊢[PRAAx] stageEntries M P m L w zero := by
   refine .allI (.impI ?_)

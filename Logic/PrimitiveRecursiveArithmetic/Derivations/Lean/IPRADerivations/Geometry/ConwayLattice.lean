@@ -1,6 +1,5 @@
 import IPRADerivations.Geometry.ConwayAlgebra
 import IPRADerivations.Core.IntCancel
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The period lattice of the Conway criterion
@@ -34,12 +33,8 @@ a hypothesis here (`J(∂T) = A`, `A > 0`).
 
 namespace LeanProofs.IPRA.Geometry.ConwayLattice
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Geometry.ConwayAlgebra (det period_area_paths)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -220,10 +215,8 @@ theorem period_det_eq
     (hf : Γ ⊢[PRAAx] ZT.eq Jf (det S₁ S₂ P₁ P₂))
     (hA : Γ ⊢[PRAAx] ZT.eq (Ja + Jb + Jc + Jd + Je + Jf) A) :
     Γ ⊢[PRAAx] ZT.eq (det w₁ w₂ (P₁ + w₁ + S₁ - Q₁ - R₁) (P₂ + w₂ + S₂ - Q₂ - R₂)) A := by
-  have e := ZT.toZ_eq (period_area_paths had hb hc he hf)
-  have e' := ZT.toZ_eq hA
   apply ZT.derive
-  linear_combination e' - e
+  linear_combination ZT.toZ_eq hA - ZT.toZ_eq (period_area_paths had hb hc he hf)
 
 /-- `cor:lattice`: the fundamental parallelogram is positively oriented, `det(t, u) > 0`. -/
 theorem period_det_pos

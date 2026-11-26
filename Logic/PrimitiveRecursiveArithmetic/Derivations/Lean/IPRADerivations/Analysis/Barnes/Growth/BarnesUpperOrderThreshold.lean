@@ -2,7 +2,6 @@ import IPRADerivations.AnalyticNumberTheory.BrunElementary
 import IPRADerivations.AnalyticNumberTheory.LocalFactor
 import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.AnalyticNumberTheory.SumReindex
-import IPRADerivations.Core.CommonLemmas
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianFactorBudget
 
 /-!
@@ -19,16 +18,13 @@ set_option maxHeartbeats 550000
 
 namespace LeanProofs.IPRA.Analysis.BarnesUpperOrderThreshold
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.BrunElementary (sq_le_pow)
 open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
 open LeanProofs.IPRA.Common (pos_of_one_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.RSA (pw_mul)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumReindex (le_quo_of_mul_le)
 open GaussianFactorBudget (power_monotone_length)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

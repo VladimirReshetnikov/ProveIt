@@ -17,7 +17,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalIntegerRecurrence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalValue (nameF)
 open GaussianBarnesCanonicalHead (source)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
@@ -30,9 +30,6 @@ open GaussianNameArithmetic (multiplyF multiplyData multiplyModulus)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_trans)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open ComplexLogarithmRemainder (oneCode zeroCode scale normSq)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

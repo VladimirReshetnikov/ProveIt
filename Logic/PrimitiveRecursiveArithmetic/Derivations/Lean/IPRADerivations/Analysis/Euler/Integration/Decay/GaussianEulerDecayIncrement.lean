@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerDecayIncrement
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegrandName (decayF decayData decayPoint)
 open GaussianEulerDecayAddition (original_decay_add original_decay_linear_remainder)
 open GaussianEulerDecayFactorBounds (original_half_decay_factor_bound)
@@ -28,10 +28,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRationalReciprocal (bound_congr power power_zero)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameRingLaws (three)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

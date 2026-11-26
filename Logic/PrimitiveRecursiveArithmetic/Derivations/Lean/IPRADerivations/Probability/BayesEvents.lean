@@ -23,15 +23,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.BayesEvents
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Variance (ad)
 open LeanProofs.IPRA.Probability.MedianWeighted (ad_le_of le_add_ad)
 open LeanProofs.IPRA.Probability.EventAlgebraMetric (wsum wsum_le)
 open LeanProofs.IPRA.Probability.RampMarkov (int_lipschitz)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

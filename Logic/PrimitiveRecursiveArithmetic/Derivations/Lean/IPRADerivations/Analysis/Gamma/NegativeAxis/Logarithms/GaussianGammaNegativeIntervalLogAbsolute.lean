@@ -15,7 +15,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalLogAbsolute
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianFactorBudget (power_positive)
 open GaussianGammaAdjacentCutoff (multiply_cross)
@@ -33,9 +33,6 @@ open GaussianRealNameExponentialInjectivity (axisSamples)
 open GaussianSignedNameExponentialOrder (realSamples)
 open GaussianStirlingGammaLogarithm (logGammaF logGammaData log_gamma_regular log_gamma_axis gamma_regular)
 open GaussianStirlingLogDuplication (exponential_sum exponential_gamma exponential_regular)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "L" => GaussianPositiveRationalLogarithm.logF
@@ -51,20 +48,11 @@ def nameData (a b N : PTm n) : PTm n := addData (logGammaData (b+a) b) (inverseL
 def expF : PR 2 := E nameF
 def expData (a b N : PTm n) : PTm n := ed nameF (nameData a b N)
 
-@[simp] theorem subst_inverseLogData {m : ℕ} (σ : Fin n → PTm m) (a b N : PTm n) :
-    Syn.subst σ (inverseLogData a b N) =
-      inverseLogData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by
-  simp [inverseLogData,productNumerator,productDenominator]
+ipra_subst inverseLogData [productNumerator, productDenominator]
 
-@[simp] theorem subst_nameData {m : ℕ} (σ : Fin n → PTm m) (a b N : PTm n) :
-    Syn.subst σ (nameData a b N) =
-      nameData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by
-  simp [nameData]
+ipra_subst nameData
 
-@[simp] theorem subst_expData {m : ℕ} (σ : Fin n → PTm m) (a b N : PTm n) :
-    Syn.subst σ (expData a b N) =
-      expData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by
-  simp [expData,exponentialInputData]
+ipra_subst expData [exponentialInputData]
 
 theorem terminal_source (a b : PTm n) (h : Γ ⊢[PRAAx] guard a b) :
     Γ ⊢[PRAAx] GaussianStirlingGammaLogarithm.source (b+a) b := by

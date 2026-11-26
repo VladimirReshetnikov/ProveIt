@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRightHalfPlaneLogarithmIncrementMargin
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianLogGammaEulerResidualDomain (native)
 open GaussianRightHalfPlaneArgument (wide wide_zero wide_one)
 open GaussianRightHalfPlaneLogarithm (source)
@@ -22,9 +22,6 @@ open GaussianRootAlgebra (sub)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (cancel_pos)
 open RationalArithmetic (select select_zero select_one)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -34,13 +31,9 @@ def lower (A a : PTm n) : PTm n := select (wide a A) A a
 def smallStep (H K C D : PTm n) : Fm PTm n :=
   le (num 128*H*(C+one)*(K*K)) D
 
-@[simp] theorem subst_lower {m : ℕ} (σ : Fin n → PTm m) (A a : PTm n) :
-    Syn.subst σ (lower A a) = lower (Syn.subst σ A) (Syn.subst σ a) := by
-  simp [lower,wide]
+ipra_subst lower [wide]
 
-@[simp] theorem subst_smallStep {m : ℕ} (σ : Fin n → PTm m) (H K C D : PTm n) :
-    (smallStep H K C D).subst σ = smallStep (Syn.subst σ H) (Syn.subst σ K) (Syn.subst σ C) (Syn.subst σ D) := by
-  simp [smallStep,one]
+ipra_subst smallStep [one]
 
 theorem lower_bounds (A a D K : PTm n)
     (hA : Γ ⊢[PRAAx] le one A) (ha : Γ ⊢[PRAAx] le one a)

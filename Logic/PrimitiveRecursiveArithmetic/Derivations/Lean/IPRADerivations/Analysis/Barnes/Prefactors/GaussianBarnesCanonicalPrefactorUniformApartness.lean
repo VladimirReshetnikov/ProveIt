@@ -15,7 +15,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalPrefactorUniformApartness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianBarnesCanonicalLogCofinal (source)
 open GaussianBarnesCanonicalDiskBound (prefactorRadius radius_le)
@@ -28,9 +28,6 @@ open GaussianNamedSmallPerturbationTransport (productClock product_at)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalLowerBounds (lower_congr product_lower)
 open GaussianRadiusExponentialName (input)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

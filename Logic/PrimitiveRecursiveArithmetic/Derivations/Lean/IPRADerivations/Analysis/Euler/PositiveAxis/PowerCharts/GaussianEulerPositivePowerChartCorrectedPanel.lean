@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartCorrectedPanel
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPositivePowerChartMesh (source node timeNumerator timeDenominator node_source time_domain)
 open GaussianEulerPositivePowerChartCorrectedImage (input imageNumerator imageDenominator imageFraction imageData)
 open GaussianEulerPositivePowerChartImage (query reciprocalMargin)
@@ -23,10 +23,6 @@ open GaussianUnitIntervalInputDecoding (numerator denominator)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (positive_product)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

@@ -13,16 +13,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedLipschitzRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (qsub distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianNamedInverseRate (rateNumerator rateDenominator independentRate denominator_positive)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -34,18 +31,10 @@ def diagonalEnvelope (F G : PR 2) (x y A N C : PTm n) : Fm PTm n := .all
     (diagonalDenominator (Syn.shift N) (var 0)))
 def input (F G : PR 2) (x y A N C : PTm n) : Fm PTm n := le one N ⋏
   (pointCN F x ⋏ (pointCN G y ⋏ diagonalEnvelope F G x y A N C))
-@[simp] theorem subst_diagonalNumerator {m : ℕ} (σ : Fin n → PTm m) (A N C t : PTm n) :
-    Syn.subst σ (diagonalNumerator A N C t) = diagonalNumerator (Syn.subst σ A) (Syn.subst σ N) (Syn.subst σ C) (Syn.subst σ t) := by
-  simp [diagonalNumerator]
-@[simp] theorem subst_diagonalDenominator {m : ℕ} (σ : Fin n → PTm m) (N t : PTm n) :
-    Syn.subst σ (diagonalDenominator N t) = diagonalDenominator (Syn.subst σ N) (Syn.subst σ t) := by simp [diagonalDenominator]
-@[simp] theorem subst_diagonalEnvelope {m : ℕ} (σ : Fin n → PTm m) (F G : PR 2) (x y A N C : PTm n) :
-    (diagonalEnvelope F G x y A N C).subst σ = diagonalEnvelope F G (Syn.subst σ x) (Syn.subst σ y)
-      (Syn.subst σ A) (Syn.subst σ N) (Syn.subst σ C) := by
-  simp [diagonalEnvelope,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (F G : PR 2) (x y A N C : PTm n) :
-    (input F G x y A N C).subst σ = input F G (Syn.subst σ x) (Syn.subst σ y)
-      (Syn.subst σ A) (Syn.subst σ N) (Syn.subst σ C) := by simp [input]
+ipra_subst diagonalNumerator
+ipra_subst diagonalDenominator
+ipra_subst diagonalEnvelope [Syn.subst_shift, Syn.shift_subst]
+ipra_subst input
 
 theorem envelope_at (F G : PR 2) (x y A N C t : PTm n)
     (h : Γ ⊢[PRAAx] diagonalEnvelope F G x y A N C) : Γ ⊢[PRAAx]
@@ -107,9 +96,7 @@ theorem independent_rate (F G : PR 2) (x y A N C : PTm n)
 
 def gapQuery (F G : PR 2) (p q x y A N C : PTm n) : PTm n :=
   GaussianRationalSlackRemoval.precision (qsub (ap2 F p x) (ap2 G q y)) (rateNumerator A N p q) (rateDenominator N p q) (C+two)
-@[simp] theorem subst_gapQuery {m : ℕ} (σ : Fin n → PTm m) (F G : PR 2) (p q x y A N C : PTm n) :
-    Syn.subst σ (gapQuery F G p q x y A N C) = gapQuery F G (Syn.subst σ p) (Syn.subst σ q)
-      (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ A) (Syn.subst σ N) (Syn.subst σ C) := by simp [gapQuery]
+ipra_subst gapQuery
 theorem computed_gap_query (F G : PR 2) (p q x y A N C : PTm n) (h : Γ ⊢[PRAAx] input F G x y A N C) : Γ ⊢[PRAAx]
     GaussianRationalSlackRemoval.slack (qsub (ap2 F p x) (ap2 G q y))
       (rateNumerator A N p q) (rateDenominator N p q) (C+two) (gapQuery F G p q x y A N C) :=
@@ -125,36 +112,34 @@ def output (F G : PR 2) (p q x y A N C : PTm n) : PTm n :=
   pairT (ap2 F p x) (pairT (ap2 G q y) (pairT (rateNumerator A N p q) (pairT (rateDenominator N p q) (gapQuery F G p q x y A N C))))
 def outputF (F G : PR 2) : PR 7 := PTm.toPR (output F G (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6))
 def run (F G : PR 2) (p q x y A N C : PTm n) : PTm n := PTm.app (outputF F G) ![p,q,x,y,A,N,C]
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (F G : PR 2) (p q x y A N C : PTm n) :
-    Syn.subst σ (output F G p q x y A N C) = output F G (Syn.subst σ p) (Syn.subst σ q)
-      (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ A) (Syn.subst σ N) (Syn.subst σ C) := by simp [output]
+ipra_subst output
 theorem program_at (F G : PR 2) (p q x y A N C : PTm n) : Γ ⊢[PRAAx]
     run F G p q x y A N C ≐ output F G p q x y A N C := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output F G (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) : PTm 7) ![p,q,x,y,A,N,C]
 theorem returned_first (F G : PR 2) (p q x y A N C : PTm n) : Γ ⊢[PRAAx]
-    fstT (run F G p q x y A N C) ≐ ap2 F p x := (congrFst (program_at F G p q x y A N C)).eqTrans (fst_pair _ _)
+    fstT (run F G p q x y A N C) ≐ ap2 F p x := (program_at F G p q x y A N C).fstE
 theorem returned_tail (F G : PR 2) (p q x y A N C : PTm n) : Γ ⊢[PRAAx]
     sndT (run F G p q x y A N C) ≐
       pairT (ap2 G q y) (pairT (rateNumerator A N p q) (pairT (rateDenominator N p q) (gapQuery F G p q x y A N C))) :=
-  (congrSnd (program_at F G p q x y A N C)).eqTrans (snd_pair _ _)
+  (program_at F G p q x y A N C).sndE
 theorem returned_second (F G : PR 2) (p q x y A N C : PTm n) : Γ ⊢[PRAAx]
-    fstT (sndT (run F G p q x y A N C)) ≐ ap2 G q y := (congrFst (returned_tail F G p q x y A N C)).eqTrans (fst_pair _ _)
+    fstT (sndT (run F G p q x y A N C)) ≐ ap2 G q y := (returned_tail F G p q x y A N C).fstE
 theorem returned_budget (F G : PR 2) (p q x y A N C : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (run F G p q x y A N C)) ≐
       pairT (rateNumerator A N p q) (pairT (rateDenominator N p q) (gapQuery F G p q x y A N C)) :=
-  (congrSnd (returned_tail F G p q x y A N C)).eqTrans (snd_pair _ _)
+  (returned_tail F G p q x y A N C).sndE
 theorem returned_numerator (F G : PR 2) (p q x y A N C : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (run F G p q x y A N C))) ≐ rateNumerator A N p q :=
-  (congrFst (returned_budget F G p q x y A N C)).eqTrans (fst_pair _ _)
+  (returned_budget F G p q x y A N C).fstE
 theorem returned_denominator_query (F G : PR 2) (p q x y A N C : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (sndT (run F G p q x y A N C))) ≐ pairT (rateDenominator N p q) (gapQuery F G p q x y A N C) :=
-  (congrSnd (returned_budget F G p q x y A N C)).eqTrans (snd_pair _ _)
+  (returned_budget F G p q x y A N C).sndE
 theorem returned_denominator (F G : PR 2) (p q x y A N C : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (sndT (run F G p q x y A N C)))) ≐ rateDenominator N p q :=
-  (congrFst (returned_denominator_query F G p q x y A N C)).eqTrans (fst_pair _ _)
+  (returned_denominator_query F G p q x y A N C).fstE
 theorem returned_query (F G : PR 2) (p q x y A N C : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (sndT (sndT (run F G p q x y A N C)))) ≐ gapQuery F G p q x y A N C :=
-  (congrSnd (returned_denominator_query F G p q x y A N C)).eqTrans (snd_pair _ _)
+  (returned_denominator_query F G p q x y A N C).sndE
 
 theorem original_diagonal_variation_to_independent_rate_closed (F G : PR 2) : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 5
     (input F G (var 0) (var 1) (var 2) (var 3) (var 4) ⟶ independentRate F G (var 0) (var 1) (var 2) (var 3)) :=

@@ -23,14 +23,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.FiniteKernel
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Expectation (Ew Wt inst2_mul')
 open LeanProofs.IPRA.Probability.TowerCommonDen (common_den)
 open LeanProofs.IPRA.Probability.SignedParts (sbq inst2_sbq)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -14,7 +14,7 @@ set_option maxHeartbeats 1500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalNormalizedExponentAlgebra
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add mul neg scale oneCode)
 open GaussianRationalHorner (qadd qmul qadd_represents qmul_represents represents represents_rescale
   represents_congr canonical_unique positive_product)
@@ -23,8 +23,6 @@ open GaussianRationalMetric (qsub qsub_canonical qsub_represents qnegative qnega
 open GaussianRationalReciprocal (qone qone_represents_scaled)
 open GaussianRationalSyntheticDivision (rescale_to)
 open GaussianRootAlgebra (equal_of_values re_add im_add re_sub im_sub re_neg im_neg re_scale im_scale re_mul im_mul re_one im_one)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

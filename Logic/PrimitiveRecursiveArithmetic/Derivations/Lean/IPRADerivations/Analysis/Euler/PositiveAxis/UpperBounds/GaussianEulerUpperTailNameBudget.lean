@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUpperTailNameBudget
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerHalfDecayTailBound (tailNumerator tailDenominator)
 open GaussianEulerUpperTailScalar (budget)
 open GaussianEulerWeightedHalfDecay (majorant)
@@ -25,10 +25,6 @@ open GaussianGammaCompactCutoffGeometry (upperWidth delta)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianCompactRiemannName (mesh precision)
 open GaussianRationalHorner (positive_product)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -38,10 +34,8 @@ def errorCost (R C : PTm n) : PTm n := C*budget R+majorant R*halfCost C
 def finiteNumerator (p s N L C E R : PTm n) : PTm n :=
   (C*budget R)*tailDenominator p s N L E+(majorant R*tailNumerator p s N L C E)*(E*unit p)
 def finiteDenominator (p s N L E : PTm n) : PTm n := (E*unit p)*tailDenominator p s N L E
-@[simp] theorem subst_halfCost {m : ℕ} (σ : Fin n → PTm m) (C : PTm n) :
-    Syn.subst σ (halfCost C) = halfCost (Syn.subst σ C) := by simp [halfCost]
-@[simp] theorem subst_errorCost {m : ℕ} (σ : Fin n → PTm m) (R C : PTm n) :
-    Syn.subst σ (errorCost R C) = errorCost (Syn.subst σ R) (Syn.subst σ C) := by simp [errorCost]
+ipra_subst halfCost
+ipra_subst errorCost
 
 theorem enlarged_mesh_lower (s N E : PTm n) (hE : Γ ⊢[PRAAx] le one E) (hN : Γ ⊢[PRAAx] le (unit s) N) : Γ ⊢[PRAAx]
     le (unit s) (two*E*E*N) := by

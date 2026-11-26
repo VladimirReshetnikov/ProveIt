@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerDerivativeCompactSlopeRows
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLogarithmicPathCompactRows (body fixedData body_at)
 open GaussianEulerDerivativeCommonInterval (intervalWidth intervalDen intervalTop compactData)
 open GaussianEulerDerivativeCompactSlopeBinding (gain)
@@ -23,9 +23,6 @@ open GaussianRationalParameterTelescope (slopeRows)
 open GaussianNamedInverseRate (rateNumerator rateDenominator)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,20 +37,11 @@ def numerator (q v s u : PTm n) : PTm n :=
 def denominator (q v s u : PTm n) : PTm n :=
   rateDenominator (GaussianEulerDerivativeCompactSlopeBinding.denominator s u) q v
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (u j z R B A h D N : PTm n) :
-    (source u j z R B A h D N).subst σ = source (Syn.subst σ u) (Syn.subst σ j) (Syn.subst σ z)
-      (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ h) (Syn.subst σ D) (Syn.subst σ N) := by simp [source]
-@[simp] theorem subst_slopeData {m : ℕ} (σ : Fin n → PTm m) (q r s j z R B A h D N : PTm n) :
-    Syn.subst σ (slopeData q r s j z R B A h D N) = slopeData (Syn.subst σ q) (Syn.subst σ r) (Syn.subst σ s)
-      (Syn.subst σ j) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ h)
-      (Syn.subst σ D) (Syn.subst σ N) := by simp [slopeData]
-@[simp] theorem subst_baseSlope {m : ℕ} (σ : Fin n → PTm m) (v j z R B A : PTm n) :
-    Syn.subst σ (baseSlope v j z R B A) = baseSlope (Syn.subst σ v) (Syn.subst σ j) (Syn.subst σ z)
-      (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) := by simp [baseSlope]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (q v s u : PTm n) :
-    Syn.subst σ (numerator q v s u) = numerator (Syn.subst σ q) (Syn.subst σ v) (Syn.subst σ s) (Syn.subst σ u) := by simp [numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (q v s u : PTm n) :
-    Syn.subst σ (denominator q v s u) = denominator (Syn.subst σ q) (Syn.subst σ v) (Syn.subst σ s) (Syn.subst σ u) := by simp [denominator]
+ipra_subst source
+ipra_subst slopeData
+ipra_subst baseSlope
+ipra_subst numerator
+ipra_subst denominator
 
 theorem denominator_positive (q v s u : PTm n) : Γ ⊢[PRAAx] le one (denominator q v s u) :=
   GaussianNamedInverseRate.denominator_positive _ q v (GaussianEulerDerivativeCompactSlopeBinding.denominator_positive s u)

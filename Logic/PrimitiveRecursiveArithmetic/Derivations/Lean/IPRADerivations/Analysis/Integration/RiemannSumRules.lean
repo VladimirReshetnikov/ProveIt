@@ -1,5 +1,4 @@
 import IPRADerivations.Core.SumSplit
-import IPRADerivations.Core.SumLemmas
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Analysis.RationalArithmetic.PowerSums
 import IPRADerivations.Probability.Independence
@@ -30,13 +29,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.RiemannSumRules
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.PowerSums (sum_le)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -79,15 +74,11 @@ theorem rs_bound {f : PTm 2} {N x M : PTm n}
     Γ ⊢[PRAAx] le (ap2 (sumF f) N x) (N * M) := by
   have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
       le (ap2 (sumF f) (var 0) (Syn.shift x)) (var 0 * Syn.shift M)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2]
+    · refine .impI ?_
       have z := natEq (sum_zero (Γ := le zero N :: Γ) f x)
       ipra_le 0 using rw [z]; ring
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      exact .impI (bound_guard Prf.hyp0 (Prf.impE h.allOpen.wk.wk Prf.hyp0) Prf.hyp1)
+    · exact .impI (bound_guard Prf.hyp0 (Prf.impE h.allOpen.wk.wk Prf.hyp0) Prf.hyp1)
   have a := Prf.allE N hall
   simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
     Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at a

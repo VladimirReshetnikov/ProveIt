@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Logarithms.PositiveAxis.ThirdDerivative.GaussianBarnesCanonicalThirdDerivativeAlgebra
 import IPRADerivations.Analysis.Barnes.Taylor.RelativeExpansions.GaussianBarnesCanonicalHigherRows
 import IPRADerivations.Analysis.RationalArithmetic.GaussianScalarColumnSelection
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The original second logarithmic row differentiates to the original cubic row
@@ -15,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalThirdDerivativeStep
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Common (pw_two)
 open ComplexLogarithmRemainder (add)
 open GaussianBarnesCanonicalDerivativeRow (offset)
@@ -38,10 +37,6 @@ open GaussianRationalRoundedPower (multiplication_difference)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qsub_congr qzero_add)
 open GaussianReciprocalHorner (qadd_commutative qmul_associative qmul_one_right)
 open Products (fact)
-open ConciseIPRA.PTm (succ zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

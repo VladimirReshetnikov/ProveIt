@@ -14,7 +14,7 @@ set_option maxHeartbeats 1100000
 
 namespace LeanProofs.IPRA.Analysis.GaussianSignedObservationOrder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianSignedObservationGrid (rounded clearedError rounding_band)
 open GaussianRationalL1 (rawDen rawGaussian raw_den_positive)
 open GaussianRationalHorner (positive_product)
@@ -23,9 +23,6 @@ open RationalValueBounds (upper cross crossLeft)
 open ComplexLogarithmRemainder (re eval_re_code)
 open SignedGridStepBounds (neg_order)
 open PolynomialBisection (zle_add zle_congr zle_scale zle_scale_cancel)
-open LeanProofs.IPRA.PTm (monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

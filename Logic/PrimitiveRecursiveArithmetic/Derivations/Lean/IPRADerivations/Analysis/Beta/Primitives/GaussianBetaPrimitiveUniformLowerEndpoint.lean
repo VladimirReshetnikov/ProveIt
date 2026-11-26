@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaPrimitiveUniformLowerEndpoint
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLowerPowerCoefficients (source)
 open GaussianGammaIntegralCutoffs (height etaDen eta_den_positive)
 open GaussianBetaPrimitiveLowerEndpoint (rootDen root_den_positive eta_factorization)
@@ -26,10 +26,6 @@ open GaussianRationalMetric (bounded)
 open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianRationalNaturalScale (naturalPoint)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -37,10 +33,8 @@ def budget (A : PTm n) : PTm n := (LeanProofs.IPRA.PTm.num 3)*A
 def numerator (p k A R : PTm n) : PTm n := budget A*(pw (rootDen k A R) (LeanProofs.IPRA.PTm.pred A)*unit p+one)
 def denominator (p k A R N : PTm n) : PTm n := N*etaDen k A R*unit p
 def precision (t A : PTm n) : PTm n := GaussianFastValueCut.exponent (budget A) (succ t)
-@[simp] theorem subst_budget {m : ℕ} (σ : Fin n → PTm m) (A : PTm n) :
-    Syn.subst σ (budget A) = budget (Syn.subst σ A) := by simp [budget]
-@[simp] theorem subst_precision {m : ℕ} (σ : Fin n → PTm m) (t A : PTm n) :
-    Syn.subst σ (precision t A) = precision (Syn.subst σ t) (Syn.subst σ A) := by simp [precision]
+ipra_subst budget
+ipra_subst precision
 
 theorem encoded_primitive_bound (z R B A k N J : PTm n) (h : Γ ⊢[PRAAx] source z R B A)
     (hN : Γ ⊢[PRAAx] le one N) (hJ : Γ ⊢[PRAAx] le one J) : Γ ⊢[PRAAx]

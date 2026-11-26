@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Euler.Integration.Parts.GaussianEulerIntegrationByPartsCompactNameObservations
 import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactZeroWidth
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Original regular compact Euler integration by parts
@@ -16,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsCompactNamedIdentity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerCompactAdditivity (intervalSource)
 open GaussianEulerIntegrationByPartsCompactNames
 open GaussianEulerIntegrationByPartsCompactNameObservations (rawLeft left_readback boundary_readback boundary_query_error grid_to_compact)
@@ -26,17 +25,11 @@ open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameEquivalence (crossEquivalent cross_at)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def gain (z R B a C E T : PTm n) : PTm n := productModulus z R B a C E T+R+num 21
-@[simp] theorem subst_gain {m : ℕ} (σ : Fin n → PTm m) (z R B a C E T : PTm n) :
-    Syn.subst σ (gain z R B a C E T) = gain (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by simp [gain]
+ipra_subst gain
 
 theorem positive_diagonal (t z R B a C E T : PTm n)
     (h : Γ ⊢[PRAAx] intervalSource z R B a C E T) (hC : Γ ⊢[PRAAx] le one C) : Γ ⊢[PRAAx]

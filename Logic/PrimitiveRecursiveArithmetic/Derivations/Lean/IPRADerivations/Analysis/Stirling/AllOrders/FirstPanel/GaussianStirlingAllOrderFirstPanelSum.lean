@@ -14,7 +14,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelSum
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianStirlingAllOrderFirstPanelGridTerms (parts grid_parts gridIndex linearCoefficient squareCoefficient)
 open GaussianStirlingAllOrderHarmonicIntegral (sum_at_original)
 open GaussianStirlingAllOrderPanelRotation (nextBody next_term panel_right_endpoints)
@@ -26,9 +26,6 @@ open RationalReciprocalPowerTail (tail tail_zero tail_succ reciprocalPower add_z
 open RationalArithmetic (add multiply negative)
 open RationalAlgebra (add_congr add_associative add_commutative multiply_congr multiply_add
   negative_congr negative_minus_multiply)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "rsum" => RationalFiniteSum.sum
@@ -38,9 +35,7 @@ def result (U B Q L : PTm n) : PTm n :=
     (add (multiply (fraction (linearCoefficient U B Q) one) (tail one (Q*U) L))
       (negative (multiply (fraction (squareCoefficient U B Q) one) (tail two (Q*U) L))))
 
-@[simp] theorem subst_result {l : ℕ} (σ : Fin n → PTm l) (U B Q L : PTm n) :
-    Syn.subst σ (result U B Q L) = result (Syn.subst σ U) (Syn.subst σ B) (Syn.subst σ Q) (Syn.subst σ L) :=
-  by simp [result,linearCoefficient,squareCoefficient]
+ipra_subst result [linearCoefficient, squareCoefficient]
 
 private theorem negative_add (a b : PTm n) : Γ ⊢[PRAAx] negative (add a b) ≐ add (negative a) (negative b) :=
   (negative_minus_multiply _).eqTrans ((multiply_add _ _ _).eqTrans
@@ -102,9 +97,7 @@ private theorem result_succ (U B Q L : PTm n) : Γ ⊢[PRAAx]
 def prefixLaw (A B Q k L : PTm n) : Fm PTm n :=
   le L (B*Q) ⟶ rsum (nextBody (panelBody 0)) L (panelData one A B (B*Q) k) ≐ result (A+B*k) B Q L
 
-@[simp] theorem subst_prefixLaw {l : ℕ} (σ : Fin n → PTm l) (A B Q k L : PTm n) :
-    (prefixLaw A B Q k L).subst σ = prefixLaw (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ Q) (Syn.subst σ k) (Syn.subst σ L) :=
-  by simp [prefixLaw]
+ipra_subst prefixLaw
 
 private theorem prefix_zero (A B Q k : PTm n) : Γ ⊢[PRAAx] prefixLaw A B Q k zero :=
   .impI ((RationalFiniteSum.sum_zero _ _).eqTrans

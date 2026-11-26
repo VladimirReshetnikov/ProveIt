@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderSquareIntegral
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (fraction fraction_represents fraction_order)
 open GaussianRationalHorner (positive_product)
 open RationalReciprocalPowerTail (tail tail_zero tail_succ reciprocalPower potential add_zero_right)
@@ -24,18 +24,13 @@ open RationalArithmetic (add)
 open RationalArgmin (rationalLE rationalLE_congr reflexive transitive)
 open RationalAlgebra (add_congr add_associative add_commutative)
 open GaussianRationalSyntheticBounds (add_monotone)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
-open LeanProofs.IPRA.PTm (pred)
 
 def inverse (j : PTm n) : PTm n := fraction one j
 
-@[simp] theorem subst_inverse {l : ℕ} (σ : Fin n → PTm l) (j : PTm n) :
-    Syn.subst σ (inverse j) = inverse (Syn.subst σ j) := by simp [inverse]
+ipra_subst inverse
 
 theorem inverse_congr {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) :
     Γ ⊢[PRAAx] inverse a ≐ inverse b := fraction_congr (.eqRefl _) h
@@ -71,9 +66,7 @@ theorem lower_step (j : PTm n) (h : Γ ⊢[PRAAx] le one j) : Γ ⊢[PRAAx]
 def lowerLaw (N L : PTm n) : Fm PTm n :=
   rationalLE (inverse (succ N)) (add (tail two N L) (inverse (succ (N+L))))
 
-@[simp] theorem subst_lowerLaw {l : ℕ} (σ : Fin n → PTm l) (N L : PTm n) :
-    (lowerLaw N L).subst σ = lowerLaw (Syn.subst σ N) (Syn.subst σ L) := by
-  simp [lowerLaw]
+ipra_subst lowerLaw
 
 private theorem lower_zero (N : PTm n) : Γ ⊢[PRAAx] lowerLaw N zero := by
   have e : Γ ⊢[PRAAx] add (tail two N zero) (inverse (succ (N+zero))) ≐ inverse (succ N) :=

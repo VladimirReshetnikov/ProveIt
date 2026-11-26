@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaSharedMeshAlignment
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianCompactRiemannName (quadrature)
@@ -24,9 +24,6 @@ open GaussianGammaEulerCompactQuadrature (conservativeCells)
 open GaussianGammaCompactCutoffGeometry (middleWidth)
 open GaussianBetaIntegralCutoffPartition (totalWidth denominator middleCells totalCells)
 open GaussianBetaRefinedFixedCompactComparison (referencePrecision refinedCells refinedBeta compactObservation numerator)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

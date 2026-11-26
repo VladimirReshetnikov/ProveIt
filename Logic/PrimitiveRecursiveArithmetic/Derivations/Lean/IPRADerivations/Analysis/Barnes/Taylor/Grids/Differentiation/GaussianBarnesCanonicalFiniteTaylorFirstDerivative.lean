@@ -18,7 +18,7 @@ set_option maxHeartbeats 720000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalFiniteTaylorFirstDerivative
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add bounded_add bounded_mono normSq scale)
 open GaussianBarnesCanonicalFiniteCentralExponential (finiteNameF finiteData finite_regular)
 open GaussianBarnesCanonicalFiniteTaylorDiskGridLimit (clockGain)
@@ -49,10 +49,6 @@ open GaussianRationalSyntheticDivision (qadd_congr qmul_congr)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open ConciseIPRA.PTm (succ zero)
-open LeanProofs.IPRA.PTm (monus num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

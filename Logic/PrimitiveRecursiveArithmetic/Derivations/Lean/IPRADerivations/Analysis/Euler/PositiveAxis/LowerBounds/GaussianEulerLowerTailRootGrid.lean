@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaCompactCutoffSplit
 import IPRADerivations.AnalyticNumberTheory.LocalFactor
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The power-transformed grid for the original lower cutoff interval
@@ -16,16 +15,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLowerTailRootGrid
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaIntegralCutoffs (height etaDen exact_eta_root_power)
 open GaussianGammaCompactCutoffGeometry (delta ratio lowerWidth lower_endpoint)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open LeanProofs.IPRA.AnalyticNumberTheory.RSA (pw_mul)
 open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

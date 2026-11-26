@@ -12,7 +12,7 @@ set_option maxHeartbeats 1600000
 
 namespace LeanProofs.IPRA.Analysis.GaussianDigammaFirstBernoulliTelescope
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianDigammaFirstBernoulliLocal (reference)
 open GaussianDigammaFirstBernoulliReference (anchor subst_anchor subst_reference harmonicPrefix reference_row anchor_zero)
 open GaussianGammaDigammaFiniteSum (index subst_index reciprocalBody reciprocalSum reciprocal_entry row_source)
@@ -30,9 +30,6 @@ open GaussianReciprocalHorner (qadd_commutative)
 open GaussianStirlingAllOrderPanelPartsOuter (data)
 open GaussianStirlingGammaLogarithm (source)
 open RationalGaussianEmbedding (embed subst_embed)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -53,9 +50,7 @@ def refPrefix (A B Q L : PTm n) : PTm n := sum refBody L (data A B Q)
 def meshTarget (A B Q L : PTm n) : PTm n :=
   qsub (qsub (reciprocalSum A B (succ L)) (endpointPair A B L)) (harmonicPrefix A B Q L)
 
-@[simp] theorem subst_refPrefix {m : ℕ} (σ : Fin n → PTm m) (A B Q L : PTm n) :
-    Syn.subst σ (refPrefix A B Q L) = refPrefix (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ Q) (Syn.subst σ L) := by
-  simp [refPrefix,data]
+ipra_subst refPrefix [data]
 
 private theorem read_fields (A B Q : PTm n) : Γ ⊢[PRAAx]
     fstT (data A B Q) ≐ A ⋏ (fstT (sndT (data A B Q)) ≐ B ⋏ sndT (sndT (data A B Q)) ≐ Q) := by

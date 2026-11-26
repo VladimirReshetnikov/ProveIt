@@ -15,7 +15,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalPolynomialProductTruncation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientL1 (coefficientNorm)
 open GaussianEuclideanDistanceName (fraction)
 open GaussianRationalDistanceOrder (distance_congr)
@@ -26,10 +26,6 @@ open GaussianRationalSyntheticBounds (natCode natCode_nonnegative natCode_multip
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
 open RationalArgmin (rationalLE)
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

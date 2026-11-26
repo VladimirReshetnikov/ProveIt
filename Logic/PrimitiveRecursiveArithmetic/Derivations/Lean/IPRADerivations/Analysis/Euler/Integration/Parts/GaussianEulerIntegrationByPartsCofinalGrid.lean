@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsCofinalGrid
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaIntegralCutoffs (etaDen top)
 open GaussianGammaCompactQuadratureBoundary (width)
 open GaussianGammaEulerCompactQuadrature (conservativeCells)
@@ -30,9 +30,6 @@ open GaussianRationalDistanceOrder (distance_radius_mono)
 open GaussianCompactRiemannName (quadrature)
 open GaussianEulerIntegrandName (fixedData)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,19 +40,9 @@ def minimumObservation (t q k A R : PTm n) : PTm n :=
   GaussianBetaRefinedFixedCompactComparison.referencePrecision q k A R+
     GaussianFastValueCut.exponent (top k A R*observationCost R (etaDen k A R) (top k A R)*cells t q k A R) t
 
-@[simp] theorem subst_refinement {m : ℕ} (σ : Fin n → PTm m) (t k A R : PTm n) :
-    Syn.subst σ (refinement t k A R) = refinement (Syn.subst σ t) (Syn.subst σ k) (Syn.subst σ A) (Syn.subst σ R) := by
-  simp [refinement,curvature,GaussianEulerIntegrationByPartsStep.productSlopeBound,GaussianEulerIntegrationByPartsProductStep.curvature,
-    GaussianEulerIntegrationByPartsProductStep.powerCurvature,GaussianEulerIntegrationByPartsProductStep.linearBound,
-    GaussianEulerPowerShiftRate.radius,GaussianEulerCompactPowerMajorant.majorant,GaussianEulerCompactPowerMajorant.exponentRadius,
-    etaDen,top,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_cells {m : ℕ} (σ : Fin n → PTm m) (t q k A R : PTm n) :
-    Syn.subst σ (cells t q k A R) = cells (Syn.subst σ t) (Syn.subst σ q) (Syn.subst σ k) (Syn.subst σ A) (Syn.subst σ R) := by simp [cells]
-@[simp] theorem subst_minimumObservation {m : ℕ} (σ : Fin n → PTm m) (t q k A R : PTm n) :
-    Syn.subst σ (minimumObservation t q k A R) = minimumObservation (Syn.subst σ t) (Syn.subst σ q) (Syn.subst σ k) (Syn.subst σ A) (Syn.subst σ R) := by
-  simp [minimumObservation,GaussianBetaRefinedFixedCompactComparison.referencePrecision,observationCost,
-    GaussianEulerIntegrationByPartsProductStep.linearBound,GaussianEulerCompactPowerMajorant.majorant,
-    GaussianEulerCompactPowerMajorant.exponentRadius,etaDen,top,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst refinement [curvature, GaussianEulerIntegrationByPartsStep.productSlopeBound, GaussianEulerIntegrationByPartsProductStep.curvature, GaussianEulerIntegrationByPartsProductStep.powerCurvature, GaussianEulerIntegrationByPartsProductStep.linearBound, GaussianEulerPowerShiftRate.radius, GaussianEulerCompactPowerMajorant.majorant, GaussianEulerCompactPowerMajorant.exponentRadius, etaDen, top, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst cells
+ipra_subst minimumObservation [GaussianBetaRefinedFixedCompactComparison.referencePrecision, observationCost, GaussianEulerIntegrationByPartsProductStep.linearBound, GaussianEulerCompactPowerMajorant.majorant, GaussianEulerCompactPowerMajorant.exponentRadius, etaDen, top, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient]
 
 theorem refinement_positive (t k A R : PTm n) : Γ ⊢[PRAAx] le one (refinement t k A R) :=
   le_trans (le_add_right _ _) (le_add_right _ _)

@@ -13,7 +13,7 @@ set_option maxHeartbeats 1150000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalFiniteTaylorGridIncrementRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add normSq)
 open GaussianBarnesCanonicalFiniteTaylorEvenGridComparison (observed)
 open GaussianBarnesCanonicalFiniteTaylorEvenGridLimit (quadraticClock uniformGain uniform_rate)
@@ -34,9 +34,6 @@ open GaussianRationalLowerBounds (lower lower_from_representation)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalNaturalScale (natScale)
 open GaussianRationalReciprocal (reciprocal)
-open ConciseIPRA.PTm (succ zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

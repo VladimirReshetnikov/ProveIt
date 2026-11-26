@@ -13,9 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderPowerIntegralCofinal
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
 open LeanProofs.IPRA.Foundations.NumeralPrimes (num_le)
 open GaussianEuclideanDistanceName (fraction fraction_order)
@@ -34,8 +32,6 @@ open RationalGaussianEmbedding (embed)
 open RationalGaussianNameEmbedding (distance_from_radius)
 open RationalReciprocalPowerTail (add_zero_right)
 open RationalValueBounds (radius_of_upper)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)

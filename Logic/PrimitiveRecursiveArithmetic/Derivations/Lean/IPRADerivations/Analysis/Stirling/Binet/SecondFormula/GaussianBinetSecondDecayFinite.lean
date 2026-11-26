@@ -15,7 +15,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetSecondDecayFinite
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetSecondDecayEnvelope (envelope envelope_distance)
 open GaussianBinetSecondDecayGrid (value rowData rowBody envelopeData envelopeBody row_at envelope_at)
 open GaussianBinetSecondDecayPointwise (rowEnvelope halfDecay row_majorized)
@@ -39,10 +39,6 @@ open GaussianReciprocalHorner (qmul_associative qadd_zero_right)
 open GaussianRightHalfPlaneLogarithm (source)
 open RationalGaussianEmbedding (embed)
 open RationalGaussianRealPart (embedBody embed_congr)
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -50,8 +46,7 @@ local notation "RF" => GaussianEuclideanDistanceName.fraction
 
 def allowance (K T : PTm n) : PTm n := K*(num 8+num 10*T)
 
-@[simp] theorem subst_allowance {k : ℕ} (σ : Fin n → PTm k) (K T : PTm n) :
-    Syn.subst σ (allowance K T) = allowance (Syn.subst σ K) (Syn.subst σ T) := by simp [allowance]
+ipra_subst allowance
 
 theorem row_envelope_distance (p m K T a b H J : PTm n)
     (hm : Γ ⊢[PRAAx] le one m) (hbJ : Γ ⊢[PRAAx] le one (b*J)) :

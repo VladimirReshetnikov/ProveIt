@@ -14,7 +14,7 @@ set_option maxHeartbeats 1300000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalPrefactorShiftBinding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalPrefactor (negativeHalf quadraticCoefficientF quadraticCoefficientData quadratic_coefficient_regular)
 open GaussianBarnesCanonicalPrefactorShift (differenceF differenceData difference_regular)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -29,10 +29,6 @@ open GaussianRationalMetric (bounded distanceBounded qsub qnegative)
 open GaussianRationalReciprocal (bound_congr bounded_sum bounded_product bounded_difference)
 open GaussianBarnesCanonicalCorrectionShift (halfShift)
 open GaussianGammaEulerHeadLower (translated)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

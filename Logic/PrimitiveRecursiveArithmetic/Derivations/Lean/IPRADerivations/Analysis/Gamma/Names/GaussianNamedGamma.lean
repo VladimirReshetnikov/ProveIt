@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedGamma
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.FiniteQueryDemand (finiteMaximum finiteMaximum_at)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaHalfPlaneInputContinuity (modulus subst_modulus original_gamma_observations)
@@ -27,9 +27,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRationalMetric (distanceBounded)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianExponentialReference (unit_monotone)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -51,16 +48,11 @@ def data (x A : PTm n) : PTm n := pairT x A
 def body (f : PR 2) : PTm 2 := sample f (var 0) (fstT (var 1)) (sndT (var 1))
 def nameF (f : PR 2) : PR 2 := PTm.toPR (body f)
 
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p x A : PTm n) :
-    Syn.subst σ (clock f p x A) = clock f (Syn.subst σ p) (Syn.subst σ x) (Syn.subst σ A) := by
-  simp [clock]
+ipra_subst clock
 
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p x A : PTm n) :
-    Syn.subst σ (sample f p x A) = sample f (Syn.subst σ p) (Syn.subst σ x) (Syn.subst σ A) := by
-  simp [sample]
+ipra_subst sample
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (x A : PTm n) :
-    Syn.subst σ (data x A) = data (Syn.subst σ x) (Syn.subst σ A) := by simp [data]
+ipra_subst data
 
 private theorem demand_at (s R A : PTm n) :
     Γ ⊢[PRAAx] inst2 demandBody s (pairT R A) ≐ modulus s R (two*A) := by

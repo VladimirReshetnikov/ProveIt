@@ -14,7 +14,7 @@ set_option maxHeartbeats 1050000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderTruncationHorner
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero qadd qmul hornerF)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qmul_zero_left qzero_canonical)
 open GaussianReciprocalHorner (qadd_zero_right)
@@ -28,10 +28,6 @@ open GaussianStirlingNames (source)
 open GaussianStirlingGlobalBounds (remainderData)
 open GaussianNameEquivalence (crossEquivalent)
 open LeanProofs.IPRA.Foundations.SequenceComposition (entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "expandedTerm" => GaussianOffDominantTerms.term

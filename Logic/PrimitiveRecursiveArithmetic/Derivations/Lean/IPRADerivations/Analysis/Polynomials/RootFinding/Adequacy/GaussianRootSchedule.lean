@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.GaussianDescentClockArithmetic
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianFactorBudget
-import IPRADerivations.Core.Search
 
 /-!
 # Actual finite precision schedule for collision-tolerant root support
@@ -17,12 +16,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRootSchedule
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -34,17 +29,12 @@ def shiftIndex (N R : PTm n) : PTm n := binaryLength (four*coefficientConstant N
 def precision (N R t : PTm n) : PTm n := N*(t+two)+shiftIndex N R
 def toleranceDenominator (N R t : PTm n) : PTm n := pw two (precision N R t)
 
-@[simp] theorem subst_four {m : ℕ} (σ : Fin n → PTm m) : Syn.subst σ (four : PTm n) = (four : PTm m) := by simp [four]
-@[simp] theorem subst_binaryLength {m : ℕ} (σ : Fin n → PTm m) (x : PTm n) :
-    Syn.subst σ (binaryLength x) = binaryLength (Syn.subst σ x) := by simp [binaryLength]
-@[simp] theorem subst_coefficientConstant {m : ℕ} (σ : Fin n → PTm m) (N R : PTm n) :
-    Syn.subst σ (coefficientConstant N R) = coefficientConstant (Syn.subst σ N) (Syn.subst σ R) := by simp [coefficientConstant]
-@[simp] theorem subst_shiftIndex {m : ℕ} (σ : Fin n → PTm m) (N R : PTm n) :
-    Syn.subst σ (shiftIndex N R) = shiftIndex (Syn.subst σ N) (Syn.subst σ R) := by simp [shiftIndex]
-@[simp] theorem subst_precision {m : ℕ} (σ : Fin n → PTm m) (N R t : PTm n) :
-    Syn.subst σ (precision N R t) = precision (Syn.subst σ N) (Syn.subst σ R) (Syn.subst σ t) := by simp [precision]
-@[simp] theorem subst_toleranceDenominator {m : ℕ} (σ : Fin n → PTm m) (N R t : PTm n) :
-    Syn.subst σ (toleranceDenominator N R t) = toleranceDenominator (Syn.subst σ N) (Syn.subst σ R) (Syn.subst σ t) := by simp [toleranceDenominator]
+ipra_subst four
+ipra_subst binaryLength
+ipra_subst coefficientConstant
+ipra_subst shiftIndex
+ipra_subst precision
+ipra_subst toleranceDenominator
 
 theorem binary_body_at (i x : PTm n) : inst2 binaryBody i x = monus x (pw two i) := by simp [binaryBody,inst2]
 
@@ -103,8 +93,7 @@ theorem root_stability_budget (N R t : PTm n) : Γ ⊢[PRAAx]
 
 def output (N R t : PTm n) : PTm n := pairT (shiftIndex N R) (pairT (precision N R t) (toleranceDenominator N R t))
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (N R t : PTm n) :
-    Syn.subst σ (output N R t) = output (Syn.subst σ N) (Syn.subst σ R) (Syn.subst σ t) := by simp [output]
+ipra_subst output
 theorem schedule_program (N R t : PTm n) : Γ ⊢[PRAAx] ap3 outputF N R t ≐ output N R t := by
   simpa [outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![N,R,t]
 

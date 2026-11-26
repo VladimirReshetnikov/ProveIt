@@ -14,7 +14,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductMap
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedFiniteProduct (sample sample_zero sample_succ)
 open GaussianRationalHorner (qmul)
 open GaussianRationalNormSquareTransport (value value_congr product_value)
@@ -23,9 +23,6 @@ open GaussianRationalReciprocal (qone)
 open GaussianReciprocalHorner (qmul_one_right)
 open GaussianRationalSyntheticDivision (qmul_congr qone_canonical)
 open GaussianRationalPowerAlgebra (qmul_shuffle)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -58,8 +55,7 @@ theorem map_at (h : PTm 1) (f : PR 3) (p i x : PTm n) :
 def law (h : PTm 1) (f : PR 3) (p i x : PTm n) : Fm PTm n :=
   applyMap h (sample f p i x) ≐ sample (mapF h f) p i x
 
-@[simp] theorem subst_law {L : ℕ} (σ : Fin n → PTm L) (h : PTm 1) (f : PR 3) (p i x : PTm n) :
-    (law h f p i x).subst σ = law h f (Syn.subst σ p) (Syn.subst σ i) (Syn.subst σ x) := by simp [law]
+ipra_subst law
 
 theorem sample_map (h : PTm 1) (f : PR 3) (p i x : PTm n)
     (hOne : ∀ {l : ℕ} {Δ : List (Fm PTm l)}, Δ ⊢[PRAAx] applyMap h qone ≐ qone)
@@ -67,11 +63,9 @@ theorem sample_map (h : PTm 1) (f : PR 3) (p i x : PTm n)
       Δ ⊢[PRAAx] applyMap h (qmul a b) ≐ qmul (applyMap h a) (applyMap h b)) :
     Γ ⊢[PRAAx] law h f p i x := by
   have all : Γ ⊢[PRAAx] .all (law h f (Syn.shift p) (var 0) (Syn.shift x)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_law,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (apply_map_congr h (sample_zero f p x)).eqTrans (hOne.eqTrans (sample_zero _ _ _).eqSymm)
-    · simp only [subst_law,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      let P := Syn.shift p
+    ipra_qfind [subst_law]
+    · exact (apply_map_congr h (sample_zero f p x)).eqTrans (hOne.eqTrans (sample_zero _ _ _).eqSymm)
+    · let P := Syn.shift p
       let X := Syn.shift x
       let j : PTm (n+1) := var 0
       let Δ := law h f P j X :: Γ.map Fm.shift

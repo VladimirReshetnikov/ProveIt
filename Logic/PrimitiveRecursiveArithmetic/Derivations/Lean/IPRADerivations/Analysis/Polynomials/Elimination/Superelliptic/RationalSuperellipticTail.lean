@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.CompanionMatrices.RationalPolynomialMonicNorm
 import IPRADerivations.Analysis.Polynomials.Elimination.Superelliptic.GaussianSuperellipticTail
 import IPRADerivations.Foundations.SequenceEquality
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The original rational coefficient table of Y^m - f(X)
@@ -16,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalSuperellipticTail
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalGaussianEmbedding (embed scalarOne)
 open RationalPolynomialGaussianEmbedding (coefficients embed_congr coefficients_length)
 open RationalPolynomialBuffersGaussianEmbedding (zeros scaled)
@@ -27,10 +26,6 @@ open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_deco
 open LeanProofs.IPRA.Foundations.SequenceComposition
   (append appendBody append_left append_right_at append_length length entry_congr)
 open LeanProofs.IPRA.Foundations.SequenceEquality (agree sequence_equal)
-open LeanProofs.IPRA.PTm (pred)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,12 +33,9 @@ def negative (f : PTm n) : PTm n := scaled f (RationalArithmetic.negative scalar
 def zeroRows (m c : PTm n) : PTm n := sequence (var 1) (pred m) (zeros (succ c))
 def tailRows (f m c : PTm n) : PTm n := append (zeroRows m c) (singleton (negative f))
 
-@[simp] theorem subst_negative {l : ℕ} (σ : Fin n → PTm l) (f : PTm n) :
-    Syn.subst σ (negative f) = negative (Syn.subst σ f) := by simp [negative]
-@[simp] theorem subst_zeroRows {l : ℕ} (σ : Fin n → PTm l) (m c : PTm n) :
-    Syn.subst σ (zeroRows m c) = zeroRows (Syn.subst σ m) (Syn.subst σ c) := by simp [zeroRows]
-@[simp] theorem subst_tailRows {l : ℕ} (σ : Fin n → PTm l) (f m c : PTm n) :
-    Syn.subst σ (tailRows f m c) = tailRows (Syn.subst σ f) (Syn.subst σ m) (Syn.subst σ c) := by simp [tailRows]
+ipra_subst negative
+ipra_subst zeroRows
+ipra_subst tailRows
 
 theorem zero_rows_length (m c : PTm n) : Γ ⊢[PRAAx] length (zeroRows m c) ≐ pred m := sequence_length _ _ _
 theorem tail_length (f m c : PTm n) (hm : Γ ⊢[PRAAx] le one m) : Γ ⊢[PRAAx] length (tailRows f m c) ≐ m :=

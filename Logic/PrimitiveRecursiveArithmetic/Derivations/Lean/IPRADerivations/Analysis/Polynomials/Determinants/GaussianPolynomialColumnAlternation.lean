@@ -4,7 +4,6 @@ import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRation
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalPermutationSum
 import IPRADerivations.Analysis.LinearAlgebra.Matrices.GaussianRationalMatrixFiniteSums
 import IPRADerivations.Analysis.Polynomials.Determinants.GaussianPolynomialDeterminant
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual numerical column swaps and evaluated determinant alternation
@@ -21,7 +20,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialColumnAlternation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
 open LeanProofs.IPRA.Foundations.GuardedTotalization (sel sel_zero sel_one)
@@ -29,10 +28,6 @@ open LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantTerms (cell tableShap
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero qadd qmul canonical evaluate)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qadd_congr qmul_congr)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qnegative)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -44,14 +39,10 @@ def rowBody : PTm 2 := selectedRow (entry (fstT (var 1)) (var 0))
   (fstT (sndT (var 1))) (sndT (sndT (var 1)))
 def CS (M m j : PTm n) : PTm n := sequence rowBody m (rowData M m j)
 
-@[simp] theorem subst_active {l : ℕ} (σ : Fin n → PTm l) (m j : PTm n) :
-    Syn.subst σ (active m j) = active (Syn.subst σ m) (Syn.subst σ j) := by simp [active]
-@[simp] theorem subst_selectedRow {l : ℕ} (σ : Fin n → PTm l) (R m j : PTm n) :
-    Syn.subst σ (selectedRow R m j) = selectedRow (Syn.subst σ R) (Syn.subst σ m) (Syn.subst σ j) := by simp [selectedRow,sel]
-@[simp] theorem subst_rowData {l : ℕ} (σ : Fin n → PTm l) (M m j : PTm n) :
-    Syn.subst σ (rowData M m j) = rowData (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ j) := by simp [rowData]
-@[simp] theorem subst_CS {l : ℕ} (σ : Fin n → PTm l) (M m j : PTm n) :
-    Syn.subst σ (CS M m j) = CS (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ j) := by simp [CS]
+ipra_subst active
+ipra_subst selectedRow [sel]
+ipra_subst rowData
+ipra_subst CS
 
 theorem selected_row_congr {R R' m m' j j' : PTm n}
     (hR : Γ ⊢[PRAAx] R ≐ R') (hm : Γ ⊢[PRAAx] m ≐ m') (hj : Γ ⊢[PRAAx] j ≐ j') : Γ ⊢[PRAAx]
@@ -74,7 +65,7 @@ theorem row_body_at (M m j r : PTm n) : Γ ⊢[PRAAx]
     Matrix.cons_val_zero,Matrix.cons_val_one]
   have tail := snd_pair (Γ := Γ) M (pairT m j)
   exact selected_row_congr (entry_congr (fst_pair _ _) (.eqRefl _))
-    ((congrFst tail).eqTrans (fst_pair _ _)) ((congrSnd tail).eqTrans (snd_pair _ _))
+    tail.fstE tail.sndE
 theorem CS_length (M m j : PTm n) : Γ ⊢[PRAAx] length (CS M m j) ≐ m := sequence_length _ _ _
 theorem row_at (M m j r : PTm n) (hr : Γ ⊢[PRAAx] lt r m) : Γ ⊢[PRAAx]
     entry (CS M m j) r ≐ selectedRow (entry M r) m j :=
@@ -201,8 +192,7 @@ def oldBody : PTm 2 := GaussianPolynomialDeterminant.valueTerm (fields (var 1) 0
 def newBody : PTm 2 := GaussianPolynomialDeterminant.valueTerm
   (CS (fields (var 1) 0) (fields (var 1) 1) (fields (var 1) 3))
   (fields (var 1) 1) (fields (var 1) 2) (var 0) (fields (var 1) 4)
-@[simp] theorem subst_pack {l : ℕ} (σ : Fin n → PTm l) (M m L j z : PTm n) :
-    Syn.subst σ (pack M m L j z) = pack (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ j) (Syn.subst σ z) := by simp [pack]
+ipra_subst pack
 @[simp] theorem subst_fields {l : ℕ} (σ : Fin n → PTm l) (x : PTm n) (i : Fin 5) :
     Syn.subst σ (fields x i) = fields (Syn.subst σ x) i := by fin_cases i <;> simp [fields]
 theorem field_at (M m L j z : PTm n) (i : Fin 5) : Γ ⊢[PRAAx] fields (pack M m L j z) i ≐ ![M,m,L,j,z] i := by
@@ -211,10 +201,10 @@ theorem field_at (M m L j z : PTm n) (i : Fin 5) : Γ ⊢[PRAAx] fields (pack M 
   have e3 := (congrSnd e2).eqTrans (snd_pair L (pairT j z))
   fin_cases i
   · exact fst_pair _ _
-  · exact (congrFst e1).eqTrans (fst_pair _ _)
-  · exact (congrFst e2).eqTrans (fst_pair _ _)
-  · exact (congrFst e3).eqTrans (fst_pair _ _)
-  · exact (congrSnd e3).eqTrans (snd_pair _ _)
+  · exact e1.fstE
+  · exact e2.fstE
+  · exact e3.fstE
+  · exact e3.sndE
 theorem rank_congr {m m' j j' t t' : PTm n} (hm : Γ ⊢[PRAAx] m ≐ m')
     (hj : Γ ⊢[PRAAx] j ≐ j') (ht : Γ ⊢[PRAAx] t ≐ t') : Γ ⊢[PRAAx]
     Foundations.RuntimeAdjacentPermutationSwap.rankSwap m j t ≐ Foundations.RuntimeAdjacentPermutationSwap.rankSwap m' j' t' := by
@@ -347,24 +337,18 @@ def output (M m L j : PTm n) : PTm n := pairT (CS M m j)
   (pairT (GaussianPolynomialDeterminant.run M m L) (GaussianPolynomialDeterminant.run (CS M m j) m L))
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (M m L j : PTm n) : PTm n := app outputF ![M,m,L,j]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (M m L j : PTm n) :
-    Syn.subst σ (output M m L j) = output (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ j) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (M m L j : PTm n) :
-    Syn.subst σ (run M m L j) = run (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ j) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 theorem program_at (M m L j : PTm n) : Γ ⊢[PRAAx] run M m L j ≐ output M m L j := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3)) ![M,m,L,j]
 theorem returned_table (M m L j : PTm n) : Γ ⊢[PRAAx] fstT (run M m L j) ≐ CS M m j :=
-  (congrFst (program_at _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _).fstE
 theorem returned_original (M m L j : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run M m L j)) ≐ GaussianPolynomialDeterminant.run M m L :=
-  (congrFst ((congrSnd (program_at _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _).sndE.fstE
 theorem returned_swapped (M m L j : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (run M m L j)) ≐ GaussianPolynomialDeterminant.run (CS M m j) m L :=
-  (congrSnd ((congrSnd (program_at _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _).sndE.sndE
 theorem returned_original_polynomial (M m L j : PTm n) : Γ ⊢[PRAAx]
     fstT (fstT (sndT (run M m L j))) ≐ GaussianPolynomialDeterminant.determinant M m L :=
   (congrFst (returned_original _ _ _ _)).eqTrans (GaussianPolynomialDeterminant.returned_polynomial _ _ _)

@@ -19,7 +19,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerDerivativeCommonInterval
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaIntegralCutoffs (height etaDen top tailCoefficient)
 open GaussianGammaCompactQuadratureBoundary (width)
 open GaussianEulerLogarithmicCommonCutoff (cutoff lowerIndex)
@@ -29,10 +29,6 @@ open GaussianRationalHorner (ofGaussian positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "I" => GaussianEulerLogarithmicImproperName.nameF
@@ -51,26 +47,14 @@ def improperData (m z R B A h D N i : PTm n) : PTm n :=
   GaussianEulerLogarithmicImproperName.data m (numerator z B h D N i) (R+one) (denominator B D N) (two*A)
 def endpointQuery (p D : PTm n) : PTm n := GaussianFastValueCut.exponent (num 4*D) (p+num 6)
 
-@[simp] theorem subst_nextIndex {m : ℕ} (σ : Fin n → PTm m) (r s j A : PTm n) :
-    Syn.subst σ (nextIndex r s j A) = nextIndex (Syn.subst σ r) (Syn.subst σ s) (Syn.subst σ j) (Syn.subst σ A) := by simp [nextIndex]
-@[simp] theorem subst_baseIndex {m : ℕ} (σ : Fin n → PTm m) (r s j R A : PTm n) :
-    Syn.subst σ (baseIndex r s j R A) = baseIndex (Syn.subst σ r) (Syn.subst σ s) (Syn.subst σ j) (Syn.subst σ R) (Syn.subst σ A) := by simp [baseIndex]
-@[simp] theorem subst_intervalDen {m : ℕ} (σ : Fin n → PTm m) (r s j R A : PTm n) :
-    Syn.subst σ (intervalDen r s j R A) = intervalDen (Syn.subst σ r) (Syn.subst σ s) (Syn.subst σ j) (Syn.subst σ R) (Syn.subst σ A) := by
-  simp [intervalDen,etaDen,height,tailCoefficient]
-@[simp] theorem subst_intervalTop {m : ℕ} (σ : Fin n → PTm m) (r s j R A : PTm n) :
-    Syn.subst σ (intervalTop r s j R A) = intervalTop (Syn.subst σ r) (Syn.subst σ s) (Syn.subst σ j) (Syn.subst σ R) (Syn.subst σ A) := by
-  simp [intervalTop,top,height,tailCoefficient]
-@[simp] theorem subst_intervalWidth {m : ℕ} (σ : Fin n → PTm m) (r s j R A : PTm n) :
-    Syn.subst σ (intervalWidth r s j R A) = intervalWidth (Syn.subst σ r) (Syn.subst σ s) (Syn.subst σ j) (Syn.subst σ R) (Syn.subst σ A) := by simp [intervalWidth]
-@[simp] theorem subst_compactData {m : ℕ} (σ : Fin n → PTm m) (r s j k z R B A h D N i : PTm n) :
-    Syn.subst σ (compactData r s j k z R B A h D N i) = compactData (Syn.subst σ r) (Syn.subst σ s) (Syn.subst σ j)
-      (Syn.subst σ k) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ h) (Syn.subst σ D) (Syn.subst σ N) (Syn.subst σ i) := by simp [compactData]
-@[simp] theorem subst_improperData {m : ℕ} (σ : Fin n → PTm m) (k z R B A h D N i : PTm n) :
-    Syn.subst σ (improperData k z R B A h D N i) = improperData (Syn.subst σ k) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ h) (Syn.subst σ D) (Syn.subst σ N) (Syn.subst σ i) := by simp [improperData]
-@[simp] theorem subst_endpointQuery {m : ℕ} (σ : Fin n → PTm m) (p D : PTm n) :
-    Syn.subst σ (endpointQuery p D) = endpointQuery (Syn.subst σ p) (Syn.subst σ D) := by simp [endpointQuery]
+ipra_subst nextIndex
+ipra_subst baseIndex
+ipra_subst intervalDen [etaDen, height, tailCoefficient]
+ipra_subst intervalTop [top, height, tailCoefficient]
+ipra_subst intervalWidth
+ipra_subst compactData
+ipra_subst improperData
+ipra_subst endpointQuery
 
 theorem base_late (r s j R A : PTm n) : Γ ⊢[PRAAx] le (cutoff r j (two*A)) (baseIndex r s j R A) :=
   le_trans (le_add_right _ _) (le_add_right _ _)

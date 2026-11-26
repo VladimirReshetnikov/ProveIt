@@ -14,7 +14,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceStripHorizon
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetLaplaceIntegrand (input subst_input meshGain)
 open GaussianBinetLaplaceStrip
   (Kernel integrandF integrandData evaluatorF fixedData tagNumerator tag_inside wrapped_at compact_input source subst_source)
@@ -23,8 +23,6 @@ open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_to_diagonal)
 open GaussianNameArithmetic (multiplyF multiplyData)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "ExpF" => GaussianBinetLaplaceExponential.nameF

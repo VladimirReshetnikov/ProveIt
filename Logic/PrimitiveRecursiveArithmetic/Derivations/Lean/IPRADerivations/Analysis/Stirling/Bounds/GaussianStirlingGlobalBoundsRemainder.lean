@@ -14,7 +14,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsRemainder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
@@ -32,10 +32,6 @@ open GaussianStirlingTailComparison (point_add_order point_order_refl)
 open GaussianStirlingTelescope (shifted shifted_source)
 open RationalArgmin (rationalLE rationalLE_congr)
 open RationalValueBounds (upper upper_congr upper_order_left upper_order_right upper_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "A" => GaussianStirlingNames.nameF
@@ -46,9 +42,7 @@ local notation "PD" => GaussianStirlingTelescopeName.data
 
 def sumF : PR 2 := addF P remainderF
 def sumData (N a b x : PTm n) : PTm n := addData (PD N a b) (remainderData (shifted a b N) b x)
-@[simp] theorem subst_sumData {l : ℕ} (σ : Fin n → PTm l) (N a b x : PTm n) :
-    Syn.subst σ (sumData N a b x) = sumData (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ x) := by
-  simp [sumData]
+ipra_subst sumData
 
 private theorem zeros_cross (x y : PTm n) : Γ ⊢[PRAAx] crossEquivalent zeroF zeroF x y :=
   GaussianNameConjugation.equal_samples_cross _ _ _ _ (zero_fast x) (zero_fast y)

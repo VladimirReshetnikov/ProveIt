@@ -15,7 +15,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingWallisRatioRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianStirlingWallisGammaRatio (ratioF ratioData wallisF wallisData wallis_cross)
 open GaussianStirlingWallisFactor (ratioFactor correction ratio_bound correction_distance ratio_times_wallis pair_odd_positive)
 open GaussianGammaHalfPiName (meshAt clearing)
@@ -36,10 +36,6 @@ open RationalGaussianEmbedding (axis_congr canonical_axis_roundtrip)
 open RationalValueBounds (upper upper_mono radius_of_upper)
 open GaussianPositiveRationalLogarithm (fraction)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

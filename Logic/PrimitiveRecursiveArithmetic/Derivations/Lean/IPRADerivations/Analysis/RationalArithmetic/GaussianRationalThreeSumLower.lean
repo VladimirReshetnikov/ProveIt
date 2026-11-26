@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalThreeSumLower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qadd positive_product scalar_congr)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalL1 (rawGaussian rawDen raw_represents raw_den_positive)
@@ -24,10 +24,6 @@ open RationalGaussianEmbedding (scalarZero scalar_zero_represents)
 open RationalValueBounds (upper upper_triangle upper_of_radius upper_mono upper_congr)
 open RationalRepresentedUpper (to_signed from_signed)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -36,8 +32,7 @@ def split (l m r : PTm n) : PTm n := qadd l (qadd m r)
 def numerator (A B C D E F : PTm n) : PTm n := (C*F+E*D)*B+A*(D*F)
 def denominator (B D F : PTm n) : PTm n := (D*F)*B
 
-@[simp] theorem subst_split {s : ℕ} (σ : Fin n → PTm s) (l m r : PTm n) :
-    Syn.subst σ (split l m r) = split (Syn.subst σ l) (Syn.subst σ m) (Syn.subst σ r) := by simp [split]
+ipra_subst split
 
 /-- Signed represented arithmetic proves the lower-tail step before any
 Gaussian distance estimate is used. No raw canonicality is required. -/

@@ -26,7 +26,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.KolmogorovBlock
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Expectation (Ew Wt inst2_mul' inst2_add')
 open LeanProofs.IPRA.Probability.Independence (dsum sum_scale shift_sum)
 open LeanProofs.IPRA.Probability.ProductPower (Pr Sr TB TB_at Tt dg wdB xdB div_eq' rem_lt'')
@@ -38,10 +38,6 @@ open LeanProofs.IPRA.Probability.KolmogorovVariance (kolmogorov_variance)
 open LeanProofs.IPRA.Probability.ProductMarginal (ρn hr marginal)
 open LeanProofs.IPRA.Foundations.MixedRadix (shift_le')
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -107,9 +103,8 @@ theorem block_kolmogorov {M x : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
         Tt w m M x * (N * (ap2 (sumF (w * X)) M x * ap2 (sumF (w * X)) M x) * Tt w N M x))
       (Tt w m M x * (N * (ap2 (sumF w) M x * ap2 (sumF (w * (X * X))) M x) * Tt w N M x)) := by
   have mg := natEq (marginal (Γ := Γ) w (hB w X a) hM N m x)
-  have bd := natEq (block_dsum (Γ := Γ) w X a N M x)
   have kv := kolmogorov_variance w X a hM hW N (x := x) (Γ := Γ)
-  ipra_le 𝔟 (Tt w m M x) * sl kv using rw [mg, bd]; ring
+  ipra_le 𝔟 (Tt w m M x) * sl kv using rw [mg, natEq (block_dsum (Γ := Γ) w X a N M x)]; ring
 
 /-- `hB(t mod M^N) = a² ∑_{c≤N} I_c(t)`: the block observable is the crossing indicator of the sample. -/
 theorem hB_low {M t N x : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) :
@@ -134,7 +129,7 @@ theorem hB_low {M t N x : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) :
     have dv := div_eq' (t := Syn.shift t) hP
     have er : Syn.shift (rem t (pw M N)) = rem (Syn.shift t) (pw (Syn.shift M) (Syn.shift N)) := by simp [Syn.shift]
     rw [er]
-    refine (congrInst2 _ (.eqRefl _) (congrPairT (fst_pair _ _) ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)))).eqTrans ?_
+    refine (congrInst2 _ (.eqRefl _) (congrPairT (fst_pair _ _) (snd_pair _ _).sndE)).eqTrans ?_
     refine .eqTrans ?_ (congrInst2 _ (.eqRefl _) (congrPairT dv.eqSymm (.eqRefl _)))
     exact (I_low_gen w X a (i := quo (Syn.shift t) (pw (Syn.shift M) (Syn.shift N))) hM'.wk hc).eqSymm
 

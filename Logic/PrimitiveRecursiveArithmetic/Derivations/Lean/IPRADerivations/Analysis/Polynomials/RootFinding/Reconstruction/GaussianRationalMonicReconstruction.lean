@@ -1,8 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianRationalMonicReduction
 import IPRADerivations.Analysis.Polynomials.Products.GaussianRationalPolynomialProduct
-import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Coefficient reconstruction for the actual monic reduction
@@ -22,7 +19,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalMonicReconstruction
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero qadd qmul canonical)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision
   (qone qadd_congr qmul_congr qzero_canonical qmul_zero_left qmul_zero_right qzero_add canonicalCoefficients)
@@ -40,10 +37,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticCoefficientValues
   (qadd_recode_left qadd_recode_right qmul_recode_left qmul_recode_right)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -89,18 +82,14 @@ theorem contribution_added (P A B M k i : PTm n) : Γ ⊢[PRAAx]
 
 def addLaw (P A B M k t : PTm n) : Fm PTm n :=
   coefficient P (added A B (succ M)) M t k ≐ qadd (coefficient P A M t k) (coefficient P B M t k)
-@[simp] theorem subst_addLaw {l : ℕ} (σ : Fin n → PTm l) (P A B M k t : PTm n) :
-    (addLaw P A B M k t).subst σ = addLaw (Syn.subst σ P) (Syn.subst σ A) (Syn.subst σ B)
-      (Syn.subst σ M) (Syn.subst σ k) (Syn.subst σ t) := by simp [addLaw]
+ipra_subst addLaw
 
 theorem coefficient_added (P A B M t k : PTm n) : Γ ⊢[PRAAx] addLaw P A B M k t := by
   have all : Γ ⊢[PRAAx] .all (addLaw (Syn.shift P) (Syn.shift A) (Syn.shift B) (Syn.shift M) (Syn.shift k) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_addLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (coefficient_zero _ _ _ _).eqTrans
+    ipra_qfind [subst_addLaw]
+    · exact (coefficient_zero _ _ _ _).eqTrans
         ((qadd_congr (coefficient_zero _ _ _ _) (coefficient_zero _ _ _ _)).eqTrans zero_add_zero).eqSymm
-    · simp only [subst_addLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact (coefficient_succ _ _ _ _ _).eqTrans
+    · exact (coefficient_succ _ _ _ _ _).eqTrans
         ((qadd_congr Prf.hyp0 (contribution_added _ _ _ _ _ _)).eqTrans
           ((GaussianRationalFiniteSum.add_shuffle _ _ _ _).eqTrans
             (qadd_congr (coefficient_succ _ _ _ _ _).eqSymm (coefficient_succ _ _ _ _ _).eqSymm)))
@@ -109,9 +98,7 @@ theorem coefficient_added (P A B M t k : PTm n) : Γ ⊢[PRAAx] addLaw P A B M k
 def paddedEqual (Q Q' M M' k : PTm n) : Fm PTm n := .all
   (le (var 0) (Syn.shift k) ⟶ padded (Syn.shift Q) (succ (Syn.shift M)) (var 0) ≐
     padded (Syn.shift Q') (succ (Syn.shift M')) (var 0))
-@[simp] theorem subst_paddedEqual {l : ℕ} (σ : Fin n → PTm l) (Q Q' M M' k : PTm n) :
-    (paddedEqual Q Q' M M' k).subst σ = paddedEqual (Syn.subst σ Q) (Syn.subst σ Q')
-      (Syn.subst σ M) (Syn.subst σ M') (Syn.subst σ k) := by simp [paddedEqual,Syn.subst_shift,Syn.shift_subst]
+ipra_subst paddedEqual [Syn.subst_shift, Syn.shift_subst]
 theorem padded_equal_at (Q Q' M M' k j : PTm n) (h : Γ ⊢[PRAAx] paddedEqual Q Q' M M' k)
     (hj : Γ ⊢[PRAAx] le j k) : Γ ⊢[PRAAx] padded Q (succ M) j ≐ padded Q' (succ M') j := by
   have gate : Γ ⊢[PRAAx] le j k ⟶ padded Q (succ M) j ≐ padded Q' (succ M') j := by
@@ -145,14 +132,10 @@ def active (a q t : PTm n) : PTm n := RationalArithmetic.select (Signum.sg (monu
 def spikeData (a q : PTm n) : PTm n := pairT a q
 def spikeBody : PTm 2 := spike (fstT (var 1)) (sndT (var 1)) (var 0)
 def spikeSum (a q t : PTm n) : PTm n := GaussianRationalFiniteSum.sum spikeBody t (spikeData a q)
-@[simp] theorem subst_spike {l : ℕ} (σ : Fin n → PTm l) (a q i : PTm n) :
-    Syn.subst σ (spike a q i) = spike (Syn.subst σ a) (Syn.subst σ q) (Syn.subst σ i) := by simp [spike]
-@[simp] theorem subst_active {l : ℕ} (σ : Fin n → PTm l) (a q t : PTm n) :
-    Syn.subst σ (active a q t) = active (Syn.subst σ a) (Syn.subst σ q) (Syn.subst σ t) := by simp [active,Signum.sg]
-@[simp] theorem subst_spikeData {l : ℕ} (σ : Fin n → PTm l) (a q : PTm n) :
-    Syn.subst σ (spikeData a q) = spikeData (Syn.subst σ a) (Syn.subst σ q) := by simp [spikeData]
-@[simp] theorem subst_spikeSum {l : ℕ} (σ : Fin n → PTm l) (a q t : PTm n) :
-    Syn.subst σ (spikeSum a q t) = spikeSum (Syn.subst σ a) (Syn.subst σ q) (Syn.subst σ t) := by simp [spikeSum]
+ipra_subst spike
+ipra_subst active [Signum.sg]
+ipra_subst spikeData
+ipra_subst spikeSum
 
 theorem select_congr {b b' u u' v v' : PTm n} (hb : Γ ⊢[PRAAx] b ≐ b')
     (hu : Γ ⊢[PRAAx] u ≐ u') (hv : Γ ⊢[PRAAx] v ≐ v') : Γ ⊢[PRAAx]
@@ -204,11 +187,9 @@ theorem spike_sum (a q t : PTm n) (hq : Γ ⊢[PRAAx] canonical q) : Γ ⊢[PRAA
   have qs : Γ.map Fm.shift ⊢[PRAAx] canonical (Syn.shift q) := by
     simpa only [Fm.shift,GaussianRationalHorner.subst_canonical,Syn.shift] using hq.shift
   have all : Γ ⊢[PRAAx] .all (spikeSum (Syn.shift a) (Syn.shift q) (var 0) ≐ active (Syn.shift a) (Syn.shift q) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,subst_spikeSum,subst_active,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (GaussianRationalFiniteSum.sum_zero _ _).eqTrans (active_off a q zero (zero_le a)).eqSymm
-    · simp only [Fm.subst_eq,subst_spikeSum,subst_active,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact spike_sum_step _ _ _ qs.wk Prf.hyp0
+    ipra_qfind [subst_spikeSum, subst_active]
+    · exact (GaussianRationalFiniteSum.sum_zero _ _).eqTrans (active_off a q zero (zero_le a)).eqSymm
+    · exact spike_sum_step _ _ _ qs.wk Prf.hyp0
   simpa only [Fm.subst_eq,subst_spikeSum,subst_active,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE t
 
 theorem leftPad_congr {C C' a a' : PTm n} (hC : Γ ⊢[PRAAx] C ≐ C') (ha : Γ ⊢[PRAAx] a ≐ a') : Γ ⊢[PRAAx]
@@ -266,9 +247,7 @@ theorem contribution_constant (P c a k i : PTm n) (ha : Γ ⊢[PRAAx] le a k) : 
 
 def offsetCoefficient (P c t a k : PTm n) : PTm n :=
   RationalArithmetic.select (Signum.sg (monus (succ k) a)) qzero (qmul c (padded P t (monus k a)))
-@[simp] theorem subst_offsetCoefficient {l : ℕ} (σ : Fin n → PTm l) (P c t a k : PTm n) :
-    Syn.subst σ (offsetCoefficient P c t a k) = offsetCoefficient (Syn.subst σ P) (Syn.subst σ c)
-      (Syn.subst σ t) (Syn.subst σ a) (Syn.subst σ k) := by simp [offsetCoefficient,Signum.sg]
+ipra_subst offsetCoefficient [Signum.sg]
 theorem offset_on (P c t a k : PTm n) (ha : Γ ⊢[PRAAx] le a k) : Γ ⊢[PRAAx]
     offsetCoefficient P c t a k ≐ qmul c (padded P t (monus k a)) :=
   RationalArithmetic.select_one _ _ _ (AnalyticNumberTheory.Totatives.sg_lt ((succ_monus_succ _ _).eqTrans ha))
@@ -338,8 +317,7 @@ theorem coefficient_quotient_next (P Q R r t k : PTm n) (hQ : Γ ⊢[PRAAx] leng
 
 def shifted (C L a k : PTm n) : PTm n :=
   RationalArithmetic.select (Signum.sg (monus (succ k) a)) qzero (padded C L (monus k a))
-@[simp] theorem subst_shifted {l : ℕ} (σ : Fin n → PTm l) (C L a k : PTm n) :
-    Syn.subst σ (shifted C L a k) = shifted (Syn.subst σ C) (Syn.subst σ L) (Syn.subst σ a) (Syn.subst σ k) := by simp [shifted,Signum.sg]
+ipra_subst shifted [Signum.sg]
 theorem shifted_congr {C C' L L' a a' k k' : PTm n} (hC : Γ ⊢[PRAAx] C ≐ C')
     (hL : Γ ⊢[PRAAx] L ≐ L') (ha : Γ ⊢[PRAAx] a ≐ a') (hk : Γ ⊢[PRAAx] k ≐ k') : Γ ⊢[PRAAx]
     shifted C L a k ≐ shifted C' L' a' k' :=
@@ -594,9 +572,7 @@ theorem coefficient_zeros (P M t k : PTm n) : Γ ⊢[PRAAx]
 def rowLaw (P S D k r : PTm n) : Fm PTm n :=
   recode (shifted S r (succ D) k) ≐
     qadd (coefficient P (quotient P S D r) r (succ D) k) (shifted (remainder P S D r) D (succ r) k)
-@[simp] theorem subst_rowLaw {l : ℕ} (σ : Fin n → PTm l) (P S D k r : PTm n) :
-    (rowLaw P S D k r).subst σ = rowLaw (Syn.subst σ P) (Syn.subst σ S) (Syn.subst σ D)
-      (Syn.subst σ k) (Syn.subst σ r) := by simp [rowLaw]
+ipra_subst rowLaw
 
 theorem reconstruction_shuffle (a b c d : PTm n) : Γ ⊢[PRAAx]
     qadd (qadd a b) (qadd c d) ≐ qadd (qadd a (qadd b c)) d :=
@@ -617,9 +593,8 @@ theorem prefix_reconstruction (P S D k r : PTm n) (hD : Γ ⊢[PRAAx] le one D)
     simpa only [Fm.shift,Fm.subst_eq,Foundations.MasterCertificate.subst_entry,Syn.shift,ConciseIPRA.PTm.subst_zero,
       GaussianRationalSyntheticDivision.subst_qone] using hMonic.shift
   have all : Γ ⊢[PRAAx] .all (rowLaw (Syn.shift P) (Syn.shift S) (Syn.shift D) (Syn.shift k) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_rowLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      have left : Γ ⊢[PRAAx] recode (shifted S zero (succ D) k) ≐ qzero :=
+    ipra_qfind [subst_rowLaw]
+    · have left : Γ ⊢[PRAAx] recode (shifted S zero (succ D) k) ≐ qzero :=
         (GaussianTranslatedNonconstant.recode_congr (shifted_empty S _ _)).eqTrans recode_zero
       have right : Γ ⊢[PRAAx]
           qadd (coefficient P (quotient P S D zero) zero (succ D) k) (shifted (remainder P S D zero) D one k) ≐ qzero :=
@@ -628,8 +603,7 @@ theorem prefix_reconstruction (P S D k r : PTm n) (hD : Γ ⊢[PRAAx] le one D)
           ((shifted_congr (GaussianRationalMonicReduction.remainder_zero P S D) (.eqRefl _) (.eqRefl _) (.eqRefl _)).eqTrans
             (shifted_zeros _ _ _))).eqTrans zero_add_zero
       exact left.eqTrans right.eqSymm
-    · simp only [subst_rowLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      let Δ := rowLaw (Syn.shift P) (Syn.shift S) (Syn.shift D) (Syn.shift k) (var 0) :: Γ.map Fm.shift
+    · let Δ := rowLaw (Syn.shift P) (Syn.shift S) (Syn.shift D) (Syn.shift k) (var 0) :: Γ.map Fm.shift
       have qstep : Δ ⊢[PRAAx]
           coefficient (Syn.shift P) (quotient (Syn.shift P) (Syn.shift S) (Syn.shift D) (succ (var 0)))
             (succ (var 0)) (succ (Syn.shift D)) (Syn.shift k) ≐
@@ -661,20 +635,13 @@ def paddedInput (S D : PTm n) : PTm n := leftPad S (succ D)
 def productPart (P S D M : PTm n) : PTm n := GaussianRationalPolynomialProduct.product P (outputQuotient P S D M) D (succ M)
 def remainderPart (P S D M : PTm n) : PTm n := leftPad (outputRemainder P S D M) (succ (succ M))
 def reconstructed (P S D M : PTm n) : PTm n := added (productPart P S D M) (remainderPart P S D M) (width D M)
-@[simp] theorem subst_width {l : ℕ} (σ : Fin n → PTm l) (D M : PTm n) :
-    Syn.subst σ (width D M) = width (Syn.subst σ D) (Syn.subst σ M) := by simp [width]
-@[simp] theorem subst_outputQuotient {l : ℕ} (σ : Fin n → PTm l) (P S D M : PTm n) :
-    Syn.subst σ (outputQuotient P S D M) = outputQuotient (Syn.subst σ P) (Syn.subst σ S) (Syn.subst σ D) (Syn.subst σ M) := by simp [outputQuotient]
-@[simp] theorem subst_outputRemainder {l : ℕ} (σ : Fin n → PTm l) (P S D M : PTm n) :
-    Syn.subst σ (outputRemainder P S D M) = outputRemainder (Syn.subst σ P) (Syn.subst σ S) (Syn.subst σ D) (Syn.subst σ M) := by simp [outputRemainder]
-@[simp] theorem subst_paddedInput {l : ℕ} (σ : Fin n → PTm l) (S D : PTm n) :
-    Syn.subst σ (paddedInput S D) = paddedInput (Syn.subst σ S) (Syn.subst σ D) := by simp [paddedInput]
-@[simp] theorem subst_productPart {l : ℕ} (σ : Fin n → PTm l) (P S D M : PTm n) :
-    Syn.subst σ (productPart P S D M) = productPart (Syn.subst σ P) (Syn.subst σ S) (Syn.subst σ D) (Syn.subst σ M) := by simp [productPart]
-@[simp] theorem subst_remainderPart {l : ℕ} (σ : Fin n → PTm l) (P S D M : PTm n) :
-    Syn.subst σ (remainderPart P S D M) = remainderPart (Syn.subst σ P) (Syn.subst σ S) (Syn.subst σ D) (Syn.subst σ M) := by simp [remainderPart]
-@[simp] theorem subst_reconstructed {l : ℕ} (σ : Fin n → PTm l) (P S D M : PTm n) :
-    Syn.subst σ (reconstructed P S D M) = reconstructed (Syn.subst σ P) (Syn.subst σ S) (Syn.subst σ D) (Syn.subst σ M) := by simp [reconstructed]
+ipra_subst width
+ipra_subst outputQuotient
+ipra_subst outputRemainder
+ipra_subst paddedInput
+ipra_subst productPart
+ipra_subst remainderPart
+ipra_subst reconstructed
 
 /-- Actual coefficient reconstruction of the original input, using the SAME
 returned PR4 quotient and remainder and the actual convolution product. -/
@@ -718,12 +685,7 @@ theorem reconstructed_canonical (P S D M : PTm n) : Γ ⊢[PRAAx] canonicalCoeff
 
 def reconstructionF : PR 4 := PTm.toPR (reconstructed (var 0) (var 1) (var 2) (var 3))
 def reconstructionRun (P S D M : PTm n) : PTm n := PTm.app reconstructionF ![P,S,D,M]
-@[simp] theorem subst_reconstructionRun {l : ℕ} (σ : Fin n → PTm l) (P S D M : PTm n) :
-    Syn.subst σ (reconstructionRun P S D M) = reconstructionRun (Syn.subst σ P) (Syn.subst σ S) (Syn.subst σ D) (Syn.subst σ M) := by
-  simp only [reconstructionRun,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext j
-  fin_cases j <;> rfl
+ipra_subst reconstructionRun
 
 theorem reconstruction_program_at (P S D M : PTm n) : Γ ⊢[PRAAx] reconstructionRun P S D M ≐ reconstructed P S D M := by
   simpa only [reconstructionRun,reconstructionF,subst_reconstructed,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,

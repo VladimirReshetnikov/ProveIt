@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsDomain
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegralGammaIdentification (source original_Euler_integral_is_Gamma improper_source original_gamma_regular)
 open GaussianGammaEulerHeadShift (shifted)
 open GaussianEulerImproperName (nameF data name_regular)
@@ -32,9 +32,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEulerCutoffCauchyComparison (observation)
 open GaussianNamedSmallPerturbationTransport (productClock product_at)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,9 +40,7 @@ abbrev gammaProductF : PR 2 := multiplyF constantF gammaF
 def productData (z R B A : PTm n) : PTm n := multiplyData constantF nameF (ofGaussian z B) (data z R B A)
 def gammaProductData (z R B A : PTm n) : PTm n := multiplyData constantF gammaF (ofGaussian z B) (gammaData z R B A)
 
-@[simp] theorem subst_productData {m : ℕ} (σ : Fin n → PTm m) (z R B A : PTm n) :
-    Syn.subst σ (productData z R B A) = productData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) := by
-  simp [productData]
+ipra_subst productData
 
 theorem common_sources (z R B A : PTm n) (h : Γ ⊢[PRAAx] source z R B A) : Γ ⊢[PRAAx]
     source z (R+one) B A ⋏ source (shifted z B) (R+one) B A := by

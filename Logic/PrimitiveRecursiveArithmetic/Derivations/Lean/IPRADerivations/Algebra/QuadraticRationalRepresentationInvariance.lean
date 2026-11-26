@@ -17,7 +17,7 @@ set_option linter.unnecessarySeqFocus false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticRationalRepresentationInvariance
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis
 open RationalSupMetric (numeratorOf denominatorOf)
 open RationalArgmin (rationalEq denominator_positive rationalEq_congr)
@@ -27,9 +27,6 @@ open QuadraticRationalRadicand (multiply isPositive)
 open QuadraticRationalNonnegativeRadicand (nonnegative radicandZero sign positive isZero equivalent less)
 open QuadraticRationalPairArithmetic (add negative)
 open QuadraticRationalEqualityOrder (difference)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -172,26 +169,19 @@ def output (d e x y : PTm n) : PTm n :=
   pairT (pairT (sign d x) (sign e x)) (pairT (multiply d x y) (multiply e x y))
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (d e x y : PTm n) : PTm n := PTm.app outputF ![d,e,x,y]
-@[simp] theorem subst_output {k : ℕ} (σ : Fin n → PTm k) (d e x y : PTm n) :
-    Syn.subst σ (output d e x y) = output (Syn.subst σ d) (Syn.subst σ e) (Syn.subst σ x) (Syn.subst σ y) := by
-  simp [output]
-@[simp] theorem subst_run {k : ℕ} (σ : Fin n → PTm k) (d e x y : PTm n) :
-    Syn.subst σ (run d e x y) = run (Syn.subst σ d) (Syn.subst σ e) (Syn.subst σ x) (Syn.subst σ y) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (d e x y : PTm n) : Γ ⊢[PRAAx] run d e x y ≐ output d e x y := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![d,e,x,y]
 theorem returned_original_sign (d e x y : PTm n) : Γ ⊢[PRAAx] fstT (fstT (run d e x y)) ≐ sign d x :=
-  (congrFst ((congrFst (program_at _ _ _ _)).eqTrans (fst_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _).fstE.fstE
 theorem returned_other_sign (d e x y : PTm n) : Γ ⊢[PRAAx] sndT (fstT (run d e x y)) ≐ sign e x :=
-  (congrSnd ((congrFst (program_at _ _ _ _)).eqTrans (fst_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _).fstE.sndE
 theorem returned_original_product (d e x y : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run d e x y)) ≐ multiply d x y :=
-  (congrFst ((congrSnd (program_at _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _).sndE.fstE
 theorem returned_other_product (d e x y : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run d e x y)) ≐ multiply e x y :=
-  (congrSnd ((congrSnd (program_at _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _).sndE.sndE
 theorem returned_equal_signs (d e x y : PTm n) (hd : Γ ⊢[PRAAx] nonnegative d)
     (h : Γ ⊢[PRAAx] rationalEq d e) : Γ ⊢[PRAAx]
     fstT (fstT (run d e x y)) ≐ sndT (fstT (run d e x y)) :=

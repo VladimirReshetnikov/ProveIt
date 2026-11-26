@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Elimination.RowReduction.GaussianRationalEliminationLoop
 import IPRADerivations.Analysis.RationalArithmetic.Spans.GaussianRationalRowSpanPivotTransfer
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Backward transport of coefficients through rectangular elimination
@@ -15,17 +14,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalRowSpanRewind
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalEliminationLoop (matrix history matrix_zero matrix_succ)
 open GaussianRationalPivotSearch (flag selected flag_cases next_failure next_success selected_correct)
 open GaussianRationalRowSpan (columnBody columnData combinationAt combination_lookup membership membership_at)
 open GaussianRationalRowSpanPivotTransfer (transfer transfer_length)
 open LeanProofs.IPRA.Foundations.GuardedTotalization (sel sel_zero sel_one)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
-open LeanProofs.IPRA.PTm (monus)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,15 +37,9 @@ def stepBody : PTm 3 := backward (fstT (sndT (sndT (var 2))))
 def rewindF : PR 2 := rec2 baseBody stepBody
 def rewind (A R N c u t : PTm n) : PTm n := ap2 rewindF t (data A R N c u)
 
-@[simp] theorem subst_backward {k : ℕ} (σ : Fin n → PTm k) (A R N p u : PTm n) :
-    Syn.subst σ (backward A R N p u) = backward (Syn.subst σ A) (Syn.subst σ R)
-      (Syn.subst σ N) (Syn.subst σ p) (Syn.subst σ u) := by simp [backward,sel]
-@[simp] theorem subst_data {k : ℕ} (σ : Fin n → PTm k) (A R N c u : PTm n) :
-    Syn.subst σ (data A R N c u) = data (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N)
-      (Syn.subst σ c) (Syn.subst σ u) := by simp [data]
-@[simp] theorem subst_rewind {k : ℕ} (σ : Fin n → PTm k) (A R N c u t : PTm n) :
-    Syn.subst σ (rewind A R N c u t) = rewind (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N)
-      (Syn.subst σ c) (Syn.subst σ u) (Syn.subst σ t) := by simp [rewind]
+ipra_subst backward [sel]
+ipra_subst data
+ipra_subst rewind
 
 theorem backward_congr {A A' R R' N N' p p' u u' : PTm n} (hA : Γ ⊢[PRAAx] A ≐ A')
     (hR : Γ ⊢[PRAAx] R ≐ R') (hN : Γ ⊢[PRAAx] N ≐ N') (hp : Γ ⊢[PRAAx] p ≐ p')
@@ -70,9 +59,9 @@ theorem rewind_succ (A R N c u t : PTm n) : Γ ⊢[PRAAx]
   have tail := snd_pair (Γ := Γ) u (pairT c (pairT A (pairT R N)))
   have rest := (congrSnd tail).eqTrans (snd_pair c (pairT A (pairT R N)))
   have dims := (congrSnd rest).eqTrans (snd_pair A (pairT R N))
-  exact e.eqTrans (backward_congr ((congrFst rest).eqTrans (fst_pair _ _))
-    ((congrFst dims).eqTrans (fst_pair _ _)) ((congrSnd dims).eqTrans (snd_pair _ _))
-    (congrMonus ((congrFst tail).eqTrans (fst_pair _ _)) (.eqRefl _)) (.eqRefl _))
+  exact e.eqTrans (backward_congr rest.fstE
+    dims.fstE dims.sndE
+    (congrMonus tail.fstE (.eqRefl _)) (.eqRefl _))
 
 theorem backward_length (A R N p u : PTm n) (hu : Γ ⊢[PRAAx] length u ≐ R) :
     Γ ⊢[PRAAx] length (backward A R N p u) ≐ R := by
@@ -86,11 +75,9 @@ theorem rewind_length (A R N c u t : PTm n) (hu : Γ ⊢[PRAAx] length u ≐ R) 
     Γ ⊢[PRAAx] length (rewind A R N c u t) ≐ R := by
   have all : Γ ⊢[PRAAx] .all (length (rewind (Syn.shift A) (Syn.shift R) (Syn.shift N)
       (Syn.shift c) (Syn.shift u) (var 0)) ≐ Syn.shift R) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,subst_length,subst_rewind,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (congrFst (rewind_zero _ _ _ _ _)).eqTrans hu
-    · simp only [Fm.subst_eq,subst_length,subst_rewind,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact (congrFst (rewind_succ _ _ _ _ _ _)).eqTrans (backward_length _ _ _ _ _ Prf.hyp0)
+    ipra_qfind [subst_length, subst_rewind]
+    · exact (congrFst (rewind_zero _ _ _ _ _)).eqTrans hu
+    · exact (congrFst (rewind_succ _ _ _ _ _ _)).eqTrans (backward_length _ _ _ _ _ Prf.hyp0)
   simpa only [Fm.subst_eq,subst_length,subst_rewind,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE t
 
 theorem combination_congr {A B R u w j : PTm n} (hA : Γ ⊢[PRAAx] A ≐ B) (hu : Γ ⊢[PRAAx] u ≐ w) :
@@ -126,9 +113,7 @@ theorem previous_prefix (c t : PTm n) (h : Γ ⊢[PRAAx] le (succ t) c) :
 def columnLaw (A R N c u j t : PTm n) : Fm PTm n := le t c ⟶
   combinationAt (matrix A R N (monus c t)) R (rewind A R N c u t) j ≐ combinationAt (matrix A R N c) R u j
 
-@[simp] theorem subst_columnLaw {k : ℕ} (σ : Fin n → PTm k) (A R N c u j t : PTm n) :
-    (columnLaw A R N c u j t).subst σ = columnLaw (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N)
-      (Syn.subst σ c) (Syn.subst σ u) (Syn.subst σ j) (Syn.subst σ t) := by simp [columnLaw]
+ipra_subst columnLaw
 
 theorem column_succ (A R N c u j t : PTm n) (hj : Γ ⊢[PRAAx] lt j N)
     (ht : Γ ⊢[PRAAx] le (succ t) c) (h : Γ ⊢[PRAAx] columnLaw A R N c u j t) : Γ ⊢[PRAAx]
@@ -149,13 +134,11 @@ theorem rewind_column (A R N c u j t : PTm n) (hj : Γ ⊢[PRAAx] lt j N)
     simpa [Fm.shift,Syn.shift] using hj.shift
   have all : Γ ⊢[PRAAx] .all (columnLaw (Syn.shift A) (Syn.shift R) (Syn.shift N) (Syn.shift c)
       (Syn.shift u) (Syn.shift j) (var 0)) := by
-    refine PRA.qfInd _ (by simp [columnLaw,Fm.QF,le]) ?_ ?_
-    · simp only [subst_columnLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (combination_congr
+    ipra_qfind (by simp [columnLaw,Fm.QF,le]) [subst_columnLaw]
+    · exact .impI (combination_congr
         (matrix_index_congr A R N (monus_zero c))
         (rewind_zero _ _ _ _ _))
-    · simp only [subst_columnLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact .impI (column_succ (Syn.shift A) (Syn.shift R) (Syn.shift N) (Syn.shift c) (Syn.shift u)
+    · exact .impI (column_succ (Syn.shift A) (Syn.shift R) (Syn.shift N) (Syn.shift c) (Syn.shift u)
         (Syn.shift j) (var 0) hjs.wk.wk Prf.hyp0 Prf.hyp1)
   have atT : Γ ⊢[PRAAx] columnLaw A R N c u j t := by
     simpa only [subst_columnLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE t
@@ -163,9 +146,7 @@ theorem rewind_column (A R N c u j t : PTm n) (hj : Γ ⊢[PRAAx] lt j N)
 
 def originalWeights (A R N c u : PTm n) : PTm n := rewind A R N c u c
 
-@[simp] theorem subst_originalWeights {k : ℕ} (σ : Fin n → PTm k) (A R N c u : PTm n) :
-    Syn.subst σ (originalWeights A R N c u) = originalWeights (Syn.subst σ A) (Syn.subst σ R)
-      (Syn.subst σ N) (Syn.subst σ c) (Syn.subst σ u) := by simp [originalWeights]
+ipra_subst originalWeights
 
 theorem original_column (A R N c u j : PTm n) (hj : Γ ⊢[PRAAx] lt j N) :
     Γ ⊢[PRAAx] combinationAt A R (originalWeights A R N c u) j ≐ combinationAt (matrix A R N c) R u j := by

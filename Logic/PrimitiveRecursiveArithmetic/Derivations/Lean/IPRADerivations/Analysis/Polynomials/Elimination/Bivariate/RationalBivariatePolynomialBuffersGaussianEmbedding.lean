@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Translation.RationalPolynomialYShiftGaussianEmbedding
 import IPRADerivations.Analysis.Polynomials.Elimination.Bivariate.GaussianBivariatePolynomialBuffers
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual original rational rectangular padding and addition
@@ -15,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalBivariatePolynomialBuffersGaussianEmbedding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalGaussianEmbedding (embed)
 open RationalPolynomialGaussianEmbedding (embed_congr)
 open RationalPolynomialMonicCompanionGaussianEmbedding (normalizedRow normalized_length normalized_entries rowsEmbedded row_embedded_at embedded_at)
@@ -24,10 +23,6 @@ open GaussianPolynomialMonicCompanion (rowShape row_shape_at)
 open LeanProofs.IPRA.Foundations.GuardedTotalization (sel sel_one sel_zero)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open LeanProofs.IPRA.PTm (monus)
-open ConciseIPRA.PTm (zero succ app)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,19 +38,12 @@ def addData (A B a : PTm n) : PTm n := pairT A (pairT B a)
 def addBody : PTm 2 := addRow (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))) (var 0)
 def add (A B m a : PTm n) : PTm n := sequence addBody m (addData A B a)
 
-@[simp] theorem subst_padRow {k : ℕ} (σ : Fin n → PTm k) (G a dx dy r : PTm n) :
-    Syn.subst σ (padRow G a dx dy r) = padRow (Syn.subst σ G) (Syn.subst σ a) (Syn.subst σ dx)
-      (Syn.subst σ dy) (Syn.subst σ r) := by simp [padRow,sel,Signum.sg]
-@[simp] theorem subst_padData {k : ℕ} (σ : Fin n → PTm k) (G a dx dy : PTm n) :
-    Syn.subst σ (padData G a dx dy) = padData (Syn.subst σ G) (Syn.subst σ a) (Syn.subst σ dx) (Syn.subst σ dy) := by simp [padData]
-@[simp] theorem subst_pad {k : ℕ} (σ : Fin n → PTm k) (G m a dx dy : PTm n) :
-    Syn.subst σ (pad G m a dx dy) = pad (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ dx) (Syn.subst σ dy) := by simp [pad]
-@[simp] theorem subst_addRow {k : ℕ} (σ : Fin n → PTm k) (A B a r : PTm n) :
-    Syn.subst σ (addRow A B a r) = addRow (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ r) := by simp [addRow]
-@[simp] theorem subst_addData {k : ℕ} (σ : Fin n → PTm k) (A B a : PTm n) :
-    Syn.subst σ (addData A B a) = addData (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ a) := by simp [addData]
-@[simp] theorem subst_add {k : ℕ} (σ : Fin n → PTm k) (A B m a : PTm n) :
-    Syn.subst σ (add A B m a) = add (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ m) (Syn.subst σ a) := by simp [add]
+ipra_subst padRow [sel, Signum.sg]
+ipra_subst padData
+ipra_subst pad
+ipra_subst addRow
+ipra_subst addData
+ipra_subst add
 
 theorem pad_row_before (G a dx dy r : PTm n) (hr : Γ ⊢[PRAAx] lt r dy) : Γ ⊢[PRAAx]
     padRow G a dx dy r ≐ zeros (succ (a+dx)) := sel_one (AnalyticNumberTheory.Totatives.sg_lt hr)
@@ -70,9 +58,9 @@ theorem pad_body_at (G a dx dy r : PTm n) : Γ ⊢[PRAAx] inst2 padBody r (padDa
       sndT (sndT (sndT (padData G a dx dy))),r]) (σ' := ![G,a,dx,dy,r]) (fun j => by
       fin_cases j
       · exact fst_pair _ _
-      · exact (congrFst tail).eqTrans (fst_pair _ _)
-      · exact (congrFst rest).eqTrans (fst_pair _ _)
-      · exact (congrSnd rest).eqTrans (snd_pair _ _)
+      · exact tail.fstE
+      · exact rest.fstE
+      · exact rest.sndE
       · exact .eqRefl _)
 theorem pad_length (G m a dx dy : PTm n) : Γ ⊢[PRAAx] length (pad G m a dx dy) ≐ dy+m := sequence_length _ _ _
 theorem pad_lookup (G m a dx dy r : PTm n) (hr : Γ ⊢[PRAAx] lt r (dy+m)) : Γ ⊢[PRAAx]
@@ -93,8 +81,8 @@ theorem add_body_at (A B a r : PTm n) : Γ ⊢[PRAAx] inst2 addBody r (addData A
   have tail := snd_pair (Γ := Γ) A (pairT B a)
   ipra_congr (addRow (var 0) (var 1) (var 2) (var 3) : PTm 4) with
     [(show _ ⊢[PRAAx] fstT (addData A B a) ≐ A from fst_pair _ _),
-      (show _ ⊢[PRAAx] fstT (sndT (addData A B a)) ≐ B from (congrFst tail).eqTrans (fst_pair _ _)),
-      (show _ ⊢[PRAAx] sndT (sndT (addData A B a)) ≐ a from (congrSnd tail).eqTrans (snd_pair _ _)), .eqRefl r]
+      (show _ ⊢[PRAAx] fstT (sndT (addData A B a)) ≐ B from tail.fstE),
+      (show _ ⊢[PRAAx] sndT (sndT (addData A B a)) ≐ a from tail.sndE), .eqRefl r]
 theorem add_length (A B m a : PTm n) : Γ ⊢[PRAAx] length (add A B m a) ≐ m := sequence_length _ _ _
 theorem add_lookup (A B m a r : PTm n) (hr : Γ ⊢[PRAAx] lt r m) : Γ ⊢[PRAAx]
     entry (add A B m a) r ≐ added (entry A r) (entry B r) (succ a) := (sequence_decode addBody hr).eqTrans (add_body_at _ _ _ _)

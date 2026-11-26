@@ -16,32 +16,22 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalProductAlgebra
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero qmul)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qone qone_canonical qmul_congr)
 open LeanProofs.IPRA.Analysis.GaussianRationalFiniteProduct (qprod product_zero product_succ product_index_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def oneTerms (f : PTm 2) (N x : PTm n) : Fm PTm n := .all
   (lt (var 0) (Syn.shift N) ⟶ inst2 f (var 0) (Syn.shift x) ≐ qone)
-@[simp] theorem subst_oneTerms {l : ℕ} (σ : Fin n → PTm l) (f : PTm 2) (N x : PTm n) :
-    (oneTerms f N x).subst σ = oneTerms f (Syn.subst σ N) (Syn.subst σ x) := by
-  simp [oneTerms,Syn.subst_shift,Syn.shift_subst]
+ipra_subst oneTerms [Syn.subst_shift, Syn.shift_subst]
 
 theorem constant_one_product (N x : PTm n) : Γ ⊢[PRAAx] qprod (qone : PTm 2) N x ≐ qone := by
   have all : Γ ⊢[PRAAx] .all (qprod (qone : PTm 2) (var 0) (Syn.shift x) ≐ qone) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,GaussianRationalFiniteProduct.subst_qprod,Syn.subst_var,Syn.inst_zero,
-        Syn.subst_inst_shift,GaussianRationalSyntheticDivision.subst_qone]
-      exact product_zero _ _
-    · simp only [Fm.subst_eq,GaussianRationalFiniteProduct.subst_qprod,Syn.subst_var,Syn.repl_zero,
-        subst_repl_shift,GaussianRationalSyntheticDivision.subst_qone]
-      have step := product_succ (Γ := (qprod (qone : PTm 2) (var 0) (Syn.shift x) ≐ qone) :: Γ.map Fm.shift)
+    ipra_qfind [GaussianRationalFiniteProduct.subst_qprod, GaussianRationalSyntheticDivision.subst_qone]
+    · exact product_zero _ _
+    · have step := product_succ (Γ := (qprod (qone : PTm 2) (var 0) (Syn.shift x) ≐ qone) :: Γ.map Fm.shift)
         (qone : PTm 2) (var 0) (Syn.shift x)
       have qi : inst2 (qone : PTm 2) (var 0) (Syn.shift x) = (qone : PTm (n+1)) := by simp [inst2]
       rw [qi] at step
@@ -70,19 +60,16 @@ def multiplyBody (f g : PTm 2) : PTm 2 := qmul f g
     inst2 (multiplyBody f g) i x = qmul (inst2 f i x) (inst2 g i x) := by simp [multiplyBody,inst2]
 def multiplyLaw (f g : PTm 2) (N x : PTm n) : Fm PTm n :=
   qprod (multiplyBody f g) N x ≐ qmul (qprod f N x) (qprod g N x)
-@[simp] theorem subst_multiplyLaw {l : ℕ} (σ : Fin n → PTm l) (f g : PTm 2) (N x : PTm n) :
-    (multiplyLaw f g N x).subst σ = multiplyLaw f g (Syn.subst σ N) (Syn.subst σ x) := by simp [multiplyLaw]
+ipra_subst multiplyLaw
 
 theorem product_multiply (f g : PTm 2) (N x : PTm n) : Γ ⊢[PRAAx]
     qprod (multiplyBody f g) N x ≐ qmul (qprod f N x) (qprod g N x) := by
   have all : Γ ⊢[PRAAx] .all (multiplyLaw f g (var 0) (Syn.shift x)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_multiplyLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (product_zero _ _).eqTrans
+    ipra_qfind [subst_multiplyLaw]
+    · exact (product_zero _ _).eqTrans
         ((qmul_congr (product_zero f x) (product_zero g x)).eqTrans
           (GaussianReciprocalHorner.qmul_one_right qone qone_canonical)).eqSymm
-    · simp only [subst_multiplyLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      have step := product_succ (Γ := multiplyLaw f g (var 0) (Syn.shift x) :: Γ.map Fm.shift)
+    · have step := product_succ (Γ := multiplyLaw f g (var 0) (Syn.shift x) :: Γ.map Fm.shift)
         (multiplyBody f g) (var 0) (Syn.shift x)
       rw [multiply_body_at] at step
       exact step.eqTrans ((qmul_congr Prf.hyp0 (.eqRefl _)).eqTrans
@@ -94,18 +81,17 @@ theorem product_multiply (f g : PTm 2) (N x : PTm n) : Γ ⊢[PRAAx]
 
 def output (f g : PTm 2) (N x : PTm n) : PTm n :=
   pairT (qprod (multiplyBody f g) N x) (pairT (qprod f N x) (qprod g N x))
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (f g : PTm 2) (N x : PTm n) :
-    Syn.subst σ (output f g N x) = output f g (Syn.subst σ N) (Syn.subst σ x) := by simp [output]
+ipra_subst output
 def outputF (f g : PTm 2) : PR 2 := PTm.toPR (output f g (var 0) (var 1))
 def run (f g : PTm 2) (N x : PTm n) : PTm n := ap2 (outputF f g) N x
 theorem program_at (f g : PTm 2) (N x : PTm n) : Γ ⊢[PRAAx] run f g N x ≐ output f g N x := by
   simpa [run,outputF,ap2] using toPR_eq (Γ := Γ) (output f g (var 0) (var 1) : PTm 2) ![N,x]
 theorem returned_multiply (f g : PTm 2) (N x : PTm n) : Γ ⊢[PRAAx]
     fstT (run f g N x) ≐ qmul (fstT (sndT (run f g N x))) (sndT (sndT (run f g N x))) := by
-  have first := (congrFst (program_at (Γ := Γ) f g N x)).eqTrans (fst_pair _ _)
-  have rest := (congrSnd (program_at (Γ := Γ) f g N x)).eqTrans (snd_pair _ _)
+  have first := (program_at (Γ := Γ) f g N x).fstE
+  have rest := (program_at (Γ := Γ) f g N x).sndE
   exact first.eqTrans ((product_multiply _ _ _ _).eqTrans
-    (qmul_congr ((congrFst rest).eqTrans (fst_pair _ _)) ((congrSnd rest).eqTrans (snd_pair _ _))).eqSymm)
+    (qmul_congr rest.fstE rest.sndE).eqSymm)
 
 theorem actual_one_product_closed (f : PTm 2) : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2
     (oneTerms f (var 0) (var 1) ⟶ qprod f (var 0) (var 1) ≐ qone) := closeUniv 2 (.impI (product_one_of_terms _ _ _ Prf.hyp0))

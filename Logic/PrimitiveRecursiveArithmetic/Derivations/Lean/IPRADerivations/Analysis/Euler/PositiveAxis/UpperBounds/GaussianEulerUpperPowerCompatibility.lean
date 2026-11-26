@@ -15,7 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUpperPowerCompatibility
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUpperPowerOrder (source leftData rightData radius leftExpData rightExpData inputF expF)
 open GaussianEulerUpperPowerCoefficients (realMultiplier upperMultiplier amplification)
 open GaussianEulerIntegrandName (coefficient powerExponentF powerExponentData powerRadius powerF powerData)
@@ -26,9 +26,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameEquivalence (crossEquivalent cross_trans cross_symm)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -39,14 +36,10 @@ def oldLogQuery (p z B a b : PTm n) : PTm n :=
   GaussianEulerIntegrandName.powerClock (GaussianFastValueCut.exponent two p) z B a b
 def squareF : PR 2 := GaussianExponentialRealPart.squareF powerF
 def squareData (z B a b : PTm n) : PTm n := GaussianExponentialRealPart.squareData powerF (powerData z B a b)
-@[simp] theorem subst_doubleData {m : ℕ} (σ : Fin n → PTm m) (z B a b : PTm n) :
-    Syn.subst σ (doubleData z B a b) = doubleData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by simp [doubleData]
-@[simp] theorem subst_doubleRadius {m : ℕ} (σ : Fin n → PTm m) (z B a b : PTm n) :
-    Syn.subst σ (doubleRadius z B a b) = doubleRadius (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by simp [doubleRadius]
-@[simp] theorem subst_oldLogQuery {m : ℕ} (σ : Fin n → PTm m) (p z B a b : PTm n) :
-    Syn.subst σ (oldLogQuery p z B a b) = oldLogQuery (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by simp [oldLogQuery]
-@[simp] theorem subst_squareData {m : ℕ} (σ : Fin n → PTm m) (z B a b : PTm n) :
-    Syn.subst σ (squareData z B a b) = squareData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by simp [squareData]
+ipra_subst doubleData
+ipra_subst doubleRadius
+ipra_subst oldLogQuery
+ipra_subst squareData
 
 theorem old_source (z R B a b : PTm n) (h : Γ ⊢[PRAAx] source z R B a b) : Γ ⊢[PRAAx]
     GaussianEulerIntegrandName.source z B a b := .andI h.andE₁.andE₁ h.andE₂.andE₁

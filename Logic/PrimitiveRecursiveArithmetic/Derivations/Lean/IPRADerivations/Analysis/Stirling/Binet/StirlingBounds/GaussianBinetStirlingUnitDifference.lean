@@ -15,7 +15,7 @@ set_option maxHeartbeats 1100000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetStirlingUnitDifference
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetStirlingUnitDifferenceAlgebra (coefficient rawRemainder rawDifference residual)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
@@ -34,10 +34,6 @@ open GaussianRationalPowerDifference (distance_refl_zero)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalSyntheticDivision (qone qmul_congr)
 open GaussianRightHalfPlaneLogarithm (source)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "L" => GaussianRightHalfPlaneLogarithm.nameF
@@ -66,21 +62,13 @@ abbrev remainderDifferenceF : PR 2 := Diff R R
 def remainderDifferenceData (A B D sign x : PTm n) : PTm n :=
   dd (rd A B D sign x) (rd (A+D) B D sign x)
 
-@[simp] theorem subst_logDifferenceData {k : ℕ} (σ : Fin n → PTm k) (A B D sign : PTm n) :
-    Syn.subst σ (logDifferenceData A B D sign) =
-      logDifferenceData (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ sign) := by simp [logDifferenceData]
+ipra_subst logDifferenceData
 
-@[simp] theorem subst_productData {k : ℕ} (σ : Fin n → PTm k) (A B D sign : PTm n) :
-    Syn.subst σ (productData A B D sign) =
-      productData (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ sign) := by simp [productData]
+ipra_subst productData
 
-@[simp] theorem subst_data {k : ℕ} (σ : Fin n → PTm k) (A B D sign : PTm n) :
-    Syn.subst σ (data A B D sign) = data (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ sign) := by simp [data]
+ipra_subst data
 
-@[simp] theorem subst_remainderDifferenceData {k : ℕ} (σ : Fin n → PTm k) (A B D sign x : PTm n) :
-    Syn.subst σ (remainderDifferenceData A B D sign x) =
-      remainderDifferenceData (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ x) := by
-  simp [remainderDifferenceData]
+ipra_subst remainderDifferenceData
 
 theorem log_difference_regular (A B D sign : PTm n) (h : Γ ⊢[PRAAx] source A D sign) :
     Γ ⊢[PRAAx] pointCN logDifferenceF (logDifferenceData A B D sign) :=

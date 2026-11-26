@@ -1,5 +1,4 @@
 import IPRADerivations.Core.MultiSums
-import IPRADerivations.Core.Pairing
 import IPRADerivations.Geometry.Distinct.AnalyticGeometryPolynomialCertificates
 import IPRADerivations.Core.LinearCombination
 
@@ -22,10 +21,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Geometry.Distinct.AnalyticConicAffine
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -37,18 +33,14 @@ def read : ℕ → PTm n → ZT n
   | k+1,c => read k (sndT c)
 def pack6 (a b c d e f : ZT n) : PTm n := pack [a,b,c,d,e,f]
 
-@[simp] theorem subst_encode {m : ℕ} (σ : Fin n → PTm m) (z : ZT n) :
-    Syn.subst σ (encode z) = encode (z.subst σ) := by simp [encode,ZT.subst]
-@[simp] theorem subst_decode {m : ℕ} (σ : Fin n → PTm m) (c : PTm n) :
-    (decode c).subst σ = decode (Syn.subst σ c) := by simp [decode,ZT.subst]
+ipra_subst encode [ZT.subst]
+ipra_subst decode [ZT.subst]
 @[simp] theorem subst_read {m : ℕ} (σ : Fin n → PTm m) (k : ℕ) (c : PTm n) :
     (read k c).subst σ = read k (Syn.subst σ c) := by
   induction k generalizing c with
   | zero => simp [read]
   | succ k ih => simp [read,ih]
-@[simp] theorem subst_pack6 {m : ℕ} (σ : Fin n → PTm m) (a b c d e f : ZT n) :
-    Syn.subst σ (pack6 a b c d e f) = pack6 (a.subst σ) (b.subst σ) (c.subst σ) (d.subst σ) (e.subst σ) (f.subst σ) := by
-  simp [pack6,pack]
+ipra_subst pack6 [pack]
 
 theorem decode_congr {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) :
     ZT.toZ Γ (decode a) = ZT.toZ Γ (decode b) := by
@@ -123,18 +115,12 @@ def pullback (c m : PTm n) : PTm n :=
     (ZT.natLit 2*a*s*t+b*(s*w+v*t)+ZT.natLit 2*cc*v*w+d*s+e*v)
     (evaluate c t w)
 
-@[simp] theorem subst_evaluate {m : ℕ} (σ : Fin n → PTm m) (c : PTm n) (x y : ZT n) :
-    (evaluate c x y).subst σ = evaluate (Syn.subst σ c) (x.subst σ) (y.subst σ) := by simp [evaluate]
-@[simp] theorem subst_imageX {m : ℕ} (σ : Fin n → PTm m) (c : PTm n) (x y : ZT n) :
-    (imageX c x y).subst σ = imageX (Syn.subst σ c) (x.subst σ) (y.subst σ) := by simp [imageX]
-@[simp] theorem subst_imageY {m : ℕ} (σ : Fin n → PTm m) (c : PTm n) (x y : ZT n) :
-    (imageY c x y).subst σ = imageY (Syn.subst σ c) (x.subst σ) (y.subst σ) := by simp [imageY]
-@[simp] theorem subst_determinant {m : ℕ} (σ : Fin n → PTm m) (c : PTm n) :
-    (determinant c).subst σ = determinant (Syn.subst σ c) := by simp [determinant]
-@[simp] theorem subst_discriminant {m : ℕ} (σ : Fin n → PTm m) (c : PTm n) :
-    (discriminant c).subst σ = discriminant (Syn.subst σ c) := by simp [discriminant,ZT.sq]
-@[simp] theorem subst_pullback {m : ℕ} (σ : Fin n → PTm m) (c p : PTm n) :
-    Syn.subst σ (pullback c p) = pullback (Syn.subst σ c) (Syn.subst σ p) := by simp [pullback]
+ipra_subst evaluate
+ipra_subst imageX
+ipra_subst imageY
+ipra_subst determinant
+ipra_subst discriminant [ZT.sq]
+ipra_subst pullback
 
 theorem evaluation_covariance (c m : PTm n) (x y : ZT n) : Γ ⊢[PRAAx]
     ZT.eq (evaluate (pullback c m) x y) (evaluate c (imageX m x y) (imageY m x y)) := by
@@ -178,10 +164,10 @@ theorem image_at (m x y : PTm n) : Γ ⊢[PRAAx] ap3 imageF m x y ≐
 
 theorem image_x_value (m x y : PTm n) : ZT.toZ Γ (decode (fstT (ap3 imageF m x y))) =
     ZT.toZ Γ (imageX m (decode x) (decode y)) :=
-  (decode_congr ((congrFst (image_at m x y)).eqTrans (fst_pair _ _))).trans (decode_encode _)
+  (decode_congr (image_at m x y).fstE).trans (decode_encode _)
 theorem image_y_value (m x y : PTm n) : ZT.toZ Γ (decode (sndT (ap3 imageF m x y))) =
     ZT.toZ Γ (imageY m (decode x) (decode y)) :=
-  (decode_congr ((congrSnd (image_at m x y)).eqTrans (snd_pair _ _))).trans (decode_encode _)
+  (decode_congr (image_at m x y).sndE).trans (decode_encode _)
 
 /-- Equality of the two actual returned signed evaluation codes in native
 integer value; no raw signed-code eta equality is asserted. -/
@@ -201,11 +187,10 @@ theorem actual_evaluation_covariance (c m x y : PTm n) : Γ ⊢[PRAAx]
 theorem actual_discriminant_covariance (c m : PTm n) : Γ ⊢[PRAAx]
     ZT.eq (discriminant (ap2 pullbackF c m)) ((determinant m).sq*discriminant c) := by
   apply ZT.derive
-  have old := ZT.toZ_eq (discriminant_covariance (Γ := Γ) c m)
   have code : ZT.toZ Γ (discriminant (ap2 pullbackF c m)) = ZT.toZ Γ (discriminant (pullback c m)) := by
     simp only [discriminant,ZT.toZ_sub,ZT.toZ_sq,ZT.toZ_mul]
     rw [read_congr 0 (pullback_at c m),read_congr 1 (pullback_at c m),read_congr 2 (pullback_at c m)]
-  exact code.trans old
+  exact code.trans (ZT.toZ_eq (discriminant_covariance (Γ := Γ) c m))
 
 theorem actual_zero_locus_iff (c m x y : PTm n) : Γ ⊢[PRAAx]
     Fm.iff (ZT.eq (decode (ap3 evaluateF (ap2 pullbackF c m) x y)) (ZT.natLit 0))

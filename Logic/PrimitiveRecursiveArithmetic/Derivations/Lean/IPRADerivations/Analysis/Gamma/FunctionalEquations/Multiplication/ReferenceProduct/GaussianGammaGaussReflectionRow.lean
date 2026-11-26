@@ -14,7 +14,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaGaussReflectionRow
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCyclicExponentialRoots (angleF)
 open GaussianCyclicFullHalfAngle (sineData)
 open GaussianGammaReciprocalInverse (gammaF gammaData gamma_regular)
@@ -31,8 +31,6 @@ open GaussianNameArithmetic (multiplyF multiplyData multiply_fast)
 open GaussianNamedSmallPerturbationTransport (product_at productClock)
 open GaussianNameEquivalence (crossEquivalent cross_symm cross_trans)
 open GaussianRationalHorner (qmul)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "S" => GaussianNamedSineFromExponential.sineF angleF
@@ -42,9 +40,7 @@ local notation "gneg" => ComplexLogarithmRemainder.neg
 def rowF : PR 2 := multiplyF S gammaPairF
 def rowData (r m x : PTm n) : PTm n := multiplyData S gammaPairF (sineData r m x) (pairData r m)
 
-@[simp] theorem subst_rowData {l : ℕ} (σ : Fin n → PTm l) (r m x : PTm n) :
-    Syn.subst σ (rowData r m x) = rowData (Syn.subst σ r) (Syn.subst σ m) (Syn.subst σ x) := by
-  simp [rowData]
+ipra_subst rowData
 
 theorem cyclic_source (r m : PTm n) (h : Γ ⊢[PRAAx] source r m) :
     Γ ⊢[PRAAx] GaussianCyclicExponentialRoots.source r m :=

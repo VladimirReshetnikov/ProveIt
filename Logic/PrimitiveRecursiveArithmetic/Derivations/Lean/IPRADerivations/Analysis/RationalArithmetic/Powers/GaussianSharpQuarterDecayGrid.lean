@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSharpQuarterDecayGrid
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBetaSharpUpperDifference (start endpointClock endpoint_clock_budget geometry)
 open GaussianEulerSharpDegreeSchedule (degree)
 open GaussianGammaIntegralCutoffs (etaDen eta_den_positive)
@@ -24,10 +24,6 @@ open GaussianRationalMetric (bounded)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianDominantPairAlgebra (radiusPoint)
 open GaussianCompactRiemannName (quadrature)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

@@ -12,15 +12,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedDifferenceQuotientProperness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent cross_to_diagonal cross_refl)
 open GaussianNameRingLaws (negativeF negativeData negative_fast negative_equivalent)
 open GaussianNameArithmetic (add_equivalent multiply_equivalent)
 open GaussianBoundedConstantProductName (constantF constant_regular)
 open GaussianNamedDifferenceQuotient (nameF data inverse)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -28,9 +26,7 @@ def input (f f' g g' : PR 2) (x x' y y' : PTm n) : Fm PTm n :=
   pointCN f x ⋏ (pointCN f' x' ⋏ (pointCN g y ⋏ (pointCN g' y' ⋏
     (crossEquivalent f f' x x' ⋏ crossEquivalent g g' y y'))))
 
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (f f' g g' : PR 2) (x x' y y' : PTm n) :
-    (input f f' g g' x x' y y').subst σ = input f f' g g' (Syn.subst σ x) (Syn.subst σ x')
-      (Syn.subst σ y) (Syn.subst σ y') := by simp [input]
+ipra_subst input
 
 theorem difference_proper (f f' g g' : PR 2) (x x' y y' : PTm n)
     (hf : Γ ⊢[PRAAx] pointCN f x) (hfp : Γ ⊢[PRAAx] pointCN f' x')

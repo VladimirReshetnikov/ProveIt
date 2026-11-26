@@ -15,24 +15,19 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaC9Bound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaCanonicalExponent (source exponentPoint exponentRadius exponentialPoint exponential_sample_at)
 open GaussianGammaCanonicalExponentBound (numericalRadius exponent_point_numerical_bound)
 open GaussianRationalMetric (bounded)
 open GaussianRationalReciprocal (bound_congr bounded_product)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def exponentialMajorant (R : PTm n) : PTm n := pw (num 3) (numericalRadius R)
 def majorant (R : PTm n) : PTm n := R*pw (one+R) (two*R)*exponentialMajorant R
 
-@[simp] theorem subst_exponentialMajorant {m : ℕ} (σ : Fin n → PTm m) (R : PTm n) :
-    Syn.subst σ (exponentialMajorant R) = exponentialMajorant (Syn.subst σ R) := by simp [exponentialMajorant]
-@[simp] theorem subst_majorant {m : ℕ} (σ : Fin n → PTm m) (R : PTm n) :
-    Syn.subst σ (majorant R) = majorant (Syn.subst σ R) := by simp [majorant]
+ipra_subst exponentialMajorant
+ipra_subst majorant
 
 theorem exponential_observation_bound (p z R B : PTm n) (h : Γ ⊢[PRAAx] source z R B) :
     Γ ⊢[PRAAx] bounded (exponentialPoint p z R B) (exponentialMajorant R) one := by

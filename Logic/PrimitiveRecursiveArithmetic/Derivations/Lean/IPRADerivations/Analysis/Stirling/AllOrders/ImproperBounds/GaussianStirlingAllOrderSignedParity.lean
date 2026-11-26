@@ -14,8 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderSignedParity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero)
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_regular constant_at)
@@ -46,8 +45,6 @@ open GaussianStirlingAllOrderSignedLowerAlgebra (orientationPoint)
 open GaussianStirlingAllOrderSignedParityAlgebra (orientation_even orientation_odd even_cap odd_cap)
 open GaussianStirlingAllOrderTruncationAlgebra (correction)
 open GaussianStirlingMultiplicativeBoundsStrictOrder (strictOrder strict_transport)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "C" => constantF

@@ -17,7 +17,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineProductImaginaryCofinalDerivative
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
@@ -36,10 +36,6 @@ open GaussianSineProductImaginaryFirstOrder (step)
 open GaussianSineProductImaginaryFirstOrderBound (axis_disk bound finite_error productBound product_bound)
 open GaussianSineProductImaginaryLogDerivative (axisNumerator derivative finite_logarithmic_derivative logarithmSum product)
 open GaussianSineProductImaginaryLogDerivativeTail (rational_real_bound)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -68,25 +64,15 @@ def weightedCost (A B C R : PTm n) : PTm n :=
 
 def cost (A B C R : PTm n) : PTm n := num 8+weightedCost A B C R
 
-@[simp] theorem subst_sineData {m : ℕ} (σ : Fin n → PTm m) (A B R : PTm n) :
-    Syn.subst σ (sineData A B R) = sineData (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ R) := by
-  simp [sineData, GaussianSineProductName.data]
+ipra_subst sineData [GaussianSineProductName.data]
 
-@[simp] theorem subst_derivativeData {m : ℕ} (σ : Fin n → PTm m) (A B R : PTm n) :
-    Syn.subst σ (derivativeData A B R) = derivativeData (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ R) := by
-  simp [derivativeData]
+ipra_subst derivativeData
 
-@[simp] theorem subst_incrementData {m : ℕ} (σ : Fin n → PTm m) (A B C R : PTm n) :
-    Syn.subst σ (incrementData A B C R) = incrementData (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ C) (Syn.subst σ R) := by
-  simp [incrementData]
+ipra_subst incrementData
 
-@[simp] theorem subst_weightedData {m : ℕ} (σ : Fin n → PTm m) (A B C R : PTm n) :
-    Syn.subst σ (weightedData A B C R) = weightedData (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ C) (Syn.subst σ R) := by
-  simp [weightedData]
+ipra_subst weightedData
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (A B C R : PTm n) :
-    (source A B C R).subst σ = source (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ C) (Syn.subst σ R) := by
-  simp [source, one]
+ipra_subst source [one]
 
 @[simp] private theorem subst_bound {m : ℕ} (σ : Fin n → PTm m) (R : PTm n) :
     Syn.subst σ (bound R) = bound (Syn.subst σ R) := by

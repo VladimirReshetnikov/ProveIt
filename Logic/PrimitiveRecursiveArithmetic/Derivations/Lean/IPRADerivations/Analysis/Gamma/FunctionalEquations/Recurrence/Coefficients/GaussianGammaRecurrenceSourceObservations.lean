@@ -20,7 +20,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaRecurrenceSourceObservations
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
 open GaussianRationalNaturalScale (natScale)
@@ -28,10 +28,6 @@ open GaussianGammaFiniteCoefficientStability (fixedCoefficient)
 open GaussianGammaHigherCoefficientName (sample)
 open GaussianGammaRecurrenceWeights (weight)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,16 +37,12 @@ def precision (t e : PTm n) : PTm n := GaussianGammaOriginalPrefixCoefficientVar
 def cap (e : PTm n) : PTm n := GaussianGammaOriginalPrefixCoefficientVariation.cap (radius e) e
 def sourceCoefficient (t e j : PTm n) : PTm n := fixedCoefficient (precision t e) (sourceRadius e) j
 def sourceSum (t e : PTm n) : PTm n := GaussianGammaFixedCoefficientRecurrence.weightedSum (precision t e) (sourceRadius e) e
-@[simp] theorem subst_radius {l : ℕ} (σ : Fin n → PTm l) (e : PTm n) : Syn.subst σ (radius e) = radius (Syn.subst σ e) := by simp [radius]
-@[simp] theorem subst_sourceRadius {l : ℕ} (σ : Fin n → PTm l) (e : PTm n) :
-    Syn.subst σ (sourceRadius e) = sourceRadius (Syn.subst σ e) := by simp [sourceRadius]
-@[simp] theorem subst_precision {l : ℕ} (σ : Fin n → PTm l) (t e : PTm n) :
-    Syn.subst σ (precision t e) = precision (Syn.subst σ t) (Syn.subst σ e) := by simp [precision]
-@[simp] theorem subst_cap {l : ℕ} (σ : Fin n → PTm l) (e : PTm n) : Syn.subst σ (cap e) = cap (Syn.subst σ e) := by simp [cap]
-@[simp] theorem subst_sourceCoefficient {l : ℕ} (σ : Fin n → PTm l) (t e j : PTm n) :
-    Syn.subst σ (sourceCoefficient t e j) = sourceCoefficient (Syn.subst σ t) (Syn.subst σ e) (Syn.subst σ j) := by simp [sourceCoefficient]
-@[simp] theorem subst_sourceSum {l : ℕ} (σ : Fin n → PTm l) (t e : PTm n) :
-    Syn.subst σ (sourceSum t e) = sourceSum (Syn.subst σ t) (Syn.subst σ e) := by simp [sourceSum]
+ipra_subst radius
+ipra_subst sourceRadius
+ipra_subst precision
+ipra_subst cap
+ipra_subst sourceCoefficient
+ipra_subst sourceSum
 
 theorem denominator_positive (p q : PTm n) : Γ ⊢[PRAAx] le one (unit p*unit q) :=
   GaussianRationalHorner.positive_product _ _ (unit_positive p) (unit_positive q)

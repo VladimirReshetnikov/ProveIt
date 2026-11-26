@@ -1,6 +1,4 @@
 import IPRADerivations.Combinatorics.Catalan
-import IPRADerivations.Core.Gcd
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Growth of the Catalan numbers (`catalan_numbers_ipra_2026-11-16`, Section 5)
@@ -27,13 +25,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.CatalanGrowth
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Catalan
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -77,13 +71,9 @@ private abbrev geF : Fm PTm 1 :=
   le (two * succ (succ (succ (succ (var 0))))) (cat (succ (succ (succ (succ (var 0))))))
 
 private theorem ge₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] geF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [subst_le, PTm.subst_mul, PTm.subst_monus, subst_ap2, Syn.subst_var,
-      Syn.inst_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact le_congr (by ipra_ring) (.eqRefl _) cat_four
-  · simp only [subst_le, PTm.subst_mul, PTm.subst_monus, subst_ap2, Syn.subst_var,
-      Syn.repl_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact ge_step Prf.hyp0
+  ipra_ind [subst_le, subst_ap2]
+  · exact le_congr (by ipra_ring) (.eqRefl _) cat_four
+  · exact ge_step Prf.hyp0
 
 /-- `Cat_n ≥ 2n` for `n = m + 4 ≥ 4`. -/
 theorem cat_ge (m : PTm n) :

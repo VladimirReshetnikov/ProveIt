@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalPrefactorInverse
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalPrefactor (linearF linearData correctionF correctionData radius
   nameF data combinedF combinedData combined regular linear_input correction_input)
 open GaussianEuclideanDistanceName (pointCN)
@@ -25,8 +25,6 @@ open GaussianNameArithmetic (addF addData multiplyF multiplyData)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_trans)
 open GaussianNameRingLaws (negativeF negativeData oneF)
 open GaussianRationalMetric (bounded)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -16,7 +16,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentImproperBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetLaplaceMomentPrefixes (prefixData tailNumerator)
 open GaussianBinetLaplaceMomentImproper (nameF data cutoff prefix_rate late_observations)
 open GaussianBinetLaplaceMomentFloor (evaluatorF fixedData gain)
@@ -29,10 +29,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianReconstructionRoots (norm_from_distance)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -43,12 +39,8 @@ def momentBound (j D : PTm n) : PTm n := tailNumerator j D+num 3
 def prefixGrid (q M j X D R L : PTm n) : PTm n :=
   quadrature evaluatorF q M (one+zero) L one (fixedData j X D R L)
 
-@[simp] theorem subst_momentBound {m : ℕ} (σ : Fin n → PTm m) (j D : PTm n) :
-    Syn.subst σ (momentBound j D) = momentBound (Syn.subst σ j) (Syn.subst σ D) := by simp [momentBound]
-@[simp] theorem subst_prefixGrid {m : ℕ} (σ : Fin n → PTm m) (q M j X D R L : PTm n) :
-    Syn.subst σ (prefixGrid q M j X D R L) =
-      prefixGrid (Syn.subst σ q) (Syn.subst σ M) (Syn.subst σ j) (Syn.subst σ X) (Syn.subst σ D) (Syn.subst σ R) (Syn.subst σ L) := by
-  simp [prefixGrid,one]
+ipra_subst momentBound
+ipra_subst prefixGrid [one]
 
 theorem prefix_source (X D R L : PTm n) (h : Γ ⊢[PRAAx] realSource X zero D zero R) :
     Γ ⊢[PRAAx] GaussianBinetLaplaceStrip.source X zero D zero R L zero L one :=

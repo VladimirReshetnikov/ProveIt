@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalPhiSectionNonzero
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalArgmin (rationalEq rationalEq_congr)
 open RationalGaussianEmbedding (embed scalarZero embed_canonical rational_equal_of_embed)
 open GaussianRationalFiberGrouping (abscissa ordinate)
@@ -26,9 +26,6 @@ open RationalPhiFeatures (dimension annihilator equation features)
 open RationalSectionCollapse (nonzero line curve)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,14 +39,9 @@ def members (A R s L : PTm n) : Fm PTm n := .all (lt (var 0) (length (Syn.shift 
   RationalRowSpanGaussianEmbedding.hasCoefficients (Syn.shift A) (Syn.shift R) (dimension (Syn.shift s))
     (features (Syn.shift s) (abscissa (Syn.shift L) (var 0)) (ordinate (Syn.shift L) (var 0))))
 
-@[simp] theorem subst_abscissae {k : ℕ} (σ : Fin n → PTm k) (L : PTm n) :
-    Syn.subst σ (abscissae L) = abscissae (Syn.subst σ L) := by simp [abscissae]
-@[simp] theorem subst_lineEquations {k : ℕ} (σ : Fin n → PTm k) (a s L : PTm n) :
-    (lineEquations a s L).subst σ = lineEquations (Syn.subst σ a) (Syn.subst σ s) (Syn.subst σ L) := by
-  simp [lineEquations,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_members {k : ℕ} (σ : Fin n → PTm k) (A R s L : PTm n) :
-    (members A R s L).subst σ = members (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ s) (Syn.subst σ L) := by
-  simp [members,Syn.subst_shift,Syn.shift_subst]
+ipra_subst abscissae
+ipra_subst lineEquations [Syn.subst_shift, Syn.shift_subst]
+ipra_subst members [Syn.subst_shift, Syn.shift_subst]
 
 theorem abscissae_length (L : PTm n) : Γ ⊢[PRAAx] length (abscissae L) ≐ length L :=
   sequence_length _ _ _
@@ -133,9 +125,7 @@ theorem abscissae_distinct (a s L : PTm n) (ha : Γ ⊢[PRAAx] nonzero (entry a 
 def collapse (a f s r m : PTm n) : PTm n :=
   RationalSectionCollapse.polynomial (RationalPhiFeatures.polynomial a s) f (entry a (succ s)) s r m
 
-@[simp] theorem subst_collapse {k : ℕ} (σ : Fin n → PTm k) (a f s r m : PTm n) :
-    Syn.subst σ (collapse a f s r m) = collapse (Syn.subst σ a) (Syn.subst σ f) (Syn.subst σ s) (Syn.subst σ r) (Syn.subst σ m) := by
-  simp [collapse]
+ipra_subst collapse
 
 theorem collapsed_root_at (a f s r m L i : PTm n) (hdeg : Γ ⊢[PRAAx] le (r*s) m)
     (hf : Γ ⊢[PRAAx] length f ≐ succ m) (hl : Γ ⊢[PRAAx] lineEquations a s L) (hc : Γ ⊢[PRAAx] pointPowers f r L)
@@ -199,10 +189,10 @@ theorem program_at (a f s r m L : PTm n) : Γ ⊢[PRAAx] run a f s r m L ≐ out
 
 theorem returned_polynomial (a f s r m L : PTm n) : Γ ⊢[PRAAx]
     fstT (run a f s r m L) ≐ collapse a f s r m :=
-  (congrFst (program_at _ _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _ _ _).fstE
 theorem returned_roots (a f s r m L : PTm n) : Γ ⊢[PRAAx]
     sndT (run a f s r m L) ≐ abscissae L :=
-  (congrSnd (program_at _ _ _ _ _ _)).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _ _ _).sndE
 
 theorem actual_section_nonzero_abscissae_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3
     (nonzero (entry (var 0) (succ (var 1))) ⟶ distinct (var 2) ⟶ lineEquations (var 0) (var 1) (var 2) ⟶

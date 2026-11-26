@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianPositiveRationalLogarithmProperness
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerIntegrandName
 import IPRADerivations.Analysis.Exponential.IntegerPowers.GaussianRobinMeshExponential
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Cancellation of the actual two exponential factors at the upper beta endpoint
@@ -17,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaUpperPowerCancellation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaFiniteApproximantName (logF logExponentF logExponentData exponentialInputData exponential_input)
 open GaussianGammaEulerShift (negativeLogData negativeLogExpData)
 open GaussianEulerIntegrandName (coefficient powerExponentF powerExponentData powerRadius powerF powerData)
@@ -32,9 +31,6 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalMetric (distanceBounded qnegative qnegative_represents)
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

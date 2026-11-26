@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerEtaToOneRootGrid
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaIntegralCutoffs (height etaDen)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (positive_product qmul)
@@ -28,10 +28,6 @@ open GaussianRationalFiniteSum (sum)
 open GaussianPartitionedFiniteSum (blockBody)
 open GaussianEulerLowerTailPartition (cutF cutData offset_at offset_zero cut_increasing)
 open GaussianRationalRiemannRefinement (weight)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

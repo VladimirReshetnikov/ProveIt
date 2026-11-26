@@ -16,7 +16,7 @@ set_option maxHeartbeats 600000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalPositiveHeadLogarithmDerivative
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalPositiveHeadLogarithm (parameters)
 open GaussianBarnesCanonicalPositiveHeadLogarithmRowDerivative (rowLinear numerator subst_numerator)
 open GaussianBarnesCanonicalThirdDerivativePositiveMargin (source step)
@@ -34,10 +34,6 @@ open GaussianRationalMetric (qsub distanceBounded)
 open GaussianRationalQuadratureDifference (differenceBody difference_body_at finite_sum_difference)
 open GaussianRationalRiemannRefinement (termsDistance sum_distance)
 open GaussianRationalSyntheticDivision (qmul_congr qsub_congr)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianDigammaFirstBernoulliReal
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianDigammaFirstBernoulliEndpoints (trapezoid)
 open GaussianDigammaFirstBernoulliImproper (baseF baseData original_base_rate meshDemand)
@@ -34,10 +34,6 @@ open GaussianStirlingGammaLogarithm (source)
 open GaussianStirlingGlobalBounds (steps)
 open GaussianStirlingNames (add_real constant_real log_x_real fraction_axis)
 open RationalGaussianEmbedding (embed embed_axis embed_canonical)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "H" => GaussianHarmonicLogarithmName.nameF
@@ -54,9 +50,7 @@ theorem local_real (a b : PTm n) : Γ ⊢[PRAAx] realSamples nameF (nameData a b
 def realF : PR 2 := GaussianNamedDifference.nameF UF D
 def realData (a b : PTm n) : PTm n := GaussianNamedDifference.data (ud a b) (dd a b)
 
-@[simp] theorem subst_realData {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (realData a b) = realData (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [realData,GaussianGammaDigammaReal.data]
+ipra_subst realData [GaussianGammaDigammaReal.data]
 
 theorem real_regular (a b : PTm n) (hs : Γ ⊢[PRAAx] source a b) : Γ ⊢[PRAAx] pointCN realF (realData a b) :=
   GaussianNamedDifference.name_regular _ _ _ _

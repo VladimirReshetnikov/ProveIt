@@ -4,7 +4,6 @@ import IPRADerivations.Analysis.Beta.EulerProducts.GaussianEulerBetaProductPasca
 import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianPositiveExponentialTermBound
 import IPRADerivations.Analysis.RationalArithmetic.Directions.GaussianRationalTravelScaling
 import IPRADerivations.Analysis.RationalArithmetic.GaussianScalarColumnSelection
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Positive-axis cubic rows of the original Barnes logarithm
@@ -19,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalThirdLogarithmRows
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (code)
 open GaussianBarnesCanonicalFactor (base)
 open GaussianBarnesCanonicalHigherRows (derivative)
@@ -35,9 +34,6 @@ open GaussianRationalReciprocal (power power_succ reciprocal reciprocal_canonica
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRootAlgebra (equal equal_of_values)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open ConciseIPRA.PTm (succ zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

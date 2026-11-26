@@ -15,15 +15,12 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesVignerasIntegerPeriod
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCompactCutoffAlignment (cross_data_congr)
 open GaussianGammaCompactCutoffSplit (point_data_congr)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianNamedFiniteEqualityChain (allSteps finite_cross)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

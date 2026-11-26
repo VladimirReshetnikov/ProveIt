@@ -16,7 +16,7 @@ set_option maxHeartbeats 1150000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalPrefixDerivative
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add normSq)
 open GaussianBarnesCanonicalLogCofinal (source)
 open GaussianBarnesCanonicalLogSchedule (initial)
@@ -25,8 +25,6 @@ open GaussianBarnesCanonicalValue (prefixF prefixData)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianL1 (norm1 normSq_le_norm1_square)
 open GaussianNamedInverseRate (independentRate)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "CF" => GaussianBarnesCanonicalHeadCorrectionExponentialDerivative.incrementGain

@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerSquareFactorInverse
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPositiveScalingConstant (source scaleF scaleData inverseF inverseData exponentData)
 open GaussianEulerSquareIntegrand (factorF factorData)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
@@ -24,8 +24,6 @@ open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (qmul qmul_canonical positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -36,13 +34,10 @@ def inverseClock (p z B c d : PTm n) : PTm n :=
   GaussianFastValueCut.exponent (multiplyModulus constantF inverseF half (inverseData z B c d)) p
 def inverseBound (z B c d : PTm n) : PTm n := GaussianEulerPositiveScalingConstant.inverseBound z B c d
 
-@[simp] theorem subst_half {m : ℕ} (σ : Fin n → PTm m) : Syn.subst σ (half : PTm n) = half := by simp [half]
-@[simp] theorem subst_inverseFactorData {m : ℕ} (σ : Fin n → PTm m) (z B c d : PTm n) :
-    Syn.subst σ (inverseFactorData z B c d) = inverseFactorData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ c) (Syn.subst σ d) := by simp [inverseFactorData]
-@[simp] theorem subst_inverseClock {m : ℕ} (σ : Fin n → PTm m) (p z B c d : PTm n) :
-    Syn.subst σ (inverseClock p z B c d) = inverseClock (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ c) (Syn.subst σ d) := by simp [inverseClock]
-@[simp] theorem subst_inverseBound {m : ℕ} (σ : Fin n → PTm m) (z B c d : PTm n) :
-    Syn.subst σ (inverseBound z B c d) = inverseBound (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ c) (Syn.subst σ d) := by simp [inverseBound]
+ipra_subst half
+ipra_subst inverseFactorData
+ipra_subst inverseClock
+ipra_subst inverseBound
 
 theorem factor_regular (z B c d : PTm n) (h : Γ ⊢[PRAAx] source B c d) : Γ ⊢[PRAAx] pointCN factorF (factorData z B c d) :=
   multiply_fast constantF scaleF _ _ (constant_regular _) (GaussianEulerPositiveScalingCancellation.scale_regular z B c d h)

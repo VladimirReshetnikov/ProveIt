@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.Grids.RationalCubeCoherentMinimizer
 import IPRADerivations.Analysis.Optimization.CubeInfimum.RationalCubeInfimumComparison
 import IPRADerivations.Analysis.Optimization.Aggregates.AggregateApproximateLipschitz
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Exact uniqueness of the cube-presented minimizing point name
@@ -17,17 +16,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalCubeMinimizerUniqueness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalCubeMinimum (coherence continuity presentedCube sample precision)
 open RationalCubeGrid (scale)
 open RationalCubeInfimumName (value data)
 open RationalCubeCoherentMinimizer (point pointName uniqueness schedule near nearAt evaluationIndex)
 open RationalCubeInfimumComparison (cubePoints cube_points_at)
 open RationalHausdorff (pointRadius)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -41,12 +36,9 @@ def equivalent (f g : PR 2) (d x z : PTm n) : Fm PTm n := .all (.all
   (pointRadius (ap2 f (var 1) (Syn.shift (Syn.shift x))) (ap2 g (var 0) (Syn.shift (Syn.shift z)))
     (Syn.shift (Syn.shift d)) (scale (var 1)+scale (var 0)) (scale (var 1)*scale (var 0))))
 
-@[simp] theorem subst_evaluation {l : ℕ} (σ : Fin n → PTm l) (A : PR 3) (mu b : PR 2) (p x z : PTm n) :
-    Syn.subst σ (evaluation A mu b p x z) = evaluation A mu b (Syn.subst σ p) (Syn.subst σ x) (Syn.subst σ z) := by simp [evaluation]
-@[simp] theorem subst_sameValue {l : ℕ} (σ : Fin n → PTm l) (A : PR 3) (mu b : PR 2) (d x z : PTm n) :
-    (sameValue A mu b d x z).subst σ = sameValue A mu b (Syn.subst σ d) (Syn.subst σ x) (Syn.subst σ z) := by simp [sameValue,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_equivalent {l : ℕ} (σ : Fin n → PTm l) (f g : PR 2) (d x z : PTm n) :
-    (equivalent f g d x z).subst σ = equivalent f g (Syn.subst σ d) (Syn.subst σ x) (Syn.subst σ z) := by simp [equivalent,Syn.subst_shift,Syn.shift_subst]
+ipra_subst evaluation
+ipra_subst sameValue [Syn.subst_shift, Syn.shift_subst]
+ipra_subst equivalent [Syn.subst_shift, Syn.shift_subst]
 
 theorem point_name_at (b : PR 2) (d z s t : PTm n) (h : Γ ⊢[PRAAx] pointName b d z) : Γ ⊢[PRAAx]
     pointRadius (ap2 b s z) (ap2 b t z) d (scale s+scale t) (scale s*scale t) := by
@@ -137,8 +129,7 @@ theorem approximant_near (A : PR 3) (mu b : PR 2) (d x z e s : PTm n)
     (Syn.shift (Syn.shift z)) (Syn.shift (Syn.shift e)) (Syn.shift (Syn.shift s)) (var 1) (var 0) c t nn cc vv ss
 
 def tailIndex (mu u : PR 2) (k x : PTm n) : PTm n := k+succ (ap2 mu (succ (ap2 u k x)) x)
-@[simp] theorem subst_tailIndex {l : ℕ} (σ : Fin n → PTm l) (mu u : PR 2) (k x : PTm n) :
-    Syn.subst σ (tailIndex mu u k x) = tailIndex mu u (Syn.subst σ k) (Syn.subst σ x) := by simp [tailIndex]
+ipra_subst tailIndex
 
 theorem tail_index_ge (mu u : PR 2) (k x : PTm n) : Γ ⊢[PRAAx] le k (tailIndex mu u k x) := le_add_right _ _
 theorem tail_index_modulus (mu u : PR 2) (k x : PTm n) : Γ ⊢[PRAAx]

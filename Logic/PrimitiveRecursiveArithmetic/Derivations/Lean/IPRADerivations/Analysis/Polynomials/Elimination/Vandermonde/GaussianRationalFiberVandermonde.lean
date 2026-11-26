@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Fibers.GaussianRationalCurveFibers
 import IPRADerivations.Analysis.Polynomials.CompanionMatrices.GaussianPolynomialMonicNorm
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual numerical fiber Vandermonde rows and polynomial row products
@@ -18,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalFiberVandermonde
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence subst_entry subst_sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero qadd qmul canonical evaluate)
@@ -31,9 +30,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalPolynomialBuffers
   (zeros zeros_length zeros_lookup zeros_evaluation added added_length added_lookup added_evaluation)
 open LeanProofs.IPRA.Analysis.GaussianRationalCoefficientScaling (scaled scaled_length scaled_lookup evaluation_linearity)
 open LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantTerms (cell rowCells tableShape cell_length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,10 +39,8 @@ def row (f : PTm 3) (b x r : PTm n) : PTm n := sequence (rowBody f) b (pairT r x
 def tableBody (f : PTm 3) : PTm 2 := row f (fstT (var 1)) (sndT (var 1)) (var 0)
 def table (f : PTm 3) (a b x : PTm n) : PTm n := sequence (tableBody f) a (pairT b x)
 
-@[simp] theorem subst_row {l : ℕ} (σ : Fin n → PTm l) (f : PTm 3) (b x r : PTm n) :
-    Syn.subst σ (row f b x r) = row f (Syn.subst σ b) (Syn.subst σ x) (Syn.subst σ r) := by simp [row]
-@[simp] theorem subst_table {l : ℕ} (σ : Fin n → PTm l) (f : PTm 3) (a b x : PTm n) :
-    Syn.subst σ (table f a b x) = table f (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ x) := by simp [table]
+ipra_subst row
+ipra_subst table
 
 theorem row_body_at (f : PTm 3) (x r j : PTm n) : Γ ⊢[PRAAx]
     inst2 (rowBody f) j (pairT r x) ≐ Syn.subst ![r,j,x] f := by
@@ -90,16 +84,11 @@ def W (R m : PTm n) : PTm n := table weightBody m m R
 def constantBody : PTm 3 := singleton (weight (var 2) (var 0) (var 1))
 def WP (R m : PTm n) : PTm n := table constantBody m m R
 
-@[simp] theorem subst_U {l : ℕ} (σ : Fin n → PTm l) (R m : PTm n) :
-    Syn.subst σ (U R m) = U (Syn.subst σ R) (Syn.subst σ m) := by simp [U]
-@[simp] theorem subst_delta {l : ℕ} (σ : Fin n → PTm l) (r j : PTm n) :
-    Syn.subst σ (delta r j) = delta (Syn.subst σ r) (Syn.subst σ j) := by simp [delta]
-@[simp] theorem subst_weight {l : ℕ} (σ : Fin n → PTm l) (R r j : PTm n) :
-    Syn.subst σ (weight R r j) = weight (Syn.subst σ R) (Syn.subst σ r) (Syn.subst σ j) := by simp [weight]
-@[simp] theorem subst_W {l : ℕ} (σ : Fin n → PTm l) (R m : PTm n) :
-    Syn.subst σ (W R m) = W (Syn.subst σ R) (Syn.subst σ m) := by simp [W]
-@[simp] theorem subst_WP {l : ℕ} (σ : Fin n → PTm l) (R m : PTm n) :
-    Syn.subst σ (WP R m) = WP (Syn.subst σ R) (Syn.subst σ m) := by simp [WP]
+ipra_subst U
+ipra_subst delta
+ipra_subst weight
+ipra_subst W
+ipra_subst WP
 
 theorem U_length (R m : PTm n) : Γ ⊢[PRAAx] length (U R m) ≐ length R := table_length _ _ _ _
 theorem U_row_length (R m r : PTm n) (hr : Γ ⊢[PRAAx] lt r (length R)) : Γ ⊢[PRAAx]
@@ -154,20 +143,12 @@ def prefixF : PR 2 := rec2 initial stepBody
 def partialProduct (S M L r j t : PTm n) : PTm n := ap2 prefixF t (productData S M L r j)
 def productCell (S M m L r j : PTm n) : PTm n := partialProduct S M L r j m
 
-@[simp] theorem subst_productData {l : ℕ} (σ : Fin n → PTm l) (S M L r j : PTm n) :
-    Syn.subst σ (productData S M L r j) = productData (Syn.subst σ S) (Syn.subst σ M)
-      (Syn.subst σ L) (Syn.subst σ r) (Syn.subst σ j) := by simp [productData]
+ipra_subst productData
 @[simp] theorem subst_fields {l : ℕ} (σ : Fin n → PTm l) (x : PTm n) (i : Fin 5) :
     Syn.subst σ (fields x i) = fields (Syn.subst σ x) i := by fin_cases i <;> simp [fields]
-@[simp] theorem subst_piece {l : ℕ} (σ : Fin n → PTm l) (S M r j t : PTm n) :
-    Syn.subst σ (piece S M r j t) = piece (Syn.subst σ S) (Syn.subst σ M)
-      (Syn.subst σ r) (Syn.subst σ j) (Syn.subst σ t) := by simp [piece,cell]
-@[simp] theorem subst_partialProduct {l : ℕ} (σ : Fin n → PTm l) (S M L r j t : PTm n) :
-    Syn.subst σ (partialProduct S M L r j t) = partialProduct (Syn.subst σ S) (Syn.subst σ M)
-      (Syn.subst σ L) (Syn.subst σ r) (Syn.subst σ j) (Syn.subst σ t) := by simp [partialProduct]
-@[simp] theorem subst_productCell {l : ℕ} (σ : Fin n → PTm l) (S M m L r j : PTm n) :
-    Syn.subst σ (productCell S M m L r j) = productCell (Syn.subst σ S) (Syn.subst σ M)
-      (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ r) (Syn.subst σ j) := by simp [productCell]
+ipra_subst piece [cell]
+ipra_subst partialProduct
+ipra_subst productCell
 
 theorem field_at (S M L r j : PTm n) (i : Fin 5) : Γ ⊢[PRAAx]
     fields (productData S M L r j) i ≐ ![S,M,L,r,j] i := by
@@ -176,10 +157,10 @@ theorem field_at (S M L r j : PTm n) (i : Fin 5) : Γ ⊢[PRAAx]
   have e3 := (congrSnd e2).eqTrans (snd_pair L (pairT r j))
   fin_cases i
   · exact fst_pair _ _
-  · exact (congrFst e1).eqTrans (fst_pair _ _)
-  · exact (congrFst e2).eqTrans (fst_pair _ _)
-  · exact (congrFst e3).eqTrans (fst_pair _ _)
-  · exact (congrSnd e3).eqTrans (snd_pair _ _)
+  · exact e1.fstE
+  · exact e2.fstE
+  · exact e3.fstE
+  · exact e3.sndE
 theorem piece_congr {S S' M M' r r' j j' t t' : PTm n}
     (hS : Γ ⊢[PRAAx] S ≐ S') (hM : Γ ⊢[PRAAx] M ≐ M') (hr : Γ ⊢[PRAAx] r ≐ r')
     (hj : Γ ⊢[PRAAx] j ≐ j') (ht : Γ ⊢[PRAAx] t ≐ t') : Γ ⊢[PRAAx]
@@ -233,18 +214,10 @@ def valueBody : PTm 2 := valueTerm (fields (var 1) 0) (fields (var 1) 1)
 def coefficientSum (S M r j t s : PTm n) : PTm n := GaussianRationalFiniteSum.sum coefficientBody t (productData S M r j s)
 def valueSum (S M r j t z : PTm n) : PTm n := GaussianRationalFiniteSum.sum valueBody t (productData S M r j z)
 
-@[simp] theorem subst_coefficientTerm {l : ℕ} (σ : Fin n → PTm l) (S M r j t s : PTm n) :
-    Syn.subst σ (coefficientTerm S M r j t s) = coefficientTerm (Syn.subst σ S) (Syn.subst σ M)
-      (Syn.subst σ r) (Syn.subst σ j) (Syn.subst σ t) (Syn.subst σ s) := by simp [coefficientTerm,cell]
-@[simp] theorem subst_valueTerm {l : ℕ} (σ : Fin n → PTm l) (S M r j t z : PTm n) :
-    Syn.subst σ (valueTerm S M r j t z) = valueTerm (Syn.subst σ S) (Syn.subst σ M)
-      (Syn.subst σ r) (Syn.subst σ j) (Syn.subst σ t) (Syn.subst σ z) := by simp [valueTerm,cell]
-@[simp] theorem subst_coefficientSum {l : ℕ} (σ : Fin n → PTm l) (S M r j t s : PTm n) :
-    Syn.subst σ (coefficientSum S M r j t s) = coefficientSum (Syn.subst σ S) (Syn.subst σ M)
-      (Syn.subst σ r) (Syn.subst σ j) (Syn.subst σ t) (Syn.subst σ s) := by simp [coefficientSum]
-@[simp] theorem subst_valueSum {l : ℕ} (σ : Fin n → PTm l) (S M r j t z : PTm n) :
-    Syn.subst σ (valueSum S M r j t z) = valueSum (Syn.subst σ S) (Syn.subst σ M)
-      (Syn.subst σ r) (Syn.subst σ j) (Syn.subst σ t) (Syn.subst σ z) := by simp [valueSum]
+ipra_subst coefficientTerm [cell]
+ipra_subst valueTerm [cell]
+ipra_subst coefficientSum
+ipra_subst valueSum
 
 theorem coefficient_body_at (S M r j t s : PTm n) : Γ ⊢[PRAAx]
     inst2 coefficientBody t (productData S M r j s) ≐ coefficientTerm S M r j t s := by
@@ -285,12 +258,8 @@ def coefficientLaw (S M m L r j s t : PTm n) : Fm PTm n := le t m ⟶
   entry (partialProduct S M L r j t) s ≐ coefficientSum S M r j t s
 def valueLaw (S M m L r j z t : PTm n) : Fm PTm n := le t m ⟶
   evaluate (partialProduct S M L r j t) z ≐ valueSum S M r j t z
-@[simp] theorem subst_coefficientLaw {l : ℕ} (σ : Fin n → PTm l) (S M m L r j s t : PTm n) :
-    (coefficientLaw S M m L r j s t).subst σ = coefficientLaw (Syn.subst σ S) (Syn.subst σ M)
-      (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ r) (Syn.subst σ j) (Syn.subst σ s) (Syn.subst σ t) := by simp [coefficientLaw]
-@[simp] theorem subst_valueLaw {l : ℕ} (σ : Fin n → PTm l) (S M m L r j z t : PTm n) :
-    (valueLaw S M m L r j z t).subst σ = valueLaw (Syn.subst σ S) (Syn.subst σ M)
-      (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ r) (Syn.subst σ j) (Syn.subst σ z) (Syn.subst σ t) := by simp [valueLaw]
+ipra_subst coefficientLaw
+ipra_subst valueLaw
 
 theorem prefix_coefficient (S M m L r j t s : PTm n) (h : Γ ⊢[PRAAx] tableShape M m L)
     (hj : Γ ⊢[PRAAx] lt j m) (ht : Γ ⊢[PRAAx] le t m) (hs : Γ ⊢[PRAAx] le s L) : Γ ⊢[PRAAx]
@@ -301,12 +270,10 @@ theorem prefix_coefficient (S M m L r j t s : PTm n) (h : Γ ⊢[PRAAx] tableSha
   have hssh : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift s) (Syn.shift L) := by simpa only [Fm.shift,subst_le,Syn.shift] using hs.shift
   have all : Γ ⊢[PRAAx] .all (coefficientLaw (Syn.shift S) (Syn.shift M) (Syn.shift m) (Syn.shift L)
       (Syn.shift r) (Syn.shift j) (Syn.shift s) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_coefficientLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI ((entry_congr (prefix_zero _ _ _ _ _) (.eqRefl _)).eqTrans
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_coefficientLaw]
+    · exact .impI ((entry_congr (prefix_zero _ _ _ _ _) (.eqRefl _)).eqTrans
         ((zeros_lookup _ _ ((succ_monus_succ _ _).eqTrans hs.wk)).eqTrans (coefficient_sum_zero _ _ _ _ _).eqSymm))
-    · simp only [subst_coefficientLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    · refine .impI ?_
       let I := coefficientLaw (Syn.shift S) (Syn.shift M) (Syn.shift m) (Syn.shift L) (Syn.shift r) (Syn.shift j) (Syn.shift s) (var 0)
       have ti : le (succ (var 0)) (Syn.shift m) :: I :: Γ.map Fm.shift ⊢[PRAAx] lt (var 0) (Syn.shift m) := Prf.hyp0
       exact (entry_congr (prefix_succ _ _ _ _ _ _) (.eqRefl _)).eqTrans
@@ -326,12 +293,10 @@ theorem prefix_evaluation (S M m L r j t z : PTm n) (h : Γ ⊢[PRAAx] tableShap
   have hjsh : Γ.map Fm.shift ⊢[PRAAx] lt (Syn.shift j) (Syn.shift m) := by simpa only [Fm.shift,subst_lt,Syn.shift] using hj.shift
   have all : Γ ⊢[PRAAx] .all (valueLaw (Syn.shift S) (Syn.shift M) (Syn.shift m) (Syn.shift L)
       (Syn.shift r) (Syn.shift j) (Syn.shift z) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_valueLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI ((evaluate_congr (prefix_zero _ _ _ _ _) (.eqRefl _)).eqTrans
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_valueLaw]
+    · exact .impI ((evaluate_congr (prefix_zero _ _ _ _ _) (.eqRefl _)).eqTrans
         ((zeros_evaluation _ _).eqTrans (value_sum_zero _ _ _ _ _).eqSymm))
-    · simp only [subst_valueLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    · refine .impI ?_
       let I := valueLaw (Syn.shift S) (Syn.shift M) (Syn.shift m) (Syn.shift L) (Syn.shift r) (Syn.shift j) (Syn.shift z) (var 0)
       have ti : le (succ (var 0)) (Syn.shift m) :: I :: Γ.map Fm.shift ⊢[PRAAx] lt (var 0) (Syn.shift m) := Prf.hyp0
       exact (evaluate_congr (prefix_succ _ _ _ _ _ _) (.eqRefl _)).eqTrans
@@ -347,10 +312,8 @@ def productBody : PTm 3 := productCell (fields (var 2) 0) (fields (var 2) 1)
   (fields (var 2) 2) (fields (var 2) 3) (var 0) (var 1)
 def product (S M m L : PTm n) : PTm n := table productBody m m (productData S M m L zero)
 def WM (R M m L : PTm n) : PTm n := product (W R m) M m L
-@[simp] theorem subst_product {l : ℕ} (σ : Fin n → PTm l) (S M m L : PTm n) :
-    Syn.subst σ (product S M m L) = product (Syn.subst σ S) (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) := by simp [product]
-@[simp] theorem subst_WM {l : ℕ} (σ : Fin n → PTm l) (R M m L : PTm n) :
-    Syn.subst σ (WM R M m L) = WM (Syn.subst σ R) (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) := by simp [WM]
+ipra_subst product
+ipra_subst WM
 
 theorem product_length (S M m L : PTm n) : Γ ⊢[PRAAx] length (product S M m L) ≐ m := table_length _ _ _ _
 theorem product_row_length (S M m L r : PTm n) (hr : Γ ⊢[PRAAx] lt r m) : Γ ⊢[PRAAx]
@@ -447,18 +410,10 @@ def polynomialCoefficientSum (S M r j t s : PTm n) : PTm n :=
   GaussianRationalFiniteSum.sum polynomialCoefficientBody t (productData S M r j s)
 def polynomialValueSum (S M r j t z : PTm n) : PTm n :=
   GaussianRationalFiniteSum.sum polynomialValueBody t (productData S M r j z)
-@[simp] theorem subst_polynomialCoefficientTerm {l : ℕ} (σ : Fin n → PTm l) (S M r j t s : PTm n) :
-    Syn.subst σ (polynomialCoefficientTerm S M r j t s) = polynomialCoefficientTerm (Syn.subst σ S) (Syn.subst σ M)
-      (Syn.subst σ r) (Syn.subst σ j) (Syn.subst σ t) (Syn.subst σ s) := by simp [polynomialCoefficientTerm,cell]
-@[simp] theorem subst_polynomialValueTerm {l : ℕ} (σ : Fin n → PTm l) (S M r j t z : PTm n) :
-    Syn.subst σ (polynomialValueTerm S M r j t z) = polynomialValueTerm (Syn.subst σ S) (Syn.subst σ M)
-      (Syn.subst σ r) (Syn.subst σ j) (Syn.subst σ t) (Syn.subst σ z) := by simp [polynomialValueTerm,cell]
-@[simp] theorem subst_polynomialCoefficientSum {l : ℕ} (σ : Fin n → PTm l) (S M r j t s : PTm n) :
-    Syn.subst σ (polynomialCoefficientSum S M r j t s) = polynomialCoefficientSum (Syn.subst σ S) (Syn.subst σ M)
-      (Syn.subst σ r) (Syn.subst σ j) (Syn.subst σ t) (Syn.subst σ s) := by simp [polynomialCoefficientSum]
-@[simp] theorem subst_polynomialValueSum {l : ℕ} (σ : Fin n → PTm l) (S M r j t z : PTm n) :
-    Syn.subst σ (polynomialValueSum S M r j t z) = polynomialValueSum (Syn.subst σ S) (Syn.subst σ M)
-      (Syn.subst σ r) (Syn.subst σ j) (Syn.subst σ t) (Syn.subst σ z) := by simp [polynomialValueSum]
+ipra_subst polynomialCoefficientTerm [cell]
+ipra_subst polynomialValueTerm [cell]
+ipra_subst polynomialCoefficientSum
+ipra_subst polynomialValueSum
 theorem polynomial_coefficient_body_at (S M r j t s : PTm n) : Γ ⊢[PRAAx]
     inst2 polynomialCoefficientBody t (productData S M r j s) ≐ polynomialCoefficientTerm S M r j t s := by
   simp only [polynomialCoefficientBody,inst2,subst_polynomialCoefficientTerm,subst_fields,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
@@ -502,8 +457,7 @@ theorem WM_evaluation (R M m L r j z : PTm n) (h : Γ ⊢[PRAAx] tableShape M m 
 
 def scalarShape (T a b : PTm n) : Fm PTm n := (length T ≐ a) ⋏ .all
   (lt (var 0) (Syn.shift a) ⟶ length (entry (Syn.shift T) (var 0)) ≐ Syn.shift b)
-@[simp] theorem subst_scalarShape {l : ℕ} (σ : Fin n → PTm l) (T a b : PTm n) :
-    (scalarShape T a b).subst σ = scalarShape (Syn.subst σ T) (Syn.subst σ a) (Syn.subst σ b) := by simp [scalarShape,Syn.subst_shift,Syn.shift_subst]
+ipra_subst scalarShape [Syn.subst_shift, Syn.shift_subst]
 theorem U_shape (R m : PTm n) : Γ ⊢[PRAAx] scalarShape (U R m) (length R) m := by
   refine .andI (U_length _ _) (.allI (.impI ?_))
   simpa only [Syn.shift,subst_U,subst_length] using U_row_length (Syn.shift R) (Syn.shift m) (var 0) Prf.hyp0
@@ -526,12 +480,8 @@ program, without asserting equality of arbitrary outer table encodings. -/
 def sourceMatrix (F G m a c : PTm n) : PTm n := fstT (sndT (GaussianPolynomialMonicNorm.run F G m a c))
 def sourceProduct (F G m a c L p g : PTm n) : PTm n := WM (GaussianRationalCurveFibers.yList L p g)
   (sourceMatrix F G m a c) m (GaussianPolynomialMonicNorm.width m a c)
-@[simp] theorem subst_sourceMatrix {l : ℕ} (σ : Fin n → PTm l) (F G m a c : PTm n) :
-    Syn.subst σ (sourceMatrix F G m a c) = sourceMatrix (Syn.subst σ F) (Syn.subst σ G)
-      (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by simp [sourceMatrix]
-@[simp] theorem subst_sourceProduct {l : ℕ} (σ : Fin n → PTm l) (F G m a c L p g : PTm n) :
-    Syn.subst σ (sourceProduct F G m a c L p g) = sourceProduct (Syn.subst σ F) (Syn.subst σ G)
-      (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ L) (Syn.subst σ p) (Syn.subst σ g) := by simp [sourceProduct]
+ipra_subst sourceMatrix
+ipra_subst sourceProduct
 
 theorem source_matrix_shape (F G m a c : PTm n) (h : Γ ⊢[PRAAx] GaussianPolynomialMonicNorm.input F G m a c) : Γ ⊢[PRAAx]
     tableShape (sourceMatrix F G m a c) m (GaussianPolynomialMonicNorm.width m a c) :=
@@ -562,9 +512,7 @@ theorem source_zero_row_at (F G m a c L p g r j : PTm n)
 def firstRowsZero (P m t x : PTm n) : Fm PTm n := .all
   (lt (var 0) (Syn.shift t) ⟶ .all (lt (var 0) (Syn.shift (Syn.shift m)) ⟶
     evaluate (cell (Syn.shift (Syn.shift P)) (var 1) (var 0)) (Syn.shift (Syn.shift x)) ≐ qzero))
-@[simp] theorem subst_firstRowsZero {l : ℕ} (σ : Fin n → PTm l) (P m t x : PTm n) :
-    (firstRowsZero P m t x).subst σ = firstRowsZero (Syn.subst σ P) (Syn.subst σ m) (Syn.subst σ t) (Syn.subst σ x) := by
-  simp [firstRowsZero,cell,Syn.subst_shift,Syn.shift_subst]
+ipra_subst firstRowsZero [cell, Syn.subst_shift, Syn.shift_subst]
 theorem source_zero_rows (F G m a c L p g : PTm n)
     (hNorm : Γ ⊢[PRAAx] GaussianPolynomialMonicNorm.input F G m a c)
     (hPoints : Γ ⊢[PRAAx] GaussianRationalCurveFibers.sourceInput F G m L) : Γ ⊢[PRAAx]
@@ -608,10 +556,7 @@ def certificate (F G m a c L p g : PTm n) : Fm PTm n :=
   (firstRowsZero (sourceProduct F G m a c L p g) m (GaussianRationalFiberGrouping.fiberCount L p g)
     (GaussianRationalCurveFibers.selectedX L p g) ⋏
   (GaussianRationalFiberGrouping.partitionTotal L p ≐ length L))))))))
-@[simp] theorem subst_certificate {l : ℕ} (σ : Fin n → PTm l) (F G m a c L p g : PTm n) :
-    (certificate F G m a c L p g).subst σ = certificate (Syn.subst σ F) (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ L) (Syn.subst σ p) (Syn.subst σ g) := by
-  simp [certificate]
+ipra_subst certificate
 theorem fiber_vandermonde (F G m a c L p g : PTm n)
     (hNorm : Γ ⊢[PRAAx] GaussianPolynomialMonicNorm.input F G m a c)
     (hPoints : Γ ⊢[PRAAx] GaussianRationalCurveFibers.sourceInput F G m L)
@@ -630,16 +575,8 @@ def output (F G m a c L p g : PTm n) : PTm n :=
       (pairT (GaussianRationalCurveFibers.selectedX L p g) (GaussianRationalFiberGrouping.partitionTotal L p))))
 def outputF : PR 8 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) (var 7))
 def run (F G m a c L p g : PTm n) : PTm n := app outputF ![F,G,m,a,c,L,p,g]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (F G m a c L p g : PTm n) :
-    Syn.subst σ (output F G m a c L p g) = output (Syn.subst σ F) (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ L) (Syn.subst σ p) (Syn.subst σ g) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (F G m a c L p g : PTm n) :
-    Syn.subst σ (run F G m a c L p g) = run (Syn.subst σ F) (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ L) (Syn.subst σ p) (Syn.subst σ g) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 theorem program_at (F G m a c L p g : PTm n) : Γ ⊢[PRAAx] run F G m a c L p g ≐ output F G m a c L p g := by
   simpa [run,outputF] using toPR_eq (Γ := Γ)
     (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) (var 7) : PTm 8) ![F,G,m,a,c,L,p,g]
@@ -647,36 +584,36 @@ theorem returned_tables (F G m a c L p g : PTm n) : Γ ⊢[PRAAx]
     fstT (run F G m a c L p g) ≐ pairT (U (GaussianRationalCurveFibers.yList L p g) m)
       (pairT (W (GaussianRationalCurveFibers.yList L p g) m)
         (pairT (WP (GaussianRationalCurveFibers.yList L p g) m) (sourceProduct F G m a c L p g))) :=
-  (congrFst (program_at _ _ _ _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _ _ _ _ _).fstE
 theorem returned_data (F G m a c L p g : PTm n) : Γ ⊢[PRAAx]
     sndT (run F G m a c L p g) ≐ pairT (GaussianRationalCurveFibers.yList L p g)
       (pairT (GaussianRationalFiberGrouping.fiberCount L p g)
         (pairT (GaussianRationalCurveFibers.selectedX L p g) (GaussianRationalFiberGrouping.partitionTotal L p))) :=
-  (congrSnd (program_at _ _ _ _ _ _ _ _)).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _ _ _ _ _).sndE
 theorem returned_U (F G m a c L p g : PTm n) : Γ ⊢[PRAAx]
     fstT (fstT (run F G m a c L p g)) ≐ U (GaussianRationalCurveFibers.yList L p g) m :=
-  (congrFst (returned_tables _ _ _ _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_tables _ _ _ _ _ _ _ _).fstE
 theorem returned_W (F G m a c L p g : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (fstT (run F G m a c L p g))) ≐ W (GaussianRationalCurveFibers.yList L p g) m :=
-  (congrFst ((congrSnd (returned_tables _ _ _ _ _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (returned_tables _ _ _ _ _ _ _ _).sndE.fstE
 theorem returned_WP (F G m a c L p g : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (fstT (run F G m a c L p g)))) ≐ WP (GaussianRationalCurveFibers.yList L p g) m :=
-  (congrFst ((congrSnd ((congrSnd (returned_tables _ _ _ _ _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (returned_tables _ _ _ _ _ _ _ _).sndE.sndE.fstE
 theorem returned_WM (F G m a c L p g : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (sndT (fstT (run F G m a c L p g)))) ≐ sourceProduct F G m a c L p g :=
-  (congrSnd ((congrSnd ((congrSnd (returned_tables _ _ _ _ _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (returned_tables _ _ _ _ _ _ _ _).sndE.sndE.sndE
 theorem returned_R (F G m a c L p g : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run F G m a c L p g)) ≐ GaussianRationalCurveFibers.yList L p g :=
-  (congrFst (returned_data _ _ _ _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_data _ _ _ _ _ _ _ _).fstE
 theorem returned_t (F G m a c L p g : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (run F G m a c L p g))) ≐ GaussianRationalFiberGrouping.fiberCount L p g :=
-  (congrFst ((congrSnd (returned_data _ _ _ _ _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (returned_data _ _ _ _ _ _ _ _).sndE.fstE
 theorem returned_x (F G m a c L p g : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (sndT (run F G m a c L p g)))) ≐ GaussianRationalCurveFibers.selectedX L p g :=
-  (congrFst ((congrSnd ((congrSnd (returned_data _ _ _ _ _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (returned_data _ _ _ _ _ _ _ _).sndE.sndE.fstE
 theorem returned_partition (F G m a c L p g : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (sndT (sndT (run F G m a c L p g)))) ≐ GaussianRationalFiberGrouping.partitionTotal L p :=
-  (congrSnd ((congrSnd ((congrSnd (returned_data _ _ _ _ _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (returned_data _ _ _ _ _ _ _ _).sndE.sndE.sndE
 theorem returned_cardinal_partition (F G m a c L p g : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (sndT (sndT (run F G m a c L p g)))) ≐ length L :=
   (returned_partition _ _ _ _ _ _ _ _).eqTrans (GaussianRationalFiberGrouping.cardinal_partition _ _)

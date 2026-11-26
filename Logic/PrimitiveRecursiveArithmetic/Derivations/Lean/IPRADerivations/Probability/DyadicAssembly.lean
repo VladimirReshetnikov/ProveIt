@@ -1,5 +1,4 @@
 import IPRADerivations.Probability.DyadicSLLN
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The union over the dyadic blocks
@@ -18,15 +17,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.DyadicAssembly
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.ProductPower (Tt)
 open LeanProofs.IPRA.Probability.DyadicBlock (pcB Pc)
 open LeanProofs.IPRA.Probability.DyadicSLLN (lw aB Nm Pblk block_hyp)
 open LeanProofs.IPRA.Probability.DyadicUnion (UF dyadic_union)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -63,13 +58,13 @@ theorem inst2_pjB (j K e H M x : PTm n) :
     simp [pjB, inst2]
   rw [h]
   have s1 : Γ ⊢[PRAAx] sndT (Yb K e H M x) ≐ pairT e (pairT H (pairT M x)) := snd_pair _ _
-  have s2 : Γ ⊢[PRAAx] sndT (sndT (Yb K e H M x)) ≐ pairT H (pairT M x) := (congrSnd s1).eqTrans (snd_pair _ _)
-  have s3 : Γ ⊢[PRAAx] sndT (sndT (sndT (Yb K e H M x))) ≐ pairT M x := (congrSnd s2).eqTrans (snd_pair _ _)
+  have s2 : Γ ⊢[PRAAx] sndT (sndT (Yb K e H M x)) ≐ pairT H (pairT M x) := s1.sndE
+  have s3 : Γ ⊢[PRAAx] sndT (sndT (sndT (Yb K e H M x))) ≐ pairT M x := s2.sndE
   have hK : Γ ⊢[PRAAx] fstT (Yb K e H M x) ≐ K := fst_pair _ _
-  have he : Γ ⊢[PRAAx] fstT (sndT (Yb K e H M x)) ≐ e := (congrFst s1).eqTrans (fst_pair _ _)
-  have hH : Γ ⊢[PRAAx] fstT (sndT (sndT (Yb K e H M x))) ≐ H := (congrFst s2).eqTrans (fst_pair _ _)
-  have hM : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (Yb K e H M x)))) ≐ M := (congrFst s3).eqTrans (fst_pair _ _)
-  have hx : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (Yb K e H M x)))) ≐ x := (congrSnd s3).eqTrans (snd_pair _ _)
+  have he : Γ ⊢[PRAAx] fstT (sndT (Yb K e H M x)) ≐ e := s1.fstE
+  have hH : Γ ⊢[PRAAx] fstT (sndT (sndT (Yb K e H M x))) ≐ H := s2.fstE
+  have hM : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (Yb K e H M x)))) ≐ M := s3.fstE
+  have hx : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (Yb K e H M x)))) ≐ x := s3.sndE
   have hr : Γ ⊢[PRAAx] fstT (Yb K e H M x) + j ≐ K + j := congrAdd hK (.eqRefl _)
   exact congrAp2 _ (congrAp2 powF hH hM)
     (congrPairT (Nm_congr hr hH) (congrPairT hH (congrPairT hM (congrPairT (congrPairT hr he) hx))))

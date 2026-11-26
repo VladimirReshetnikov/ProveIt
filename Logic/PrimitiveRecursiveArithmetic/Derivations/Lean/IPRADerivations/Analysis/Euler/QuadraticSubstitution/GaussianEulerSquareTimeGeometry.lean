@@ -16,17 +16,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerSquareTimeGeometry
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCompactLogarithmBounds (domain)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (positive_product qmul)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRationalQuadratureSquareCells (jacobian)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -36,15 +32,10 @@ def majorant (R E T c d : PTm n) : PTm n := pw (num 3)
   (GaussianEulerExponentCompactBounds.radius R (lowerDenominator d E) (upperEndpoint c T))
 def source (z R B E c d : PTm n) : Fm PTm n := GaussianEulerExponentCompactBounds.source z R B E ⋏ (le one c ⋏ le one d)
 
-@[simp] theorem subst_lowerDenominator {m : ℕ} (σ : Fin n → PTm m) (d E : PTm n) :
-    Syn.subst σ (lowerDenominator d E) = lowerDenominator (Syn.subst σ d) (Syn.subst σ E) := by simp [lowerDenominator]
-@[simp] theorem subst_upperEndpoint {m : ℕ} (σ : Fin n → PTm m) (c T : PTm n) :
-    Syn.subst σ (upperEndpoint c T) = upperEndpoint (Syn.subst σ c) (Syn.subst σ T) := by simp [upperEndpoint]
-@[simp] theorem subst_majorant {m : ℕ} (σ : Fin n → PTm m) (R E T c d : PTm n) :
-    Syn.subst σ (majorant R E T c d) = majorant (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ c) (Syn.subst σ d) := by simp [majorant]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B E c d : PTm n) :
-    (source z R B E c d).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ E) (Syn.subst σ c) (Syn.subst σ d) := by simp [source]
+ipra_subst lowerDenominator
+ipra_subst upperEndpoint
+ipra_subst majorant
+ipra_subst source
 
 theorem mapped_source (z R B E c d : PTm n) (h : Γ ⊢[PRAAx] source z R B E c d) : Γ ⊢[PRAAx]
     GaussianEulerExponentCompactBounds.source z R B (lowerDenominator d E) :=

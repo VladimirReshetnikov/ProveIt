@@ -1,6 +1,4 @@
 import IPRADerivations.Foundations.GapDecision
-import IPRADerivations.Core.Gcd
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Rational coherence from finite adjacent-error sums
@@ -21,14 +19,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.RationalSummableTails
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.GapDecision (zabs zabs_congr zabs_tri subst_zabs)
 open LeanProofs.IPRA.Probability.MedianWeighted (ad_mul)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -47,19 +41,11 @@ def cross (a b : ZT n) (da db : PTm n) : ZT n :=
 def difference (p q d : PR 2) (N M x : PTm n) : ZT n :=
   cross (value p q N x) (value p q M x) (ap2 d N x) (ap2 d M x)
 
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (p q : PR 2) (k x : PTm n) :
-    (value p q k x).subst σ = value p q (Syn.subst σ k) (Syn.subst σ x) := by
-  simp [value, ZT.subst]
+ipra_subst value [ZT.subst]
 
-@[simp] theorem subst_cross {m : ℕ} (σ : Fin n → PTm m) (a b : ZT n) (da db : PTm n) :
-    (cross a b da db).subst σ = cross (a.subst σ) (b.subst σ) (Syn.subst σ da) (Syn.subst σ db) := by
-  simp [cross]
+ipra_subst cross
 
-@[simp] theorem subst_difference {m : ℕ} (σ : Fin n → PTm m)
-    (p q d : PR 2) (N M x : PTm n) :
-    (difference p q d N M x).subst σ =
-      difference p q d (Syn.subst σ N) (Syn.subst σ M) (Syn.subst σ x) := by
-  simp [difference]
+ipra_subst difference
 
 private alias pair_congr := Common.congrPairT
 
@@ -79,23 +65,11 @@ def accumulator (e f : PR 2) (N r x : PTm n) : PTm n :=
 def sumNum (e f : PR 2) (N r x : PTm n) : PTm n := fstT (accumulator e f N r x)
 def sumDen (e f : PR 2) (N r x : PTm n) : PTm n := sndT (accumulator e f N r x)
 
-@[simp] theorem subst_accumulator {m : ℕ} (σ : Fin n → PTm m)
-    (e f : PR 2) (N r x : PTm n) :
-    Syn.subst σ (accumulator e f N r x) =
-      accumulator e f (Syn.subst σ N) (Syn.subst σ r) (Syn.subst σ x) := by
-  simp only [accumulator, subst_ap2, subst_pairT]
+ipra_subst accumulator
 
-@[simp] theorem subst_sumNum {m : ℕ} (σ : Fin n → PTm m)
-    (e f : PR 2) (N r x : PTm n) :
-    Syn.subst σ (sumNum e f N r x) =
-      sumNum e f (Syn.subst σ N) (Syn.subst σ r) (Syn.subst σ x) := by
-  simp only [sumNum, subst_fstT, subst_accumulator]
+ipra_subst sumNum
 
-@[simp] theorem subst_sumDen {m : ℕ} (σ : Fin n → PTm m)
-    (e f : PR 2) (N r x : PTm n) :
-    Syn.subst σ (sumDen e f N r x) =
-      sumDen e f (Syn.subst σ N) (Syn.subst σ r) (Syn.subst σ x) := by
-  simp only [sumDen, subst_sndT, subst_accumulator]
+ipra_subst sumDen
 
 theorem accumulator_zero (e f : PR 2) (N x : PTm n) :
     Γ ⊢[PRAAx] accumulator e f N zero x ≐ pairT zero one := by
@@ -132,20 +106,18 @@ theorem sumDen_zero (e f : PR 2) (N x : PTm n) :
 theorem sumNum_succ (e f : PR 2) (N r x : PTm n) :
     Γ ⊢[PRAAx] sumNum e f N (succ r) x ≐
       sumNum e f N r x * ap2 f (N + r) x + ap2 e (N + r) x * sumDen e f N r x :=
-  (congrFst (accumulator_succ e f N r x)).eqTrans (fst_pair _ _)
+  (accumulator_succ e f N r x).fstE
 
 theorem sumDen_succ (e f : PR 2) (N r x : PTm n) :
     Γ ⊢[PRAAx] sumDen e f N (succ r) x ≐ sumDen e f N r x * ap2 f (N + r) x :=
-  (congrSnd (accumulator_succ e f N r x)).eqTrans (snd_pair _ _)
+  (accumulator_succ e f N r x).sndE
 
 /-- Every denominator in this supplied PR family is positive. -/
 def positive (d : PR 2) (x : PTm n) : Fm PTm n :=
   .all (le one (ap2 d (var 0) (Syn.shift x)))
 
-@[simp] theorem subst_positive {m : ℕ} (σ : Fin n → PTm m) (d : PR 2) (x : PTm n) :
-    (positive d x).subst σ = positive d (Syn.subst σ x) := by
-  simp only [positive, Fm.subst_all, subst_le, subst_one, subst_ap2,
-    Syn.subst_var, Syn.up_zero, Syn.subst_shift, Syn.shift_subst, Syn.up_succ]
+ipra_subst positive [Fm.subst_all, subst_le, subst_one, subst_ap2, Syn.subst_var, Syn.up_zero, Syn.subst_shift,
+    Syn.shift_subst, Syn.up_succ]
 
 theorem positive_at {d : PR 2} {x : PTm n} (h : Γ ⊢[PRAAx] positive d x) (k : PTm n) :
     Γ ⊢[PRAAx] le one (ap2 d k x) := by
@@ -158,13 +130,9 @@ theorem sumDen_positive (e f : PR 2) (N r x : PTm n)
     Γ ⊢[PRAAx] le one (sumDen e f N r x) := by
   have hall : Γ ⊢[PRAAx] .all (le one
       (sumDen e f (Syn.shift N) (var 0) (Syn.shift x))) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le, subst_one, subst_sumDen, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
-      exact le_congr (.eqRefl _) (sumDen_zero e f N x).eqSymm (le_refl one)
-    · simp only [subst_le, subst_one, subst_sumDen, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift]
-      have shifted : Γ.map Fm.shift ⊢[PRAAx] positive f (Syn.shift x) := by
+    ipra_qfind (le_QF _ _) [subst_le, subst_one, subst_sumDen]
+    · exact le_congr (.eqRefl _) (sumDen_zero e f N x).eqSymm (le_refl one)
+    · have shifted : Γ.map Fm.shift ⊢[PRAAx] positive f (Syn.shift x) := by
         simpa only [Fm.shift, subst_positive, Syn.shift] using hf.shift
       exact le_congr (one_mul one) (sumDen_succ e f _ _ _).eqSymm
         (le_mul_mono Prf.hyp0 (positive_at shifted (Syn.shift N + var 0)).wk)
@@ -216,18 +184,16 @@ theorem rational_step (a b c : ZT n) (da db dc E D e f : PTm n)
 
 private theorem value_congr (p q : PR 2) (x : PTm n) {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) :
     ZT.toZ Γ (value p q a x) = ZT.toZ Γ (value p q b x) := by
-  have hp := natEq (congrAp2 p h (.eqRefl x))
   have hq := natEq (congrAp2 q h (.eqRefl x))
-  simpa only [value, ZT.toZ] using congrArg₂ HSub.hSub hp hq
+  simpa only [value, ZT.toZ] using congrArg₂ HSub.hSub (natEq (congrAp2 p h (.eqRefl x))) hq
 
 theorem difference_right_congr (p q d : PR 2) (N x : PTm n) {M M' : PTm n}
     (h : Γ ⊢[PRAAx] M ≐ M') :
     Γ ⊢[PRAAx] zabs (difference p q d N M x) ≐ zabs (difference p q d N M' x) := by
   have numerator := value_congr p q x h
-  have denominator := natEq (congrAp2 d h (.eqRefl x))
   apply zabs_congr
   simp only [difference, cross, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_ofNat,
-    numerator, denominator]
+    numerator, natEq (congrAp2 d h (.eqRefl x))]
 
 private theorem difference_self (p q d : PR 2) (N x : PTm n) :
     Γ ⊢[PRAAx] zabs (difference p q d N N x) ≐ zero := by

@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerResidualIntervalMajorant
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (fraction fraction_represents)
 open GaussianRationalHorner (positive_product)
 open RationalAlgebra (add_congr multiply_congr)
@@ -26,10 +26,6 @@ open RationalReciprocalPowerTail (reciprocalPower potential)
 open RationalSumAdditivity (addedBody added_term sum_additive)
 open RationalSumConstants (constantBody sum_constant term_constant)
 open RationalSumLinearity (scaledBody scaled_term sum_homogeneous)
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (pred)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,10 +38,7 @@ def budgetSum (A C U N r : PTm n) : PTm n := RationalFiniteSum.sum budgetBody r 
 def numerator (A C U N r : PTm n) : PTm n := A * U + C * r * N
 def denominator (U N : PTm n) : PTm n := N * U
 
-@[simp] theorem subst_budgetData {m : ℕ} (σ : Fin n → PTm m) (A C U N : PTm n) :
-    Syn.subst σ (budgetData A C U N) =
-      budgetData (Syn.subst σ A) (Syn.subst σ C) (Syn.subst σ U) (Syn.subst σ N) := by
-  simp [budgetData, one, two]
+ipra_subst budgetData [one, two]
 
 private theorem fraction_add (a b c d : PTm n) (hb : Γ ⊢[PRAAx] le one b) (hd : Γ ⊢[PRAAx] le one d) :
     Γ ⊢[PRAAx] add (fraction a b) (fraction c d) ≐ fraction (a * d + c * b) (b * d) := by
@@ -57,8 +50,7 @@ private theorem fraction_add (a b c d : PTm n) (hb : Γ ⊢[PRAAx] le one b) (hd
   apply ZT.derive
   simp only [ZT.toZ_add, ZT.toZ_mul, ZT.toZ_ofNat, Q.mk_add, Q.mk_mul, map_add, map_mul]
 
-private theorem square_denominator (k : PTm n) : Γ ⊢[PRAAx] pw k two ≐ k * k :=
-  (pw_succ k one).eqTrans (congrMul (pw_one k) (.eqRefl _))
+private alias square_denominator := Common.pw_two
 
 private theorem quadratic_term (A N i : PTm n) :
     Γ ⊢[PRAAx] inst2 quadraticBody i (quadraticData A N) ≐ fraction A (succ (N + i) * succ (N + i)) := by

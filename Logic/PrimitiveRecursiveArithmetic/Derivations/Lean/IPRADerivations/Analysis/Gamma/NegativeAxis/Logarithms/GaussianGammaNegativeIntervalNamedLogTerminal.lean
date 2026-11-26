@@ -14,7 +14,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalNamedLogTerminal
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaNegativeCriticalCorrection (guard)
@@ -27,8 +27,6 @@ open GaussianRationalHorner (qadd)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalSyntheticDivision (qadd_congr qone)
 open GaussianStirlingGammaLogarithm (arg gammaData gamma_source)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,9 +39,7 @@ private def compactData (a b : PTm n) : PTm n :=
     Syn.subst σ (compactData a b) = compactData (Syn.subst σ a) (Syn.subst σ b) := by
   simp [compactData,GaussianGammaReciprocalInverse.gammaData,GaussianGammaReciprocalInverse.gammaHeight,one,two]
 
-@[simp] theorem subst_terminalModulus {m : ℕ} (σ : Fin n → PTm m) (s : PTm n) :
-    Syn.subst σ (terminalModulus s) = terminalModulus (Syn.subst σ s) := by
-  simp [terminalModulus,two,one]
+ipra_subst terminalModulus [two, one]
 
 theorem modulus_later (s : PTm n) : Γ ⊢[PRAAx] le s (terminalModulus s) := by
   let i := GaussianGammaHalfPlaneInputContinuity.inverseClock s two one

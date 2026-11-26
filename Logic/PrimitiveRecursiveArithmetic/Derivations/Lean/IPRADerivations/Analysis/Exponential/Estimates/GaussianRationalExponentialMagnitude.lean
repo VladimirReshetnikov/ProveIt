@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalExponentialMagnitude
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (bounded_radius_mono)
 open GaussianPositiveRealArithmetic (positive numerator natural_representation)
 open GaussianRationalHorner (canonical qadd qmul scalar_congr positive_product)
@@ -24,17 +24,12 @@ open GaussianRationalSyntheticDivision (qone)
 open GaussianRationalPolynomialExponential (scalarSum inverseFactorial factorial_positive)
 open RationalSupMetric (denominatorOf)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def majorized (q r : PTm n) : Fm PTm n := bounded q (numerator (fstT r)) (denominatorOf (fstT r))
 
-@[simp] theorem subst_majorized {l : ℕ} (σ : Fin n → PTm l) (q r : PTm n) :
-    (majorized q r).subst σ = majorized (Syn.subst σ q) (Syn.subst σ r) := by
-  simp [majorized,numerator,RationalSupMetric.numeratorOf]
+ipra_subst majorized [numerator, RationalSupMetric.numeratorOf]
 
 theorem congr {q q' r r' : PTm n} (hq : Γ ⊢[PRAAx] q ≐ q') (hr : Γ ⊢[PRAAx] r ≐ r')
     (h : Γ ⊢[PRAAx] majorized q r) : Γ ⊢[PRAAx] majorized q' r' := by
@@ -110,7 +105,7 @@ theorem add (q r u v : PTm n) (hu : Γ ⊢[PRAAx] positive u) (hv : Γ ⊢[PRAAx
   have repr := RationalRepresentations.represents_add a b _ _ B D
     (natural_representation a hu.andE₂) (natural_representation b hv.andE₂)
   have lifted := RationalGaussianEmbedding.scalar_recode_represents _ _ _ repr
-  have read := (congrFst (RationalGaussianEmbedding.axis_add_representation u v hu.andE₁ hv.andE₁)).eqTrans (fst_pair _ _)
+  have read := (RationalGaussianEmbedding.axis_add_representation u v hu.andE₁ hv.andE₁).fstE
   apply of_representation _ _ (A*D+C*B) (B*D) (positive_product _ _ bpos dpos)
     (GaussianPositiveRealArithmetic.positive_add u v hu hv) _ (bounded_sum _ _ _ _ _ _ bpos dpos hq hr)
   apply scalar_congr read.eqSymm _ (.eqRefl _) lifted
@@ -132,7 +127,7 @@ theorem multiply (q r u v : PTm n) (hu : Γ ⊢[PRAAx] positive u) (hv : Γ ⊢[
   have repr := RationalRepresentations.represents_multiply a b _ _ B D
     (natural_representation a hu.andE₂) (natural_representation b hv.andE₂)
   have lifted := RationalGaussianEmbedding.scalar_recode_represents _ _ _ repr
-  have read := (congrFst (RationalGaussianEmbedding.axis_multiply_representation u v hu.andE₁ hv.andE₁)).eqTrans (fst_pair _ _)
+  have read := (RationalGaussianEmbedding.axis_multiply_representation u v hu.andE₁ hv.andE₁).fstE
   apply of_representation _ _ (A*C) (B*D) (positive_product _ _ bpos dpos)
     (GaussianPositiveRealArithmetic.positive_multiply u v hu hv) _ (bounded_product _ _ _ _ _ _ bpos dpos hq hr)
   apply scalar_congr read.eqSymm _ (.eqRefl _) lifted

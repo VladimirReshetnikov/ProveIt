@@ -20,13 +20,11 @@ Packet: `topology/general_topology_ipra_2026-11-19`, `paper/sections/03_finite.t
 
 namespace LeanProofs.IPRA.Topology.FiniteClosureMaps
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.IntersectionEnumeration (disjFin disjFin_intro disjFin_imp)
 open LeanProofs.IPRA.Topology.FiniteInteriorClosure
 open LeanProofs.IPRA.Foundations.RichardsonLogic (iffF)
 open LeanProofs.IPRA.Foundations.ObservationCut.Finality (Walk pathDerivation)
-open Syn
-open scoped Fm
 
 variable {n k l : ℕ} {Γ : List (Fm PTm n)}
 

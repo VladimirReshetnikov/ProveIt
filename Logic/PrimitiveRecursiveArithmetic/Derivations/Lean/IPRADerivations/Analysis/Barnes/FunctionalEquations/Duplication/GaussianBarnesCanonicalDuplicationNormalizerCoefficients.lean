@@ -14,7 +14,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalDuplicationNormalizerCoefficients
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add scale oneCode)
 open GaussianRootAlgebra (sub equal equal_of_values re_add im_add re_sub im_sub re_scale im_scale re_neg im_neg re_one im_one)
 open GaussianRationalHorner (ofGaussian qadd qadd_represents qadd_canonical ofGaussian_represents ofGaussian_canonical
@@ -24,9 +24,6 @@ open GaussianRationalReciprocal (qone_represents_scaled)
 open GaussianRationalSyntheticDivision (qone rescale_to)
 open GaussianGaussMultiplicationPowerRate (multiplier)
 open GaussianStirlingGammaLogarithm (arg)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

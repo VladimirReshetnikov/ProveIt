@@ -15,26 +15,20 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmDyadicTail
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianRationalHorner (evaluate)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianFiniteLogarithmPolynomial (composition)
 open GaussianFiniteLogarithmCompositionTail (linearValue)
 open GaussianFiniteLogarithmGeometricTail (numerator denominator residual)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def clock (p : PTm n) : PTm n := num 10*(p+num 8)
 def precisionDenominator (p : PTm n) : PTm n := pw two (p+num 4)
-@[simp] theorem subst_clock {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) :
-    Syn.subst σ (clock p) = clock (Syn.subst σ p) := by simp [clock]
-@[simp] theorem subst_precisionDenominator {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) :
-    Syn.subst σ (precisionDenominator p) = precisionDenominator (Syn.subst σ p) := by simp [precisionDenominator]
+ipra_subst clock
+ipra_subst precisionDenominator
 
 theorem clock_positive (p : PTm n) : Γ ⊢[PRAAx] le one (clock p) :=
   le_of_eq_add (d := num 10*p+num 79) (by unfold clock; ipra_ring)
@@ -96,14 +90,8 @@ def output (d K p w : PTm n) : PTm n := pairT (composition d K)
   (pairT (clock p) (pairT (residual d K w) (precisionDenominator p)))
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (d K p w : PTm n) : PTm n := PTm.app outputF ![d,K,p,w]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (d K p w : PTm n) :
-    Syn.subst σ (output d K p w) = output (Syn.subst σ d) (Syn.subst σ K) (Syn.subst σ p) (Syn.subst σ w) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (d K p w : PTm n) :
-    Syn.subst σ (run d K p w) = run (Syn.subst σ d) (Syn.subst σ K) (Syn.subst σ p) (Syn.subst σ w) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem clock_at (p : PTm n) : Γ ⊢[PRAAx] ap1 clockF p ≐ clock p := by
   simpa [clockF,ap1] using toPR_eq (Γ := Γ) (clock (var 0) : PTm 1) ![p]
@@ -111,21 +99,21 @@ theorem clock_zero : Γ ⊢[PRAAx] clock (zero : PTm n) ≐ num 80 := by unfold 
 theorem program_at (d K p w : PTm n) : Γ ⊢[PRAAx] run d K p w ≐ output d K p w := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![d,K,p,w]
 theorem returned_composition (d K p w : PTm n) : Γ ⊢[PRAAx] fstT (run d K p w) ≐ composition d K :=
-  (congrFst (program_at _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _).fstE
 theorem returned_tail (d K p w : PTm n) : Γ ⊢[PRAAx] sndT (run d K p w) ≐
     pairT (clock p) (pairT (residual d K w) (precisionDenominator p)) :=
-  (congrSnd (program_at _ _ _ _)).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _).sndE
 theorem returned_clock (d K p w : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run d K p w)) ≐ clock p :=
-  (congrFst (returned_tail _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_tail _ _ _ _).fstE
 theorem returned_pair (d K p w : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run d K p w)) ≐
     pairT (residual d K w) (precisionDenominator p) :=
-  (congrSnd (returned_tail _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_tail _ _ _ _).sndE
 theorem returned_residual (d K p w : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (run d K p w))) ≐ residual d K w :=
-  (congrFst (returned_pair _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_pair _ _ _ _).fstE
 theorem returned_denominator (d K p w : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (sndT (run d K p w))) ≐ precisionDenominator p :=
-  (congrSnd (returned_pair _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_pair _ _ _ _).sndE
 theorem returned_bound (d K p w : PTm n)
     (hd : Γ ⊢[PRAAx] le (clock p) d) (hK : Γ ⊢[PRAAx] le (clock p) K)
     (hw : Γ ⊢[PRAAx] bounded w one two) : Γ ⊢[PRAAx]

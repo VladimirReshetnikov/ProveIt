@@ -15,7 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineProductScaledZero
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (normSq)
 open GaussianArctangentDivisionAngles (modulus)
 open GaussianCoefficientNameBounds (unit)
@@ -42,18 +42,13 @@ open GaussianSinePolynomialVariation (variationBudget normalized_value_distance)
 open GaussianSineProductScaledArgumentCancellation (zero_at)
 open GaussianSineProductScaledArguments (nameF data)
 open GaussianSineSquaredTrace (fromSine)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def zeroSamples (f : PR 2) (x : PTm n) : Fm PTm n :=
   .all (ap2 f (var 0) (Syn.shift x) ≐ qzero)
 
-@[simp] theorem subst_zeroSamples {l : ℕ} (σ : Fin n → PTm l) (f : PR 2) (x : PTm n) :
-    (zeroSamples f x).subst σ = zeroSamples f (Syn.subst σ x) := by
-  simp [zeroSamples,Syn.subst_shift,Syn.shift_subst]
+ipra_subst zeroSamples [Syn.subst_shift, Syn.shift_subst]
 
 theorem zero_sample_at (f : PR 2) (x p : PTm n) (h : Γ ⊢[PRAAx] zeroSamples f x) :
     Γ ⊢[PRAAx] ap2 f p x ≐ qzero := by simpa [zeroSamples] using h.allE p

@@ -15,7 +15,7 @@ set_option maxHeartbeats 500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRightHalfPlaneLogarithmCompactBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCompactLogarithmBounds (domain)
 open GaussianGammaCanonicalExponent (constantF constant_at)
 open GaussianLogGammaEulerResidualDomain (source)
@@ -28,17 +28,13 @@ open GaussianRationalMetric (bounded)
 open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRightHalfPlaneRadialLogarithm (normNum normDen)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def radius (R K : PTm n) : PTm n :=
   GaussianCompactLogarithmBounds.radius (K*K) (R*R)+GaussianRightHalfPlaneArgument.radius
 
-@[simp] theorem subst_radius {m : ℕ} (σ : Fin n → PTm m) (R K : PTm n) :
-    Syn.subst σ (radius R K) = radius (Syn.subst σ R) (Syn.subst σ K) := by
-  simp [radius,GaussianRightHalfPlaneArgument.radius,two]
+ipra_subst radius [GaussianRightHalfPlaneArgument.radius, two]
 
 private theorem radial_bound (p A B D neg R K : PTm n)
     (h : Γ ⊢[PRAAx] source A B D neg R) (hK : Γ ⊢[PRAAx] le D (K*A)) :

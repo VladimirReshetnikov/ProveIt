@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialNormBuffers
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientL1
   (normBody prefixNorm coefficientNorm norm_body_at prefix_succ qL1_congr subst_prefixNorm)
 open GaussianCoefficientNormOrder (prefixNorm_congr)
@@ -31,9 +31,6 @@ open RationalArithmetic (add multiply)
 open RationalArgmin (rationalLE rationalLE_congr)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -87,20 +84,17 @@ theorem padding_prefix_zero (C t : PTm n) : Γ ⊢[PRAAx] prefixNorm (leftPad C 
 def padLaw (C t r : PTm n) : Fm PTm n :=
   le r (length C) ⟶ prefixNorm (leftPad C t) (t + r) ≐ prefixNorm C r
 
-@[simp] theorem subst_padLaw {k : ℕ} (σ : Fin n → PTm k) (C t r : PTm n) :
-    (padLaw C t r).subst σ = padLaw (Syn.subst σ C) (Syn.subst σ t) (Syn.subst σ r) := by simp [padLaw]
+ipra_subst padLaw
 
 theorem padding_prefix (C t r : PTm n) (hr : Γ ⊢[PRAAx] le r (length C)) :
     Γ ⊢[PRAAx] prefixNorm (leftPad C t) (t + r) ≐ prefixNorm C r := by
   have all : Γ ⊢[PRAAx] .all (padLaw (Syn.shift C) (Syn.shift t) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-    · simp only [subst_padLaw, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _, trivial⟩) [subst_padLaw]
+    · refine .impI ?_
       exact (prefixNorm_congr (.eqRefl _) (add_zero t)).eqTrans
         ((padding_prefix_zero C t).eqTrans
           (GaussianRationalLinearProduct.scalar_zero_code.eqTrans (GaussianCoefficientL1.prefix_zero C).eqSymm))
-    · simp only [subst_padLaw, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      refine .impI ?_
+    · refine .impI ?_
       let A := Syn.shift C
       let T := Syn.shift t
       let k : PTm (n + 1) := var 0

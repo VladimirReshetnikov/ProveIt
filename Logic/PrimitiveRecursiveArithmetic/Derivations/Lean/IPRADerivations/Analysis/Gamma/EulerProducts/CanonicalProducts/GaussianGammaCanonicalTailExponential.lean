@@ -19,7 +19,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailExponential
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianRationalHorner (qzero qadd qmul positive_product)
 open GaussianRationalSyntheticDivision (qone)
@@ -30,10 +30,6 @@ open GaussianRationalPolynomialExponential (scalarSum scalarBody inverseFactoria
 open GaussianGammaCanonicalTailName (source safeSource data point pointF radius denominator)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -55,9 +51,7 @@ theorem scalar_zero_point (K : PTm n) : Γ ⊢[PRAAx] scalarSum qzero K ≐ qone
 
 def exponentialPoint (p z R B N : PTm n) : PTm n :=
   GaussianUnitDiskExponentialName.sample pointF p (data z R B N)
-@[simp] theorem subst_exponentialPoint {l : ℕ} (σ : Fin n → PTm l) (p z R B N : PTm n) :
-    Syn.subst σ (exponentialPoint p z R B N) = exponentialPoint (Syn.subst σ p) (Syn.subst σ z)
-      (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [exponentialPoint]
+ipra_subst exponentialPoint
 
 theorem exponential_point_at (p z R B N : PTm n) : Γ ⊢[PRAAx] exponentialPoint p z R B N ≐
     scalarSum (point (GaussianUnitDiskExponentialName.shifted p) z R B N) (GaussianUnitDiskExponentialName.index p) := by
@@ -112,12 +106,9 @@ budget; no target tail cutoff is assumed externally. -/
 def cutoff (R k : PTm n) : PTm n := one+two*R+num 4*R*R+num 6*R*R*unit k
 def diskSource (z R B : PTm n) : Fm PTm n := le one B ⋏ ComplexLogarithmRemainder.bounded z (R*B)
 def cofinalValue (p z R B : PTm n) : PTm n := exponentialPoint p z R B (cutoff R p)
-@[simp] theorem subst_cutoff {l : ℕ} (σ : Fin n → PTm l) (R k : PTm n) :
-    Syn.subst σ (cutoff R k) = cutoff (Syn.subst σ R) (Syn.subst σ k) := by simp [cutoff]
-@[simp] theorem subst_diskSource {l : ℕ} (σ : Fin n → PTm l) (z R B : PTm n) :
-    (diskSource z R B).subst σ = diskSource (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) := by simp [diskSource]
-@[simp] theorem subst_cofinalValue {l : ℕ} (σ : Fin n → PTm l) (p z R B : PTm n) :
-    Syn.subst σ (cofinalValue p z R B) = cofinalValue (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) := by simp [cofinalValue]
+ipra_subst cutoff
+ipra_subst diskSource
+ipra_subst cofinalValue
 
 theorem cutoff_positive (R k : PTm n) : Γ ⊢[PRAAx] le one (cutoff R k) :=
   le_of_eq_add (d := two*R+num 4*R*R+num 6*R*R*unit k) (by unfold cutoff; ipra_ring)
@@ -146,12 +137,9 @@ def cofinalData (z R B : PTm n) : PTm n := pairT z (pairT R B)
 def cofinalTerm (p x : PTm n) : PTm n := cofinalValue p (fstT x) (fstT (sndT x)) (sndT (sndT x))
 def cofinalF : PR 2 := PTm.toPR (cofinalTerm (var 0) (var 1))
 def cofinalPoint (p z R B : PTm n) : PTm n := ap2 cofinalF p (cofinalData z R B)
-@[simp] theorem subst_cofinalData {l : ℕ} (σ : Fin n → PTm l) (z R B : PTm n) :
-    Syn.subst σ (cofinalData z R B) = cofinalData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) := by simp [cofinalData]
-@[simp] theorem subst_cofinalTerm {l : ℕ} (σ : Fin n → PTm l) (p x : PTm n) :
-    Syn.subst σ (cofinalTerm p x) = cofinalTerm (Syn.subst σ p) (Syn.subst σ x) := by simp [cofinalTerm]
-@[simp] theorem subst_cofinalPoint {l : ℕ} (σ : Fin n → PTm l) (p z R B : PTm n) :
-    Syn.subst σ (cofinalPoint p z R B) = cofinalPoint (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) := by simp [cofinalPoint]
+ipra_subst cofinalData
+ipra_subst cofinalTerm
+ipra_subst cofinalPoint
 
 theorem cofinal_point_at (p z R B : PTm n) : Γ ⊢[PRAAx] cofinalPoint p z R B ≐ cofinalValue p z R B := by
   have prog : Γ ⊢[PRAAx] cofinalPoint p z R B ≐ cofinalTerm p (cofinalData z R B) := by
@@ -164,8 +152,8 @@ theorem cofinal_point_at (p z R B : PTm n) : Γ ⊢[PRAAx] cofinalPoint p z R B 
         fin_cases i
         · exact .eqRefl _
         · exact fst_pair _ _
-        · exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-        · exact (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))
+        · exact (snd_pair _ _).fstE
+        · exact (snd_pair _ _).sndE)
 theorem cofinal_point_canonical (p z R B : PTm n) : Γ ⊢[PRAAx] GaussianRationalHorner.canonical (cofinalPoint p z R B) :=
   GaussianRationalHorner.canonical_congr (cofinal_point_at p z R B) (exponential_canonical p z R B (cutoff R p))
 theorem cofinal_point_distance (p z R B : PTm n) (h : Γ ⊢[PRAAx] diskSource z R B) : Γ ⊢[PRAAx]

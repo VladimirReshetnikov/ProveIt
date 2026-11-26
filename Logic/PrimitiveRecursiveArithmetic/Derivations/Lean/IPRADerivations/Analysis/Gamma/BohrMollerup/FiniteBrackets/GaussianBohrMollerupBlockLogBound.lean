@@ -16,7 +16,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBohrMollerupBlockLogBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open GaussianBohrMollerupBracketEndpoints (rowBody row_at sumData sum_regular)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -36,10 +36,6 @@ open GaussianRationalNaturalScale (naturalPoint natScale)
 open GaussianStirlingGammaLogarithm (source)
 open RationalArgmin (rationalLE rationalLE_congr)
 open RationalValueBounds (upper upper_of_order upper_of_radius upper_triangle upper_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "H" => GaussianHarmonicLogarithmName.nameF
@@ -48,8 +44,7 @@ local notation "logData" => GaussianHarmonicLogarithmName.data
 
 def cap (a b N : PTm n) : PTm n := a+b*pred N
 
-@[simp] theorem subst_cap {m : ℕ} (σ : Fin n → PTm m) (a b N : PTm n) :
-    Syn.subst σ (cap a b N) = cap (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by simp [cap]
+ipra_subst cap
 
 theorem cap_source (a b N : PTm n) (hs : Γ ⊢[PRAAx] source a b) : Γ ⊢[PRAAx] source (cap a b N) b :=
   .andI (le_trans hs.andE₁ (le_add_right a (b*pred N))) hs.andE₂

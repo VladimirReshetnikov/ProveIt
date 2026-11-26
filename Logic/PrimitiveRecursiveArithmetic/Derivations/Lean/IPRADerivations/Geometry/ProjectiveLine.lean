@@ -1,8 +1,5 @@
 import IPRADerivations.Core.SumReflect
 import IPRADerivations.Core.SumSplit
-import IPRADerivations.Core.Powers
-import IPRADerivations.Core.Tactic
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Global sections of `O(d)` on the projective line
@@ -39,11 +36,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Geometry.ProjectiveLine
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

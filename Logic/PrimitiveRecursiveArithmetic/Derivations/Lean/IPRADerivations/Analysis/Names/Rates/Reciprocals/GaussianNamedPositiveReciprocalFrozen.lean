@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedPositiveReciprocalFrozen
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedPositiveReciprocal (clock observation observation_inverse observation_canonical observation_bound nameF data name_at)
 open GaussianNamedPositiveLogarithm (source numerator denominator decoded_domain decoded_value)
 open GaussianPositiveRationalLogarithm (fraction)
@@ -24,17 +24,13 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameEquivalence (point_at)
 open GaussianGammaCanonicalExponent (constantF constant_at)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
 
 def frozen (f : PR 2) (k x : PTm n) : PTm n := fraction (denominator f k x) (numerator f k x)
 
-@[simp] theorem subst_frozen {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (k x : PTm n) :
-    Syn.subst σ (frozen f k x) = frozen f (Syn.subst σ k) (Syn.subst σ x) := by
-  simp [frozen,numerator,denominator]
+ipra_subst frozen [numerator, denominator]
 
 private theorem frozen_bound (f : PR 2) (k x E T : PTm n) (hs : Γ ⊢[PRAAx] source f x E T) :
     Γ ⊢[PRAAx] bounded (frozen f k x) E one := by

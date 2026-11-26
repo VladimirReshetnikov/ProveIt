@@ -1,5 +1,4 @@
 import IPRADerivations.Combinatorics.BinomialIdentities
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Cancellation of a nonzero integer factor

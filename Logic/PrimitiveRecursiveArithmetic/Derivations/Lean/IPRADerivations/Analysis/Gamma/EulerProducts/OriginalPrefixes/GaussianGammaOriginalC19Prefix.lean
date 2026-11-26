@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaCofinalCoefficientName
 import IPRADerivations.Analysis.Gamma.GaussianGammaRadiusOverlap
 import IPRADerivations.Analysis.RationalArithmetic.Directions.GaussianRationalTravelScaling
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Original C7 observations versus an actual computed C19 coefficient prefixValue
@@ -18,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaOriginalC19Prefix
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul evaluate ofGaussian)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRationalMetric (bounded distanceBounded)
@@ -31,9 +30,6 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianNameEquivalence (cross_trans cross_symm cross_at)
 open GaussianNamedInverseRate (rateNumerator rateDenominator)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

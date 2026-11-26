@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalVariableHornerBudget
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerExpansion
 import IPRADerivations.Foundations.BoundedSyntaxBackwardInduction
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Exact coefficient-dependent derivative weights of the actual Horner budget
@@ -18,12 +17,8 @@ set_option linter.unnecessarySeqFocus false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalDerivativeWeights
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalVariableHornerBudget (coefficient size variation size_zero variation_zero size_succ variation_succ denominator)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -37,26 +32,21 @@ def conservation (C N U k : PTm n) : PTm n :=
   pw U (monus (succ N) k)*variation C U k+
     monus (succ N) k*pw U (monus N k)*size C U k
 def prefixLaw (C N U k : PTm n) : Fm PTm n := le k N ⟶ prefixSum C N U k ≐ conservation C N U k
-@[simp] theorem subst_weight {l : ℕ} (σ : Fin n → PTm l) (C N U i : PTm n) :
-    Syn.subst σ (weight C N U i) = weight (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ U) (Syn.subst σ i) := by simp [weight]
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (C N U : PTm n) :
-    Syn.subst σ (data C N U) = data (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ U) := by simp [data]
+ipra_subst weight
+ipra_subst data
 @[simp] theorem subst_prefix {l : ℕ} (σ : Fin n → PTm l) (C N U k : PTm n) :
     Syn.subst σ (prefixSum C N U k) = prefixSum (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ U) (Syn.subst σ k) := by simp [prefixSum]
-@[simp] theorem subst_total {l : ℕ} (σ : Fin n → PTm l) (C N U : PTm n) :
-    Syn.subst σ (total C N U) = total (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ U) := by simp [total]
-@[simp] theorem subst_conservation {l : ℕ} (σ : Fin n → PTm l) (C N U k : PTm n) :
-    Syn.subst σ (conservation C N U k) = conservation (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ U) (Syn.subst σ k) := by simp [conservation]
-@[simp] theorem subst_prefixLaw {l : ℕ} (σ : Fin n → PTm l) (C N U k : PTm n) :
-    (prefixLaw C N U k).subst σ = prefixLaw (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ U) (Syn.subst σ k) := by simp [prefixLaw]
+ipra_subst total
+ipra_subst conservation
+ipra_subst prefixLaw
 
 theorem weight_congr {C D N K U V i j : PTm n} (hC : Γ ⊢[PRAAx] C ≐ D) (hN : Γ ⊢[PRAAx] N ≐ K)
     (hU : Γ ⊢[PRAAx] U ≐ V) (hi : Γ ⊢[PRAAx] i ≐ j) : Γ ⊢[PRAAx] weight C N U i ≐ weight D K V j := by
   ipra_congr (weight (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hC, hN, hU, hi]
 theorem body_at (C N U i : PTm n) : Γ ⊢[PRAAx] inst2 body i (data C N U) ≐ weight C N U i := by
   simp only [body,inst2,subst_weight,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
-  exact weight_congr (fst_pair _ _) ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
-    ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)) (.eqRefl _)
+  exact weight_congr (fst_pair _ _) (snd_pair _ _).fstE
+    (snd_pair _ _).sndE (.eqRefl _)
 theorem prefix_zero (C N U : PTm n) : Γ ⊢[PRAAx] prefixSum C N U zero ≐ zero := sum_zero _ _
 theorem prefix_succ (C N U k : PTm n) : Γ ⊢[PRAAx] prefixSum C N U (succ k) ≐ prefixSum C N U k+weight C N U k :=
   (sum_succ' body k (data C N U)).eqTrans (congrAdd (.eqRefl _) (body_at C N U k))
@@ -83,24 +73,20 @@ theorem conservation_step (C N U k : PTm n) (hk : Γ ⊢[PRAAx] lt k N) : Γ ⊢
   have powerRest := natEq ((congrAp2 powF rest.eqSymm (.eqRefl U)).eqTrans (pw_succ U (monus N (succ k))))
   have powerPred := natEq (congrAp2 powF predRest (.eqRefl U))
   have oldValue := natEq old
-  have nextValue := natEq next
-  have restValue := natEq rest.eqSymm
   have b := natEq (size_succ (Γ := Γ) C U k)
   have v := natEq (variation_succ (Γ := Γ) C U k)
   apply deriveNat
   unfold conservation weight
   ipra_simps
-  simp only [powerOld,powerNext,powerPred,powerRest,oldValue,nextValue,restValue,b,v]
+  simp only [powerOld,powerNext,powerPred,powerRest,oldValue,natEq next,natEq rest.eqSymm,b,v]
   ring
 
 theorem prefix_conservation (C N U k : PTm n) (hk : Γ ⊢[PRAAx] le k N) : Γ ⊢[PRAAx]
     prefixSum C N U k ≐ conservation C N U k := by
   have all : Γ ⊢[PRAAx] .all (prefixLaw (Syn.shift C) (Syn.shift N) (Syn.shift U) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI ((prefix_zero C N U).eqTrans (conservation_zero C N U).eqSymm)
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_prefixLaw]
+    · exact .impI ((prefix_zero C N U).eqTrans (conservation_zero C N U).eqSymm)
+    · refine .impI ?_
       let Δ := le (succ (var 0)) (Syn.shift N) :: prefixLaw (Syn.shift C) (Syn.shift N) (Syn.shift U) (var 0) :: Γ.map Fm.shift
       have ih : Δ ⊢[PRAAx] prefixSum (Syn.shift C) (Syn.shift N) (Syn.shift U) (var 0) ≐
           conservation (Syn.shift C) (Syn.shift N) (Syn.shift U) (var 0) :=
@@ -114,14 +100,13 @@ theorem terminal_remaining (N : PTm n) : Γ ⊢[PRAAx] monus (succ N) N ≐ one 
   (congrMonus (succ_eq_add_one N) (.eqRefl N)).eqTrans (add_monus' one N)
 
 theorem conservation_terminal (C N U : PTm n) : Γ ⊢[PRAAx] conservation C N U N ≐ variation C U (succ N) := by
-  have high := natEq ((congrAp2 powF (terminal_remaining (Γ := Γ) N) (.eqRefl U)).eqTrans (pw_one U))
   have low := natEq ((congrAp2 powF (monus_self (Γ := Γ) N) (.eqRefl U)).eqTrans (pw_zero U))
   have index := natEq (terminal_remaining (Γ := Γ) N)
   have step := natEq (variation_succ (Γ := Γ) C U N)
   apply deriveNat
   unfold conservation
   ipra_simps
-  rw [high,low,index,step]
+  rw [natEq ((congrAp2 powF (terminal_remaining (Γ := Γ) N) (.eqRefl U)).eqTrans (pw_one U)),low,index,step]
   ring
 
 theorem derivative_identity (C N U : PTm n) : Γ ⊢[PRAAx] variation C U (succ N) ≐ total C N U :=
@@ -143,18 +128,16 @@ theorem evaluation_bound (C N U z w p q : PTm n)
 def output (C N U : PTm n) : PTm n := pairT (total C N U) (pairT (variation C U (succ N)) (denominator C))
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (C N U : PTm n) : PTm n := ap3 outputF C N U
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (C N U : PTm n) :
-    Syn.subst σ (output C N U) = output (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ U) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (C N U : PTm n) :
-    Syn.subst σ (run C N U) = run (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ U) := by simp [run]
+ipra_subst output
+ipra_subst run
 theorem program_at (C N U : PTm n) : Γ ⊢[PRAAx] run C N U ≐ output C N U := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![C,N,U]
 theorem returned_total (C N U : PTm n) : Γ ⊢[PRAAx] fstT (run C N U) ≐ total C N U :=
-  (congrFst (program_at C N U)).eqTrans (fst_pair _ _)
+  (program_at C N U).fstE
 theorem returned_variation (C N U : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run C N U)) ≐ variation C U (succ N) :=
-  (congrFst (congrSnd (program_at C N U))).eqTrans ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
+  (congrFst (congrSnd (program_at C N U))).eqTrans (snd_pair _ _).fstE
 theorem returned_denominator (C N U : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run C N U)) ≐ denominator C :=
-  (congrSnd (congrSnd (program_at C N U))).eqTrans ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))
+  (congrSnd (congrSnd (program_at C N U))).eqTrans (snd_pair _ _).sndE
 theorem returned_identity (C N U : PTm n) : Γ ⊢[PRAAx] fstT (run C N U) ≐ fstT (sndT (run C N U)) :=
   (returned_total C N U).eqTrans ((derivative_identity C N U).eqSymm.eqTrans (returned_variation C N U).eqSymm)
 

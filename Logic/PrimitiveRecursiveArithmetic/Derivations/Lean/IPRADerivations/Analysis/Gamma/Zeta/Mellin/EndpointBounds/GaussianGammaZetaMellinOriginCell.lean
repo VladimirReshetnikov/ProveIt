@@ -15,7 +15,7 @@ set_option maxHeartbeats 680000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinOriginCell
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianEulerLowerTailPowerPanel (width width_bound)
 open GaussianGammaEulerHeadShift (shifted)
@@ -25,10 +25,6 @@ open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (bounded)
 open GaussianRationalReciprocal (bound_congr bounded_product)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open LeanProofs.IPRA.PTm (monus num)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Mellin" => GaussianGammaZetaMellinIntegrand.nameF
@@ -38,11 +34,7 @@ def value (p z D k x y b : PTm n) : PTm n :=
   qmul (fraction (width x y k) (pw b (succ k)))
     (ap2 Mellin p (mellinData (shifted z D) D (pw y (succ k)) (pw b (succ k))))
 
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (p z D k x y b : PTm n) :
-    Syn.subst σ (value p z D k x y b) =
-      value (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ D) (Syn.subst σ k) (Syn.subst σ x)
-        (Syn.subst σ y) (Syn.subst σ b) := by
-  simp [value,GaussianGammaEulerHeadShift.subst_shifted]
+ipra_subst value [GaussianGammaEulerHeadShift.subst_shifted]
 
 theorem right_cell_bound (p z R D k x y b : PTm n)
     (h : Γ ⊢[PRAAx] GaussianEulerLowerPowerOrder.source z R D (succ k) y b)

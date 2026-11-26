@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineNormalizedSampleReconstruction
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode normSq_one scale)
 open GaussianArctangentDivisionAngles (modulus)
 open GaussianArctangentDivisionAngleResidual (positiveBudget)
@@ -36,10 +36,6 @@ open GaussianSineSampleRootGuards (fine clock clock_fine clock_later sineDenomin
 open GaussianSineSampleRootList (roots)
 open GaussianSineSquaredPolynomial (coefficients)
 open GaussianSineSquaredTrace (fromSine)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -51,17 +47,11 @@ def reconstructionBudget (J C : PTm n) : PTm n :=
 def normalizedBudget (J B : PTm n) : PTm n :=
   productBudget B (sineDenominator J) J*reconstructionBudget J (num 4)+reconstructionBudget J (traceBudget B)
 
-@[simp] theorem subst_inverseOdd {l : ℕ} (σ : Fin n → PTm l) (J : PTm n) :
-    Syn.subst σ (inverseOdd J) = inverseOdd (Syn.subst σ J) := by
-  simp [inverseOdd]
+ipra_subst inverseOdd
 
-@[simp] theorem subst_normalizedValue {l : ℕ} (σ : Fin n → PTm l) (J y : PTm n) :
-    Syn.subst σ (normalizedValue J y) = normalizedValue (Syn.subst σ J) (Syn.subst σ y) := by
-  simp [normalizedValue]
+ipra_subst normalizedValue
 
-@[simp] theorem subst_normalizedBudget {l : ℕ} (σ : Fin n → PTm l) (J B : PTm n) :
-    Syn.subst σ (normalizedBudget J B) = normalizedBudget (Syn.subst σ J) (Syn.subst σ B) := by
-  simp [normalizedBudget,reconstructionBudget,traceBudget,positiveBudget,two,one]
+ipra_subst normalizedBudget [reconstructionBudget, traceBudget, positiveBudget, two, one]
 
 theorem inverse_odd_unit (J : PTm n) :
     Γ ⊢[PRAAx] qmul (inverseOdd J) (naturalPoint (modulus J)) ≐ qone := by

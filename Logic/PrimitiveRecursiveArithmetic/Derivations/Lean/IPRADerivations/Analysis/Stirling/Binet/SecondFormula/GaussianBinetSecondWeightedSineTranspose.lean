@@ -16,7 +16,7 @@ set_option maxHeartbeats 880000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetSecondWeightedSineTranspose
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetSecondWeightedSineMatrix (matrix data subst_data original_cell_at suffix_row_at)
 open GaussianBinetSecondDecayPointwise (fullDecay frozenPiNumerator)
 open GaussianBinetSineFrozenPiTerm (realNumerator realDenominator)
@@ -31,9 +31,6 @@ open GaussianRationalRiemannRefinement (leftSum weight)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianReciprocalHorner (qmul_associative)
 open GaussianStirlingConstant (piDenominator)
-open LeanProofs.IPRA.PTm (monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -64,34 +61,15 @@ def rawFrozenValue (l k i A B U T M : PTm n) : PTm n :=
     Syn.subst σ (realDenominator k) = realDenominator (Syn.subst σ k) := by
   simp [realDenominator,GaussianBinetKernelImaginaryRatioRows.timeDenominator,one]
 
-@[simp] theorem subst_rawFrozenValue {m : ℕ} (σ : Fin n → PTm m) (l k i A B U T M : PTm n) :
-    Syn.subst σ (rawFrozenValue l k i A B U T M) =
-      rawFrozenValue (Syn.subst σ l) (Syn.subst σ k) (Syn.subst σ i) (Syn.subst σ A)
-        (Syn.subst σ B) (Syn.subst σ U) (Syn.subst σ T) (Syn.subst σ M) := by simp [rawFrozenValue,one,two]
+ipra_subst rawFrozenValue [one, two]
 
-@[simp] theorem subst_suffixData {m : ℕ} (σ : Fin n → PTm m) (p M T H J X Y D sign R L N cut : PTm n) :
-    Syn.subst σ (suffixData p M T H J X Y D sign R L N cut) =
-      suffixData (Syn.subst σ p) (Syn.subst σ M) (Syn.subst σ T) (Syn.subst σ H) (Syn.subst σ J)
-        (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ R)
-        (Syn.subst σ L) (Syn.subst σ N) (Syn.subst σ cut) := by simp [suffixData,one]
+ipra_subst suffixData [one]
 
-@[simp] theorem subst_suffixValue {m : ℕ} (σ : Fin n → PTm m) (p M T H J X Y D sign R L N cut : PTm n) :
-    Syn.subst σ (suffixValue p M T H J X Y D sign R L N cut) =
-      suffixValue (Syn.subst σ p) (Syn.subst σ M) (Syn.subst σ T) (Syn.subst σ H) (Syn.subst σ J)
-        (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ R)
-        (Syn.subst σ L) (Syn.subst σ N) (Syn.subst σ cut) := by simp [suffixValue,one]
+ipra_subst suffixValue [one]
 
-@[simp] theorem subst_transposedData {m : ℕ} (σ : Fin n → PTm m) (p M T H J X Y D sign R L N cut : PTm n) :
-    Syn.subst σ (transposedData p M T H J X Y D sign R L N cut) =
-      transposedData (Syn.subst σ p) (Syn.subst σ M) (Syn.subst σ T) (Syn.subst σ H) (Syn.subst σ J)
-        (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ R)
-        (Syn.subst σ L) (Syn.subst σ N) (Syn.subst σ cut) := by simp [transposedData,one,two]
+ipra_subst transposedData [one, two]
 
-@[simp] theorem subst_transposedValue {m : ℕ} (σ : Fin n → PTm m) (p M T H J X Y D sign R L N cut : PTm n) :
-    Syn.subst σ (transposedValue p M T H J X Y D sign R L N cut) =
-      transposedValue (Syn.subst σ p) (Syn.subst σ M) (Syn.subst σ T) (Syn.subst σ H) (Syn.subst σ J)
-        (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ R)
-        (Syn.subst σ L) (Syn.subst σ N) (Syn.subst σ cut) := by simp [transposedValue,one]
+ipra_subst transposedValue [one]
 
 theorem suffix_at (j p M T H J X Y D sign R L N cut : PTm n) :
     Γ ⊢[PRAAx] inst2 suffixBody j (suffixData p M T H J X Y D sign R L N cut) ≐

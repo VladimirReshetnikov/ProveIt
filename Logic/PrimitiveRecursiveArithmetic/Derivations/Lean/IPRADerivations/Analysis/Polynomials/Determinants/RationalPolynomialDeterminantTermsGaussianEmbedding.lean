@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalPolynomialDeterminantTermsGaussianEmbedding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalGaussianEmbedding (embed scalarOne)
 open RationalPolynomialGaussianEmbedding (coefficients coefficient_lookup coefficients_length embed_congr)
 open GaussianPolynomialDeterminantTerms (cell factor data tableShape rowCells)
@@ -25,16 +25,12 @@ open GaussianRationalMonicReduction (singleton singleton_length singleton_lookup
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
 open LeanProofs.IPRA.Foundations.BoundedSyntax (BFm formula)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def cellBody : PTm 3 := coefficients (cell (fstT (var 2)) (var 0) (var 1)) (succ (sndT (var 2)))
 def embeddedTable (M m L : PTm n) : PTm n := table cellBody m m (pairT M L)
-@[simp] theorem subst_embeddedTable {l : ℕ} (σ : Fin n → PTm l) (M m L : PTm n) :
-    Syn.subst σ (embeddedTable M m L) = embeddedTable (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) := by simp [embeddedTable]
+ipra_subst embeddedTable
 theorem coefficients_congr {C D N K : PTm n} (hC : Γ ⊢[PRAAx] C ≐ D) (hN : Γ ⊢[PRAAx] N ≐ K) : Γ ⊢[PRAAx]
     coefficients C N ≐ coefficients D K :=
   (RationalPolynomialGaussianEmbedding.coefficients_at _ _).eqSymm.eqTrans
@@ -63,9 +59,7 @@ theorem embedded_factor (M m L w j : PTm n) (hj : Γ ⊢[PRAAx] lt j m) : Γ ⊢
 
 def entriesEqual (P Q N : PTm n) : Fm PTm n := .all
   (lt (var 0) (Syn.shift N) ⟶ entry (Syn.shift P) (var 0) ≐ entry (Syn.shift Q) (var 0))
-@[simp] theorem subst_entriesEqual {l : ℕ} (σ : Fin n → PTm l) (P Q N : PTm n) :
-    (entriesEqual P Q N).subst σ = entriesEqual (Syn.subst σ P) (Syn.subst σ Q) (Syn.subst σ N) := by
-  simp [entriesEqual,Syn.subst_shift,Syn.shift_subst]
+ipra_subst entriesEqual [Syn.subst_shift, Syn.shift_subst]
 theorem entry_equal_at (P Q N i : PTm n) (h : Γ ⊢[PRAAx] entriesEqual P Q N) (hi : Γ ⊢[PRAAx] lt i N) : Γ ⊢[PRAAx]
     entry P i ≐ entry Q i := by
   have rule : Γ ⊢[PRAAx] lt i N ⟶ entry P i ≐ entry Q i := by simpa [entriesEqual] using h.allE i
@@ -98,10 +92,8 @@ def stageF : PR 2 := rec2 (singleton scalarOne : PTm 1) stepBody
 def stage (M m L w j : PTm n) : PTm n := ap2 stageF j (data M m L w)
 def term (M m L w : PTm n) : PTm n := RationalPolynomialBuffersGaussianEmbedding.scaled (stage M m L w m)
   (RationalScalarDeterminantGaussianEmbedding.sign m w)
-@[simp] theorem subst_stage {l : ℕ} (σ : Fin n → PTm l) (M m L w j : PTm n) :
-    Syn.subst σ (stage M m L w j) = stage (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ w) (Syn.subst σ j) := by simp [stage]
-@[simp] theorem subst_term {l : ℕ} (σ : Fin n → PTm l) (M m L w : PTm n) :
-    Syn.subst σ (term M m L w) = term (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ w) := by simp [term]
+ipra_subst stage
+ipra_subst term
 theorem stage_congr {M M' m m' L L' w w' j j' : PTm n} (hM : Γ ⊢[PRAAx] M ≐ M') (hm : Γ ⊢[PRAAx] m ≐ m')
     (hL : Γ ⊢[PRAAx] L ≐ L') (hw : Γ ⊢[PRAAx] w ≐ w') (hj : Γ ⊢[PRAAx] j ≐ j') : Γ ⊢[PRAAx]
     stage M m L w j ≐ stage M' m' L' w' j' :=
@@ -152,12 +144,8 @@ theorem embedded_entries_to_codes (C D H : PTm n)
 def stageEntries (M m L w j : PTm n) : Fm PTm n := RationalPolynomialBuffersGaussianEmbedding.embeddedEntries
   (stage M m L w j) (GaussianPolynomialDeterminantTerms.stage (embeddedTable M m L) m L w j) (succ (j*L))
 def stageLaw (M m L w j : PTm n) : Fm PTm n := le j m ⟶ stageEntries M m L w j
-@[simp] theorem subst_stageEntries {l : ℕ} (σ : Fin n → PTm l) (M m L w j : PTm n) :
-    (stageEntries M m L w j).subst σ = stageEntries (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ w) (Syn.subst σ j) := by
-  simp [stageEntries]
-@[simp] theorem subst_stageLaw {l : ℕ} (σ : Fin n → PTm l) (M m L w j : PTm n) :
-    (stageLaw M m L w j).subst σ = stageLaw (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ w) (Syn.subst σ j) := by
-  simp [stageLaw]
+ipra_subst stageEntries
+ipra_subst stageLaw
 
 theorem stage_base_entry (M m L w i : PTm n) (hi : Γ ⊢[PRAAx] lt i (succ (zero*L))) : Γ ⊢[PRAAx]
     embed (entry (stage M m L w zero) i) ≐ entry (GaussianPolynomialDeterminantTerms.stage (embeddedTable M m L) m L w zero) i := by
@@ -260,22 +248,16 @@ theorem term_evaluation_conjugacy (M m L w z : PTm n) : Γ ⊢[PRAAx]
 def output (M m L w j : PTm n) : PTm n := pairT (stage M m L w j) (term M m L w)
 def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (M m L w j : PTm n) : PTm n := PTm.app outputF ![M,m,L,w,j]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (M m L w j : PTm n) :
-    Syn.subst σ (output M m L w j) = output (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ w) (Syn.subst σ j) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (M m L w j : PTm n) :
-    Syn.subst σ (run M m L w j) = run (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ w) (Syn.subst σ j) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 theorem program_at (M m L w j : PTm n) : Γ ⊢[PRAAx] run M m L w j ≐ output M m L w j := by
   simpa only [run,outputF,subst_output,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
     Matrix.cons_val_three,Matrix.cons_val_four,Matrix.head_cons,Matrix.tail_cons] using
     toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![M,m,L,w,j]
 theorem returned_stage (M m L w j : PTm n) : Γ ⊢[PRAAx] fstT (run M m L w j) ≐ stage M m L w j :=
-  (congrFst (program_at _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _ _).fstE
 theorem returned_term (M m L w j : PTm n) : Γ ⊢[PRAAx] sndT (run M m L w j) ≐ term M m L w :=
-  (congrSnd (program_at _ _ _ _ _)).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _ _).sndE
 
 theorem actual_rational_embedded_table_shape_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3
     (tableShape (embeddedTable (var 0) (var 1) (var 2)) (var 1) (var 2)) := closeUniv 3 (embedded_shape _ _ _)

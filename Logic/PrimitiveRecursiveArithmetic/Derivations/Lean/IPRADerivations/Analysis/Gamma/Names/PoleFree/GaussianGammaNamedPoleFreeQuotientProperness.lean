@@ -14,12 +14,10 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNamedPoleFreeQuotientProperness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaNamedPoleFree (source name_regular)
 open GaussianNameArithmetic (add_equivalent)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_to_diagonal)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

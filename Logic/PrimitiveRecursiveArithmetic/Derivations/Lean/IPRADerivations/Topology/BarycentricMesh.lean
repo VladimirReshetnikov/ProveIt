@@ -1,5 +1,4 @@
 import IPRADerivations.Topology.HairyBallEstimates
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The mesh of iterated barycentric subdivision
@@ -21,12 +20,8 @@ derivations (coordinates as integer terms, norms and diameters as natural terms 
 
 namespace LeanProofs.IPRA.Topology.BarycentricMesh
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Topology.HairyBallEstimates (bernoulli)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicUpperCutoffBudget
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerWeightedHalfDecay (majorant halfSample)
 open GaussianEulerUpperTailPointwise (referenceTop referenceBottom)
 open GaussianEulerLogarithmicNamedUpperBound (original_named_bound denominator_positive)
@@ -31,10 +31,6 @@ open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalHorner (positive_product)
 open GaussianReconstructionRoots (norm_from_distance)
 open RationalGaussianEmbedding (embed native)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

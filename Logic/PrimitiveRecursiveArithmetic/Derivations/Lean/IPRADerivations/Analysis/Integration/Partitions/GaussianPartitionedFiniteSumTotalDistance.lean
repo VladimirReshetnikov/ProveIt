@@ -15,16 +15,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPartitionedFiniteSumTotalDistance
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianPartitionedFiniteSum (increasing block cut_step original_prefix_step)
 open GaussianPartitionedFiniteSumDistance (blockLength coarseRow coarseBody coarse_at blockAgreement block_error)
 open GaussianRationalFiniteSum (sum)
 open GaussianRationalHorner (qzero qmul positive_product)
 open GaussianRationalMetric (distanceBounded bounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -35,11 +32,8 @@ def prefixLaw (cut : PR 2) (f g : PTm 2) (K d x y A B k : PTm n) : Fm PTm n := l
 def unitWeight (M : PTm n) : PTm n :=
   GaussianRationalHorner.ofGaussian (ComplexLogarithmRemainder.scale one ComplexLogarithmRemainder.oneCode) M
 
-@[simp] theorem subst_prefixLaw {m : ℕ} (σ : Fin n → PTm m) (cut : PR 2) (f g : PTm 2) (K d x y A B k : PTm n) :
-    (prefixLaw cut f g K d x y A B k).subst σ = prefixLaw cut f g (Syn.subst σ K) (Syn.subst σ d)
-      (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ k) := by simp [prefixLaw]
-@[simp] theorem subst_unitWeight {m : ℕ} (σ : Fin n → PTm m) (M : PTm n) :
-    Syn.subst σ (unitWeight M) = unitWeight (Syn.subst σ M) := by simp [unitWeight]
+ipra_subst prefixLaw
+ipra_subst unitWeight
 
 theorem prefix_zero (cut : PR 2) (f g : PTm 2) (d x y A B : PTm n)
     (hB : Γ ⊢[PRAAx] le one B) (h0 : Γ ⊢[PRAAx] ap2 cut zero d ≐ zero) : Γ ⊢[PRAAx]
@@ -76,11 +70,9 @@ theorem prefix_comparison (cut : PR 2) (f g : PTm 2) (K d x y A B k : PTm n)
     by simpa [Fm.shift,Syn.shift] using hr.shift
   have all : Γ ⊢[PRAAx] .all (prefixLaw cut f g (Syn.shift K) (Syn.shift d) (Syn.shift x) (Syn.shift y)
       (Syn.shift A) (Syn.shift B) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI ((prefix_zero cut f g d x y A B hB h0).wk)
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_prefixLaw]
+    · exact .impI ((prefix_zero cut f g d x y A B hB h0).wk)
+    · refine .impI ?_
       exact prefix_step cut f g (Syn.shift K) (Syn.shift d) (Syn.shift x) (Syn.shift y) (Syn.shift A) (Syn.shift B)
         (var 0) bs.wk.wk ms.wk.wk rs.wk.wk Prf.hyp0
         (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))

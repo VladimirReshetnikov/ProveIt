@@ -1,7 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.BalancedRadius.GaussianBalancedRadiusSyntax
 import IPRADerivations.Analysis.Inequalities.RationalNonnegativePowers
-import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Genuine zero-radius branch of the balanced radius certificate
@@ -19,23 +17,18 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBalancedRadiusZero
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianBalancedRadiusSyntax (coefficient numerator denominator)
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (fraction fraction_represents)
 open LeanProofs.IPRA.Analysis.RationalNonnegativePowers (power)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (positive_product scalar_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def term (C N A B i : PTm n) : PTm n := RationalArithmetic.multiply
   (GaussianRationalMetric.qnormSq (coefficient C N i)) (power A B (two*i))
 
-@[simp] theorem subst_term {m : ℕ} (σ : Fin n → PTm m) (C N A B i : PTm n) :
-    Syn.subst σ (term C N A B i) = term (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ i) := by simp [term]
+ipra_subst term
 
 theorem term_congr (C N i : PTm n) {A A' B B' : PTm n}
     (hA : Γ ⊢[PRAAx] A ≐ A') (hB : Γ ⊢[PRAAx] B ≐ B') : Γ ⊢[PRAAx]

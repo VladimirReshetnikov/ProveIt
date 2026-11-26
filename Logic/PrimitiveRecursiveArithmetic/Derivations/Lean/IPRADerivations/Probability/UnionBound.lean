@@ -21,14 +21,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.UnionBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.EventAlgebraMetric (wsum wsum_le)
 open LeanProofs.IPRA.Probability.BayesEvents (wsum_zero)
 open LeanProofs.IPRA.Analysis.Observation.PrefixObject (larger larger_le le_larger_left le_larger_right)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -94,9 +90,7 @@ theorem union_bound (w : α → PTm n) (L : List α) (fs : List (α → PTm n)) 
     Γ ⊢[PRAAx] le (wsum w (unionL fs) L) (sumW w L fs) := by
   have h := wsum_le (Γ := Γ) w (unionL fs) (sumL fs) (fun _ => zero) L
     fun r _ => le_congr (.eqRefl _) (add_zero _).eqSymm (union_le_sum fs r)
-  have e := natEq (wsum_sum (Γ := Γ) w L fs)
-  have z := natEq (wsum_zero (Γ := Γ) w L)
-  ipra_le sl h with e + z
+  ipra_le sl h with natEq (wsum_sum (Γ := Γ) w L fs) + natEq (wsum_zero (Γ := Γ) w L)
 
 /-- The Borel–Cantelli tail certificate: a tail-sum bound `∑_j P(A_j) ≤ ε` gives `P(⋃_j A_j) ≤ ε`. -/
 theorem tail_union (w : α → PTm n) (L : List α) (fs : List (α → PTm n)) {ε : PTm n}

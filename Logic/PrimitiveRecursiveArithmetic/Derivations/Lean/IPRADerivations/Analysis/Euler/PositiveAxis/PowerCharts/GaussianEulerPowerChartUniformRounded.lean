@@ -14,7 +14,7 @@ set_option maxHeartbeats 2000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPowerChartUniformRounded
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPositivePowerChart (nameF data)
 open GaussianEulerPowerChartCofinalEndpoints (lowerDenominator upperNumerator width)
 open GaussianEulerPowerChartUniformEndpoints (source uniform_physical_panel uniform_endpoint_order uniform_reference_bounds)
@@ -32,9 +32,6 @@ open GaussianRationalHorner (positive_product)
 open RationalValueBounds (upper upper_of_radius upper_triangle upper_congr upper_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.CoprimeModulus (pos_of_one_le)
 open LeanProofs.IPRA.Geometry.HypercubeSplit (le_cancel_pos)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

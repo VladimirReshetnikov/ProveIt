@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaShiftedDeflatedIdentification
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaCanonicalExponent (source constantF constant_at)
 open GaussianGammaShiftedDeflatedName (nameF nameData)
 open GaussianNameEquivalence (crossEquivalent cross_at cross_symm cross_trans)
@@ -24,9 +24,6 @@ open GaussianRationalDistanceOrder (distance_congr)
 open GaussianCoefficientNameBounds (unit)
 open ComplexLogarithmRemainder (normSq)
 open GaussianRationalSyntheticDivision (qone)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.LinearAlgebra.Cofactors.RationalCofactorBorderedRows
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Exact transport from original rational cells to the cleared row
@@ -15,8 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalCofactorOriginalClearing
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (app)
+open_ipra
 open RationalSupMetric (commonDenominator commonDenominator_one_le normalizedList coordinate)
 open RationalSelectedMinors (fromInteger scale positive_scale_nonzero)
 open RationalMatrixClearingBounds (cleared_representation)
@@ -29,8 +27,6 @@ open GaussianRationalSyntheticDivision (qmul_congr qmul_zero_right)
 open GaussianTranslatedNonconstant (recode recode_canonical recode_eq)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -90,22 +86,21 @@ def output (P d i j : PTm n) : PTm n := pairT (clearedCell P d i j)
   (pairT (scale P d) (pairT (embed (cell P i j)) (commonDenominator P d)))
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (P d i j : PTm n) : PTm n := app outputF ![P,d,i,j]
-@[simp] theorem subst_output {k : ℕ} (σ : Fin n → PTm k) (P d i j : PTm n) :
-    Syn.subst σ (output P d i j) = output (Syn.subst σ P) (Syn.subst σ d) (Syn.subst σ i) (Syn.subst σ j) := by simp [output]
+ipra_subst output
 theorem program_at (P d i j : PTm n) : Γ ⊢[PRAAx] run P d i j ≐ output P d i j := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![P,d,i,j]
 theorem returned_cleared (P d i j : PTm n) : Γ ⊢[PRAAx] fstT (run P d i j) ≐ clearedCell P d i j :=
-  (congrFst (program_at P d i j)).eqTrans (fst_pair _ _)
+  (program_at P d i j).fstE
 theorem returned_tail (P d i j : PTm n) : Γ ⊢[PRAAx] sndT (run P d i j) ≐ pairT (scale P d) (pairT (embed (cell P i j)) (commonDenominator P d)) :=
-  (congrSnd (program_at P d i j)).eqTrans (snd_pair _ _)
+  (program_at P d i j).sndE
 theorem returned_scale (P d i j : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run P d i j)) ≐ scale P d :=
-  (congrFst (returned_tail P d i j)).eqTrans (fst_pair _ _)
+  (returned_tail P d i j).fstE
 theorem returned_source (P d i j : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run P d i j)) ≐ pairT (embed (cell P i j)) (commonDenominator P d) :=
-  (congrSnd (returned_tail P d i j)).eqTrans (snd_pair _ _)
+  (returned_tail P d i j).sndE
 theorem returned_original (P d i j : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run P d i j))) ≐ embed (cell P i j) :=
-  (congrFst (returned_source P d i j)).eqTrans (fst_pair _ _)
+  (returned_source P d i j).fstE
 theorem returned_denominator (P d i j : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run P d i j))) ≐ commonDenominator P d :=
-  (congrSnd (returned_source P d i j)).eqTrans (snd_pair _ _)
+  (returned_source P d i j).sndE
 theorem returned_cell_scale (P d i j : PTm n) (hi : Γ ⊢[PRAAx] lt i (length P)) (hj : Γ ⊢[PRAAx] lt j d) : Γ ⊢[PRAAx]
     fstT (run P d i j) ≐ qmul (scale P d) (embed (cell P i j)) :=
   (returned_cleared P d i j).eqTrans (cleared_cell_scale P d i j hi hj)

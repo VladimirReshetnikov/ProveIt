@@ -1,6 +1,5 @@
 import IPRADerivations.Algebra.QuadraticIntegerSignDispatch
 import IPRADerivations.Algebra.QuadraticTowerSignCoherence
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The source native dispatch on original rational coefficients
@@ -17,7 +16,7 @@ set_option linter.unnecessarySeqFocus false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis
 open RationalSupMetric (numeratorOf denominatorOf)
 open QuadraticSignCertificates (tag first second)
@@ -25,9 +24,6 @@ open QuadraticRationalRadicand (positiveNumerator integerRadicand stretch)
 open QuadraticRationalClearing (clear denominator)
 open QuadraticTowerSignRecipe (dispatch)
 open LeanProofs.IPRA.Foundations.GuardedTotalization (sel)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -40,18 +36,12 @@ def normNumerator (d x : PTm n) : ZT n := ZT.ofNat (denominatorOf d)*(first (cle
   ZT.ofNat (positiveNumerator d)*(second (clear x)*second (clear x))
 def third (d x : PTm n) : PTm n := sel (eqb (scalarTag (fstT x)) zero) (scalarTag d) (scalarTag (norm d x))
 def recipe (d x : PTm n) : PTm n := dispatch (scalarTag (fstT x)) (scalarTag (sndT x)) (third d x)
-@[simp] theorem subst_scalarTag {k : ℕ} (σ : Fin n → PTm k) (q : PTm n) :
-    Syn.subst σ (scalarTag q) = scalarTag (Syn.subst σ q) := by simp [scalarTag]
-@[simp] theorem subst_norm {k : ℕ} (σ : Fin n → PTm k) (d x : PTm n) :
-    Syn.subst σ (norm d x) = norm (Syn.subst σ d) (Syn.subst σ x) := by simp [norm]
-@[simp] theorem subst_nativeData {k : ℕ} (σ : Fin n → PTm k) (d x : PTm n) :
-    Syn.subst σ (nativeData d x) = nativeData (Syn.subst σ d) (Syn.subst σ x) := by simp [nativeData,stretch]
-@[simp] theorem subst_normNumerator {k : ℕ} (σ : Fin n → PTm k) (d x : PTm n) :
-    (normNumerator d x).subst σ = normNumerator (Syn.subst σ d) (Syn.subst σ x) := by simp [normNumerator]
-@[simp] theorem subst_third {k : ℕ} (σ : Fin n → PTm k) (d x : PTm n) :
-    Syn.subst σ (third d x) = third (Syn.subst σ d) (Syn.subst σ x) := by simp [third,sel]
-@[simp] theorem subst_recipe {k : ℕ} (σ : Fin n → PTm k) (d x : PTm n) :
-    Syn.subst σ (recipe d x) = recipe (Syn.subst σ d) (Syn.subst σ x) := by simp [recipe]
+ipra_subst scalarTag
+ipra_subst norm
+ipra_subst nativeData [stretch]
+ipra_subst normNumerator
+ipra_subst third [sel]
+ipra_subst recipe
 
 /-- Any actual positive-denominator representation determines the native
 numerator sign; no canonical scalar-code premise is needed. -/
@@ -180,29 +170,27 @@ def output (d x : PTm n) : PTm n := pairT (recipe d x)
   (pairT (QuadraticRationalNonnegativeRadicand.sign d x) (pairT (norm d x) (pairT (third d x) (nativeData d x))))
 def outputF : PR 2 := PTm.toPR (output (var 0) (var 1))
 def run (d x : PTm n) : PTm n := ap2 outputF d x
-@[simp] theorem subst_output {k : ℕ} (σ : Fin n → PTm k) (d x : PTm n) :
-    Syn.subst σ (output d x) = output (Syn.subst σ d) (Syn.subst σ x) := by simp [output]
-@[simp] theorem subst_run {k : ℕ} (σ : Fin n → PTm k) (d x : PTm n) :
-    Syn.subst σ (run d x) = run (Syn.subst σ d) (Syn.subst σ x) := by simp [run]
+ipra_subst output
+ipra_subst run
 theorem program_at (d x : PTm n) : Γ ⊢[PRAAx] run d x ≐ output d x := by
   simpa [run,outputF,ap2] using toPR_eq (Γ := Γ) (output (var 0) (var 1) : PTm 2) ![d,x]
 theorem returned_recipe (d x : PTm n) : Γ ⊢[PRAAx] fstT (run d x) ≐ recipe d x :=
-  (congrFst (program_at d x)).eqTrans (fst_pair _ _)
+  (program_at d x).fstE
 theorem returned_tail (d x : PTm n) : Γ ⊢[PRAAx] sndT (run d x) ≐
     pairT (QuadraticRationalNonnegativeRadicand.sign d x) (pairT (norm d x) (pairT (third d x) (nativeData d x))) :=
-  (congrSnd (program_at d x)).eqTrans (snd_pair _ _)
+  (program_at d x).sndE
 theorem returned_source_sign (d x : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run d x)) ≐ QuadraticRationalNonnegativeRadicand.sign d x :=
-  (congrFst (returned_tail d x)).eqTrans (fst_pair _ _)
+  (returned_tail d x).fstE
 theorem returned_norm_pair (d x : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run d x)) ≐ pairT (norm d x) (pairT (third d x) (nativeData d x)) :=
-  (congrSnd (returned_tail d x)).eqTrans (snd_pair _ _)
+  (returned_tail d x).sndE
 theorem returned_norm (d x : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run d x))) ≐ norm d x :=
-  (congrFst (returned_norm_pair d x)).eqTrans (fst_pair _ _)
+  (returned_norm_pair d x).fstE
 theorem returned_queries (d x : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run d x))) ≐ pairT (third d x) (nativeData d x) :=
-  (congrSnd (returned_norm_pair d x)).eqTrans (snd_pair _ _)
+  (returned_norm_pair d x).sndE
 theorem returned_third (d x : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (run d x)))) ≐ third d x :=
-  (congrFst (returned_queries d x)).eqTrans (fst_pair _ _)
+  (returned_queries d x).fstE
 theorem returned_native (d x : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (run d x)))) ≐ nativeData d x :=
-  (congrSnd (returned_queries d x)).eqTrans (snd_pair _ _)
+  (returned_queries d x).sndE
 theorem returned_equal (d x : PTm n) (hd : Γ ⊢[PRAAx] QuadraticRationalNonnegativeRadicand.nonnegative d) : Γ ⊢[PRAAx]
     fstT (run d x) ≐ fstT (sndT (run d x)) :=
   (returned_recipe d x).eqTrans ((nonnegative_dispatch d x hd).eqTrans (returned_source_sign d x).eqSymm)

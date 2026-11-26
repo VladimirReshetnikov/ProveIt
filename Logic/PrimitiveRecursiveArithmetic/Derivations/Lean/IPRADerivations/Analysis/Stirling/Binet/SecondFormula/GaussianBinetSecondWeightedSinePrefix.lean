@@ -14,7 +14,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetSecondWeightedSinePrefix
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetBoseFrozenMatrix (subst_frozenPiNumerator subst_piDenominator)
 open GaussianBinetSecondDecayPointwise (frozenPiNumerator)
 open GaussianBinetSecondWeightedSineGrid (parameters)
@@ -30,9 +30,6 @@ open GaussianRationalFiniteSum (sum)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalRiemannRefinement (leftSum termsDistance sum_distance)
 open GaussianStirlingConstant (piDenominator)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Frozen" => GaussianBinetBoseFrozenMatrix.value
@@ -58,17 +55,9 @@ def data (q k M T X Y D sign R K : PTm n) : PTm n :=
 def value (q k N M T X Y D sign R K : PTm n) : PTm n :=
   sum body N (data q k M T X Y D sign R K)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (q k M T X Y D sign R K : PTm n) :
-    Syn.subst σ (data q k M T X Y D sign R K) =
-      data (Syn.subst σ q) (Syn.subst σ k) (Syn.subst σ M) (Syn.subst σ T)
-        (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ R) (Syn.subst σ K) := by
-  simp [data]
+ipra_subst data
 
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (q k N M T X Y D sign R K : PTm n) :
-    Syn.subst σ (value q k N M T X Y D sign R K) =
-      value (Syn.subst σ q) (Syn.subst σ k) (Syn.subst σ N) (Syn.subst σ M) (Syn.subst σ T)
-        (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ R) (Syn.subst σ K) := by
-  simp [value]
+ipra_subst value
 
 theorem column_at (j q k M T X Y D sign R K : PTm n) :
     Γ ⊢[PRAAx] inst2 body j (data q k M T X Y D sign R K) ≐

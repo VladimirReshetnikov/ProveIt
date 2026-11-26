@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaFiniteCoefficientRecurrence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qadd)
 open GaussianRationalSyntheticDivision (qone qadd_congr qmul_congr qsub_congr)
 open GaussianRationalLowCoefficientConvolution (exponentCoefficient exponent_inside data)
@@ -28,10 +28,6 @@ open GaussianGammaFiniteEulerFactorization (whole totalDegree)
 open GaussianGammaReciprocalDegreeCells (degree)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -60,12 +56,8 @@ def coefficient (q N L K e : PTm n) : PTm n := exponentCoefficient (whole q N L 
 def recurrenceSum (q N L K e : PTm n) : PTm n := priorSum
   (GaussianGammaCombinedEulerKernelPolynomial.polynomial q N L) (degree L)
   (whole q N L K) (totalDegree N L K) e
-@[simp] theorem subst_coefficient {l : ℕ} (σ : Fin n → PTm l) (q N L K e : PTm n) :
-    Syn.subst σ (coefficient q N L K e) =
-      coefficient (Syn.subst σ q) (Syn.subst σ N) (Syn.subst σ L) (Syn.subst σ K) (Syn.subst σ e) := by simp [coefficient]
-@[simp] theorem subst_recurrenceSum {l : ℕ} (σ : Fin n → PTm l) (q N L K e : PTm n) :
-    Syn.subst σ (recurrenceSum q N L K e) =
-      recurrenceSum (Syn.subst σ q) (Syn.subst σ N) (Syn.subst σ L) (Syn.subst σ K) (Syn.subst σ e) := by simp [recurrenceSum]
+ipra_subst coefficient
+ipra_subst recurrenceSum
 
 theorem scaled_prior (q N L K e : PTm n) (hD : Γ ⊢[PRAAx] le e (degree L))
     (hK : Γ ⊢[PRAAx] le e K) (hH : Γ ⊢[PRAAx] le e (succ N)) : Γ ⊢[PRAAx]

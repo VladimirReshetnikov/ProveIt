@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsGridObservation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegrationByPartsLinear (originalProduct)
 open GaussianEulerIntegrandName (evaluatorF fixedData)
 open GaussianCompactRiemannName (sampleBody sampleData quadrature grid)
@@ -26,20 +26,14 @@ open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def rawTerm (p t x : PTm n) : PTm n := originalProduct p (fstT x) (sndT x) (fstT t) (sndT t)
 def rawF : PR 3 := PTm.toPR (rawTerm (var 0) (var 1) (var 2))
 def rowCost (R E T : PTm n) : PTm n := GaussianEulerIntegrationByPartsObservation.factor R E T+one
-@[simp] theorem subst_rawTerm {m : ℕ} (σ : Fin n → PTm m) (p t x : PTm n) :
-    Syn.subst σ (rawTerm p t x) = rawTerm (Syn.subst σ p) (Syn.subst σ t) (Syn.subst σ x) := by simp [rawTerm]
-@[simp] theorem subst_rowCost {m : ℕ} (σ : Fin n → PTm m) (R E T : PTm n) :
-    Syn.subst σ (rowCost R E T) = rowCost (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T) :=
-  by simp [rowCost,GaussianEulerIntegrationByPartsObservation.factor,GaussianEulerCompactPowerMajorant.majorant,
-    GaussianEulerCompactPowerMajorant.exponentRadius]
+ipra_subst rawTerm
+ipra_subst rowCost [GaussianEulerIntegrationByPartsObservation.factor, GaussianEulerCompactPowerMajorant.majorant, GaussianEulerCompactPowerMajorant.exponentRadius]
 
 theorem raw_evaluator_at (p a b z B : PTm n) : Γ ⊢[PRAAx]
     ap3 rawF p (pairT a b) (fixedData z B) ≐ originalProduct p z B a b := by

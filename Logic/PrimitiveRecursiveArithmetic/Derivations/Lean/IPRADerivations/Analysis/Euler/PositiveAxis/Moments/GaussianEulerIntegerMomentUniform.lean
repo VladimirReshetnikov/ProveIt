@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIntegerMomentUniform
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegerMomentIntegrand (source monomial shiftedData)
 open GaussianEulerIntegrandName (data)
 open GaussianNameEquivalence (crossEquivalent cross_symm cross_trans cross_at)
@@ -22,8 +22,6 @@ open GaussianEuclideanDistanceName (pointCN)
 open GaussianRationalHorner (qmul)
 open GaussianRationalMetric (distanceBounded)
 open GaussianCoefficientNameBounds (unit)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "I" => GaussianEulerIntegrandName.nameF
@@ -32,11 +30,8 @@ def nameF : PR 2 := GaussianBoundedConstantProductName.nameF I
 def nameData (z B N a b T : PTm n) : PTm n :=
   GaussianBoundedConstantProductName.data (pw T N) (monomial N a b) (data z B a b)
 def clock (p N T : PTm n) : PTm n := GaussianBoundedConstantProductName.clock p (pw T N)
-@[simp] theorem subst_nameData {m : ℕ} (σ : Fin n → PTm m) (z B N a b T : PTm n) :
-    Syn.subst σ (nameData z B N a b T) = nameData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N)
-      (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ T) := by simp [nameData]
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (p N T : PTm n) :
-    Syn.subst σ (clock p N T) = clock (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ T) := by simp [clock]
+ipra_subst nameData
+ipra_subst clock
 
 theorem input (z B N a b E T : PTm n) (h : Γ ⊢[PRAAx] source B a b E T) : Γ ⊢[PRAAx]
     GaussianBoundedConstantProductName.input I (pw T N) (monomial N a b) (data z B a b) :=

@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.SpecialFunctions.LambertW.GaussianRobinLowerDecomposition
 import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaFiniteApproximantName
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Decomposition of the original mesh logarithm name
@@ -14,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRobinMeshLogDecomposition
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogInterval (eb dt st c3)
 open GaussianRobinOddExponential (oddF constantF)
 open GaussianRobinOddLogarithmName (inputs cutoff stored)
@@ -31,9 +30,6 @@ open GaussianGammaFiniteApproximantName (logF log_regular)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (point_at crossEquivalent)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -50,21 +46,11 @@ def arithmeticBudget (N : PTm n) : PTm n := three+(multiplyModulus constantF odd
 def retimeBudget (N : PTm n) : PTm n := ceilL1 (exponentPoint N one)*two+two
 def budget (N : PTm n) : PTm n := (arithmeticBudget N+retimeBudget N)+two
 
-@[simp] theorem subst_baseData {m : ℕ} (σ : Fin n → PTm m) :
-    Syn.subst σ (baseData : PTm n) = (baseData : PTm m) := by
-  simp [baseData,inputs]
-@[simp] theorem subst_reducedData {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (reducedData N) = reducedData (Syn.subst σ N) := by
-  simp [reducedData,inputs]
-@[simp] theorem subst_exponentPoint {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (exponentPoint a b) = exponentPoint (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [exponentPoint,LeanProofs.IPRA.AnalyticNumberTheory.RobinLogInterval.eb,
-    LeanProofs.IPRA.AnalyticNumberTheory.RobinLogInterval.ebB]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (data N) = data (Syn.subst σ N) := by simp [data,integerData]
-@[simp] theorem subst_budget {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (budget N) = budget (Syn.subst σ N) := by
-  simp [budget,arithmeticBudget,retimeBudget,ceilL1,three,two,one]
+ipra_subst baseData [inputs]
+ipra_subst reducedData [inputs]
+ipra_subst exponentPoint [LeanProofs.IPRA.AnalyticNumberTheory.RobinLogInterval.eb, LeanProofs.IPRA.AnalyticNumberTheory.RobinLogInterval.ebB]
+ipra_subst data [integerData]
+ipra_subst budget [arithmeticBudget, retimeBudget, ceilL1, three, two, one]
 
 theorem base_regular : Γ ⊢[PRAAx] pointCN oddF (baseData : PTm n) :=
   GaussianRobinOddLogarithmName.name_regular one c3

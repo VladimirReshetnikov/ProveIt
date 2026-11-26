@@ -13,7 +13,7 @@ The independent requested Euler observation is retained.
 set_option autoImplicit false
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitSubstitutionPanelComparison
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUnitSubstitutionCompactName (source)
 open GaussianEulerUnitSubstitutionPanelSchedule
   (densityIndex densityCount chartIndex latticeDenominator panelData left width)
@@ -23,9 +23,6 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -33,9 +30,7 @@ local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
 def sample (s z R B a C E T : PTm n) : PTm n :=
   ap2 GaussianEulerUnitKernelCompactName.nameF s (panelData s z R B a C E T)
 
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (s z R B a C E T : PTm n) :
-    Syn.subst σ (sample s z R B a C E T) = sample (Syn.subst σ s) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by simp [sample]
+ipra_subst sample
 
 theorem original_density_observation (s z R B a C E T : PTm n) (h : Γ ⊢[PRAAx] source z R B a C E T) : Γ ⊢[PRAAx]
     distanceBounded (sample s z R B a C E T) (GaussianEulerUnitSubstitutionPanelSchedule.density s z R B a C E T)

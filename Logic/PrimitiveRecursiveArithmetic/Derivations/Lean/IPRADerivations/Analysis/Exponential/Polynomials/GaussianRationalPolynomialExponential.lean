@@ -19,7 +19,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalPolynomialExponential
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero qadd qmul canonical evaluate ofGaussian represents)
 open GaussianRationalSyntheticDivision (qone qone_canonical qadd_congr qmul_congr qzero_add canonicalCoefficients)
 open GaussianRationalPolynomialPowers (powerPrefix prefix_length prefix_evaluation)
@@ -29,15 +29,11 @@ open GaussianRationalMonicReduction (singleton singleton_length singleton_evalua
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def inverseFactorial (j : PTm n) : PTm n := ofGaussian ComplexLogarithmRemainder.oneCode (fact j)
-@[simp] theorem subst_inverseFactorial {m : ℕ} (σ : Fin n → PTm m) (j : PTm n) :
-    Syn.subst σ (inverseFactorial j) = inverseFactorial (Syn.subst σ j) := by simp [inverseFactorial,fact]
+ipra_subst inverseFactorial [fact]
 
 theorem factorial_positive (j : PTm n) : Γ ⊢[PRAAx] le one (fact j) :=
   le_congr (.eqRefl _) (AnalyticNumberTheory.Primes.fact_pos j).eqSymm (zero_lt_succ _)
@@ -57,8 +53,7 @@ theorem inverse_factorial_zero : Γ ⊢[PRAAx] inverseFactorial (zero : PTm n) �
 
 def scalarBody : PTm 2 := qmul (inverseFactorial (var 0)) (GaussianRationalReciprocal.power (var 1) (var 0))
 def scalarSum (q j : PTm n) : PTm n := GaussianRationalFiniteSum.sum scalarBody (succ j) q
-@[simp] theorem subst_scalarSum {m : ℕ} (σ : Fin n → PTm m) (q j : PTm n) :
-    Syn.subst σ (scalarSum q j) = scalarSum (Syn.subst σ q) (Syn.subst σ j) := by simp [scalarSum]
+ipra_subst scalarSum
 theorem scalar_body_at (q j : PTm n) : inst2 scalarBody j q =
     qmul (inverseFactorial j) (GaussianRationalReciprocal.power q j) := by simp [scalarBody,inst2]
 theorem scalar_sum_zero (q : PTm n) : Γ ⊢[PRAAx] scalarSum q zero ≐ qone := by
@@ -83,15 +78,10 @@ def stepBody : PTm 3 := advance (fstT (var 2)) (fstT (sndT (var 2))) (sndT (sndT
 def stageF : PR 2 := rec2 (singleton qone : PTm 1) stepBody
 def stage (C N K j : PTm n) : PTm n := ap2 stageF j (data C N K)
 def polynomial (C N K : PTm n) : PTm n := stage C N K K
-@[simp] theorem subst_advance {m : ℕ} (σ : Fin n → PTm m) (C N K j Q : PTm n) :
-    Syn.subst σ (advance C N K j Q) = advance
-      (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ K) (Syn.subst σ j) (Syn.subst σ Q) := by simp [advance]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (C N K : PTm n) :
-    Syn.subst σ (data C N K) = data (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ K) := by simp [data]
-@[simp] theorem subst_stage {m : ℕ} (σ : Fin n → PTm m) (C N K j : PTm n) :
-    Syn.subst σ (stage C N K j) = stage (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ K) (Syn.subst σ j) := by simp [stage]
-@[simp] theorem subst_polynomial {m : ℕ} (σ : Fin n → PTm m) (C N K : PTm n) :
-    Syn.subst σ (polynomial C N K) = polynomial (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ K) := by simp [polynomial]
+ipra_subst advance
+ipra_subst data
+ipra_subst stage
+ipra_subst polynomial
 
 theorem advance_congr {C C' N N' K K' j j' Q Q' : PTm n}
     (hC : Γ ⊢[PRAAx] C ≐ C') (hN : Γ ⊢[PRAAx] N ≐ N') (hK : Γ ⊢[PRAAx] K ≐ K')
@@ -118,8 +108,8 @@ theorem stage_succ (C N K j : PTm n) : Γ ⊢[PRAAx] stage C N K (succ j) ≐ ad
   simp only [stepBody,subst_advance,subst_fstT,subst_sndT,Syn.subst_var,
     Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two] at e
   have rest := snd_pair (Γ := Γ) C (pairT N K)
-  exact e.eqTrans (advance_congr (fst_pair _ _) ((congrFst rest).eqTrans (fst_pair _ _))
-    ((congrSnd rest).eqTrans (snd_pair _ _)) (.eqRefl _) (.eqRefl _))
+  exact e.eqTrans (advance_congr (fst_pair _ _) rest.fstE
+    rest.sndE (.eqRefl _) (.eqRefl _))
 
 theorem advance_length (C N K j Q : PTm n) : Γ ⊢[PRAAx] length (advance C N K j Q) ≐ succ (succ j*N) :=
   added_length _ _ _
@@ -153,9 +143,7 @@ theorem stage_step_evaluation (C N K j z : PTm n) (hC : Γ ⊢[PRAAx] length C �
 
 def evaluationLaw (C N K z j : PTm n) : Fm PTm n := le j K ⟶
   evaluate (stage C N K j) z ≐ scalarSum (evaluate C z) j
-@[simp] theorem subst_evaluationLaw {m : ℕ} (σ : Fin n → PTm m) (C N K z j : PTm n) :
-    (evaluationLaw C N K z j).subst σ = evaluationLaw
-      (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ K) (Syn.subst σ z) (Syn.subst σ j) := by simp [evaluationLaw]
+ipra_subst evaluationLaw
 
 theorem stage_evaluation (C N K j z : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ succ N)
     (hj : Γ ⊢[PRAAx] le j K) : Γ ⊢[PRAAx] evaluate (stage C N K j) z ≐ scalarSum (evaluate C z) j := by
@@ -163,13 +151,11 @@ theorem stage_evaluation (C N K j z : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ su
     simpa only [Fm.shift,Fm.subst_eq,Foundations.SequenceComposition.subst_length,
       ConciseIPRA.PTm.subst_succ,Syn.shift] using hC.shift
   have all : Γ ⊢[PRAAx] .all (evaluationLaw (Syn.shift C) (Syn.shift N) (Syn.shift K) (Syn.shift z) (var 0)) := by
-    refine PRA.qfInd _ (by trivial) ?_ ?_
-    · simp only [subst_evaluationLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI ((evaluate_congr (stage_zero C N K) (.eqRefl _)).eqTrans
+    ipra_qfind (by trivial) [subst_evaluationLaw]
+    · exact .impI ((evaluate_congr (stage_zero C N K) (.eqRefl _)).eqTrans
         ((singleton_evaluation _ _).eqTrans ((GaussianTranslatedNonconstant.recode_eq _ qone_canonical).eqTrans
           (scalar_sum_zero _).eqSymm)))
-    · simp only [subst_evaluationLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    · refine .impI ?_
       exact stage_step_evaluation _ _ _ _ _ hcs.wk.wk Prf.hyp0
         (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
   have gate : Γ ⊢[PRAAx] evaluationLaw C N K z j := by
@@ -200,12 +186,7 @@ theorem stage_coefficient_succ (C N K j s : PTm n) (hs : Γ ⊢[PRAAx] le s (suc
 def polynomialF : PR 3 := PTm.toPR (polynomial (var 0) (var 1) (var 2))
 def scalarF : PR 2 := PTm.toPR (scalarSum (var 0) (var 1))
 def run (C N K : PTm n) : PTm n := PTm.app polynomialF ![C,N,K]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (C N K : PTm n) :
-    Syn.subst σ (run C N K) = run (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ K) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst run
 
 theorem program_at (C N K : PTm n) : Γ ⊢[PRAAx] run C N K ≐ polynomial C N K := by
   simpa [run,polynomialF] using toPR_eq (Γ := Γ) (polynomial (var 0) (var 1) (var 2) : PTm 3) ![C,N,K]

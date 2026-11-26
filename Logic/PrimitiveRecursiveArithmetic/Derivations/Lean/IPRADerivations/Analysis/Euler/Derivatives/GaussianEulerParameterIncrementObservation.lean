@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerParameterIncrementObservation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLogarithmicParameterIncrement (source increment)
 open GaussianEulerParameterExponentialIncrement (shifted incrementF incrementData)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
@@ -27,10 +27,6 @@ open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -49,13 +45,9 @@ def productCost (z B h D a b : PTm n) : PTm n :=
 
 def modelCost (z R B E T h D a b : PTm n) : PTm n := productCost z B h D a b+num 6*GaussianEulerLogarithmicMultiplier.eulerMajorant R E T
 
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (p h D a b : PTm n) :
-    Syn.subst σ (clock p h D a b) = clock (Syn.subst σ p) (Syn.subst σ h) (Syn.subst σ D) (Syn.subst σ a) (Syn.subst σ b) := by simp [clock]
-@[simp] theorem subst_unitData {m : ℕ} (σ : Fin n → PTm m) (h D a b : PTm n) :
-    Syn.subst σ (unitData h D a b) = unitData (Syn.subst σ h) (Syn.subst σ D) (Syn.subst σ a) (Syn.subst σ b) := by simp [unitData]
-@[simp] theorem subst_unitProductData {m : ℕ} (σ : Fin n → PTm m) (z B h D a b : PTm n) :
-    Syn.subst σ (unitProductData z B h D a b) = unitProductData (Syn.subst σ z) (Syn.subst σ B)
-      (Syn.subst σ h) (Syn.subst σ D) (Syn.subst σ a) (Syn.subst σ b) := by simp [unitProductData]
+ipra_subst clock
+ipra_subst unitData
+ipra_subst unitProductData
 
 theorem increment_at (p h D a b : PTm n) : Γ ⊢[PRAAx]
     ap2 incrementF p (incrementData h D a b) ≐ increment (clock p h D a b) h D a b :=

@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.RationalAlgebra
 import IPRADerivations.Analysis.RationalArithmetic.Representations.GaussianRationalValueEquality
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The original rational codes inside the Gaussian rational codes
@@ -16,7 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.RationalGaussianEmbedding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.RationalSupMetric (numeratorOf denominatorOf)
 open LeanProofs.IPRA.Analysis.RationalArgmin (rationalEq denominator_positive)
 open LeanProofs.IPRA.Analysis.RationalIntegerNormalization (normalize normalize_preserves_value)
@@ -27,9 +26,6 @@ open LeanProofs.IPRA.Analysis.GaussianRootAlgebra
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder (re im scale zeroCode)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qzero_canonical)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qnegative qnegative_canonical qnegative_represents)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -40,16 +36,11 @@ def native (a : ZT n) : PTm n := ComplexLogarithmRemainder.code a (ZT.ofNat zero
 def embed (q : PTm n) : PTm n := pairT (RationalArithmetic.recode q) scalarZero
 def axis (q : PTm n) : Fm PTm n := rationalEq (sndT q) scalarZero
 
-@[simp] theorem subst_scalarZero {l : ℕ} (σ : Fin n → PTm l) :
-    Syn.subst σ (scalarZero : PTm n) = scalarZero := by simp [scalarZero]
-@[simp] theorem subst_scalarOne {l : ℕ} (σ : Fin n → PTm l) :
-    Syn.subst σ (scalarOne : PTm n) = scalarOne := by simp [scalarOne]
-@[simp] theorem subst_native {l : ℕ} (σ : Fin n → PTm l) (a : ZT n) :
-    Syn.subst σ (native a) = native (ZT.subst σ a) := by simp [native]
-@[simp] theorem subst_embed {l : ℕ} (σ : Fin n → PTm l) (q : PTm n) :
-    Syn.subst σ (embed q) = embed (Syn.subst σ q) := by simp [embed,RationalArithmetic.recode]
-@[simp] theorem subst_axis {l : ℕ} (σ : Fin n → PTm l) (q : PTm n) :
-    (axis q).subst σ = axis (Syn.subst σ q) := by simp [axis]
+ipra_subst scalarZero
+ipra_subst scalarOne
+ipra_subst native
+ipra_subst embed [RationalArithmetic.recode]
+ipra_subst axis
 
 theorem scalar_recode_represents (q : PTm n) (a : ZT n) (A : PTm n)
     (hq : Γ ⊢[PRAAx] RationalArithmetic.represents q a A) :
@@ -160,7 +151,7 @@ theorem embed_equal (a b : PTm n) (h : Γ ⊢[PRAAx] rationalEq a b) :
 
 theorem rational_equal_of_embed (a b : PTm n) (h : Γ ⊢[PRAAx] embed a ≐ embed b) :
     Γ ⊢[PRAAx] rationalEq a b := rational_equal_of_scalar_recode a b
-      ((fst_pair _ _).eqSymm.eqTrans ((congrFst h).eqTrans (fst_pair _ _)))
+      ((fst_pair _ _).eqSymm.eqTrans h.fstE)
 
 theorem eq_iff (a b : PTm n) : Γ ⊢[PRAAx] Fm.iff (rationalEq a b)
     (GaussianRationalValueEquality.valueEqual (embed a) (embed b)) := by
@@ -200,8 +191,8 @@ theorem axis_roundtrip (q : PTm n) (hq : Γ ⊢[PRAAx] axis q) :
 theorem axis_of_recode_embed (q a : PTm n)
     (h : Γ ⊢[PRAAx] GaussianTranslatedNonconstant.recode q ≐ embed a) :
     Γ ⊢[PRAAx] axis q := by
-  have e := ((congrSnd (recode_pair q)).eqTrans (snd_pair _ _)).eqSymm.eqTrans
-    ((congrSnd h).eqTrans (snd_pair _ _))
+  have e := (recode_pair q).sndE.eqSymm.eqTrans
+    h.sndE
   exact rational_equal_of_scalar_recode _ _ (e.eqTrans scalar_recode_zero.eqSymm)
 
 theorem axis_iff_roundtrip (q : PTm n) : Γ ⊢[PRAAx] Fm.iff (axis q)
@@ -245,9 +236,9 @@ theorem negative_congr {q r : PTm n} (h : Γ ⊢[PRAAx] q ≐ r) :
 theorem negative_recode (q : PTm n) : Γ ⊢[PRAAx]
     qnegative (GaussianTranslatedNonconstant.recode q) ≐ qnegative q :=
   congrPairT
-    ((RationalAlgebra.negative_congr ((congrFst (recode_pair q)).eqTrans (fst_pair _ _))).eqTrans
+    ((RationalAlgebra.negative_congr (recode_pair q).fstE).eqTrans
       (scalar_negative_recode _))
-    ((RationalAlgebra.negative_congr ((congrSnd (recode_pair q)).eqTrans (snd_pair _ _))).eqTrans
+    ((RationalAlgebra.negative_congr (recode_pair q).sndE).eqTrans
       (scalar_negative_recode _))
 
 theorem axis_negative_representation (q : PTm n) (hq : Γ ⊢[PRAAx] axis q) :
@@ -279,9 +270,9 @@ theorem embed_at (q : PTm n) : Γ ⊢[PRAAx] ap1 embedF q ≐ embed q := by
   simpa only [embedF,ap1,subst_embed,Syn.subst_var,Matrix.cons_val_zero] using
     toPR_eq (Γ := Γ) (embed (var 0) : PTm 1) ![q]
 theorem embed_real_part (q : PTm n) : Γ ⊢[PRAAx] fstT (ap1 embedF q) ≐ RationalArithmetic.recode q :=
-  (congrFst (embed_at q)).eqTrans (fst_pair _ _)
+  (embed_at q).fstE
 theorem embed_imaginary_part (q : PTm n) : Γ ⊢[PRAAx] sndT (ap1 embedF q) ≐ scalarZero :=
-  (congrSnd (embed_at q)).eqTrans (snd_pair _ _)
+  (embed_at q).sndE
 theorem program_canonical (q : PTm n) : Γ ⊢[PRAAx] canonical (ap1 embedF q) :=
   canonical_congr (embed_at q) (embed_canonical q)
 theorem program_axis (q : PTm n) : Γ ⊢[PRAAx] axis (ap1 embedF q) :=

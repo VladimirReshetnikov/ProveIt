@@ -16,7 +16,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentImproperTaylor
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianBinetLaplaceMomentImproper (nameF data cutoff)
 open GaussianBinetLaplaceMomentImproperBound (momentBound prefixGrid prefix_source cofinal_refinement_error)
@@ -29,10 +29,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (qsub bounded distanceBounded)
 open GaussianReconstructionRoots (norm_from_distance)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (LeanProofs.IPRA.Q.mk _ t)
@@ -43,14 +39,9 @@ def leading (j D H : PTm n) : PTm n := num 3*(H*H)*higherBound j D
 def linearSample (p j X D R H Q : PTm n) : PTm n :=
   qsub (ap2 nameF p (data j X D R)) (qmul (radiusPoint H Q) (ap2 nameF p (data (succ j) X D R)))
 
-@[simp] theorem subst_higherBound {m : ℕ} (σ : Fin n → PTm m) (j D : PTm n) :
-    Syn.subst σ (higherBound j D) = higherBound (Syn.subst σ j) (Syn.subst σ D) := by simp [higherBound]
-@[simp] theorem subst_leading {m : ℕ} (σ : Fin n → PTm m) (j D H : PTm n) :
-    Syn.subst σ (leading j D H) = leading (Syn.subst σ j) (Syn.subst σ D) (Syn.subst σ H) := by simp [leading]
-@[simp] theorem subst_linearSample {m : ℕ} (σ : Fin n → PTm m) (p j X D R H Q : PTm n) :
-    Syn.subst σ (linearSample p j X D R H Q) =
-      linearSample (Syn.subst σ p) (Syn.subst σ j) (Syn.subst σ X) (Syn.subst σ D)
-        (Syn.subst σ R) (Syn.subst σ H) (Syn.subst σ Q) := by simp [linearSample]
+ipra_subst higherBound
+ipra_subst leading
+ipra_subst linearSample
 
 private theorem dyadic_scale (a b C E p : PTm n) (hE : Γ ⊢[PRAAx] le one E)
     (h : Γ ⊢[PRAAx] distanceBounded a b C (unit p)) :

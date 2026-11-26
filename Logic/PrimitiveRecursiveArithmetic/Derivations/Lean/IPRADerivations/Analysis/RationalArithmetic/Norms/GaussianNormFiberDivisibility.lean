@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianFiberDeterminantNonzero
 import IPRADerivations.Analysis.Polynomials.Determinants.GaussianPolynomialScalarLeftDeterminant
 import IPRADerivations.Analysis.Polynomials.Determinants.GaussianPolynomialRowFactorDeterminant
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual local fiber divisibility of the original norm polynomial
@@ -24,7 +23,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNormFiberDivisibility
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero qmul canonical evaluate)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qone qmul_congr canonicalCoefficients)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qsub)
@@ -41,9 +40,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalGridCoefficientEquality (gridEqual
 open LeanProofs.IPRA.Analysis.GaussianRationalFiniteGridIdentity (gridPoint)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -56,22 +52,12 @@ def paddedOriginal (M m B t : PTm n) : PTm n := leftPad (determinant M m B) t
 def factorProduct (R M m B t x : PTm n) : PTm n :=
   GaussianRationalPolynomialProduct.product (H x t) (quotient R M m B t x) t (m*B)
 
-@[simp] theorem subst_inverseScalar {l : ℕ} (σ : Fin n → PTm l) (R m : PTm n) :
-    Syn.subst σ (inverseScalar R m) = inverseScalar (Syn.subst σ R) (Syn.subst σ m) := by simp [inverseScalar]
-@[simp] theorem subst_quotientDeterminant {l : ℕ} (σ : Fin n → PTm l) (R M m B t x : PTm n) :
-    Syn.subst σ (quotientDeterminant R M m B t x) = quotientDeterminant (Syn.subst σ R) (Syn.subst σ M)
-      (Syn.subst σ m) (Syn.subst σ B) (Syn.subst σ t) (Syn.subst σ x) := by simp [quotientDeterminant]
-@[simp] theorem subst_quotient {l : ℕ} (σ : Fin n → PTm l) (R M m B t x : PTm n) :
-    Syn.subst σ (quotient R M m B t x) = quotient (Syn.subst σ R) (Syn.subst σ M)
-      (Syn.subst σ m) (Syn.subst σ B) (Syn.subst σ t) (Syn.subst σ x) := by simp [quotient]
-@[simp] theorem subst_width {l : ℕ} (σ : Fin n → PTm l) (m B t : PTm n) :
-    Syn.subst σ (width m B t) = width (Syn.subst σ m) (Syn.subst σ B) (Syn.subst σ t) := by simp [width]
-@[simp] theorem subst_paddedOriginal {l : ℕ} (σ : Fin n → PTm l) (M m B t : PTm n) :
-    Syn.subst σ (paddedOriginal M m B t) = paddedOriginal (Syn.subst σ M) (Syn.subst σ m)
-      (Syn.subst σ B) (Syn.subst σ t) := by simp [paddedOriginal]
-@[simp] theorem subst_factorProduct {l : ℕ} (σ : Fin n → PTm l) (R M m B t x : PTm n) :
-    Syn.subst σ (factorProduct R M m B t x) = factorProduct (Syn.subst σ R) (Syn.subst σ M)
-      (Syn.subst σ m) (Syn.subst σ B) (Syn.subst σ t) (Syn.subst σ x) := by simp [factorProduct]
+ipra_subst inverseScalar
+ipra_subst quotientDeterminant
+ipra_subst quotient
+ipra_subst width
+ipra_subst paddedOriginal
+ipra_subst factorProduct
 
 theorem multiply_inverse_cancel (a b c : PTm n) (hInverse : Γ ⊢[PRAAx] qmul a b ≐ qone)
     (hCanonical : Γ ⊢[PRAAx] canonical c) : Γ ⊢[PRAAx] qmul b (qmul a c) ≐ c :=
@@ -201,24 +187,12 @@ def sourceWidth (m a c P p g : PTm n) : PTm n := width m (GaussianPolynomialMoni
 def input (F G m a c P : PTm n) : Fm PTm n := GaussianPolynomialMonicNorm.input F G m a c ⋏
   GaussianRationalCurveFibers.sourceInput F G m P
 
-@[simp] theorem subst_sourceQuotient {l : ℕ} (σ : Fin n → PTm l) (F G m a c P p g : PTm n) :
-    Syn.subst σ (sourceQuotient F G m a c P p g) = sourceQuotient (Syn.subst σ F) (Syn.subst σ G)
-      (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ P) (Syn.subst σ p) (Syn.subst σ g) := by simp [sourceQuotient]
-@[simp] theorem subst_sourceOriginal {l : ℕ} (σ : Fin n → PTm l) (F G m a c : PTm n) :
-    Syn.subst σ (sourceOriginal F G m a c) = sourceOriginal (Syn.subst σ F) (Syn.subst σ G)
-      (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by simp [sourceOriginal]
-@[simp] theorem subst_sourcePadded {l : ℕ} (σ : Fin n → PTm l) (F G m a c P p g : PTm n) :
-    Syn.subst σ (sourcePadded F G m a c P p g) = sourcePadded (Syn.subst σ F) (Syn.subst σ G)
-      (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ P) (Syn.subst σ p) (Syn.subst σ g) := by simp [sourcePadded]
-@[simp] theorem subst_sourceFactor {l : ℕ} (σ : Fin n → PTm l) (F G m a c P p g : PTm n) :
-    Syn.subst σ (sourceFactor F G m a c P p g) = sourceFactor (Syn.subst σ F) (Syn.subst σ G)
-      (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ P) (Syn.subst σ p) (Syn.subst σ g) := by simp [sourceFactor]
-@[simp] theorem subst_sourceWidth {l : ℕ} (σ : Fin n → PTm l) (m a c P p g : PTm n) :
-    Syn.subst σ (sourceWidth m a c P p g) = sourceWidth (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c)
-      (Syn.subst σ P) (Syn.subst σ p) (Syn.subst σ g) := by simp [sourceWidth]
-@[simp] theorem subst_input {l : ℕ} (σ : Fin n → PTm l) (F G m a c P : PTm n) :
-    (input F G m a c P).subst σ = input (Syn.subst σ F) (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ P) := by simp [input]
+ipra_subst sourceQuotient
+ipra_subst sourceOriginal
+ipra_subst sourcePadded
+ipra_subst sourceFactor
+ipra_subst sourceWidth
+ipra_subst input
 
 theorem source_norm_identity (F G m a c : PTm n) : Γ ⊢[PRAAx]
     determinant (GaussianRationalFiberVandermonde.sourceMatrix F G m a c) m (GaussianPolynomialMonicNorm.width m a c) ≐
@@ -287,9 +261,7 @@ def certificate (F G m a c P p g : PTm n) : Fm PTm n :=
         (neg (scalarDet (W (GaussianRationalCurveFibers.yList P p g) m) m ≐ qzero) ⋏
           (coefficientsEqual (sourcePadded F G m a c P p g) (sourceFactor F G m a c P p g) (sourceWidth m a c P p g) ⋏
             (GaussianRationalFiberGrouping.partitionTotal P p ≐ length P)))))
-@[simp] theorem subst_certificate {l : ℕ} (σ : Fin n → PTm l) (F G m a c P p g : PTm n) :
-    (certificate F G m a c P p g).subst σ = certificate (Syn.subst σ F) (Syn.subst σ G)
-      (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ P) (Syn.subst σ p) (Syn.subst σ g) := by simp [certificate]
+ipra_subst certificate
 theorem source_factorization (F G m a c P p g : PTm n) (h : Γ ⊢[PRAAx] input F G m a c P) : Γ ⊢[PRAAx]
     certificate F G m a c P p g :=
   .andI (source_quotient_length _ _ _ _ _ _ _ _) (.andI (source_quotient_canonical _ _ _ _ _ _ _ _)
@@ -309,16 +281,8 @@ def run (F G m a c P p g : PTm n) : PTm n := app outputF ![F,G,m,a,c,P,p,g]
 def fields (c : PTm n) (i : Fin 6) : PTm n :=
   ![fstT c,fstT (sndT c),fstT (sndT (sndT c)),fstT (sndT (sndT (sndT c))),
     fstT (sndT (sndT (sndT (sndT c)))),sndT (sndT (sndT (sndT (sndT c))))] i
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (F G m a c P p g : PTm n) :
-    Syn.subst σ (output F G m a c P p g) = output (Syn.subst σ F) (Syn.subst σ G)
-      (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ P) (Syn.subst σ p) (Syn.subst σ g) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (F G m a c P p g : PTm n) :
-    Syn.subst σ (run F G m a c P p g) = run (Syn.subst σ F) (Syn.subst σ G)
-      (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ P) (Syn.subst σ p) (Syn.subst σ g) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 @[simp] theorem subst_fields {l : ℕ} (σ : Fin n → PTm l) (c : PTm n) (i : Fin 6) :
     Syn.subst σ (fields c i) = fields (Syn.subst σ c) i := by fin_cases i <;> simp [fields]
 theorem program_at (F G m a c P p g : PTm n) : Γ ⊢[PRAAx] run F G m a c P p g ≐ output F G m a c P p g := by
@@ -330,17 +294,17 @@ theorem returned_fields (F G m a c P p g : PTm n) (i : Fin 6) : Γ ⊢[PRAAx]
         sourceQuotient F G m a c P p g,H (GaussianRationalCurveFibers.selectedX P p g) (GaussianRationalFiberGrouping.fiberCount P p g),
         sourcePadded F G m a c P p g,sourceFactor F G m a c P p g] i := by
   have e0 := program_at (Γ := Γ) F G m a c P p g
-  have e1 := (congrSnd e0).eqTrans (snd_pair _ _)
-  have e2 := (congrSnd e1).eqTrans (snd_pair _ _)
-  have e3 := (congrSnd e2).eqTrans (snd_pair _ _)
-  have e4 := (congrSnd e3).eqTrans (snd_pair _ _)
-  have e5 := (congrSnd e4).eqTrans (snd_pair _ _)
+  have e1 := e0.sndE
+  have e2 := e1.sndE
+  have e3 := e2.sndE
+  have e4 := e3.sndE
+  have e5 := e4.sndE
   fin_cases i
-  · exact (congrFst e0).eqTrans (fst_pair _ _)
-  · exact (congrFst e1).eqTrans (fst_pair _ _)
-  · exact (congrFst e2).eqTrans (fst_pair _ _)
-  · exact (congrFst e3).eqTrans (fst_pair _ _)
-  · exact (congrFst e4).eqTrans (fst_pair _ _)
+  · exact e0.fstE
+  · exact e1.fstE
+  · exact e2.fstE
+  · exact e3.fstE
+  · exact e4.fstE
   · exact e5
 
 theorem returned_original (F G m a c P p g : PTm n) : Γ ⊢[PRAAx]

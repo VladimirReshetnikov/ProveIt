@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicCompactBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLogarithmicCompactName (evaluatorF fixedData raw_evaluator_at)
 open GaussianEulerLogarithmicMultiplier (majorant lipschitz)
 open GaussianEulerLogarithmicIntervalName (data nameF name_at)
@@ -23,8 +23,6 @@ open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded)
 open GaussianScalarExponentialProductTail (termsBounded sum_bound)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

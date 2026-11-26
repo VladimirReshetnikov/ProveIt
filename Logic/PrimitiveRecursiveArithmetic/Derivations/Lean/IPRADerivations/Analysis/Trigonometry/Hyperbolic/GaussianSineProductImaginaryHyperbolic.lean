@@ -17,7 +17,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineProductImaginaryHyperbolic
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (eval_re_code eval_im_code)
 open GaussianArctangentCayleyValues (imaginaryCode imaginaryPoint)
 open GaussianBoundedConstantProductName (constantF constant_regular)
@@ -33,8 +33,6 @@ open GaussianRationalHorner (ofGaussian ofGaussian_represents ofGaussian_canonic
 open GaussianRootAlgebra (equal equal_of_values re_mul im_mul re_neg im_neg)
 open GaussianSineProductImaginaryLogDerivative (axisNumerator realNumerator)
 open GaussianSineProductImaginaryCofinalDerivative (sineData)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

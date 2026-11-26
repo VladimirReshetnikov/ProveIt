@@ -16,7 +16,7 @@ set_option maxHeartbeats 1800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalFunctionalEquation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalHead (source)
 open GaussianBarnesCanonicalFiniteGaussRate (targetF targetData remainderGain leftGain rightGain)
 open GaussianBarnesCanonicalValue (nameF data regular)
@@ -29,9 +29,6 @@ open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalSlackRemoval (slack slack_removal_at)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

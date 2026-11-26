@@ -19,7 +19,7 @@ set_option maxHeartbeats 1500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRightHalfPlaneLogarithmIncrementBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianLogGammaEulerResidualDomain (native)
 open GaussianNamedExponentialLocalUniqueness (lateSmall)
@@ -36,10 +36,6 @@ open GaussianRightHalfPlaneLogarithmRelativeStep (denominator numerator radius)
 open GaussianRightHalfPlaneRadialContinuity (admission budget)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (cancel_pos)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "G" => GaussianRightHalfPlaneLogarithm.nameF
@@ -57,12 +53,7 @@ def input (A B neg a b sign D H J M : PTm n) : Fm PTm n :=
     (le one J ⋏ (le J A ⋏ (le J a ⋏
       (le (num 128*H) J ⋏ le (num 16*budget A B a b H) M))))
 
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (A B neg a b sign D H J M : PTm n) :
-    (input A B neg a b sign D H J M).subst σ =
-      input (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ neg)
-        (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ sign)
-        (Syn.subst σ D) (Syn.subst σ H) (Syn.subst σ J) (Syn.subst σ M) := by
-  simp [input,one]
+ipra_subst input [one]
 
 theorem shift_input (i A B neg a b sign D H J M : PTm n) (h : Γ ⊢[PRAAx] input A B neg a b sign D H J M) :
     Γ ⊢[PRAAx] input (A+i*D) B neg (a+i*D) b sign D H J

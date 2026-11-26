@@ -1,6 +1,5 @@
 import IPRADerivations.Probability.MedianSorted
 import IPRADerivations.Foundations.BoundedReflection
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The finite-sample replacement breakdown of the median
@@ -29,7 +28,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.MedianBreakdown
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Algebra.CubeRootTwo (sg)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totatives (sg_lt sg_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.EulerDomination (sg_le_one)
@@ -40,10 +39,6 @@ open LeanProofs.IPRA.Probability.MedianSorted (geB inst2_geB count_ge le_shift)
 open LeanProofs.IPRA.Combinatorics.LegendreFact (ltB inst2_ltB inst2_one2 count_lt)
 open LeanProofs.IPRA.AnalyticNumberTheory.TotientCorollaries (eqb_le_one)
 open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases eq_of_eqb)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -142,8 +137,8 @@ theorem dB_at (i q p : PTm n) :
 theorem tq_parts (t q p : PTm n) :
     Γ ⊢[PRAAx] (fstT (pairT t (pairT q p)) ≐ t) ⋏ ((fstT (sndT (pairT t (pairT q p))) ≐ q) ⋏
       (sndT (sndT (pairT t (pairT q p))) ≐ p)) :=
-  .andI (fst_pair _ _) (.andI ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
-    ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)))
+  .andI (fst_pair _ _) (.andI (snd_pair _ _).fstE
+    (snd_pair _ _).sndE)
 
 theorem bZ_at (i t q p : PTm n) :
     Γ ⊢[PRAAx] inst2 (bZ Z) i (pairT t (pairT q p)) ≐ sg (monus t (inst2 Z i q)) := by
@@ -262,8 +257,8 @@ theorem zB_eq (i P : PTm n) : inst2 (zB X) i P =
 theorem z_lt {i s H p : PTm n} (h : Γ ⊢[PRAAx] lt i s) :
     Γ ⊢[PRAAx] inst2 (zB X) i (pairT (pairT s H) p) ≐ H := by
   rw [zB_eq]
-  have fs : Γ ⊢[PRAAx] fstT (fstT (pairT (pairT s H) p)) ≐ s := (congrFst (fst_pair _ _)).eqTrans (fst_pair _ _)
-  have fH : Γ ⊢[PRAAx] sndT (fstT (pairT (pairT s H) p)) ≐ H := (congrSnd (fst_pair _ _)).eqTrans (snd_pair _ _)
+  have fs : Γ ⊢[PRAAx] fstT (fstT (pairT (pairT s H) p)) ≐ s := (fst_pair _ _).fstE
+  have fH : Γ ⊢[PRAAx] sndT (fstT (pairT (pairT s H) p)) ≐ H := (fst_pair _ _).sndE
   have g : Γ ⊢[PRAAx] sg (monus (fstT (fstT (pairT (pairT s H) p))) i) ≐ one :=
     (congrSg (congrMonus fs (.eqRefl _))).eqTrans (sg_lt h)
   have m := (congrMonus (.eqRefl one) g).eqTrans (monus_self _)
@@ -273,7 +268,7 @@ theorem z_lt {i s H p : PTm n} (h : Γ ⊢[PRAAx] lt i s) :
 theorem z_ge {i s H p : PTm n} (h : Γ ⊢[PRAAx] le s i) :
     Γ ⊢[PRAAx] inst2 (zB X) i (pairT (pairT s H) p) ≐ inst2 X i p := by
   rw [zB_eq]
-  have fs : Γ ⊢[PRAAx] fstT (fstT (pairT (pairT s H) p)) ≐ s := (congrFst (fst_pair _ _)).eqTrans (fst_pair _ _)
+  have fs : Γ ⊢[PRAAx] fstT (fstT (pairT (pairT s H) p)) ≐ s := (fst_pair _ _).fstE
   have g : Γ ⊢[PRAAx] sg (monus (fstT (fstT (pairT (pairT s H) p))) i) ≐ zero :=
     (congrSg (congrMonus fs (.eqRefl _))).eqTrans (sg_le h)
   have m := (congrMonus (.eqRefl one) g).eqTrans (monus_zero _)

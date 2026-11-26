@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLowerTransformedPower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLowerPowerOrder (source)
 open GaussianEulerLowerPowerRebasing (exponent)
 open GaussianEulerIntegrandName (powerF powerExponentF powerExponentData powerRadius)
@@ -26,10 +26,6 @@ open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_radius_mono)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,12 +34,9 @@ def observation (p z B A a b : PTm n) : PTm n := ap2 powerF p (data z B A a b)
 def query (t z B A a b : PTm n) : PTm n := GaussianExponentialRealPart.squarePrecision powerF (t+t) (data z B A a b)
 def numerator (p A a b : PTm n) : PTm n := pw b (pred A)*unit p+pw a (pred A)
 def denominator (p A a : PTm n) : PTm n := pw a (pred A)*unit p
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (z B A a b : PTm n) :
-    Syn.subst σ (data z B A a b) = data (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ a) (Syn.subst σ b) := by simp [data]
-@[simp] theorem subst_observation {m : ℕ} (σ : Fin n → PTm m) (p z B A a b : PTm n) :
-    Syn.subst σ (observation p z B A a b) = observation (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ a) (Syn.subst σ b) := by simp [observation]
-@[simp] theorem subst_query {m : ℕ} (σ : Fin n → PTm m) (t z B A a b : PTm n) :
-    Syn.subst σ (query t z B A a b) = query (Syn.subst σ t) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ a) (Syn.subst σ b) := by simp [query]
+ipra_subst data
+ipra_subst observation
+ipra_subst query
 
 theorem reference_source (z R B A a b : PTm n) (h : Γ ⊢[PRAAx] source z R B A a b) : Γ ⊢[PRAAx]
     GaussianEulerLowerRationalPowerReference.source A a b := .andI h.andE₁.andE₁ h.andE₂

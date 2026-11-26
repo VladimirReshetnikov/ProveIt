@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedPositiveLogarithmExponential
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedPositiveLogarithm (source rationalData numerator denominator)
 open GaussianPositiveRationalLogarithm (logF fraction)
 open GaussianCompactLogarithmBounds (domain radius)
@@ -25,9 +25,6 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -36,10 +33,8 @@ abbrev nameF (f : PR 2) : PR 2 := GaussianRadiusExponentialName.nameF (GaussianN
 def data (x E T : PTm n) : PTm n := GaussianRadiusExponentialName.data (radius E T) (GaussianNamedPositiveLogarithm.data x E)
 def budget (E T : PTm n) : PTm n := factor (radius E T)*(E+two)+two
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (x E T : PTm n) :
-    Syn.subst σ (data x E T) = data (Syn.subst σ x) (Syn.subst σ E) (Syn.subst σ T) := by simp [data]
-@[simp] theorem subst_budget {m : ℕ} (σ : Fin n → PTm m) (E T : PTm n) :
-    Syn.subst σ (budget E T) = budget (Syn.subst σ E) (Syn.subst σ T) := by simp [budget]
+ipra_subst data
+ipra_subst budget
 
 theorem original_rational_input (a b E T : PTm n)
     (hE : Γ ⊢[PRAAx] le one E) (ht : Γ ⊢[PRAAx] domain a b E T) :

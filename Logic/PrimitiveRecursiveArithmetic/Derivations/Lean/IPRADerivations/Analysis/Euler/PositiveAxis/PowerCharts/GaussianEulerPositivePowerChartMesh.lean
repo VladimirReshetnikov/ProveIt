@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartMesh
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPositivePowerChartImage (query)
 open GaussianEulerPositivePowerChart (parameters lipschitz)
 open GaussianCompactLogarithmBounds (domain)
@@ -25,10 +25,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEulerUnitSubstitutionTiltedNodes (tilt tilt_step_order tilt_error)
 open RationalValueBounds (upper radius)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -45,27 +41,13 @@ def cellNumerator (p h Q S E T C N : PTm n) : PTm n :=
   lipschitz Q S E T*C*unit (query p h Q E T)+two*timeDenominator N E
 def cellDenominator (p h Q E T N : PTm n) : PTm n := timeDenominator N E*unit (query p h Q E T)
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (e f d h Q S E T a C N : PTm n) :
-    (source e f d h Q S E T a C N).subst σ = source (Syn.subst σ e) (Syn.subst σ f) (Syn.subst σ d)
-      (Syn.subst σ h) (Syn.subst σ Q) (Syn.subst σ S) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ N) := by simp [source]
-@[simp] theorem subst_timeNumerator {m : ℕ} (σ : Fin n → PTm m) (i N a C : PTm n) :
-    Syn.subst σ (timeNumerator i N a C) = timeNumerator (Syn.subst σ i) (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ C) := by simp [timeNumerator]
-@[simp] theorem subst_timeDenominator {m : ℕ} (σ : Fin n → PTm m) (N E : PTm n) :
-    Syn.subst σ (timeDenominator N E) = timeDenominator (Syn.subst σ N) (Syn.subst σ E) := by simp [timeDenominator]
-@[simp] theorem subst_node {m : ℕ} (σ : Fin n → PTm m) (p i e f d h Q S E T a C N : PTm n) :
-    Syn.subst σ (node p i e f d h Q S E T a C N) = node (Syn.subst σ p) (Syn.subst σ i) (Syn.subst σ e)
-      (Syn.subst σ f) (Syn.subst σ d) (Syn.subst σ h) (Syn.subst σ Q) (Syn.subst σ S) (Syn.subst σ E) (Syn.subst σ T)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ N) := by simp [node]
-@[simp] theorem subst_correctedNode {m : ℕ} (σ : Fin n → PTm m) (p i e f d h Q S E T a C N : PTm n) :
-    Syn.subst σ (correctedNode p i e f d h Q S E T a C N) = correctedNode (Syn.subst σ p) (Syn.subst σ i) (Syn.subst σ e)
-      (Syn.subst σ f) (Syn.subst σ d) (Syn.subst σ h) (Syn.subst σ Q) (Syn.subst σ S) (Syn.subst σ E) (Syn.subst σ T)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ N) := by simp [correctedNode]
-@[simp] theorem subst_cellNumerator {m : ℕ} (σ : Fin n → PTm m) (p h Q S E T C N : PTm n) :
-    Syn.subst σ (cellNumerator p h Q S E T C N) = cellNumerator (Syn.subst σ p) (Syn.subst σ h) (Syn.subst σ Q)
-      (Syn.subst σ S) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ C) (Syn.subst σ N) := by simp [cellNumerator]
-@[simp] theorem subst_cellDenominator {m : ℕ} (σ : Fin n → PTm m) (p h Q E T N : PTm n) :
-    Syn.subst σ (cellDenominator p h Q E T N) = cellDenominator (Syn.subst σ p) (Syn.subst σ h) (Syn.subst σ Q)
-      (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ N) := by simp [cellDenominator]
+ipra_subst source
+ipra_subst timeNumerator
+ipra_subst timeDenominator
+ipra_subst node
+ipra_subst correctedNode
+ipra_subst cellNumerator
+ipra_subst cellDenominator
 
 theorem time_domain (i e f d h Q S E T a C N : PTm n)
     (hs : Γ ⊢[PRAAx] source e f d h Q S E T a C N) (hi : Γ ⊢[PRAAx] le i N) : Γ ⊢[PRAAx]
@@ -182,9 +164,7 @@ theorem tilt_successor_upper (a b i A B X Y : PTm n) (hB : Γ ⊢[PRAAx] le one 
 
 def widthNumerator (p h Q S E T C N : PTm n) : PTm n :=
   lipschitz Q S E T*C*unit (query p h Q E T)+num 4*timeDenominator N E
-@[simp] theorem subst_widthNumerator {m : ℕ} (σ : Fin n → PTm m) (p h Q S E T C N : PTm n) :
-    Syn.subst σ (widthNumerator p h Q S E T C N) = widthNumerator (Syn.subst σ p) (Syn.subst σ h) (Syn.subst σ Q)
-      (Syn.subst σ S) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ C) (Syn.subst σ N) := by simp [widthNumerator]
+ipra_subst widthNumerator
 
 /-- The actual ordered corrected image cell has width at most
 L*C/(E*N)+4/2^query; the index has cancelled exactly. -/

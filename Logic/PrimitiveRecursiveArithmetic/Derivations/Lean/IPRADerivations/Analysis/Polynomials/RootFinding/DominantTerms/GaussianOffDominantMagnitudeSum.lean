@@ -3,8 +3,6 @@ import IPRADerivations.Analysis.Polynomials.RootFinding.DominantTerms.GaussianDo
 import IPRADerivations.Foundations.FiniteFiberGrouping
 import IPRADerivations.Analysis.Polynomials.RootFinding.DominantTerms.GaussianTranslatedDominantPlateau
 import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.GaussianTranslatedNonconstant
-import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Finite lower cuts for the sum of individual off-dominant magnitudes
@@ -21,7 +19,7 @@ set_option linter.unnecessarySeqFocus false
 
 namespace LeanProofs.IPRA.Analysis.GaussianOffDominantMagnitudeSum
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRootAlgebra (equal equal_of_code equal_refl equal_trans add_equal normSq_equal)
 open ComplexLogarithmRemainder (normSq add zeroCode)
 open GaussianDominantPairAlgebra (radiusNumerator)
@@ -29,9 +27,6 @@ open GaussianRationalCover (Side original)
 open GaussianRelativeNormTriangle (gaussianSum gaussianSumF)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -39,10 +34,8 @@ def naturalSum (f : PTm 2) (N x : PTm n) : PTm n := ap2 (sumF f) N x
 def positiveBody (f : PTm 2) : PTm 2 := radiusNumerator f
 def positiveF (f : PTm 2) : PR 2 := PTm.toPR (positiveBody f)
 def positiveSum (f : PTm 2) (N x : PTm n) : PTm n := gaussianSum (positiveF f) N x
-@[simp] theorem subst_naturalSum {l : ℕ} (σ : Fin n → PTm l) (f : PTm 2) (N x : PTm n) :
-    Syn.subst σ (naturalSum f N x) = naturalSum f (Syn.subst σ N) (Syn.subst σ x) := by simp [naturalSum]
-@[simp] theorem subst_positiveSum {l : ℕ} (σ : Fin n → PTm l) (f : PTm 2) (N x : PTm n) :
-    Syn.subst σ (positiveSum f N x) = positiveSum f (Syn.subst σ N) (Syn.subst σ x) := by simp [positiveSum]
+ipra_subst naturalSum
+ipra_subst positiveSum
 
 theorem natural_point_congr {A B : PTm n} (h : Γ ⊢[PRAAx] A ≐ B) : Γ ⊢[PRAAx] radiusNumerator A ≐ radiusNumerator B := by
   ipra_congr (radiusNumerator (var 0) : PTm 1) with [h]
@@ -61,14 +54,11 @@ theorem positive_sum_value (f : PTm 2) (N x : PTm n) : Γ ⊢[PRAAx]
     equal (positiveSum f N x) (radiusNumerator (naturalSum f N x)) := by
   have all : Γ ⊢[PRAAx] .all
       (equal (positiveSum f (var 0) (Syn.shift x)) (radiusNumerator (naturalSum f (var 0) (Syn.shift x)))) := by
-    refine PRA.qfInd _ ⟨trivial,trivial⟩ ?_ ?_
-    · simp only [GaussianRootAlgebra.subst_equal,subst_positiveSum,subst_naturalSum,
-        GaussianDominantPairAlgebra.subst_radiusNumerator,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact equal_trans (equal_of_code (GaussianRelativeNormTriangle.gaussian_sum_zero _ _))
+    ipra_qfind (⟨trivial,trivial⟩) [GaussianRootAlgebra.subst_equal, subst_positiveSum, subst_naturalSum,
+        GaussianDominantPairAlgebra.subst_radiusNumerator]
+    · exact equal_trans (equal_of_code (GaussianRelativeNormTriangle.gaussian_sum_zero _ _))
         (equal_of_code (natural_point_congr (LeanProofs.IPRA.sum_zero f x)).eqSymm)
-    · simp only [GaussianRootAlgebra.subst_equal,subst_positiveSum,subst_naturalSum,
-        GaussianDominantPairAlgebra.subst_radiusNumerator,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      let Δ := equal (positiveSum f (var 0) (Syn.shift x)) (radiusNumerator (naturalSum f (var 0) (Syn.shift x))) :: Γ.map Fm.shift
+    · let Δ := equal (positiveSum f (var 0) (Syn.shift x)) (radiusNumerator (naturalSum f (var 0) (Syn.shift x))) :: Γ.map Fm.shift
       have step := equal_trans (equal_of_code (GaussianRelativeNormTriangle.gaussian_sum_succ (Γ := Δ)
           (positiveF f) (var 0) (Syn.shift x)))
         (add_equal Prf.hyp0 (equal_of_code (positive_program f (var 0) (Syn.shift x))))
@@ -93,26 +83,20 @@ def lowerCandidates (s : Side) (N k S T ref H A B : PTm n) : Fm PTm n := .all
     le (entry (original s (Syn.shift A) (Syn.shift B)) (var 0)*entry (original s (Syn.shift A) (Syn.shift B)) (var 0))
       (Syn.shift H*Syn.shift H*normSq (ap2 (GaussianGeometricSumBound.f s) (var 0)
         (GaussianGeometricSumBound.data (Syn.shift N) (Syn.shift k) (Syn.shift S) (Syn.shift T) (Syn.shift ref)))))
-@[simp] theorem subst_candidateData {l : ℕ} (σ : Fin n → PTm l) (N k A B : PTm n) :
-    Syn.subst σ (candidateData N k A B) = candidateData (Syn.subst σ N) (Syn.subst σ k) (Syn.subst σ A) (Syn.subst σ B) := by simp [candidateData]
-@[simp] theorem subst_candidateSum {l : ℕ} (σ : Fin n → PTm l) (s : Side) (N k A B : PTm n) :
-    Syn.subst σ (candidateSum s N k A B) = candidateSum s (Syn.subst σ N) (Syn.subst σ k) (Syn.subst σ A) (Syn.subst σ B) := by simp [candidateSum]
-@[simp] theorem subst_candidateTotal {l : ℕ} (σ : Fin n → PTm l) (N k A B : PTm n) :
-    Syn.subst σ (candidateTotal N k A B) = candidateTotal (Syn.subst σ N) (Syn.subst σ k) (Syn.subst σ A) (Syn.subst σ B) := by simp [candidateTotal]
-@[simp] theorem subst_lowerCandidates {l : ℕ} (σ : Fin n → PTm l) (s : Side) (N k S T ref H A B : PTm n) :
-    (lowerCandidates s N k S T ref H A B).subst σ = lowerCandidates s (Syn.subst σ N) (Syn.subst σ k)
-      (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ ref) (Syn.subst σ H) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [lowerCandidates,Syn.subst_shift,Syn.shift_subst]
+ipra_subst candidateData
+ipra_subst candidateSum
+ipra_subst candidateTotal
+ipra_subst lowerCandidates [Syn.subst_shift, Syn.shift_subst]
 
 theorem candidate_body_at (s : Side) (N k A B i : PTm n) : Γ ⊢[PRAAx]
     inst2 (candidateBody s) i (candidateData N k A B) ≐ entry (original s A B) i := by
   let x := candidateData N k A B
   have tail : Γ ⊢[PRAAx] sndT x ≐ pairT k (pairT A B) := snd_pair _ _
-  have pay := (congrSnd tail).eqTrans (snd_pair _ _)
+  have pay := tail.sndE
   have field : Γ ⊢[PRAAx] GaussianGeometricSumBound.payloadField s x ≐ original s A B := by
     cases s
-    · exact (congrFst pay).eqTrans (fst_pair _ _)
-    · exact (congrSnd pay).eqTrans (snd_pair _ _)
+    · exact pay.fstE
+    · exact pay.sndE
   simpa only [candidateBody,inst2,Foundations.MasterCertificate.subst_entry,
     GaussianGeometricSumBound.subst_payloadField,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
     entry_congr field (.eqRefl i)
@@ -232,18 +216,10 @@ def rootBody (s : Side) : PTm 2 := isqrt (normSq (ap2 (GaussianGeometricSumBound
 def rootList (s : Side) (N k S T ref H : PTm n) : PTm n :=
   sequence (rootBody s) (GaussianGeometricSumBound.count s N k) (rootData N k S T ref H)
 def rootTotal (N k S T ref H : PTm n) : PTm n := candidateTotal N k (rootList .source N k S T ref H) (rootList .target N k S T ref H)
-@[simp] theorem subst_rootTerm {l : ℕ} (σ : Fin n → PTm l) (s : Side) (N k S T ref H i : PTm n) :
-    Syn.subst σ (rootTerm s N k S T ref H i) = rootTerm s (Syn.subst σ N) (Syn.subst σ k)
-      (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ ref) (Syn.subst σ H) (Syn.subst σ i) := by simp [rootTerm]
-@[simp] theorem subst_rootData {l : ℕ} (σ : Fin n → PTm l) (N k S T ref H : PTm n) :
-    Syn.subst σ (rootData N k S T ref H) = rootData (Syn.subst σ N) (Syn.subst σ k)
-      (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ ref) (Syn.subst σ H) := by simp [rootData]
-@[simp] theorem subst_rootList {l : ℕ} (σ : Fin n → PTm l) (s : Side) (N k S T ref H : PTm n) :
-    Syn.subst σ (rootList s N k S T ref H) = rootList s (Syn.subst σ N) (Syn.subst σ k)
-      (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ ref) (Syn.subst σ H) := by simp [rootList]
-@[simp] theorem subst_rootTotal {l : ℕ} (σ : Fin n → PTm l) (N k S T ref H : PTm n) :
-    Syn.subst σ (rootTotal N k S T ref H) = rootTotal (Syn.subst σ N) (Syn.subst σ k)
-      (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ ref) (Syn.subst σ H) := by simp [rootTotal]
+ipra_subst rootTerm
+ipra_subst rootData
+ipra_subst rootList
+ipra_subst rootTotal
 
 theorem root_lower (s : Side) (N k S T ref H i : PTm n) : Γ ⊢[PRAAx]
     le (rootTerm s N k S T ref H i*rootTerm s N k S T ref H i)
@@ -306,9 +282,7 @@ def magnitudeCut (N k S T ref : PTm n) : Fm PTm n := .all (.all (.all
     totalBound (Syn.shift (Syn.shift (Syn.shift N))) (Syn.shift (Syn.shift (Syn.shift k)))
       (Syn.shift (Syn.shift (Syn.shift S))) (Syn.shift (Syn.shift (Syn.shift T))) (Syn.shift (Syn.shift (Syn.shift ref)))
       (var 2) (var 1) (var 0))))
-@[simp] theorem subst_totalBound {l : ℕ} (σ : Fin n → PTm l) (N k S T ref H A B : PTm n) :
-    (totalBound N k S T ref H A B).subst σ = totalBound (Syn.subst σ N) (Syn.subst σ k)
-      (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ ref) (Syn.subst σ H) (Syn.subst σ A) (Syn.subst σ B) := by simp [totalBound]
+ipra_subst totalBound
 @[simp] theorem subst_magnitudeCut {l : ℕ} (σ : Fin n → PTm l) (N k S T ref : PTm n) :
     (magnitudeCut N k S T ref).subst σ = magnitudeCut (Syn.subst σ N) (Syn.subst σ k)
       (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ ref) := by
@@ -354,18 +328,12 @@ def sourceRoot (s : Side) (C N H : PTm n) : PTm n := rootList s N (GaussianDomin
   (radialLower C N) (radialUpper C N) (GaussianOffDominantTerms.selectedReference C N) H
 def sourceTotal (C N H : PTm n) : PTm n := rootTotal N (GaussianDominantPlateau.winner C N)
   (radialLower C N) (radialUpper C N) (GaussianOffDominantTerms.selectedReference C N) H
-@[simp] theorem subst_radialPoint {l : ℕ} (σ : Fin n → PTm l) (C N : PTm n) :
-    Syn.subst σ (radialPoint C N) = radialPoint (Syn.subst σ C) (Syn.subst σ N) := by simp [radialPoint]
-@[simp] theorem subst_radialLower {l : ℕ} (σ : Fin n → PTm l) (C N : PTm n) :
-    Syn.subst σ (radialLower C N) = radialLower (Syn.subst σ C) (Syn.subst σ N) := by simp [radialLower]
-@[simp] theorem subst_radialUpper {l : ℕ} (σ : Fin n → PTm l) (C N : PTm n) :
-    Syn.subst σ (radialUpper C N) = radialUpper (Syn.subst σ C) (Syn.subst σ N) := by simp [radialUpper]
-@[simp] theorem subst_sourceCut {l : ℕ} (σ : Fin n → PTm l) (C N : PTm n) :
-    (sourceCut C N).subst σ = sourceCut (Syn.subst σ C) (Syn.subst σ N) := by simp [sourceCut]
-@[simp] theorem subst_sourceRoot {l : ℕ} (σ : Fin n → PTm l) (s : Side) (C N H : PTm n) :
-    Syn.subst σ (sourceRoot s C N H) = sourceRoot s (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ H) := by simp [sourceRoot]
-@[simp] theorem subst_sourceTotal {l : ℕ} (σ : Fin n → PTm l) (C N H : PTm n) :
-    Syn.subst σ (sourceTotal C N H) = sourceTotal (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ H) := by simp [sourceTotal]
+ipra_subst radialPoint
+ipra_subst radialLower
+ipra_subst radialUpper
+ipra_subst sourceCut
+ipra_subst sourceRoot
+ipra_subst sourceTotal
 
 theorem radial_within (C N : PTm n) : Γ ⊢[PRAAx] GaussianOffDominantTerms.withinRadius C N (radialPoint C N) :=
   GaussianDominantPairAlgebra.radius_bounded _ _ (GaussianOffDominantTerms.radius_denominator_positive C N)
@@ -418,18 +386,10 @@ def lowerPoint (s : Side) (N k S T ref H i : PTm n) : PTm n := GaussianDominantP
   (rootTerm s N k S T ref H i) (sampleDen N S T ref H)
 def upperPoint (s : Side) (N k S T ref H i : PTm n) : PTm n := GaussianDominantPairAlgebra.radiusPoint
   (succ (rootTerm s N k S T ref H i)) (sampleDen N S T ref H)
-@[simp] theorem subst_sampleDen {l : ℕ} (σ : Fin n → PTm l) (N S T ref H : PTm n) :
-    Syn.subst σ (sampleDen N S T ref H) = sampleDen (Syn.subst σ N) (Syn.subst σ S)
-      (Syn.subst σ T) (Syn.subst σ ref) (Syn.subst σ H) := by simp [sampleDen]
-@[simp] theorem subst_samplePoint {l : ℕ} (σ : Fin n → PTm l) (N k S T ref H : PTm n) :
-    Syn.subst σ (samplePoint N k S T ref H) = samplePoint (Syn.subst σ N) (Syn.subst σ k)
-      (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ ref) (Syn.subst σ H) := by simp [samplePoint]
-@[simp] theorem subst_lowerPoint {l : ℕ} (σ : Fin n → PTm l) (s : Side) (N k S T ref H i : PTm n) :
-    Syn.subst σ (lowerPoint s N k S T ref H i) = lowerPoint s (Syn.subst σ N) (Syn.subst σ k)
-      (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ ref) (Syn.subst σ H) (Syn.subst σ i) := by simp [lowerPoint]
-@[simp] theorem subst_upperPoint {l : ℕ} (σ : Fin n → PTm l) (s : Side) (N k S T ref H i : PTm n) :
-    Syn.subst σ (upperPoint s N k S T ref H i) = upperPoint s (Syn.subst σ N) (Syn.subst σ k)
-      (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ ref) (Syn.subst σ H) (Syn.subst σ i) := by simp [upperPoint]
+ipra_subst sampleDen
+ipra_subst samplePoint
+ipra_subst lowerPoint
+ipra_subst upperPoint
 
 theorem sample_den_positive (N S T ref H : PTm n) (hH : Γ ⊢[PRAAx] le one H) : Γ ⊢[PRAAx]
     le one (sampleDen N S T ref H) :=
@@ -511,19 +471,11 @@ def lowerValue (N k S T ref H : PTm n) : PTm n :=
 def upperValue (N k S T ref H : PTm n) : PTm n :=
   GaussianEuclideanDistanceName.fraction (upperTotal N k S T ref H) (sampleDen N S T ref H)
 def precision (N k m : PTm n) : PTm n := succ (candidateCount N k)*GaussianEuclideanPointDistance.unit m
-@[simp] theorem subst_candidateCount {l : ℕ} (σ : Fin n → PTm l) (N k : PTm n) :
-    Syn.subst σ (candidateCount N k) = candidateCount (Syn.subst σ N) (Syn.subst σ k) := by simp [candidateCount]
-@[simp] theorem subst_upperTotal {l : ℕ} (σ : Fin n → PTm l) (N k S T ref H : PTm n) :
-    Syn.subst σ (upperTotal N k S T ref H) = upperTotal (Syn.subst σ N) (Syn.subst σ k)
-      (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ ref) (Syn.subst σ H) := by simp [upperTotal]
-@[simp] theorem subst_lowerValue {l : ℕ} (σ : Fin n → PTm l) (N k S T ref H : PTm n) :
-    Syn.subst σ (lowerValue N k S T ref H) = lowerValue (Syn.subst σ N) (Syn.subst σ k)
-      (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ ref) (Syn.subst σ H) := by simp [lowerValue]
-@[simp] theorem subst_upperValue {l : ℕ} (σ : Fin n → PTm l) (N k S T ref H : PTm n) :
-    Syn.subst σ (upperValue N k S T ref H) = upperValue (Syn.subst σ N) (Syn.subst σ k)
-      (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ ref) (Syn.subst σ H) := by simp [upperValue]
-@[simp] theorem subst_precision {l : ℕ} (σ : Fin n → PTm l) (N k m : PTm n) :
-    Syn.subst σ (precision N k m) = precision (Syn.subst σ N) (Syn.subst σ k) (Syn.subst σ m) := by simp [precision]
+ipra_subst candidateCount
+ipra_subst upperTotal
+ipra_subst lowerValue
+ipra_subst upperValue
+ipra_subst precision
 
 theorem natural_sum_successors (f : PTm 2) (N x : PTm n) : Γ ⊢[PRAAx]
     naturalSum (succ f) N x ≐ naturalSum f N x+N := by
@@ -592,16 +544,11 @@ def sourceLower (C N H : PTm n) : PTm n := lowerValue N (GaussianDominantPlateau
 def sourceUpper (C N H : PTm n) : PTm n := upperValue N (GaussianDominantPlateau.winner C N)
   (radialLower C N) (radialUpper C N) (GaussianOffDominantTerms.selectedReference C N) H
 def sourcePrecision (C N m : PTm n) : PTm n := precision N (GaussianDominantPlateau.winner C N) m
-@[simp] theorem subst_sourceDen {l : ℕ} (σ : Fin n → PTm l) (C N H : PTm n) :
-    Syn.subst σ (sourceDen C N H) = sourceDen (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ H) := by simp [sourceDen]
-@[simp] theorem subst_sourcePoint {l : ℕ} (σ : Fin n → PTm l) (C N H : PTm n) :
-    Syn.subst σ (sourcePoint C N H) = sourcePoint (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ H) := by simp [sourcePoint]
-@[simp] theorem subst_sourceLower {l : ℕ} (σ : Fin n → PTm l) (C N H : PTm n) :
-    Syn.subst σ (sourceLower C N H) = sourceLower (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ H) := by simp [sourceLower]
-@[simp] theorem subst_sourceUpper {l : ℕ} (σ : Fin n → PTm l) (C N H : PTm n) :
-    Syn.subst σ (sourceUpper C N H) = sourceUpper (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ H) := by simp [sourceUpper]
-@[simp] theorem subst_sourcePrecision {l : ℕ} (σ : Fin n → PTm l) (C N m : PTm n) :
-    Syn.subst σ (sourcePrecision C N m) = sourcePrecision (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ m) := by simp [sourcePrecision]
+ipra_subst sourceDen
+ipra_subst sourcePoint
+ipra_subst sourceLower
+ipra_subst sourceUpper
+ipra_subst sourcePrecision
 
 theorem source_normalized_bound (C N H : PTm n) (hInput : Γ ⊢[PRAAx] GaussianBalancedRadiusSyntax.input C N)
     (hH : Γ ⊢[PRAAx] le one H) : Γ ⊢[PRAAx]
@@ -648,52 +595,50 @@ def output (C N m : PTm n) : PTm n := pairT (sourceRoot .source C N (sourcePreci
           (pairT (sourceDen C N (sourcePrecision C N m)) (GaussianOffDominantTerms.selectedReference C N))))))
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (C N m : PTm n) : PTm n := ap3 outputF C N m
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (C N m : PTm n) :
-    Syn.subst σ (output C N m) = output (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ m) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (C N m : PTm n) :
-    Syn.subst σ (run C N m) = run (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ m) := by simp [run]
+ipra_subst output
+ipra_subst run
 
 theorem program_at (C N m : PTm n) : Γ ⊢[PRAAx] run C N m ≐ output C N m := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![C,N,m]
 theorem returned_lower_roots (C N m : PTm n) : Γ ⊢[PRAAx]
     fstT (run C N m) ≐ sourceRoot .source C N (sourcePrecision C N m) :=
-  (congrFst (program_at C N m)).eqTrans (fst_pair _ _)
+  (program_at C N m).fstE
 theorem returned_upper_roots (C N m : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run C N m)) ≐ sourceRoot .target C N (sourcePrecision C N m) :=
-  (congrFst (congrSnd (program_at C N m))).eqTrans ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
+  (congrFst (congrSnd (program_at C N m))).eqTrans (snd_pair _ _).fstE
 theorem returned_lower (C N m : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (run C N m))) ≐ sourceLower C N (sourcePrecision C N m) :=
   (congrFst (congrSnd (congrSnd (program_at C N m)))).eqTrans
-    ((congrFst (congrSnd (snd_pair _ _))).eqTrans ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)))
+    ((congrFst (congrSnd (snd_pair _ _))).eqTrans (snd_pair _ _).fstE)
 theorem returned_upper (C N m : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (sndT (run C N m)))) ≐ sourceUpper C N (sourcePrecision C N m) := by
   exact (congrFst (congrSnd (congrSnd (congrSnd (program_at C N m))))).eqTrans
     ((congrFst (congrSnd (congrSnd (snd_pair _ _)))).eqTrans
-      ((congrFst (congrSnd (snd_pair _ _))).eqTrans ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))))
+      ((congrFst (congrSnd (snd_pair _ _))).eqTrans (snd_pair _ _).fstE))
 theorem returned_point (C N m : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (sndT (sndT (run C N m))))) ≐ sourcePoint C N (sourcePrecision C N m) := by
-  have t1 := (congrSnd (program_at (Γ := Γ) C N m)).eqTrans (snd_pair _ _)
-  have t2 := (congrSnd t1).eqTrans (snd_pair _ _)
-  have t3 := (congrSnd t2).eqTrans (snd_pair _ _)
-  have t4 := (congrSnd t3).eqTrans (snd_pair _ _)
-  exact (congrFst t4).eqTrans (fst_pair _ _)
+  have t1 := (program_at (Γ := Γ) C N m).sndE
+  have t2 := t1.sndE
+  have t3 := t2.sndE
+  have t4 := t3.sndE
+  exact t4.fstE
 
 theorem returned_denominator (C N m : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (sndT (sndT (sndT (run C N m)))))) ≐ sourceDen C N (sourcePrecision C N m) := by
-  have t1 := (congrSnd (program_at (Γ := Γ) C N m)).eqTrans (snd_pair _ _)
-  have t2 := (congrSnd t1).eqTrans (snd_pair _ _)
-  have t3 := (congrSnd t2).eqTrans (snd_pair _ _)
-  have t4 := (congrSnd t3).eqTrans (snd_pair _ _)
-  have t5 := (congrSnd t4).eqTrans (snd_pair _ _)
-  exact (congrFst t5).eqTrans (fst_pair _ _)
+  have t1 := (program_at (Γ := Γ) C N m).sndE
+  have t2 := t1.sndE
+  have t3 := t2.sndE
+  have t4 := t3.sndE
+  have t5 := t4.sndE
+  exact t5.fstE
 theorem returned_reference (C N m : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (sndT (sndT (sndT (sndT (run C N m)))))) ≐ GaussianOffDominantTerms.selectedReference C N := by
-  have t1 := (congrSnd (program_at (Γ := Γ) C N m)).eqTrans (snd_pair _ _)
-  have t2 := (congrSnd t1).eqTrans (snd_pair _ _)
-  have t3 := (congrSnd t2).eqTrans (snd_pair _ _)
-  have t4 := (congrSnd t3).eqTrans (snd_pair _ _)
-  have t5 := (congrSnd t4).eqTrans (snd_pair _ _)
-  exact (congrSnd t5).eqTrans (snd_pair _ _)
+  have t1 := (program_at (Γ := Γ) C N m).sndE
+  have t2 := t1.sndE
+  have t3 := t2.sndE
+  have t4 := t3.sndE
+  have t5 := t4.sndE
+  exact t5.sndE
 
 theorem returned_bound (C N m : PTm n) (hInput : Γ ⊢[PRAAx] GaussianBalancedRadiusSyntax.input C N) : Γ ⊢[PRAAx]
     RationalArgmin.rationalLE

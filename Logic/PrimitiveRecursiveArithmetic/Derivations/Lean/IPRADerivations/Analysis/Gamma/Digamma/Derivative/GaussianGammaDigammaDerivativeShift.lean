@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaDerivativeShift
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
@@ -30,9 +30,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianStirlingGammaLogarithm (source source_shift gammaData gamma_regular)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -48,15 +45,11 @@ def budget (a b : PTm n) : PTm n :=
   three+two+(three+one)+three*(a+one)+GaussianNameBounds.U IF (derivativeData a b)+two+
     (three+(multiplyModulus constantF IF (fraction a b) (derivativeData a b)+one))
 
-@[simp] theorem subst_productData {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (productData a b) = productData (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [productData]
+ipra_subst productData
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (data a b) = data (Syn.subst σ a) (Syn.subst σ b) := by simp [data]
+ipra_subst data
 
-@[simp] theorem subst_budget {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (budget a b) = budget (Syn.subst σ a) (Syn.subst σ b) := by simp [budget,three]
+ipra_subst budget [three]
 
 theorem product_regular (a b : PTm n) (hs : Γ ⊢[PRAAx] source a b) : Γ ⊢[PRAAx]
     pointCN productF (productData a b) :=

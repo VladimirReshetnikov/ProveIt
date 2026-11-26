@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.BalancedRadius.GaussianBalancedRadiusHeight
 import IPRADerivations.Analysis.Polynomials.RootFinding.BalancedRadius.GaussianBalancedRadiusArithmetic
 import IPRADerivations.Foundations.BoundedSyntax
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual bounded balanced-radius search
@@ -20,13 +19,10 @@ set_option maxRecDepth 8192
 
 namespace LeanProofs.IPRA.Analysis.GaussianBalancedRadiusSearch
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianBalancedRadiusSyntax
   (score cap fitAt numerator denominator input nonconstant)
 open LeanProofs.IPRA.Foundations.BoundedSyntax
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,25 +39,13 @@ def coefficientMu (C N E j : PTm n) : PTm n := Search.mu atomBody N (atomData C 
 def failedIndex (C N E j : PTm n) : PTm n := succ (coefficientMu C N E j)
 def check (C N E j : PTm n) : PTm n := eqb (coefficientMu C N E j) N
 
-@[simp] theorem subst_fits {m : ℕ} (σ : Fin n → PTm m) (C N E j : PTm n) :
-    (fits C N E j).subst σ = fits (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ E) (Syn.subst σ j) := by
-  simp [fits,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_atom {m : ℕ} (σ : Fin n → PTm m) (C N E j h : PTm n) :
-    Syn.subst σ (atom C N E j h) = atom (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ E) (Syn.subst σ j) (Syn.subst σ h) := by
-  simp only [atom,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (C N E : PTm n) :
-    Syn.subst σ (data C N E) = data (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ E) := by simp [data]
-@[simp] theorem subst_atomData {m : ℕ} (σ : Fin n → PTm m) (C N E j : PTm n) :
-    Syn.subst σ (atomData C N E j) = atomData (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ E) (Syn.subst σ j) := by simp [atomData]
-@[simp] theorem subst_coefficientMu {m : ℕ} (σ : Fin n → PTm m) (C N E j : PTm n) :
-    Syn.subst σ (coefficientMu C N E j) = coefficientMu (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ E) (Syn.subst σ j) := by simp [coefficientMu]
-@[simp] theorem subst_failedIndex {m : ℕ} (σ : Fin n → PTm m) (C N E j : PTm n) :
-    Syn.subst σ (failedIndex C N E j) = failedIndex (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ E) (Syn.subst σ j) := by simp [failedIndex]
-@[simp] theorem subst_check {m : ℕ} (σ : Fin n → PTm m) (C N E j : PTm n) :
-    Syn.subst σ (check C N E j) = check (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ E) (Syn.subst σ j) := by simp [check]
+ipra_subst fits [Syn.subst_shift, Syn.shift_subst]
+ipra_subst atom
+ipra_subst data
+ipra_subst atomData
+ipra_subst coefficientMu
+ipra_subst failedIndex
+ipra_subst check
 
 theorem atom_program (C N E j h : PTm n) : Γ ⊢[PRAAx]
     atom C N E j h ≐ bit (atomSyntax (var 0) (var 1) (var 2) (var 3) (var 4) : BFm 5) ![C,N,E,j,h] :=
@@ -179,17 +163,14 @@ def firstBody : PTm 2 := check (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT 
 def first (C N E : PTm n) : PTm n := Search.mu firstBody (succ (two*E)) (data C N E)
 def selected (C N E : PTm n) : PTm n := PTm.pred (first C N E)
 
-@[simp] theorem subst_first {m : ℕ} (σ : Fin n → PTm m) (C N E : PTm n) :
-    Syn.subst σ (first C N E) = first (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ E) := by simp [first]
-@[simp] theorem subst_selected {m : ℕ} (σ : Fin n → PTm m) (C N E : PTm n) :
-    Syn.subst σ (selected C N E) = selected (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ E) := by
-  simp only [selected,PTm.subst_pred,subst_first]
+ipra_subst first
+ipra_subst selected
 
 theorem first_body_at (C N E j : PTm n) : Γ ⊢[PRAAx] inst2 firstBody j (data C N E) ≐ check C N E j := by
   have tail := snd_pair (Γ := Γ) C (pairT N E)
   simpa only [firstBody,data,inst2,subst_check,subst_fstT,subst_sndT,Syn.subst_var,
     Matrix.cons_val_zero,Matrix.cons_val_one] using check_congr (fst_pair _ _)
-      ((congrFst tail).eqTrans (fst_pair _ _)) ((congrSnd tail).eqTrans (snd_pair _ _)) (.eqRefl j)
+      tail.fstE tail.sndE (.eqRefl j)
 
 theorem first_found (C N E : PTm n) (hHigh : Γ ⊢[PRAAx] check C N E (two*E) ≐ zero) : Γ ⊢[PRAAx]
     le (first C N E) (two*E) ⋏ check C N E (first C N E) ≐ zero := by
@@ -244,9 +225,7 @@ theorem fits_monotone (C N E j k : PTm n) (hjk : Γ ⊢[PRAAx] le j k)
       order.wk (fits_at _ _ _ _ (var 0) all.wk Prf.hyp0)
 
 def greatest (C N E j : PTm n) : Fm PTm n := .all (fits (Syn.shift C) (Syn.shift N) (Syn.shift E) (var 0) ⟶ le (var 0) (Syn.shift j))
-@[simp] theorem subst_greatest {m : ℕ} (σ : Fin n → PTm m) (C N E j : PTm n) :
-    (greatest C N E j).subst σ = greatest (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ E) (Syn.subst σ j) := by
-  simp [greatest,Syn.subst_shift,Syn.shift_subst]
+ipra_subst greatest [Syn.subst_shift, Syn.shift_subst]
 
 theorem fits_upper_bound (C N E k : PTm n) (hLow : Γ ⊢[PRAAx] check C N E zero ≐ one)
     (hHigh : Γ ⊢[PRAAx] check C N E (two*E) ≐ zero) (hk : Γ ⊢[PRAAx] fits C N E k) : Γ ⊢[PRAAx]
@@ -271,10 +250,8 @@ finite input height. No endpoint or successful search is a source premise. -/
 def radiusIndex (C N : PTm n) : PTm n := selected C N (GaussianBalancedRadiusHeight.E C N)
 def witness (C N : PTm n) : PTm n := failedIndex C N (GaussianBalancedRadiusHeight.E C N) (succ (radiusIndex C N))
 
-@[simp] theorem subst_radiusIndex {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (radiusIndex C N) = radiusIndex (Syn.subst σ C) (Syn.subst σ N) := by simp [radiusIndex]
-@[simp] theorem subst_witness {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (witness C N) = witness (Syn.subst σ C) (Syn.subst σ N) := by simp [witness]
+ipra_subst radiusIndex
+ipra_subst witness
 
 theorem initial_fits (C N : PTm n) (hn0 : Γ ⊢[PRAAx] le one (numerator C N zero)) : Γ ⊢[PRAAx]
     fits C N (GaussianBalancedRadiusHeight.E C N) zero := by
@@ -357,8 +334,7 @@ def certificate (C N j i : PTm n) : Fm PTm n :=
       ((le one i ⋏ (le i N ⋏ (le one (numerator C N i) ⋏
           lt (cap C N (GaussianBalancedRadiusHeight.E C N) i) (score C N (GaussianBalancedRadiusHeight.E C N) (succ j) i)))) ⋏
         greatest C N (GaussianBalancedRadiusHeight.E C N) j))
-@[simp] theorem subst_certificate {m : ℕ} (σ : Fin n → PTm m) (C N j i : PTm n) :
-    (certificate C N j i).subst σ = certificate (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ j) (Syn.subst σ i) := by simp [certificate]
+ipra_subst certificate
 
 theorem search_correct (C N : PTm n) (h : Γ ⊢[PRAAx] input C N) : Γ ⊢[PRAAx]
     certificate C N (radiusIndex C N) (witness C N) := by
@@ -376,10 +352,8 @@ def output (C N : PTm n) : PTm n := pairT (radiusIndex C N) (pairT (witness C N)
 def outputF : PR 2 := PTm.toPR (output (var 0) (var 1))
 def run (C N : PTm n) : PTm n := ap2 outputF C N
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (output C N) = output (Syn.subst σ C) (Syn.subst σ N) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (run C N) = run (Syn.subst σ C) (Syn.subst σ N) := by simp [run]
+ipra_subst output
+ipra_subst run
 
 theorem check_program (C N E j : PTm n) : Γ ⊢[PRAAx]
     PTm.app checkF ![C,N,E,j] ≐ check C N E j := by
@@ -391,11 +365,11 @@ theorem program_at (C N : PTm n) : Γ ⊢[PRAAx] run C N ≐ output C N := by
   simpa [run,outputF,ap2] using toPR_eq (Γ := Γ) (output (var 0) (var 1) : PTm 2) ![C,N]
 
 theorem returned_index (C N : PTm n) : Γ ⊢[PRAAx] fstT (run C N) ≐ radiusIndex C N :=
-  (congrFst (program_at C N)).eqTrans (fst_pair _ _)
+  (program_at C N).fstE
 theorem returned_witness (C N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run C N)) ≐ witness C N :=
-  (congrFst ((congrSnd (program_at C N)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at C N).sndE.fstE
 theorem returned_exponent (C N : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run C N)) ≐ GaussianBalancedRadiusHeight.E C N :=
-  (congrSnd ((congrSnd (program_at C N)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at C N).sndE.sndE
 
 theorem returned_certificate (C N : PTm n) (h : Γ ⊢[PRAAx] input C N) : Γ ⊢[PRAAx]
     certificate C N (fstT (run C N)) (fstT (sndT (run C N))) := by

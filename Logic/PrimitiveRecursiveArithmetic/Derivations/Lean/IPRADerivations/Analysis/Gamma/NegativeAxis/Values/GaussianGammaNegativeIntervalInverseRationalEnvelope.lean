@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalInverseRationalEnvelope
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaNegativeCriticalCorrection (guard)
 open GaussianGammaNegativeIntervalChordInverse (poleMargin inverse_bound)
 open GaussianGammaNegativeIntervalInverseBound (literal_inverse)
@@ -33,9 +33,6 @@ open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianRationalSyntheticDivision (qmul_congr qsub_congr qone)
 open GaussianStirlingGammaLogarithm (arg)
 open GaussianStirlingRationalTelescopers (fraction_same)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -47,15 +44,9 @@ def productCoefficient (a b c d N : PTm n) : PTm n :=
 def finiteCoefficient (a b c d N : PTm n) : PTm n :=
   inverseCoefficient (inverse c d N) (inverse a b N) (productCoefficient a b c d N)
 
-@[simp] theorem subst_productCoefficient {m : ℕ} (σ : Fin n → PTm m) (a b c d N : PTm n) :
-    Syn.subst σ (productCoefficient a b c d N) =
-      productCoefficient (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d) (Syn.subst σ N) := by
-  simp [productCoefficient]
+ipra_subst productCoefficient
 
-@[simp] theorem subst_finiteCoefficient {m : ℕ} (σ : Fin n → PTm m) (a b c d N : PTm n) :
-    Syn.subst σ (finiteCoefficient a b c d N) =
-      finiteCoefficient (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d) (Syn.subst σ N) := by
-  simp [finiteCoefficient]
+ipra_subst finiteCoefficient
 
 private theorem denominator_positive {a b : PTm n} (h : Γ ⊢[PRAAx] guard a b) : Γ ⊢[PRAAx] le one b :=
   le_trans h.andE₁ (le_of_lt h.andE₂)

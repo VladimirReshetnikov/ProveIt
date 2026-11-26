@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinBasel
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode)
 open GaussianBinetBaselName (piSquareF piSquareData)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
@@ -29,10 +29,6 @@ open GaussianNameRingLaws (oneF one_fast multiply_associative multiply_one_left)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (qmul)
 open GaussianRationalSyntheticDivision (qone qmul_congr)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "I" => GaussianGammaZetaMellinImproper.nameF

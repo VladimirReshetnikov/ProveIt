@@ -21,14 +21,10 @@ Packet: `analysis/ipra_certified_continuation_2026-11-19`, `paper/sections/06_cl
 
 namespace LeanProofs.IPRA.Analysis.ClusterObservations
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.PolynomialCertificates (mpow pow_ad ad_mul_step ad_self)
 open LeanProofs.IPRA.Probability.Variance (ad)
 open LeanProofs.IPRA.Probability.MedianWeighted (ad_add_le)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -15,7 +15,7 @@ set_option maxHeartbeats 2000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaTwoShiftNamedRelativeOrder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
@@ -35,9 +35,6 @@ open GaussianRationalHorner (positive_product qadd)
 open GaussianRationalMetric (qnegative)
 open GaussianRationalReciprocal (qone)
 open RationalValueBounds (upper)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "F" => GaussianGammaDigammaTwoShiftNamedBinding.quotientLogF

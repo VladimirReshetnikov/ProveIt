@@ -2,7 +2,6 @@ import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.GaussianRootRes
 import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.GaussianRootApproximationWitness
 import IPRADerivations.Analysis.Geometry.Distances.GaussianEuclideanDistanceName
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalSlackRemoval
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The actual Gaussian polynomial value name
@@ -19,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialValueName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (bounded distanceBounded)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (evaluate positive_product)
 open LeanProofs.IPRA.Analysis.GaussianCoefficientNameBounds (CN A unit unit_positive subst_unit)
@@ -29,9 +28,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalDistanceOrder (distance_congr dist
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,14 +38,10 @@ def exponent (a : PR 3) (N U x k : PTm n) : PTm n := k+normalizer a N U x
 def value (a : PR 3) (point : PR 2) (N U x k : PTm n) : PTm n :=
   observation a point N x (exponent a N U x k)
 
-@[simp] theorem subst_observation {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (point : PR 2) (N x s : PTm n) :
-    Syn.subst σ (observation a point N x s) = observation a point (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ s) := by simp [observation]
-@[simp] theorem subst_normalizer {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N U x : PTm n) :
-    Syn.subst σ (normalizer a N U x) = normalizer a (Syn.subst σ N) (Syn.subst σ U) (Syn.subst σ x) := by simp [normalizer]
-@[simp] theorem subst_exponent {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N U x k : PTm n) :
-    Syn.subst σ (exponent a N U x k) = exponent a (Syn.subst σ N) (Syn.subst σ U) (Syn.subst σ x) (Syn.subst σ k) := by simp [exponent]
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (point : PR 2) (N U x k : PTm n) :
-    Syn.subst σ (value a point N U x k) = value a point (Syn.subst σ N) (Syn.subst σ U) (Syn.subst σ x) (Syn.subst σ k) := by simp [value]
+ipra_subst observation
+ipra_subst normalizer
+ipra_subst exponent
+ipra_subst value
 
 theorem sample_errors (a : PR 3) (N x s t : PTm n) (hCN : Γ ⊢[PRAAx] CN a N x) : Γ ⊢[PRAAx]
     GaussianRationalHornerPerturbation.coefficientErrors (GaussianRootSamples.sample a N s x)
@@ -135,9 +127,7 @@ theorem value_regular_at (a : PR 3) (point : PR 2) (N U x s t : PTm n)
 def valueZero (a : PR 3) (point : PR 2) (N U x : PTm n) : Fm PTm n :=
   .all (bounded (value a point (Syn.shift N) (Syn.shift U) (Syn.shift x) (var 0)) one (unit (var 0)))
 
-@[simp] theorem subst_valueZero {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (point : PR 2) (N U x : PTm n) :
-    (valueZero a point N U x).subst σ = valueZero a point (Syn.subst σ N) (Syn.subst σ U) (Syn.subst σ x) := by
-  simp [valueZero,Syn.subst_shift,Syn.shift_subst]
+ipra_subst valueZero [Syn.subst_shift, Syn.shift_subst]
 
 theorem value_zero_at (a : PR 3) (point : PR 2) (N U x k : PTm n)
     (h : Γ ⊢[PRAAx] valueZero a point N U x) : Γ ⊢[PRAAx] bounded (value a point N U x k) one (unit k) := by
@@ -238,8 +228,7 @@ def nameBody (a : PR 3) (point : PR 2) : PTm 2 :=
   value a point (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))) (var 0)
 def nameF (a : PR 3) (point : PR 2) : PR 2 := PTm.toPR (nameBody a point)
 
-@[simp] theorem subst_nameData {m : ℕ} (σ : Fin n → PTm m) (N U x : PTm n) :
-    Syn.subst σ (nameData N U x) = nameData (Syn.subst σ N) (Syn.subst σ U) (Syn.subst σ x) := by simp [nameData]
+ipra_subst nameData
 
 theorem value_congr (a : PR 3) (point : PR 2) {N N' U U' x x' k k' : PTm n}
     (hN : Γ ⊢[PRAAx] N ≐ N') (hU : Γ ⊢[PRAAx] U ≐ U')
@@ -255,7 +244,7 @@ theorem name_at (a : PR 3) (point : PR 2) (N U x k : PTm n) : Γ ⊢[PRAAx]
     simpa [nameF,nameBody,ap2] using toPR_eq (Γ := Γ) (nameBody a point) ![k,nameData N U x]
   have tail : Γ ⊢[PRAAx] sndT (nameData N U x) ≐ pairT U x := snd_pair _ _
   exact program.eqTrans (value_congr a point (fst_pair _ _)
-    ((congrFst tail).eqTrans (fst_pair _ _)) ((congrSnd tail).eqTrans (snd_pair _ _)) (.eqRefl _))
+    tail.fstE tail.sndE (.eqRefl _))
 
 theorem value_canonical (a : PR 3) (point : PR 2) (N U x k : PTm n) : Γ ⊢[PRAAx]
     GaussianRationalHorner.canonical (value a point N U x k) :=
@@ -289,9 +278,7 @@ theorem name_canonical (a : PR 3) (point : PR 2) (N U x k : PTm n) : Γ ⊢[PRAA
 def nameZero (a : PR 3) (point : PR 2) (N U x : PTm n) : Fm PTm n :=
   .all (bounded (ap2 (nameF a point) (var 0) (nameData (Syn.shift N) (Syn.shift U) (Syn.shift x))) one (unit (var 0)))
 
-@[simp] theorem subst_nameZero {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (point : PR 2) (N U x : PTm n) :
-    (nameZero a point N U x).subst σ = nameZero a point (Syn.subst σ N) (Syn.subst σ U) (Syn.subst σ x) := by
-  simp [nameZero,Syn.subst_shift,Syn.shift_subst]
+ipra_subst nameZero [Syn.subst_shift, Syn.shift_subst]
 
 theorem name_zero_to_value_zero (a : PR 3) (point : PR 2) (N U x : PTm n)
     (h : Γ ⊢[PRAAx] nameZero a point N U x) : Γ ⊢[PRAAx] valueZero a point N U x := by

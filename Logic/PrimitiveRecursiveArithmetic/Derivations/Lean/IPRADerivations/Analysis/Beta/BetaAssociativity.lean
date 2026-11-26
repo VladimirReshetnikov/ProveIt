@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Beta.BetaIntegers
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The associativity identity of the Beta function at positive integers
@@ -17,16 +16,12 @@ real-argument statement and the Beta–Gamma identity behind it are not formaliz
 
 namespace LeanProofs.IPRA.Analysis.BetaAssociativity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Analysis.BetaIntegers (rbeta rbeta_fact)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (fact_pos)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

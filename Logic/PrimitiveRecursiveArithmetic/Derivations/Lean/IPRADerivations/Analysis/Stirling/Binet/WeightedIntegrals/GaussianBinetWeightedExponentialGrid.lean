@@ -17,7 +17,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetWeightedExponentialGrid
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetLaplaceStrip (tagNumerator)
 open GaussianBinetWeightedExponentialAlgebra
   (tagWeight primitiveCoefficient leftCoefficient rightCoefficient panelScale integrationScale inverseScale correction cap)
@@ -37,10 +37,6 @@ open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalReciprocal (bound_congr bounded_negative)
 open GaussianRationalSyntheticDivision (qone qmul_congr qsub_congr)
 open GaussianReciprocalHorner (qmul_associative qmul_one_right)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num pred)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -63,26 +59,14 @@ def observationCost (a b : PTm n) : PTm n := num 20*cap a b
 def rowError (p a b N : PTm n) : PTm n := meshCost a b*unit p+observationCost a b*(N*N)
 def rowDen (p N : PTm n) : PTm n := (N*N)*unit p
 
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (p N a b : PTm n) :
-    Syn.subst σ (value p N a b) = value (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [value,one]
-@[simp] theorem subst_rowValue {m : ℕ} (σ : Fin n → PTm m) (p a b j N : PTm n) :
-    Syn.subst σ (rowValue p a b j N) = rowValue (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ j) (Syn.subst σ N) := by
-  simp [rowValue]
-@[simp] theorem subst_evaluatorTerm {m : ℕ} (σ : Fin n → PTm m) (p t x : PTm n) :
-    Syn.subst σ (evaluatorTerm p t x) = evaluatorTerm (Syn.subst σ p) (Syn.subst σ t) (Syn.subst σ x) := by simp [evaluatorTerm]
-@[simp] theorem subst_primitiveValue {m : ℕ} (σ : Fin n → PTm m) (p a b j N : PTm n) :
-    Syn.subst σ (primitiveValue p a b j N) = primitiveValue (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ j) (Syn.subst σ N) := by
-  simp [primitiveValue]
-@[simp] theorem subst_primitiveData {m : ℕ} (σ : Fin n → PTm m) (p a b N : PTm n) :
-    Syn.subst σ (primitiveData p a b N) = primitiveData (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by simp [primitiveData]
-@[simp] theorem subst_endpoint {m : ℕ} (σ : Fin n → PTm m) (p a b : PTm n) :
-    Syn.subst σ (endpoint p a b) = endpoint (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ b) := by simp [endpoint]
-@[simp] theorem subst_rowError {m : ℕ} (σ : Fin n → PTm m) (p a b N : PTm n) :
-    Syn.subst σ (rowError p a b N) = rowError (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by
-  simp [rowError,meshCost,observationCost,three,two,one]
-@[simp] theorem subst_rowDen {m : ℕ} (σ : Fin n → PTm m) (p N : PTm n) :
-    Syn.subst σ (rowDen p N) = rowDen (Syn.subst σ p) (Syn.subst σ N) := by simp [rowDen]
+ipra_subst value [one]
+ipra_subst rowValue
+ipra_subst evaluatorTerm
+ipra_subst primitiveValue
+ipra_subst primitiveData
+ipra_subst endpoint
+ipra_subst rowError [meshCost, observationCost, three, two, one]
+ipra_subst rowDen
 
 private theorem row_congr (p a b j j' N N' : PTm n)
     (hj : Γ ⊢[PRAAx] j ≐ j') (hN : Γ ⊢[PRAAx] N ≐ N') :

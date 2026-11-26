@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialLinearFactorCoefficients
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul qadd)
 open GaussianRationalSyntheticDivision (qmul_congr qadd_congr)
 open GaussianRationalPolynomialProduct (product coefficient contribution coefficient_succ coefficient_zero contribution_inside contribution_outside)
@@ -22,9 +22,6 @@ open GaussianRationalLinearProduct (padded_inside padded_congr)
 open GaussianRationalMonicReduction (singleton)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

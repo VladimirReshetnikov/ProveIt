@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRootFiniteEvaluation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianCoefficientNameBounds (CN R unit unit_positive)
 open LeanProofs.IPRA.Analysis.GaussianRootRadius (product)
 open LeanProofs.IPRA.Analysis.GaussianFactorParameters (monicRD)
@@ -29,9 +29,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalDistanceOrder
 open LeanProofs.IPRA.Analysis.GaussianRootSchedule (coefficientConstant)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,23 +38,10 @@ def coefficientDenominator (a : PR 3) (N t s x : PTm n) : PTm n := denominator a
 def evaluationNumerator (a : PR 3) (N U t s x T : PTm n) : PTm n :=
   two*coefficientConstant N U*unit s+(coefficientConstant N U+T)*denominator a N t x
 
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N t x : PTm n) :
-    Syn.subst σ (denominator a N t x) = denominator a (Syn.subst σ N) (Syn.subst σ t) (Syn.subst σ x) := by
-  simp only [denominator,GaussianRootSchedule.subst_toleranceDenominator,GaussianCoefficientNameBounds.subst_R]
-@[simp] theorem subst_coefficientNumerator {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N t s x : PTm n) :
-    Syn.subst σ (coefficientNumerator a N t s x) = coefficientNumerator a (Syn.subst σ N) (Syn.subst σ t)
-      (Syn.subst σ s) (Syn.subst σ x) := by
-  simp only [coefficientNumerator,PTm.subst_add,PTm.subst_mul,GaussianCoefficientNameBounds.subst_unit,
-    subst_denominator,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero]
-@[simp] theorem subst_coefficientDenominator {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N t s x : PTm n) :
-    Syn.subst σ (coefficientDenominator a N t s x) = coefficientDenominator a (Syn.subst σ N) (Syn.subst σ t)
-      (Syn.subst σ s) (Syn.subst σ x) := by
-  simp only [coefficientDenominator,PTm.subst_mul,GaussianCoefficientNameBounds.subst_unit,subst_denominator]
-@[simp] theorem subst_evaluationNumerator {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N U t s x T : PTm n) :
-    Syn.subst σ (evaluationNumerator a N U t s x T) = evaluationNumerator a (Syn.subst σ N) (Syn.subst σ U)
-      (Syn.subst σ t) (Syn.subst σ s) (Syn.subst σ x) (Syn.subst σ T) := by
-  simp only [evaluationNumerator,PTm.subst_add,PTm.subst_mul,GaussianRootSchedule.subst_coefficientConstant,
-    GaussianCoefficientNameBounds.subst_unit,subst_denominator,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero]
+ipra_subst denominator
+ipra_subst coefficientNumerator
+ipra_subst coefficientDenominator
+ipra_subst evaluationNumerator
 
 theorem denominator_positive (a : PR 3) (N t x : PTm n) : Γ ⊢[PRAAx] le one (denominator a N t x) :=
   GaussianRootSchedule.tolerance_positive _ _ _
@@ -150,18 +134,8 @@ def outputF (step a : PR 3) : PR 7 := PTm.toPR
   (output step a (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6))
 def run (step a : PR 3) (N U t s x z T : PTm n) : PTm n := PTm.app (outputF step a) ![N,U,t,s,x,z,T]
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (step a : PR 3) (N U t s x z T : PTm n) :
-    Syn.subst σ (output step a N U t s x z T) = output step a (Syn.subst σ N) (Syn.subst σ U)
-      (Syn.subst σ t) (Syn.subst σ s) (Syn.subst σ x) (Syn.subst σ z) (Syn.subst σ T) := by
-  simp only [output,subst_pairT,GaussianRationalHorner.subst_evaluate,GaussianRootRadius.subst_product,
-    subst_evaluationNumerator,subst_coefficientDenominator]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (step a : PR 3) (N U t s x z T : PTm n) :
-    Syn.subst σ (run step a N U t s x z T) = run step a (Syn.subst σ N) (Syn.subst σ U)
-      (Syn.subst σ t) (Syn.subst σ s) (Syn.subst σ x) (Syn.subst σ z) (Syn.subst σ T) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (step a : PR 3) (N U t s x z T : PTm n) : Γ ⊢[PRAAx]
     run step a N U t s x z T ≐ output step a N U t s x z T := by
@@ -170,13 +144,13 @@ theorem program_at (step a : PR 3) (N U t s x z T : PTm n) : Γ ⊢[PRAAx]
 
 theorem output_value (step a : PR 3) (N U t s x z T : PTm n) : Γ ⊢[PRAAx]
     fstT (run step a N U t s x z T) ≐ evaluate (product step a N t x) z :=
-  (congrFst (program_at step a N U t s x z T)).eqTrans (fst_pair _ _)
+  (program_at step a N U t s x z T).fstE
 theorem output_numerator (step a : PR 3) (N U t s x z T : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run step a N U t s x z T)) ≐ evaluationNumerator a N U t s x T :=
-  (congrFst ((congrSnd (program_at step a N U t s x z T)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at step a N U t s x z T).sndE.fstE
 theorem output_denominator (step a : PR 3) (N U t s x z T : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (run step a N U t s x z T)) ≐ coefficientDenominator a N t s x :=
-  (congrSnd ((congrSnd (program_at step a N U t s x z T)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at step a N U t s x z T).sndE.sndE
 
 theorem program_certificate (step a : PR 3) (N U t s x z T : PTm n)
     (hRD : Γ ⊢[PRAAx] monicRD step) (hCN : Γ ⊢[PRAAx] CN a N x)

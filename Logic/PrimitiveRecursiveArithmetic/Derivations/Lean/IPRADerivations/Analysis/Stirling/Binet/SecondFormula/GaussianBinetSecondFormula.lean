@@ -20,7 +20,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetSecondFormula
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetBoseFrozenSuffix (fullMesh)
 open GaussianBinetBoseImproperName (source)
 open GaussianBinetBoseLateSchedule
@@ -42,10 +42,6 @@ open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianValueNormalizerExtensionality (rawDiagonal)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)

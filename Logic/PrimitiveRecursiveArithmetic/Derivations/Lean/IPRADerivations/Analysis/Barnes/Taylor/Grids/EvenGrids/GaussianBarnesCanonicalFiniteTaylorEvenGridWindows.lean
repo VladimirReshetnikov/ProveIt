@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalFiniteTaylorEvenGridWindows
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add bounded normSq scale)
 open GaussianBarnesCanonicalCofinalTaylorGridObservations (deadline node_source)
 open GaussianBarnesCanonicalCofinalTaylorGridReturn (return_point_fraction_equal)
@@ -36,10 +36,6 @@ open GaussianRootAlgebra (equal equal_of_values re_add im_add re_neg im_neg norm
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (entry_congr)
 open LeanProofs.IPRA.Foundations.SequenceEquality (sequence_equal)
-open ConciseIPRA.PTm (succ zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

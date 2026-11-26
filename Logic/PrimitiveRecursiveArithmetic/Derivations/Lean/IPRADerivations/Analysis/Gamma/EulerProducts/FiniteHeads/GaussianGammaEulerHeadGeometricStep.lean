@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaEulerHeadGeometricStep
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero qadd qmul)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr)
 open GaussianGammaEulerHeadPolynomial (polynomial)
@@ -24,22 +24,15 @@ open GaussianGammaEulerHeadExponentStep (reader reader_congr reader_zero origina
 open GaussianGammaHarmonicIncrement (reciprocalPoint)
 open GaussianCoefficientGeometricCancellation (body)
 open GaussianRationalFiniteSum (sum)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def data (a N s : PTm n) : PTm n := GaussianCoefficientGeometricCancellation.data a (polynomial N) (succ N) s
 def term (a N s j : PTm n) : PTm n := GaussianCoefficientGeometricCancellation.term a (polynomial N) (succ N) s j
 def value (a N s : PTm n) : PTm n := GaussianCoefficientGeometricCancellation.geometricSum a (polynomial N) (succ N) s
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (a N s : PTm n) :
-    Syn.subst σ (data a N s) = data (Syn.subst σ a) (Syn.subst σ N) (Syn.subst σ s) := by simp [data]
-@[simp] theorem subst_term {l : ℕ} (σ : Fin n → PTm l) (a N s j : PTm n) :
-    Syn.subst σ (term a N s j) = term (Syn.subst σ a) (Syn.subst σ N) (Syn.subst σ s) (Syn.subst σ j) := by simp [term]
-@[simp] theorem subst_value {l : ℕ} (σ : Fin n → PTm l) (a N s : PTm n) :
-    Syn.subst σ (value a N s) = value (Syn.subst σ a) (Syn.subst σ N) (Syn.subst σ s) := by simp [value]
+ipra_subst data
+ipra_subst term
+ipra_subst value
 
 theorem term_at (a N s j : PTm n) : Γ ⊢[PRAAx] inst2 body j (data a N s) ≐ term a N s j :=
   GaussianCoefficientGeometricCancellation.term_at _ _ _ _ _

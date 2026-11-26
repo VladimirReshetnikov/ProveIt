@@ -15,14 +15,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaFiniteValueProperness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRootAlgebra (equal)
 open GaussianRationalHorner (ofGaussian canonical_unique represents_congr positive_product)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr)
 open GaussianGammaWeierstrassFactors (localArgument literalPrefix)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,8 +39,7 @@ theorem head_factor_equal (i z w B : PTm n) (hB : Γ ⊢[PRAAx] le one B) (h : �
   qadd_congr (.eqRefl _) (fraction_equal z w _ (positive_product _ _ hB (zero_lt_succ i)) h)
 
 def headLaw (z w B N : PTm n) : Fm PTm n := GaussianGammaEulerHead.head z B N ≐ GaussianGammaEulerHead.head w B N
-@[simp] theorem subst_headLaw {l : ℕ} (σ : Fin n → PTm l) (z w B N : PTm n) :
-    (headLaw z w B N).subst σ = headLaw (Syn.subst σ z) (Syn.subst σ w) (Syn.subst σ B) (Syn.subst σ N) := by simp [headLaw]
+ipra_subst headLaw
 
 theorem head_zero (z w B : PTm n) (hB : Γ ⊢[PRAAx] le one B) (h : Γ ⊢[PRAAx] equal z w) : Γ ⊢[PRAAx] headLaw z w B zero :=
   (GaussianGammaEulerHead.head_zero z B hB).eqTrans
@@ -77,8 +73,7 @@ theorem literal_factor_equal (i z w B K : PTm n) (hB : Γ ⊢[PRAAx] le one B) (
     (GaussianRationalFiniteSum.sum_index_congr _ (.eqRefl _) (local_argument_equal i z w B hB h))
 
 def prefixLaw (z w B K N : PTm n) : Fm PTm n := literalPrefix z B K N ≐ literalPrefix w B K N
-@[simp] theorem subst_prefixLaw {l : ℕ} (σ : Fin n → PTm l) (z w B K N : PTm n) :
-    (prefixLaw z w B K N).subst σ = prefixLaw (Syn.subst σ z) (Syn.subst σ w) (Syn.subst σ B) (Syn.subst σ K) (Syn.subst σ N) := by simp [prefixLaw]
+ipra_subst prefixLaw
 
 theorem prefix_zero (z w B K : PTm n) (hB : Γ ⊢[PRAAx] le one B) (h : Γ ⊢[PRAAx] equal z w) : Γ ⊢[PRAAx] prefixLaw z w B K zero :=
   (GaussianGammaWeierstrassFactors.literal_zero z B K hB).eqTrans
@@ -104,19 +99,13 @@ def output (z w B K N : PTm n) : PTm n := pairT (GaussianGammaEulerHead.head z B
   (pairT (GaussianGammaEulerHead.head w B N) (pairT (literalPrefix z B K N) (literalPrefix w B K N)))
 def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (z w B K N : PTm n) : PTm n := PTm.app outputF ![z,w,B,K,N]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (z w B K N : PTm n) :
-    Syn.subst σ (output z w B K N) = output (Syn.subst σ z) (Syn.subst σ w) (Syn.subst σ B) (Syn.subst σ K) (Syn.subst σ N) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (z w B K N : PTm n) :
-    Syn.subst σ (run z w B K N) = run (Syn.subst σ z) (Syn.subst σ w) (Syn.subst σ B) (Syn.subst σ K) (Syn.subst σ N) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (z w B K N : PTm n) : Γ ⊢[PRAAx] run z w B K N ≐ output z w B K N := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![z,w,B,K,N]
 theorem returned_head_left (z w B K N : PTm n) : Γ ⊢[PRAAx] fstT (run z w B K N) ≐ GaussianGammaEulerHead.head z B N :=
-  (congrFst (program_at z w B K N)).eqTrans (fst_pair _ _)
+  (program_at z w B K N).fstE
 theorem returned_head_right (z w B K N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run z w B K N)) ≐ GaussianGammaEulerHead.head w B N :=
   ((congrFst (congrSnd (program_at z w B K N))).eqTrans (congrFst (snd_pair _ _))).eqTrans (fst_pair _ _)
 theorem returned_prefix_left (z w B K N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run z w B K N))) ≐ literalPrefix z B K N :=

@@ -17,7 +17,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetArctangentPoleLaplace
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetArctangentResolvent (pole pole_lower)
 open GaussianBinetArctangentSignedPole (argument_chart branch chart_source imagNumerator)
 open GaussianBinetExponentialIntegral (uniformCost)
@@ -35,10 +35,6 @@ open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalReciprocal (reciprocal reciprocal_canonical reciprocal_identity bounded_negative bound_congr)
 open GaussianRationalSyntheticDivision (qone qmul_congr qzero_add)
 open GaussianReciprocalHorner (qmul_one_right qmul_associative)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)

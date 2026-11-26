@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaElementaryOriginalLog
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianGammaDigammaHarmonicCells (halfReciprocal)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm)
@@ -20,8 +20,6 @@ open GaussianNamedPositiveExponentialOrder (realOrder)
 open GaussianNamedRealOrderTransport (transport)
 open GaussianPositiveRationalLogarithm (fraction logF)
 open GaussianStirlingGammaLogarithm (source)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "DF" => GaussianGammaDigammaNative.nameF
@@ -38,12 +36,9 @@ def data (a b c : PTm n) : PTm n :=
 def lowerData (a b : PTm n) : PTm n := data a b (fraction b a)
 def upperData (a b : PTm n) : PTm n := data a b (halfReciprocal a b)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (a b c : PTm n) :
-    Syn.subst σ (data a b c) = data (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) := by simp [data]
-@[simp] theorem subst_lowerData {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (lowerData a b) = lowerData (Syn.subst σ a) (Syn.subst σ b) := by simp [lowerData]
-@[simp] theorem subst_upperData {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (upperData a b) = upperData (Syn.subst σ a) (Syn.subst σ b) := by simp [upperData]
+ipra_subst data
+ipra_subst lowerData
+ipra_subst upperData
 
 theorem endpoint_cross (a b c : PTm n) (hs : Γ ⊢[PRAAx] source a b) :
     Γ ⊢[PRAAx] crossEquivalent nameF HF (data a b c)

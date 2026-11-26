@@ -13,8 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalConvexSourceRLC
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero app)
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiRationalScaling (rationalLT)
 open RationalArgmin (left)
 open RationalArithmetic (represents recode)
@@ -26,8 +25,6 @@ open RationalConvexArguments (arguments endpointDen firstNumerator secondNumerat
 open RationalOriginalConvexModulus (sourceLeft sourceRight source_queries)
 open RationalCubeMidpoint (fraction fraction_represents)
 open RationalIntervalPowerComparison (centerOrder)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,18 +39,9 @@ def rule (L U : PR 3) (S : PR 6) (x : PTm n) : Fm PTm n := .all
   (instanceAt L U S (fstT (var 0)) (fstT (sndT (var 0))) (fstT (sndT (sndT (var 0))))
     (fstT (sndT (sndT (sndT (var 0))))) (sndT (sndT (sndT (sndT (var 0))))) (Syn.shift x))
 
-@[simp] theorem subst_schedule {m : ℕ} (σ : Fin n → PTm m) (S : PR 6) (A B C j l x : PTm n) :
-    Syn.subst σ (schedule S A B C j l x) =
-      schedule S (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ C) (Syn.subst σ j) (Syn.subst σ l) (Syn.subst σ x) := by
-  simp only [schedule,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst schedule
 
-@[simp] theorem subst_instanceAt {m : ℕ} (σ : Fin n → PTm m) (L U : PR 3) (S : PR 6) (A B C j l x : PTm n) :
-    (instanceAt L U S A B C j l x).subst σ =
-      instanceAt L U S (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ C) (Syn.subst σ j) (Syn.subst σ l) (Syn.subst σ x) := by
-  simp [instanceAt,barycentric,RationalMultiplicativeConvexity.weighted,RationalConvexSecants.scale]
+ipra_subst instanceAt [barycentric, RationalMultiplicativeConvexity.weighted, RationalConvexSecants.scale]
 
 theorem instance_at (L U : PR 3) (S : PR 6) (A B C j l x : PTm n) (h : Γ ⊢[PRAAx] rule L U S x) :
     Γ ⊢[PRAAx] instanceAt L U S A B C j l x := by
@@ -67,13 +55,13 @@ theorem instance_at (L U : PR 3) (S : PR 6) (A B C j l x : PTm n) (h : Γ ⊢[PR
     simpa only [rule,subst_instanceAt,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift,subst_fstT,subst_sndT,A',B',C',j',l']
       using h.allE t
   have r1 : Γ ⊢[PRAAx] sndT t ≐ pairT B (pairT C (pairT j l)) := snd_pair _ _
-  have r2 := (congrSnd r1).eqTrans (snd_pair _ _)
-  have r3 := (congrSnd r2).eqTrans (snd_pair _ _)
+  have r2 := r1.sndE
+  have r3 := r2.sndE
   have a : Γ ⊢[PRAAx] A' ≐ A := fst_pair _ _
-  have b : Γ ⊢[PRAAx] B' ≐ B := (congrFst r1).eqTrans (fst_pair _ _)
-  have c : Γ ⊢[PRAAx] C' ≐ C := (congrFst r2).eqTrans (fst_pair _ _)
-  have s : Γ ⊢[PRAAx] j' ≐ j := (congrFst r3).eqTrans (fst_pair _ _)
-  have u : Γ ⊢[PRAAx] l' ≐ l := (congrSnd r3).eqTrans (snd_pair _ _)
+  have b : Γ ⊢[PRAAx] B' ≐ B := r1.fstE
+  have c : Γ ⊢[PRAAx] C' ≐ C := r2.fstE
+  have s : Γ ⊢[PRAAx] j' ≐ j := r3.fstE
+  have u : Γ ⊢[PRAAx] l' ≐ l := r3.sndE
   have e := Prf.eqSubst (Ax := PRAAx) (Γ := Γ) (instanceAt L U S (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : Fm PTm 6)
     (![A',B',C',j',l',x] : Fin 6 → PTm n) ![A,B,C,j,l,x]
       (fun i => by fin_cases i; exact a; exact b; exact c; exact s; exact u; exact .eqRefl _) ?_

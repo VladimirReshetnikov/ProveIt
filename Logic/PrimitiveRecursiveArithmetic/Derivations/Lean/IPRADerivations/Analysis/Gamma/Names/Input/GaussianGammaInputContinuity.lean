@@ -15,16 +15,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaInputContinuity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaEulerContinuityReference (headBound inputGain reference reciprocalBudget original_C7_reference reference_distance_wide)
 open GaussianRationalHorner (positive_product ofGaussian)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_symmetric)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -34,8 +30,7 @@ def numerator (p q r R A D N : PTm n) : PTm n :=
   N*D*((unit p+unit q)*unit r+loss R N*unit p*unit q)+
   N*inputGain r R N*A*unit p*unit q*unit r
 def denominator (p q r D N : PTm n) : PTm n := N*D*unit p*unit q*unit r
-@[simp] theorem subst_loss {l : ℕ} (σ : Fin n → PTm l) (R N : PTm n) :
-    Syn.subst σ (loss R N) = loss (Syn.subst σ R) (Syn.subst σ N) := by simp [loss]
+ipra_subst loss
 
 /-- Quantitative original C7 continuity before choosing the cutoff and
 accuracy schedules. Every tolerance is derived from original input data. -/
@@ -67,13 +62,9 @@ theorem quantitative_distance (p q r z w R B A D N : PTm n)
 def cutoff (s R : PTm n) : PTm n := succ (GaussianGammaEulerApproximationName.cutoff (s+num 3) R)
 def accuracy (s R : PTm n) : PTm n := s+loss R (cutoff s R)+num 4
 def modulus (s R : PTm n) : PTm n := s+inputGain (accuracy s R) R (cutoff s R)+num 4
-@[simp] theorem subst_cutoff {l : ℕ} (σ : Fin n → PTm l) (s R : PTm n) :
-    Syn.subst σ (cutoff s R) = cutoff (Syn.subst σ s) (Syn.subst σ R) := by simp [cutoff]
-@[simp] theorem subst_accuracy {l : ℕ} (σ : Fin n → PTm l) (s R : PTm n) :
-    Syn.subst σ (accuracy s R) = accuracy (Syn.subst σ s) (Syn.subst σ R) := by simp [accuracy]
-@[simp] theorem subst_modulus {l : ℕ} (σ : Fin n → PTm l) (s R : PTm n) :
-    Syn.subst σ (modulus s R) = modulus (Syn.subst σ s) (Syn.subst σ R) := by simp [modulus,GaussianGammaEulerContinuityReference.inputGain,
-      GaussianGammaEulerContinuityReference.finiteGain,GaussianGammaEulerContinuityReference.finiteBound]
+ipra_subst cutoff
+ipra_subst accuracy
+ipra_subst modulus [GaussianGammaEulerContinuityReference.inputGain, GaussianGammaEulerContinuityReference.finiteGain, GaussianGammaEulerContinuityReference.finiteBound]
 
 theorem cutoff_positive (s R : PTm n) : Γ ⊢[PRAAx] le one (cutoff s R) := zero_lt_succ _
 theorem cutoff_source (s z R B : PTm n) (h : Γ ⊢[PRAAx] GaussianGammaCanonicalExponent.source z R B) : Γ ⊢[PRAAx]
@@ -131,10 +122,8 @@ theorem residual_budget (s R : PTm n) : Γ ⊢[PRAAx]
 
 def tolerance (p q s : PTm n) : PTm n := (unit p+unit q)*unit s+unit p*unit q
 def toleranceDen (p q s : PTm n) : PTm n := unit p*unit q*unit s
-@[simp] theorem subst_tolerance {l : ℕ} (σ : Fin n → PTm l) (p q s : PTm n) :
-    Syn.subst σ (tolerance p q s) = tolerance (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ s) := by simp [tolerance]
-@[simp] theorem subst_toleranceDen {l : ℕ} (σ : Fin n → PTm l) (p q s : PTm n) :
-    Syn.subst σ (toleranceDen p q s) = toleranceDen (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ s) := by simp [toleranceDen]
+ipra_subst tolerance
+ipra_subst toleranceDen
 
 /-- Actual original reciprocal Gamma continuity on every original disk.
 The returned observation error is exactly 2^-p+2^-q+2^-s. -/
@@ -191,49 +180,40 @@ theorem original_C7_independent_rate (s z w R B : PTm n)
 
 def input (s z w R B : PTm n) : Fm PTm n := GaussianGammaCanonicalExponent.source z R B ⋏
   (GaussianGammaCanonicalExponent.source w R B ⋏ distanceBounded (ofGaussian z B) (ofGaussian w B) one (unit (modulus s R)))
-@[simp] theorem subst_input {l : ℕ} (σ : Fin n → PTm l) (s z w R B : PTm n) :
-    (input s z w R B).subst σ = input (Syn.subst σ s) (Syn.subst σ z) (Syn.subst σ w) (Syn.subst σ R) (Syn.subst σ B) := by simp [input]
+ipra_subst input
 
 /-- Both original observations, computed input modulus and exact returned tolerance. -/
 def output (p q s z w R B : PTm n) : PTm n := pairT (GaussianGammaC7Name.sample p z R B)
   (pairT (GaussianGammaC7Name.sample q w R B) (pairT (modulus s R) (pairT (tolerance p q s) (toleranceDen p q s))))
 def outputF : PR 7 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6))
 def run (p q s z w R B : PTm n) : PTm n := PTm.app outputF ![p,q,s,z,w,R,B]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (p q s z w R B : PTm n) :
-    Syn.subst σ (output p q s z w R B) = output (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ s)
-      (Syn.subst σ z) (Syn.subst σ w) (Syn.subst σ R) (Syn.subst σ B) := by simp [output,GaussianGammaC7Name.sample]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (p q s z w R B : PTm n) :
-    Syn.subst σ (run p q s z w R B) = run (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ s)
-      (Syn.subst σ z) (Syn.subst σ w) (Syn.subst σ R) (Syn.subst σ B) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext k
-  fin_cases k <;> rfl
+ipra_subst output [GaussianGammaC7Name.sample]
+ipra_subst run
 
 theorem program_at (p q s z w R B : PTm n) : Γ ⊢[PRAAx] run p q s z w R B ≐ output p q s z w R B := by
   simpa [run,outputF] using toPR_eq (Γ := Γ)
     (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) : PTm 7) ![p,q,s,z,w,R,B]
 theorem returned_left (p q s z w R B : PTm n) : Γ ⊢[PRAAx] fstT (run p q s z w R B) ≐ GaussianGammaC7Name.sample p z R B :=
-  (congrFst (program_at p q s z w R B)).eqTrans (fst_pair _ _)
+  (program_at p q s z w R B).fstE
 theorem returned_tail (p q s z w R B : PTm n) : Γ ⊢[PRAAx] sndT (run p q s z w R B) ≐
     pairT (GaussianGammaC7Name.sample q w R B) (pairT (modulus s R) (pairT (tolerance p q s) (toleranceDen p q s))) :=
-  (congrSnd (program_at p q s z w R B)).eqTrans (snd_pair _ _)
+  (program_at p q s z w R B).sndE
 theorem returned_right (p q s z w R B : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run p q s z w R B)) ≐ GaussianGammaC7Name.sample q w R B :=
-  (congrFst (returned_tail p q s z w R B)).eqTrans (fst_pair _ _)
+  (returned_tail p q s z w R B).fstE
 theorem returned_rest (p q s z w R B : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run p q s z w R B)) ≐
     pairT (modulus s R) (pairT (tolerance p q s) (toleranceDen p q s)) :=
-  (congrSnd (returned_tail p q s z w R B)).eqTrans (snd_pair _ _)
+  (returned_tail p q s z w R B).sndE
 theorem returned_modulus (p q s z w R B : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run p q s z w R B))) ≐ modulus s R :=
-  (congrFst (returned_rest p q s z w R B)).eqTrans (fst_pair _ _)
+  (returned_rest p q s z w R B).fstE
 theorem returned_budget (p q s z w R B : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run p q s z w R B))) ≐
     pairT (tolerance p q s) (toleranceDen p q s) :=
-  (congrSnd (returned_rest p q s z w R B)).eqTrans (snd_pair _ _)
+  (returned_rest p q s z w R B).sndE
 theorem returned_numerator (p q s z w R B : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (sndT (run p q s z w R B)))) ≐ tolerance p q s :=
-  (congrFst (returned_budget p q s z w R B)).eqTrans (fst_pair _ _)
+  (returned_budget p q s z w R B).fstE
 theorem returned_denominator (p q s z w R B : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (sndT (sndT (run p q s z w R B)))) ≐ toleranceDen p q s :=
-  (congrSnd (returned_budget p q s z w R B)).eqTrans (snd_pair _ _)
+  (returned_budget p q s z w R B).sndE
 theorem returned_distance (p q s z w R B : PTm n) (h : Γ ⊢[PRAAx] input s z w R B) : Γ ⊢[PRAAx]
     distanceBounded (fstT (run p q s z w R B)) (fstT (sndT (run p q s z w R B)))
       (fstT (sndT (sndT (sndT (run p q s z w R B))))) (sndT (sndT (sndT (sndT (run p q s z w R B))))) :=

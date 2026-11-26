@@ -15,13 +15,10 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerDerivativePrecision
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerDerivativeSubdivisionBudget (compactCount compact_quadratic_budget observation_query_budget)
 open GaussianEulerLogarithmicParameterIncrement (curvature)
 open GaussianCoefficientNameBounds (unit)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -29,10 +26,8 @@ local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
 def workUnit (p : PTm n) : PTm n := unit (p+num 6)
 def readIndex (p N D : PTm n) : PTm n := GaussianEulerDerivativeSubdivisionBudget.readQuery p N (num 4) D
 
-@[simp] theorem subst_workUnit {m : ℕ} (σ : Fin n → PTm m) (p : PTm n) :
-    Syn.subst σ (workUnit p) = workUnit (Syn.subst σ p) := by simp [workUnit]
-@[simp] theorem subst_readIndex {m : ℕ} (σ : Fin n → PTm m) (p N D : PTm n) :
-    Syn.subst σ (readIndex p N D) = readIndex (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ D) := by simp [readIndex]
+ipra_subst workUnit
+ipra_subst readIndex
 
 theorem observation_budget (p N D : PTm n) : Γ ⊢[PRAAx]
     le ((num 4*N*D)*workUnit p) (unit (readIndex p N D)) :=

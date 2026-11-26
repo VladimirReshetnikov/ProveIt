@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Polynomials.CompanionMatrices.GaussianPolynomialMonicCompanion
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The full stored monic factor
@@ -13,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBivariateMonicFactor
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianPolynomialMonicCompanion
   (rowShape row_shape_at monicRow monic_row_length values values_length values_lookup
     monicValues monic_length monic_head monic_tail evaluation_congr)
@@ -23,10 +22,6 @@ open GaussianRationalSyntheticDivision (qone qone_canonical)
 open GaussianTranslatedNonconstant (recode_eq)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open LeanProofs.IPRA.PTm (pred)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -37,13 +32,9 @@ def rowBody : PTm 2 := row (fstT (var 1)) (sndT (var 1)) (var 0)
 
 def table (F m c : PTm n) : PTm n := sequence rowBody (succ m) (pairT F c)
 
-@[simp] theorem subst_row {k : ℕ} (σ : Fin n → PTm k) (F c i : PTm n) :
-    Syn.subst σ (row F c i) = row (Syn.subst σ F) (Syn.subst σ c) (Syn.subst σ i) := by
-  simp [row, Signum.sg]
+ipra_subst row [Signum.sg]
 
-@[simp] theorem subst_table {k : ℕ} (σ : Fin n → PTm k) (F m c : PTm n) :
-    Syn.subst σ (table F m c) = table (Syn.subst σ F) (Syn.subst σ m) (Syn.subst σ c) := by
-  simp [table]
+ipra_subst table
 
 theorem row_body_at (F c i : PTm n) : Γ ⊢[PRAAx] inst2 rowBody i (pairT F c) ≐ row F c i := by
   simp only [rowBody, inst2, subst_row, subst_fstT, subst_sndT, Syn.subst_var, Matrix.cons_val_zero,

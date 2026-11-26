@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalOriginalAnnihilator
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalRowSpanGaussianEmbedding (matrix matrix_shape matrix_lookup realVector real_vector_lookup real_vector_length)
 open RationalGaussianEmbedding (embed scalarOne scalarZero)
 open RationalArgmin (rationalEq rationalEq_congr)
@@ -25,9 +25,6 @@ open GaussianRationalRowElimination (dotData)
 open GaussianPolynomialDeterminantTerms (cell subst_cell)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open ConciseIPRA.PTm (app)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -47,15 +44,11 @@ def deficit (A R N : PTm n) : Fm PTm n := lt (rank (matrix A R N) R N) N
 
 def certificate (A R N v s : PTm n) : Fm PTm n := length v ≐ N ⋏ (lt s N ⋏ (entry v s ≐ scalarOne ⋏ nullRows A R N v))
 
-@[simp] theorem subst_rowDot {q : ℕ} (σ : Fin n → PTm q) (A N v r : PTm n) :
-    Syn.subst σ (rowDot A N v r) = rowDot (Syn.subst σ A) (Syn.subst σ N) (Syn.subst σ v) (Syn.subst σ r) := by
-  simp [rowDot]
+ipra_subst rowDot
 
-@[simp] theorem subst_free {q : ℕ} (σ : Fin n → PTm q) (A R N : PTm n) :
-    Syn.subst σ (free A R N) = free (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) := by simp [free]
+ipra_subst free
 
-@[simp] theorem subst_vector {q : ℕ} (σ : Fin n → PTm q) (A R N : PTm n) :
-    Syn.subst σ (vector A R N) = vector (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) := by simp [vector]
+ipra_subst vector
 
 theorem dot_body_at (A v r j : PTm n) : Γ ⊢[PRAAx]
     inst2 dotBody j (dotData A v r) ≐ RationalArithmetic.multiply (entry v j) (cell A r j) := by

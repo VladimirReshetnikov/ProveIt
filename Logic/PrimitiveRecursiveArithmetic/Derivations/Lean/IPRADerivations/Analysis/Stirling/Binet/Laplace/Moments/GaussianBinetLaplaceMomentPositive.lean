@@ -18,7 +18,7 @@ set_option maxHeartbeats 1100000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentPositive
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianBinetLaplaceMomentCompact (data regular)
 open GaussianBinetLaplaceMomentFloor (unitPanelData unit_panel_floor_with_cap)
@@ -38,10 +38,6 @@ open GaussianNamedRealOrderTransport (transport)
 open GaussianRationalHorner (qadd qzero canonical ofGaussian_canonical positive_product)
 open GaussianRationalSyntheticDivision (qzero_add)
 open RationalValueBounds (upper upper_congr upper_mono)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "F" => GaussianBinetLaplaceMomentFloor.nameF
@@ -53,8 +49,7 @@ local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
 
 def marginPoint (X : PTm n) : PTm n := radiusPoint two (floorDenominator X two)
 
-@[simp] theorem subst_marginPoint {m : ℕ} (σ : Fin n → PTm m) (X : PTm n) :
-    Syn.subst σ (marginPoint X) = marginPoint (Syn.subst σ X) := by simp [marginPoint,two,one]
+ipra_subst marginPoint [two, one]
 
 private theorem margin_canonical (X : PTm n) : Γ ⊢[PRAAx] canonical (marginPoint X) :=
   ofGaussian_canonical _ _ (floor_denominator_positive X two)

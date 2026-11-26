@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedGammaIncrementInput
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedRightHalfPlane (certificate marginPoint numerator denominator radius)
 open GaussianNameArithmetic (addF addData add_fast add_at recode_congr)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
@@ -31,10 +31,6 @@ open GaussianEuclideanDistanceName (pointCN)
 open GaussianNamedPositiveExponentialOrder (realOrder)
 open RationalValueBounds (upper upper_congr upper_mono)
 open ComplexLogarithmRemainder (scale re oneCode)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -45,12 +41,9 @@ def clock (p : PTm n) : PTm n := GaussianFastValueCut.exponent two p
 def source (f : PR 2) (x A h D : PTm n) : Fm PTm n :=
   GaussianNamedRightHalfPlane.source f x A ⋏ (le one D ⋏ bounded (ofGaussian h D) one (num 4*A))
 
-@[simp] theorem subst_incrementData {m : ℕ} (σ : Fin n → PTm m) (x h D : PTm n) :
-    Syn.subst σ (incrementData x h D) = incrementData (Syn.subst σ x) (Syn.subst σ h) (Syn.subst σ D) := by simp [incrementData]
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (p : PTm n) :
-    Syn.subst σ (clock p) = clock (Syn.subst σ p) := by simp [clock]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x A h D : PTm n) :
-    (source f x A h D).subst σ = source f (Syn.subst σ x) (Syn.subst σ A) (Syn.subst σ h) (Syn.subst σ D) := by simp [source]
+ipra_subst incrementData
+ipra_subst clock
+ipra_subst source
 
 theorem clock_later (p : PTm n) : Γ ⊢[PRAAx] le p (clock p) := le_add_right _ _
 

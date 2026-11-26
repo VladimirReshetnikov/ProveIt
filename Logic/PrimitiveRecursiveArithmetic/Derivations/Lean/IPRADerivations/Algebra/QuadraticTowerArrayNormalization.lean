@@ -1,7 +1,6 @@
 import IPRADerivations.Algebra.QuadraticTowerMultiplicationTable
 import IPRADerivations.Foundations.SequenceEquality
 import IPRADerivations.Analysis.RationalArithmetic.RationalGaussianEmbedding
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual normalization of numerical quadratic-tower arrays
@@ -20,7 +19,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticTowerArrayNormalization
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis
 open QuadraticTowerCoefficients (width width_succ)
 open QuadraticTowerArrayCodec
@@ -32,9 +31,6 @@ open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
 open LeanProofs.IPRA.Foundations.SequenceEquality (agree sequence_equal)
 open LeanProofs.IPRA.Foundations.RealizerComposition
   (slice sliceBody sliceBody_at slice_lookup)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

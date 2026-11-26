@@ -18,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianHarmonicLogarithmPower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianHarmonicLogarithmName (nameF data sample sample_at)
 open GaussianHarmonicLogarithmProduct (mesh mesh_later)
 open GaussianRationalNaturalScale (natScale)
@@ -27,10 +27,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent cross_trans)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,12 +34,9 @@ def scaledF : PR 2 := GaussianNamedNaturalScale.nameF nameF
 def powerData (a b m : PTm n) : PTm n := data (pw a m) (pw b m)
 def scaledData (a b m : PTm n) : PTm n := GaussianNamedNaturalScale.data m m (data a b)
 def radius (a b : PTm n) : PTm n := GaussianHarmonicLogarithmName.radius b a
-@[simp] theorem subst_powerData {k : ℕ} (σ : Fin n → PTm k) (a b m : PTm n) :
-    Syn.subst σ (powerData a b m) = powerData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ m) := by simp [powerData]
-@[simp] theorem subst_scaledData {k : ℕ} (σ : Fin n → PTm k) (a b m : PTm n) :
-    Syn.subst σ (scaledData a b m) = scaledData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ m) := by simp [scaledData]
-@[simp] theorem subst_radius {k : ℕ} (σ : Fin n → PTm k) (a b : PTm n) :
-    Syn.subst σ (radius a b) = radius (Syn.subst σ a) (Syn.subst σ b) := by simp [radius]
+ipra_subst powerData
+ipra_subst scaledData
+ipra_subst radius
 
 theorem compact_domain (a b : PTm n) (h : Γ ⊢[PRAAx] GaussianPositiveRationalLogarithm.source a b) : Γ ⊢[PRAAx]
     GaussianCompactLogarithmBounds.domain a b b a :=

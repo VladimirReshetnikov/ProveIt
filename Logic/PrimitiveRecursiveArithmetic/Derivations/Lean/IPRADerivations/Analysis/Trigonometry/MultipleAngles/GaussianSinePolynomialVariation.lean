@@ -15,7 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSinePolynomialVariation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (normSq)
 open GaussianCoefficientNameBounds (bounded_radius_mono)
 open GaussianEuclideanResidualRadius (coefficientBounds)
@@ -32,9 +32,6 @@ open GaussianSineSquaredPolynomial (coefficients coefficients_length)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -44,13 +41,9 @@ def coefficientBound (C : PTm n) : PTm n := ap2 (sumF boundBody) (length C) C
 def variationBudget (J B : PTm n) : PTm n :=
   GaussianRationalHornerLipschitz.constant J (traceBudget B) (coefficientBound (coefficients J))*(num 8*B)
 
-@[simp] theorem subst_coefficientBound {l : ℕ} (σ : Fin n → PTm l) (C : PTm n) :
-    Syn.subst σ (coefficientBound C) = coefficientBound (Syn.subst σ C) := by
-  simp [coefficientBound]
+ipra_subst coefficientBound
 
-@[simp] theorem subst_variationBudget {l : ℕ} (σ : Fin n → PTm l) (J B : PTm n) :
-    Syn.subst σ (variationBudget J B) = variationBudget (Syn.subst σ J) (Syn.subst σ B) := by
-  simp [variationBudget,GaussianRationalHornerLipschitz.constant,traceBudget,one]
+ipra_subst variationBudget [GaussianRationalHornerLipschitz.constant, traceBudget, one]
 
 theorem point_bound (q : PTm n) : Γ ⊢[PRAAx] bounded q (pointBound q) one := by
   let a := rawGaussian q

@@ -21,7 +21,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedExponentialShiftDerivative
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianExponentialAddition (sumData productF productData exponential_add_cross)
 open GaussianExponentialRadiusIndependence (independent_radii_proper input_widen)
@@ -36,9 +36,6 @@ open GaussianNamedDifferenceRate (rate_parameters_congr same_right_rate self_rat
 open GaussianNamedInverseRate (independentRate)
 open GaussianRadiusExponentialName (nameF name_regular data input)
 open GaussianRationalHorner (positive_product)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -18,7 +18,7 @@ set_option maxHeartbeats 1250000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesVignerasCubicForce
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalThirdLogarithmCauchy (gain)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaCanonicalExponent (constantF constant_at)
@@ -28,9 +28,6 @@ open GaussianRationalMetric (distanceBounded bounded qnormSq qsub squaredToleran
 open GaussianSignedObservationGrid (rounded)
 open RationalValueBounds (upper upper_congr upper_of_radius upper_triangle upper_mono)
 open PolynomialBisection (zle_congr zle_scale)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

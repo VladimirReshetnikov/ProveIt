@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalCenteredHeadTaylor
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add)
 open GaussianBarnesCanonicalBaseProductShift (powerProduct)
 open GaussianBarnesCanonicalCenteredHead (polynomial polynomial_length original_evaluation)
@@ -27,10 +27,6 @@ open GaussianRationalPowerExpansion (partialSum)
 open GaussianRationalReciprocal (bound_congr bounded_power bounded_product)
 open GaussianRationalUniformFirstOrderPolynomial (mass prefix_bound)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open LeanProofs.IPRA.PTm (monus)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

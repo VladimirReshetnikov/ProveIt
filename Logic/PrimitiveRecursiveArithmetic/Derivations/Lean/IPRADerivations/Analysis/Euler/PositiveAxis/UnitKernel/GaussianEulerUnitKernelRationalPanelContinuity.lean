@@ -4,7 +4,6 @@ import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
 import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaCompactCutoffAlignment
 import IPRADerivations.Analysis.RationalArithmetic.RationalNativeFractionDisplacement
 import IPRADerivations.AnalyticNumberTheory.PowerTransfer
-import IPRADerivations.Core.Fubini
 
 /-!
 # Endpoint continuity of the actual unit quadrature at different denominators
@@ -19,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelRationalPanelContinuity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUnitKernelCompactName (nameF data)
 open GaussianEulerUnitKernelPanelContinuity (leading)
 open GaussianEulerUnitKernelPanelRescaling (source_rescaling original_rescaling)
@@ -35,8 +34,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.PowerTransfer (maxT le_maxT_l le_maxT_
 open LeanProofs.IPRA.Probability.Variance (ad)
 open LeanProofs.IPRA.Probability.MedianWeighted (le_add_ad)
 open GaussianRationalHorner (positive_product)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

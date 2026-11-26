@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianConstantCoefficientNames
 import IPRADerivations.Analysis.Polynomials.RootFinding.FundamentalTheorem.GaussianGeneralFTAValueZero
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The constant-name FTA program evaluates the original numerical polynomial
@@ -23,7 +22,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianConstantPolynomialEvaluation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianConstantCoefficientNames (coefficientF data apartPrecision)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (horner hornerF evaluate)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (bounded)
@@ -33,9 +32,6 @@ open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (pointCN)
 open LeanProofs.IPRA.Analysis.GaussianRootApproximationWitness (pointBounds)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -44,11 +40,8 @@ def sample (C N s : PTm n) : PTm n :=
 def prefixLaw (C N z s r : PTm n) : Fm PTm n :=
   le r (succ N) ⟶ horner (sample C N s) z r ≐ horner C z r
 
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (C N s : PTm n) :
-    Syn.subst σ (sample C N s) = sample (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ s) := by simp [sample]
-@[simp] theorem subst_prefixLaw {m : ℕ} (σ : Fin n → PTm m) (C N z s r : PTm n) :
-    (prefixLaw C N z s r).subst σ = prefixLaw (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ z) (Syn.subst σ s) (Syn.subst σ r) := by simp [prefixLaw]
+ipra_subst sample
+ipra_subst prefixLaw
 
 /-- Actual entry codes, including raw noncanonical original coefficients. -/
 theorem sample_entry (C N s i : PTm n) (hi : Γ ⊢[PRAAx] le i N) : Γ ⊢[PRAAx]
@@ -73,11 +66,9 @@ theorem horner_prefix (C N z s r : PTm n) (hr : Γ ⊢[PRAAx] le r (succ N)) : �
     horner (sample C N s) z r ≐ horner C z r := by
   have all : Γ ⊢[PRAAx] .all
       (prefixLaw (Syn.shift C) (Syn.shift N) (Syn.shift z) (Syn.shift s) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (prefix_zero C N z s).wk
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_prefixLaw]
+    · exact .impI (prefix_zero C N z s).wk
+    · refine .impI ?_
       have inside : le (succ (var 0)) (succ (Syn.shift N)) ::
           prefixLaw (Syn.shift C) (Syn.shift N) (Syn.shift z) (Syn.shift s) (var 0) :: Γ.map Fm.shift
           ⊢[PRAAx] le (var 0) (Syn.shift N) :=
@@ -106,12 +97,8 @@ def precision (C N U t : PTm n) : PTm n :=
 def originalValue (point : PR 2) (C N U y t : PTm n) : PTm n :=
   GaussianFastValueCut.recode (evaluate C (ap2 point (precision C N U t) y))
 
-@[simp] theorem subst_precision {m : ℕ} (σ : Fin n → PTm m) (C N U t : PTm n) :
-    Syn.subst σ (precision C N U t) = precision (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ U) (Syn.subst σ t) := by simp [precision]
-@[simp] theorem subst_originalValue {m : ℕ} (σ : Fin n → PTm m) (point : PR 2) (C N U y t : PTm n) :
-    Syn.subst σ (originalValue point C N U y t) = originalValue point (Syn.subst σ C)
-      (Syn.subst σ N) (Syn.subst σ U) (Syn.subst σ y) (Syn.subst σ t) := by simp [originalValue]
+ipra_subst precision
+ipra_subst originalValue
 
 theorem recode_congr {z w : PTm n} (h : Γ ⊢[PRAAx] z ≐ w) : Γ ⊢[PRAAx]
     GaussianFastValueCut.recode z ≐ GaussianFastValueCut.recode w := by
@@ -148,17 +135,11 @@ def originalZero (C N k : PTm n) : Fm PTm n := .all
     (precision (Syn.shift C) (Syn.shift N) (radius (Syn.shift C) (Syn.shift N) (Syn.shift k)) (var 0))
     (rootData (Syn.shift C) (Syn.shift N) (Syn.shift k)))) one (unit (var 0)))
 
-@[simp] theorem subst_rootData {m : ℕ} (σ : Fin n → PTm m) (C N k : PTm n) :
-    Syn.subst σ (rootData C N k) = rootData (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ k) := by simp [rootData]
-@[simp] theorem subst_radius {m : ℕ} (σ : Fin n → PTm m) (C N k : PTm n) :
-    Syn.subst σ (radius C N k) = radius (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ k) := by simp [radius]
-@[simp] theorem subst_valueData {m : ℕ} (σ : Fin n → PTm m) (C N k : PTm n) :
-    Syn.subst σ (valueData C N k) = valueData (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ k) := by simp [valueData]
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (C N k : PTm n) :
-    (input C N k).subst σ = input (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ k) := by simp [input]
-@[simp] theorem subst_originalZero {m : ℕ} (σ : Fin n → PTm m) (C N k : PTm n) :
-    (originalZero C N k).subst σ = originalZero (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ k) := by
-  simp [originalZero,Syn.subst_shift,Syn.shift_subst]
+ipra_subst rootData
+ipra_subst radius
+ipra_subst valueData
+ipra_subst input
+ipra_subst originalZero [Syn.subst_shift, Syn.shift_subst]
 
 theorem source_input (C N k : PTm n) (h : Γ ⊢[PRAAx] input C N k) : Γ ⊢[PRAAx]
     GaussianGeneralPolynomialSamples.sourceInput coefficientF N k (apartPrecision C N k) (data C N) :=

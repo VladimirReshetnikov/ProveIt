@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPartitionedFiniteSumDistance
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianPartitionedFiniteSum (increasing block blockBody grouped_from_zero)
 open GaussianRationalFiniteSum (sum)
 open GaussianRationalRiemannRefinement (termsDistance constantBody sum_distance constant_sum)
@@ -23,10 +23,6 @@ open GaussianRationalNaturalScale (natScale)
 open GaussianRationalMetric (distanceBounded bounded)
 open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,17 +38,10 @@ def blockAgreement (cut : PR 2) (f g : PTm 2) (K d x y A B : PTm n) : Fm PTm n :
 def blockBound (cut : PR 2) (K d H : PTm n) : Fm PTm n := .all
   (lt (var 0) (Syn.shift K) ⟶ le (blockLength cut (var 0) (Syn.shift d)) (Syn.shift H))
 
-@[simp] theorem subst_blockLength {m : ℕ} (σ : Fin n → PTm m) (cut : PR 2) (i d : PTm n) :
-    Syn.subst σ (blockLength cut i d) = blockLength cut (Syn.subst σ i) (Syn.subst σ d) := by simp [blockLength]
-@[simp] theorem subst_coarseRow {m : ℕ} (σ : Fin n → PTm m) (cut : PR 2) (g : PTm 2) (i d y : PTm n) :
-    Syn.subst σ (coarseRow cut g i d y) = coarseRow cut g (Syn.subst σ i) (Syn.subst σ d) (Syn.subst σ y) := by simp [coarseRow]
-@[simp] theorem subst_blockAgreement {m : ℕ} (σ : Fin n → PTm m) (cut : PR 2) (f g : PTm 2) (K d x y A B : PTm n) :
-    (blockAgreement cut f g K d x y A B).subst σ = blockAgreement cut f g (Syn.subst σ K) (Syn.subst σ d)
-      (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [blockAgreement,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_blockBound {m : ℕ} (σ : Fin n → PTm m) (cut : PR 2) (K d H : PTm n) :
-    (blockBound cut K d H).subst σ = blockBound cut (Syn.subst σ K) (Syn.subst σ d) (Syn.subst σ H) := by
-  simp [blockBound,Syn.subst_shift,Syn.shift_subst]
+ipra_subst blockLength
+ipra_subst coarseRow
+ipra_subst blockAgreement [Syn.subst_shift, Syn.shift_subst]
+ipra_subst blockBound [Syn.subst_shift, Syn.shift_subst]
 
 theorem coarse_at (cut : PR 2) (g : PTm 2) (i d y : PTm n) : Γ ⊢[PRAAx]
     inst2 (coarseBody cut g) i (pairT d y) ≐ coarseRow cut g i d y := by

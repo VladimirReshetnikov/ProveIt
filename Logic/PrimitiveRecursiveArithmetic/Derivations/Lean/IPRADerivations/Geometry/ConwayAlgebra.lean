@@ -1,7 +1,3 @@
-import IPRADerivations.Core.Tactic
-import IPRADerivations.Core.Gcd
-import IPRADerivations.Core.Parity
-import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
 
 /-!
@@ -40,11 +36,7 @@ here.
 
 namespace LeanProofs.IPRA.Geometry.ConwayAlgebra
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 /-- `det((x₁, x₂), (y₁, y₂)) = x₁ y₂ − x₂ y₁`. -/
 abbrev det {n : ℕ} (x₁ x₂ y₁ y₂ : ZT n) : ZT n := x₁ * y₂ - x₂ * y₁

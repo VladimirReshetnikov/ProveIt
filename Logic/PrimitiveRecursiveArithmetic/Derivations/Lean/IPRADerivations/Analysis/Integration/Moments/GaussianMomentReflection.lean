@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianMomentReflection
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul qadd qzero ofGaussian_represents canonical_unique represents_congr)
 open GaussianRationalMetric (qnegative)
 open GaussianRationalSyntheticDivision (qone qone_canonical qmul_congr qadd_congr)
@@ -28,9 +28,6 @@ open GaussianRationalParityPower (negative_power parity_succ)
 open GaussianEulerIntegrandName (decayF decayData)
 open GaussianPositiveRationalLogarithm (fraction)
 open ComplexLogarithmRemainder (oneCode)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -49,9 +46,7 @@ theorem negative_odd_power (t N : PTm n) : Γ ⊢[PRAAx]
   (negative_power t (succ (two*N))).eqTrans ((qmul_congr (parity_odd N) (.eqRefl _)).eqTrans (negative_as_minusOne _).eqSymm)
 
 def row (p M t a b c d : PTm n) : PTm n := qmul (power t M) (ap2 decayF p (decayData (c*(a*a)) (d*(b*b))))
-@[simp] theorem subst_row {m : ℕ} (σ : Fin n → PTm m) (p M t a b c d : PTm n) :
-    Syn.subst σ (row p M t a b c d) = row (Syn.subst σ p) (Syn.subst σ M) (Syn.subst σ t)
-      (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d) := by simp [row]
+ipra_subst row
 
 theorem even_row (p N a b c d : PTm n) : Γ ⊢[PRAAx]
     row p (two*N) (qnegative (fraction a b)) a b c d ≐ row p (two*N) (fraction a b) a b c d :=

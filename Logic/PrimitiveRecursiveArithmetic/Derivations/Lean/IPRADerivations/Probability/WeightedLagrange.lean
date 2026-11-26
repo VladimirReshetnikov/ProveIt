@@ -1,5 +1,4 @@
 import IPRADerivations.Probability.ExpectationCorollaries
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The weighted Lagrange identity and equality in Cauchy–Schwarz
@@ -19,14 +18,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.WeightedLagrange
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Expectation (inst2_mul')
 open LeanProofs.IPRA.Probability.Variance (ad ad_sq)
 open LeanProofs.IPRA.Probability.ExpectationCorollaries (zml)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -63,8 +58,8 @@ theorem eB_at (i U V x : PTm n) : Γ ⊢[PRAAx] inst2 (eB w u v) i (pairT (pairT
     inst2 w i x * (ad (U * inst2 v i x) (V * inst2 u i x) * ad (U * inst2 v i x) (V * inst2 u i x)) := by
   rw [inst2_eB]
   have hx : Γ ⊢[PRAAx] sndT (pairT (pairT U V) x) ≐ x := snd_pair _ _
-  have hU : Γ ⊢[PRAAx] fstT (fstT (pairT (pairT U V) x)) ≐ U := (congrFst (fst_pair _ _)).eqTrans (fst_pair _ _)
-  have hV : Γ ⊢[PRAAx] sndT (fstT (pairT (pairT U V) x)) ≐ V := (congrSnd (fst_pair _ _)).eqTrans (snd_pair _ _)
+  have hU : Γ ⊢[PRAAx] fstT (fstT (pairT (pairT U V) x)) ≐ U := (fst_pair _ _).fstE
+  have hV : Γ ⊢[PRAAx] sndT (fstT (pairT (pairT U V) x)) ≐ V := (fst_pair _ _).sndE
   have ha := congrMul hU (congrInst2 v (.eqRefl i) hx)
   have hb := congrMul hV (congrInst2 u (.eqRefl i) hx)
   have hd := congrAdd (congrMonus ha hb) (congrMonus hb ha)
@@ -146,9 +141,8 @@ theorem cs_equality {M x i j : PTm n}
     (hj : Γ ⊢[PRAAx] lt j M) (hi : Γ ⊢[PRAAx] lt i j) :
     Γ ⊢[PRAAx] inst2 w j x * (inst2 w i x * (ad (inst2 u j x * inst2 v i x) (inst2 v j x * inst2 u i x) *
       ad (inst2 u j x * inst2 v i x) (inst2 v j x * inst2 u i x))) ≐ zero := by
-  have h' := natEq h
   have d0 : Γ ⊢[PRAAx] ap2 (sumF (DB w u v)) M x ≐ zero := by
-    ipra_lc h' - natEq (lagrange (Γ := Γ) w u v M x)
+    ipra_lc natEq h - natEq (lagrange (Γ := Γ) w u v M x)
   have r := sum_zero_elim (DB w u v) d0 hj
   rw [inst2_DB] at r
   refine .orE (zero_or_zero_of_mul r) (zml Prf.hyp0 _) ?_

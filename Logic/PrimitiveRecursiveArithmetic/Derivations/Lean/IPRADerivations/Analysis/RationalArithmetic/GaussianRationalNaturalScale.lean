@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianRationalCoefficientScaling
 import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.GaussianTranslatedNonconstant
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual natural scaling of arbitrary Gaussian-rational codes
@@ -18,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalNaturalScale
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner
   (ofGaussian represents canonical canonical_unique represents_congr qzero qadd qmul
     positive_product qadd_represents qmul_represents)
@@ -27,19 +26,14 @@ open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder (scale oneCode zeroCode 
 open LeanProofs.IPRA.Analysis.GaussianRootAlgebra
   (equal equal_of_values re_scale im_scale re_mul im_mul re_add im_add re_one im_one re_zero im_zero)
 open LeanProofs.IPRA.Analysis.GaussianTranslatedNonconstant (recode recode_canonical)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def natScale (t q : PTm n) : PTm n := ofGaussian (scale t (rawGaussian q)) (rawDen q)
 def naturalPoint (t : PTm n) : PTm n := ofGaussian (scale t oneCode) one
 
-@[simp] theorem subst_natScale {m : ℕ} (σ : Fin n → PTm m) (t q : PTm n) :
-    Syn.subst σ (natScale t q) = natScale (Syn.subst σ t) (Syn.subst σ q) := by simp [natScale]
-@[simp] theorem subst_naturalPoint {m : ℕ} (σ : Fin n → PTm m) (t : PTm n) :
-    Syn.subst σ (naturalPoint t) = naturalPoint (Syn.subst σ t) := by simp [naturalPoint]
+ipra_subst natScale
+ipra_subst naturalPoint
 
 theorem natScale_canonical (t q : PTm n) : Γ ⊢[PRAAx] canonical (natScale t q) :=
   GaussianRationalHorner.ofGaussian_canonical _ _ (raw_den_positive q)

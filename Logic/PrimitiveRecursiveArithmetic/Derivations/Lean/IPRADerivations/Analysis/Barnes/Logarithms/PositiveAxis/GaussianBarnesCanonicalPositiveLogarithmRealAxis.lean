@@ -17,7 +17,7 @@ set_option maxHeartbeats 550000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalPositiveLogarithmRealAxis
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (im eval_im_code)
 open GaussianBarnesCanonicalPositiveLogarithm (source nameF data expData default_source regular exponential_value)
 open GaussianBarnesCanonicalThirdLogarithmRows (center)
@@ -27,9 +27,6 @@ open GaussianNameEquivalence (crossEquivalent cross_trans cross_symm)
 open GaussianRealNameExponentialInjectivity (axisSamples independent_radii_injective)
 open GaussianRationalHorner (ofGaussian)
 open GaussianSignedNameExponentialOrder (realSamples)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "E" => GaussianRadiusExponentialName.nameF

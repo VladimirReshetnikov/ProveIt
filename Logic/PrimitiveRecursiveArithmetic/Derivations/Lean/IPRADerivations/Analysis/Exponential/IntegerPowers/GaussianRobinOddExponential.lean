@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRobinOddExponential
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRobinOddLogarithmName (source negativeArgument log_sources plusData minusData inputs)
 open GaussianRobinLogarithmParity (native)
 open GaussianNameArithmetic (addF addData multiplyF multiplyData multiply_fast)
@@ -32,10 +32,6 @@ open GaussianRadiusExponentialName (input)
 open GaussianRadiusExponentialName renaming data → expData, nameF → expF
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num monus)
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -231,9 +227,8 @@ theorem factor_inverse (a b : PTm n) (h : Γ ⊢[PRAAx] source a b) :
   have r1 := rescale_to qone o one E E (ofGaussian_represents (Γ := Γ) o one (le_refl _))
     (one_mul _)
   have ea : Γ ⊢[PRAAx] GaussianRootAlgebra.equal (native (d*b)) (native E) := by
-    have commuted := natEq (mul_comm (Γ := Γ) d b)
     apply GaussianRootAlgebra.equal_of_values <;>
-      simp only [native,GaussianRootAlgebra.re_scale,GaussianRootAlgebra.im_scale,commuted,E]
+      simp only [native,GaussianRootAlgebra.re_scale,GaussianRootAlgebra.im_scale,natEq (mul_comm (Γ := Γ) d b),E]
   have r2 := represents_congr (.eqRefl _) ea (.eqRefl _)
     (ofGaussian_represents (native (d*b)) E he)
   exact (qmul_congr (minus_fraction a b h) (.eqRefl _)).eqTrans

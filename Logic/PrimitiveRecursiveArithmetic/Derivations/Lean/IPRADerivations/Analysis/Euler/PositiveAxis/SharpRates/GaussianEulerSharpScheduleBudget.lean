@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerSharpScheduleBudget
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerSharpDegreeSchedule (degree height size coefficient tailCoefficient degree_is_four_height height_positive)
 open GaussianWeightedHalfDecayEndpoint (coefficient_positive)
 open GaussianBetaContiguousUpperTail (quarterSample sampleNumerator sampleDenominator)
@@ -26,10 +26,6 @@ open GaussianRationalMetric (bounded)
 open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianRationalL1 (rawGaussian rawDen raw_represents raw_den_positive qL1 qL1_represents)
 open GaussianDominantPairAlgebra (radiusPoint radius_bounded)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -37,8 +33,7 @@ def decayClock (p R : PTm n) : PTm n := GaussianFastValueCut.exponent (num 5*tai
 def mainNumerator (p R : PTm n) : PTm n :=
   coefficient R*fixedDenominator (decayClock p R) (degree p R)+fixedNumerator (decayClock p R) R (degree p R)*degree p R
 def mainDenominator (p R : PTm n) : PTm n := degree p R*fixedDenominator (decayClock p R) (degree p R)
-@[simp] theorem subst_decayClock {m : ℕ} (σ : Fin n → PTm m) (p R : PTm n) :
-    Syn.subst σ (decayClock p R) = decayClock (Syn.subst σ p) (Syn.subst σ R) := by simp [decayClock]
+ipra_subst decayClock
 
 theorem weighted_raw_l1_bound (q D X Y : PTm n) (hq : Γ ⊢[PRAAx] canonical q)
     (hD : Γ ⊢[PRAAx] le one D) (hY : Γ ⊢[PRAAx] le one Y)

@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIncompleteCutoffParts
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIncompleteCutoff (clock denominator splitPoint lowerWidth upperWidth source)
 open GaussianEulerIncompleteCutoffRefinement (lowerTail upperTail denominator_refinement point_refinement
   tail_left_end scaled_early_upper early_upper_endpoint refined_widths)
@@ -25,8 +25,6 @@ open GaussianGammaCompactCutoffAlignment (cross_data_congr)
 open GaussianRationalHorner (positive_product)
 open GaussianNameArithmetic (addF addData)
 open GaussianNameEquivalence (crossEquivalent cross_trans cross_symm cross_to_diagonal)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

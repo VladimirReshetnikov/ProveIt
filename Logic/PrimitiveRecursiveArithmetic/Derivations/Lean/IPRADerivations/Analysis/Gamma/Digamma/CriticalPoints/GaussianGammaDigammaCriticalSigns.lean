@@ -17,7 +17,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaCriticalSigns
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianGammaDigammaLogThree (logData lower_order upper_order)
 open GaussianGammaEulerShift (constant_sum_cross)
@@ -34,9 +34,6 @@ open GaussianStirlingMultiplicativeBoundsLog (constant_order fractions_order)
 open GaussianStirlingMultiplicativeBoundsCaps (strict_fractions)
 open GaussianStirlingMultiplicativeBoundsStrictOrder (strictOrder strict_transport)
 open GaussianStirlingRationalTelescopers (fraction_same)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "DF" => GaussianGammaDigammaNative.nameF

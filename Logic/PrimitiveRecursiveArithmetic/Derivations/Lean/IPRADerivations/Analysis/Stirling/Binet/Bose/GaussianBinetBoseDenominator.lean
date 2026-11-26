@@ -15,7 +15,7 @@ set_option maxHeartbeats 550000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetBoseDenominator
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetBoseExponential (scaleF scaleData expData expF expRadius exp_regular scale_positive scale_lower_order)
 open GaussianCoefficientNameBounds (unit)
 open GaussianEuclideanDistanceName (pointCN)
@@ -25,10 +25,6 @@ open GaussianNamedDifference (name_regular)
 open GaussianRationalLowerBounds (lower lower_congr name_lower)
 open GaussianRationalMetric (qsub qnegative qsub_canonical qnegative_canonical)
 open GaussianRationalSyntheticDivision (qone qadd_congr qsub_congr qzero_add)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -39,11 +35,9 @@ def sampleClock (p : PTm n) : PTm n := exponent two p
 def reciprocalF : PR 2 := GaussianNameReciprocal.nameF nameF
 def reciprocalData (A B : PTm n) : PTm n := GaussianNameReciprocal.nameData B (data A B)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (A B : PTm n) :
-    Syn.subst σ (data A B) = data (Syn.subst σ A) (Syn.subst σ B) := by simp [data]
+ipra_subst data
 
-@[simp] theorem subst_reciprocalData {m : ℕ} (σ : Fin n → PTm m) (A B : PTm n) :
-    Syn.subst σ (reciprocalData A B) = reciprocalData (Syn.subst σ A) (Syn.subst σ B) := by simp [reciprocalData]
+ipra_subst reciprocalData
 
 theorem regular (A B : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
     Γ ⊢[PRAAx] pointCN nameF (data A B) :=

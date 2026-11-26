@@ -16,7 +16,7 @@ set_option maxHeartbeats 500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerRationalContinuity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianCoefficientNameBounds (bounded_radius_mono unit unit_positive)
 open GaussianGammaCanonicalExponent (constantF constant_at)
@@ -38,10 +38,6 @@ open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianReconstructionRoots (norm_from_distance)
 open GaussianRightHalfPlaneLogarithmIncrementMargin (smallStep)
 open RationalValueBounds (positive_cancel)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -56,11 +52,9 @@ def response (K C : PTm n) : PTm n := bound C K + num 4*(K*K+two)
 nonzero displacement to a natural radius. -/
 def gain (K C : PTm n) : PTm n := two*response K C + num 256*(C+one)*(K*K)
 
-@[simp] theorem subst_response {m : ℕ} (σ : Fin n → PTm m) (K C : PTm n) :
-    Syn.subst σ (response K C) = response (Syn.subst σ K) (Syn.subst σ C) := by simp [response]
+ipra_subst response
 
-@[simp] theorem subst_gain {m : ℕ} (σ : Fin n → PTm m) (K C : PTm n) :
-    Syn.subst σ (gain K C) = gain (Syn.subst σ K) (Syn.subst σ C) := by simp [gain]
+ipra_subst gain
 
 theorem local_guard (H E K C d D : PTm n) (hD : Γ ⊢[PRAAx] le one D)
     (hStep : Γ ⊢[PRAAx] le (H*D) (two*E*d)) (hClose : Γ ⊢[PRAAx] le (gain K C*E) D) :

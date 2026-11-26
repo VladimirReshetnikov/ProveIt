@@ -29,12 +29,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.LogarithmRemainder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -55,14 +51,9 @@ def numerator (R N L : PTm n) : PTm n := ap2 numeratorF L (pairT R N)
 /-- A common denominator for every summand of the finite Taylor tail. -/
 def denominator (N L : PTm n) : PTm n := fact (L + two) * pw N (L + two)
 
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (R N L : PTm n) :
-    Syn.subst σ (numerator R N L) =
-      numerator (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ L) := by
-  simp [numerator]
+ipra_subst numerator
 
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (N L : PTm n) :
-    Syn.subst σ (denominator N L) = denominator (Syn.subst σ N) (Syn.subst σ L) := by
-  simp [denominator, fact]
+ipra_subst denominator [fact]
 
 theorem numerator_zero (R N : PTm n) : Γ ⊢[PRAAx] numerator R N zero ≐ zero :=
   by simpa [numerator, numeratorF] using rec2_zero (Γ := Γ) zero numeratorStep (pairT R N)
@@ -103,16 +94,11 @@ theorem denominator_zero (N : PTm n) :
 theorem denominator_positive (N L : PTm n) (hN : Γ ⊢[PRAAx] le one N) :
     Γ ⊢[PRAAx] le one (denominator N L) := by
   have all : Γ ⊢[PRAAx] .all (le one (denominator (Syn.shift N) (var 0))) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le, subst_denominator, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-      have d := natEq (denominator_zero (Γ := Γ) N)
-      have h := natEq (eq_add_of_le hN)
+    ipra_qfind (le_QF _ _) [subst_le, subst_denominator]
+    · have d := natEq (denominator_zero (Γ := Γ) N)
       refine le_of_eq_add (d := N * N + monus N one * (N + one)) ?_
-      ipra_lc d + (𝔞(N) + 1) * h
-    · simp only [subst_le, subst_denominator, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-      have positive : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift N) := by
+      ipra_lc d + (𝔞(N) + 1) * natEq (eq_add_of_le hN)
+    · have positive : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift N) := by
         simpa [Fm.shift, Syn.shift] using hN.shift
       have i := natEq (eq_add_of_le (Prf.hyp0 :
         (le one (denominator (Syn.shift N) (var 0))) :: Γ.map Fm.shift ⊢[PRAAx] _))
@@ -156,10 +142,7 @@ def strong (R N L : PTm n) : Fm PTm n :=
       two * fact (L + two) * N * N * pw R (L + three))
     (two * R * R * R * denominator N L)
 
-@[simp] theorem subst_strong {m : ℕ} (σ : Fin n → PTm m) (R N L : PTm n) :
-    (strong R N L).subst σ =
-      strong (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ L) := by
-  simp [strong, fact]
+ipra_subst strong [fact]
 
 theorem strong_zero (R N : PTm n) : Γ ⊢[PRAAx] strong R N zero := by
   have e : Γ ⊢[PRAAx] zero + three ≐ succ (succ (succ zero)) := by ipra_ring
@@ -177,7 +160,6 @@ theorem strong_zero (R N : PTm n) : Γ ⊢[PRAAx] strong R N zero := by
 /-- A polynomial induction step; the gap `N-2R` supplies the geometric estimate. -/
 theorem strong_step {R N L : PTm n} (h : Γ ⊢[PRAAx] le (two * R) N)
     (ih : Γ ⊢[PRAAx] strong R N L) : Γ ⊢[PRAAx] strong R N (succ L) := by
-  have h := natEq (eq_add_of_le h)
   have d := natEq (denominator_succ (Γ := Γ) N L)
   have e₂ : Γ ⊢[PRAAx] succ L + two ≐ succ (L + two) := by ipra_ring
   have e₃ : Γ ⊢[PRAAx] succ L + three ≐ succ (L + three) := by ipra_ring
@@ -189,7 +171,7 @@ theorem strong_step {R N L : PTm n} (h : Γ ⊢[PRAAx] le (two * R) N)
     fact (L + two) * N * N * pw R (L + three) *
       ((L + three) * monus N (two * R) + L * N)) ?_
   ipra_lc (𝔞(L) + 3) * 𝔞(N) * natEq (eq_add_of_le ih) +
-    𝔞(fact (L + two)) * 𝔞(N) ^ 2 * 𝔞(pw R (L + three)) * (𝔞(L) + 3) * h + 2 * 𝔞(R) ^ 3 * d -
+    𝔞(fact (L + two)) * 𝔞(N) ^ 2 * 𝔞(pw R (L + three)) * (𝔞(L) + 3) * natEq (eq_add_of_le h) + 2 * 𝔞(R) ^ 3 * d -
     3 * 𝔞(N) ^ 3 * natEq (numerator_succ (Γ := Γ) R N L) -
     2 * 𝔞(N) ^ 2 * 𝔞(pw R (succ L + three)) * natEq ((congrAp2 factF e₂ (.eqRefl zero)).eqTrans (fact_succ (L + two) zero)) -
     2 * 𝔞(N) ^ 2 * 𝔞(fact (L + two)) * (𝔞(L) + 3) * natEq ((congrAp2 powF e₃ (.eqRefl R)).eqTrans (pw_succ R (L + three)))

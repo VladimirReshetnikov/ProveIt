@@ -1,6 +1,5 @@
 import IPRADerivations.Probability.MedianCounts
 import IPRADerivations.Geometry.HypercubeSplit
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Weighted medians: the `L¹` theorem and the mean–median bound
@@ -38,7 +37,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.MedianWeighted
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Algebra.CubeRootTwo (sg sg_zero sg_succ)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totatives (sg_lt sg_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
@@ -46,10 +45,6 @@ open LeanProofs.IPRA.Probability.Expectation (Ew Wt inst2_mul' second_moment)
 open LeanProofs.IPRA.Probability.Variance (ad dvB dS Vr variance_identity)
 open LeanProofs.IPRA.Probability.MedianCounts
 open LeanProofs.IPRA.Geometry.HypercubeSplit (le_cancel_pos)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -297,8 +292,8 @@ theorem dw_pt (i c T p : PTm n) :
     Γ ⊢[PRAAx] inst2 (wY w * Yb X) i (pairT c (pairT T p)) ≐ inst2 w i p * ad (c * inst2 X i p) T := by
   rw [inst2_dw]
   have hA : Γ ⊢[PRAAx] fstT (pairT c (pairT T p)) ≐ c := fst_pair _ _
-  have hB : Γ ⊢[PRAAx] fstT (sndT (pairT c (pairT T p))) ≐ T := (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-  have hx : Γ ⊢[PRAAx] sndT (sndT (pairT c (pairT T p))) ≐ p := (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
+  have hB : Γ ⊢[PRAAx] fstT (sndT (pairT c (pairT T p))) ≐ T := (snd_pair _ _).fstE
+  have hx : Γ ⊢[PRAAx] sndT (sndT (pairT c (pairT T p))) ≐ p := (snd_pair _ _).sndE
   have ht := congrMul hA (congrInst2 X (.eqRefl i) hx)
   exact congrMul (congrInst2 w (.eqRefl i) hx) (congrAdd (congrMonus ht hB) (congrMonus hB ht))
 
@@ -342,13 +337,9 @@ private abbrev upWF : Fm PTm 5 :=
       var 2 * ap2 (sumF (wL w * aboveB X)) (var 0) (pairT (var 1) (var 4)))
 
 private theorem upW₀ : ([] : List (Fm PTm 5)) ⊢[PRAAx] upWF w X := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, inst_two, inst_three, inst_four, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact upW_base w X _ _ _ _
-  · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
-      repl_one, repl_two, repl_three, repl_four, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact upW_step w X Prf.hyp0
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2, subst_pairT]
+  · exact upW_base w X _ _ _ _
+  · exact upW_step w X Prf.hyp0
 
 /-- `D_c(c m) + d (B(m) + E(m)) ≤ D_c(c m + d) + d A(m)`. -/
 theorem dev_upW (N m d c p : PTm n) :
@@ -395,15 +386,9 @@ private abbrev downWF : Fm PTm 5 :=
         monus (var 3 * var 1) (var 2) * ap2 (sumF (wL w * belowB X)) (var 0) (pairT (var 1) (var 4)))
 
 private theorem downW₀ : ([] : List (Fm PTm 5)) ⊢[PRAAx] downWF w X := by
-  refine ind _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_imp, subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, PTm.subst_monus,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, inst_three, inst_four, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact .impI (downW_base w X _ _ _ _)
-  · simp only [Fm.subst_imp, subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, PTm.subst_monus,
-      Syn.subst_var, Syn.repl_zero, repl_one, repl_two, repl_three, repl_four, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact .impI (downW_step w X Prf.hyp0 (.impE Prf.hyp1 Prf.hyp0))
+  ipra_ind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2, subst_pairT]
+  · exact .impI (downW_base w X _ _ _ _)
+  · exact .impI (downW_step w X Prf.hyp0 (.impE Prf.hyp1 Prf.hyp0))
 
 /-- For `t ≤ c m` and `d = c m ∸ t`: `D_c(c m) + d (A(m) + E(m)) ≤ D_c(t) + d B(m)`. -/
 theorem dev_downW (N m c p : PTm n) {t : PTm n} (ht : Γ ⊢[PRAAx] le t (c * m)) :
@@ -476,13 +461,9 @@ private abbrev triF : Fm PTm 4 :=
     (ap2 (sumF (wY w * Yb X)) (var 0) (pairT (var 1) (pairT (var 2) (var 3))))
 
 private theorem tri₀ : ([] : List (Fm PTm 4)) ⊢[PRAAx] triF w X := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, Syn.subst_var,
-      Syn.inst_zero, Syn.inst_one, inst_two, inst_three, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact tri_base w X _ _ _
-  · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, Syn.subst_var,
-      Syn.repl_zero, repl_one, repl_two, repl_three, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact tri_step w X Prf.hyp0
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2, subst_pairT]
+  · exact tri_base w X _ _ _
+  · exact tri_step w X Prf.hyp0
 
 /-- `|c S − T W| ≤ ∑ w_i |c x_i − T|`. -/
 theorem sum_triangle (N c T p : PTm n) :
@@ -496,7 +477,7 @@ theorem wt_wY (N c T p : PTm n) : Γ ⊢[PRAAx] Wt (wY w) N (pairT c (pairT T p)
     simp only [inst2]; rw [Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
   rw [e]
   simp only [Syn.shift, subst_pairT]
-  exact congrInst2 w (.eqRefl _) ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))
+  exact congrInst2 w (.eqRefl _) (snd_pair _ _).sndE
 
 /-- `thm:mean-median` (`eq:mean-median-cleared`): for a weighted median `m` and `W > 0`,
 `|S − W m|² + S² ≤ W Q`, i.e. `(S − W m)² ≤ W Q − S²`. -/

@@ -1,6 +1,4 @@
 import IPRADerivations.Probability.MedianCounts
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Balance medians minimize the absolute deviation
@@ -32,15 +30,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.MedianL1
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Algebra.CubeRootTwo (sg sg_zero sg_succ)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totatives (sg_lt sg_le)
 open LeanProofs.IPRA.Probability.Variance (ad)
 open LeanProofs.IPRA.Probability.MedianCounts
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -189,13 +183,9 @@ private abbrev upF : Fm PTm 4 :=
       var 2 * ap2 (sumF (aboveB X)) (var 0) (pairT (var 1) (var 3)))
 
 private theorem up₀ : ([] : List (Fm PTm 4)) ⊢[PRAAx] upF X := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, inst_two, inst_three, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact up_base X _ _ _
-  · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
-      repl_one, repl_two, repl_three, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact up_step X Prf.hyp0
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2, subst_pairT]
+  · exact up_base X _ _ _
+  · exact up_step X Prf.hyp0
 
 /-- `D(m) + d (B(m) + E(m)) ≤ D(m + d) + d A(m)`. -/
 theorem dev_up (N m d p : PTm n) :
@@ -237,13 +227,9 @@ private abbrev downF : Fm PTm 4 :=
       var 2 * ap2 (sumF (belowB X)) (var 0) (pairT (var 1 + var 2) (var 3)))
 
 private theorem down₀ : ([] : List (Fm PTm 4)) ⊢[PRAAx] downF X := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, inst_two, inst_three, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact down_base X _ _ _
-  · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
-      repl_one, repl_two, repl_three, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact down_step X Prf.hyp0
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2, subst_pairT]
+  · exact down_base X _ _ _
+  · exact down_step X Prf.hyp0
 
 /-- `D(t + d) + d (A + E)(t + d) ≤ D(t) + d B(t + d)`. -/
 theorem dev_down (N t d p : PTm n) :
@@ -373,10 +359,9 @@ theorem uz_step {N t p : PTm n}
   have sA := natEq (sum_succ' (Γ := Γ) (aboveB X) N (pairT t p))
   have dv := natEq (dev_pt (Γ := Γ) X N t p); have dv' := natEq (dev_pt (Γ := Γ) X N (succ t) p)
   have bp := natEq (below_pt (Γ := Γ) X N t p); have ep := natEq (equal_pt (Γ := Γ) X N t p)
-  have ap := natEq (above_pt (Γ := Γ) X N t p)
   have ih' := natEq ih; have pw := natEq (pu (Γ := Γ) (inst2 X N p) t)
   apply deriveNat; ipra_simps
-  linear_combination sD' + sA - sD - sB - sE + ih' + dv' + ap - dv - bp - ep + pw
+  linear_combination sD' + sA - sD - sB - sE + ih' + dv' + natEq (above_pt (Γ := Γ) X N t p) - dv - bp - ep + pw
 
 /-- Variables: `0 = N`, `1 = t`, `2 = p`. -/
 private abbrev uzF : Fm PTm 3 :=
@@ -385,13 +370,9 @@ private abbrev uzF : Fm PTm 3 :=
       (ap2 (sumF (belowB X)) (var 0) (pairT (var 1) (var 2)) + ap2 (sumF (equalB X)) (var 0) (pairT (var 1) (var 2)))
 
 private theorem uz₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] uzF X := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_add, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact uz_base X _ _
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_add, Syn.subst_var, Syn.repl_zero,
-      repl_one, repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact uz_step X Prf.hyp0
+  ipra_ind [subst_ap2, subst_pairT]
+  · exact uz_base X _ _
+  · exact uz_step X Prf.hyp0
 
 /-- `D(t + 1) + A(t) = D(t) + B(t) + E(t)`. -/
 theorem dev_succ (N t p : PTm n) :
@@ -430,13 +411,9 @@ private abbrev lzF : Fm PTm 3 :=
         ap2 (sumF (aboveB X)) (var 0) (pairT (succ (var 1)) (var 2)))
 
 private theorem lz₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] lzF X := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_add, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact lz_base X _ _
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_add, Syn.subst_var, Syn.repl_zero,
-      repl_one, repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact lz_step X Prf.hyp0
+  ipra_ind [subst_ap2, subst_pairT]
+  · exact lz_base X _ _
+  · exact lz_step X Prf.hyp0
 
 /-- `D(s) + B(s + 1) = D(s + 1) + E(s + 1) + A(s + 1)`. -/
 theorem dev_pred (N s p : PTm n) :

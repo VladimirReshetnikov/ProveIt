@@ -1,5 +1,4 @@
 import IPRADerivations.Geometry.EuclideanSpace
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Turán's bound for every number of parts
@@ -40,11 +39,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.Turan
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Geometry.EuclideanSpace (cauchy_schwarz)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
 
 variable {n k : ℕ} {Γ : List (Fm PTm n)}
 
@@ -179,10 +175,9 @@ def Free (Γ : List (Fm PTm n)) : ℕ → (Fin k → Fin k → ZT n) → Prop
 
 theorem nb_symm {A : Fin k → Fin k → ZT n} (hs : ∀ v w, Γ ⊢[PRAAx] ZT.eq (A v w) (A w v)) (u v w : Fin k) :
     Γ ⊢[PRAAx] ZT.eq (nb A u v w) (nb A u w v) := by
-  have e := ZT.toZ_eq (hs v w)
   apply ZT.derive
   simp only [nb, ZT.toZ_mul]
-  rw [e]
+  rw [ZT.toZ_eq (hs v w)]
   ring
 
 theorem nb_bit {A : Fin k → Fin k → ZT n} (hb : ∀ v w, Γ ⊢[PRAAx] ZT.eq (A v w * A v w) (A v w))
@@ -209,8 +204,7 @@ theorem turan : ∀ (ρ : ℕ) (A : Fin k → Fin k → ZT n) (x : Fin k → ZT 
   | 0, A, x, _, _, _, _, hfree => by
     have hf : ∀ v w, Γ ⊢[PRAAx] ZT.eq (A v w) (ZT.natLit 0) := hfree
     have h0 : ∀ v w, ZT.toZ Γ (A v w) = 0 := fun v w => by
-      have e := ZT.toZ_eq (hf v w)
-      simpa only [ZT.toZ_natLit, Nat.cast_zero] using e
+      simpa only [ZT.toZ_natLit, Nat.cast_zero] using ZT.toZ_eq (hf v w)
     refine zle_of_comb 0 ?_ nn_zero
     simp only [ZT.toZ_mul, ZT.toZ_sq, ZT.toZ_natLit, ZT.toZ_sumFin, h0, Finset.sum_const_zero,
       Nat.cast_zero]
@@ -219,14 +213,11 @@ theorem turan : ∀ (ρ : ℕ) (A : Fin k → Fin k → ZT n) (x : Fin k → ZT 
     have hf : ∀ u, Free Γ ρ (nb A u) := hfree
     have hs1 : ∀ v w, ZT.toZ Γ (A v w) = ZT.toZ Γ (A w v) := fun v w => ZT.toZ_eq (hs v w)
     have hb1 : ∀ v w, ZT.toZ Γ (A v w) * ZT.toZ Γ (A v w) = ZT.toZ Γ (A v w) := fun v w => by
-      have e := ZT.toZ_eq (hb v w)
-      simpa only [ZT.toZ_mul] using e
+      simpa only [ZT.toZ_mul] using ZT.toZ_eq (hb v w)
     have hx1 : ∀ v, ZT.toZ Γ (x v) * ZT.toZ Γ (x v) = ZT.toZ Γ (x v) := fun v => by
-      have e := ZT.toZ_eq (hx v)
-      simpa only [ZT.toZ_mul] using e
+      simpa only [ZT.toZ_mul] using ZT.toZ_eq (hx v)
     have hsup1 : ∀ u v, ZT.toZ Γ (A u v) * ZT.toZ Γ (x u) = ZT.toZ Γ (A u v) := fun u v => by
-      have e := ZT.toZ_eq (hsup u v)
-      simpa only [ZT.toZ_mul] using e
+      simpa only [ZT.toZ_mul] using ZT.toZ_eq (hsup u v)
     have IH : ∀ u, Γ ⊢[PRAAx] zle
         (ZT.natLit (ρ + 1) * ZT.sumFin fun v => ZT.sumFin fun w => nb A u v w)
         (ZT.natLit ρ * ZT.sq (ZT.sumFin fun v => A u v)) := fun u =>

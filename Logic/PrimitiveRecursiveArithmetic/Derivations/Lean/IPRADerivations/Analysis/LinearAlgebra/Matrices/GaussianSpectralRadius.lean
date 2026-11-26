@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSpectralRadius
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCharacteristicRootSupport (data roots)
 open GaussianCharacteristicAggregate
   (stageF pointF point_at sample_length sample_entry sample_nonempty stage_regular vector_point_regular member_support)
@@ -27,10 +27,6 @@ open RationalValueBounds
   (radius upper negate negate_congr negate_neg negate_pos upper_congr upper_of_order upper_negate upper_unnegate_left)
 open RationalSupMetric (denominatorOf)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,17 +38,11 @@ def maximizingIndex (a : PR 4) (N k x : PTm n) : PTm n :=
   minimumIndex (stageF a) (negateEvaluator evaluatorF) (k+two) (data N x)
 def modulusSample (z s : PTm n) : PTm n := GaussianRationalModulus.lower (point (vector z)) s
 
-@[simp] theorem subst_radiusName {l : ℕ} (σ : Fin n → PTm l) (a : PR 4) (N k x : PTm n) :
-    Syn.subst σ (radiusName a N k x) = radiusName a (Syn.subst σ N) (Syn.subst σ k) (Syn.subst σ x) := by
-  simp [radiusName]
+ipra_subst radiusName
 
-@[simp] theorem subst_maximizingIndex {l : ℕ} (σ : Fin n → PTm l) (a : PR 4) (N k x : PTm n) :
-    Syn.subst σ (maximizingIndex a N k x) = maximizingIndex a (Syn.subst σ N) (Syn.subst σ k) (Syn.subst σ x) := by
-  simp [maximizingIndex]
+ipra_subst maximizingIndex
 
-@[simp] theorem subst_modulusSample {l : ℕ} (σ : Fin n → PTm l) (z s : PTm n) :
-    Syn.subst σ (modulusSample z s) = modulusSample (Syn.subst σ z) (Syn.subst σ s) := by
-  simp [modulusSample]
+ipra_subst modulusSample
 
 theorem radius_at (a : PR 4) (N k x : PTm n) : Γ ⊢[PRAAx] ap3 (radiusF a) N k x ≐ radiusName a N k x := by
   simpa [radiusF,ap3] using toPR_eq (Γ := Γ) (radiusName a (var 0) (var 1) (var 2) : PTm 3) ![N,k,x]

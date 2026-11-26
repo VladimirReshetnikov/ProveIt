@@ -20,7 +20,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalLinearCancellation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero evaluate horner)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (quotient canonicalCoefficients)
 open LeanProofs.IPRA.Analysis.GaussianRationalLinearProduct (linear linear_length linear_canonical horner_ext)
@@ -30,9 +30,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalPolynomialDegree (first degree non
 open LeanProofs.IPRA.Analysis.GaussianTranslatedNonconstant (recode recode_congr zeroPrefix zero_prefix_at)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -149,8 +146,7 @@ theorem pad_degree (C N t : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ succ N)
 def input (C D x B : PTm n) : Fm PTm n := (length C ≐ succ B) ⋏
   ((length D ≐ succ B) ⋏ (canonicalCoefficients C ⋏ (canonicalCoefficients D ⋏
     gridEqual (linear C x (succ B)) (linear D x (succ B)) (succ B))))
-@[simp] theorem subst_input {l : ℕ} (σ : Fin n → PTm l) (C D x B : PTm n) :
-    (input C D x B).subst σ = input (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ x) (Syn.subst σ B) := by simp [input]
+ipra_subst input
 theorem cancel_from_input (C D x B : PTm n) (h : Γ ⊢[PRAAx] input C D x B) : Γ ⊢[PRAAx] coefficientsEqual C D B :=
   linear_grid_cancel _ _ _ _ (.andE₁ h) (.andE₁ (.andE₂ h)) (.andE₁ (.andE₂ (.andE₂ h)))
     (.andE₁ (.andE₂ (.andE₂ (.andE₂ h)))) (.andE₂ (.andE₂ (.andE₂ (.andE₂ h))))
@@ -170,16 +166,8 @@ def run (C D x B i : PTm n) : PTm n := app outputF ![C,D,x,B,i]
 def fields (p : PTm n) (i : Fin 6) : PTm n :=
   ![fstT p,fstT (sndT p),fstT (sndT (sndT p)),fstT (sndT (sndT (sndT p))),
     fstT (sndT (sndT (sndT (sndT p)))),sndT (sndT (sndT (sndT (sndT p))))] i
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (C D x B i : PTm n) :
-    Syn.subst σ (output C D x B i) = output (Syn.subst σ C) (Syn.subst σ D)
-      (Syn.subst σ x) (Syn.subst σ B) (Syn.subst σ i) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (C D x B i : PTm n) :
-    Syn.subst σ (run C D x B i) = run (Syn.subst σ C) (Syn.subst σ D)
-      (Syn.subst σ x) (Syn.subst σ B) (Syn.subst σ i) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext j
-  fin_cases j <;> rfl
+ipra_subst output
+ipra_subst run
 @[simp] theorem subst_fields {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) (i : Fin 6) :
     Syn.subst σ (fields p i) = fields (Syn.subst σ p) i := by fin_cases i <;> simp [fields]
 theorem program_at (C D x B i : PTm n) : Γ ⊢[PRAAx] run C D x B i ≐ output C D x B i := by
@@ -189,17 +177,17 @@ theorem returned_fields (C D x B i : PTm n) (j : Fin 6) : Γ ⊢[PRAAx]
     fields (run C D x B i) j ≐ ![linear C x (succ B),linear D x (succ B),
       quotient (linear C x (succ B)) x (succ B),quotient (linear D x (succ B)) x (succ B),entry C i,entry D i] j := by
   have e0 := program_at (Γ := Γ) C D x B i
-  have e1 := (congrSnd e0).eqTrans (snd_pair _ _)
-  have e2 := (congrSnd e1).eqTrans (snd_pair _ _)
-  have e3 := (congrSnd e2).eqTrans (snd_pair _ _)
-  have e4 := (congrSnd e3).eqTrans (snd_pair _ _)
-  have e5 := (congrSnd e4).eqTrans (snd_pair _ _)
+  have e1 := e0.sndE
+  have e2 := e1.sndE
+  have e3 := e2.sndE
+  have e4 := e3.sndE
+  have e5 := e4.sndE
   fin_cases j
-  · exact (congrFst e0).eqTrans (fst_pair _ _)
-  · exact (congrFst e1).eqTrans (fst_pair _ _)
-  · exact (congrFst e2).eqTrans (fst_pair _ _)
-  · exact (congrFst e3).eqTrans (fst_pair _ _)
-  · exact (congrFst e4).eqTrans (fst_pair _ _)
+  · exact e0.fstE
+  · exact e1.fstE
+  · exact e2.fstE
+  · exact e3.fstE
+  · exact e4.fstE
   · exact e5
 theorem returned_equal (C D x B i : PTm n) (h : Γ ⊢[PRAAx] input C D x B)
     (hi : Γ ⊢[PRAAx] le i B) : Γ ⊢[PRAAx] fields (run C D x B i) 4 ≐ fields (run C D x B i) 5 :=

@@ -16,7 +16,7 @@ set_option maxHeartbeats 1100000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentSignedVariation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianBinetLaplaceMomentImproper (nameF data regular)
 open GaussianBinetLaplaceMomentVariation (gain ordered_observations)
@@ -29,10 +29,6 @@ open GaussianNamedLipschitzRate (diagonalNumerator diagonalDenominator)
 open GaussianRationalDistanceOrder (distance_radius_mono distance_symmetric)
 open GaussianRationalHorner (ofGaussian_represents scalar_congr positive_product)
 open GaussianRationalMetric (distanceBounded)
-open LeanProofs.IPRA.PTm (num monus)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (LeanProofs.IPRA.Q.mk _ t)
@@ -41,9 +37,7 @@ local notation "realSource" => GaussianLogGammaEulerResidualDomain.source
 def pointData (j q : PTm n) : PTm n :=
   data j (realNumerator q) (denominator q) (radius (realNumerator q) zero)
 
-@[simp] theorem subst_pointData {m : ℕ} (σ : Fin n → PTm m) (j q : PTm n) :
-    Syn.subst σ (pointData j q) = pointData (Syn.subst σ j) (Syn.subst σ q) := by
-  simp [pointData]
+ipra_subst pointData
 
 theorem projected_source (q R K : PTm n) (h : Γ ⊢[PRAAx] certificate q R K) :
     Γ ⊢[PRAAx] realSource (realNumerator q) zero (denominator q) zero (radius (realNumerator q) zero) :=

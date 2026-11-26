@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetKernelCoarseBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetKernelRows (inputData rowF rowBody rowData row_bound)
 open GaussianBinetKernelTail (finiteF finiteData)
 open GaussianRationalHorner (qzero)
@@ -20,10 +20,6 @@ open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianCoefficientNameBounds (unit_positive bounded_radius_mono)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num pred)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "finite" => GaussianNamedFiniteSumFamily.finite rowF rowBody

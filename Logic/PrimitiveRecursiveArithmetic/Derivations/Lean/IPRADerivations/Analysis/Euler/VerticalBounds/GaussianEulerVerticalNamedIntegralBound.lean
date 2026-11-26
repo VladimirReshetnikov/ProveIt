@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Gamma.Names.GaussianEulerVerticalNamedGammaBound
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Vertical domination for the original named improper Euler integral
@@ -14,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerVerticalNamedIntegralBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedRightHalfPlane (source)
 open GaussianGammaRealValues (axisF)
 open GaussianNamedGamma (data)
@@ -29,10 +28,6 @@ open GaussianEuclideanDistanceName (fraction fraction_represents)
 open RationalGaussianEmbedding (embed scalarZero)
 open RationalValueBounds (upper upper_of_radius upper_triangle upper_congr upper_mono)
 open GaussianRationalSlackRemoval (slack slack_removal_at)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

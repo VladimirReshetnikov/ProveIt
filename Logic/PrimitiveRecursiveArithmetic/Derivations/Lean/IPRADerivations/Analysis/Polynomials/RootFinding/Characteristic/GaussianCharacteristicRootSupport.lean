@@ -16,17 +16,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCharacteristicRootSupport
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCharacteristicNames (coefficientF)
 open GaussianRationalMetric (bounded)
 open GaussianRationalCover (close check)
 open GaussianRootSupport (coverDenominator)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open LeanProofs.IPRA.PTm (monus)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,22 +38,14 @@ def actualPolynomial (a : PR 4) (N t x : PTm n) : PTm n := GaussianRationalChara
   (GaussianMatrixNames.sample a N (sourcePrecision a N t x) x) N
 def rootNameF (a : PR 4) : PR 3 := GaussianMonicRootSupport.rootNameF (coefficientF a)
 
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (N x : PTm n) :
-    Syn.subst σ (data N x) = data (Syn.subst σ N) (Syn.subst σ x) := by simp [data]
-@[simp] theorem subst_radius {l : ℕ} (σ : Fin n → PTm l) (a : PR 4) (N x : PTm n) :
-    Syn.subst σ (radius a N x) = radius a (Syn.subst σ N) (Syn.subst σ x) := by simp [radius]
-@[simp] theorem subst_stagePrecision {l : ℕ} (σ : Fin n → PTm l) (a : PR 4) (N t x : PTm n) :
-    Syn.subst σ (stagePrecision a N t x) = stagePrecision a (Syn.subst σ N) (Syn.subst σ t) (Syn.subst σ x) := by simp [stagePrecision]
-@[simp] theorem subst_sourcePrecision {l : ℕ} (σ : Fin n → PTm l) (a : PR 4) (N t x : PTm n) :
-    Syn.subst σ (sourcePrecision a N t x) = sourcePrecision a (Syn.subst σ N) (Syn.subst σ t) (Syn.subst σ x) := by simp [sourcePrecision]
-@[simp] theorem subst_roots {l : ℕ} (σ : Fin n → PTm l) (a : PR 4) (N t x : PTm n) :
-    Syn.subst σ (roots a N t x) = roots a (Syn.subst σ N) (Syn.subst σ t) (Syn.subst σ x) := by simp [roots]
-@[simp] theorem subst_product {l : ℕ} (σ : Fin n → PTm l) (a : PR 4) (N t x : PTm n) :
-    Syn.subst σ (product a N t x) = product a (Syn.subst σ N) (Syn.subst σ t) (Syn.subst σ x) := by simp [product]
-@[simp] theorem subst_polynomial {l : ℕ} (σ : Fin n → PTm l) (a : PR 4) (N t x : PTm n) :
-    Syn.subst σ (polynomial a N t x) = polynomial a (Syn.subst σ N) (Syn.subst σ t) (Syn.subst σ x) := by simp [polynomial]
-@[simp] theorem subst_actualPolynomial {l : ℕ} (σ : Fin n → PTm l) (a : PR 4) (N t x : PTm n) :
-    Syn.subst σ (actualPolynomial a N t x) = actualPolynomial a (Syn.subst σ N) (Syn.subst σ t) (Syn.subst σ x) := by simp [actualPolynomial]
+ipra_subst data
+ipra_subst radius
+ipra_subst stagePrecision
+ipra_subst sourcePrecision
+ipra_subst roots
+ipra_subst product
+ipra_subst polynomial
+ipra_subst actualPolynomial
 
 theorem coefficient_name (a : PR 4) (N x : PTm n) (h : Γ ⊢[PRAAx] GaussianMatrixNames.CN a N x) :
     Γ ⊢[PRAAx] GaussianCoefficientNameBounds.CN (coefficientF a) N (data N x) :=

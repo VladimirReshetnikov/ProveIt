@@ -14,7 +14,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaCutoffName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qadd qmul)
 open GaussianRationalMetric (bounded)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr)
@@ -22,9 +22,6 @@ open GaussianGammaCanonicalExponent (constantF constant_at constant_regular prod
   exponentF exponentialF addPrecision)
 open GaussianGammaCanonicalTailName (source)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -48,28 +45,15 @@ def value (p z R B N : PTm n) : PTm n := GaussianFastValueCut.recode
   (qmul (head z B N) (exponentialPoint (samplePrecision p z R B N) z R B N))
 def diskBound (z R B N : PTm n) : PTm n := GaussianNameBounds.U nameF (data z R B N)
 
-@[simp] theorem subst_exponentData {l : ℕ} (σ : Fin n → PTm l) (z R B N : PTm n) :
-    Syn.subst σ (exponentData z R B N) = exponentData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [exponentData]
-@[simp] theorem subst_exponentPoint {l : ℕ} (σ : Fin n → PTm l) (p z R B N : PTm n) :
-    Syn.subst σ (exponentPoint p z R B N) = exponentPoint (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [exponentPoint]
-@[simp] theorem subst_exponentRadius {l : ℕ} (σ : Fin n → PTm l) (z R B N : PTm n) :
-    Syn.subst σ (exponentRadius z R B N) = exponentRadius (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [exponentRadius]
-@[simp] theorem subst_exponentialData {l : ℕ} (σ : Fin n → PTm l) (z R B N : PTm n) :
-    Syn.subst σ (exponentialData z R B N) = exponentialData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [exponentialData]
-@[simp] theorem subst_exponentialPoint {l : ℕ} (σ : Fin n → PTm l) (p z R B N : PTm n) :
-    Syn.subst σ (exponentialPoint p z R B N) = exponentialPoint (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [exponentialPoint]
-@[simp] theorem subst_head {l : ℕ} (σ : Fin n → PTm l) (z B N : PTm n) :
-    Syn.subst σ (head z B N) = head (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by
-  simp only [head,GaussianGammaEulerHead.run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (z R B N : PTm n) :
-    Syn.subst σ (data z R B N) = data (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [data]
-@[simp] theorem subst_sample {l : ℕ} (σ : Fin n → PTm l) (p z R B N : PTm n) :
-    Syn.subst σ (sample p z R B N) = sample (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [sample]
-@[simp] theorem subst_diskBound {l : ℕ} (σ : Fin n → PTm l) (z R B N : PTm n) :
-    Syn.subst σ (diskBound z R B N) = diskBound (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [diskBound]
+ipra_subst exponentData
+ipra_subst exponentPoint
+ipra_subst exponentRadius
+ipra_subst exponentialData
+ipra_subst exponentialPoint
+ipra_subst head [GaussianGammaEulerHead.run]
+ipra_subst data
+ipra_subst sample
+ipra_subst diskBound
 
 theorem exponent_sample_at (p z R B N : PTm n) : Γ ⊢[PRAAx] exponentPoint p z R B N ≐ exponentValue p z R B N :=
   (GaussianNameArithmetic.add_at productF GaussianGammaCanonicalTailName.pointF (productData z B N)

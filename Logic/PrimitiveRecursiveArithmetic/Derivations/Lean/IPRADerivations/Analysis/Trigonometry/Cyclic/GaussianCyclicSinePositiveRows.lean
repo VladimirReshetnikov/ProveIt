@@ -14,7 +14,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCyclicSinePositiveRows
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianArctangentDivisionAngles (source coefficient)
 open GaussianArctangentDivisionSinePositive (sine_lower exactSineData)
 open GaussianCyclicHalfAngleAgreement (sine_divided_cross)
@@ -35,10 +35,6 @@ open RationalValueBounds (upper upper_congr upper_mono upper_of_radius upper_tri
 open RationalRepresentedUpper (left right to_signed from_signed)
 open PolynomialBisection (zle_scale_cancel)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.Deflation.GaussianRationalDeflation
 import IPRADerivations.Analysis.Polynomials.Elimination.Vandermonde.GaussianVandermondeNewtonPolynomials
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The exact residual sum of the computed deflation loop
@@ -14,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianDeflationTelescoping
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalDeflation (data polynomial polynomial_zero polynomial_invariant roots roots_lookup rootAt stage_division)
 open GaussianVandermondeNewtonPolynomials (differenceProduct difference_zero difference_succ evaluation_product)
 open GaussianRationalFiniteSum (sum)
@@ -30,9 +29,6 @@ open GaussianRationalReconstruction (evaluate_congr)
 open GaussianTranslatedNonconstant (recode_eq)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -46,12 +42,8 @@ def residualBody (step : PR 3) : PTm 2 :=
 def residuals (step : PR 3) (C N e f : PTm n) : PTm n :=
   sequence (residualBody step) N (data C N e f)
 
-@[simp] theorem subst_residual {k : ℕ} (σ : Fin n → PTm k) (step : PR 3) (C N e f i : PTm n) :
-    Syn.subst σ (residual step C N e f i) = residual step (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ e) (Syn.subst σ f) (Syn.subst σ i) := by simp [residual]
-@[simp] theorem subst_residuals {k : ℕ} (σ : Fin n → PTm k) (step : PR 3) (C N e f : PTm n) :
-    Syn.subst σ (residuals step C N e f) = residuals step (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ e) (Syn.subst σ f) := by simp [residuals]
+ipra_subst residual
+ipra_subst residuals
 
 theorem residual_body_at (step : PR 3) (C N e f i : PTm n) :
     Γ ⊢[PRAAx] inst2 (residualBody step) i (data C N e f) ≐ residual step C N e f i := by
@@ -65,10 +57,10 @@ theorem residual_body_at (step : PR 3) (C N e f i : PTm n) :
       (σ := ![fstT (sndT (data C N e f)), fstT (data C N e f), fstT (sndT (sndT (data C N e f))),
         sndT (sndT (sndT (data C N e f))), i]) (σ' := ![C, N, e, f, i]) (fun r => by
           fin_cases r
-          · exact (congrFst tail).eqTrans (fst_pair _ _)
+          · exact tail.fstE
           · exact fst_pair _ _
-          · exact (congrFst rest).eqTrans (fst_pair _ _)
-          · exact (congrSnd rest).eqTrans (snd_pair _ _)
+          · exact rest.fstE
+          · exact rest.sndE
           · exact .eqRefl _)
 
 theorem residuals_length (step : PR 3) (C N e f : PTm n) :
@@ -83,11 +75,8 @@ def sumBody : PTm 2 := qmul (entry (fstT (sndT (var 1))) (var 0))
   (differenceProduct (fstT (var 1)) (sndT (sndT (var 1))) (var 0))
 def residualSum (S R j y : PTm n) : PTm n := sum sumBody j (sumData S R y)
 
-@[simp] theorem subst_sumData {k : ℕ} (σ : Fin n → PTm k) (S R y : PTm n) :
-    Syn.subst σ (sumData S R y) = sumData (Syn.subst σ S) (Syn.subst σ R) (Syn.subst σ y) := by simp [sumData]
-@[simp] theorem subst_residualSum {k : ℕ} (σ : Fin n → PTm k) (S R j y : PTm n) :
-    Syn.subst σ (residualSum S R j y) = residualSum (Syn.subst σ S) (Syn.subst σ R)
-      (Syn.subst σ j) (Syn.subst σ y) := by simp [residualSum]
+ipra_subst sumData
+ipra_subst residualSum
 
 theorem sum_body_at (S R y i : PTm n) :
     Γ ⊢[PRAAx] inst2 sumBody i (sumData S R y) ≐ qmul (entry R i) (differenceProduct S y i) := by
@@ -96,10 +85,10 @@ theorem sum_body_at (S R y i : PTm n) :
       differenceProduct S y i := by
     ipra_congr (differenceProduct (var 0) (var 1) (var 2) : PTm 3) with
       [(show _ ⊢[PRAAx] fstT (sumData S R y) ≐ S from fst_pair _ _),
-        (show _ ⊢[PRAAx] sndT (sndT (sumData S R y)) ≐ y from (congrSnd tail).eqTrans (snd_pair _ _)), .eqRefl i]
+        (show _ ⊢[PRAAx] sndT (sndT (sumData S R y)) ≐ y from tail.sndE), .eqRefl i]
   simp only [sumBody, inst2, GaussianRationalHorner.subst_qmul, GaussianVandermondeNewtonPolynomials.subst_differenceProduct,
     Foundations.MasterCertificate.subst_entry, subst_fstT, subst_sndT, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one]
-  exact qmul_congr (Foundations.SequenceComposition.entry_congr ((congrFst tail).eqTrans (fst_pair _ _)) (.eqRefl i)) productEq
+  exact qmul_congr (Foundations.SequenceComposition.entry_congr tail.fstE (.eqRefl i)) productEq
 
 theorem residual_sum_zero (S R y : PTm n) : Γ ⊢[PRAAx] residualSum S R zero y ≐ qzero := GaussianRationalFiniteSum.sum_zero _ _
 theorem residual_sum_succ (S R j y : PTm n) :
@@ -112,9 +101,7 @@ def invariant (step : PR 3) (C N e f j y : PTm n) : Fm PTm n :=
     qadd (residualSum (roots step C N e f N) (residuals step C N e f) j y)
       (qmul (differenceProduct (roots step C N e f N) y j) (evaluate (polynomial step C N e f j) y))
 
-@[simp] theorem subst_invariant {k : ℕ} (σ : Fin n → PTm k) (step : PR 3) (C N e f j y : PTm n) :
-    (invariant step C N e f j y).subst σ = invariant step (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ e) (Syn.subst σ f) (Syn.subst σ j) (Syn.subst σ y) := by simp [invariant]
+ipra_subst invariant
 
 theorem invariant_base (step : PR 3) (C N e f y : PTm n) :
     Γ ⊢[PRAAx] invariant step C N e f zero y := by
@@ -162,11 +149,9 @@ theorem prefix_identity (step : PR 3) (C N e f j y : PTm n)
     simpa [Fm.shift, Syn.shift] using hM.shift
   have all : Γ ⊢[PRAAx] .all (invariant step (Syn.shift C) (Syn.shift N) (Syn.shift e)
       (Syn.shift f) (var 0) (Syn.shift y)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-    · simp only [subst_invariant, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      exact invariant_base _ _ _ _ _ _
-    · simp only [subst_invariant, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      exact invariant_step _ _ _ _ _ _ _ cs.wk ms.wk Prf.hyp0
+    ipra_qfind (⟨le_QF _ _, trivial⟩) [subst_invariant]
+    · exact invariant_base _ _ _ _ _ _
+    · exact invariant_step _ _ _ _ _ _ _ cs.wk ms.wk Prf.hyp0
   simpa only [subst_invariant, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using all.allE j
 
 theorem final_evaluation (step : PR 3) (C N e f y : PTm n)

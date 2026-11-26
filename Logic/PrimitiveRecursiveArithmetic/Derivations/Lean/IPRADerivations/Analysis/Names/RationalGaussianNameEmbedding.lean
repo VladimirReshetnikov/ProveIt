@@ -19,7 +19,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.RationalGaussianNameEmbedding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open RationalSupMetric (numeratorOf denominatorOf)
 open RationalGaussianEmbedding (embed native embed_represents)
@@ -28,17 +28,13 @@ open GaussianRationalMetric (distanceBounded qsub)
 open LeanProofs.IPRA.Foundations.GapDecision (zabs zabs_sq)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def crossNumerator (a b : PTm n) : PTm n := GaussianRootAlgebra.sub
   (ComplexLogarithmRemainder.scale (denominatorOf b) (native (numeratorOf a)))
   (ComplexLogarithmRemainder.scale (denominatorOf a) (native (numeratorOf b)))
-@[simp] theorem subst_crossNumerator {l : ℕ} (σ : Fin n → PTm l) (a b : PTm n) :
-    Syn.subst σ (crossNumerator a b) = crossNumerator (Syn.subst σ a) (Syn.subst σ b) := by simp [crossNumerator]
+ipra_subst crossNumerator
 
 theorem cross_norm (a b : PTm n) : Γ ⊢[PRAAx] ComplexLogarithmRemainder.normSq (crossNumerator a b) ≐
     zabs (RationalValueBounds.cross a b)*zabs (RationalValueBounds.cross a b) := by
@@ -79,10 +75,8 @@ theorem distance_from_radius (a b A B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
 def body (f : PR 2) (p x : PTm n) : PTm n := embed (ap2 f p x)
 def nameF (f : PR 2) : PR 2 := PTm.toPR (body f (var 0) (var 1))
 def sample (f : PR 2) (p x : PTm n) : PTm n := ap2 (nameF f) p x
-@[simp] theorem subst_body {l : ℕ} (σ : Fin n → PTm l) (f : PR 2) (p x : PTm n) :
-    Syn.subst σ (body f p x) = body f (Syn.subst σ p) (Syn.subst σ x) := by simp [body]
-@[simp] theorem subst_sample {l : ℕ} (σ : Fin n → PTm l) (f : PR 2) (p x : PTm n) :
-    Syn.subst σ (sample f p x) = sample f (Syn.subst σ p) (Syn.subst σ x) := by simp [sample]
+ipra_subst body
+ipra_subst sample
 theorem sample_at (f : PR 2) (p x : PTm n) : Γ ⊢[PRAAx] sample f p x ≐ embed (ap2 f p x) := by
   change Γ ⊢[PRAAx] PTm.app (PTm.toPR (body f (var 0) (var 1))) ![p,x] ≐ embed (ap2 f p x)
   have h := toPR_eq (Γ := Γ) (body f (var 0) (var 1) : PTm 2) ![p,x]

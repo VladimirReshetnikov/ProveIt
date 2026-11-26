@@ -16,7 +16,7 @@ set_option maxHeartbeats 450000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalPositiveLogarithm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalThirdLogarithmRows (center)
 open GaussianBarnesCanonicalLogSchedule (initial)
 open GaussianEuclideanDistanceName (pointCN)
@@ -27,8 +27,6 @@ open GaussianNameBounds (U)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
 open GaussianRootAlgebra (equal equal_of_values re_sub im_sub re_scale im_scale re_one im_one)
 open ComplexLogarithmRemainder (eval_re_code eval_im_code)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

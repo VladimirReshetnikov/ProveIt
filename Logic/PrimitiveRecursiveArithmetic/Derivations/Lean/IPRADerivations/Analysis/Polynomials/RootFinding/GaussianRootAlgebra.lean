@@ -14,12 +14,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRootAlgebra
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder
   (re im code add mul scale zeroCode oneCode eval_re_code eval_im_code normSq normSq_eval)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -29,10 +26,8 @@ local notation "ℑ" c:max => ZT.toZ Γ (im c)
 def sub (a b : PTm n) : PTm n := add a (ComplexLogarithmRemainder.neg b)
 def equal (a b : PTm n) : Fm PTm n := ZT.eq (re a) (re b) ⋏ ZT.eq (im a) (im b)
 
-@[simp] theorem subst_sub {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (sub a b) = sub (Syn.subst σ a) (Syn.subst σ b) := by simp [sub]
-@[simp] theorem subst_equal {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    (equal a b).subst σ = equal (Syn.subst σ a) (Syn.subst σ b) := by simp [equal]
+ipra_subst sub
+ipra_subst equal
 
 theorem equal_of_values {a b : PTm n} (hr : ℜ a = ℜ b) (hi : ℑ a = ℑ b) : Γ ⊢[PRAAx] equal a b :=
   .andI (ZT.derive hr) (ZT.derive hi)

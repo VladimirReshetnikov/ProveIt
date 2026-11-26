@@ -19,7 +19,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalGridCoefficientEquality
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero canonical evaluate)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qsub)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision
@@ -33,9 +33,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalFiniteGridIdentity (grid gridPoint
 open LeanProofs.IPRA.Analysis.GaussianTranslatedNonconstant (recode recode_eq)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ app)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -46,16 +43,10 @@ def negativePolynomial (D : PTm n) : PTm n := scaled D minusOne
 def difference (C D N : PTm n) : PTm n := added C (negativePolynomial D) (succ N)
 def coefficientsEqual (C D N : PTm n) : Fm PTm n := .all (le (var 0) (Syn.shift N) ⟶
   entry (Syn.shift C) (var 0) ≐ entry (Syn.shift D) (var 0))
-@[simp] theorem subst_gridEqual {l : ℕ} (σ : Fin n → PTm l) (C D N : PTm n) :
-    (gridEqual C D N).subst σ = gridEqual (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ N) := by
-  simp [gridEqual,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_negativePolynomial {l : ℕ} (σ : Fin n → PTm l) (D : PTm n) :
-    Syn.subst σ (negativePolynomial D) = negativePolynomial (Syn.subst σ D) := by simp [negativePolynomial]
-@[simp] theorem subst_difference {l : ℕ} (σ : Fin n → PTm l) (C D N : PTm n) :
-    Syn.subst σ (difference C D N) = difference (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ N) := by simp [difference]
-@[simp] theorem subst_coefficientsEqual {l : ℕ} (σ : Fin n → PTm l) (C D N : PTm n) :
-    (coefficientsEqual C D N).subst σ = coefficientsEqual (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ N) := by
-  simp [coefficientsEqual,Syn.subst_shift,Syn.shift_subst]
+ipra_subst gridEqual [Syn.subst_shift, Syn.shift_subst]
+ipra_subst negativePolynomial
+ipra_subst difference
+ipra_subst coefficientsEqual [Syn.subst_shift, Syn.shift_subst]
 
 theorem grid_equal_at (C D N i : PTm n) (h : Γ ⊢[PRAAx] gridEqual C D N)
     (hi : Γ ⊢[PRAAx] le i N) : Γ ⊢[PRAAx] evaluate C (gridPoint i) ≐ evaluate D (gridPoint i) := by
@@ -160,8 +151,7 @@ theorem coefficients_equal (C D N : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ succ
 /-- Original shape, original coefficient canonicality and actual finite observations. -/
 def input (C D N : PTm n) : Fm PTm n := (length C ≐ succ N) ⋏
   ((length D ≐ succ N) ⋏ (canonicalCoefficients C ⋏ (canonicalCoefficients D ⋏ gridEqual C D N)))
-@[simp] theorem subst_input {l : ℕ} (σ : Fin n → PTm l) (C D N : PTm n) :
-    (input C D N).subst σ = input (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ N) := by simp [input]
+ipra_subst input
 theorem coefficient_from_input (C D N i : PTm n) (h : Γ ⊢[PRAAx] input C D N)
     (hi : Γ ⊢[PRAAx] le i N) : Γ ⊢[PRAAx] entry C i ≐ entry D i :=
   coefficient_equal _ _ _ _ (.andE₁ h) (.andE₁ (.andE₂ h)) (.andE₁ (.andE₂ (.andE₂ h)))
@@ -176,26 +166,21 @@ def output (C D N i : PTm n) : PTm n := pairT (difference C D N)
   (pairT (grid N) (pairT (entry C i) (entry D i)))
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (C D N i : PTm n) : PTm n := app outputF ![C,D,N,i]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (C D N i : PTm n) :
-    Syn.subst σ (output C D N i) = output (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ N) (Syn.subst σ i) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (C D N i : PTm n) :
-    Syn.subst σ (run C D N i) = run (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ N) (Syn.subst σ i) := by
-  simp [run]
-  funext j
-  fin_cases j <;> rfl
+ipra_subst output
+ipra_subst run
 theorem program_at (C D N i : PTm n) : Γ ⊢[PRAAx] run C D N i ≐ output C D N i := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![C,D,N,i]
 theorem returned_difference (C D N i : PTm n) : Γ ⊢[PRAAx]
-    fstT (run C D N i) ≐ difference C D N := (congrFst (program_at _ _ _ _)).eqTrans (fst_pair _ _)
+    fstT (run C D N i) ≐ difference C D N := (program_at _ _ _ _).fstE
 theorem returned_grid (C D N i : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run C D N i)) ≐ grid N :=
-  (congrFst ((congrSnd (program_at _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _).sndE.fstE
 theorem returned_left (C D N i : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (run C D N i))) ≐ entry C i :=
-  (congrFst ((congrSnd ((congrSnd (program_at _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _).sndE.sndE.fstE
 theorem returned_right (C D N i : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (sndT (run C D N i))) ≐ entry D i :=
-  (congrSnd ((congrSnd ((congrSnd (program_at _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _).sndE.sndE.sndE
 theorem returned_difference_length (C D N i : PTm n) : Γ ⊢[PRAAx] length (fstT (run C D N i)) ≐ succ N :=
   (congrFst (returned_difference _ _ _ _)).eqTrans (difference_length _ _ _)
 theorem returned_grid_length (C D N i : PTm n) : Γ ⊢[PRAAx] length (fstT (sndT (run C D N i))) ≐ succ N :=

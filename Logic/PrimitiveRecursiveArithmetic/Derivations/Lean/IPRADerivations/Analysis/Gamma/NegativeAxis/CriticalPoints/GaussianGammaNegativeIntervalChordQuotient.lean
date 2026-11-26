@@ -15,7 +15,7 @@ set_option maxHeartbeats 1500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalChordQuotient
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaAdjacentCutoff (multiply_cross)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
@@ -34,9 +34,6 @@ open GaussianNamedDifferenceQuotient (separated)
 open GaussianRationalReciprocal (reciprocalF reciprocal_program)
 open GaussianRootAlgebra (equal equal_of_values normSq_equal)
 open GaussianStirlingGammaLogarithm (gammaData gamma_regular)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -50,10 +47,7 @@ def finiteData (a c b N W : PTm n) : PTm n :=
     (gammaData (centerNumerator (b+a) (b+c) W) (centerDenominator b W)) (gammaData (b+a) b)
     (increment (b+a) (b+c)) (centerDenominator b W)
 
-@[simp] theorem subst_finiteData {k : ℕ} (σ : Fin n → PTm k) (a c b N W : PTm n) :
-    Syn.subst σ (finiteData a c b N W) =
-      finiteData (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ b) (Syn.subst σ N) (Syn.subst σ W) := by
-  simp [finiteData, centerInverse, finiteInverseCoefficient, GaussianGammaNegativeIntervalChordInverse.shiftCoefficient]
+ipra_subst finiteData [centerInverse, finiteInverseCoefficient, GaussianGammaNegativeIntervalChordInverse.shiftCoefficient]
 
 theorem translated_increment (a c b : PTm n) : Γ ⊢[PRAAx] equal (increment a c) (increment (b+a) (b+c)) := by
   apply equal_of_values

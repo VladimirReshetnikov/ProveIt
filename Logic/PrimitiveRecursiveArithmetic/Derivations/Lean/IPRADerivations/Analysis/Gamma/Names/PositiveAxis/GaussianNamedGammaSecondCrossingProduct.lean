@@ -16,7 +16,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedGammaSecondCrossingProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedGammaBackwardShift (minusOneF minusOneData)
 open GaussianEulerNamedShiftInput (shiftF shiftData)
 open GaussianNamedGoldenRatioProduct (equation productF productData)
@@ -29,9 +29,6 @@ open GaussianRationalReciprocal (qone)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianGammaAdjacentCutoff (multiply_cross)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

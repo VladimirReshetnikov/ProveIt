@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineProductHeadLower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaEulerReflectionHead (sineProduct squareFactor paired_factor body)
 open GaussianGammaEulerHeadLower (poleAt poleGuard pole_at factor_lower translated_zero)
 open GaussianRationalLowerBounds (lower lower_congr lower_from_representation product_lower)
@@ -26,10 +26,6 @@ open GaussianRationalHorner (positive_product ofGaussian ofGaussian_represents)
 open GaussianSineProductName (sine_product_succ)
 open GaussianFactorBudget (power_positive)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "gneg" => ComplexLogarithmRemainder.neg
@@ -43,15 +39,9 @@ def prefixBound (z B a d N : PTm n) : Fm PTm n :=
 def input (z B a d N : PTm n) : Fm PTm n :=
   poleGuard z B a d N ⋏ poleGuard (gneg z) B a d N
 
-@[simp] theorem subst_prefixBound {l : ℕ} (σ : Fin n → PTm l) (z B a d N : PTm n) :
-    (prefixBound z B a d N).subst σ = prefixBound (Syn.subst σ z) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ d) (Syn.subst σ N) := by
-  simp [prefixBound,numerator,denominator,sineProduct,fact]
+ipra_subst prefixBound [numerator, denominator, sineProduct, fact]
 
-@[simp] theorem subst_input {l : ℕ} (σ : Fin n → PTm l) (z B a d N : PTm n) :
-    (input z B a d N).subst σ = input (Syn.subst σ z) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ d) (Syn.subst σ N) := by
-  simp [input]
+ipra_subst input
 
 theorem lower_one : Γ ⊢[PRAAx] lower (qone : PTm n) one one :=
   lower_congr (.eqRefl _) (monus_zero one) (.eqRefl _)

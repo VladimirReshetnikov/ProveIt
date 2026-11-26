@@ -1,6 +1,5 @@
 import IPRADerivations.Geometry.TriangleCentres
 import IPRADerivations.Geometry.ConwayAlgebra
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Straightedge and compass: copying a segment, the perpendicular bisector, and the field operations
@@ -29,10 +28,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Geometry.Constructions
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Geometry.TriangleCentres (dot det nsq)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

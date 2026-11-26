@@ -14,7 +14,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderPanelRotation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianStirlingAllOrderCenteredBernoulli (endpoint_samples_zero)
 open GaussianStirlingAllOrderKernel (row multiply_zero_right)
 open GaussianStirlingAllOrderPanelTail (panelBody panelData panel_row_at)
@@ -23,9 +23,6 @@ open RationalAlgebra (add_congr add_associative add_commutative multiply_congr m
 open RationalArithmetic (add multiply)
 open RationalFiniteSum (term sum_well_formed)
 open RationalReciprocalPowerTail (zero_fraction add_zero_right)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "rsum" => RationalFiniteSum.sum
@@ -42,9 +39,7 @@ def nextBody (f : PTm 2) : PTm 2 := inst2 f (succ (var 0)) (var 1)
 def rotationLaw (f : PTm 2) (N x : PTm n) : Fm PTm n :=
   add (rsum f N x) (term f N x) ≐ add (term f zero x) (rsum (nextBody f) N x)
 
-@[simp] theorem subst_rotationLaw {l : ℕ} (σ : Fin n → PTm l) (f : PTm 2) (N x : PTm n) :
-    (rotationLaw f N x).subst σ = rotationLaw f (Syn.subst σ N) (Syn.subst σ x) := by
-  simp [rotationLaw]
+ipra_subst rotationLaw
 
 private theorem rotate_zero (f : PTm 2) (x : PTm n) : Γ ⊢[PRAAx] rotationLaw f zero x := by
   exact (add_congr (RationalFiniteSum.sum_zero f x) (.eqRefl _)).eqTrans

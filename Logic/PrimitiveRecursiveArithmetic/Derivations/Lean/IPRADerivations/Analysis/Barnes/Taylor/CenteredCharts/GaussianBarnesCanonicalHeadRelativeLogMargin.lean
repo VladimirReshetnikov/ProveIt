@@ -5,14 +5,13 @@ The lower margin for the original base power is one over M.
 import IPRADerivations.Analysis.Barnes.Taylor.CenteredCharts.GaussianBarnesCanonicalHeadRelativeLog
 import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalHeadPolynomialQuotient
 import IPRADerivations.Analysis.Names.GaussianNameReciprocal
-import IPRADerivations.Core.CommonLemmas
 
 set_option autoImplicit false
 set_option maxHeartbeats 500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalHeadRelativeLogMargin
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalBaseProductShift (powerProduct)
 open GaussianBarnesCanonicalHeadRelativeLog (relative numerator denominator radius source)
 open GaussianBarnesCanonicalHeadPolynomialDerivative (input)
@@ -20,9 +19,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded bounded_iff)
 open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianRationalL1 (raw_den_positive raw_represents)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

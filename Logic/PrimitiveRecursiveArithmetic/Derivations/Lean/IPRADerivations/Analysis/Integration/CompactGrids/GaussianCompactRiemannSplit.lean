@@ -17,16 +17,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCompactRiemannSplit
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (ofGaussian qadd qmul positive_product)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianCompactRiemannName (grid value sampleBody sampleData quadrature fraction_congr value_grid)
 open GaussianRationalRiemannRefinement (weight)
 open GaussianRationalFiniteSum (sum sum_index_congr)
 open ComplexLogarithmRemainder (scale oneCode)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -45,8 +42,7 @@ theorem fraction_cancel (C A D : PTm n) (hC : Γ ⊢[PRAAx] le one C) (hD : Γ �
     (GaussianGammaEncodingRescaling.fraction_rescale (scale A oneCode) D C hD hC)
 
 def sharedValue (i K a E : PTm n) : PTm n := ofGaussian (scale (a*K+i) oneCode) (E*K)
-@[simp] theorem subst_sharedValue {m : ℕ} (σ : Fin n → PTm m) (i K a E : PTm n) :
-    Syn.subst σ (sharedValue i K a E) = sharedValue (Syn.subst σ i) (Syn.subst σ K) (Syn.subst σ a) (Syn.subst σ E) := by simp [sharedValue]
+ipra_subst sharedValue
 
 theorem grid_shared_value (i K a C E : PTm n) (hC : Γ ⊢[PRAAx] le one C)
     (hE : Γ ⊢[PRAAx] le one E) (hK : Γ ⊢[PRAAx] le one K) : Γ ⊢[PRAAx]
@@ -84,15 +80,9 @@ def prefixPart (F : PR 3) (s K a C1 C2 E x : PTm n) : PTm n := qmul (weight one 
   (sum (sampleBody F) (C1*K) (fullData s K a C1 C2 E x))
 def suffixPart (F : PR 3) (s K a C1 C2 E x : PTm n) : PTm n := qmul (weight one E K)
   (sum (offB (sampleBody F)) (C2*K) (pairT (C1*K) (fullData s K a C1 C2 E x)))
-@[simp] theorem subst_fullData {m : ℕ} (σ : Fin n → PTm m) (s K a C1 C2 E x : PTm n) :
-    Syn.subst σ (fullData s K a C1 C2 E x) = fullData (Syn.subst σ s) (Syn.subst σ K) (Syn.subst σ a)
-      (Syn.subst σ C1) (Syn.subst σ C2) (Syn.subst σ E) (Syn.subst σ x) := by simp [fullData]
-@[simp] theorem subst_prefixPart {m : ℕ} (σ : Fin n → PTm m) (F : PR 3) (s K a C1 C2 E x : PTm n) :
-    Syn.subst σ (prefixPart F s K a C1 C2 E x) = prefixPart F (Syn.subst σ s) (Syn.subst σ K) (Syn.subst σ a)
-      (Syn.subst σ C1) (Syn.subst σ C2) (Syn.subst σ E) (Syn.subst σ x) := by simp [prefixPart]
-@[simp] theorem subst_suffixPart {m : ℕ} (σ : Fin n → PTm m) (F : PR 3) (s K a C1 C2 E x : PTm n) :
-    Syn.subst σ (suffixPart F s K a C1 C2 E x) = suffixPart F (Syn.subst σ s) (Syn.subst σ K) (Syn.subst σ a)
-      (Syn.subst σ C1) (Syn.subst σ C2) (Syn.subst σ E) (Syn.subst σ x) := by simp [suffixPart]
+ipra_subst fullData
+ipra_subst prefixPart
+ipra_subst suffixPart
 
 /-- A literal identity of the SAME actual full-grid sum, keeping its
 original data in both generated prefix and offset suffix. -/
@@ -111,30 +101,28 @@ def output (F : PR 3) (s K a C1 C2 E x : PTm n) : PTm n := pairT (quadrature F s
   (pairT (prefixPart F s K a C1 C2 E x) (pairT (suffixPart F s K a C1 C2 E x) (weight one E K)))
 def outputF (F : PR 3) : PR 7 := PTm.toPR (output F (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6))
 def run (F : PR 3) (s K a C1 C2 E x : PTm n) : PTm n := PTm.app (outputF F) ![s,K,a,C1,C2,E,x]
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (F : PR 3) (s K a C1 C2 E x : PTm n) :
-    Syn.subst σ (output F s K a C1 C2 E x) = output F (Syn.subst σ s) (Syn.subst σ K) (Syn.subst σ a)
-      (Syn.subst σ C1) (Syn.subst σ C2) (Syn.subst σ E) (Syn.subst σ x) := by simp [output]
+ipra_subst output
 theorem program_at (F : PR 3) (s K a C1 C2 E x : PTm n) : Γ ⊢[PRAAx]
     run F s K a C1 C2 E x ≐ output F s K a C1 C2 E x := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output F (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) : PTm 7) ![s,K,a,C1,C2,E,x]
 theorem returned_full (F : PR 3) (s K a C1 C2 E x : PTm n) : Γ ⊢[PRAAx]
     fstT (run F s K a C1 C2 E x) ≐ quadrature F s ((C1+C2)*K) a (C1+C2) E x :=
-  (congrFst (program_at F s K a C1 C2 E x)).eqTrans (fst_pair _ _)
+  (program_at F s K a C1 C2 E x).fstE
 theorem returned_tail (F : PR 3) (s K a C1 C2 E x : PTm n) : Γ ⊢[PRAAx]
     sndT (run F s K a C1 C2 E x) ≐ pairT (prefixPart F s K a C1 C2 E x) (pairT (suffixPart F s K a C1 C2 E x) (weight one E K)) :=
-  (congrSnd (program_at F s K a C1 C2 E x)).eqTrans (snd_pair _ _)
+  (program_at F s K a C1 C2 E x).sndE
 theorem returned_prefix (F : PR 3) (s K a C1 C2 E x : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run F s K a C1 C2 E x)) ≐ prefixPart F s K a C1 C2 E x :=
-  (congrFst (returned_tail F s K a C1 C2 E x)).eqTrans (fst_pair _ _)
+  (returned_tail F s K a C1 C2 E x).fstE
 theorem returned_suffix_weight (F : PR 3) (s K a C1 C2 E x : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (run F s K a C1 C2 E x)) ≐ pairT (suffixPart F s K a C1 C2 E x) (weight one E K) :=
-  (congrSnd (returned_tail F s K a C1 C2 E x)).eqTrans (snd_pair _ _)
+  (returned_tail F s K a C1 C2 E x).sndE
 theorem returned_suffix (F : PR 3) (s K a C1 C2 E x : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (run F s K a C1 C2 E x))) ≐ suffixPart F s K a C1 C2 E x :=
-  (congrFst (returned_suffix_weight F s K a C1 C2 E x)).eqTrans (fst_pair _ _)
+  (returned_suffix_weight F s K a C1 C2 E x).fstE
 theorem returned_weight (F : PR 3) (s K a C1 C2 E x : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (sndT (run F s K a C1 C2 E x))) ≐ weight one E K :=
-  (congrSnd (returned_suffix_weight F s K a C1 C2 E x)).eqTrans (snd_pair _ _)
+  (returned_suffix_weight F s K a C1 C2 E x).sndE
 
 theorem actual_common_step_weight_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3
     ((le one (var 0) ⋏ (le one (var 1) ⋏ le one (var 2))) ⟶ weight (var 0) (var 1) (var 0*var 2) ≐ weight one (var 1) (var 2)) :=

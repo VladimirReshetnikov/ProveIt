@@ -18,7 +18,7 @@ set_option maxHeartbeats 1800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaLocationInput
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianGammaDigammaDyadicLocation (index location locationF location_at location_regular lower selected_cell)
@@ -34,10 +34,6 @@ open GaussianStirlingMultiplicativeBoundsLog (fractions_order)
 open RationalArgmin (rationalLE rationalLE_congr)
 open RationalGaussianEmbedding (axis axis_congr)
 open RationalValueBounds (upper_of_order)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -90,9 +86,7 @@ theorem frozen_fraction_at (p x : PTm n) : Γ ⊢[PRAAx]
 def nativeLogData (j k : PTm n) : PTm n :=
   GaussianEulerLogarithmicImproperName.data j (arg (lower k)) (lower k) (grid k) (grid k)
 
-@[simp] theorem subst_nativeLogData {m : ℕ} (σ : Fin n → PTm m) (j k : PTm n) :
-    Syn.subst σ (nativeLogData j k) = nativeLogData (Syn.subst σ j) (Syn.subst σ k) := by
-  simp [nativeLogData]
+ipra_subst nativeLogData
 
 theorem frozen_log_cross (j k x : PTm n) (hLate : Γ ⊢[PRAAx] le (threshold one) k) :
     Γ ⊢[PRAAx] crossEquivalent IF IF (GaussianNamedEulerLogarithmicFrozenRate.frozenData L j x one k)

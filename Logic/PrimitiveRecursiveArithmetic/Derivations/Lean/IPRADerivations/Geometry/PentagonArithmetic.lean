@@ -1,6 +1,4 @@
-import IPRADerivations.Core.Tactic
 import IPRADerivations.Core.Gcd
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Arithmetic of pentagonal tilings
@@ -24,11 +22,7 @@ formalized.
 
 namespace LeanProofs.IPRA.Geometry.PentagonArithmetic
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -150,12 +144,10 @@ theorem coxeter_hyperbolic (m : PTm n) :
     Γ ⊢[PRAAx] Fm.iff (lt (num 7 * m + num 10) (num 10 * m)) (le (num 4) m) := by
   refine .andI (.impI ?_) (.impI ?_)
   · let C := lt (num 7 * m + num 10) (num 10 * m) :: Γ
-    have e := natEq (eq_add_of_le (Prf.hyp0 : C ⊢[PRAAx] lt (num 7 * m + num 10) (num 10 * m)))
     refine le_of_hyperbolic (le_of_eq_add (d := monus (num 10 * m) (succ (num 7 * m + num 10))) ?_)
-    ipra_lc e
+    ipra_lc natEq (eq_add_of_le (Prf.hyp0 : C ⊢[PRAAx] lt (num 7 * m + num 10) (num 10 * m)))
   · let C := le (num 4) m :: Γ
-    have e := natEq (eq_add_of_le (hyperbolic_of_le (Prf.hyp0 : C ⊢[PRAAx] le (num 4) m)))
     refine le_of_eq_add (d := monus (num 3 * m) (succ (num 10))) ?_
-    ipra_lc e
+    ipra_lc natEq (eq_add_of_le (hyperbolic_of_le (Prf.hyp0 : C ⊢[PRAAx] le (num 4) m)))
 
 end LeanProofs.IPRA.Geometry.PentagonArithmetic

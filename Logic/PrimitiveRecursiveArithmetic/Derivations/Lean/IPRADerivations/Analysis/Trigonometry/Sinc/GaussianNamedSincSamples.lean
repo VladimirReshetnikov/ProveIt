@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedSincSamples
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianScalarSincTaylor (sincBody sincTaylor sinc_canonical sine_taylor_factors)
 open GaussianScalarSincTaylorBounds (unit_disk_sinc_bound)
 open GaussianNamedSineTaylor (argumentPrecision imaginaryF imaginary_input finite_taylor_error)
@@ -35,10 +35,6 @@ open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRadiusExponentialName (input index inputPrecision bounded_samples_at)
 open GaussianReciprocalHorner (qmul_associative)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -54,20 +50,13 @@ def sineSize (f : PR 2) (R x : PTm n) : PTm n :=
   GaussianNameBounds.U (sineF (imaginaryF f)) (sineData (imaginaryF f) R x)
 def sampleSize (f : PR 2) (R x : PTm n) : PTm n := sineSize f R x+sineBudget f R x+two
 
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (p : PTm n) :
-    Syn.subst σ (clock p) = clock (Syn.subst σ p) := by simp [clock]
-@[simp] theorem subst_argumentClock {m : ℕ} (σ : Fin n → PTm m) (R p : PTm n) :
-    Syn.subst σ (argumentClock R p) = argumentClock (Syn.subst σ R) (Syn.subst σ p) := by simp [argumentClock]
-@[simp] theorem subst_argument {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (R x p : PTm n) :
-    Syn.subst σ (argument f R x p) = argument f (Syn.subst σ R) (Syn.subst σ x) (Syn.subst σ p) := by simp [argument]
-@[simp] theorem subst_cutoff {m : ℕ} (σ : Fin n → PTm m) (R p : PTm n) :
-    Syn.subst σ (cutoff R p) = cutoff (Syn.subst σ R) (Syn.subst σ p) := by simp [cutoff]
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (R x p : PTm n) :
-    Syn.subst σ (value f R x p) = value f (Syn.subst σ R) (Syn.subst σ x) (Syn.subst σ p) := by simp [value]
-@[simp] theorem subst_sineBudget {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (R x : PTm n) :
-    Syn.subst σ (sineBudget f R x) = sineBudget f (Syn.subst σ R) (Syn.subst σ x) := by simp [sineBudget]
-@[simp] theorem subst_sampleSize {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (R x : PTm n) :
-    Syn.subst σ (sampleSize f R x) = sampleSize f (Syn.subst σ R) (Syn.subst σ x) := by simp [sampleSize,sineSize]
+ipra_subst clock
+ipra_subst argumentClock
+ipra_subst argument
+ipra_subst cutoff
+ipra_subst value
+ipra_subst sineBudget
+ipra_subst sampleSize [sineSize]
 
 theorem clock_later (p : PTm n) : Γ ⊢[PRAAx] le p (clock p) :=
   le_of_eq_add (d := p+two) (by unfold clock; ipra_ring)

@@ -25,10 +25,8 @@ set_option maxRecDepth 20000
 
 namespace LeanProofs.IPRA.Geometry.SphericalArea
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Geometry.SphericalHalf (sin3R cos3R sin3 cos3 toZ_sin3 toZ_cos3)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

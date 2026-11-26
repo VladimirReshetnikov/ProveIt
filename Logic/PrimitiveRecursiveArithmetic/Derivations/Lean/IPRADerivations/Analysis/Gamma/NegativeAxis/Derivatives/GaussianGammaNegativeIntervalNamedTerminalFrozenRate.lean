@@ -17,7 +17,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalNamedTerminalFrozenRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaNegativeIntervalNamedTerminalDerivative
@@ -27,10 +27,6 @@ open GaussianNamedInverseRate (independentRate)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (ofGaussian ofGaussian_canonical)
 open GaussianUnitIntervalInputDecoding (numerator denominator denominator_positive)
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -52,21 +48,13 @@ def minimumClock (f : PR 2) (s x : PTm n) : PTm n :=
     succ (GaussianEulerLogarithmicContinuity.modulus s one
       (GaussianNamedRightHalfPlane.radius (terminalF f) (terminalData x)) (two*one))
 
-@[simp] theorem subst_terminalNumerator {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (k x : PTm n) :
-    Syn.subst σ (terminalNumerator f k x) = terminalNumerator f (Syn.subst σ k) (Syn.subst σ x) := by
-  simp [terminalNumerator]
+ipra_subst terminalNumerator
 
-@[simp] theorem subst_terminalDenominator {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (k x : PTm n) :
-    Syn.subst σ (terminalDenominator f k x) = terminalDenominator f (Syn.subst σ k) (Syn.subst σ x) := by
-  simp [terminalDenominator]
+ipra_subst terminalDenominator
 
-@[simp] theorem subst_nativeData {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (k x : PTm n) :
-    Syn.subst σ (nativeData f k x) = nativeData f (Syn.subst σ k) (Syn.subst σ x) := by
-  simp [nativeData]
+ipra_subst nativeData
 
-@[simp] theorem subst_minimumClock {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (s x : PTm n) :
-    Syn.subst σ (minimumClock f s x) = minimumClock f (Syn.subst σ s) (Syn.subst σ x) := by
-  simp [minimumClock,one,two]
+ipra_subst minimumClock [one, two]
 
 theorem native_source (f : PR 2) (k x : PTm n) :
     Γ ⊢[PRAAx] GaussianStirlingGammaLogarithm.source (terminalNumerator f k x) (terminalDenominator f k x) := by

@@ -28,11 +28,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.BernsteinContraction
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -61,16 +57,12 @@ theorem weighted_bound {h w : PTm 2} {N x K : PTm n}
     Γ ⊢[PRAAx] le (ap2 (sumF h) N x) (K * ap2 (sumF w) N x) := by
   have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
       le (ap2 (sumF h) (var 0) (Syn.shift x)) (Syn.shift K * ap2 (sumF w) (var 0) (Syn.shift x))) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2]
+    · refine .impI ?_
       have z₁ := natEq (sum_zero (Γ := le zero N :: Γ) h x)
       have z₂ := natEq (sum_zero (Γ := le zero N :: Γ) w x)
       ipra_le 0 using rw [z₁, z₂]; ring
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      exact .impI (weighted_guard Prf.hyp0 (Prf.impE hp.allOpen.wk.wk Prf.hyp0) Prf.hyp1)
+    · exact .impI (weighted_guard Prf.hyp0 (Prf.impE hp.allOpen.wk.wk Prf.hyp0) Prf.hyp1)
   have a := Prf.allE N hall
   simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
     Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at a
@@ -108,15 +100,11 @@ theorem ramp_bound {h : PTm 2} {N x K : PTm n}
     Γ ⊢[PRAAx] le (two * ap2 (sumF h) N x) (K * (N * succ N)) := by
   have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
       le (two * ap2 (sumF h) (var 0) (Syn.shift x)) (Syn.shift K * (var 0 * succ (var 0)))) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2]
+    · refine .impI ?_
       have z₁ := natEq (sum_zero (Γ := le zero N :: Γ) h x)
       ipra_le 0 using rw [z₁]; ring
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      exact .impI (ramp_guard Prf.hyp0 (Prf.impE hp.allOpen.wk.wk Prf.hyp0) Prf.hyp1)
+    · exact .impI (ramp_guard Prf.hyp0 (Prf.impE hp.allOpen.wk.wk Prf.hyp0) Prf.hyp1)
   have a := Prf.allE N hall
   simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
     Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at a

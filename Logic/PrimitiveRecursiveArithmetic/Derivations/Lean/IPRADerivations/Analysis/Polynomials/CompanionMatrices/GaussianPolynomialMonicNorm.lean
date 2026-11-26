@@ -21,16 +21,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialMonicNorm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero qmul evaluate)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qone canonicalCoefficients)
 open LeanProofs.IPRA.Analysis.GaussianRationalMonicReduction (evaluate_congr canonical_coefficients_congr)
 open LeanProofs.IPRA.Analysis.GaussianPolynomialMonicCompanion (rowShape subst_rowShape values monicValues)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -45,24 +42,14 @@ def coefficientSum (F G m a c s : PTm n) : PTm n := GaussianPolynomialDeterminan
 def valueSum (F G m a c x : PTm n) : PTm n := GaussianPolynomialDeterminant.valueSum
   (matrix F G m a c) m (width m a c) (Foundations.RuntimePermutationWords.count m) x
 
-@[simp] theorem subst_width {l : ℕ} (σ : Fin n → PTm l) (m a c : PTm n) :
-    Syn.subst σ (width m a c) = width (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by simp [width]
-@[simp] theorem subst_degreeBound {l : ℕ} (σ : Fin n → PTm l) (m a c : PTm n) :
-    Syn.subst σ (degreeBound m a c) = degreeBound (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by simp [degreeBound]
-@[simp] theorem subst_matrix {l : ℕ} (σ : Fin n → PTm l) (F G m a c : PTm n) :
-    Syn.subst σ (matrix F G m a c) = matrix (Syn.subst σ F) (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by simp [matrix]
-@[simp] theorem subst_columns {l : ℕ} (σ : Fin n → PTm l) (F G m a c : PTm n) :
-    Syn.subst σ (columns F G m a c) = columns (Syn.subst σ F) (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by simp [columns]
-@[simp] theorem subst_norm {l : ℕ} (σ : Fin n → PTm l) (F G m a c : PTm n) :
-    Syn.subst σ (norm F G m a c) = norm (Syn.subst σ F) (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by simp [norm]
-@[simp] theorem subst_input {l : ℕ} (σ : Fin n → PTm l) (F G m a c : PTm n) :
-    (input F G m a c).subst σ = input (Syn.subst σ F) (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by simp [input]
-@[simp] theorem subst_coefficientSum {l : ℕ} (σ : Fin n → PTm l) (F G m a c s : PTm n) :
-    Syn.subst σ (coefficientSum F G m a c s) = coefficientSum (Syn.subst σ F) (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ s) := by simp [coefficientSum]
-@[simp] theorem subst_valueSum {l : ℕ} (σ : Fin n → PTm l) (F G m a c x : PTm n) :
-    Syn.subst σ (valueSum F G m a c x) = valueSum (Syn.subst σ F) (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ x) := by simp [valueSum]
+ipra_subst width
+ipra_subst degreeBound
+ipra_subst matrix
+ipra_subst columns
+ipra_subst norm
+ipra_subst input
+ipra_subst coefficientSum
+ipra_subst valueSum
 
 theorem matrix_row_cells (F G m a c r : PTm n) (hm : Γ ⊢[PRAAx] le one m)
     (hG : Γ ⊢[PRAAx] rowShape G m a) (hr : Γ ⊢[PRAAx] lt r m) : Γ ⊢[PRAAx]
@@ -111,9 +98,7 @@ def certificate (F G m a c x : PTm n) : Fm PTm n := (length (norm F G m a c) ≐
   (canonicalCoefficients (norm F G m a c) ⋏
     (GaussianPolynomialDeterminantTerms.tableShape (matrix F G m a c) m (width m a c) ⋏
       (evaluate (norm F G m a c) x ≐ valueSum F G m a c x)))
-@[simp] theorem subst_certificate {l : ℕ} (σ : Fin n → PTm l) (F G m a c x : PTm n) :
-    (certificate F G m a c x).subst σ = certificate (Syn.subst σ F) (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ x) := by simp [certificate]
+ipra_subst certificate
 theorem monic_norm (F G m a c x : PTm n) (h : Γ ⊢[PRAAx] input F G m a c) : Γ ⊢[PRAAx] certificate F G m a c x :=
   .andI (norm_length _ _ _ _ _) (.andI (norm_canonical _ _ _ _ _)
     (.andI (multiplication_table_shape _ _ _ _ _ (.andE₁ h) (.andE₂ (.andE₂ h)))
@@ -143,26 +128,20 @@ def output (F G m a c : PTm n) : PTm n := pairT (norm F G m a c)
 def normF : PR 5 := PTm.toPR (norm (var 0) (var 1) (var 2) (var 3) (var 4))
 def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (F G m a c : PTm n) : PTm n := app outputF ![F,G,m,a,c]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (F G m a c : PTm n) :
-    Syn.subst σ (output F G m a c) = output (Syn.subst σ F) (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (F G m a c : PTm n) :
-    Syn.subst σ (run F G m a c) = run (Syn.subst σ F) (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 theorem norm_program_at (F G m a c : PTm n) : Γ ⊢[PRAAx] app normF ![F,G,m,a,c] ≐ norm F G m a c := by
   simpa [normF] using toPR_eq (Γ := Γ) (norm (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![F,G,m,a,c]
 theorem program_at (F G m a c : PTm n) : Γ ⊢[PRAAx] run F G m a c ≐ output F G m a c := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![F,G,m,a,c]
 theorem returned_norm (F G m a c : PTm n) : Γ ⊢[PRAAx] fstT (run F G m a c) ≐ norm F G m a c :=
-  (congrFst (program_at _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _ _).fstE
 theorem returned_matrix (F G m a c : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run F G m a c)) ≐ matrix F G m a c :=
-  (congrFst ((congrSnd (program_at _ _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _ _).sndE.fstE
 theorem returned_columns (F G m a c : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run F G m a c))) ≐ columns F G m a c :=
-  (congrFst ((congrSnd ((congrSnd (program_at _ _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _ _).sndE.sndE.fstE
 theorem returned_width (F G m a c : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run F G m a c))) ≐ width m a c :=
-  (congrSnd ((congrSnd ((congrSnd (program_at _ _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _ _).sndE.sndE.sndE
 theorem returned_length (F G m a c : PTm n) : Γ ⊢[PRAAx] length (fstT (run F G m a c)) ≐ succ (degreeBound m a c) :=
   (congrFst (returned_norm _ _ _ _ _)).eqTrans (norm_length _ _ _ _ _)
 theorem returned_canonical (F G m a c : PTm n) : Γ ⊢[PRAAx] canonicalCoefficients (fstT (run F G m a c)) :=

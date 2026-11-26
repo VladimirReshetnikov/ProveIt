@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaLocalPoleFormula
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianGammaLocalPoleGuards (center terminal localMargin center_Gamma_domain terminal_Gamma_domain)
 open GaussianGammaPoleMultiplier
@@ -29,10 +29,6 @@ open GaussianRationalHorner (positive_product qmul ofGaussian)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianEuclideanDistanceName (pointCN)
 open ComplexLogarithmRemainder (normSq normSq_scale bounded scale)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (pred monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

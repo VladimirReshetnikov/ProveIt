@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaShrinkingGridCoefficientComparison
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaCoefficientObservationPolynomials (polynomial degree)
 open GaussianRationalHorner (evaluate ofGaussian)
 open GaussianRationalMetric (distanceBounded)
@@ -26,9 +26,6 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianShrinkingGridValueRecovery (query valuesClose)
 open GaussianLagrangeCoefficientSensitivity (gain)
 open GaussianGammaCanonicalExponent (source)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -36,12 +33,9 @@ def mesh (t e : PTm n) : PTm n := unit (t+e)
 def precision (t e : PTm n) : PTm n := pw (mesh t e) (succ e)+t
 def budget (R S e : PTm n) : PTm n := two*gain e e*
   (two+(GaussianGammaUnitCoefficientMass.budget R+GaussianGammaUnitCoefficientMass.budget S)*pw e (succ e))
-@[simp] theorem subst_mesh {l : ℕ} (σ : Fin n → PTm l) (t e : PTm n) :
-    Syn.subst σ (mesh t e) = mesh (Syn.subst σ t) (Syn.subst σ e) := by simp [mesh]
-@[simp] theorem subst_precision {l : ℕ} (σ : Fin n → PTm l) (t e : PTm n) :
-    Syn.subst σ (precision t e) = precision (Syn.subst σ t) (Syn.subst σ e) := by simp [precision]
-@[simp] theorem subst_budget {l : ℕ} (σ : Fin n → PTm l) (R S e : PTm n) :
-    Syn.subst σ (budget R S e) = budget (Syn.subst σ R) (Syn.subst σ S) (Syn.subst σ e) := by simp [budget]
+ipra_subst mesh
+ipra_subst precision
+ipra_subst budget
 
 theorem mesh_positive (t e : PTm n) : Γ ⊢[PRAAx] le one (mesh t e) := unit_positive _
 theorem mesh_degree (t e : PTm n) : Γ ⊢[PRAAx] le e (mesh t e) :=

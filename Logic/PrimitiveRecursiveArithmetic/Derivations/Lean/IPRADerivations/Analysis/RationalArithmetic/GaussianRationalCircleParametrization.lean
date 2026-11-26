@@ -17,16 +17,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalCircleParametrization
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder (code re im normSq normSq_eval scale oneCode)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (ofGaussian positive_product)
 open LeanProofs.IPRA.Analysis.GaussianRationalReciprocal (qone)
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (fraction fraction_represents)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,19 +34,13 @@ def denominator (L V : PTm n) : PTm n := L*L+V*V
 def point (L V b : PTm n) : PTm n := ofGaussian (numerator L V b) (denominator L V)
 def bit (b : PTm n) : Fm PTm n := b ≐ zero ⋎ b ≐ one
 
-@[simp] theorem subst_four {m : ℕ} (σ : Fin n → PTm m) : Syn.subst σ (four : PTm n) = (four : PTm m) := by simp [four]
-@[simp] theorem subst_realNumerator {m : ℕ} (σ : Fin n → PTm m) (L V : PTm n) :
-    (realNumerator L V).subst σ = realNumerator (Syn.subst σ L) (Syn.subst σ V) := by simp [realNumerator]
-@[simp] theorem subst_imagNumerator {m : ℕ} (σ : Fin n → PTm m) (L V b : PTm n) :
-    (imagNumerator L V b).subst σ = imagNumerator (Syn.subst σ L) (Syn.subst σ V) (Syn.subst σ b) := by simp [imagNumerator]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (L V b : PTm n) :
-    Syn.subst σ (numerator L V b) = numerator (Syn.subst σ L) (Syn.subst σ V) (Syn.subst σ b) := by simp [numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (L V : PTm n) :
-    Syn.subst σ (denominator L V) = denominator (Syn.subst σ L) (Syn.subst σ V) := by simp [denominator]
-@[simp] theorem subst_point {m : ℕ} (σ : Fin n → PTm m) (L V b : PTm n) :
-    Syn.subst σ (point L V b) = point (Syn.subst σ L) (Syn.subst σ V) (Syn.subst σ b) := by simp [point]
-@[simp] theorem subst_bit {m : ℕ} (σ : Fin n → PTm m) (b : PTm n) :
-    (bit b).subst σ = bit (Syn.subst σ b) := by simp [bit]
+ipra_subst four
+ipra_subst realNumerator
+ipra_subst imagNumerator
+ipra_subst numerator
+ipra_subst denominator
+ipra_subst point
+ipra_subst bit
 
 theorem re_numerator (L V b : PTm n) : ZT.toZ Γ (re (numerator L V b)) = ZT.toZ Γ (realNumerator L V) :=
   ComplexLogarithmRemainder.eval_re_code _ _
@@ -117,8 +107,7 @@ theorem unit_norm (L V b : PTm n) (hL : Γ ⊢[PRAAx] le one L) (hb : Γ ⊢[PRA
 def differenceNumerator (L V b : PTm n) : PTm n :=
   GaussianRootAlgebra.sub (numerator L V b) (scale (denominator L V) oneCode)
 
-@[simp] theorem subst_differenceNumerator {m : ℕ} (σ : Fin n → PTm m) (L V b : PTm n) :
-    Syn.subst σ (differenceNumerator L V b) = differenceNumerator (Syn.subst σ L) (Syn.subst σ V) (Syn.subst σ b) := by simp [differenceNumerator]
+ipra_subst differenceNumerator
 
 theorem difference_numerator_norm (L V b : PTm n) (hb : Γ ⊢[PRAAx] bit b) : Γ ⊢[PRAAx]
     normSq (differenceNumerator L V b) ≐ four*V*V*denominator L V := by
@@ -172,10 +161,8 @@ def output (L V b : PTm n) : PTm n := pairT (point L V b) (pairT (numerator L V 
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (L V b : PTm n) : PTm n := ap3 outputF L V b
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (L V b : PTm n) :
-    Syn.subst σ (output L V b) = output (Syn.subst σ L) (Syn.subst σ V) (Syn.subst σ b) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (L V b : PTm n) :
-    Syn.subst σ (run L V b) = run (Syn.subst σ L) (Syn.subst σ V) (Syn.subst σ b) := by simp [run]
+ipra_subst output
+ipra_subst run
 
 theorem point_program (L V b : PTm n) : Γ ⊢[PRAAx] ap3 pointF L V b ≐ point L V b := by
   simpa [pointF,ap3] using toPR_eq (Γ := Γ) (point (var 0) (var 1) (var 2) : PTm 3) ![L,V,b]
@@ -183,11 +170,11 @@ theorem program_at (L V b : PTm n) : Γ ⊢[PRAAx] run L V b ≐ output L V b :=
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![L,V,b]
 
 theorem returned_point (L V b : PTm n) : Γ ⊢[PRAAx] fstT (run L V b) ≐ point L V b :=
-  (congrFst (program_at L V b)).eqTrans (fst_pair _ _)
+  (program_at L V b).fstE
 theorem returned_numerator (L V b : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run L V b)) ≐ numerator L V b :=
-  (congrFst ((congrSnd (program_at L V b)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at L V b).sndE.fstE
 theorem returned_denominator (L V b : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run L V b)) ≐ denominator L V :=
-  (congrSnd ((congrSnd (program_at L V b)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at L V b).sndE.sndE
 
 theorem rational_circle_pythagorean_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3
     (bit (var 2) ⟶ normSq (numerator (var 0) (var 1) (var 2)) ≐ denominator (var 0) (var 1)*denominator (var 0) (var 1)) :=

@@ -28,16 +28,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Geometry.GenericHeight
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.FilteredEnumeration (rank sel sel_spec)
 open LeanProofs.IPRA.Foundations.VandermondeDeterminant (root_bound)
 open LeanProofs.IPRA.Foundations.EliminationRoot (vpow toZ_vpow)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (eq_of_eqb_ne)
 open LeanProofs.IPRA.AnalyticNumberTheory.Euler (congrEqb)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -166,12 +162,12 @@ theorem k_at (t x y z x' y' z' : PTm n) :
   have a : Γ ⊢[PRAAx] fstT (pd x y z x' y' z') ≐ pairT x (pairT y z) := fst_pair _ _
   have b : Γ ⊢[PRAAx] sndT (pd x y z x' y' z') ≐ pairT x' (pairT y' z') := snd_pair _ _
   exact congrEqb
-    (congrHgt ((congrFst a).eqTrans (fst_pair _ _))
-      ((congrFst ((congrSnd a).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _))
-      ((congrSnd ((congrSnd a).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)))
-    (congrHgt ((congrFst b).eqTrans (fst_pair _ _))
-      ((congrFst ((congrSnd b).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _))
-      ((congrSnd ((congrSnd b).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)))
+    (congrHgt a.fstE
+      a.sndE.fstE
+      a.sndE.sndE)
+    (congrHgt b.fstE
+      b.sndE.fstE
+      b.sndE.sndE)
 
 theorem k_root {t x y z x' y' z' : PTm n}
     (h : Γ ⊢[PRAAx] neg (inst2 kB t (pd x y z x' y' z') ≐ zero)) :

@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalHead
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale oneCode)
 open GaussianGammaEulerHead (head factor head_zero head_succ run program_at)
 open GaussianGammaEulerHeadLower (translated factor_represents)
@@ -25,9 +25,6 @@ open GaussianRationalHorner (positive_product ofGaussian_represents ofGaussian_c
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRootAlgebra (equal_of_values re_add im_add re_scale im_scale re_one im_one)
 open Products (fact)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,13 +35,9 @@ def numerator (K a b : PTm n) : PTm n :=
 
 def denominator (N b : PTm n) : PTm n := pw b (succ N) * fact N
 
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (K a b : PTm n) :
-    Syn.subst σ (numerator K a b) = numerator (Syn.subst σ K) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [numerator]
+ipra_subst numerator
 
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (N b : PTm n) :
-    Syn.subst σ (denominator N b) = denominator (Syn.subst σ N) (Syn.subst σ b) := by
-  simp [denominator,fact]
+ipra_subst denominator [fact]
 
 theorem numerator_zero (a b : PTm n) : Γ ⊢[PRAAx] numerator zero a b ≐ one :=
   prod_zero linearBody (pairT a b)
@@ -61,11 +54,9 @@ theorem numerator_positive (K a b : PTm n) (ha : Γ ⊢[PRAAx] le one a) :
     Γ ⊢[PRAAx] le one (numerator K a b) := by
   have h : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift a) := by simpa [Fm.shift,Syn.shift,one] using ha.shift
   have hall : Γ ⊢[PRAAx] .all (le one (numerator (var 0) (Syn.shift a) (Syn.shift b))) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le,subst_numerator,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift,one,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero]
-      exact le_congr (.eqRefl _) (numerator_zero a b).eqSymm (le_refl _)
-    · simp only [subst_le,subst_numerator,Syn.subst_var,Syn.repl_zero,subst_repl_shift,one,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero]
-      exact le_congr (.eqRefl _) (numerator_succ _ _ _).eqSymm
+    ipra_qfind (le_QF _ _) [subst_le, subst_numerator, one]
+    · exact le_congr (.eqRefl _) (numerator_zero a b).eqSymm (le_refl _)
+    · exact le_congr (.eqRefl _) (numerator_succ _ _ _).eqSymm
         (positive_product _ _ Prf.hyp0 (le_trans h.wk (le_add_right _ _)))
   simpa only [subst_le,subst_numerator,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift,one,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero] using hall.allE K
 
@@ -91,9 +82,7 @@ private theorem fraction_factor (N a b : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
 def headLaw (N a b : PTm n) : Fm PTm n :=
   head (scale a oneCode) b N ≐ fraction (numerator (succ N) a b) (denominator N b)
 
-@[simp] theorem subst_headLaw {m : ℕ} (σ : Fin n → PTm m) (N a b : PTm n) :
-    (headLaw N a b).subst σ = headLaw (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [headLaw,fraction]
+ipra_subst headLaw [fraction]
 
 private theorem head_zero_fraction (a b : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
     Γ ⊢[PRAAx] headLaw zero a b := by

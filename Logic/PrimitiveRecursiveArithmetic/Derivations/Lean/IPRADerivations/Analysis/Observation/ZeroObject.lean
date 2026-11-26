@@ -9,9 +9,7 @@ The offsets need not be minimal. Each of the seven numbers is internal.
 -/
 namespace LeanProofs.IPRA.Analysis.Observation.ZeroObject
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

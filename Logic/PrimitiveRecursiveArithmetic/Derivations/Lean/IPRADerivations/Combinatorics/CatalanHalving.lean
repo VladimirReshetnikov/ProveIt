@@ -1,8 +1,6 @@
 import IPRADerivations.Combinatorics.CatalanSquares
 import IPRADerivations.Core.SumPalindrome
 import IPRADerivations.Combinatorics.CatalanConvolution
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The square sum, halved
@@ -24,7 +22,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.CatalanHalving
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial (binom)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
 open LeanProofs.IPRA.Combinatorics.Stirling (sg sg_zero sg_succ)
@@ -34,10 +32,6 @@ open LeanProofs.IPRA.Combinatorics.CatalanSquares (inst2_d signed_square signed_
 open LeanProofs.IPRA.Combinatorics.CatalanConvolution (congrCat)
 open LeanProofs.IPRA.Combinatorics.Catalan (cat succ_pos)
 open LeanProofs.IPRA.Probability.Variance (ad)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -145,17 +139,15 @@ theorem t_middle (N : PTm n) :
     · have z := natEq (Prf.hyp0 (Ax := PRAAx) (Γ := (par (succ (succ N)) ≐ one) :: Γ)
         (φ := half (succ (succ N)) ≐ zero))
       have hp := natEq (half_par (Γ := (half (succ (succ N)) ≐ zero) :: (par (succ (succ N)) ≐ one) :: Γ) (succ (succ N)))
-      have pp := natEq (p.wk (ψ := half (succ (succ N)) ≐ zero))
       have bad : ((half (succ (succ N)) ≐ zero) :: (par (succ (succ N)) ≐ one) :: Γ) ⊢[PRAAx] succ N ≐ zero := by
-        ipra_lc hp + pp + 2 * z
+        ipra_lc hp + natEq (p.wk (ψ := half (succ (succ N)) ≐ zero)) + 2 * z
       exact succ_ne_zero' _ bad
     · have hp := natEq (half_par (Γ := (half (succ (succ N)) ≐ succ (pred (half (succ (succ N))))) ::
         (par (succ (succ N)) ≐ one) :: Γ) (succ (succ N)))
-      have pp := natEq (p.wk (ψ := half (succ (succ N)) ≐ succ (pred (half (succ (succ N))))))
       set h := half (succ (succ N))
       have eh : ((h ≐ succ (pred h)) :: (par (succ (succ N)) ≐ one) :: Γ) ⊢[PRAAx] h ≐ succ (pred h) := Prf.hyp0
       have eN : ((h ≐ succ (pred h)) :: (par (succ (succ N)) ≐ one) :: Γ) ⊢[PRAAx] N ≐ pred h + succ (pred h) := by
-        ipra_lc hp + pp + 2 * natEq eh
+        ipra_lc hp + natEq (p.wk (ψ := half (succ (succ N)) ≐ succ (pred (half (succ (succ N)))))) + 2 * natEq eh
       have l : ((h ≐ succ (pred h)) :: (par (succ (succ N)) ≐ one) :: Γ) ⊢[PRAAx] le (pred h) N :=
         le_of_eq_add eN
       have m : ((h ≐ succ (pred h)) :: (par (succ (succ N)) ≐ one) :: Γ) ⊢[PRAAx] monus N (pred h) ≐ h :=
@@ -193,9 +185,8 @@ theorem half_succ_succ (N : PTm n) : Γ ⊢[PRAAx] half (succ (succ N)) ≐ succ
     apply deriveNat; ipra_simps; linear_combination a + b + c + p + q
   · have a := natEq (half_succ (Γ := (par N ≐ one) :: Γ) (succ N))
     have b := natEq (half_succ (Γ := (par N ≐ one) :: Γ) N)
-    have c := natEq (par_succ (Γ := (par N ≐ one) :: Γ) N)
     have p := natEq (Prf.hyp0 (Ax := PRAAx) (Γ := Γ) (φ := par N ≐ one))
     have q := natEq ((congrMonus (Γ := (par N ≐ one) :: Γ) (.eqRefl one) Prf.hyp0).eqTrans (monus_self one))
-    apply deriveNat; ipra_simps; linear_combination a + b + c + p + q
+    apply deriveNat; ipra_simps; linear_combination a + b + natEq (par_succ (Γ := (par N ≐ one) :: Γ) N) + p + q
 
 end LeanProofs.IPRA.Combinatorics.CatalanHalving

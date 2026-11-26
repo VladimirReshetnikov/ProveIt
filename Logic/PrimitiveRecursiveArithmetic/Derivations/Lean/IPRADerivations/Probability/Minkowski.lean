@@ -1,6 +1,5 @@
 import IPRADerivations.Probability.ExpectationCorollaries
 import IPRADerivations.DiophantineNumberTheory.SquareArea
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Finite Minkowski for `p = 1` and `p = 2`
@@ -23,17 +22,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.Minkowski
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Expectation (Ew Wt inst2_mul' inst2_add' exp_add exp_mono cauchy_schwarz)
 open LeanProofs.IPRA.Probability.Variance (ad second_moment_add)
 open LeanProofs.IPRA.Probability.ExpectationCorollaries (adB inst2_adB)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (le_of_sq_le)
 open LeanProofs.IPRA.DiophantineNumberTheory.SquareArea (le_add_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -51,9 +46,7 @@ theorem monus_le_of_le_add {x y z : PTm n} (h : Γ ⊢[PRAAx] le x (y + z)) : Γ
       natEq (eq_add_of_le (Prf.hyp0 : C ⊢[PRAAx] le y x))
 
 /-- `a ≤ b + (a ∸ b)`. -/
-theorem le_add_monus (a b : PTm n) : Γ ⊢[PRAAx] le a (b + monus a b) := by
-  refine le_of_eq_add (d := monus b a) ?_
-  ipra_lc natEq (monus_max (Γ := Γ) a b)
+alias le_add_monus := Common.le_add_monus
 
 /-- `(a + a') ∸ (b + b') ≤ (a ∸ b) + (a' ∸ b')`. -/
 theorem monus_add_le (a a' b b' : PTm n) : Γ ⊢[PRAAx] le (monus (a + a') (b + b')) (monus a b + monus a' b') := by

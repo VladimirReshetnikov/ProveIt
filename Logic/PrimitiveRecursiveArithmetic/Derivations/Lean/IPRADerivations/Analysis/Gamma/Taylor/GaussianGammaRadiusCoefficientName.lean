@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaHigherCoefficientName
 import IPRADerivations.Analysis.Names.GaussianNameConjugation
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Original coefficient names at an admissible common radius
@@ -17,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaRadiusCoefficientName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaFixedCoefficientVariation (modulus)
 open GaussianGammaFiniteCoefficientStability (cofinalObservation)
 open GaussianRationalMetric (distanceBounded)
@@ -26,9 +25,6 @@ open GaussianRationalDistanceOrder (distance_congr)
 open GaussianCoefficientNameBounds (unit)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,18 +36,12 @@ def nameF : PR 2 := GaussianFastValueCut.nameF rawF
 def data (R e : PTm n) : PTm n := GaussianFastValueCut.nameData (modulus R e) (rawData R e)
 def clock (p R e : PTm n) : PTm n := GaussianFastValueCut.exponent (modulus R e) p
 def sample (p R e : PTm n) : PTm n := ap2 nameF p (data R e)
-@[simp] theorem subst_admissible {m : ℕ} (σ : Fin n → PTm m) (R e : PTm n) :
-    (admissible R e).subst σ = admissible (Syn.subst σ R) (Syn.subst σ e) := by simp [admissible]
-@[simp] theorem subst_rawValue {m : ℕ} (σ : Fin n → PTm m) (p R e : PTm n) :
-    Syn.subst σ (rawValue p R e) = rawValue (Syn.subst σ p) (Syn.subst σ R) (Syn.subst σ e) := by simp [rawValue]
-@[simp] theorem subst_rawData {m : ℕ} (σ : Fin n → PTm m) (R e : PTm n) :
-    Syn.subst σ (rawData R e) = rawData (Syn.subst σ R) (Syn.subst σ e) := by simp [rawData]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (R e : PTm n) :
-    Syn.subst σ (data R e) = data (Syn.subst σ R) (Syn.subst σ e) := by simp [data]
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (p R e : PTm n) :
-    Syn.subst σ (clock p R e) = clock (Syn.subst σ p) (Syn.subst σ R) (Syn.subst σ e) := by simp [clock]
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (p R e : PTm n) :
-    Syn.subst σ (sample p R e) = sample (Syn.subst σ p) (Syn.subst σ R) (Syn.subst σ e) := by simp [sample]
+ipra_subst admissible
+ipra_subst rawValue
+ipra_subst rawData
+ipra_subst data
+ipra_subst clock
+ipra_subst sample
 
 theorem raw_congr {p R e p' R' e' : PTm n} (hp : Γ ⊢[PRAAx] p ≐ p') (hR : Γ ⊢[PRAAx] R ≐ R')
     (he : Γ ⊢[PRAAx] e ≐ e') : Γ ⊢[PRAAx] rawValue p R e ≐ rawValue p' R' e' := by

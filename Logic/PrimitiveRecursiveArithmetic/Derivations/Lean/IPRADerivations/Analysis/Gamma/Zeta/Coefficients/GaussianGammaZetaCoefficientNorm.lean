@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaCoefficientNorm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul)
 open GaussianRationalReciprocal (power)
 open GaussianRationalL1 (qL1)
@@ -29,10 +29,6 @@ open GaussianDominantPairAlgebra (radiusPoint)
 open RationalSupMetric (denominatorOf)
 open RationalGaussianEmbedding (embed)
 open RationalArgmin (rationalLE)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

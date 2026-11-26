@@ -28,7 +28,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.BellWindowPeriod
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Bell (bell)
 open LeanProofs.IPRA.Combinatorics.BellPascalInversion (congrBell)
 open LeanProofs.IPRA.Combinatorics.BellTouchardPower (cong_add cong_mul cong_of_eq cong_sum
@@ -39,10 +39,6 @@ open LeanProofs.IPRA.Combinatorics.BellModularRecurrence (recurrence_split MidB)
 open LeanProofs.IPRA.Combinatorics.BellLeastPeriod (eB e_elim e_intro Test allB_extend)
 open LeanProofs.IPRA.Combinatorics.LinearFactorTable (cyc actB act_at)
 open LeanProofs.IPRA.Foundations.BoundedReflection (allB allB_zero all_elim)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

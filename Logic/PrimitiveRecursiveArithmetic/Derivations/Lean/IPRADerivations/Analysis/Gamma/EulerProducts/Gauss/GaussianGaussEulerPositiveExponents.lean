@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGaussEulerPositiveExponents
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaAdjacentCutoff (multiply_cross)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
@@ -34,8 +34,6 @@ open GaussianNamedGammaHalfShift (add_cross)
 open GaussianRationalHorner (qadd qzero ofGaussian)
 open GaussianRationalMetric (qnegative qnegative_canonical)
 open GaussianRationalSyntheticDivision (qmul_congr qadd_congr qzero_add qmul_zero_left)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

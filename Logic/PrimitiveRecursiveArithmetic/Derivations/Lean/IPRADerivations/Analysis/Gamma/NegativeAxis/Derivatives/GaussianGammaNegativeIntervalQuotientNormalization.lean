@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalQuotientNormalization
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaNegativeCriticalCorrection (guard)
 open GaussianGammaNegativeIntervalDerivativeTarget (reciprocalData target_regular reciprocal_regular normalized_target)
@@ -24,9 +24,6 @@ open GaussianNameBounds (U all_samples_bounded)
 open GaussianNameEquivalence (cross_refl cross_symm)
 open GaussianNamedDifferenceRate (self_rate rate_parameters_congr)
 open GaussianNamedInverseRate (independentRate)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "P" => GaussianGammaC7Name.nameF

@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerExponentialLogCompact
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerCompactAdditivity (intervalSource)
 open GaussianEulerExponentialNamedLogGrid (imageSum observationCost rowNumerator)
 open GaussianEulerExponentialSubstitutionCompactBound (majorant)
@@ -27,10 +27,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRationalHorner (positive_product)
 open GaussianNameEquivalence (crossEquivalent cross_trans cross_symm point_at)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -46,13 +42,8 @@ def diagonalSample (t z R B a C E T : PTm n) : PTm n :=
 def sample (p z R B a C E T : PTm n) : PTm n := diagonalSample (stage p R C E T) z R B a C E T
 def data (z R B a C E T : PTm n) : PTm n := pairT (pairT z R) (pairT (pairT B a) (pairT (pairT C E) T))
 
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (p z R B a C E T : PTm n) :
-    Syn.subst σ (sample p z R B a C E T) = sample (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by
-  simp [sample,diagonalSample,stage,query,count,curvature,observationCost,GaussianEulerExponentialLogGrid.observationCost]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (z R B a C E T : PTm n) :
-    Syn.subst σ (data z R B a C E T) = data (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by simp [data]
+ipra_subst sample [diagonalSample, stage, query, count, curvature, observationCost, GaussianEulerExponentialLogGrid.observationCost]
+ipra_subst data
 
 private def fields (p x : PTm n) : Fin 8 → PTm n :=
   ![p,fstT (fstT x),sndT (fstT x),fstT (fstT (sndT x)),sndT (fstT (sndT x)),
@@ -66,18 +57,18 @@ private theorem decoded_values (p z R B a C E T : PTm n) (i : Fin 8) :
   let x := data z R B a C E T
   have head : Γ ⊢[PRAAx] fstT x ≐ pairT z R := fst_pair _ _
   have tail : Γ ⊢[PRAAx] sndT x ≐ pairT (pairT B a) (pairT (pairT C E) T) := snd_pair _ _
-  have mid : Γ ⊢[PRAAx] fstT (sndT x) ≐ pairT B a := (congrFst tail).eqTrans (fst_pair _ _)
-  have last : Γ ⊢[PRAAx] sndT (sndT x) ≐ pairT (pairT C E) T := (congrSnd tail).eqTrans (snd_pair _ _)
-  have bounds : Γ ⊢[PRAAx] fstT (sndT (sndT x)) ≐ pairT C E := (congrFst last).eqTrans (fst_pair _ _)
+  have mid : Γ ⊢[PRAAx] fstT (sndT x) ≐ pairT B a := tail.fstE
+  have last : Γ ⊢[PRAAx] sndT (sndT x) ≐ pairT (pairT C E) T := tail.sndE
+  have bounds : Γ ⊢[PRAAx] fstT (sndT (sndT x)) ≐ pairT C E := last.fstE
   fin_cases i
   · exact .eqRefl _
-  · exact (congrFst head).eqTrans (fst_pair _ _)
-  · exact (congrSnd head).eqTrans (snd_pair _ _)
-  · exact (congrFst mid).eqTrans (fst_pair _ _)
-  · exact (congrSnd mid).eqTrans (snd_pair _ _)
-  · exact (congrFst bounds).eqTrans (fst_pair _ _)
-  · exact (congrSnd bounds).eqTrans (snd_pair _ _)
-  · exact (congrSnd last).eqTrans (snd_pair _ _)
+  · exact head.fstE
+  · exact head.sndE
+  · exact mid.fstE
+  · exact mid.sndE
+  · exact bounds.fstE
+  · exact bounds.sndE
+  · exact last.sndE
 
 theorem name_at (p z R B a C E T : PTm n) : Γ ⊢[PRAAx]
     ap2 nameF p (data z R B a C E T) ≐ sample p z R B a C E T := by

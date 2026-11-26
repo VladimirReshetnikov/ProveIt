@@ -17,7 +17,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaPositiveNamedReciprocalFrozen
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode re normSq)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianEuclideanDistanceName (pointCN fraction fraction_represents)
@@ -36,10 +36,6 @@ open GaussianRationalL1 (rawGaussian rawDen raw_den_positive raw_represents)
 open GaussianRationalMetric (bounded)
 open GaussianStirlingGammaLogarithm (arg gammaData gamma_lower_at gammaMargin gamma_source gamma_regular)
 open RationalValueBounds (upper upper_congr)
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -67,13 +63,9 @@ def syntheticData (a b : PTm n) : PTm n :=
     Syn.subst σ (coefficient : PTm n) = (coefficient : PTm m) := by
   simp [coefficient]
 
-@[simp] theorem subst_nativeData {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (k x : PTm n) :
-    Syn.subst σ (nativeData f k x) = nativeData f (Syn.subst σ k) (Syn.subst σ x) := by
-  simp [nativeData]
+ipra_subst nativeData
 
-@[simp] theorem subst_syntheticData {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (syntheticData a b) = syntheticData (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [syntheticData,inverseClock,one,two]
+ipra_subst syntheticData [inverseClock, one, two]
 
 private theorem margin_positive : Γ ⊢[PRAAx] le one (gammaMargin : PTm n) := by
   unfold gammaMargin

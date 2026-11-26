@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Poles.GaussianGammaPoleZeros
 import IPRADerivations.Analysis.Gamma.GaussianGammaReciprocalInverse
-import IPRADerivations.Core.SearchParameters
 
 /-!
 # Exact pole search for rational reciprocal Gamma inputs
@@ -16,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaPoleSearch
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaEulerHeadLower (translated poleGuard poleAt)
 open GaussianGeneralPolynomialValueName (programZero program_zero_at)
 open GaussianGammaCanonicalExponent (source)
@@ -27,10 +26,6 @@ open GaussianRationalHorner (positive_product qzero)
 open GaussianRationalL1 (rawDen rawGaussian raw_represents raw_den_positive)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -40,12 +35,7 @@ def search (z B N : PTm n) : PTm n := Search.Finite.mu testBody (succ N) ![z,B]
 def hit (z B N : PTm n) : Fm PTm n :=
   le (search z B N) N ⋏ equal (translated z B (search z B N)) zeroCode
 
-@[simp] theorem subst_search {l : ℕ} (σ : Fin n → PTm l) (z B N : PTm n) :
-    Syn.subst σ (search z B N) = search (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by
-  simp only [search,Search.Finite.subst_mu,ConciseIPRA.PTm.subst_succ]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst search [Search.Finite.subst_mu, ConciseIPRA.PTm.subst_succ]
 
 theorem test_at (z B k : PTm n) :
     Search.Finite.applyBody testBody k ![z,B] = normSq (translated z B k) := by

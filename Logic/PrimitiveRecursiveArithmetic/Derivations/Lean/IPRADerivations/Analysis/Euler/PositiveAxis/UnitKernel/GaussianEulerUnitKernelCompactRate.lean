@@ -19,7 +19,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelCompactRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUnitSubstitutionKernel (nameF data exponentF exponentData)
 open GaussianEulerIntegrandName (coefficient)
 open GaussianGammaCanonicalExponent (constantF constant_regular constant_at)
@@ -28,10 +28,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,17 +39,11 @@ def exponentRadius (R E : PTm n) : PTm n := (R+one)*GaussianEulerUnitCompactTime
 def majorant (R E : PTm n) : PTm n := pw (num 3) (exponentRadius R E)
 def lipschitz (R E : PTm n) : PTm n := majorant R E*(R+one)*GaussianEulerUnitLogarithmicRate.lipschitz E
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B a b E : PTm n) :
-    (source z R B a b E).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ E) := by simp [source]
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (z R B a b c d E X Y : PTm n) :
-    (input z R B a b c d E X Y).subst σ = input (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b)
-      (Syn.subst σ c) (Syn.subst σ d) (Syn.subst σ E) (Syn.subst σ X) (Syn.subst σ Y) := by simp [input]
-@[simp] theorem subst_exponentRadius {m : ℕ} (σ : Fin n → PTm m) (R E : PTm n) :
-    Syn.subst σ (exponentRadius R E) = exponentRadius (Syn.subst σ R) (Syn.subst σ E) := by simp [exponentRadius]
-@[simp] theorem subst_majorant {m : ℕ} (σ : Fin n → PTm m) (R E : PTm n) :
-    Syn.subst σ (majorant R E) = majorant (Syn.subst σ R) (Syn.subst σ E) := by simp [majorant]
-@[simp] theorem subst_lipschitz {m : ℕ} (σ : Fin n → PTm m) (R E : PTm n) :
-    Syn.subst σ (lipschitz R E) = lipschitz (Syn.subst σ R) (Syn.subst σ E) := by simp [lipschitz]
+ipra_subst source
+ipra_subst input
+ipra_subst exponentRadius
+ipra_subst majorant
+ipra_subst lipschitz
 
 theorem kernel_source (z R B a b E : PTm n) (h : Γ ⊢[PRAAx] source z R B a b E) : Γ ⊢[PRAAx]
     GaussianEulerUnitSubstitutionKernel.source z B a b := .andI h.andE₁.andE₁ h.andE₂.andE₁

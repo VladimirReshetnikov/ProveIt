@@ -1,9 +1,6 @@
 import IPRADerivations.Combinatorics.KummerDigits
 import IPRADerivations.AnalyticNumberTheory.FactorialLambda
 import IPRADerivations.AnalyticNumberTheory.RSA
-import IPRADerivations.Core.SumSplit
-import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Kummer's carry formula
@@ -34,7 +31,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.KummerCarries
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime fact_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val pw_pos' lt_pw)
@@ -49,10 +46,6 @@ open LeanProofs.IPRA.Combinatorics.LegendreDigits (dm dmu pos_mul' quo_quo quo_s
 open LeanProofs.IPRA.Combinatorics.LegendreFact (legendre_fact)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (pos_of_eq_mul)
 open LeanProofs.IPRA.Foundations.CrossingSearch (monus_of_eq)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -70,8 +63,7 @@ theorem quo_add_split {P : PTm n} (hP : Γ ⊢[PRAAx] P ≐ succ (pred P)) (a b 
 
 theorem two_contra {P q r ra rb : PTm n} (la : Γ ⊢[PRAAx] le (succ ra) P) (lb : Γ ⊢[PRAAx] le (succ rb) P)
     (hq : Γ ⊢[PRAAx] le two q) (e : Γ ⊢[PRAAx] ra + rb ≐ P * q + r) : Γ ⊢[PRAAx] le one zero := by
-  have x := natEq e
-  ipra_le sl la + sl lb + 𝔞 P * sl hq + 𝔞 r + 1 with x
+  ipra_le sl la + sl lb + 𝔞 P * sl hq + 𝔞 r + 1 with natEq e
 
 /-- The carry is a bit: `⌊((a mod P) + (b mod P))/P⌋ ≤ 1`. -/
 theorem carry_le_one {P : PTm n} (hP : Γ ⊢[PRAAx] P ≐ succ (pred P)) (a b : PTm n) :
@@ -149,8 +141,8 @@ theorem cy_at (j p a b : PTm n) :
   have ep : Γ ⊢[PRAAx] pw (fstT (pairT p (pairT a b))) (succ j) ≐ pw p (succ j) :=
     congrPw (fst_pair _ _) (.eqRefl _)
   exact congrAp2 quoF (congrAdd
-    (congrAp2 remF ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)) ep)
-    (congrAp2 remF ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)) ep)) ep
+    (congrAp2 remF (snd_pair _ _).fstE ep)
+    (congrAp2 remF (snd_pair _ _).sndE ep)) ep
 
 /-! ## Sums -/
 

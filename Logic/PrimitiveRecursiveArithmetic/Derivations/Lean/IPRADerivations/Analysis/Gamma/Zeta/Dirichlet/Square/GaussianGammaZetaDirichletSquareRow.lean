@@ -18,7 +18,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaDirichletSquareRow
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEulerPositiveScalingConstant (exponentF exponentData exponent_regular inverseF inverseData)
@@ -33,8 +33,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRationalSyntheticDivision (qone qmul_congr qadd_congr)
 open RationalGaussianEmbedding (embed)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "L" => GaussianPositiveRationalLogarithm.logF
@@ -45,9 +43,7 @@ def squareData (j : PTm n) : PTm n := embed (RationalReciprocalPowerTail.recipro
 
 @[simp] theorem subst_nativeTwo {m : ℕ} (σ : Fin n → PTm m) :
     Syn.subst σ (nativeTwo : PTm n) = nativeTwo := by simp [nativeTwo,one]
-@[simp] theorem subst_squareData {m : ℕ} (σ : Fin n → PTm m) (j : PTm n) :
-    Syn.subst σ (squareData j) = squareData (Syn.subst σ j) := by
-  simp [squareData,RationalReciprocalPowerTail.reciprocalPower,two,one]
+ipra_subst squareData [RationalReciprocalPowerTail.reciprocalPower, two, one]
 
 theorem native_two_coefficient : Γ ⊢[PRAAx] ofGaussian (nativeTwo : PTm n) one ≐ qadd qone qone :=
   ((GaussianEulerIntegrationByPartsLinear.coefficient_plus_one nativeTwo one (le_refl one)).eqSymm.eqTrans

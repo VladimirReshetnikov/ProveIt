@@ -6,10 +6,7 @@ import IPRADerivations.Core.BoundedSums
 N and the two data tables are arbitrary object terms. The premise only
 compares the two responses at states visited by the first run. -/
 namespace LeanProofs.IPRA.Analysis.Observation.ReplayObject
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open LeanProofs.ConciseIPRA.PTm (zero succ)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

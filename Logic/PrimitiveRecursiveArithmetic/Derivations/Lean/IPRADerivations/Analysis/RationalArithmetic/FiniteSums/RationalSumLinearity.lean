@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalFiniteSum
 import IPRADerivations.DiophantineNumberTheory.MinkowskiCenters
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Actual rational finite sums commute with scalar multiplication
@@ -17,13 +16,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.RationalSumLinearity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.RationalSupMetric (numeratorOf denominatorOf)
 open LeanProofs.IPRA.Analysis.RationalArithmetic (multiply multiplyF represents)
 open LeanProofs.IPRA.Analysis.RationalFiniteSum
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -32,9 +28,7 @@ def scaledBody (A : PTm 2) : PTm 2 :=
   ap2 multiplyF (fstT (var 1)) (ap2 (PTm.toPR A) (var 0) (sndT (var 1)))
 def scaledSum (A : PTm 2) (N c x : PTm n) : PTm n := sum (scaledBody A) N (pairT c x)
 
-@[simp] theorem subst_scaledSum {m : ℕ} (σ : Fin n → PTm m) (A : PTm 2) (N c x : PTm n) :
-    Syn.subst σ (scaledSum A N c x) = scaledSum A (Syn.subst σ N) (Syn.subst σ c) (Syn.subst σ x) := by
-  simp only [scaledSum,subst_sum,subst_pairT]
+ipra_subst scaledSum
 
 theorem scaled_term (A : PTm 2) (i c x : PTm n) :
     Γ ⊢[PRAAx] term (scaledBody A) i (pairT c x) ≐ multiply c (term A i x) := by
@@ -68,22 +62,16 @@ def rawScale (A : PTm 2) (N c x : PTm n) : Fm PTm n :=
   ZT.eq (numerator (scaledBody A) N (pairT c x)*ZT.ofNat (denominatorOf c*denominator A N x))
     (numeratorOf c*numerator A N x*ZT.ofNat (denominator (scaledBody A) N (pairT c x)))
 
-@[simp] theorem subst_rawScale {m : ℕ} (σ : Fin n → PTm m) (A : PTm 2) (N c x : PTm n) :
-    (rawScale A N c x).subst σ = rawScale A (Syn.subst σ N) (Syn.subst σ c) (Syn.subst σ x) := by
-  simp only [rawScale,ZT.subst_eq,ZT.subst_mul,ZT.subst_ofNat,subst_numerator,
-    PTm.subst_mul,RationalSupMetric.subst_denominatorOf,RationalSupMetric.subst_numeratorOf,
-    subst_denominator,subst_pairT]
+ipra_subst rawScale
 
 theorem raw_scale_zero (A : PTm 2) (c x : PTm n) : Γ ⊢[PRAAx] rawScale A zero c x := by
   apply ZT.derive
-  have pa := natEq (positive_zero (Γ := Γ) A x)
-  have qa := natEq (negative_zero (Γ := Γ) A x)
   have pb := natEq (positive_zero (Γ := Γ) (scaledBody A) (pairT c x))
   have qb := natEq (negative_zero (Γ := Γ) (scaledBody A) (pairT c x))
   simp only [rawScale,ZT.toZ_mul,ZT.toZ_ofNat]
   simp only [numerator,ZT.toZ]
   ipra_simps
-  rw [pa,qa,pb,qb]
+  rw [natEq (positive_zero (Γ := Γ) A x),natEq (negative_zero (Γ := Γ) A x),pb,qb]
   ring
 
 theorem raw_scale_succ (A : PTm 2) (N c x : PTm n)
@@ -104,11 +92,9 @@ theorem raw_scale_succ (A : PTm 2) (N c x : PTm n)
 
 theorem raw_scale (A : PTm 2) (N c x : PTm n) : Γ ⊢[PRAAx] rawScale A N c x := by
   have all : Γ ⊢[PRAAx] .all (rawScale A (var 0) (Syn.shift c) (Syn.shift x)) := by
-    refine PRA.qfInd _ (by trivial) ?_ ?_
-    · simp only [subst_rawScale,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact raw_scale_zero A c x
-    · simp only [Fm.subst_imp,subst_rawScale,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact raw_scale_succ A _ _ _ Prf.hyp0
+    ipra_qfind (by trivial) [subst_rawScale]
+    · exact raw_scale_zero A c x
+    · exact raw_scale_succ A _ _ _ Prf.hyp0
   simpa only [subst_rawScale,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
 
 /-- The actual finite scalar multiple equals multiplying the actual sum.

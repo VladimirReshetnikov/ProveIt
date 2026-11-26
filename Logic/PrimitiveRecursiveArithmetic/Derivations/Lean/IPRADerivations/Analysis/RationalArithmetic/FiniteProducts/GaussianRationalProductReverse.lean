@@ -15,17 +15,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalProductReverse
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalFiniteProduct (qprod product_succ product_zero product_canonical product_index_congr)
 open GaussianRationalHorner (qmul)
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalReciprocal (qone)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianReciprocalHorner (qmul_associative qmul_one_right)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -33,9 +29,7 @@ def reverseBody (t : PTm 2) : PTm 2 :=
   inst2 t (monus (fstT (var 1)) (succ (var 0))) (sndT (var 1))
 def reversed (t : PTm 2) (N x k : PTm n) : PTm n := qprod (reverseBody t) k (pairT N x)
 
-@[simp] theorem subst_reversed {l : ℕ} (σ : Fin n → PTm l) (t : PTm 2) (N x k : PTm n) :
-    Syn.subst σ (reversed t N x k) = reversed t (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ k) := by
-  simp [reversed]
+ipra_subst reversed
 
 theorem reverse_at (t : PTm 2) (N x k : PTm n) :
     Γ ⊢[PRAAx] inst2 (reverseBody t) k (pairT N x) ≐ inst2 t (monus N (succ k)) x := by
@@ -48,9 +42,7 @@ theorem reverse_at (t : PTm 2) (N x k : PTm n) :
 def prefixLaw (t : PTm 2) (N x k : PTm n) : Fm PTm n := le k N ⟶
   qmul (reversed t N x k) (qprod t (monus N k) x) ≐ qprod t N x
 
-@[simp] theorem subst_prefixLaw {l : ℕ} (σ : Fin n → PTm l) (t : PTm 2) (N x k : PTm n) :
-    (prefixLaw t N x k).subst σ = prefixLaw t (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ k) := by
-  simp [prefixLaw]
+ipra_subst prefixLaw
 
 private theorem prefix_zero (t : PTm 2) (N x : PTm n) : Γ ⊢[PRAAx] prefixLaw t N x zero := by
   refine .impI ?_

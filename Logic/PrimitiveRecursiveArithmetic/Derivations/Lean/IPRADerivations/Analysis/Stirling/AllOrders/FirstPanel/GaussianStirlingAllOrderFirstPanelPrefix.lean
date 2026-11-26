@@ -16,7 +16,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelPrefix
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
@@ -37,9 +37,6 @@ open RationalSumLinearity (scaledBody scaled_term sum_homogeneous)
 open RationalGaussianEmbedding (embed)
 open RationalGaussianRealPart (embedBody embed_congr embed_sum)
 open GaussianEuclideanDistanceName (fraction)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -50,11 +47,8 @@ def halfPrefix (A B Q L : PTm n) : PTm n := embed (multiply (fraction one two) (
 def rowCap (A B L : PTm n) : PTm n := num 4*(A+B*L+B)+two
 def rowClock (A B L p : PTm n) : PTm n := exponent (L*rowCap A B L) p
 
-@[simp] theorem subst_rowCap {l : ℕ} (σ : Fin n → PTm l) (A B L : PTm n) :
-    Syn.subst σ (rowCap A B L) = rowCap (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ L) := by simp [rowCap]
-@[simp] theorem subst_rowClock {l : ℕ} (σ : Fin n → PTm l) (A B L p : PTm n) :
-    Syn.subst σ (rowClock A B L p) = rowClock (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ L) (Syn.subst σ p) :=
-  by simp [rowClock]
+ipra_subst rowCap
+ipra_subst rowClock
 
 theorem row_clock_ge (A B L p : PTm n) : Γ ⊢[PRAAx] le (L*unit p) (unit (rowClock A B L p)) := by
   have h : Γ ⊢[PRAAx] le (L*unit p) (L*rowCap A B L*unit p) := by
@@ -65,9 +59,7 @@ theorem row_clock_ge (A B L p : PTm n) : Γ ⊢[PRAAx] le (L*unit p) (unit (rowC
 private def gaussianBody : PTm 2 := embedBody (scaledBody body)
 private def gaussianData (A B Q : PTm n) : PTm n := pairT (fraction one two) (data A B (B*Q))
 
-@[simp] theorem subst_gaussianData {l : ℕ} (σ : Fin n → PTm l) (A B Q : PTm n) :
-    Syn.subst σ (gaussianData A B Q) = gaussianData (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ Q) :=
-  by simp [gaussianData]
+ipra_subst gaussianData
 
 private theorem gaussian_at (A B Q k : PTm n) : Γ ⊢[PRAAx]
     inst2 gaussianBody k (gaussianData A B Q) ≐ halfPanel A B Q k := by

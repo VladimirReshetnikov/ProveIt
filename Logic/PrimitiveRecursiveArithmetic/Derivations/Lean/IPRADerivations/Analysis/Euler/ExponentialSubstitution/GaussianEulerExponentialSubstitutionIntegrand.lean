@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerExponentialSubstitutionIntegrand
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaEulerHeadShift (shifted)
 open GaussianEulerIntegrandName (source logarithmF powerExponentF decayPoint)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
@@ -25,8 +25,6 @@ open GaussianRationalHorner (qmul qadd ofGaussian)
 open GaussianRationalMetric (distanceBounded)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianCoefficientNameBounds (unit)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -45,18 +43,12 @@ def sample (p z B a b : PTm n) : PTm n :=
 def logarithmClock (p z B a b : PTm n) : PTm n := GaussianEulerPositiveScalingConstant.exponentClock
   (GaussianFastValueCut.exponent two p) z B a b
 
-@[simp] theorem subst_exponentData {m : ℕ} (σ : Fin n → PTm m) (z B a b : PTm n) :
-    Syn.subst σ (exponentData z B a b) = exponentData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by simp [exponentData]
-@[simp] theorem subst_radius {m : ℕ} (σ : Fin n → PTm m) (z B a b : PTm n) :
-    Syn.subst σ (radius z B a b) = radius (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by simp [radius]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (z B a b : PTm n) :
-    Syn.subst σ (data z B a b) = data (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by simp [data]
-@[simp] theorem subst_fixedData {m : ℕ} (σ : Fin n → PTm m) (z B : PTm n) :
-    Syn.subst σ (fixedData z B) = fixedData (Syn.subst σ z) (Syn.subst σ B) := by simp [fixedData,shifted]
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (p z B a b : PTm n) :
-    Syn.subst σ (sample p z B a b) = sample (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by simp [sample]
-@[simp] theorem subst_logarithmClock {m : ℕ} (σ : Fin n → PTm m) (p z B a b : PTm n) :
-    Syn.subst σ (logarithmClock p z B a b) = logarithmClock (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by simp [logarithmClock,GaussianEulerPositiveScalingConstant.exponentClock]
+ipra_subst exponentData
+ipra_subst radius
+ipra_subst data
+ipra_subst fixedData [shifted]
+ipra_subst sample
+ipra_subst logarithmClock [GaussianEulerPositiveScalingConstant.exponentClock]
 
 theorem exponent_at (p z B a b : PTm n) : Γ ⊢[PRAAx]
     ap2 exponentF p (exponentData z B a b) ≐ qadd

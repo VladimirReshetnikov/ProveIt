@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaAllDegreeUpperEndpoint
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRationalMetric (distanceBounded)
@@ -25,9 +25,6 @@ open GaussianBetaUpperEndpointName (endpointConstant)
 open GaussianBetaUpperGridEndpoint (gridClock scaledEndpoint factor precision numerator original_grid_endpoint_raw_product original_clock_later precision_budget)
 open GaussianBetaAllDegreeEulerInverse (nameF data)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

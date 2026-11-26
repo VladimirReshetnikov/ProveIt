@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaPolygammaTail
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianDominantPairAlgebra (radiusPoint radius_bounded)
 open GaussianGammaPolygammaTailRows (term normalizedTerm weight normalized_term_bound term_factor)
 open GaussianPositiveRealArithmetic (numerator natural_representation)
@@ -26,12 +26,8 @@ open GaussianRationalMetric (bounded qnegative)
 open GaussianRationalReciprocal (qone power)
 open GaussianRationalSumMajorant (majorized termsMajorized sum_majorized)
 open GaussianEuclideanDistanceName (fraction_represents)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 open Products (fact)
 open RationalSupMetric (denominatorOf)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -49,16 +45,9 @@ def derivativeTail (z B m N r : PTm n) : PTm n := qmul (radiusPoint (fact m) one
 def signedTail (z B m N r : PTm n) : PTm n :=
   qmul (power (qnegative qone) (succ m)) (derivativeTail z B m N r)
 
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (z B e N : PTm n) :
-    Syn.subst σ (data z B e N) = data (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ e) (Syn.subst σ N) := by
-  simp [data]
-@[simp] theorem subst_tail {l : ℕ} (σ : Fin n → PTm l) (z B e N r : PTm n) :
-    Syn.subst σ (tail z B e N r) = tail (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ e) (Syn.subst σ N) (Syn.subst σ r) := by
-  simp [tail]
-@[simp] theorem subst_derivativeTail {l : ℕ} (σ : Fin n → PTm l) (z B m N r : PTm n) :
-    Syn.subst σ (derivativeTail z B m N r) =
-      derivativeTail (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ m) (Syn.subst σ N) (Syn.subst σ r) := by
-  simp [derivativeTail,Products.fact,one]
+ipra_subst data
+ipra_subst tail
+ipra_subst derivativeTail [Products.fact, one]
 
 private theorem read_data (z B e N : PTm n) : Γ ⊢[PRAAx]
     (fstT (data z B e N) ≐ z) ⋏ ((fstT (sndT (data z B e N)) ≐ B) ⋏

@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Beta.CompactKernels.GaussianBetaKernelDampedDoubling
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Actual finite dyadic telescope of the beta relative error
@@ -14,25 +13,19 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaKernelDampedRefinement
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBetaKernelDampedDoubling (smaller larger commonDenominator)
 open GaussianBetaKernelRefinement (cutoff cutoff_zero cutoff_succ cutoff_ge)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (positive_product)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 
 def numerator (a b N : PTm n) : PTm n := pw (monus (b*N) a) N
 def denominator (b N : PTm n) : PTm n := pw (b*N) N
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (a b N : PTm n) :
-    Syn.subst σ (numerator a b N) = numerator (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by simp [numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (b N : PTm n) :
-    Syn.subst σ (denominator b N) = denominator (Syn.subst σ b) (Syn.subst σ N) := by simp [denominator]
+ipra_subst numerator
+ipra_subst denominator
 
 theorem numerator_congr {a a' b b' N N' : PTm n}
     (ha : Γ ⊢[PRAAx] a ≐ a') (hb : Γ ⊢[PRAAx] b ≐ b') (hN : Γ ⊢[PRAAx] N ≐ N') : Γ ⊢[PRAAx]
@@ -65,13 +58,12 @@ theorem native_step (a b N : PTm n) (h : Γ ⊢[PRAAx] GaussianBetaKernelLogarit
       (le_congr (by ipra_ring) (by ipra_ring)
         (GaussianBetaKernelDampedDoubling.doubling_relative_cleared a (b*N) N h.andE₂.andE₂))
   have np := natEq (next_numerator (Γ := Γ) a b N)
-  have nd := natEq (next_denominator (Γ := Γ) b N)
   have cp := natEq (current_common_numerator (Γ := Γ) a b N)
   have cd := natEq (show Γ ⊢[PRAAx] commonDenominator (b*N) N ≐ pw (num 4*(b*N)) N*denominator b N from
     GaussianBetaKernelRefinement.doubling_denominator (b*N) N)
   apply le_congr ?_ ?_ (mul_le_mul_right (denominator b N) raw)
   · apply deriveNat; ipra_simps; rw [np]
-  · apply deriveNat; ipra_simps; rw [np,nd,cp,cd]; ring
+  · apply deriveNat; ipra_simps; rw [np,natEq (next_denominator (Γ := Γ) b N),cp,cd]; ring
 
 theorem native_monotone (a b N : PTm n) (h : Γ ⊢[PRAAx] GaussianBetaKernelLogarithm.source a b N) : Γ ⊢[PRAAx]
     le (numerator a b N*denominator b (two*N)) (numerator a b (two*N)*denominator b N) := by
@@ -105,12 +97,9 @@ theorem telescope_step (D A W P Q PN QN P0 Q0 : PTm n)
 
 def refinementLaw (a b N j : PTm n) : Fm PTm n := relation (b*b*N) (a*a) (unit j)
   (numerator a b (cutoff N j)) (denominator b (cutoff N j)) (numerator a b N) (denominator b N)
-@[simp] theorem subst_refinementLaw {m : ℕ} (σ : Fin n → PTm m) (a b N j : PTm n) :
-    (refinementLaw a b N j).subst σ = refinementLaw (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) (Syn.subst σ j) := by
-  simp [refinementLaw,relation]
+ipra_subst refinementLaw [relation]
 
 theorem refinement_zero (a b N : PTm n) : Γ ⊢[PRAAx] refinementLaw a b N zero := by
-  have u := natEq (show Γ ⊢[PRAAx] unit zero ≐ one from pw_zero two)
   have ep := natEq (numerator_congr (Γ := Γ) (.eqRefl a) (.eqRefl b) (cutoff_zero N))
   have eq := natEq (denominator_congr (Γ := Γ) (.eqRefl b) (cutoff_zero N))
   have gap := natEq (show Γ ⊢[PRAAx] monus (unit zero) one ≐ zero from
@@ -118,7 +107,7 @@ theorem refinement_zero (a b N : PTm n) : Γ ⊢[PRAAx] refinementLaw a b N zero
   apply le_of_eq_add (d := zero)
   apply deriveNat
   ipra_simps
-  rw [ep,eq,u,gap]; ring
+  rw [ep,eq,natEq (show Γ ⊢[PRAAx] unit zero ≐ one from pw_zero two),gap]; ring
 
 theorem later_source (a b N j : PTm n) (h : Γ ⊢[PRAAx] GaussianBetaKernelLogarithm.source a b N) : Γ ⊢[PRAAx]
     GaussianBetaKernelLogarithm.source a b (cutoff N j) :=
@@ -159,11 +148,9 @@ theorem actual_dyadic_telescope (a b N j : PTm n) (h : Γ ⊢[PRAAx] GaussianBet
   have hs : Γ.map Fm.shift ⊢[PRAAx] GaussianBetaKernelLogarithm.source (Syn.shift a) (Syn.shift b) (Syn.shift N) := by
     simpa [Fm.shift,Syn.shift] using h.shift
   have all : Γ ⊢[PRAAx] .all (refinementLaw (Syn.shift a) (Syn.shift b) (Syn.shift N) (var 0)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_refinementLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact refinement_zero a b N
-    · simp only [subst_refinementLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact refinement_step _ _ _ _ hs.wk Prf.hyp0
+    ipra_qfind (le_QF _ _) [subst_refinementLaw]
+    · exact refinement_zero a b N
+    · exact refinement_step _ _ _ _ hs.wk Prf.hyp0
   simpa only [subst_refinementLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
 
 def geometricNumerator (a b N j : PTm n) : PTm n :=

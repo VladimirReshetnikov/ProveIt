@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBivariatePowerExpansion
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianPolynomialMonicCompanion (values values_length values_lookup rowShape row_shape_at)
 open LeanProofs.IPRA.Analysis.GaussianPolynomialMultiplicationMatrix (slot slot_pred slot_range)
 open LeanProofs.IPRA.Analysis.GaussianRationalFiniteSum (sum sum_index_congr)
@@ -23,10 +23,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalReciprocal (power powerF)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qmul_congr)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (pred)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -45,13 +41,9 @@ def rowBody : PTm 2 :=
 
 def bivariateSum (G m a x y : PTm n) : PTm n := sum rowBody m (data G m a x y)
 
-@[simp] theorem subst_powerSum {l : ℕ} (σ : Fin n → PTm l) (C N x : PTm n) :
-    Syn.subst σ (powerSum C N x) = powerSum (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ x) := by
-  simp [powerSum]
+ipra_subst powerSum
 
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (G m a x y : PTm n) :
-    Syn.subst σ (data G m a x y) = data (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ x) (Syn.subst σ y) := by
-  simp [data]
+ipra_subst data
 
 theorem row_body_at (G m a x y i : PTm n) : Γ ⊢[PRAAx]
     inst2 rowBody i (data G m a x y) ≐ qmul (powerSum (entry G (slot m i)) a x) (power y i) := by

@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalHornerPerturbation
 import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.GaussianEuclideanResidualRadius
 import IPRADerivations.AnalyticNumberTheory.GoldbachGeometric
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Exact runtime Lipschitz bounds for original rational Horner evaluation
@@ -18,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalHornerLipschitz
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner
   (qzero qadd qmul represents qadd_represents qmul_represents represents_rescale represents_congr canonical_unique
     positive_product horner evaluate)
@@ -33,9 +32,6 @@ open LeanProofs.IPRA.Analysis.GaussianEuclideanResidualRadius (coefficientBounds
 open LeanProofs.IPRA.AnalyticNumberTheory.GoldbachGeometric (gB inst2_gB)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -44,12 +40,9 @@ def weightedBody : PTm 2 := succ (var 0)*pw (var 1) (var 0)
 def weighted (U k : PTm n) : PTm n := ap2 (sumF weightedBody) k U
 def constant (N U A : PTm n) : PTm n := A*weighted U N
 
-@[simp] theorem subst_geometric {m : ℕ} (σ : Fin n → PTm m) (U k : PTm n) :
-    Syn.subst σ (geometric U k) = geometric (Syn.subst σ U) (Syn.subst σ k) := by simp only [geometric,subst_ap2]
-@[simp] theorem subst_weighted {m : ℕ} (σ : Fin n → PTm m) (U k : PTm n) :
-    Syn.subst σ (weighted U k) = weighted (Syn.subst σ U) (Syn.subst σ k) := by simp only [weighted,subst_ap2]
-@[simp] theorem subst_constant {m : ℕ} (σ : Fin n → PTm m) (N U A : PTm n) :
-    Syn.subst σ (constant N U A) = constant (Syn.subst σ N) (Syn.subst σ U) (Syn.subst σ A) := by simp only [constant,PTm.subst_mul,subst_weighted]
+ipra_subst geometric
+ipra_subst weighted
+ipra_subst constant
 
 theorem geometric_zero (U : PTm n) : Γ ⊢[PRAAx] geometric U zero ≐ zero := sum_zero _ _
 theorem geometric_succ (U k : PTm n) : Γ ⊢[PRAAx] geometric U (succ k) ≐ geometric U k+pw U k := by
@@ -57,19 +50,15 @@ theorem geometric_succ (U k : PTm n) : Γ ⊢[PRAAx] geometric U (succ k) ≐ ge
 
 theorem geometric_affine (U k : PTm n) : Γ ⊢[PRAAx] geometric U (succ k) ≐ U*geometric U k+one := by
   have all : Γ ⊢[PRAAx] .all (geometric (Syn.shift U) (succ (var 0)) ≐ Syn.shift U*geometric (Syn.shift U) (var 0)+one) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,subst_geometric,ConciseIPRA.PTm.subst_succ,PTm.subst_mul,PTm.subst_add,
-        ConciseIPRA.PTm.subst_zero,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      have g0 := natEq (geometric_zero (Γ := Γ) U)
+    ipra_qfind [subst_geometric]
+    · have g0 := natEq (geometric_zero (Γ := Γ) U)
       have g1 := natEq (geometric_succ (Γ := Γ) U zero)
       have p := natEq (pw_zero (Γ := Γ) U)
       apply deriveNat
       ipra_simps
       rw [g1,g0,p]
       ring
-    · simp only [Fm.subst_eq,subst_geometric,ConciseIPRA.PTm.subst_succ,PTm.subst_mul,PTm.subst_add,
-        ConciseIPRA.PTm.subst_zero,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      let Δ := (geometric (Syn.shift U) (succ (var 0)) ≐ Syn.shift U*geometric (Syn.shift U) (var 0)+one) :: Γ.map Fm.shift
+    · let Δ := (geometric (Syn.shift U) (succ (var 0)) ≐ Syn.shift U*geometric (Syn.shift U) (var 0)+one) :: Γ.map Fm.shift
       have g0 := natEq (geometric_succ (Γ := Δ) (Syn.shift U) (var 0))
       have g1 := natEq (geometric_succ (Γ := Δ) (Syn.shift U) (succ (var 0)))
       have p := natEq (pw_succ (Γ := Δ) (Syn.shift U) (var 0))
@@ -160,10 +149,7 @@ theorem horner_query_difference_succ (C z w k : PTm n) : Γ ⊢[PRAAx]
     (affine_query_difference _ _ _ _ _)
 
 def sizeLaw (C w A U k : PTm n) : Fm PTm n := le k (length C) ⟶ bounded (horner C w k) (A*geometric U k) one
-@[simp] theorem subst_sizeLaw {m : ℕ} (σ : Fin n → PTm m) (C w A U k : PTm n) :
-    (sizeLaw C w A U k).subst σ = sizeLaw (Syn.subst σ C) (Syn.subst σ w) (Syn.subst σ A) (Syn.subst σ U) (Syn.subst σ k) := by
-  simp only [sizeLaw,Fm.subst_imp,subst_le,subst_length,GaussianRationalMetric.subst_bounded,
-    GaussianRationalHorner.subst_horner,PTm.subst_mul,subst_geometric,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero]
+ipra_subst sizeLaw
 
 theorem size_zero (C w A U : PTm n) : Γ ⊢[PRAAx] bounded (horner C w zero) (A*geometric U zero) one :=
   bound_congr (GaussianRationalHorner.horner_zero C w).eqSymm
@@ -195,11 +181,9 @@ theorem size_prefix (C w A U k : PTm n)
     simpa only [Fm.shift,GaussianRationalMetric.subst_bounded,ConciseIPRA.PTm.subst_succ,
       ConciseIPRA.PTm.subst_zero,Syn.shift] using hw.shift
   have all : Γ ⊢[PRAAx] .all (sizeLaw (Syn.shift C) (Syn.shift w) (Syn.shift A) (Syn.shift U) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [subst_sizeLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (size_zero C w A U).wk
-    · simp only [subst_sizeLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_sizeLaw]
+    · exact .impI (size_zero C w A U).wk
+    · refine .impI ?_
       exact size_step _ _ _ _ _ cShift.wk.wk wShift.wk.wk Prf.hyp0
         (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
   have rule : Γ ⊢[PRAAx] sizeLaw C w A U k := by
@@ -208,11 +192,7 @@ theorem size_prefix (C w A U k : PTm n)
 
 def differenceLaw (C z w N U A p q k : PTm n) : Fm PTm n := le k N ⟶
   distanceBounded (horner C z (succ k)) (horner C w (succ k)) (constant k U A*p) q
-@[simp] theorem subst_differenceLaw {m : ℕ} (σ : Fin n → PTm m) (C z w N U A p q k : PTm n) :
-    (differenceLaw C z w N U A p q k).subst σ = differenceLaw (Syn.subst σ C) (Syn.subst σ z)
-      (Syn.subst σ w) (Syn.subst σ N) (Syn.subst σ U) (Syn.subst σ A) (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ k) := by
-  simp only [differenceLaw,Fm.subst_imp,subst_le,GaussianRationalMetric.subst_distanceBounded,
-    GaussianRationalHorner.subst_horner,ConciseIPRA.PTm.subst_succ,PTm.subst_mul,subst_constant]
+ipra_subst differenceLaw
 
 theorem difference_zero (C z w U A p q : PTm n) (hq : Γ ⊢[PRAAx] le one q) : Γ ⊢[PRAAx]
     distanceBounded (horner C z (succ zero)) (horner C w (succ zero)) (constant zero U A*p) q := by
@@ -277,11 +257,9 @@ theorem difference_prefix (C z w N U A p q k : PTm n)
     simpa only [Fm.shift,GaussianRationalMetric.subst_distanceBounded,Syn.shift] using hzw.shift
   have all : Γ ⊢[PRAAx] .all (differenceLaw (Syn.shift C) (Syn.shift z) (Syn.shift w) (Syn.shift N)
       (Syn.shift U) (Syn.shift A) (Syn.shift p) (Syn.shift q) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [subst_differenceLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (difference_zero C z w U A p q hq).wk
-    · simp only [subst_differenceLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_differenceLaw]
+    · exact .impI (difference_zero C z w U A p q hq).wk
+    · refine .impI ?_
       exact difference_step _ _ _ _ _ _ _ _ _ lenShift.wk.wk cShift.wk.wk zShift.wk.wk wShift.wk.wk
         qShift.wk.wk zwShift.wk.wk Prf.hyp0 (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
   have rule : Γ ⊢[PRAAx] differenceLaw C z w N U A p q k := by
@@ -304,9 +282,7 @@ def difference (C z w : PTm n) : PTm n := qsub (evaluate C z) (evaluate C w)
 def differenceF : PR 3 := PTm.toPR (difference (var 0) (var 1) (var 2))
 def constantF : PR 3 := PTm.toPR (constant (var 0) (var 1) (var 2))
 
-@[simp] theorem subst_difference {m : ℕ} (σ : Fin n → PTm m) (C z w : PTm n) :
-    Syn.subst σ (difference C z w) = difference (Syn.subst σ C) (Syn.subst σ z) (Syn.subst σ w) := by
-  simp only [difference,GaussianRationalMetric.subst_qsub,GaussianRationalHorner.subst_evaluate]
+ipra_subst difference
 
 theorem difference_program_at (C z w : PTm n) : Γ ⊢[PRAAx] ap3 differenceF C z w ≐ difference C z w := by
   simpa only [differenceF,ap3,subst_difference,Syn.subst_var,Matrix.cons_val_zero,

@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaPoleLimitTransport
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianGammaLocalPoleGuards (terminal)
 open GaussianGammaPoleFiniteFactors (signedFactorial factorProduct)
@@ -38,9 +38,6 @@ open GaussianNamedInverseRate (independentRate)
 open GaussianNameRingLaws (oneF)
 open GaussianCoefficientNameBounds (unit)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

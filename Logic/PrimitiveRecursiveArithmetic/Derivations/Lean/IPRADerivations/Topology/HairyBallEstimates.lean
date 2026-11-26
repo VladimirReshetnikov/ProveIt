@@ -26,11 +26,7 @@ terms (`ZT`, rational data cleared of denominators) and natural terms. (The obst
 
 namespace LeanProofs.IPRA.Topology.HairyBallEstimates
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus)
+open_ipra
 
 variable {n d : ℕ} {Γ : List (Fm PTm n)}
 

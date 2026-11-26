@@ -13,7 +13,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalL1Algebra
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalL1
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner
   (represents qadd qmul positive_product scalar_congr scalar_add_same)
@@ -22,9 +22,6 @@ open LeanProofs.IPRA.Analysis.RationalIntegerNormalization (normalize normalize_
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder (scale add mul normSq)
 open LeanProofs.IPRA.Analysis.GaussianL1 (norm1)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

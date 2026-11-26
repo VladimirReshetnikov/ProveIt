@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerHalfDecayReference
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRealExponentialPositiveRepresentative (positiveF positiveData sample_canonical sample_nonnegative)
 open GaussianEulerDecayOrder (signedTime original_decay_nonnegative_representative)
 open GaussianEulerIntegrandName (decayF decayData)
@@ -25,9 +25,6 @@ open RationalGaussianEmbedding (embed native)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianCoefficientNameBounds (unit)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -36,15 +33,10 @@ def scalar (q a b : PTm n) : PTm n := fstT (reference q a b)
 def numerator (q a b : PTm n) : PTm n := GaussianPositiveRealArithmetic.numerator (scalar q a b)
 def denominator (q a b : PTm n) : PTm n := RationalSupMetric.denominatorOf (scalar q a b)
 def scalarF : PR 3 := PTm.toPR (scalar (var 0) (var 1) (var 2))
-@[simp] theorem subst_reference {m : ℕ} (σ : Fin n → PTm m) (q a b : PTm n) :
-    Syn.subst σ (reference q a b) = reference (Syn.subst σ q) (Syn.subst σ a) (Syn.subst σ b) := by simp [reference,signedTime]
-@[simp] theorem subst_scalar {m : ℕ} (σ : Fin n → PTm m) (q a b : PTm n) :
-    Syn.subst σ (scalar q a b) = scalar (Syn.subst σ q) (Syn.subst σ a) (Syn.subst σ b) := by simp [scalar]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (q a b : PTm n) :
-    Syn.subst σ (numerator q a b) = numerator (Syn.subst σ q) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [numerator,GaussianPositiveRealArithmetic.numerator,RationalSupMetric.numeratorOf]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (q a b : PTm n) :
-    Syn.subst σ (denominator q a b) = denominator (Syn.subst σ q) (Syn.subst σ a) (Syn.subst σ b) := by simp [denominator,RationalSupMetric.denominatorOf]
+ipra_subst reference [signedTime]
+ipra_subst scalar
+ipra_subst numerator [GaussianPositiveRealArithmetic.numerator, RationalSupMetric.numeratorOf]
+ipra_subst denominator [RationalSupMetric.denominatorOf]
 
 theorem scalar_at (q a b : PTm n) : Γ ⊢[PRAAx] ap3 scalarF q a b ≐ scalar q a b := by
   simpa [scalarF,ap3] using toPR_eq (Γ := Γ) (scalar (var 0) (var 1) (var 2) : PTm 3) ![q,a,b]

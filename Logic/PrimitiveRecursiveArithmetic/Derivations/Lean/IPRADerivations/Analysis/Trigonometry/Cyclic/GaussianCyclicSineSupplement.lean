@@ -16,7 +16,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianCyclicSineSupplement
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCyclicExponentialRoots (source sample sample_bound sampleRadius rootF rootData root_regular angleF angleData angle_input)
 open GaussianCyclicExponentialGroup (productF productData product_index_cross)
 open GaussianCyclicExponentialSamples (product_error inverse_error inverseBudget sampleBound)
@@ -48,10 +48,6 @@ open GaussianRootAlgebra (equal equal_of_values re_neg im_neg re_one im_one re_s
 open ComplexLogarithmRemainder (neg normSq oneCode re im eval_re_code eval_im_code normSq_eval)
 open RationalGaussianEmbedding (native embed_from_representation embed_canonical)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

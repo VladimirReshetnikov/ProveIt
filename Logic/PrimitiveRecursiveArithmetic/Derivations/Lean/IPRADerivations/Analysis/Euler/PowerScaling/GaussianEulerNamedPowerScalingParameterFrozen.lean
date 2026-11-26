@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerNamedPowerScalingParameterFrozen
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerNamedPowerScalingParameter (nameF data source regular)
 open GaussianNamedPositiveLogarithm (numerator denominator decoded_domain)
 open GaussianNamedPositiveReciprocalFrozen (frozen)
@@ -24,8 +24,6 @@ open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianNamedInverseRate (independentRate)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

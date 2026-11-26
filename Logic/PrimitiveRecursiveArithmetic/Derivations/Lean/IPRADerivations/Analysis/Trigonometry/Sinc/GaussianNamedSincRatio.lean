@@ -15,7 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedSincRatio
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedSinc (nameF data)
 open GaussianNamedSincQuadraticBounds (observationBound quadratic_bound square_quadratic_bound)
 open GaussianRationalHorner (qmul positive_product)
@@ -27,9 +27,6 @@ open GaussianApproximateInverseDistance (multiply_distance)
 open GaussianBoundedInverseApartness (lower_near_one)
 open GaussianReconstructionRoots (distance_triangle)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -39,14 +36,9 @@ def square (f : PR 2) (R x p : PTm n) : PTm n := qmul (value f R x p) (value f R
 def ratio (f g : PR 2) (R x S y p q : PTm n) : PTm n :=
   qmul (reciprocal (square g S y q)) (square f R x p)
 
-@[simp] theorem subst_value {l : ℕ} (σ : Fin n → PTm l) (f : PR 2) (R x p : PTm n) :
-    Syn.subst σ (value f R x p) = value f (Syn.subst σ R) (Syn.subst σ x) (Syn.subst σ p) := by simp [value]
-@[simp] theorem subst_square {l : ℕ} (σ : Fin n → PTm l) (f : PR 2) (R x p : PTm n) :
-    Syn.subst σ (square f R x p) = square f (Syn.subst σ R) (Syn.subst σ x) (Syn.subst σ p) := by simp [square]
-@[simp] theorem subst_ratio {l : ℕ} (σ : Fin n → PTm l) (f g : PR 2) (R x S y p q : PTm n) :
-    Syn.subst σ (ratio f g R x S y p q) =
-      ratio f g (Syn.subst σ R) (Syn.subst σ x) (Syn.subst σ S) (Syn.subst σ y) (Syn.subst σ p) (Syn.subst σ q) := by
-  simp [ratio]
+ipra_subst value
+ipra_subst square
+ipra_subst ratio
 
 theorem value_lower (f : PR 2) (R x A B p : PTm n)
     (hB : Γ ⊢[PRAAx] le one B) (hAB : Γ ⊢[PRAAx] le A B)

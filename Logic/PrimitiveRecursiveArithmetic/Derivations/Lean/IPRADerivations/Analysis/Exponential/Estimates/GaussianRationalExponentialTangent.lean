@@ -14,7 +14,7 @@ set_option maxHeartbeats 1750000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalExponentialTangent
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianGammaEulerRationalLogOrder (add_order order_refl)
@@ -38,10 +38,6 @@ open GaussianStirlingLogDuplication (exponential_regular)
 open GaussianStirlingMultiplicativeBoundsLog (constant_order fractions_order logarithm_rectangles)
 open GaussianStirlingMultiplicativeBoundsOrder (exponential_order)
 open RationalValueBounds (upper_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "C" => constantF

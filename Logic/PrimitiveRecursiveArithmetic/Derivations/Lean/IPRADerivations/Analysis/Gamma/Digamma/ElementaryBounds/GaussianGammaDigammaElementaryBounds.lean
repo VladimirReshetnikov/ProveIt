@@ -15,7 +15,7 @@ set_option maxHeartbeats 8000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaElementaryBounds
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
@@ -41,10 +41,6 @@ open RationalArgmin (rationalLE rationalLE_congr)
 open RationalGaussianEmbedding (scalar_zero_represents)
 open RationalHarmonicInterval (horizon left_horizon)
 open RationalValueBounds (upper upper_of_radius upper_order_right upper_triangle upper_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "DF" => GaussianGammaDigammaNative.nameF
@@ -58,10 +54,8 @@ def nameF : PR 2 := GaussianNamedDifference.nameF HF constantF
 def lowerData (a b : PTm n) : PTm n := GaussianNamedDifference.data (hd a b) (fraction b a)
 def upperData (a b : PTm n) : PTm n := GaussianNamedDifference.data (hd a b) (halfReciprocal a b)
 
-@[simp] theorem subst_lowerData {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (lowerData a b) = lowerData (Syn.subst σ a) (Syn.subst σ b) := by simp [lowerData]
-@[simp] theorem subst_upperData {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (upperData a b) = upperData (Syn.subst σ a) (Syn.subst σ b) := by simp [upperData]
+ipra_subst lowerData
+ipra_subst upperData
 
 theorem endpoint_regular (a b c : PTm n) (hs : Γ ⊢[PRAAx] source a b) :
     Γ ⊢[PRAAx] pointCN nameF (GaussianNamedDifference.data (hd a b) c) :=

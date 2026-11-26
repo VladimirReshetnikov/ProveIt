@@ -29,16 +29,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.BernoulliIncrements
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.BernoulliCoefficients (bc bc_deriv)
 open LeanProofs.IPRA.Analysis.BernoulliBounds (zint toZ_zint qsplit natAbs_cast_of_nonneg natAbs_cast_of_neg
   bden bint bint_eq bint_abs_sum)
 open LeanProofs.IPRA.Algebra.PowerDifference (gd power_diff gd_le)
 open LeanProofs.IPRA.Analysis.PowerIncrement (power_inc_lower power_inc_upper)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

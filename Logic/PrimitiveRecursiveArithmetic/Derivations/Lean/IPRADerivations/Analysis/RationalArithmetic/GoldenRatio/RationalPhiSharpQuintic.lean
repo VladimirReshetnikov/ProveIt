@@ -1,8 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.GoldenRatio.RationalPhiSharpFamily
 import IPRADerivations.Analysis.Polynomials.Elimination.Bivariate.RationalBivariateGridCoefficients
 import IPRADerivations.Foundations.BoundedDecision
-import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The literal expanded quintic sharpness example
@@ -17,9 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalPhiSharpQuintic
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero succ app)
-open LeanProofs.IPRA.PTm (num)
+open_ipra
 open RationalPolynomialGaussianEmbedding (horner hornerF horner_zero horner_succ evaluate embed_congr)
 open RationalGaussianEmbedding (scalarZero scalarOne embed)
 open RationalArithmetic (represents)
@@ -27,8 +23,6 @@ open GaussianRationalHorner (scalar_congr)
 open GaussianRationalMonicReduction (singleton singleton_length singleton_lookup)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length append append_length append_left append_right entry_congr)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -223,7 +217,7 @@ theorem expanded_natural_evaluation (x : PTm n) : Γ ⊢[PRAAx]
     simp only [Foundations.SequenceComposition.subst_append,GaussianRationalMonicReduction.subst_singleton,subst_integer,ih]
 @[simp] theorem subst_Q {m : ℕ} (σ : Fin n → PTm m) : Syn.subst σ (Q : PTm n) = Q := subst_literal σ _
 @[simp] theorem subst_quintic {m : ℕ} (σ : Fin n → PTm m) : Syn.subst σ (quintic : PTm n) = quintic := subst_literal σ _
-@[simp] theorem subst_family {m : ℕ} (σ : Fin n → PTm m) : Syn.subst σ (family : PTm n) = family := by simp [family]
+ipra_subst family
 
 theorem family_length : Γ ⊢[PRAAx] length (family : PTm n) ≐ num 6 := RationalPhiSharpFamily.polynomial_length _ _ _ _
 
@@ -307,8 +301,8 @@ def point2 : PTm n := pairT (integer 2) (integer 5)
 def point3 : PTm n := pairT (integer 3) (integer 10)
 def point4 : PTm n := pairT (integer 4) (integer 17)
 def point5 : PTm n := pairT (integer 5) (integer 26)
-@[simp] theorem subst_pointList {m : ℕ} (σ : Fin n → PTm m) : Syn.subst σ (pointList : PTm n) = pointList := by simp [pointList]
-@[simp] theorem subst_witness {m : ℕ} (σ : Fin n → PTm m) : Syn.subst σ (witness : PTm n) = witness := by simp [witness]
+ipra_subst pointList
+ipra_subst witness
 
 theorem named_point (j : ℕ) (hj : j < 5) : Γ ⊢[PRAAx] entry pointList (num j) ≐
     pairT (integer ((j+1 : ℕ) : ℤ)) (integer (((j+1)*(j+1)+1 : ℕ) : ℤ)) := by
@@ -354,9 +348,8 @@ theorem negative_integer_certificate (z : ℤ) (h : Γ ⊢[PRAAx] ZT.eq (-(signe
     (RationalNormalForm.normalize_well_formed _ _ (le_refl one))
     (RationalRepresentations.represents_negative _ _ _ (integer_represents z)) (integer_represents (-z)) (le_refl one) (le_refl one)
   apply ZT.derive
-  have e := ZT.toZ_eq h
   simp only [ZT.toZ_mul,ZT.toZ_ofNat,Q.mk_one,map_one,mul_one]
-  exact e
+  exact ZT.toZ_eq h
 
 theorem negative_one_code : Γ ⊢[PRAAx] RationalArithmetic.negative (integer (1 : ℤ) : PTm n) ≐ integer (-1) :=
   negative_integer_certificate 1 (by apply ZT.derive; simp [signed,ZT.toZ_neg,ZT.toZ_ofNat,map_one])
@@ -393,15 +386,15 @@ and explicitly checked integer feature vector are returned together. -/
 def output : PTm n := pairT family (pairT quintic (pairT pointList witness))
 def outputF : PR 0 := PTm.toPR (output : PTm 0)
 def run : PTm n := app outputF Fin.elim0
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) : Syn.subst σ (output : PTm n) = output := by simp [output]
+ipra_subst output
 theorem program_at : Γ ⊢[PRAAx] (run : PTm n) ≐ output := by
   simpa only [run,outputF,subst_output] using toPR_eq (Γ := Γ) (output : PTm 0) (Fin.elim0 : Fin 0 → PTm n)
-theorem returned_family : Γ ⊢[PRAAx] fstT (run : PTm n) ≐ family := (congrFst program_at).eqTrans (fst_pair _ _)
-theorem returned_tail : Γ ⊢[PRAAx] sndT (run : PTm n) ≐ pairT quintic (pairT pointList witness) := (congrSnd program_at).eqTrans (snd_pair _ _)
-theorem returned_quintic : Γ ⊢[PRAAx] fstT (sndT (run : PTm n)) ≐ quintic := (congrFst returned_tail).eqTrans (fst_pair _ _)
-theorem returned_data : Γ ⊢[PRAAx] sndT (sndT (run : PTm n)) ≐ pairT pointList witness := (congrSnd returned_tail).eqTrans (snd_pair _ _)
-theorem returned_points : Γ ⊢[PRAAx] fstT (sndT (sndT (run : PTm n))) ≐ pointList := (congrFst returned_data).eqTrans (fst_pair _ _)
-theorem returned_witness : Γ ⊢[PRAAx] sndT (sndT (sndT (run : PTm n))) ≐ witness := (congrSnd returned_data).eqTrans (snd_pair _ _)
+theorem returned_family : Γ ⊢[PRAAx] fstT (run : PTm n) ≐ family := program_at.fstE
+theorem returned_tail : Γ ⊢[PRAAx] sndT (run : PTm n) ≐ pairT quintic (pairT pointList witness) := program_at.sndE
+theorem returned_quintic : Γ ⊢[PRAAx] fstT (sndT (run : PTm n)) ≐ quintic := returned_tail.fstE
+theorem returned_data : Γ ⊢[PRAAx] sndT (sndT (run : PTm n)) ≐ pairT pointList witness := returned_tail.sndE
+theorem returned_points : Γ ⊢[PRAAx] fstT (sndT (sndT (run : PTm n))) ≐ pointList := returned_data.fstE
+theorem returned_witness : Γ ⊢[PRAAx] sndT (sndT (sndT (run : PTm n))) ≐ witness := returned_data.sndE
 
 theorem actual_quintic_expanded_coefficients_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] .all
     (le (var 0) (num 5) ⟶ entry (family : PTm 1) (var 0) ≐ entry (quintic : PTm 1) (var 0)) :=

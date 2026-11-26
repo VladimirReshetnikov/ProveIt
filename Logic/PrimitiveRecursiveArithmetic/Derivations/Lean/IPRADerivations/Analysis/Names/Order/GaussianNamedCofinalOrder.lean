@@ -13,17 +13,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedCofinalOrder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNamedInverseRate (independentRate rate_at rateNumerator rateDenominator)
 open GaussianNamedPositiveExponentialOrder (realOrder real_order_at scalar_coordinate_distance)
 open GaussianNamedRealOrderTransport (precision upperSlack remove_upper_slack)
 open GaussianRationalHorner (positive_product)
 open RationalValueBounds (upper upper_of_radius upper_triangle upper_mono)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

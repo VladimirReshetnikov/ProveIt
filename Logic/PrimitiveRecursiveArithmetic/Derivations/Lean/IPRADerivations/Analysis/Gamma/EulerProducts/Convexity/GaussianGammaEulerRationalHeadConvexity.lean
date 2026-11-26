@@ -15,14 +15,11 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalHeadConvexity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaEulerRationalHead (numerator denominator numerator_zero numerator_succ)
 open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.RSA (pw_mul)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -33,11 +30,7 @@ def compareNumerators (K a d b r s : PTm n) : Fm PTm n :=
   le (pw (pw (weight r s) (weight r s)) K * (pw (numerator K a b) (succ r) * pw (numerator K d b) s))
     (pw (numerator K (barycenter a d r s) (weight r s*b)) (weight r s))
 
-@[simp] theorem subst_compareNumerators {m : ℕ} (σ : Fin n → PTm m) (K a d b r s : PTm n) :
-    (compareNumerators K a d b r s).subst σ =
-      compareNumerators (Syn.subst σ K) (Syn.subst σ a) (Syn.subst σ d)
-        (Syn.subst σ b) (Syn.subst σ r) (Syn.subst σ s) := by
-  simp [compareNumerators,weight,barycenter,pw]
+ipra_subst compareNumerators [weight, barycenter, pw]
 
 private theorem numerator_comparison_zero (a d b r s : PTm n) :
     Γ ⊢[PRAAx] compareNumerators zero a d b r s := by

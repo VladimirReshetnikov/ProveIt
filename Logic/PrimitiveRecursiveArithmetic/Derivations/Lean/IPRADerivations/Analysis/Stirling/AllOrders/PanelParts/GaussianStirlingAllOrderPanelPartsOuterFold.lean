@@ -12,7 +12,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderPanelPartsOuterFold
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianStirlingAllOrderPanelPartsOuter (data body errorSum row_at)
 open GaussianStirlingAllOrderPanelPartsRecurrence (panelMass residual)
 open GaussianStirlingAllOrderPanelPartsDensities (lowScalar highScalar)
@@ -23,10 +23,6 @@ open RationalArithmetic (add multiply negative)
 open RationalAlgebra (add_congr multiply_congr negative_congr)
 open RationalFiniteSum (term termwiseEq sum_ext)
 open RationalSumLinearity (scaledBody scaled_term sum_homogeneous)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "rsum" => RationalFiniteSum.sum
@@ -46,17 +42,10 @@ def panelBody (m : ℕ) (q : ℕ) : PTm 2 :=
 def massPrefix (e : ℕ) (A B M L : PTm n) : PTm n := rsum (massBody e) L (data A B M)
 def panelPrefix (m q : ℕ) (A B M L : PTm n) : PTm n := rsum (panelBody m q) L (data A B M)
 
-@[simp] theorem subst_panelMass {l : ℕ} (σ : Fin n → PTm l) (e : ℕ) (U B M : PTm n) :
-    Syn.subst σ (panelMass e U B M) = panelMass e (Syn.subst σ U) (Syn.subst σ B) (Syn.subst σ M) := by
-  simp [panelMass,GaussianStirlingAllOrderPanelPartsRecurrence.fullMass,
-    GaussianStirlingAllOrderPanelPartsFold.weightInput,GaussianStirlingAllOrderPanelPartsFinite.parameters]
+ipra_subst panelMass [GaussianStirlingAllOrderPanelPartsRecurrence.fullMass, GaussianStirlingAllOrderPanelPartsFold.weightInput, GaussianStirlingAllOrderPanelPartsFinite.parameters]
 
-@[simp] theorem subst_massPrefix {l : ℕ} (σ : Fin n → PTm l) (e : ℕ) (A B M L : PTm n) :
-    Syn.subst σ (massPrefix e A B M L) = massPrefix e (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ M) (Syn.subst σ L) :=
-  by simp [massPrefix]
-@[simp] theorem subst_panelPrefix {l : ℕ} (σ : Fin n → PTm l) (m q : ℕ) (A B M L : PTm n) :
-    Syn.subst σ (panelPrefix m q A B M L) = panelPrefix m q (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ M) (Syn.subst σ L) :=
-  by simp [panelPrefix]
+ipra_subst massPrefix
+ipra_subst panelPrefix
 
 theorem mass_at (e : ℕ) (A B M k : PTm n) : Γ ⊢[PRAAx]
     term (massBody e) k (data A B M) ≐ panelMass e (A+B*k) B M := by

@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Exponential.Polynomials.GaussianFiniteExponentialWeightedNorm
 import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalVariableHornerBudget
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianCoefficientNameBounds
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Actual Euclidean unit-disk Horner prefixes from the original finite norm
@@ -19,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalVariableHornerBudget (denominator denominator_positive coefficient size)
 open GaussianRationalHorner (horner scalar_congr scalar_add_same qmul)
 open GaussianRationalMetric (bounded)
@@ -29,17 +28,12 @@ open RationalArithmetic (represents)
 open RationalArgmin (rationalLE)
 open RationalSupMetric (numeratorOf)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def representationLaw (C k : PTm n) : Fm PTm n := le k (length C) ⟶
   represents (prefixNorm C k) (ZT.ofNat (size C one k)) (denominator C)
-@[simp] theorem subst_representationLaw {l : ℕ} (σ : Fin n → PTm l) (C k : PTm n) :
-    (representationLaw C k).subst σ = representationLaw (Syn.subst σ C) (Syn.subst σ k) := by simp [representationLaw]
+ipra_subst representationLaw
 
 theorem representation_zero (C : PTm n) : Γ ⊢[PRAAx]
     represents (prefixNorm C zero) (ZT.ofNat (size C one zero)) (denominator C) := by
@@ -72,11 +66,9 @@ no replacement norm or Horner recursion is introduced. -/
 theorem prefix_represents (C k : PTm n) (hk : Γ ⊢[PRAAx] le k (length C)) : Γ ⊢[PRAAx]
     represents (prefixNorm C k) (ZT.ofNat (size C one k)) (denominator C) := by
   have all : Γ ⊢[PRAAx] .all (representationLaw (Syn.shift C) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_representationLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (representation_zero C).wk
-    · simp only [subst_representationLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact .impI (representation_step _ _ Prf.hyp0
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_representationLaw]
+    · exact .impI (representation_zero C).wk
+    · exact .impI (representation_step _ _ Prf.hyp0
         (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)))
   have rule : Γ ⊢[PRAAx] representationLaw C k := by
     simpa only [subst_representationLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
@@ -90,8 +82,7 @@ theorem size_step_monotone (C k : PTm n) : Γ ⊢[PRAAx] le (size C one k) (size
     (congrAdd (one_mul _) (.eqRefl _))).eqSymm (le_add_right _ _)
 
 def sizeOrder (C k r : PTm n) : Fm PTm n := le k r ⟶ le (size C one k) (size C one r)
-@[simp] theorem subst_sizeOrder {l : ℕ} (σ : Fin n → PTm l) (C k r : PTm n) :
-    (sizeOrder C k r).subst σ = sizeOrder (Syn.subst σ C) (Syn.subst σ k) (Syn.subst σ r) := by simp [sizeOrder]
+ipra_subst sizeOrder
 
 theorem size_order_zero (C k : PTm n) : Γ ⊢[PRAAx] sizeOrder C k zero := by
   refine .impI ?_
@@ -107,11 +98,9 @@ theorem size_order_step (C k r : PTm n) (hk : Γ ⊢[PRAAx] le k (succ r))
 theorem size_monotone (C k r : PTm n) (hk : Γ ⊢[PRAAx] le k r) : Γ ⊢[PRAAx]
     le (size C one k) (size C one r) := by
   have all : Γ ⊢[PRAAx] .all (sizeOrder (Syn.shift C) (Syn.shift k) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [subst_sizeOrder,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact size_order_zero C k
-    · simp only [subst_sizeOrder,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact .impI (size_order_step _ _ _ Prf.hyp0 Prf.hyp1)
+    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_sizeOrder]
+    · exact size_order_zero C k
+    · exact .impI (size_order_step _ _ _ Prf.hyp0 Prf.hyp1)
   have rule : Γ ⊢[PRAAx] sizeOrder C k r := by
     simpa only [subst_sizeOrder,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE r
   exact .impE rule hk
@@ -133,10 +122,8 @@ theorem unit_prefix_bound (C z k A B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
 def sourceBuffer (d K : PTm n) : PTm n := GaussianRationalPolynomialDilation.dilated
   (GaussianFiniteLogarithmPolynomial.composition d K) (K*d) GaussianFiniteLogarithmWeightedNorm.point
 def query (w : PTm n) : PTm n := qmul (GaussianDominantPairAlgebra.radiusPoint (num 9) (num 5)) w
-@[simp] theorem subst_sourceBuffer {l : ℕ} (σ : Fin n → PTm l) (d K : PTm n) :
-    Syn.subst σ (sourceBuffer d K) = sourceBuffer (Syn.subst σ d) (Syn.subst σ K) := by simp [sourceBuffer]
-@[simp] theorem subst_query {l : ℕ} (σ : Fin n → PTm l) (w : PTm n) :
-    Syn.subst σ (query w) = query (Syn.subst σ w) := by simp [query]
+ipra_subst sourceBuffer
+ipra_subst query
 
 theorem source_length (d K : PTm n) : Γ ⊢[PRAAx] length (sourceBuffer d K) ≐ succ (K*d) :=
   GaussianRationalPolynomialDilation.dilated_length _ _ _
@@ -169,47 +156,41 @@ def output (d K w k : PTm n) : PTm n := pairT (GaussianFiniteLogarithmPolynomial
     (pairT (size (sourceBuffer d K) one k) (denominator (sourceBuffer d K))))))
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (d K w k : PTm n) : PTm n := PTm.app outputF ![d,K,w,k]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (d K w k : PTm n) :
-    Syn.subst σ (output d K w k) = output (Syn.subst σ d) (Syn.subst σ K) (Syn.subst σ w) (Syn.subst σ k) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (d K w k : PTm n) :
-    Syn.subst σ (run d K w k) = run (Syn.subst σ d) (Syn.subst σ K) (Syn.subst σ w) (Syn.subst σ k) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (d K w k : PTm n) : Γ ⊢[PRAAx] run d K w k ≐ output d K w k := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![d,K,w,k]
 theorem returned_composition (d K w k : PTm n) : Γ ⊢[PRAAx] fstT (run d K w k) ≐ GaussianFiniteLogarithmPolynomial.composition d K :=
-  (congrFst (program_at _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _).fstE
 theorem returned_tail (d K w k : PTm n) : Γ ⊢[PRAAx] sndT (run d K w k) ≐
     pairT (sourceBuffer d K) (pairT (query w) (pairT (horner (sourceBuffer d K) (query w) k)
       (pairT (size (sourceBuffer d K) one k) (denominator (sourceBuffer d K))))) :=
-  (congrSnd (program_at _ _ _ _)).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _).sndE
 theorem returned_buffer (d K w k : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run d K w k)) ≐ sourceBuffer d K :=
-  (congrFst (returned_tail _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_tail _ _ _ _).fstE
 theorem returned_rest (d K w k : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run d K w k)) ≐
     pairT (query w) (pairT (horner (sourceBuffer d K) (query w) k)
       (pairT (size (sourceBuffer d K) one k) (denominator (sourceBuffer d K)))) :=
-  (congrSnd (returned_tail _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_tail _ _ _ _).sndE
 theorem returned_query (d K w k : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run d K w k))) ≐ query w :=
-  (congrFst (returned_rest _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_rest _ _ _ _).fstE
 theorem returned_prefix_pair (d K w k : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run d K w k))) ≐
     pairT (horner (sourceBuffer d K) (query w) k)
       (pairT (size (sourceBuffer d K) one k) (denominator (sourceBuffer d K))) :=
-  (congrSnd (returned_rest _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_rest _ _ _ _).sndE
 theorem returned_prefix (d K w k : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (run d K w k)))) ≐
     horner (sourceBuffer d K) (query w) k :=
-  (congrFst (returned_prefix_pair _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_prefix_pair _ _ _ _).fstE
 theorem returned_clear_pair (d K w k : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (run d K w k)))) ≐
     pairT (size (sourceBuffer d K) one k) (denominator (sourceBuffer d K)) :=
-  (congrSnd (returned_prefix_pair _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_prefix_pair _ _ _ _).sndE
 theorem returned_size (d K w k : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (sndT (run d K w k))))) ≐
     size (sourceBuffer d K) one k :=
-  (congrFst (returned_clear_pair _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_clear_pair _ _ _ _).fstE
 theorem returned_denominator (d K w k : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (sndT (run d K w k))))) ≐
     denominator (sourceBuffer d K) :=
-  (congrSnd (returned_clear_pair _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_clear_pair _ _ _ _).sndE
 theorem returned_bound (d K w k : PTm n) (hw : Γ ⊢[PRAAx] bounded w one two)
     (hk : Γ ⊢[PRAAx] le k (succ (K*d))) : Γ ⊢[PRAAx]
     bounded (fstT (sndT (sndT (sndT (run d K w k))))) (num 11) one :=

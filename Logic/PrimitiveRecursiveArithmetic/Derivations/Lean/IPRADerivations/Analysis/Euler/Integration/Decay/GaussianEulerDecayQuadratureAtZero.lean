@@ -16,7 +16,7 @@ set_option maxHeartbeats 750000
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerDecayQuadratureAtZero
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianCompactRiemannName (quadrature sampleBody sampleData)
 open GaussianEulerDecayAddition (original_decay_linear_remainder)
@@ -33,10 +33,6 @@ open GaussianRationalHorner (positive_product qmul qzero)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalRiemannRefinement (weight termsDistance sum_distance)
 open GaussianRationalSyntheticDivision (qone qone_canonical qmul_congr qsub_congr)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num pred)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)

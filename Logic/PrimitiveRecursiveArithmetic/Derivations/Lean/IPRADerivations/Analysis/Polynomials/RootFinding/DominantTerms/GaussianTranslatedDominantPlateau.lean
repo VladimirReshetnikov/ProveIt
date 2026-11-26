@@ -19,13 +19,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianTranslatedDominantPlateau
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalTranslation (translated subst_translated)
 open LeanProofs.IPRA.Analysis.GaussianTranslatedBalancedRadius (inputContract residual subst_inputContract subst_residual)
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (fraction)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -51,9 +48,7 @@ def certificate (C N z : PTm n) : Fm PTm n :=
     ((residual C z ≐ zero ⟶ GaussianTranslatedBalancedRadius.radius C N z ≐ fraction zero one) ⋏
       (le one (residual C z) ⟶ GaussianDominantPlateauValues.certificate (translated C N z) N))
 
-@[simp] theorem subst_certificate {m : ℕ} (σ : Fin n → PTm m) (C N z : PTm n) :
-    (certificate C N z).subst σ = certificate (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z) := by
-  simp [certificate]
+ipra_subst certificate
 
 theorem translated_dominant_plateau (C N z : PTm n) (h : Γ ⊢[PRAAx] inputContract C N) : Γ ⊢[PRAAx]
     certificate C N z :=
@@ -67,20 +62,18 @@ def output (C N z : PTm n) : PTm n :=
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (C N z : PTm n) : PTm n := ap3 outputF C N z
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (C N z : PTm n) :
-    Syn.subst σ (output C N z) = output (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (C N z : PTm n) :
-    Syn.subst σ (run C N z) = run (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z) := by simp [run]
+ipra_subst output
+ipra_subst run
 
 theorem program_at (C N z : PTm n) : Γ ⊢[PRAAx] run C N z ≐ output C N z := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![C,N,z]
 
 theorem returned_polynomial (C N z : PTm n) : Γ ⊢[PRAAx] fstT (run C N z) ≐ translated C N z :=
-  (congrFst (program_at C N z)).eqTrans (fst_pair _ _)
+  (program_at C N z).fstE
 
 theorem returned_values (C N z : PTm n) : Γ ⊢[PRAAx]
     sndT (run C N z) ≐ GaussianDominantPlateauValues.run (translated C N z) N :=
-  (congrSnd (program_at C N z)).eqTrans (snd_pair _ _)
+  (program_at C N z).sndE
 
 theorem returned_center (C N z : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run C N z)) ≐ GaussianDominantPlateau.center (translated C N z) N :=

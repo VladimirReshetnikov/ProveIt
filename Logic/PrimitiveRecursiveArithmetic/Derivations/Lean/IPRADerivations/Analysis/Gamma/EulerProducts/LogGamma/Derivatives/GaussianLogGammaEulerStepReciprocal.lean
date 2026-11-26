@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerStepReciprocal
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.BertrandPostulate (le_isqrt)
 open ComplexLogarithmRemainder (normSq normSq_scale scale)
 open GaussianDominantPairAlgebra (represents_cross)
@@ -28,9 +28,6 @@ open GaussianRationalReciprocal
   (conjugate inverseNumerator norm_conjugate normNumerator qone reciprocal
     reciprocal_identity reciprocal_represents)
 open GaussianRootAlgebra (normSq_equal sub)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,19 +38,11 @@ def lower (δ : PTm n) : PTm n := isqrt (normSq δ)
 
 def radius (δ : PTm n) : PTm n := lower δ + one
 
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (A B neg a b sign : PTm n) :
-    Syn.subst σ (numerator A B neg a b sign) =
-      numerator (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ neg)
-        (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ sign) := by
-  simp [numerator]
+ipra_subst numerator
 
-@[simp] theorem subst_lower {m : ℕ} (σ : Fin n → PTm m) (δ : PTm n) :
-    Syn.subst σ (lower δ) = lower (Syn.subst σ δ) := by
-  simp [lower]
+ipra_subst lower
 
-@[simp] theorem subst_radius {m : ℕ} (σ : Fin n → PTm m) (δ : PTm n) :
-    Syn.subst σ (radius δ) = radius (Syn.subst σ δ) := by
-  simp [radius]
+ipra_subst radius
 
 theorem lower_positive (δ : PTm n) (h : Γ ⊢[PRAAx] le one (normSq δ)) :
     Γ ⊢[PRAAx] le one (lower δ) :=

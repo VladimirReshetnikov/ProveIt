@@ -15,7 +15,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetFirstFormulaDecay
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianCompactRiemannName
   (sampleData field0 field1 field2 field3 field4 field0_at field1_at field2_at field3_at field4_at)
@@ -31,10 +31,6 @@ open GaussianRationalMetric (bounded)
 open GaussianRationalReciprocal (bounded_difference)
 open GaussianReconstructionRoots (distance_zero_iff norm_from_distance)
 open GaussianRightHalfPlaneLogarithm (source)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -47,12 +43,8 @@ def laplaceData (A B D sign : PTm n) : PTm n := jd A B D sign (radius A B)
 def nameF : PR 2 := GaussianNamedDifference.nameF S J
 def data (A B D sign x : PTm n) : PTm n := GaussianNamedDifference.data (sd A B D sign x) (laplaceData A B D sign)
 
-@[simp] theorem subst_laplaceData {m : ℕ} (σ : Fin n → PTm m) (A B D sign : PTm n) :
-    Syn.subst σ (laplaceData A B D sign) = laplaceData (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ sign) := by
-  simp [laplaceData]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (A B D sign x : PTm n) :
-    Syn.subst σ (data A B D sign x) =
-      data (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ x) := by simp [data]
+ipra_subst laplaceData
+ipra_subst data
 
 theorem laplace_regular (A B D sign : PTm n) (h : Γ ⊢[PRAAx] source A D sign) :
     Γ ⊢[PRAAx] pointCN J (laplaceData A B D sign) :=

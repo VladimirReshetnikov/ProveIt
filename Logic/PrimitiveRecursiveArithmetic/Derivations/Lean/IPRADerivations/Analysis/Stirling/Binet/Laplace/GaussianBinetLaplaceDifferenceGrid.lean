@@ -14,7 +14,7 @@ set_option maxHeartbeats 600000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceDifferenceGrid
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetFirstFormulaPinning (laplaceStepData)
 open GaussianBinetLaplaceDifferencePrefix (shifted_source prefixStepData prefix_step_rate tailDen tail_den_positive)
 open GaussianBinetLaplaceIntegrand (meshGain)
@@ -28,10 +28,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRightHalfPlaneLogarithm (source)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "F" => evaluatorF GaussianBinetLaplaceStrip.Kernel.cofinal

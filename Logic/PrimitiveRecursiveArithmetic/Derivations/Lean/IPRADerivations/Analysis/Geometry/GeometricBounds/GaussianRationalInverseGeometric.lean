@@ -13,16 +13,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalInverseGeometric
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qadd qmul qzero)
 open GaussianRationalMetric (qsub)
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalReciprocal (power power_succ power_zero power_canonical)
 open GaussianRationalSyntheticDivision (qone qmul_congr qadd_congr qsub_congr)
 open GaussianReciprocalHorner (qmul_associative qmul_one_right)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -30,8 +27,7 @@ def body : PTm 2 := power (var 1) (succ (var 0))
 
 def value (N y : PTm n) : PTm n := GaussianRationalFiniteSum.sum body N y
 
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (N y : PTm n) :
-    Syn.subst σ (value N y) = value (Syn.subst σ N) (Syn.subst σ y) := by simp [value]
+ipra_subst value
 
 theorem row (x y k : PTm n) (h : Γ ⊢[PRAAx] qmul x y ≐ qone) :
     Γ ⊢[PRAAx] qmul (qsub x qone) (power y (succ k)) ≐ qsub (power y k) (power y (succ k)) := by
@@ -49,8 +45,7 @@ theorem row (x y k : PTm n) (h : Γ ⊢[PRAAx] qmul x y ≐ qone) :
 def law (x y N : PTm n) : Fm PTm n :=
   qmul (qsub x qone) (value N y) ≐ qsub qone (power y N)
 
-@[simp] theorem subst_law {m : ℕ} (σ : Fin n → PTm m) (x y N : PTm n) :
-    (law x y N).subst σ = law (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ N) := by simp [law]
+ipra_subst law
 
 private theorem zero_case (x y : PTm n) : Γ ⊢[PRAAx] law x y zero := by
   have l : Γ ⊢[PRAAx] qmul (qsub x qone) (value zero y) ≐ qzero :=

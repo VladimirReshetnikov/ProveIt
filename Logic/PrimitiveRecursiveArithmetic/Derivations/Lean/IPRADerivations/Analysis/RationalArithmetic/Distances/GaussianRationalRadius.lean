@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalMetric
 import IPRADerivations.Analysis.FiniteOperations.GaussianProductStability
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # An actual common-scale radius for original Gaussian rational lists
@@ -23,7 +22,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalRadius
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder (re im code normSq eval_re_code)
 open LeanProofs.IPRA.Analysis.RationalSupMetric (numeratorOf denominatorOf)
 open LeanProofs.IPRA.Analysis.RationalIntegerNormalization (positivePart positive_form)
@@ -34,9 +33,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalMetric (bounded bounded_to_cleared
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -46,19 +42,9 @@ def radiusQuery (u v : PTm n) : PTm n := ofGaussian (code (ZT.ofNat u) (ZT.ofNat
 def scaleDenominator (S T u v : PTm n) : PTm n := commonD S T (radiusQuery u v)
 def rawRadius (S T u v : PTm n) : PTm n := positivePart (re (queryNumerator S T (radiusQuery u v)))
 
-@[simp] theorem subst_radiusQuery {m : ℕ} (σ : Fin n → PTm m) (u v : PTm n) :
-    Syn.subst σ (radiusQuery u v) = radiusQuery (Syn.subst σ u) (Syn.subst σ v) := by
-  simp only [radiusQuery,GaussianRationalHorner.subst_ofGaussian,ComplexLogarithmRemainder.subst_code,
-    ZT.subst_ofNat,ConciseIPRA.PTm.subst_zero]
-@[simp] theorem subst_scaleDenominator {m : ℕ} (σ : Fin n → PTm m) (S T u v : PTm n) :
-    Syn.subst σ (scaleDenominator S T u v) = scaleDenominator (Syn.subst σ S) (Syn.subst σ T)
-      (Syn.subst σ u) (Syn.subst σ v) := by
-  simp only [scaleDenominator,GaussianRationalNormalization.subst_commonD,subst_radiusQuery]
-@[simp] theorem subst_rawRadius {m : ℕ} (σ : Fin n → PTm m) (S T u v : PTm n) :
-    Syn.subst σ (rawRadius S T u v) = rawRadius (Syn.subst σ S) (Syn.subst σ T)
-      (Syn.subst σ u) (Syn.subst σ v) := by
-  simp only [rawRadius,RationalIntegerNormalization.subst_positivePart,ComplexLogarithmRemainder.subst_re,
-    GaussianRationalNormalization.subst_queryNumerator,subst_radiusQuery]
+ipra_subst radiusQuery
+ipra_subst scaleDenominator
+ipra_subst rawRadius
 
 theorem scale_positive (S T u v : PTm n) : Γ ⊢[PRAAx] le one (scaleDenominator S T u v) := commonD_positive _ _ _
 
@@ -159,15 +145,8 @@ def scaledBudget (N S T u v A B p q : PTm n) : Fm PTm n :=
   le (pw q N*N*pw (rawRadius S T u v) (PTm.pred N)*A)
     (pw p N*B*pw (scaleDenominator S T u v) (PTm.pred N))
 
-@[simp] theorem subst_sourceBudget {m : ℕ} (σ : Fin n → PTm m) (N u v A B p q : PTm n) :
-    (sourceBudget N u v A B p q).subst σ = sourceBudget (Syn.subst σ N) (Syn.subst σ u)
-      (Syn.subst σ v) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ p) (Syn.subst σ q) := by
-  simp only [sourceBudget,subst_le,PTm.subst_mul,subst_ap2,PTm.subst_pred]
-@[simp] theorem subst_scaledBudget {m : ℕ} (σ : Fin n → PTm m) (N S T u v A B p q : PTm n) :
-    (scaledBudget N S T u v A B p q).subst σ = scaledBudget (Syn.subst σ N) (Syn.subst σ S)
-      (Syn.subst σ T) (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ A) (Syn.subst σ B)
-      (Syn.subst σ p) (Syn.subst σ q) := by
-  simp only [scaledBudget,subst_le,PTm.subst_mul,subst_ap2,PTm.subst_pred,subst_rawRadius,subst_scaleDenominator]
+ipra_subst sourceBudget
+ipra_subst scaledBudget
 
 theorem budget_transport (N S T u v A B p q : PTm n) (hv : Γ ⊢[PRAAx] le one v)
     (h : Γ ⊢[PRAAx] sourceBudget N u v A B p q) : Γ ⊢[PRAAx] scaledBudget N S T u v A B p q := by
@@ -190,10 +169,7 @@ def radiusOutput (S T u v : PTm n) : PTm n :=
   pairT (radiusQuery u v) (pairT (scaleDenominator S T u v) (rawRadius S T u v))
 def radiusF : PR 4 := PTm.toPR (radiusOutput (var 0) (var 1) (var 2) (var 3))
 
-@[simp] theorem subst_radiusOutput {m : ℕ} (σ : Fin n → PTm m) (S T u v : PTm n) :
-    Syn.subst σ (radiusOutput S T u v) = radiusOutput (Syn.subst σ S) (Syn.subst σ T)
-      (Syn.subst σ u) (Syn.subst σ v) := by
-  simp only [radiusOutput,subst_pairT,subst_radiusQuery,subst_scaleDenominator,subst_rawRadius]
+ipra_subst radiusOutput
 
 theorem radius_program (S T u v : PTm n) : Γ ⊢[PRAAx]
     ConciseIPRA.PTm.app radiusF ![S,T,u,v] ≐ radiusOutput S T u v := by

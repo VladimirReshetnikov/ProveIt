@@ -17,22 +17,18 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalHarmonicIntervalProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalHarmonicInterval (interval common numerator horizon at_common common_value common_canonical)
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
 open Products (fact)
 open GaussianRationalHorner (qadd)
 open RationalGaussianEmbedding (embed)
 open GaussianRationalMetric (distanceBounded)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def commonHorizon (a b c d Q : PTm n) : PTm n := horizon (a*c) (b*d) Q+horizon a b (c*Q)+horizon c d (b*Q)
-@[simp] theorem subst_commonHorizon {m : ℕ} (σ : Fin n → PTm m) (a b c d Q : PTm n) :
-    Syn.subst σ (commonHorizon a b c d Q) = commonHorizon (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d) (Syn.subst σ Q) := by simp [commonHorizon]
+ipra_subst commonHorizon
 
 theorem common_product (a b c d Q L : PTm n) : Γ ⊢[PRAAx]
     common (a*c) (b*d) Q L ≐ RationalArithmetic.add (common a b (c*Q) L) (common c d (b*Q) L) := by

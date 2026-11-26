@@ -22,7 +22,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalRankNullityCriterion
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero qmul)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRationalRowElimination (shape pivot rowDot nullRows)
@@ -33,10 +33,6 @@ open GaussianTranslatedNonconstant (recode recode_congr)
 open GaussianRationalFiberVandermonde (delta)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open LeanProofs.IPRA.PTm (pred)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -46,14 +42,10 @@ def rank (A R N : PTm n) : PTm n := count (finalHistory A R N) N
 def zeroVector (v N : PTm n) : Fm PTm n := .all
   (lt (var 0) (Syn.shift N) ⟶ recode (entry (Syn.shift v) (var 0)) ≐ qzero)
 def reader : PTm 2 := entry (var 1) (var 0)
-@[simp] theorem subst_finalMatrix {k : ℕ} (σ : Fin n → PTm k) (A R N : PTm n) :
-    Syn.subst σ (finalMatrix A R N) = finalMatrix (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) := by simp [finalMatrix]
-@[simp] theorem subst_finalHistory {k : ℕ} (σ : Fin n → PTm k) (A R N : PTm n) :
-    Syn.subst σ (finalHistory A R N) = finalHistory (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) := by simp [finalHistory]
-@[simp] theorem subst_rank {k : ℕ} (σ : Fin n → PTm k) (A R N : PTm n) :
-    Syn.subst σ (rank A R N) = rank (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) := by simp [rank]
-@[simp] theorem subst_zeroVector {k : ℕ} (σ : Fin n → PTm k) (v N : PTm n) :
-    (zeroVector v N).subst σ = zeroVector (Syn.subst σ v) (Syn.subst σ N) := by simp [zeroVector,Syn.subst_shift,Syn.shift_subst]
+ipra_subst finalMatrix
+ipra_subst finalHistory
+ipra_subst rank
+ipra_subst zeroVector [Syn.subst_shift, Syn.shift_subst]
 
 theorem count_full_marked (H N : PTm n) (hFull : Γ ⊢[PRAAx] count H N ≐ N) : Γ ⊢[PRAAx] allMarked H N := by
   have hs : Γ.map Fm.shift ⊢[PRAAx] count (Syn.shift H) (Syn.shift N) ≐ Syn.shift N := by
@@ -164,9 +156,7 @@ formula. It is never used as an induction formula. -/
 def hasNonzeroNull (A R N : PTm n) : Fm PTm n := .ex
   ((length (var 0) ≐ Syn.shift N) ⋏ (nonzeroVector (var 0) (Syn.shift N) ⋏
     nullRows (Syn.shift A) (Syn.shift R) (Syn.shift N) (var 0)))
-@[simp] theorem subst_hasNonzeroNull {k : ℕ} (σ : Fin n → PTm k) (A R N : PTm n) :
-    (hasNonzeroNull A R N).subst σ = hasNonzeroNull (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) := by
-  simp [hasNonzeroNull,Syn.subst_shift,Syn.shift_subst]
+ipra_subst hasNonzeroNull [Syn.subst_shift, Syn.shift_subst]
 
 theorem deficit_has_nonzero_null (A R N : PTm n) (hA : Γ ⊢[PRAAx] shape A R N)
     (hDef : Γ ⊢[PRAAx] lt (rank A R N) N) : Γ ⊢[PRAAx] hasNonzeroNull A R N := by
@@ -196,12 +186,7 @@ theorem rank_zero (A R : PTm n) : Γ ⊢[PRAAx] rank A R zero ≐ zero := Gaussi
 
 def rankF : PR 3 := PTm.toPR (rank (var 0) (var 1) (var 2))
 def run (A R N : PTm n) : PTm n := app rankF ![A,R,N]
-@[simp] theorem subst_run {k : ℕ} (σ : Fin n → PTm k) (A R N : PTm n) :
-    Syn.subst σ (run A R N) = run (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst run
 theorem program_at (A R N : PTm n) : Γ ⊢[PRAAx] run A R N ≐ rank A R N := by
   simpa [run,rankF] using toPR_eq (Γ := Γ) (rank (var 0) (var 1) (var 2) : PTm 3) ![A,R,N]
 theorem returned_criterion (A R N : PTm n) (hA : Γ ⊢[PRAAx] shape A R N) : Γ ⊢[PRAAx]

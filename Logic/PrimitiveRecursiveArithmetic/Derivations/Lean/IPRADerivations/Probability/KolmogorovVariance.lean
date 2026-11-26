@@ -1,6 +1,5 @@
 import IPRADerivations.Probability.KolmogorovIidGlue
 import IPRADerivations.Combinatorics.BinomialIdentities
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Kolmogorov's maximal inequality with the variance of the sum
@@ -22,7 +21,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.KolmogorovVariance
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Expectation (Ew Wt inst2_mul' inst2_add')
 open LeanProofs.IPRA.Probability.Independence (dsum sum_scale shift_sum)
 open LeanProofs.IPRA.Probability.Variance (ad ad_sq)
@@ -31,10 +30,6 @@ open LeanProofs.IPRA.Probability.KolmogorovIid (Cs Cs_at rv rv_at kB kB_at DB DB
 open LeanProofs.IPRA.Probability.KolmogorovIidGlue (A1 Cv kolmogorov_iid shift_pw)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -57,15 +52,12 @@ theorem point_square (t r M x : PTm n) :
   simp only [inst2_mul', inst2_add']
   have e2 : inst2 (two : PTm 2) t (pairT r (pairT M x)) = two := by simp [inst2]
   rw [e2]
-  have p := natEq (TB_at (Γ := Γ) w t r M x)
-  have s := natEq (SB_at (Γ := Γ) X t r M x)
-  have cw := natEq (Cs_at (Γ := Γ) w t r M x)
   have cs := natEq (Cs_at (Γ := Γ) (w * X) t r M x)
   have rr := natEq (rv_at (Γ := Γ) t r (pairT M x))
   have d := natEq ((kB_at (Γ := Γ) (DB w X) t r (pairT M x)).eqTrans (DB_at w X r t M x))
   have q := natEq (ad_sq (Γ := Γ) (ap2 (sumF w) M x * Sr X r t M x) (r * ap2 (sumF (w * X)) M x))
   apply deriveNat; ipra_simps
-  rw [p, s, cw, cs, rr, d]
+  rw [natEq (TB_at (Γ := Γ) w t r M x), natEq (SB_at (Γ := Γ) X t r M x), natEq (Cs_at (Γ := Γ) w t r M x), cs, rr, d]
   linear_combination 𝔟 (Pr w r t M x) * q
 
 /-- `∑ P_n D_n + 2 n W S A = W² B + n² S² T`. -/

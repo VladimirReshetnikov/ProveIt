@@ -15,9 +15,7 @@ set_option maxHeartbeats 700000
 
 namespace LeanProofs.IPRA.Analysis.RationalPolynomialGridSum
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
+open_ipra
 open BernoulliBounds (pv zint toZ_zint)
 open GaussianEuclideanDistanceName (fraction fraction_represents)
 open GaussianRationalHorner (positive_product)
@@ -27,8 +25,6 @@ open RationalFiniteSum (sum term canonical_equal)
 open RationalIntegerNormalization (normalize normalize_preserves_value)
 open RationalNormalForm (normalize_well_formed)
 open RationalPowerMoments (naturalSum)
-open Syn
-open scoped Fm
 
 variable {n d : ℕ} {Γ : List (Fm PTm n)}
 
@@ -48,13 +44,9 @@ private theorem subst_sumFin {l k : ℕ} (σ : Fin n → PTm l) (f : Fin k → Z
   | zero => simp [ZT.sumFin, ZT.natLit]
   | succ k ih => simp only [ZT.sumFin,ZT.subst_add,ih]
 
-@[simp] theorem subst_rowDen {l : ℕ} (σ : Fin n → PTm l) (d D : ℕ) (M : PTm n) :
-    Syn.subst σ (rowDen d D M) = rowDen d D (Syn.subst σ M) := by
-  simp [rowDen,pw]
+ipra_subst rowDen [pw]
 
-@[simp] theorem subst_prefixNumerator {l : ℕ} (σ : Fin n → PTm l) (a : Fin (d+1) → ℤ) (N M : PTm n) :
-    (prefixNumerator a N M).subst σ = prefixNumerator a (Syn.subst σ N) (Syn.subst σ M) := by
-  simp [prefixNumerator,subst_sumFin,zint,ZT.natLit,pw]
+ipra_subst prefixNumerator [subst_sumFin, zint, ZT.natLit, pw]
 
 theorem body_at (a : Fin (d+1) → ℤ) (D : ℕ) (i M : PTm n) :
     term (body a D) i M = normalize (pv a i M) (rowDen d D M) := by
@@ -89,9 +81,7 @@ private theorem prefix_succ (a : Fin (d+1) → ℤ) (N M : PTm n) :
 def foldLaw (a : Fin (d+1) → ℤ) (D : ℕ) (N M : PTm n) : Fm PTm n :=
   sum (body a D) N M ≐ normalize (prefixNumerator a N M) (rowDen d D M)
 
-@[simp] theorem subst_foldLaw {l : ℕ} (σ : Fin n → PTm l) (a : Fin (d+1) → ℤ) (D : ℕ) (N M : PTm n) :
-    (foldLaw a D N M).subst σ = foldLaw a D (Syn.subst σ N) (Syn.subst σ M) := by
-  simp [foldLaw]
+ipra_subst foldLaw
 
 private theorem fold_zero (a : Fin (d+1) → ℤ) (D : ℕ) (hD : 0 < D) (M : PTm n)
     (hM : Γ ⊢[PRAAx] le one M) : Γ ⊢[PRAAx] foldLaw a D zero M := by

@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalFullReducedSpan
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul)
 open GaussianRationalFiberVandermonde (delta)
 open GaussianRationalLagrangeCardinals (delta_equal delta_unequal)
@@ -28,9 +28,6 @@ open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianTranslatedNonconstant (recode recode_congr)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,13 +37,9 @@ def weightBody : PTm 2 := weight (fstT (var 1)) (fstT (sndT (var 1))) (fstT (snd
   (sndT (sndT (sndT (var 1)))) (var 0)
 def weights (A R N v : PTm n) : PTm n := sequence weightBody R (data A R N v)
 
-@[simp] theorem subst_weight {k : ℕ} (σ : Fin n → PTm k) (A R N v i : PTm n) :
-    Syn.subst σ (weight A R N v i) = weight (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N)
-      (Syn.subst σ v) (Syn.subst σ i) := by simp [weight]
-@[simp] theorem subst_data {k : ℕ} (σ : Fin n → PTm k) (A R N v : PTm n) :
-    Syn.subst σ (data A R N v) = data (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ v) := by simp [data]
-@[simp] theorem subst_weights {k : ℕ} (σ : Fin n → PTm k) (A R N v : PTm n) :
-    Syn.subst σ (weights A R N v) = weights (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ v) := by simp [weights]
+ipra_subst weight
+ipra_subst data
+ipra_subst weights
 
 theorem weight_body_at (A R N v i : PTm n) : Γ ⊢[PRAAx] inst2 weightBody i (data A R N v) ≐ weight A R N v i := by
   have tail := snd_pair (Γ := Γ) A (pairT R (pairT N v))
@@ -58,9 +51,9 @@ theorem weight_body_at (A R N v i : PTm n) : Γ ⊢[PRAAx] inst2 weightBody i (d
     (σ' := ![A,R,N,v,i]) (fun j => by
       fin_cases j
       · exact fst_pair _ _
-      · exact (congrFst tail).eqTrans (fst_pair _ _)
-      · exact (congrFst endPair).eqTrans (fst_pair _ _)
-      · exact (congrSnd endPair).eqTrans (snd_pair _ _)
+      · exact tail.fstE
+      · exact endPair.fstE
+      · exact endPair.sndE
       · exact .eqRefl _)
 
 theorem weights_length (A R N v : PTm n) : Γ ⊢[PRAAx] length (weights A R N v) ≐ R := sequence_length _ _ _

@@ -16,7 +16,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.SignedDiscreteThirdDerivativeNormalization
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open SignedDiscreteDerivativeBlock (source)
 open SignedDiscreteDerivativeOperators (width divisor)
 open SignedDiscreteThirdDerivativeIdentity (coarseThird)
@@ -25,9 +25,6 @@ open SignedDiscreteDerivativeBounds (floorOn)
 open SignedCubicTaylorGrid (combination)
 open GaussianRationalHorner (positive_product)
 open PolynomialBisection (zle_congr zle_scale_cancel)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -10,7 +10,7 @@ set_option maxHeartbeats 1100000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalHyperfactorialProperness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalHyperfactorial
   (center radius barnesData height barnes_source barnes_regular barnes_apart specialLogData logarithm_source
     exponentF exponentData powerF powerData power_input power_regular inverseF inverseData inverse_regular nameF data)
@@ -21,9 +21,6 @@ open GaussianRationalSyntheticDivision (qone qsub_congr qadd_sub_cancel)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianNameEquivalence (crossEquivalent cross_to_diagonal)
 open GaussianGammaAdjacentCutoff (multiply_cross)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

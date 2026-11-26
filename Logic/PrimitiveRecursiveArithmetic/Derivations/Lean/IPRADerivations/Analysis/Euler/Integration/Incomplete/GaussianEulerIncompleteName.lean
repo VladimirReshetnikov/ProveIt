@@ -12,14 +12,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIncompleteName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIncompleteCofinalRate (lowerSample upperSample source sample_regularity)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianCoefficientNameBounds (unit)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -35,25 +33,23 @@ private def upperBody : PTm 7 := upperSample (var 0) (var 1) (var 2) (var 3) (va
 def lowerF : PR 2 := PTm.toPR (reader lowerBody (var 0) (var 1))
 def upperF : PR 2 := PTm.toPR (reader upperBody (var 0) (var 1))
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (z R B A a b : PTm n) :
-    Syn.subst σ (data z R B A a b) =
-      data (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ a) (Syn.subst σ b) := by simp [data]
+ipra_subst data
 
 private theorem decoder_at (p z R B A a b : PTm n) (i : Fin 7) :
     Γ ⊢[PRAAx] decoded p (data z R B A a b) i ≐ (![p,z,R,B,A,a,b] : Fin 7 → PTm n) i := by
   let x := data z R B A a b
   have head : Γ ⊢[PRAAx] fstT x ≐ pairT z R := fst_pair _ _
   have tail : Γ ⊢[PRAAx] sndT x ≐ pairT (pairT B A) (pairT a b) := snd_pair _ _
-  have middle : Γ ⊢[PRAAx] fstT (sndT x) ≐ pairT B A := (congrFst tail).eqTrans (fst_pair _ _)
-  have endp : Γ ⊢[PRAAx] sndT (sndT x) ≐ pairT a b := (congrSnd tail).eqTrans (snd_pair _ _)
+  have middle : Γ ⊢[PRAAx] fstT (sndT x) ≐ pairT B A := tail.fstE
+  have endp : Γ ⊢[PRAAx] sndT (sndT x) ≐ pairT a b := tail.sndE
   fin_cases i
   · exact .eqRefl _
-  · exact (congrFst head).eqTrans (fst_pair _ _)
-  · exact (congrSnd head).eqTrans (snd_pair _ _)
-  · exact (congrFst middle).eqTrans (fst_pair _ _)
-  · exact (congrSnd middle).eqTrans (snd_pair _ _)
-  · exact (congrFst endp).eqTrans (fst_pair _ _)
-  · exact (congrSnd endp).eqTrans (snd_pair _ _)
+  · exact head.fstE
+  · exact head.sndE
+  · exact middle.fstE
+  · exact middle.sndE
+  · exact endp.fstE
+  · exact endp.sndE
 
 private theorem reader_at (body : PTm 7) (p z R B A a b : PTm n) :
     Γ ⊢[PRAAx] ap2 (PTm.toPR (reader body (var 0) (var 1))) p (data z R B A a b) ≐

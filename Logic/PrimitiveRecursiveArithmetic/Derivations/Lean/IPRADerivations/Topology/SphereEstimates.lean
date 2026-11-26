@@ -28,10 +28,8 @@ The scalings: points `x = X/N`, field values `F(x) = G/N`, times `t = T/K` with 
 
 namespace LeanProofs.IPRA.Topology.SphereEstimates
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Variance (ad)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -50,10 +48,9 @@ theorem antipodal_finite {N₀ N₁ : ℕ} (D : Fin N₀ → Fin N₁ → ZT n) 
   have e := ZT.toZ_eq (hcomm p)
   simp only [ZT.toZ_sub, ZT.toZ_sumFin, ZT.toZ_mul, hF, MulZeroClass.mul_zero, Finset.sum_const_zero] at e
   have et := ZT.toZ_eq (htop p)
-  have eb := ZT.toZ_eq (hbot p)
   have ep := ZT.toZ_eq (hp)
   simp only [ZT.toZ_neg, ZT.toZ_natLit, Nat.cast_one] at et ep
-  exact false_of_comb 1 (by linear_combination -e + et - eb - 2 * ep) nn_one φ
+  exact false_of_comb 1 (by linear_combination -e + et - ZT.toZ_eq (hbot p) - 2 * ep) nn_one φ
 
 /-! ## S05 -/
 

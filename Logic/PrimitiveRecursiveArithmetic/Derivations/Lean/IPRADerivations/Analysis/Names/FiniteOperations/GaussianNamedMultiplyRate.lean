@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedMultiplyRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNameArithmetic (multiplyF multiplyData multiplyModulus multiply_fast)
 open GaussianNamedInverseRate (independentRate rate_at rateNumerator rateDenominator denominator_positive)
 open GaussianNamedLipschitzRate (diagonalNumerator diagonalDenominator diagonalEnvelope)
@@ -24,9 +24,6 @@ open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_symmetric)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,21 +37,11 @@ def input (F G H K : PR 2) (x y u v A B C E M R : PTm n) : Fm PTm n :=
   le one B ⋏ (le one E ⋏ (pointCN F x ⋏ (pointCN G y ⋏ (pointCN H u ⋏ (pointCN K v ⋏
     (sampleBound G y M ⋏ (sampleBound H u R ⋏ (independentRate F H x u A B ⋏ independentRate G K y v C E))))))))
 
-@[simp] theorem subst_sampleBound {m : ℕ} (σ : Fin n → PTm m) (F : PR 2) (x M : PTm n) :
-    (sampleBound F x M).subst σ = sampleBound F (Syn.subst σ x) (Syn.subst σ M) := by
-  simp [sampleBound,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_leadingNumerator {m : ℕ} (σ : Fin n → PTm m) (A B C E M R : PTm n) :
-    Syn.subst σ (leadingNumerator A B C E M R) = leadingNumerator (Syn.subst σ A) (Syn.subst σ B)
-      (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ M) (Syn.subst σ R) := by simp [leadingNumerator]
-@[simp] theorem subst_leadingDenominator {m : ℕ} (σ : Fin n → PTm m) (B E : PTm n) :
-    Syn.subst σ (leadingDenominator B E) = leadingDenominator (Syn.subst σ B) (Syn.subst σ E) := by simp [leadingDenominator]
-@[simp] theorem subst_observationCost {m : ℕ} (σ : Fin n → PTm m) (F G H K : PR 2) (x y u v M R : PTm n) :
-    Syn.subst σ (observationCost F G H K x y u v M R) = observationCost F G H K (Syn.subst σ x) (Syn.subst σ y)
-      (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ M) (Syn.subst σ R) := by simp [observationCost]
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (F G H K : PR 2) (x y u v A B C E M R : PTm n) :
-    (input F G H K x y u v A B C E M R).subst σ = input F G H K (Syn.subst σ x) (Syn.subst σ y)
-      (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ C) (Syn.subst σ E)
-      (Syn.subst σ M) (Syn.subst σ R) := by simp [input]
+ipra_subst sampleBound [Syn.subst_shift, Syn.shift_subst]
+ipra_subst leadingNumerator
+ipra_subst leadingDenominator
+ipra_subst observationCost
+ipra_subst input
 
 theorem sample_bound_at (F : PR 2) (x M t : PTm n) (h : Γ ⊢[PRAAx] sampleBound F x M) : Γ ⊢[PRAAx]
     bounded (ap2 F t x) M one := by

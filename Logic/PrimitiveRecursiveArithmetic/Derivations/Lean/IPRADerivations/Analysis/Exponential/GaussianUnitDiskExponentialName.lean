@@ -18,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianUnitDiskExponentialName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalPolynomialExponential (scalarSum scalarBody)
@@ -27,10 +27,6 @@ open GaussianCoefficientNameBounds (unit unit_positive subst_unit)
 open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_radius_mono distance_triangle_same)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent diagonalEquivalent)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -44,23 +40,15 @@ def unitSamples (f : PR 2) (x : PTm n) : Fm PTm n := .all (bounded (ap2 f (var 0
 def input (f : PR 2) (x : PTm n) : Fm PTm n := pointCN f x ⋏ unitSamples f x
 def scale : PTm n := pw two (num 4)
 def commonDenominator (s t : PTm n) : PTm n := scale*unit s*unit t
-@[simp] theorem subst_shifted {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) :
-    Syn.subst σ (shifted p) = shifted (Syn.subst σ p) := by simp [shifted]
-@[simp] theorem subst_index {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) :
-    Syn.subst σ (index p) = index (Syn.subst σ p) := by simp [index]
-@[simp] theorem subst_query {l : ℕ} (σ : Fin n → PTm l) (f : PR 2) (p x : PTm n) :
-    Syn.subst σ (query f p x) = query f (Syn.subst σ p) (Syn.subst σ x) := by simp [query]
-@[simp] theorem subst_value {l : ℕ} (σ : Fin n → PTm l) (f : PR 2) (p x : PTm n) :
-    Syn.subst σ (value f p x) = value f (Syn.subst σ p) (Syn.subst σ x) := by simp [value]
-@[simp] theorem subst_sample {l : ℕ} (σ : Fin n → PTm l) (f : PR 2) (p x : PTm n) :
-    Syn.subst σ (sample f p x) = sample f (Syn.subst σ p) (Syn.subst σ x) := by simp [sample]
-@[simp] theorem subst_unitSamples {l : ℕ} (σ : Fin n → PTm l) (f : PR 2) (x : PTm n) :
-    (unitSamples f x).subst σ = unitSamples f (Syn.subst σ x) := by simp [unitSamples,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_input {l : ℕ} (σ : Fin n → PTm l) (f : PR 2) (x : PTm n) :
-    (input f x).subst σ = input f (Syn.subst σ x) := by simp [input]
-@[simp] theorem subst_scale {l : ℕ} (σ : Fin n → PTm l) : Syn.subst σ (scale : PTm n) = (scale : PTm l) := by simp [scale]
-@[simp] theorem subst_commonDenominator {l : ℕ} (σ : Fin n → PTm l) (s t : PTm n) :
-    Syn.subst σ (commonDenominator s t) = commonDenominator (Syn.subst σ s) (Syn.subst σ t) := by simp [commonDenominator]
+ipra_subst shifted
+ipra_subst index
+ipra_subst query
+ipra_subst value
+ipra_subst sample
+ipra_subst unitSamples [Syn.subst_shift, Syn.shift_subst]
+ipra_subst input
+ipra_subst scale
+ipra_subst commonDenominator
 
 theorem sample_at (f : PR 2) (p x : PTm n) : Γ ⊢[PRAAx] sample f p x ≐ value f p x := by
   simpa [sample,nameF,ap2] using toPR_eq (Γ := Γ) (value f (var 0) (var 1) : PTm 2) ![p,x]

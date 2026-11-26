@@ -15,15 +15,11 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaIntegralCutoffPartition
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaIntegralCutoffs (etaDen top cells)
 open GaussianGammaCompactQuadratureBoundary (width)
 open GaussianGammaCompactCutoffGeometry (ratio lowerWidth middleWidth)
 open GaussianRationalHorner (positive_product)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -36,14 +32,9 @@ def middleCells (k deep A R K : PTm n) : PTm n := middleWidth k deep A R*K
 def upperCells (k deep A R N K : PTm n) : PTm n := upperWidth k deep A R N*K
 def totalCells (k deep A R N K : PTm n) : PTm n := totalWidth k deep A R N*K
 def source (k deep A R N : PTm n) : Fm PTm n := le one A ⋏ (lt k deep ⋏ lt (top k A R) N)
-@[simp] theorem subst_denominator {l : ℕ} (σ : Fin n → PTm l) (deep A R : PTm n) :
-    Syn.subst σ (denominator deep A R) = denominator (Syn.subst σ deep) (Syn.subst σ A) (Syn.subst σ R) := by
-  simp [denominator,etaDen,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_upperWidth {l : ℕ} (σ : Fin n → PTm l) (k deep A R N : PTm n) :
-    Syn.subst σ (upperWidth k deep A R N) = upperWidth (Syn.subst σ k) (Syn.subst σ deep) (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) := by
-  simp [upperWidth,top,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_totalWidth {l : ℕ} (σ : Fin n → PTm l) (k deep A R N : PTm n) :
-    Syn.subst σ (totalWidth k deep A R N) = totalWidth (Syn.subst σ k) (Syn.subst σ deep) (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) := by simp [totalWidth]
+ipra_subst denominator [etaDen, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst upperWidth [top, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst totalWidth
 
 theorem denominator_positive (deep A R : PTm n) : Γ ⊢[PRAAx] le one (denominator deep A R) :=
   GaussianGammaIntegralCutoffs.eta_den_positive _ _ _
@@ -102,10 +93,7 @@ def output (k deep A R N K : PTm n) : PTm n := pairT (denominator deep A R)
     (pairT (upperCells k deep A R N K) (totalCells k deep A R N K))))
 def outputF : PR 6 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5))
 def run (k deep A R N K : PTm n) : PTm n := PTm.app outputF ![k,deep,A,R,N,K]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (k deep A R N K : PTm n) :
-    Syn.subst σ (output k deep A R N K) = output (Syn.subst σ k) (Syn.subst σ deep) (Syn.subst σ A)
-      (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ K) := by
-  simp [output,lowerCells,middleCells,upperCells,totalCells]
+ipra_subst output [lowerCells, middleCells, upperCells, totalCells]
 theorem program_at (k deep A R N K : PTm n) : Γ ⊢[PRAAx] run k deep A R N K ≐ output k deep A R N K := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) ![k,deep,A,R,N,K]
 

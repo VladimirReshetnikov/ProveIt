@@ -15,7 +15,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRightHalfPlaneExponentialMargin
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Foundations.GapDecision (zabs)
 open GaussianCoefficientNameBounds (unit)
@@ -36,10 +36,6 @@ open RationalSupMetric (denominatorOf)
 open RationalValueBounds (upper)
 open ComplexLogarithmRemainder (code re normSq scale oneCode mul add eval_re_code)
 open GaussianRootAlgebra (equal_refl re_add re_mul re_scale re_one im_scale im_one)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

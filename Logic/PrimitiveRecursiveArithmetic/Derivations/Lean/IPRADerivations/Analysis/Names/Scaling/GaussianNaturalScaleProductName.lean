@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNaturalScaleProductName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalNaturalScale (naturalPoint natScale natScale_as_product natScale_canonical)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianNameArithmetic (multiplyF multiplyData multiplyModulus multiply_fast)
@@ -24,8 +24,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameEquivalence (point_at crossEquivalent)
 open GaussianRadiusExponentialName (input bounded_samples_at)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -35,8 +33,7 @@ def clock (f : PR 2) (p i x : PTm n) : PTm n :=
   GaussianFastValueCut.exponent (multiplyModulus constantF f (naturalPoint i) x) p
 def sample (f : PR 2) (p i x : PTm n) : PTm n := ap2 (productF f) p (productData f i x)
 
-@[simp] theorem subst_productData {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (i x : PTm n) :
-    Syn.subst σ (productData f i x) = productData f (Syn.subst σ i) (Syn.subst σ x) := by simp [productData]
+ipra_subst productData
 
 theorem product_at (f : PR 2) (p i x : PTm n) : Γ ⊢[PRAAx]
     sample f p i x ≐ natScale i (ap2 f (clock f p i x) x) := by

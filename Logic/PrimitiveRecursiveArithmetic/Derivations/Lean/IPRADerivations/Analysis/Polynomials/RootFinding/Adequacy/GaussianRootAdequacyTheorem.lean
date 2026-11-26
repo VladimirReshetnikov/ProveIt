@@ -17,11 +17,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRootAdequacyTheorem
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRootAdequacy (inputContract)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -30,9 +27,7 @@ def distanceValid (point : PR 2) (T x : PTm n) : Fm PTm n :=
     .all (RationalArgmin.rationalLE (GaussianEuclideanDistanceName.fraction zero one)
       (GaussianEuclideanDistanceName.distanceSample point (Syn.shift T) (Syn.shift x) (var 0)))
 
-@[simp] theorem subst_distanceValid {m : ℕ} (σ : Fin n → PTm m) (point : PR 2) (T x : PTm n) :
-    (distanceValid point T x).subst σ = distanceValid point (Syn.subst σ T) (Syn.subst σ x) := by
-  simp [distanceValid,Syn.subst_shift,Syn.shift_subst]
+ipra_subst distanceValid [Syn.subst_shift, Syn.shift_subst]
 
 theorem distance_valid (point : PR 2) (T x : PTm n)
     (hCN : Γ ⊢[PRAAx] GaussianEuclideanDistanceName.pointCN point x)
@@ -53,10 +48,7 @@ def stageEstimates (step a : PR 3) (point : PR 2) (N Z t x : PTm n) : Fm PTm n :
   GaussianScalarOrderCut.jointCut (GaussianPolynomialValueName.nameF a point) (GaussianLinearDistanceName.nameF point)
     (GaussianPolynomialValueName.nameData N (Z+one) x) (GaussianRootSharpDistance.rhsData step a N Z t x))))
 
-@[simp] theorem subst_stageEstimates {m : ℕ} (σ : Fin n → PTm m) (step a : PR 3) (point : PR 2) (N Z t x : PTm n) :
-    (stageEstimates step a point N Z t x).subst σ = stageEstimates step a point
-      (Syn.subst σ N) (Syn.subst σ Z) (Syn.subst σ t) (Syn.subst σ x) := by
-  simp [stageEstimates,GaussianRootSharpEvaluation.errorNameData]
+ipra_subst stageEstimates [GaussianRootSharpEvaluation.errorNameData]
 
 def conclusion (step a : PR 3) (point : PR 2) (N Z x : PTm n) : Fm PTm n :=
   GaussianEuclideanDistanceName.pointCN (GaussianPolynomialValueName.nameF a point)
@@ -67,9 +59,7 @@ def conclusion (step a : PR 3) (point : PR 2) (N Z x : PTm n) : Fm PTm n :=
      GaussianRootMembership.stageCondition step a point (Syn.shift N) (Syn.shift x) (var 0)
        (GaussianRootApproximationWitness.stageIndex (Syn.shift N) (Syn.shift Z+one) (var 0)))))
 
-@[simp] theorem subst_conclusion {m : ℕ} (σ : Fin n → PTm m) (step a : PR 3) (point : PR 2) (N Z x : PTm n) :
-    (conclusion step a point N Z x).subst σ = conclusion step a point (Syn.subst σ N) (Syn.subst σ Z) (Syn.subst σ x) := by
-  simp [conclusion,Fm.iff,Syn.subst_shift,Syn.shift_subst]
+ipra_subst conclusion [Fm.iff, Syn.subst_shift, Syn.shift_subst]
 
 theorem estimates_at_stage (step a : PR 3) (point : PR 2) (N Z t x : PTm n)
     (h : Γ ⊢[PRAAx] inputContract step a point N Z x) : Γ ⊢[PRAAx] stageEstimates step a point N Z t x := by

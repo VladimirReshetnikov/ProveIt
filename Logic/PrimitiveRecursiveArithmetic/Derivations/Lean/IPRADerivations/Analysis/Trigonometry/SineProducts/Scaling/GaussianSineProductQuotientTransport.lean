@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineProductQuotientTransport
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul qmul_canonical positive_product)
 open GaussianRationalMetric (bounded distanceBounded qsub)
 open GaussianRationalReciprocal (qone reciprocal reciprocal_identity bounded_product bound_congr)
@@ -27,19 +27,13 @@ open GaussianNamedDifference (difference_distance)
 open GaussianNameArithmetic (product_distance)
 open GaussianRationalPowerDifference (distance_refl_zero)
 open GaussianSineRootNormalization (normalizedFactor)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def correctedFactor (b s t : PTm n) : PTm n :=
   qsub qone (qmul (qmul b b) (qmul (reciprocal (qmul t t)) (qmul s s)))
 
-@[simp] theorem subst_correctedFactor {l : ℕ} (σ : Fin n → PTm l) (b s t : PTm n) :
-    Syn.subst σ (correctedFactor b s t) = correctedFactor (Syn.subst σ b) (Syn.subst σ s) (Syn.subst σ t) := by
-  simp [correctedFactor]
+ipra_subst correctedFactor
 
 private theorem inverse_identity (a D : PTm n) (hD : Γ ⊢[PRAAx] le one D)
     (h : Γ ⊢[PRAAx] lower a one D) : Γ ⊢[PRAAx] qmul (reciprocal a) a ≐ qone :=

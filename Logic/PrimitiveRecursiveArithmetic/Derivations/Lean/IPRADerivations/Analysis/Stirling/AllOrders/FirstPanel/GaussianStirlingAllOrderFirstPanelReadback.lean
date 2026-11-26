@@ -16,7 +16,7 @@ set_option maxHeartbeats 350000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelReadback
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianStirlingAllOrderFirstPanelError (reference logPart panel_error)
 open GaussianStirlingAllOrderFirstPanelSquareError (squareError)
 open GaussianStirlingAllOrderPanelTail (panel)
@@ -36,10 +36,6 @@ open RationalGaussianRealPart (embed_congr)
 open GaussianRationalMetric (distanceBounded qnegative)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr)
 open GaussianStirlingOddReadback (affine)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerHalfDecayQuadrature
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerDecayQuadrature (evaluatorF evaluator_at)
 open GaussianEulerDecayQuadraturePrecision (endpointDifference independent_quadrature_endpoint numerator denominator)
 open GaussianCompactRiemannName (sampleBody sampleData quadrature sample_body_at)
@@ -25,18 +25,13 @@ open GaussianRationalNaturalScale (naturalPoint)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianCoefficientNameBounds (unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def evaluator (p t x : PTm n) : PTm n := ap3 evaluatorF p (pairT (fstT t) (two*sndT t)) x
 def halfF : PR 3 := PTm.toPR (evaluator (var 0) (var 1) (var 2))
 
-@[simp] theorem subst_evaluator {m : ℕ} (σ : Fin n → PTm m) (p t x : PTm n) :
-    Syn.subst σ (evaluator p t x) = evaluator (Syn.subst σ p) (Syn.subst σ t) (Syn.subst σ x) :=
-  by simp [evaluator]
+ipra_subst evaluator
 
 theorem half_at (p a b x : PTm n) :
     Γ ⊢[PRAAx] ap3 halfF p (pairT a b) x ≐ ap3 evaluatorF p (pairT a (two*b)) x := by

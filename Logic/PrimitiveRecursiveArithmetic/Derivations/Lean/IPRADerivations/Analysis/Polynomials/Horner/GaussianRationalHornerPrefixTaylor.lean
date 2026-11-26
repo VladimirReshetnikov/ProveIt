@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalHornerPrefixTaylor
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (horner hornerF qadd qmul)
 open GaussianRationalPowerExpansion (conservationLeft remaining remaining_zero remaining_succ remaining_before partialSum prefix_zero prefix_succ)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr)
@@ -24,18 +24,12 @@ open GaussianEuclideanDistanceName (fraction)
 open RationalArgmin (rationalLE)
 open GaussianCoefficientL1 (coefficientNorm)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def conservationLaw (C N w m : PTm n) : Fm PTm n := le m (succ N) ⟶
   conservationLeft C N w m ≐ horner C w (succ N)
-@[simp] theorem subst_conservationLaw {l : ℕ} (σ : Fin n → PTm l) (C N w m : PTm n) :
-    (conservationLaw C N w m).subst σ = conservationLaw (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ w) (Syn.subst σ m) := by
-  simp [conservationLaw]
+ipra_subst conservationLaw
 
 theorem conservation_zero (C N w : PTm n) : Γ ⊢[PRAAx]
     conservationLeft C N w zero ≐ horner C w (succ N) :=
@@ -65,11 +59,9 @@ theorem conservation_step (C N w m : PTm n) (hm : Γ ⊢[PRAAx] le m N)
 theorem conservation (C N w m : PTm n) (hm : Γ ⊢[PRAAx] le m (succ N)) : Γ ⊢[PRAAx]
     conservationLeft C N w m ≐ horner C w (succ N) := by
   have all : Γ ⊢[PRAAx] .all (conservationLaw (Syn.shift C) (Syn.shift N) (Syn.shift w) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_conservationLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (conservation_zero C N w).wk
-    · simp only [subst_conservationLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_conservationLaw]
+    · exact .impI (conservation_zero C N w).wk
+    · refine .impI ?_
       exact conservation_step _ _ _ _ ((succ_monus_succ _ _).eqSymm.eqTrans Prf.hyp0)
         (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
   have rule : Γ ⊢[PRAAx] conservationLaw C N w m := by

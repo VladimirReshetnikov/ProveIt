@@ -1,7 +1,4 @@
 import IPRADerivations.Analysis.Series.ReciprocalSquares.ReciprocalSquareTail
-import IPRADerivations.Core.Powers
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # A checked cutoff for the Barnes canonical-factor tail
@@ -20,12 +17,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.BarnesCutoff
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.ReciprocalSquareTail (majorant tailSum tailSum_zero tailSum_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -48,25 +41,15 @@ def scale (R p : PTm n) : PTm n := pw two (p + num 6) * R * R * R
 /-- The corrected source cutoff. -/
 def cutoff (R p : PTm n) : PTm n := maximum (two * R) (ceilThird (scale R p))
 
-@[simp] theorem subst_ceilThird {m : ℕ} (σ : Fin n → PTm m) (s : PTm n) :
-    Syn.subst σ (ceilThird s) = ceilThird (Syn.subst σ s) := by
-  simp [ceilThird]
+ipra_subst ceilThird
 
-@[simp] theorem subst_maximum {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (maximum a b) = maximum (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [maximum]
+ipra_subst maximum
 
-@[simp] theorem subst_budget {m : ℕ} (σ : Fin n → PTm m) (p : PTm n) :
-    Syn.subst σ (budget p) = budget (Syn.subst σ p) := by
-  simp [budget]
+ipra_subst budget
 
-@[simp] theorem subst_scale {m : ℕ} (σ : Fin n → PTm m) (R p : PTm n) :
-    Syn.subst σ (scale R p) = scale (Syn.subst σ R) (Syn.subst σ p) := by
-  simp [scale]
+ipra_subst scale
 
-@[simp] theorem subst_cutoff {m : ℕ} (σ : Fin n → PTm m) (R p : PTm n) :
-    Syn.subst σ (cutoff R p) = cutoff (Syn.subst σ R) (Syn.subst σ p) := by
-  simp [cutoff]
+ipra_subst cutoff
 
 /-- The ceiling never rounds down. -/
 theorem ceil_lower (s : PTm n) : Γ ⊢[PRAAx] le s (three * ceilThird s) := by

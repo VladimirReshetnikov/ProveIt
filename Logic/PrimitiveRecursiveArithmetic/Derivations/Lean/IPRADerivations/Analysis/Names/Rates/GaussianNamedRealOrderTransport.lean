@@ -16,26 +16,19 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedRealOrderTransport
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedPositiveExponentialOrder (realOrder real_order_at positiveSamples positive_at scalar_coordinate_distance)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open RationalValueBounds (upper upper_of_radius upper_triangle crossLeft)
 open RationalSupMetric (denominatorOf)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def precision (a b B C : PTm n) : PTm n := C*B*denominatorOf a*denominatorOf b
 def upperSlack (a b A B C t : PTm n) : Fm PTm n := upper a b (A*unit t+C*B) (B*unit t)
-@[simp] theorem subst_precision {m : ℕ} (σ : Fin n → PTm m) (a b B C : PTm n) :
-    Syn.subst σ (precision a b B C) = precision (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ B) (Syn.subst σ C) := by simp [precision]
-@[simp] theorem subst_upperSlack {m : ℕ} (σ : Fin n → PTm m) (a b A B C t : PTm n) :
-    (upperSlack a b A B C t).subst σ = upperSlack (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ A)
-      (Syn.subst σ B) (Syn.subst σ C) (Syn.subst σ t) := by simp [upperSlack]
+ipra_subst precision
+ipra_subst upperSlack
 
 /-- Only this single actual finite comparison is needed, with no
 positive tolerance or denominator premise. -/

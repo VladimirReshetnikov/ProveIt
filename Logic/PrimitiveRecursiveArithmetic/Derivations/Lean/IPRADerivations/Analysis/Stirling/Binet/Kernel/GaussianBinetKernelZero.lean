@@ -16,7 +16,7 @@ set_option maxHeartbeats 600000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetKernelZero
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianBinetBaselBinding (literalSum subst_literalSum)
 open GaussianBinetBaselName (minimumCutoff finite_vs_named_pi)
@@ -37,10 +37,6 @@ open GaussianStirlingConstant (piNumerator piDenominator)
 open GaussianStirlingOddCoefficients (fraction_embed fraction_equal fraction_product)
 open RationalGaussianEmbedding (embed embedF embed_at embed_add)
 open RationalReciprocalPowerTail (reciprocalPower tail tail_succ tail_zero)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "P" => GaussianBinetKernelPi.sample

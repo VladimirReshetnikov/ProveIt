@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartCorrectedImage
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPositivePowerChartMesh (source timeNumerator timeDenominator node correctedNode node_source)
 open GaussianEulerPositivePowerChartMeshJacobian (correctedPoint)
 open GaussianEulerPositivePowerChartImage (query reciprocalMargin)
@@ -27,9 +27,6 @@ open GaussianRationalHorner (qadd positive_product canonical_unique ofGaussian_r
 open GaussianRationalMetric (distanceBounded)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNamedInverseRate (independentRate)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -45,21 +42,11 @@ def imageFraction (k i e f d h Q S E T a C N : PTm n) : PTm n :=
 def imageData (k i e f d h Q S E T a C N : PTm n) : PTm n :=
   pairT (imageNumerator k i e f d h Q S E T a C N) (imageDenominator k i e f d h Q S E T a C N)
 
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (k e f d h Q S E T a C N : PTm n) :
-    (input k e f d h Q S E T a C N).subst σ = input (Syn.subst σ k) (Syn.subst σ e) (Syn.subst σ f) (Syn.subst σ d) (Syn.subst σ h)
-      (Syn.subst σ Q) (Syn.subst σ S) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ N) := by simp [input]
-@[simp] theorem subst_imageNumerator {m : ℕ} (σ : Fin n → PTm m) (k i e f d h Q S E T a C N : PTm n) :
-    Syn.subst σ (imageNumerator k i e f d h Q S E T a C N) = imageNumerator (Syn.subst σ k) (Syn.subst σ i) (Syn.subst σ e) (Syn.subst σ f)
-      (Syn.subst σ d) (Syn.subst σ h) (Syn.subst σ Q) (Syn.subst σ S) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ N) := by simp [imageNumerator]
-@[simp] theorem subst_imageDenominator {m : ℕ} (σ : Fin n → PTm m) (k i e f d h Q S E T a C N : PTm n) :
-    Syn.subst σ (imageDenominator k i e f d h Q S E T a C N) = imageDenominator (Syn.subst σ k) (Syn.subst σ i) (Syn.subst σ e) (Syn.subst σ f)
-      (Syn.subst σ d) (Syn.subst σ h) (Syn.subst σ Q) (Syn.subst σ S) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ N) := by simp [imageDenominator]
-@[simp] theorem subst_imageFraction {m : ℕ} (σ : Fin n → PTm m) (k i e f d h Q S E T a C N : PTm n) :
-    Syn.subst σ (imageFraction k i e f d h Q S E T a C N) = imageFraction (Syn.subst σ k) (Syn.subst σ i) (Syn.subst σ e) (Syn.subst σ f)
-      (Syn.subst σ d) (Syn.subst σ h) (Syn.subst σ Q) (Syn.subst σ S) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ N) := by simp [imageFraction]
-@[simp] theorem subst_imageData {m : ℕ} (σ : Fin n → PTm m) (k i e f d h Q S E T a C N : PTm n) :
-    Syn.subst σ (imageData k i e f d h Q S E T a C N) = imageData (Syn.subst σ k) (Syn.subst σ i) (Syn.subst σ e) (Syn.subst σ f)
-      (Syn.subst σ d) (Syn.subst σ h) (Syn.subst σ Q) (Syn.subst σ S) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ N) := by simp [imageData]
+ipra_subst input
+ipra_subst imageNumerator
+ipra_subst imageDenominator
+ipra_subst imageFraction
+ipra_subst imageData
 
 theorem fraction_sum (A B C D : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hD : Γ ⊢[PRAAx] le one D) : Γ ⊢[PRAAx]
     qadd (fraction A B) (fraction C D) ≐ fraction (A*D+C*B) (B*D) := by

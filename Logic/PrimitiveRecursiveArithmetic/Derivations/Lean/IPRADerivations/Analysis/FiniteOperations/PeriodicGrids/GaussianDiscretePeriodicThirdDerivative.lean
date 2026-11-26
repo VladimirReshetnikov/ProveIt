@@ -18,7 +18,7 @@ set_option maxHeartbeats 1550000
 
 namespace LeanProofs.IPRA.Analysis.GaussianDiscretePeriodicThirdDerivative
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianDiscretePeriodicGridReadback
   (factor sample grid data wrappedStencil third_at projected_distance_of_third_lower)
 open GaussianDiscreteDerivativeRounding (source latticeScale body)
@@ -37,10 +37,6 @@ open SignedGridStepBounds (neg_order)
 open PeriodicThirdDifferenceConstancy (band)
 open PeriodicThirdDifferenceModulo (thirdLower third)
 open PolynomialBisection (zle_add zle_congr zle_scale)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

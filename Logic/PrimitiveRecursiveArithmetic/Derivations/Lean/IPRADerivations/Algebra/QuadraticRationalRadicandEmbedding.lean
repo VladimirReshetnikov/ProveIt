@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticRationalRadicandEmbedding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis
 open RationalSupMetric (numeratorOf denominatorOf)
 open RationalArgmin (rationalEq rationalEq_congr left)
@@ -25,9 +25,6 @@ open QuadraticRationalRadicandOrder (positive same_coefficients_equivalent)
 open QuadraticRationalEmbedding (embed root)
 open QuadraticRationalClearing (represents sameCoefficients)
 open QuadraticSignCertificates (first second equal first_value second_value)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

@@ -14,7 +14,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetBoseFrozenOriginCut
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetBoseFrozenSuffix (geometry fullMesh fullData prefixValue suffixValue full_split subst_geometry)
 open GaussianBinetBoseFrozenMatrix (matrix matrix_at cell_at)
 open GaussianBinetBoseFrozenTimeRescale (coordinates)
@@ -34,10 +34,6 @@ open GaussianRationalRiemannRefinement (constantBody constant_entry constant_sum
 open GaussianRationalSyntheticDivision (qsub_congr qadd_sub_cancel)
 open GaussianRightHalfPlaneLogarithm (source)
 open GaussianStirlingConstant (piDenominator)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)

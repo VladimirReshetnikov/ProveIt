@@ -6,9 +6,7 @@ import IPRADerivations.Core.Tactic
 A signed integer is a pair of natural-number terms. Rational identities follow
 by clearing common positive denominators. The object sentences have no premises. -/
 namespace LeanProofs.IPRA.Analysis.Quantum.Identities
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
+open_ipra
 
 structure Amp (n : ℕ) where
   re : ZT n

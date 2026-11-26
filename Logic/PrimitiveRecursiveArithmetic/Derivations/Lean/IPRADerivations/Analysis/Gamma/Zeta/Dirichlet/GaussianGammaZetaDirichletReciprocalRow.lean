@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaDirichletReciprocalRow
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEulerPositiveScalingConstant (exponentF exponentData inverseF inverseData)
 open GaussianEuclideanDistanceName (pointCN)
@@ -29,8 +29,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_triangle_same distan
 open GaussianRationalHorner (ofGaussian qmul)
 open GaussianRationalMetric (qnegative qnegative_canonical distanceBounded)
 open GaussianRationalSyntheticDivision (qmul_congr qzero_add)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "L" => GaussianHarmonicLogarithmName.nameF

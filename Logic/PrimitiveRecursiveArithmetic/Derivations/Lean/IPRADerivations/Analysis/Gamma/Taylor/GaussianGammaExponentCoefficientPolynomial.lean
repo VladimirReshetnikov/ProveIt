@@ -20,7 +20,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaExponentCoefficientPolynomial
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qadd qmul evaluate ofGaussian)
 open GaussianRationalSyntheticDivision (qadd_congr)
 open GaussianRationalPolynomialBuffers (leftPad added)
@@ -32,10 +32,6 @@ open GaussianEuclideanDistanceName (fraction fraction_represents fraction_order)
 open GaussianGammaCanonicalExponentBound (numericalRadius)
 open RationalArgmin (rationalLE)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,14 +39,10 @@ def linear (q N L : PTm n) : PTm n := leftPad (GaussianGammaLinearCoefficient.po
 def polynomial (q N L : PTm n) : PTm n := added (linear q N L) (GaussianGammaZetaCoefficientPolynomial.polynomial q N L) (succ (degree L))
 def massNumerator (R N : PTm n) : PTm n := R*succ N*N+R*R
 def exponential (q R L K : PTm n) : PTm n := GaussianRationalPolynomialExponential.polynomial (polynomial q (two*R) L) (degree L) K
-@[simp] theorem subst_linear {m : ℕ} (σ : Fin n → PTm m) (q N L : PTm n) :
-    Syn.subst σ (linear q N L) = linear (Syn.subst σ q) (Syn.subst σ N) (Syn.subst σ L) := by simp [linear]
-@[simp] theorem subst_polynomial {m : ℕ} (σ : Fin n → PTm m) (q N L : PTm n) :
-    Syn.subst σ (polynomial q N L) = polynomial (Syn.subst σ q) (Syn.subst σ N) (Syn.subst σ L) := by simp [polynomial]
-@[simp] theorem subst_massNumerator {m : ℕ} (σ : Fin n → PTm m) (R N : PTm n) :
-    Syn.subst σ (massNumerator R N) = massNumerator (Syn.subst σ R) (Syn.subst σ N) := by simp [massNumerator]
-@[simp] theorem subst_exponential {m : ℕ} (σ : Fin n → PTm m) (q R L K : PTm n) :
-    Syn.subst σ (exponential q R L K) = exponential (Syn.subst σ q) (Syn.subst σ R) (Syn.subst σ L) (Syn.subst σ K) := by simp [exponential]
+ipra_subst linear
+ipra_subst polynomial
+ipra_subst massNumerator
+ipra_subst exponential
 
 theorem linear_length (q N L : PTm n) : Γ ⊢[PRAAx] length (linear q N L) ≐ succ (degree L) :=
   (GaussianRationalPolynomialBuffers.pad_length _ _).eqTrans
@@ -110,8 +102,7 @@ theorem polynomial_weighted_bound (q N L R : PTm n) (hN : Γ ⊢[PRAAx] le one N
     (GaussianGammaZetaWeightedNorm.original_tail_weighted_norm q N L R hN hh)
   exact RationalArgmin.rationalLE_congr (.eqRefl _) (scalar_mass_sum R N hN) (RationalArgmin.transitive first second)
 
-theorem original_cutoff_positive (R : PTm n) (hR : Γ ⊢[PRAAx] le one R) : Γ ⊢[PRAAx] le one (two*R) :=
-  le_trans hR (le_of_eq_add (d := R) (by ipra_ring))
+alias original_cutoff_positive := Common.one_le_two_mul
 
 /-- The exact original C7 numerical exponent radius bounds the actual
 original sampled coefficient buffer, independently of sample and degree. -/

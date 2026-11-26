@@ -21,9 +21,7 @@ Not derived: "some two vertices have the same degree" (a pigeonhole on the degre
 
 namespace LeanProofs.IPRA.Combinatorics.DegreeBounds
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
+open_ipra
 
 variable {n k : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,8 +36,7 @@ theorem odd_vertices_even (d q b : Fin k → ZT n) (m : ZT n)
     (hs : Γ ⊢[PRAAx] ZT.eq (ZT.sumFin d) (ZT.natLit 2 * m)) :
     Γ ⊢[PRAAx] ZT.eq (ZT.sumFin b) (ZT.natLit 2 * (m - ZT.sumFin q)) := by
   have hd1 : ∀ v, ZT.toZ Γ (d v) = 2 * ZT.toZ Γ (q v) + ZT.toZ Γ (b v) := fun v => by
-    have h := ZT.toZ_eq (hd v)
-    simpa only [ZT.toZ_add, ZT.toZ_mul, ZT.toZ_natLit, Nat.cast_ofNat] using h
+    simpa only [ZT.toZ_add, ZT.toZ_mul, ZT.toZ_natLit, Nat.cast_ofNat] using ZT.toZ_eq (hd v)
   have e := ZT.toZ_eq hs
   simp only [ZT.toZ_sumFin, ZT.toZ_mul, ZT.toZ_natLit, Nat.cast_ofNat] at e
   rw [Finset.sum_congr rfl fun v _ => hd1 v, sum_parity] at e

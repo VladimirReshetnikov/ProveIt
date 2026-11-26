@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingFrozenRow
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPositivePowerChart (source)
 open GaussianEulerPowerScalingFrozenIntegrand (factorF factorData frozenF frozenData)
 open GaussianEulerPowerScalingKernel (scaleExpF scaleExpData)
@@ -29,8 +29,6 @@ open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianReciprocalHorner (qmul_associative)
 open GaussianRationalPowerAlgebra (qmul_commutative qmul_shuffle)
 open GaussianPositiveRationalLogarithm (fraction)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

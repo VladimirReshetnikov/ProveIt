@@ -16,7 +16,7 @@ set_option maxHeartbeats 1500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalNamedHyperfactorialRecurrence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalNamedHyperfactorial
   (source nameF data regular cleared_relation powerF powerData power_regular barnes_regular)
 open GaussianBarnesCanonicalNamedHyperfactorialPowerStep
@@ -28,8 +28,6 @@ open GaussianNameArithmetic (multiplyF multiplyData multiply_fast)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
 open GaussianGammaAdjacentCutoff (multiply_cross)
 open GaussianBarnesCanonicalHyperfactorialRecurrence (regroup cancel_right)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

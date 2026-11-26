@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaContiguousUpperTail
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBetaSharpPartition (halfPoint halfDen even_denominator half_boundary_order half_point_decay_sample)
 open GaussianGammaIntegralCutoffs (etaDen eta_den_positive)
 open GaussianWeightedHalfDecayEndpoint (coefficient)
@@ -27,10 +27,6 @@ open GaussianDominantPairAlgebra (radiusPoint radius_bounded)
 open GaussianCompactRiemannName (quadrature)
 open GaussianEulerIntegrandName (decayF decayData)
 open GaussianRationalL1 (rawGaussian rawDen raw_represents raw_den_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

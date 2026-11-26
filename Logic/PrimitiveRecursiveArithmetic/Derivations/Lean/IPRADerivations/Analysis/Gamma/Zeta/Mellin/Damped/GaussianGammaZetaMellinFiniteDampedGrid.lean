@@ -13,7 +13,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinFiniteDampedGrid
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCompactRiemannName (grid quadrature sampleBody sampleData sample_body_at field0 field1 field2 field3 field4 field5
   field0_at field1_at field2_at field3_at field4_at field5_at)
 open GaussianFastValueCut (exponent)
@@ -23,9 +23,6 @@ open GaussianRationalFiniteSum (sum termsEqual multiplyBody multiply_body_at sum
 open GaussianRationalFubini (columnBody columnSumBody rowBody rowSumBody column_entry column_sum_at row_entry row_sum_at)
 open GaussianRationalRiemannRefinement (weight)
 open GaussianRationalSyntheticDivision (qmul_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Damped" => GaussianEulerPositiveScalingIntegrand.evaluatorF

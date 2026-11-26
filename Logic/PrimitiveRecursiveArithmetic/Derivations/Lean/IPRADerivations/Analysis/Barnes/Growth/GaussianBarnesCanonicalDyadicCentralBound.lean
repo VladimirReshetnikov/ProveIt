@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalDyadicCentralBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalCenteredExponentialShift (baseData)
 open GaussianBarnesCanonicalCorrectionShift (total)
 open GaussianBarnesCanonicalDiskBound (prefactorRadius radius_le)
@@ -33,10 +33,6 @@ open GaussianRadiusExponentialLipschitzRate (factor)
 open GaussianRationalDistanceOrder (distance_radius_mono)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

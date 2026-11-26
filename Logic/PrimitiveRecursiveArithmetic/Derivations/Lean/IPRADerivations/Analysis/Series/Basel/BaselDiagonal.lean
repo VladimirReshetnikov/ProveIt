@@ -2,10 +2,8 @@ import IPRADerivations.AnalyticNumberTheory.Primes
 import IPRADerivations.AnalyticNumberTheory.GcdFiber
 import IPRADerivations.AnalyticNumberTheory.PhiDouble
 import IPRADerivations.Combinatorics.BinomialIdentities
-import IPRADerivations.Core.SumReflect
 import IPRADerivations.Combinatorics.Bell
 import IPRADerivations.Probability.Independence
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The finite convolution identity of the Basel packet
@@ -29,7 +27,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.BaselDiagonal
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
 open LeanProofs.IPRA.Combinatorics.Bell (monus_le')
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
@@ -37,10 +35,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber (div_eq)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiDouble (two_pos')
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (dvd_fact)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

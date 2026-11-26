@@ -16,7 +16,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentDivisionAngleRoots
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale oneCode normSq normSq_eval eval_re_code eval_im_code)
 open GaussianArctangentDivisionAngles (source coefficient modulus odd_source)
 open GaussianArctangentExponentialPeriod (twiceF twiceData twiceRadius minusOne minusOneCode negative_one_square)
@@ -36,9 +36,6 @@ open GaussianRationalReciprocal (qone power powerF)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRootAlgebra (equal_refl)
 open GaussianExponentialReference (add_input unit_monotone)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -51,13 +48,9 @@ def halfPowerF : PR 2 := GaussianNamedNaturalScale.nameF twiceF
 def halfPowerData (k z : PTm n) : PTm n := GaussianNamedNaturalScale.data k k (twiceData z)
 def halfPowerRadius (k : PTm n) : PTm n := GaussianNamedNaturalScale.radius k twiceRadius
 
-@[simp] theorem subst_multipleData {l : ℕ} (σ : Fin n → PTm l) (k m z : PTm n) :
-    Syn.subst σ (multipleData k m z) = multipleData (Syn.subst σ k) (Syn.subst σ m) (Syn.subst σ z) :=
-  by simp [multipleData]
+ipra_subst multipleData
 
-@[simp] theorem subst_halfPowerData {l : ℕ} (σ : Fin n → PTm l) (k z : PTm n) :
-    Syn.subst σ (halfPowerData k z) = halfPowerData (Syn.subst σ k) (Syn.subst σ z) :=
-  by simp [halfPowerData,twiceData]
+ipra_subst halfPowerData [twiceData]
 
 theorem multiple_input (k m z : PTm n) (h : Γ ⊢[PRAAx] source k m) : Γ ⊢[PRAAx]
     GaussianRadiusExponentialName.input multipleF (multipleRadius m) (multipleData k m z) :=

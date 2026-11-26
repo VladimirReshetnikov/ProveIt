@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalPolynomialExponentialFixedRadius
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianDominantPairAlgebra (radiusPoint radius_bounded)
 open GaussianEuclideanDistanceName (fraction)
 open GaussianGammaCanonicalExponent (constantF)
@@ -27,10 +27,6 @@ open GaussianRationalTravelScaling (ratio)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
 open RationalArgmin (rationalLE)
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

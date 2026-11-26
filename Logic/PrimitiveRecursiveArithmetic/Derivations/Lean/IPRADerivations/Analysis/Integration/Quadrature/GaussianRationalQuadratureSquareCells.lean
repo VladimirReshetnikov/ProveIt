@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalQuadratureSquareCells
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (qadd qmul positive_product canonical_unique represents_congr)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qsub_congr)
@@ -23,9 +23,6 @@ open GaussianRationalMetric (qsub bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianCompactRiemannName (grid)
 open GaussianRationalQuadratureDilation (pullData)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,27 +39,15 @@ def linearWidth (i N c d a C E : PTm n) : PTm n :=
 def remainder (N c d C E : PTm n) : PTm n := fraction (c*C*C) (denominator d E N)
 def jacobian (c d t : PTm n) : PTm n := fraction (two*c*fstT t) (d*sndT t)
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (d E N : PTm n) :
-    (source d E N).subst σ = source (Syn.subst σ d) (Syn.subst σ E) (Syn.subst σ N) := by simp [source]
-@[simp] theorem subst_nodeNumerator {m : ℕ} (σ : Fin n → PTm m) (i N a C : PTm n) :
-    Syn.subst σ (nodeNumerator i N a C) = nodeNumerator (Syn.subst σ i) (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ C) := by simp [nodeNumerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (d E N : PTm n) :
-    Syn.subst σ (denominator d E N) = denominator (Syn.subst σ d) (Syn.subst σ E) (Syn.subst σ N) := by simp [denominator]
-@[simp] theorem subst_timeMap {m : ℕ} (σ : Fin n → PTm m) (c d t : PTm n) :
-    Syn.subst σ (timeMap c d t) = timeMap (Syn.subst σ c) (Syn.subst σ d) (Syn.subst σ t) := by simp [timeMap]
-@[simp] theorem subst_node {m : ℕ} (σ : Fin n → PTm m) (i N c d a C E : PTm n) :
-    Syn.subst σ (node i N c d a C E) = node (Syn.subst σ i) (Syn.subst σ N) (Syn.subst σ c) (Syn.subst σ d)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) := by simp [node]
-@[simp] theorem subst_cellWidth {m : ℕ} (σ : Fin n → PTm m) (i N c d a C E : PTm n) :
-    Syn.subst σ (cellWidth i N c d a C E) = cellWidth (Syn.subst σ i) (Syn.subst σ N) (Syn.subst σ c) (Syn.subst σ d)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) := by simp [cellWidth]
-@[simp] theorem subst_linearWidth {m : ℕ} (σ : Fin n → PTm m) (i N c d a C E : PTm n) :
-    Syn.subst σ (linearWidth i N c d a C E) = linearWidth (Syn.subst σ i) (Syn.subst σ N) (Syn.subst σ c) (Syn.subst σ d)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) := by simp [linearWidth]
-@[simp] theorem subst_remainder {m : ℕ} (σ : Fin n → PTm m) (N c d C E : PTm n) :
-    Syn.subst σ (remainder N c d C E) = remainder (Syn.subst σ N) (Syn.subst σ c) (Syn.subst σ d) (Syn.subst σ C) (Syn.subst σ E) := by simp [remainder]
-@[simp] theorem subst_jacobian {m : ℕ} (σ : Fin n → PTm m) (c d t : PTm n) :
-    Syn.subst σ (jacobian c d t) = jacobian (Syn.subst σ c) (Syn.subst σ d) (Syn.subst σ t) := by simp [jacobian]
+ipra_subst source
+ipra_subst nodeNumerator
+ipra_subst denominator
+ipra_subst timeMap
+ipra_subst node
+ipra_subst cellWidth
+ipra_subst linearWidth
+ipra_subst remainder
+ipra_subst jacobian
 
 theorem denominator_positive (d E N : PTm n) (h : Γ ⊢[PRAAx] source d E N) : Γ ⊢[PRAAx]
     le one (denominator d E N) := positive_product _ _

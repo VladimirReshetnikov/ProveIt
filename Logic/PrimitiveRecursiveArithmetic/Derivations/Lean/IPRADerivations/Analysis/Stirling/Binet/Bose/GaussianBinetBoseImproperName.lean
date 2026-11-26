@@ -14,7 +14,7 @@ set_option maxHeartbeats 560000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetBoseImproperName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetBoseHorizonRate (ordered_rate)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianCompactRiemannName
@@ -25,11 +25,7 @@ open GaussianNamedLipschitzRate (diagonalEnvelope diagonalNumerator diagonalDeno
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "CompactF" => GaussianBinetBoseOriginName.nameF
@@ -39,10 +35,7 @@ local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
 def source (X _Y D sign K : PTm n) : Fm PTm n :=
   GaussianRightHalfPlaneLogarithm.source X D sign ⋏ le D (K*X)
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (X Y D sign K : PTm n) :
-    (source X Y D sign K).subst σ = source (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D)
-      (Syn.subst σ sign) (Syn.subst σ K) := by
-  simp [source,GaussianRightHalfPlaneLogarithm.source,GaussianRightHalfPlaneArgument.source]
+ipra_subst source [GaussianRightHalfPlaneLogarithm.source, GaussianRightHalfPlaneArgument.source]
 
 def schedule (p K : PTm n) : PTm n := one+(two*K)*unit (succ p)
 
@@ -54,17 +47,11 @@ def sample (p X Y D sign K : PTm n) : PTm n :=
 def nameF : PR 2 := PTm.toPR
   (sample (var 0) (field0 (var 1)) (field1 (var 1)) (field2 (var 1)) (field3 (var 1)) (field4 (var 1)) : PTm 2)
 
-@[simp] theorem subst_schedule {m : ℕ} (σ : Fin n → PTm m) (p K : PTm n) :
-    Syn.subst σ (schedule p K) = schedule (Syn.subst σ p) (Syn.subst σ K) := by simp [schedule,one,two]
+ipra_subst schedule [one, two]
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (X Y D sign K : PTm n) :
-    Syn.subst σ (data X Y D sign K) =
-      data (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ K) := by simp [data]
+ipra_subst data
 
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (p X Y D sign K : PTm n) :
-    Syn.subst σ (sample p X Y D sign K) =
-      sample (Syn.subst σ p) (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ K) := by
-  simp [sample]
+ipra_subst sample
 
 private theorem last_field {α : Type} (a b c d e f : α) : ![a,b,c,d,e,f] (5 : Fin 6) = f := rfl
 

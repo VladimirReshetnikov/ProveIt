@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicLowerFiniteBudget
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLogarithmicLowerRootRows (source panelExponent panelDegree lipschitz)
 open GaussianEulerLogarithmicLowerPointwise (coefficient)
 open GaussianEulerLogarithmicLowerQuadrature (originalQuadrature)
@@ -25,9 +25,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianGammaIntegralCutoffs (height)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -45,12 +42,9 @@ theorem leading_coefficient (j A : PTm n) (hA : Γ ⊢[PRAAx] le one A) : Γ ⊢
       Products.fact j*(pw (GaussianEulerLogarithmicLowerPointwise.degree A) j*GaussianEulerLogarithmicLowerPointwise.degree A)).eqTrans
       (congrMul (.eqRefl _) (pw_succ _ _).eqSymm))
 
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (t j p q A R : PTm n) :
-    Syn.subst σ (numerator t j p q A R) = numerator (Syn.subst σ t) (Syn.subst σ j) (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ A) (Syn.subst σ R) := by simp [numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (t p A R : PTm n) :
-    Syn.subst σ (denominator t p A R) = denominator (Syn.subst σ t) (Syn.subst σ p) (Syn.subst σ A) (Syn.subst σ R) := by simp [denominator]
-@[simp] theorem subst_residualCoefficient {m : ℕ} (σ : Fin n → PTm m) (j p q A R : PTm n) :
-    Syn.subst σ (residualCoefficient j p q A R) = residualCoefficient (Syn.subst σ j) (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ A) (Syn.subst σ R) := by simp [residualCoefficient]
+ipra_subst numerator
+ipra_subst denominator
+ipra_subst residualCoefficient
 
 theorem original_finite_budget (s t j z R B H p q A : PTm n)
     (h : Γ ⊢[PRAAx] source z R B H p q A)

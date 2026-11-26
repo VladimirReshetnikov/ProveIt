@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingFrozenIntegrand
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPositivePowerChart (source)
 open GaussianEulerPowerScalingParameter (scaled)
 open GaussianEulerPowerScalingKernel (scaleF scaleData scaleExpF scaleExpData transformedF transformedData)
@@ -32,9 +32,6 @@ open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalSyntheticDivision (qone)
 open GaussianRationalMetric (bounded)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "C" => GaussianEulerPositivePowerChart.nameF
@@ -50,16 +47,9 @@ abbrev frozenF : PR 2 := multiplyF factorF EulerRow
 def frozenData (k z B e f d h Q S E T a b : PTm n) : PTm n :=
   multiplyData factorF EulerRow (factorData z B e f d h a b) (imageData k z B e f d h Q S E T a b)
 
-@[simp] theorem subst_scaleExpData {m : ℕ} (σ : Fin n → PTm m) (z B e f d h : PTm n) :
-    Syn.subst σ (scaleExpData z B e f d h) = scaleExpData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ e)
-      (Syn.subst σ f) (Syn.subst σ d) (Syn.subst σ h) := by
-  simp [scaleExpData,scaleData,GaussianGammaFiniteApproximantName.exponentialInputData,scaled,ComplexLogarithmRemainder.scale]
-@[simp] theorem subst_factorData {m : ℕ} (σ : Fin n → PTm m) (z B e f d h a b : PTm n) :
-    Syn.subst σ (factorData z B e f d h a b) = factorData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ e)
-      (Syn.subst σ f) (Syn.subst σ d) (Syn.subst σ h) (Syn.subst σ a) (Syn.subst σ b) := by simp [factorData]
-@[simp] theorem subst_factorBound {m : ℕ} (σ : Fin n → PTm m) (z B e f d h E : PTm n) :
-    Syn.subst σ (factorBound z B e f d h E) = factorBound (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ e)
-      (Syn.subst σ f) (Syn.subst σ d) (Syn.subst σ h) (Syn.subst σ E) := by simp [factorBound]
+ipra_subst scaleExpData [scaleData, GaussianGammaFiniteApproximantName.exponentialInputData, scaled, ComplexLogarithmRemainder.scale]
+ipra_subst factorData
+ipra_subst factorBound
 
 private theorem reciprocal_time (a b : PTm n) (ht : Γ ⊢[PRAAx] GaussianPositiveRationalLogarithm.source a b) :
     Γ ⊢[PRAAx] qmul (fraction b a) (fraction a b) ≐ qone := by

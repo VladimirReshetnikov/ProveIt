@@ -14,7 +14,7 @@ set_option maxHeartbeats 1650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaRationalWendelUniformLog
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianGammaEulerRationalLogOrder (order_refl)
@@ -36,10 +36,6 @@ open GaussianRationalMetric (qsub)
 open GaussianRationalSyntheticDivision (qmul_congr qmul_zero_right)
 open GaussianStirlingGammaLogarithm (source)
 open GaussianStirlingMultiplicativeBoundsLog (constant_order fractions_order logarithm_rectangles)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "C" => constantF
@@ -125,9 +121,7 @@ def logWeak (a b r s : PTm n) : Fm PTm n :=
   realOrder L relativeExponentF (fractionalData s b a (a+r)) (relativeExponentData a b r s) ⋏
   realOrder relativeExponentF zeroF (relativeExponentData a b r s) (ratioExponentData a b r)
 
-@[simp] theorem subst_logEndpoint {m : ℕ} (σ : Fin n → PTm m) (a b r s : PTm n) :
-    (logEndpoint a b r s).subst σ = logEndpoint (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ r) (Syn.subst σ s) := by
-  simp [logEndpoint,relativeExponentData,ratioExponentData,fractionalData]
+ipra_subst logEndpoint [relativeExponentData, ratioExponentData, fractionalData]
 
 theorem log_endpoint_congr (a b r s r' s' : PTm n) (er : Γ ⊢[PRAAx] r ≐ r') (es : Γ ⊢[PRAAx] s ≐ s')
     (h : Γ ⊢[PRAAx] logEndpoint a b r s) : Γ ⊢[PRAAx] logEndpoint a b r' s' := by

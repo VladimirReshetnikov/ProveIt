@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingFactorialRobbinsExponential
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEulerPowerChartTimeOrder (order_trans)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
@@ -40,10 +40,6 @@ open GaussianStirlingRationalTelescopers (firstTerm upperValue lowerValue denomi
 open GaussianStirlingTailComparison (point_add_order point_order_refl)
 open RationalArgmin (rationalLE rationalLE_congr)
 open RationalValueBounds (upper_mono upper_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (monus num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

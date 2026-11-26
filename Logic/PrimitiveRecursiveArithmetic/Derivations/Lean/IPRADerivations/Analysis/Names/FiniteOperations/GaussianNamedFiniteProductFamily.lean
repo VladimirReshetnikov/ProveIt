@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteProductName
-import IPRADerivations.Core.SumLemmas
 
 /-!
 # A product of a finite family of original Gaussian names
@@ -14,7 +13,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductFamily
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameBounds (U sample_bound)
@@ -23,8 +22,6 @@ open GaussianNamedFiniteProduct (rowBoundsAt rowDistance)
 open GaussianNamedFiniteProductName (nameF data rowBounds rowRegular name_regular)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRationalReciprocal (bound_congr)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,16 +35,13 @@ theorem row_at (f : PR 2) (t : PTm 2) (p i x : PTm n) :
 def regularRows (f : PR 2) (t : PTm 2) (N x : PTm n) : Fm PTm n :=
   .all (lt (var 0) (Syn.shift N) ⟶ pointCN f (inst2 t (var 0) (Syn.shift x)))
 
-@[simp] theorem subst_regularRows {l : ℕ} (σ : Fin n → PTm l) (f : PR 2) (t : PTm 2) (N x : PTm n) :
-    (regularRows f t N x).subst σ = regularRows f t (Syn.subst σ N) (Syn.subst σ x) := by
-  simp [regularRows,Syn.subst_shift,Syn.shift_subst]
+ipra_subst regularRows [Syn.subst_shift, Syn.shift_subst]
 
 def radiusBody (f : PR 2) (t : PTm 2) : PTm 2 := U f t
 def radius (f : PR 2) (t : PTm 2) (N x : PTm n) : PTm n := ap2 (sumF (radiusBody f t)) N x
 def productData (f : PR 2) (t : PTm 2) (N x : PTm n) : PTm n := data N (radius f t N x) one x
 
-@[simp] theorem subst_radius {l : ℕ} (σ : Fin n → PTm l) (f : PR 2) (t : PTm 2) (N x : PTm n) :
-    Syn.subst σ (radius f t N x) = radius f t (Syn.subst σ N) (Syn.subst σ x) := by simp [radius]
+ipra_subst radius
 
 theorem regular_at (f : PR 2) (t : PTm 2) (N x i : PTm n)
     (h : Γ ⊢[PRAAx] regularRows f t N x) (hi : Γ ⊢[PRAAx] lt i N) :

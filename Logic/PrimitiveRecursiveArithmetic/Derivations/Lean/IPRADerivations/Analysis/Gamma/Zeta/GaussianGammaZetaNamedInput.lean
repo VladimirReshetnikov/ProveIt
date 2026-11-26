@@ -16,7 +16,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaNamedInput
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianNameArithmetic (addF addData add_fast)
@@ -30,8 +30,6 @@ open GaussianRationalLinearProduct (add_sub_right qadd_zero_right qadd_commutati
 open GaussianRationalMetric (qsub)
 open GaussianRationalSumAlgebra (qadd_associative)
 open GaussianRationalSyntheticDivision (qone qadd_congr qzero_canonical)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -44,15 +42,11 @@ def minusOneData (x : PTm n) : PTm n := addData x (qsub qzero qone)
 def radius (f : PR 2) (x : PTm n) : PTm n :=
   GaussianNamedRightHalfPlane.radius (minusOneF f) (minusOneData x)
 
-@[simp] theorem subst_minusOneData {m : ℕ} (σ : Fin n → PTm m) (x : PTm n) :
-    Syn.subst σ (minusOneData x) = minusOneData (Syn.subst σ x) := by
-  simp [minusOneData,GaussianRationalMetric.subst_qsub]
+ipra_subst minusOneData [GaussianRationalMetric.subst_qsub]
 
-@[simp] theorem subst_radius {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x : PTm n) :
-    Syn.subst σ (radius f x) = radius f (Syn.subst σ x) := by simp [radius]
+ipra_subst radius
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x M : PTm n) :
-    (source f x M).subst σ = source f (Syn.subst σ x) (Syn.subst σ M) := by simp [source]
+ipra_subst source
 
 private theorem margin_cancel (M : PTm n) (hM : Γ ⊢[PRAAx] le one M) :
     Γ ⊢[PRAAx] qadd (qadd qone (marginPoint M)) (qsub qzero qone) ≐ marginPoint M := by

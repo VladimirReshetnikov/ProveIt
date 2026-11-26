@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelPanelContinuity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUnitKernelCompactName (evaluatorF fixedData)
 open GaussianEulerUnitKernelCompactRate (lipschitz majorant)
 open GaussianCompactRiemannName (sampleBody sampleData grid quadrature)
@@ -29,9 +29,6 @@ open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianNamedInverseRate (rateNumerator rateDenominator)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,11 +37,8 @@ def source (z R B a C b D M G A : PTm n) : Fm PTm n :=
     (GaussianEulerUnitKernelCompactName.source z R B b D M G ⋏ endpointSource a C b D A)
 def leading (R G A : PTm n) : PTm n := (lipschitz R G+two*majorant R G)*A
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B a C b D M G A : PTm n) :
-    (source z R B a C b D M G A).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ b) (Syn.subst σ D) (Syn.subst σ M) (Syn.subst σ G) (Syn.subst σ A) := by simp [source]
-@[simp] theorem subst_leading {m : ℕ} (σ : Fin n → PTm m) (R G A : PTm n) :
-    Syn.subst σ (leading R G A) = leading (Syn.subst σ R) (Syn.subst σ G) (Syn.subst σ A) := by simp [leading]
+ipra_subst source
+ipra_subst leading
 
 private theorem native_source_congr {z R B a b c d G : PTm n}
     (ha : Γ ⊢[PRAAx] a ≐ c) (hb : Γ ⊢[PRAAx] b ≐ d)

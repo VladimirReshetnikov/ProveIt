@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGaussEulerNamedHeadGrouping
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode scale)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
@@ -30,8 +30,6 @@ open GaussianNamedFiniteProductFamily (rowF productData family_product_regular)
 open GaussianNamedFiniteProductName (nameF)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRationalHorner (qmul qmul_canonical)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,14 +38,9 @@ abbrev referenceNameF : PR 2 := nameF (rowF constantF referenceInverseBody)
 def shiftedNameData (z B m N : PTm n) : PTm n := productData constantF shiftedInverseBody m (shiftedData z B m N)
 def referenceNameData (m N : PTm n) : PTm n := productData constantF referenceInverseBody m (pairT m N)
 
-@[simp] theorem subst_shiftedNameData {l : ℕ} (σ : Fin n → PTm l) (z B m N : PTm n) :
-    Syn.subst σ (shiftedNameData z B m N) =
-      shiftedNameData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ m) (Syn.subst σ N) := by
-  simp [shiftedNameData,productData,one]
+ipra_subst shiftedNameData [productData, one]
 
-@[simp] theorem subst_referenceNameData {l : ℕ} (σ : Fin n → PTm l) (m N : PTm n) :
-    Syn.subst σ (referenceNameData m N) = referenceNameData (Syn.subst σ m) (Syn.subst σ N) := by
-  simp [referenceNameData,productData,one]
+ipra_subst referenceNameData [productData, one]
 
 theorem shifted_regular (z B m N : PTm n) : Γ ⊢[PRAAx] pointCN shiftedNameF (shiftedNameData z B m N) :=
   family_product_regular _ _ _ _ (constant_rows_regular _ _ _)

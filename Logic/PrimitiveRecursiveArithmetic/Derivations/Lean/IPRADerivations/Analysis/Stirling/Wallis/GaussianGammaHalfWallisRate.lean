@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaHalfWallisRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open WallisFinite (da db Dm da_succ wallis_le_two finite_wallis J_zero_eq)
 open WallisRecurrence (J)
 open Products (fact)
@@ -23,10 +23,6 @@ open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

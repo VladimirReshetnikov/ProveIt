@@ -1,6 +1,5 @@
 import IPRADerivations.Combinatorics.BellStirling
 import IPRADerivations.Combinatorics.CatalanNarayana
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # A Pascal inversion for the Bell numbers
@@ -31,7 +30,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.BellPascalInversion
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Stirling (gle gle_of_le)
 open LeanProofs.IPRA.Combinatorics.Vandermonde (gb congrGb gb_zero gb_above gb_pascal zB zsum inst2_z)
 open LeanProofs.IPRA.Combinatorics.StirlingBinomial (shift_y)
@@ -39,10 +38,6 @@ open LeanProofs.IPRA.Combinatorics.CatalanNarayana (le_of_lt_succ)
 open LeanProofs.IPRA.Combinatorics.Bell (bell BL bell_succ recB inst2_rec)
 open LeanProofs.IPRA.Combinatorics.Binomial (binom)
 open LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct (eq_of_viol viol_of_eq)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -387,13 +382,9 @@ theorem psi_step {M R : PTm n} (ih : Γ ⊢[PRAAx] ap2 (sumF vB) (monus M R) R �
 private abbrev psiF : Fm PTm 2 := ap2 (sumF vB) (monus (var 1) (var 0)) (var 0) ≐ zero
 
 private theorem psi₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] psiF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_monus, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact psi_base _
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_monus, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact psi_step Prf.hyp0
+  ipra_ind [subst_ap2]
+  · exact psi_base _
+  · exact psi_step Prf.hyp0
 
 /-- `eq:general-pascal-inversion`: `∑_{j ≤ n} C(n, j) B_{r+j} + ∑_{r − i odd} C(r, i) B_{n+i+1}
 = ∑_{r − i even} C(r, i) B_{n+i+1}`. -/

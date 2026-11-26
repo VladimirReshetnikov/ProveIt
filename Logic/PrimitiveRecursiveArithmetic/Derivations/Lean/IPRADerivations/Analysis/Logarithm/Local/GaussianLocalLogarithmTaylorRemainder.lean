@@ -16,7 +16,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianLocalLogarithmTaylorRemainder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianFiniteLogarithmPolynomial (value sourceTerm)
 open GaussianFiniteLogarithmTaylorRemainder (numerator denominator denominator_positive)
@@ -26,10 +26,6 @@ open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
 open GaussianRationalHorner (ofGaussian ofGaussian_represents positive_product)
 open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_radius_mono distance_triangle_same)
 open GaussianRationalMetric (bounded bounded_of_cleared distanceBounded)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

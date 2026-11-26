@@ -13,8 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianDigammaBernoulliActualUpper
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero)
+open_ipra
 open GaussianDigammaBernoulliActualBase (original_named_positive)
 open GaussianDigammaBernoulliName (nameF nameData name_regular)
 open GaussianDigammaBernoulliRecurrence (weightedPrimitive)
@@ -26,8 +25,6 @@ open GaussianRationalHorner (qzero)
 open GaussianSignedNameExponentialOrder (constant_equal_cross)
 open GaussianStirlingMultiplicativeBoundsStrictOrder (strictOrder strict_transport)
 open GaussianStirlingNames (source)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "fraction" => GaussianPositiveRationalLogarithm.fraction

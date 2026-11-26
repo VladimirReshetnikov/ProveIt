@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalDyadicCentralExponent
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalCenteredExponentialShift (baseData)
 open GaussianBarnesCanonicalDyadicCentralBound (centralCap centralExponent central_samples)
 open GaussianBarnesCanonicalLogCofinal (source)
@@ -23,10 +23,6 @@ open GaussianCoefficientNameBounds (bounded_radius_mono unit unit_positive)
 open GaussianNameBounds (U)
 open GaussianNamedMultiplyRate (sample_bound_at)
 open GaussianRationalMetric (bounded)
-open ConciseIPRA.PTm (succ zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

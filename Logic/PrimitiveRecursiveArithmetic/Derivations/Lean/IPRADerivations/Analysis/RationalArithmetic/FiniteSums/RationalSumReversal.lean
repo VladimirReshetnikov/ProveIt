@@ -14,8 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalSumReversal
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero succ)
+open_ipra
 open GaussianRationalFiniteProduct (offset_at)
 open GaussianRationalFiniteSumReversal (data reverseBody reverse_body_at first_at)
 open RationalAlgebra (add_congr add_associative add_commutative)
@@ -24,8 +23,6 @@ open RationalArgmin (rationalEq_congr)
 open RationalFiniteSum (term sum termwiseEq sum_ext subst_sum)
 open RationalReciprocalPowerTail (add_zero_right zero_fraction)
 open RationalSumSegments (sum_congr split)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -70,9 +67,7 @@ private theorem reverse_tail (f : PTm 2) (N x : PTm n) :
 def reversal (f : PTm 2) (N x : PTm n) : Fm PTm n :=
   sum (reverseBody f) N (data N x) ≐ sum f N x
 
-@[simp] theorem subst_reversal {l : ℕ} (σ : Fin n → PTm l) (f : PTm 2) (N x : PTm n) :
-    (reversal f N x).subst σ = reversal f (Syn.subst σ N) (Syn.subst σ x) := by
-  simp [reversal]
+ipra_subst reversal
 
 /-- Each successor trades the last term of the original sum against
 the first term of its reversal. -/

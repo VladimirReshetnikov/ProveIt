@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Exponential.Polynomials.LogarithmExponentialCoefficients
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Literal finite exponential polynomials and their differential residual
@@ -21,17 +20,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.FiniteExponential
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.LogarithmExponentialCoefficients (value code eval_value_code eval_value_congr monus_succ_le)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (fact_pos)
 open LeanProofs.IPRA.Combinatorics.Binomial (binom pos_mul quo_of_eq)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (binom_eq mul_cancel)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -44,10 +39,8 @@ def powerF : PR 2 := rec2 (pairT one zero) powerStep
 def powerCode (x k : PTm n) : PTm n := ap2 powerF k x
 def power (x k : PTm n) : ZT n := value (powerCode x k)
 
-@[simp] theorem subst_powerCode {m : ℕ} (σ : Fin n → PTm m) (x k : PTm n) :
-    Syn.subst σ (powerCode x k) = powerCode (Syn.subst σ x) (Syn.subst σ k) := by simp [powerCode]
-@[simp] theorem subst_power {m : ℕ} (σ : Fin n → PTm m) (x k : PTm n) :
-    (power x k).subst σ = power (Syn.subst σ x) (Syn.subst σ k) := by simp [power]
+ipra_subst powerCode
+ipra_subst power
 
 theorem powerCode_zero (x : PTm n) : Γ ⊢[PRAAx] powerCode x zero ≐ pairT one zero := by
   simpa [powerCode,powerF] using rec2_zero (Γ := Γ) (pairT one zero) powerStep x
@@ -69,8 +62,7 @@ theorem power_succ (x k : PTm n) : Γ ⊢[PRAAx] ZT.eq (power x (succ k)) (power
 /-- `N!/k!`, computed without a partial quotient. -/
 def weight (N k : PTm n) : PTm n := binom N k*fact (monus N k)
 
-@[simp] theorem subst_weight {m : ℕ} (σ : Fin n → PTm m) (N k : PTm n) :
-    Syn.subst σ (weight N k) = weight (Syn.subst σ N) (Syn.subst σ k) := by simp [weight,fact,binom]
+ipra_subst weight [fact, binom]
 
 theorem weight_exact (N k : PTm n) (hk : Γ ⊢[PRAAx] le k N) :
     Γ ⊢[PRAAx] fact k*weight N k ≐ fact N := by
@@ -96,10 +88,8 @@ theorem weight_quotient (N k : PTm n) (hk : Γ ⊢[PRAAx] le k N) :
 def scalar (N k D : PTm n) : PTm n := weight N k*pw D (monus N k)
 def dscalar (N k D : PTm n) : PTm n := succ k*scalar N (succ k) D
 
-@[simp] theorem subst_scalar {m : ℕ} (σ : Fin n → PTm m) (N k D : PTm n) :
-    Syn.subst σ (scalar N k D) = scalar (Syn.subst σ N) (Syn.subst σ k) (Syn.subst σ D) := by simp [scalar]
-@[simp] theorem subst_dscalar {m : ℕ} (σ : Fin n → PTm m) (N k D : PTm n) :
-    Syn.subst σ (dscalar N k D) = dscalar (Syn.subst σ N) (Syn.subst σ k) (Syn.subst σ D) := by simp [dscalar]
+ipra_subst scalar
+ipra_subst dscalar
 
 /-- Packed persistent data: `(N,(x,D))`. -/
 def pBody : PTm 2 := scalar (fstT (var 1)) (var 0) (sndT (sndT (var 1)))*
@@ -115,14 +105,10 @@ def sum (b : PTm 2) (r N x D : PTm n) : PTm n := ap2 (sumF b) r (data N x D)
 def exponential (x D N : PTm n) : ZT n := ⟨sum pBody (succ N) N x D,sum mBody (succ N) N x D⟩
 def derivative (x D N : PTm n) : ZT n := ⟨sum dpBody N N x D,sum dmBody N N x D⟩
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (N x D : PTm n) :
-    Syn.subst σ (data N x D) = data (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ D) := by simp [data]
-@[simp] theorem subst_sum {m : ℕ} (σ : Fin n → PTm m) (b : PTm 2) (r N x D : PTm n) :
-    Syn.subst σ (sum b r N x D) = sum b (Syn.subst σ r) (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ D) := by simp [sum]
-@[simp] theorem subst_exponential {m : ℕ} (σ : Fin n → PTm m) (x D N : PTm n) :
-    (exponential x D N).subst σ = exponential (Syn.subst σ x) (Syn.subst σ D) (Syn.subst σ N) := by simp [exponential,ZT.subst]
-@[simp] theorem subst_derivative {m : ℕ} (σ : Fin n → PTm m) (x D N : PTm n) :
-    (derivative x D N).subst σ = derivative (Syn.subst σ x) (Syn.subst σ D) (Syn.subst σ N) := by simp [derivative,ZT.subst]
+ipra_subst data
+ipra_subst sum
+ipra_subst exponential [ZT.subst]
+ipra_subst derivative [ZT.subst]
 
 theorem scalar_self (N D : PTm n) : Γ ⊢[PRAAx] scalar N N D ≐ one :=
   (congrMul (weight_self N) ((congrAp2 powF (monus_self N) (.eqRefl D)).eqTrans (pw_zero D))).eqTrans (one_mul one)
@@ -146,9 +132,9 @@ theorem body_at (k N x D : PTm n) :
       (inst2 mBody k (data N x D) ≐ scalar N k D*(power x k).neg) := by
   have hn : Γ ⊢[PRAAx] fstT (data N x D) ≐ N := fst_pair _ _
   have hx : Γ ⊢[PRAAx] fstT (sndT (data N x D)) ≐ x :=
-    (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
+    (snd_pair _ _).fstE
   have hd : Γ ⊢[PRAAx] sndT (sndT (data N x D)) ≐ D :=
-    (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
+    (snd_pair _ _).sndE
   have p : inst2 pBody k (data N x D) =
       scalar (fstT (data N x D)) k (sndT (sndT (data N x D)))*
         (power (fstT (sndT (data N x D))) k).pos := by simp [inst2,pBody,power,value]
@@ -168,9 +154,9 @@ theorem dbody_at (k N x D : PTm n) :
       (inst2 dmBody k (data N x D) ≐ dscalar N k D*(power x k).neg) := by
   have hn : Γ ⊢[PRAAx] fstT (data N x D) ≐ N := fst_pair _ _
   have hx : Γ ⊢[PRAAx] fstT (sndT (data N x D)) ≐ x :=
-    (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
+    (snd_pair _ _).fstE
   have hd : Γ ⊢[PRAAx] sndT (sndT (data N x D)) ≐ D :=
-    (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
+    (snd_pair _ _).sndE
   have p : inst2 dpBody k (data N x D) =
       dscalar (fstT (data N x D)) k (sndT (sndT (data N x D)))*
         (power (fstT (sndT (data N x D))) k).pos := by simp [inst2,dpBody,power,value]
@@ -291,26 +277,21 @@ theorem derivative_zero (x D : PTm n) : Γ ⊢[PRAAx] ZT.eq (derivative x D zero
 def differentialFormula (x D N : PTm n) : Fm PTm n :=
   ZT.eq (ZT.ofNat D*derivative x D N+power x N) (exponential x D N)
 
-@[simp] theorem subst_differentialFormula {m : ℕ} (σ : Fin n → PTm m) (x D N : PTm n) :
-    (differentialFormula x D N).subst σ =
-      differentialFormula (Syn.subst σ x) (Syn.subst σ D) (Syn.subst σ N) := by
-  simp [differentialFormula]
+ipra_subst differentialFormula
 
 /-- The literal finite exponential's derivative differs from itself by
 exactly its last homogeneous term. This holds even at the totalized `D=0`. -/
 theorem differential_residual (x D N : PTm n) : Γ ⊢[PRAAx] differentialFormula x D N := by
   have all : Γ ⊢[PRAAx] .all (differentialFormula (Syn.shift x) (Syn.shift D) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_differentialFormula,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      have a := ZT.toZ_eq (exponential_zero (Γ := Γ) x D)
+    ipra_qfind [subst_differentialFormula]
+    · have a := ZT.toZ_eq (exponential_zero (Γ := Γ) x D)
       have b := ZT.toZ_eq (derivative_zero (Γ := Γ) x D)
       have c := ZT.toZ_eq (power_zero (Γ := Γ) x)
       apply ZT.derive
       simp only [ZT.toZ_add,ZT.toZ_mul,ZT.toZ_ofNat]
       simp only [ZT.toZ_natLit] at a b c
       linear_combination 𝔞(D)*b+c-a
-    · simp only [subst_differentialFormula,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      let Δ : List (Fm PTm (n+1)) :=
+    · let Δ : List (Fm PTm (n+1)) :=
         differentialFormula (Syn.shift x) (Syn.shift D) (var 0) :: Γ.map Fm.shift
       change Δ ⊢[PRAAx] differentialFormula (Syn.shift x) (Syn.shift D) (succ (var 0))
       have ih := ZT.toZ_eq (Γ := Δ) (Prf.hyp0 : Δ ⊢[PRAAx] differentialFormula (Syn.shift x) (Syn.shift D) (var 0))
@@ -326,8 +307,7 @@ theorem differential_residual (x D N : PTm n) : Γ ⊢[PRAAx] differentialFormul
 
 def denominator (D N : PTm n) : PTm n := fact N*pw D N
 
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (D N : PTm n) :
-    Syn.subst σ (denominator D N) = denominator (Syn.subst σ D) (Syn.subst σ N) := by simp [denominator,fact]
+ipra_subst denominator [fact]
 
 /-- Each actual summand, divided by `N!D^N`, has exactly coefficient
 `1/(k!D^k)`. This is the literal exponential finite sum, not a definition
@@ -355,8 +335,7 @@ def program (x D N : PTm n) : PTm n :=
   pairT (code (exponential x D N)) (pairT (code (derivative x D N)) (denominator D N))
 def programF : PR 3 := PTm.toPR (program (var 0) (var 1) (var 2))
 
-@[simp] theorem subst_program {m : ℕ} (σ : Fin n → PTm m) (x D N : PTm n) :
-    Syn.subst σ (program x D N) = program (Syn.subst σ x) (Syn.subst σ D) (Syn.subst σ N) := by simp [program]
+ipra_subst program
 
 theorem program_at (x D N : PTm n) :
     Γ ⊢[PRAAx] ap3 programF x D N ≐ program x D N := by
@@ -397,8 +376,8 @@ theorem literal_program_closed :
             ((sndT (sndT (program (var 0) (var 1) (var 2))) ≐ denominator (var 1) (var 2)) ⋏
               (le one (var 1) ⟶ le one (denominator (var 1) (var 2))))))) :=
   closeUniv 3 (.andI (program_at _ _ _) (.andI (fst_pair _ _)
-    (.andI ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
-      (.andI ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))
+    (.andI (snd_pair _ _).fstE
+      (.andI (snd_pair _ _).sndE
         (.impI (denominator_positive _ _ Prf.hyp0))))))
 
 end LeanProofs.IPRA.Analysis.FiniteExponential

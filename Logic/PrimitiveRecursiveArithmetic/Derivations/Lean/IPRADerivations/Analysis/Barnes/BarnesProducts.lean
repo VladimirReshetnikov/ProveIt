@@ -15,15 +15,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.BarnesProducts
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Analysis.BarnesInteger (barnes barnes_zero barnes_succ barnes_pos)
 open LeanProofs.IPRA.Analysis.Pochhammer (poch poch_zero poch_succ)
 open LeanProofs.IPRA.Combinatorics.Binomial (quo_of_eq)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -83,15 +79,9 @@ abbrev cancellationFormula : Fm PTm 2 :=
     pw (var 1 + var 0) (var 0) * lower (var 0) (var 1)
 
 private theorem cancellation_open : ([] : List (Fm PTm 2)) ⊢[PRAAx] cancellationFormula := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_ap2,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact cancellation_base _
-  · simp only [Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_ap2,
-      Syn.subst_var, Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact cancellation_step Prf.hyp0
+  ipra_ind [subst_ap2]
+  · exact cancellation_base _
+  · exact cancellation_step Prf.hyp0
 
 /-- The cleared monomial cancellation behind `eq:finite-ratio`, including
 the zero cutoff and zero argument. -/
@@ -141,13 +131,9 @@ abbrev gammaFormula : Fm PTm 2 :=
   barnes (var 1 + var 0) ≐ barnes (var 1) * gammaProduct (var 0) (var 1)
 
 private theorem gamma_open : ([] : List (Fm PTm 2)) ⊢[PRAAx] gammaFormula := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_ap2,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero]
-    exact gamma_base _
-  · simp only [Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_ap2,
-      Syn.subst_var, Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero]
-    exact gamma_step Prf.hyp0
+  ipra_ind [subst_ap2]
+  · exact gamma_base _
+  · exact gamma_step Prf.hyp0
 
 /-- `eq:gamma-finite-product` at all positive integer arguments,
 `G(k + N + 1) = G(k + 1) ∏_{i<N} Γ(k + i + 1)`. -/

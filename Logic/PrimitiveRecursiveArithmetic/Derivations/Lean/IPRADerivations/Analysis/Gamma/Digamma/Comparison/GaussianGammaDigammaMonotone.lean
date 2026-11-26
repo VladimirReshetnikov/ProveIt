@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaMonotone
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaAdjacentCutoff (multiply_cross)
 open GaussianGammaDigammaNative (derivativeData derivative_regular gamma_times_digamma)
@@ -33,10 +33,6 @@ open GaussianStirlingGammaFractionalIncrementObservations (scalar_upper)
 open GaussianStirlingGammaLogarithm (source gammaData gamma_regular gammaRetimedF gammaRetimedData gamma_retimed_cross
   gammaLogMargin log_input)
 open RationalValueBounds (upper upper_mono upper_triangle upper_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "DF" => GaussianGammaDigammaNative.nameF

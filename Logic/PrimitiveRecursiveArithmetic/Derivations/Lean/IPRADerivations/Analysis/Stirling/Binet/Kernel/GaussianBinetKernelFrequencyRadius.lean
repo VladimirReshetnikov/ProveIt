@@ -14,7 +14,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetKernelFrequencyRadius
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetKernelFrequencyGrid (cofinalBody originalData physical_row_at)
 open GaussianBinetKernelFrozenIndependent (dampedNumerator errorDenominator error_denominator_positive)
 open GaussianBinetLaplaceIntegrand (cofinalF cofinalData)
@@ -25,18 +25,12 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRationalFiniteProduct (offset_at)
 open GaussianRationalHorner (positive_product qmul)
 open GaussianRationalMetric (distanceBounded)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def errorNumerator (p q I : PTm n) : PTm n := dampedNumerator p q I+two*I*unit p
 
-@[simp] theorem subst_errorNumerator {m : ℕ} (σ : Fin n → PTm m) (p q I : PTm n) :
-    Syn.subst σ (errorNumerator p q I) = errorNumerator (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ I) := by
-  simp [errorNumerator,two,one]
+ipra_subst errorNumerator [two, one]
 
 theorem damping_suffix_error (j J s p q k I N X Y D sign S R T C W : PTm n)
     (hS : Γ ⊢[PRAAx] source X Y D sign S) (hR : Γ ⊢[PRAAx] source X Y D sign R)

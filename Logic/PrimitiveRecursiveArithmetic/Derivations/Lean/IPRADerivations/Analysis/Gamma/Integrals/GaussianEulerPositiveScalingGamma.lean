@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPositiveScalingGamma
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPositiveScalingConstant (inverseF inverseData scaleF scaleData)
 open GaussianGammaReciprocalInverse (gammaF gammaData)
 open GaussianNameArithmetic (multiplyF multiplyData multiply_fast)
@@ -23,8 +23,6 @@ open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans 
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianRationalMetric (distanceBounded)
 open GaussianCoefficientNameBounds (unit)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Damped" => GaussianEulerPositiveScalingImproper.nameF
@@ -40,15 +38,9 @@ def forwardF : PR 2 := multiplyF scaleF Damped
 def forwardData (z R B A c d : PTm n) : PTm n :=
   multiplyData scaleF Damped (scaleData z B c d) (ddata z R B A c d)
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B A c d : PTm n) :
-    (source z R B A c d).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ A) (Syn.subst σ c) (Syn.subst σ d) := by simp [source]
-@[simp] theorem subst_productData {m : ℕ} (σ : Fin n → PTm m) (z R B A c d : PTm n) :
-    Syn.subst σ (productData z R B A c d) = productData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ A) (Syn.subst σ c) (Syn.subst σ d) := by simp [productData]
-@[simp] theorem subst_forwardData {m : ℕ} (σ : Fin n → PTm m) (z R B A c d : PTm n) :
-    Syn.subst σ (forwardData z R B A c d) = forwardData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ A) (Syn.subst σ c) (Syn.subst σ d) := by simp [forwardData,GaussianEulerPositiveScalingConstant.scaleData]
+ipra_subst source
+ipra_subst productData
+ipra_subst forwardData [GaussianEulerPositiveScalingConstant.scaleData]
 
 theorem improper_source (z R B A c d : PTm n) (h : Γ ⊢[PRAAx] source z R B A c d) : Γ ⊢[PRAAx]
     GaussianEulerPositiveScalingImproper.source z R B A c d :=

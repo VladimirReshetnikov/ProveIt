@@ -14,8 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalCofactorCoefficientValues
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero)
+open_ipra
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open RationalSupMetric (coordinate numeratorOf denominatorOf)
 open RationalIntegerNormalization (normalize normalize_preserves_value)
@@ -37,16 +36,12 @@ open RationalSubtupleSpan (bit)
 open GaussianScalarDeterminantLaplace (unitSign sign_bit_even sign_bit_odd)
 open GaussianRationalHorner (qmul qzero scalar_congr)
 open GaussianRationalSyntheticDivision (qmul_congr)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def coefficientValue (P d j : PTm n) : PTm n := normalize (coordinate (vector P d) j) one
 
-@[simp] theorem subst_coefficientValue {k : ℕ} (σ : Fin n → PTm k) (P d j : PTm n) :
-    Syn.subst σ (coefficientValue P d j) = coefficientValue (Syn.subst σ P) (Syn.subst σ d) (Syn.subst σ j) := by
-  simp [coefficientValue,RationalSupMetric.coordinate,ZT.subst,one]
+ipra_subst coefficientValue [RationalSupMetric.coordinate, ZT.subst, one]
 
 theorem output_from_signed_code (P d j : PTm n) (hj : Γ ⊢[PRAAx] lt j d)
     (hs : Γ ⊢[PRAAx] bit (extendedColumn P d) j ≐ one) (a : ZT n)

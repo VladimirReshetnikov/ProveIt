@@ -23,13 +23,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalFiniteProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qmul canonical)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qone qone_canonical qmul_congr)
 open LeanProofs.IPRA.Analysis.GaussianTranslatedNonconstant (recode recode_canonical)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -37,8 +34,7 @@ def stepBody (t : PTm 2) : PTm 3 := qmul (var 1) (inst2 t (var 0) (var 2))
 def productF (t : PTm 2) : PR 2 := rec2 (qone : PTm 1) (stepBody t)
 def qprod (t : PTm 2) (N x : PTm n) : PTm n := ap2 (productF t) N x
 
-@[simp] theorem subst_qprod {l : ℕ} (σ : Fin n → PTm l) (t : PTm 2) (N x : PTm n) :
-    Syn.subst σ (qprod t N x) = qprod t (Syn.subst σ N) (Syn.subst σ x) := by simp only [qprod,subst_ap2]
+ipra_subst qprod
 
 theorem product_zero (t : PTm 2) (x : PTm n) : Γ ⊢[PRAAx] qprod t zero x ≐ qone := by
   simpa only [qprod,productF,GaussianRationalSyntheticDivision.subst_qone] using
@@ -66,9 +62,7 @@ theorem product_canonical (t : PTm 2) (N x : PTm n) : Γ ⊢[PRAAx] canonical (q
 def prefixLaw (t u : PTm 2) (N x y k : PTm n) : Fm PTm n :=
   le k N ⟶ qprod t k x ≐ qprod u k y
 
-@[simp] theorem subst_prefixLaw {l : ℕ} (σ : Fin n → PTm l) (t u : PTm 2) (N x y k : PTm n) :
-    (prefixLaw t u N x y k).subst σ = prefixLaw t u (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ k) := by
-  simp only [prefixLaw,Fm.subst_imp,subst_le,Fm.subst_eq,subst_qprod]
+ipra_subst prefixLaw
 
 theorem prefix_step (t u : PTm 2) (N x y k : PTm n)
     (h : Γ ⊢[PRAAx] GaussianRationalFiniteSum.termsEqual t u N x y)
@@ -86,11 +80,9 @@ theorem product_prefix_congr (t u : PTm 2) (N x y k : PTm n)
       GaussianRationalFiniteSum.termsEqual t u (Syn.shift N) (Syn.shift x) (Syn.shift y) := by
     simpa only [Fm.shift,GaussianRationalFiniteSum.subst_termsEqual,Syn.shift] using h.shift
   have all : Γ ⊢[PRAAx] .all (prefixLaw t u (Syn.shift N) (Syn.shift x) (Syn.shift y) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI ((product_zero t x).eqTrans (product_zero u y).eqSymm)
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_prefixLaw]
+    · exact .impI ((product_zero t x).eqTrans (product_zero u y).eqSymm)
+    · refine .impI ?_
       exact prefix_step t u _ _ _ _ hs.wk.wk Prf.hyp0
         (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
   have rule : Γ ⊢[PRAAx] prefixLaw t u N x y k := by
@@ -108,9 +100,7 @@ theorem offset_at (t : PTm 2) (N i x : PTm n) : Γ ⊢[PRAAx]
 
 def splitLaw (t : PTm 2) (N M x : PTm n) : Fm PTm n :=
   qprod t (N+M) x ≐ qmul (qprod t N x) (qprod (offB t) M (pairT N x))
-@[simp] theorem subst_splitLaw {l : ℕ} (σ : Fin n → PTm l) (t : PTm 2) (N M x : PTm n) :
-    (splitLaw t N M x).subst σ = splitLaw t (Syn.subst σ N) (Syn.subst σ M) (Syn.subst σ x) := by
-  simp only [splitLaw,Fm.subst_eq,subst_qprod,PTm.subst_add,subst_pairT,GaussianRationalHorner.subst_qmul]
+ipra_subst splitLaw
 
 theorem split_zero (t : PTm 2) (N x : PTm n) : Γ ⊢[PRAAx] splitLaw t N zero x :=
   (product_index_congr t (add_zero N) (.eqRefl _)).eqTrans
@@ -129,11 +119,9 @@ theorem split_step (t : PTm 2) (N M x : PTm n) (ih : Γ ⊢[PRAAx] splitLaw t N 
 theorem product_split (t : PTm 2) (N M x : PTm n) : Γ ⊢[PRAAx]
     qprod t (N+M) x ≐ qmul (qprod t N x) (qprod (offB t) M (pairT N x)) := by
   have all : Γ ⊢[PRAAx] .all (splitLaw t (Syn.shift N) (var 0) (Syn.shift x)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_splitLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact split_zero t N x
-    · simp only [subst_splitLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact split_step t _ _ _ Prf.hyp0
+    ipra_qfind [subst_splitLaw]
+    · exact split_zero t N x
+    · exact split_step t _ _ _ Prf.hyp0
   have actual : Γ ⊢[PRAAx] splitLaw t N M x := by
     simpa only [subst_splitLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE M
   exact actual
@@ -143,8 +131,7 @@ def recodeBody (t : PTm 2) : PTm 2 := recode t
     inst2 (recodeBody t) i x = recode (inst2 t i x) := by simp only [inst2,recodeBody,GaussianTranslatedNonconstant.subst_recode]
 
 def recodeLaw (t : PTm 2) (N x : PTm n) : Fm PTm n := qprod (recodeBody t) N x ≐ qprod t N x
-@[simp] theorem subst_recodeLaw {l : ℕ} (σ : Fin n → PTm l) (t : PTm 2) (N x : PTm n) :
-    (recodeLaw t N x).subst σ = recodeLaw t (Syn.subst σ N) (Syn.subst σ x) := by simp only [recodeLaw,Fm.subst_eq,subst_qprod]
+ipra_subst recodeLaw
 
 theorem recode_step (t : PTm 2) (N x : PTm n) (ih : Γ ⊢[PRAAx] recodeLaw t N x) : Γ ⊢[PRAAx]
     recodeLaw t (succ N) x := by
@@ -155,11 +142,9 @@ theorem recode_step (t : PTm 2) (N x : PTm n) (ih : Γ ⊢[PRAAx] recodeLaw t N 
 
 theorem product_recode (t : PTm 2) (N x : PTm n) : Γ ⊢[PRAAx] qprod (recodeBody t) N x ≐ qprod t N x := by
   have all : Γ ⊢[PRAAx] .all (recodeLaw t (var 0) (Syn.shift x)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_recodeLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (product_zero _ _).eqTrans (product_zero _ _).eqSymm
-    · simp only [subst_recodeLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact recode_step t _ _ Prf.hyp0
+    ipra_qfind [subst_recodeLaw]
+    · exact (product_zero _ _).eqTrans (product_zero _ _).eqSymm
+    · exact recode_step t _ _ Prf.hyp0
   have actual : Γ ⊢[PRAAx] recodeLaw t N x := by
     simpa only [subst_recodeLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
   exact actual
@@ -178,19 +163,17 @@ def output (t : PTm 2) (N M x : PTm n) : PTm n :=
   pairT (qprod t (N+M) x) (pairT (qprod t N x) (qprod (offB t) M (pairT N x)))
 def outputF (t : PTm 2) : PR 3 := PTm.toPR (output t (var 0) (var 1) (var 2))
 def run (t : PTm 2) (N M x : PTm n) : PTm n := ap3 (outputF t) N M x
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (t : PTm 2) (N M x : PTm n) :
-    Syn.subst σ (output t N M x) = output t (Syn.subst σ N) (Syn.subst σ M) (Syn.subst σ x) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (t : PTm 2) (N M x : PTm n) :
-    Syn.subst σ (run t N M x) = run t (Syn.subst σ N) (Syn.subst σ M) (Syn.subst σ x) := by simp only [run,subst_ap3]
+ipra_subst output
+ipra_subst run
 
 theorem program_at (t : PTm 2) (N M x : PTm n) : Γ ⊢[PRAAx] run t N M x ≐ output t N M x := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output t (var 0) (var 1) (var 2) : PTm 3) ![N,M,x]
 theorem returned_whole (t : PTm 2) (N M x : PTm n) : Γ ⊢[PRAAx] fstT (run t N M x) ≐ qprod t (N+M) x :=
-  (congrFst (program_at t N M x)).eqTrans (fst_pair _ _)
+  (program_at t N M x).fstE
 theorem returned_prefix (t : PTm 2) (N M x : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run t N M x)) ≐ qprod t N x :=
-  (congrFst ((congrSnd (program_at t N M x)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at t N M x).sndE.fstE
 theorem returned_suffix (t : PTm 2) (N M x : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run t N M x)) ≐ qprod (offB t) M (pairT N x) :=
-  (congrSnd ((congrSnd (program_at t N M x)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at t N M x).sndE.sndE
 theorem returned_split (t : PTm 2) (N M x : PTm n) : Γ ⊢[PRAAx]
     fstT (run t N M x) ≐ qmul (fstT (sndT (run t N M x))) (sndT (sndT (run t N M x))) :=
   (returned_whole t N M x).eqTrans ((product_split t N M x).eqTrans

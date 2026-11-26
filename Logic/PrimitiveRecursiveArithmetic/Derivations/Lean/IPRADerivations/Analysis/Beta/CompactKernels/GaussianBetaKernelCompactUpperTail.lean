@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Beta.Tails.GaussianBetaKernelUpperTail
 import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactUpperTail
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Finite upper-tail quadrature for the literal beta kernel
@@ -16,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaKernelCompactUpperTail
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUpperPowerCoefficients (source)
 open GaussianBetaKernelGridComparison (evaluatorF sampleDataBeta row_at)
 open GaussianBetaKernelUpperTail (scalarMajorant referenceBudget)
@@ -34,9 +33,6 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianDominantPairAlgebra (radiusPoint radius_bounded)
 open RationalGaussianEmbedding (embed)
 open RationalGaussianRealPart (embedBody)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

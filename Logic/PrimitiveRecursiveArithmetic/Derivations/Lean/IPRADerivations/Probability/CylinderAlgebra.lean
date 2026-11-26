@@ -1,8 +1,5 @@
-import IPRADerivations.Core.SumLemmas
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Probability.Variance
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The cylinder algebra: union, intersection and additivity as bounded sums
@@ -26,11 +23,7 @@ Monotonicity is `Analysis/PowerSums.sum_le`.
 
 namespace LeanProofs.IPRA.Probability.CylinderAlgebra
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 open LeanProofs.IPRA.Probability.Variance (sum_one)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}

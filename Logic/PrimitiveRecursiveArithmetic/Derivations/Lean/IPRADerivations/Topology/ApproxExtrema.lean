@@ -21,12 +21,8 @@ rational approximations `q_i` (cleared to a common scale) and the error `η`.
 
 namespace LeanProofs.IPRA.Topology.ApproxExtrema
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.WeightedComparison (lconj ldisj lconj_elim R max_exists)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n m : ℕ} {Γ : List (Fm PTm n)}
 

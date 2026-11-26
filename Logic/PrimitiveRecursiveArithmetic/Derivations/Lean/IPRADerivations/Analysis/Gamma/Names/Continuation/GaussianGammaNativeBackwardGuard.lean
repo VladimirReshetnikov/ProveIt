@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNativeBackwardGuard
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open ComplexLogarithmRemainder (bounded bounded_add bounded_neg bounded_scale normSq normSq_one oneCode scale)
 open GaussianGammaEulerHeadLower (poleAt poleGuard translated translated_zero)
@@ -21,17 +21,12 @@ open GaussianGammaRightHalfPlane (realMargin real_margin_pole_at)
 open GaussianNameReciprocal (lower)
 open GaussianRationalHorner (ofGaussian ofGaussian_represents positive_product)
 open GaussianRootAlgebra (equal equal_of_values equal_of_code equal_trans normSq_equal sub)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def back (z B : PTm n) : PTm n := sub z (scale B oneCode)
 
-@[simp] theorem subst_back {m : ℕ} (σ : Fin n → PTm m) (z B : PTm n) :
-    Syn.subst σ (back z B) = back (Syn.subst σ z) (Syn.subst σ B) := by simp [back]
+ipra_subst back
 
 theorem translated_back_succ (z B k : PTm n) :
     Γ ⊢[PRAAx] equal (translated (back z B) B (succ k)) (translated z B k) := by

@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBivariateGridCoefficients
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianPolynomialMonicCompanion (values values_length values_lookup rowShape row_shape_at)
 open GaussianRationalFiniteGridIdentity (gridPoint)
 open GaussianRationalGridCoefficientEquality (gridEqual coefficient_recode_equal)
@@ -21,9 +21,6 @@ open GaussianRationalHorner (canonical canonical_congr evaluate horner_canonical
 open GaussianRationalSyntheticDivision (canonicalCoefficients canonical_coefficient_at)
 open GaussianTranslatedNonconstant (recode recode_congr recode_eq)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,16 +35,9 @@ def recodedEntriesEqual (G H a b : PTm n) : Fm PTm n := .all
     recode (entry (entry (Syn.shift (Syn.shift G)) (Syn.shift (var 0))) (var 0)) ≐
     recode (entry (entry (Syn.shift (Syn.shift H)) (Syn.shift (var 0))) (var 0))))
 
-@[simp] theorem subst_specializationGrid {k : ℕ} (σ : Fin n → PTm k) (G H b x : PTm n) :
-    (specializationGrid G H b x).subst σ =
-      specializationGrid (Syn.subst σ G) (Syn.subst σ H) (Syn.subst σ b) (Syn.subst σ x) := by
-  simp [specializationGrid]
-@[simp] theorem subst_rectangleEqual {k : ℕ} (σ : Fin n → PTm k) (G H a b : PTm n) :
-    (rectangleEqual G H a b).subst σ = rectangleEqual (Syn.subst σ G) (Syn.subst σ H)
-      (Syn.subst σ a) (Syn.subst σ b) := by simp [rectangleEqual,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_recodedEntriesEqual {k : ℕ} (σ : Fin n → PTm k) (G H a b : PTm n) :
-    (recodedEntriesEqual G H a b).subst σ = recodedEntriesEqual (Syn.subst σ G) (Syn.subst σ H)
-      (Syn.subst σ a) (Syn.subst σ b) := by simp [recodedEntriesEqual,Syn.subst_shift,Syn.shift_subst]
+ipra_subst specializationGrid
+ipra_subst rectangleEqual [Syn.subst_shift, Syn.shift_subst]
+ipra_subst recodedEntriesEqual [Syn.subst_shift, Syn.shift_subst]
 
 theorem specialization_at (G H a b i : PTm n) (h : Γ ⊢[PRAAx] rectangleEqual G H a b) (hi : Γ ⊢[PRAAx] le i a) :
     Γ ⊢[PRAAx] specializationGrid G H b (gridPoint i) := by

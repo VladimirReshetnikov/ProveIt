@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarDeterminant
 import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalProductAlgebra
-import IPRADerivations.Core.BoundedSums
 import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianDeterminantSignTransport
 
 /-!
@@ -20,7 +19,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianScalarIdentityDeterminant
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero qmul canonical)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qone qone_canonical qmul_congr)
 open LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantTerms (cell signPoint)
@@ -31,9 +30,6 @@ open LeanProofs.IPRA.Foundations.SequenceComposition (entry_congr length subst_l
 open LeanProofs.IPRA.Foundations.RuntimePermutationWords
   (digit identity encode position words count retained_bound retained_position_unique)
 open LeanProofs.IPRA.Foundations.BoundedReflection (allB)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,12 +37,9 @@ def identityBody : PTm 3 := delta (var 0) (var 1)
 def identityTable (m : PTm n) : PTm n := table identityBody m m zero
 def identityWord (m : PTm n) : PTm n := encode (identity m) m
 def identityRank (m : PTm n) : PTm n := position (identity m) m
-@[simp] theorem subst_identityTable {l : ℕ} (σ : Fin n → PTm l) (m : PTm n) :
-    Syn.subst σ (identityTable m) = identityTable (Syn.subst σ m) := by simp [identityTable]
-@[simp] theorem subst_identityWord {l : ℕ} (σ : Fin n → PTm l) (m : PTm n) :
-    Syn.subst σ (identityWord m) = identityWord (Syn.subst σ m) := by simp [identityWord]
-@[simp] theorem subst_identityRank {l : ℕ} (σ : Fin n → PTm l) (m : PTm n) :
-    Syn.subst σ (identityRank m) = identityRank (Syn.subst σ m) := by simp [identityRank]
+ipra_subst identityTable
+ipra_subst identityWord
+ipra_subst identityRank
 
 theorem identity_lookup (m r j : PTm n) (hr : Γ ⊢[PRAAx] lt r m) (hj : Γ ⊢[PRAAx] lt j m) : Γ ⊢[PRAAx]
     cell (identityTable m) r j ≐ delta r j := by
@@ -103,8 +96,7 @@ theorem identity_product (m : PTm n) : Γ ⊢[PRAAx] rawProduct (identityTable m
 /-- The actual all-bit test of matching every identity digit. -/
 def matchBody : PTm 2 := eqb (digit (fstT (var 1)) (sndT (var 1)) (var 0)) (var 0)
 def matchBit (m w : PTm n) : PTm n := allB matchBody m (pairT m w)
-@[simp] theorem subst_matchBit {l : ℕ} (σ : Fin n → PTm l) (m w : PTm n) :
-    Syn.subst σ (matchBit m w) = matchBit (Syn.subst σ m) (Syn.subst σ w) := by simp [matchBit,allB]
+ipra_subst matchBit [allB]
 
 theorem match_body_at (m w i : PTm n) : Γ ⊢[PRAAx] inst2 matchBody i (pairT m w) ≐ eqb (digit m w i) i := by
   simp only [matchBody,inst2,subst_eqb,Foundations.RuntimePermutationWords.subst_digit,subst_fstT,subst_sndT,
@@ -199,12 +191,8 @@ def identityRow (A m r : PTm n) : Fm PTm n := .all
   (lt (var 0) (Syn.shift m) ⟶ cell (Syn.shift A) (Syn.shift r) (var 0) ≐ delta (Syn.shift r) (var 0))
 def identityEntries (A m : PTm n) : Fm PTm n := .all
   (lt (var 0) (Syn.shift m) ⟶ identityRow (Syn.shift A) (Syn.shift m) (var 0))
-@[simp] theorem subst_identityRow {l : ℕ} (σ : Fin n → PTm l) (A m r : PTm n) :
-    (identityRow A m r).subst σ = identityRow (Syn.subst σ A) (Syn.subst σ m) (Syn.subst σ r) := by
-  simp [identityRow,cell,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_identityEntries {l : ℕ} (σ : Fin n → PTm l) (A m : PTm n) :
-    (identityEntries A m).subst σ = identityEntries (Syn.subst σ A) (Syn.subst σ m) := by
-  simp [identityEntries,cell,Syn.subst_shift,Syn.shift_subst]
+ipra_subst identityRow [cell, Syn.subst_shift, Syn.shift_subst]
+ipra_subst identityEntries [cell, Syn.subst_shift, Syn.shift_subst]
 theorem identity_entry_at (A m r j : PTm n) (h : Γ ⊢[PRAAx] identityEntries A m)
     (hr : Γ ⊢[PRAAx] lt r m) (hj : Γ ⊢[PRAAx] lt j m) : Γ ⊢[PRAAx] cell A r j ≐ delta r j := by
   have first : Γ ⊢[PRAAx] lt r m ⟶ identityRow A m r := by
@@ -238,23 +226,21 @@ def output (m : PTm n) : PTm n := pairT (identityTable m)
     (GaussianScalarDeterminant.run (identityTable m) m) (scalarDet (identityTable m) m))))
 def outputF : PR 1 := PTm.toPR (output (var 0))
 def run (m : PTm n) : PTm n := ap1 outputF m
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (m : PTm n) :
-    Syn.subst σ (output m) = output (Syn.subst σ m) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (m : PTm n) :
-    Syn.subst σ (run m) = run (Syn.subst σ m) := by simp [run]
+ipra_subst output
+ipra_subst run
 theorem program_at (m : PTm n) : Γ ⊢[PRAAx] run m ≐ output m := by
   simpa [run,outputF,ap1] using toPR_eq (Γ := Γ) (output (var 0) : PTm 1) ![m]
 theorem returned_table (m : PTm n) : Γ ⊢[PRAAx] fstT (run m) ≐ identityTable m :=
-  (congrFst (program_at _)).eqTrans (fst_pair _ _)
+  (program_at _).fstE
 theorem returned_rank (m : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run m)) ≐ identityRank m :=
-  (congrFst ((congrSnd (program_at _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _).sndE.fstE
 theorem returned_word (m : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run m))) ≐ identityWord m :=
-  (congrFst ((congrSnd ((congrSnd (program_at _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _).sndE.sndE.fstE
 theorem returned_scalar_run (m : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (run m)))) ≐
     GaussianScalarDeterminant.run (identityTable m) m :=
-  (congrFst ((congrSnd ((congrSnd ((congrSnd (program_at _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _).sndE.sndE.sndE.fstE
 theorem returned_value (m : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (run m)))) ≐ scalarDet (identityTable m) m :=
-  (congrSnd ((congrSnd ((congrSnd ((congrSnd (program_at _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at _).sndE.sndE.sndE.sndE
 theorem returned_value_one (m : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (run m)))) ≐ qone :=
   (returned_value m).eqTrans (identity_det m)
 

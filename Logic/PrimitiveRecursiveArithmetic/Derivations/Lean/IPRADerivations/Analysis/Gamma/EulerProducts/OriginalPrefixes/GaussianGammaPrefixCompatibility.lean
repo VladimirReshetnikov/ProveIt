@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaPrefixCompatibility
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaOriginalC19Prefix (prefixValue)
 open GaussianGammaOriginalPrefixCoefficientVariation (cap)
 open GaussianGammaOriginalPrefixCoefficientNames (reader)
@@ -38,17 +38,12 @@ open GaussianNamedInverseRate (rateNumerator rateDenominator independentRate)
 open GaussianNameEquivalence (crossEquivalent)
 open RationalArgmin (rationalLE)
 open RationalArithmetic (multiply)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def mixedNumerator (p q R d : PTm n) : PTm n := GaussianGammaOriginalPrefixRegularity.modulus R d*unit q+
   GaussianGammaCanonicalPrefixName.modulus R d*unit p
-@[simp] theorem subst_mixedNumerator {l : ℕ} (σ : Fin n → PTm l) (p q R d : PTm n) :
-    Syn.subst σ (mixedNumerator p q R d) = mixedNumerator (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ R) (Syn.subst σ d) := by
-  simp [mixedNumerator]
+ipra_subst mixedNumerator
 
 theorem term_error (p q z R B d e : PTm n) (h : Γ ⊢[PRAAx] source z R B) (he : Γ ⊢[PRAAx] le e d) : Γ ⊢[PRAAx]
     rationalLE (qL1 (qsub (GaussianGammaOriginalPrefixRegularity.sourceTerm p z R B d e)

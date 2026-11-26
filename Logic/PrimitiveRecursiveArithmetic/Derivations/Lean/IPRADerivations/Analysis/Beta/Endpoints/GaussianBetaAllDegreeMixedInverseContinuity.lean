@@ -14,23 +14,18 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaAllDegreeMixedInverseContinuity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBetaAllDegreeInverseContinuity (source gain)
 open GaussianBetaAllDegreeEulerInverse (nameF data)
 open GaussianRationalHorner (ofGaussian)
 open GaussianRationalMetric (distanceBounded)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def input (z w R B C A X Y N : PTm n) : Fm PTm n := source z w R B C A N ⋏
   (le one Y ⋏ distanceBounded (ofGaussian z B) (ofGaussian w C) X Y)
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (z w R B C A X Y N : PTm n) :
-    (input z w R B C A X Y N).subst σ = input (Syn.subst σ z) (Syn.subst σ w) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ C) (Syn.subst σ A) (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ N) := by simp [input]
+ipra_subst input
 
 theorem original_independent_rate (z w R B C A X Y N : PTm n) (h : Γ ⊢[PRAAx] input z w R B C A X Y N) : Γ ⊢[PRAAx]
     independentRate nameF nameF (data z B N) (data w C N) (gain R A N*X) Y := by

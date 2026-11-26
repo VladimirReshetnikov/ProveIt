@@ -14,7 +14,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRightHalfPlaneArgumentExponential
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode scale)
 open GaussianArctangentQuarterExponential (quarterF)
 open GaussianArctangentCayleyValues (imaginaryPoint value)
@@ -31,9 +31,6 @@ open GaussianRationalHorner (ofGaussian ofGaussian_canonical ofGaussian_represen
 open GaussianRightHalfPlaneArgument (smallF smallData small_input small_regular small_bound
   half_bounded largeF largeData radius)
 open GaussianRightHalfPlaneArgumentAxis (small_axis)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

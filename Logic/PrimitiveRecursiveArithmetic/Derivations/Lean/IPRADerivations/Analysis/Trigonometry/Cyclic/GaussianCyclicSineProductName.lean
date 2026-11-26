@@ -15,7 +15,7 @@ set_option maxHeartbeats 750000
 
 namespace LeanProofs.IPRA.Analysis.GaussianCyclicSineProductName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCyclicOriginalSineProduct (originalF budget)
 open GaussianCyclicSineProductRatio (ratio original_product_error)
 open GaussianCyclicSineProductNormalization (clock clock_later)
@@ -30,9 +30,6 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianExponentialReference (unit_monotone)
 open LeanProofs.IPRA.Foundations.DyadicGain (amplitude_absorb)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,22 +40,13 @@ def body : PTm 2 := observation (var 0) (fstT (var 1)) (fstT (sndT (var 1))) (sn
 def nameF : PR 2 := PTm.toPR body
 def productData (N x : PTm n) : PTm n := data N (budget N) x
 
-@[simp] theorem subst_data {L : ℕ} (σ : Fin n → PTm L) (N C x : PTm n) :
-    Syn.subst σ (data N C x) = data (Syn.subst σ N) (Syn.subst σ C) (Syn.subst σ x) := by simp [data]
+ipra_subst data
 
-@[simp] theorem subst_observation {L : ℕ} (σ : Fin n → PTm L) (p N C x : PTm n) :
-    Syn.subst σ (observation p N C x) = observation (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ C) (Syn.subst σ x) := by
-  simp [observation,clock]
+ipra_subst observation [clock]
 
-@[simp] theorem subst_budget {L : ℕ} (σ : Fin n → PTm L) (N : PTm n) :
-    Syn.subst σ (budget N) = budget (Syn.subst σ N) := by
-  simp [budget,GaussianCyclicOriginalSineProduct.radius,GaussianCyclicSineProductSquare.normBudget,
-    GaussianCyclicSineProductSquare.radius,GaussianCyclicChordSquare.chordRadius,GaussianCyclicChordSquare.sineSquareRadius,
-    GaussianCyclicChordSquare.twiceSineRadius,GaussianCyclicChordSquare.squareError,GaussianCyclicChordSquare.compareRadius,
-    GaussianCyclicChordSquare.chordError,GaussianCyclicChordSquare.unitError]
+ipra_subst budget [GaussianCyclicOriginalSineProduct.radius, GaussianCyclicSineProductSquare.normBudget, GaussianCyclicSineProductSquare.radius, GaussianCyclicChordSquare.chordRadius, GaussianCyclicChordSquare.sineSquareRadius, GaussianCyclicChordSquare.twiceSineRadius, GaussianCyclicChordSquare.squareError, GaussianCyclicChordSquare.compareRadius, GaussianCyclicChordSquare.chordError, GaussianCyclicChordSquare.unitError]
 
-@[simp] theorem subst_productData {L : ℕ} (σ : Fin n → PTm L) (N x : PTm n) :
-    Syn.subst σ (productData N x) = productData (Syn.subst σ N) (Syn.subst σ x) := by simp [productData]
+ipra_subst productData
 
 theorem name_at (p N C x : PTm n) :
     Γ ⊢[PRAAx] ap2 nameF p (data N C x) ≐ observation p N C x := by
@@ -70,8 +58,8 @@ theorem name_at (p N C x : PTm n) :
       fin_cases i
       · exact .eqRefl _
       · exact fst_pair _ _
-      · exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-      · exact (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))
+      · exact (snd_pair _ _).fstE
+      · exact (snd_pair _ _).sndE)
   exact first.eqTrans (by simpa using next)
 
 private theorem absorb (p N : PTm n) :

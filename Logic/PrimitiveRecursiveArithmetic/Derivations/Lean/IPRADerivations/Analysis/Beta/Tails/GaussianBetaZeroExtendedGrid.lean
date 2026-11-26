@@ -13,14 +13,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaZeroExtendedGrid
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBetaZeroExtension (evaluatorF row_at_supported row_at_exterior row_at_endpoint)
 open GaussianBetaKernelGridComparison (sampleDataBeta)
 open GaussianCompactRiemannName (grid quadrature sampleBody sampleData sample_body_at)
 open GaussianRationalHorner (qzero positive_product)
 open GaussianRationalSyntheticDivision (qmul_congr qmul_zero_right)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

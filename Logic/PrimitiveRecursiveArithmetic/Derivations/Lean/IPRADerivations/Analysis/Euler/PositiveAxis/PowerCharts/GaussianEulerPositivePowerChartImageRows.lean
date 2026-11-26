@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartImageRows
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPositivePowerChartCorrectedImage (input imageNumerator imageDenominator imageFraction)
 open GaussianEulerPositivePowerChartImageCuts (data numeratorBody denominatorBody cutF start count denominator)
 open GaussianEulerPositivePowerChartImageLattice (cutData)
@@ -34,10 +34,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianCoefficientNameBounds (unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -52,9 +48,7 @@ def coarseBody : PTm 2 :=
     (GaussianEulerIntegrandName.data (fstT (sndT (sndT (var 1)))) (sndT (sndT (sndT (var 1))))
       (inst2 numeratorBody (var 0) (fstT (var 1))) (inst2 denominatorBody (var 0) (fstT (var 1))))
 
-@[simp] theorem subst_coarseData {m : ℕ} (σ : Fin n → PTm m) (p z B x : PTm n) :
-    Syn.subst σ (coarseData p z B x) = coarseData (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ x) := by
-  simp [coarseData]
+ipra_subst coarseData
 
 theorem coarse_body_at (p z B k i e f d h Q S E T a C N : PTm n) :
     Γ ⊢[PRAAx] inst2 coarseBody i (coarseData p z B (data k e f d h Q S E T a C N)) ≐
@@ -63,10 +57,10 @@ theorem coarse_body_at (p z B k i e f d h Q S E T a C N : PTm n) :
   let x := data k e f d h Q S E T a C N
   let v := coarseData p z B x
   have hx : Γ ⊢[PRAAx] fstT v ≐ x := fst_pair _ _
-  have hp : Γ ⊢[PRAAx] fstT (sndT v) ≐ p := (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-  have ht : Γ ⊢[PRAAx] sndT (sndT v) ≐ pairT z B := (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
-  have hz : Γ ⊢[PRAAx] fstT (sndT (sndT v)) ≐ z := (congrFst ht).eqTrans (fst_pair _ _)
-  have hb : Γ ⊢[PRAAx] sndT (sndT (sndT v)) ≐ B := (congrSnd ht).eqTrans (snd_pair _ _)
+  have hp : Γ ⊢[PRAAx] fstT (sndT v) ≐ p := (snd_pair _ _).fstE
+  have ht : Γ ⊢[PRAAx] sndT (sndT v) ≐ pairT z B := (snd_pair _ _).sndE
+  have hz : Γ ⊢[PRAAx] fstT (sndT (sndT v)) ≐ z := ht.fstE
+  have hb : Γ ⊢[PRAAx] sndT (sndT (sndT v)) ≐ B := ht.sndE
   have hn := (congrInst2 numeratorBody (.eqRefl i) hx).eqTrans (GaussianEulerPositivePowerChartImageCuts.numerator_at k i e f d h Q S E T a C N)
   have hd := (congrInst2 denominatorBody (.eqRefl i) hx).eqTrans (GaussianEulerPositivePowerChartImageCuts.denominator_at k i e f d h Q S E T a C N)
   have kernel : Γ ⊢[PRAAx] GaussianEulerIntegrandName.data (fstT (sndT (sndT v))) (sndT (sndT (sndT v)))
@@ -93,15 +87,9 @@ def cost (p q k R h Q S E T C N : PTm n) : PTm n :=
 
 def errorDenominator (p q k h Q E T N : PTm n) : PTm n := rateDenominator (cellDenominator k h Q E T N) q p
 
-@[simp] theorem subst_cost {m : ℕ} (σ : Fin n → PTm m) (p q k R h Q S E T C N : PTm n) :
-    Syn.subst σ (cost p q k R h Q S E T C N) = cost (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ k) (Syn.subst σ R)
-      (Syn.subst σ h) (Syn.subst σ Q) (Syn.subst σ S) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ C) (Syn.subst σ N) := by
-  simp [cost]
+ipra_subst cost
 
-@[simp] theorem subst_errorDenominator {m : ℕ} (σ : Fin n → PTm m) (p q k h Q E T N : PTm n) :
-    Syn.subst σ (errorDenominator p q k h Q E T N) = errorDenominator (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ k)
-      (Syn.subst σ h) (Syn.subst σ Q) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ N) := by
-  simp [errorDenominator]
+ipra_subst errorDenominator
 
 theorem cell_denominator_positive (k e f d h Q S E T a C N : PTm n)
     (hs : Γ ⊢[PRAAx] input k e f d h Q S E T a C N) : Γ ⊢[PRAAx] le one (cellDenominator k h Q E T N) :=
@@ -111,10 +99,7 @@ theorem cell_denominator_positive (k e f d h Q S E T a C N : PTm n)
 def fineData (q z B N x J : PTm n) : PTm n :=
   sampleData q (count N x J) (start N x J) (count N x J) (denominator N x J) (fixedData z B)
 
-@[simp] theorem subst_fineData {m : ℕ} (σ : Fin n → PTm m) (q z B N x J : PTm n) :
-    Syn.subst σ (fineData q z B N x J) = fineData (Syn.subst σ q) (Syn.subst σ z) (Syn.subst σ B)
-      (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ J) := by
-  simp [fineData,count,start,denominator]
+ipra_subst fineData [count, start, denominator]
 
 theorem original_lattice_row (p q k i r z R B e f d h Q S E T a C N J : PTm n)
     (hs : Γ ⊢[PRAAx] GaussianEulerPowerScalingCorrectedQuadrature.source k z R B e f d h Q S E T a C N)

@@ -15,22 +15,18 @@ set_option linter.unnecessarySeqFocus false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticPositiveScaling
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open QuadraticSignCertificates (first second encode equal add negative multiply sign
   first_value second_value multiply_first multiply_second negative_first negative_second)
 open QuadraticConeOrder (equal_of_values equal_symm add_first add_second sign_congr negative_product_right)
 open QuadraticIntegerOrder (positive isZero isNegative positive_multiply positive_value_congr
   negative_positive positive_negative zero_multiply zero_value_congr)
 open QuadraticIntegerEmbedding (integer integer_first integer_second negative_value_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def scale (k x : PTm n) : PTm n := encode (ZT.ofNat k*first x) (ZT.ofNat k*second x)
-@[simp] theorem subst_scale {l : ℕ} (σ : Fin n → PTm l) (k x : PTm n) :
-    Syn.subst σ (scale k x) = scale (Syn.subst σ k) (Syn.subst σ x) := by simp [scale]
+ipra_subst scale
 theorem scale_first (k x : PTm n) : ZT.toZ Γ (first (scale k x)) =
     Groth.ι (Q.mk Γ k)*ZT.toZ Γ (first x) := by rw [scale,first_value,ZT.toZ_mul,ZT.toZ_ofNat]
 theorem scale_second (k x : PTm n) : ZT.toZ Γ (second (scale k x)) =
@@ -94,18 +90,16 @@ theorem zero_scale_iff (d k x : PTm n) (hd : Γ ⊢[PRAAx] le one d)
 def output (d k x : PTm n) : PTm n := pairT (scale k x) (pairT (sign d (scale k x)) (sign d x))
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (d k x : PTm n) : PTm n := ap3 outputF d k x
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (d k x : PTm n) :
-    Syn.subst σ (output d k x) = output (Syn.subst σ d) (Syn.subst σ k) (Syn.subst σ x) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (d k x : PTm n) :
-    Syn.subst σ (run d k x) = run (Syn.subst σ d) (Syn.subst σ k) (Syn.subst σ x) := by simp [run]
+ipra_subst output
+ipra_subst run
 theorem program_at (d k x : PTm n) : Γ ⊢[PRAAx] run d k x ≐ output d k x := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![d,k,x]
 theorem returned_scale (d k x : PTm n) : Γ ⊢[PRAAx] fstT (run d k x) ≐ scale k x :=
-  (congrFst (program_at _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _).fstE
 theorem returned_scaled_sign (d k x : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run d k x)) ≐ sign d (scale k x) :=
-  (congrFst ((congrSnd (program_at _ _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _).sndE.fstE
 theorem returned_original_sign (d k x : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run d k x)) ≐ sign d x :=
-  (congrSnd ((congrSnd (program_at _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at _ _ _).sndE.sndE
 theorem returned_equal_signs (d k x : PTm n) (hd : Γ ⊢[PRAAx] le one d)
     (hk : Γ ⊢[PRAAx] le one k) : Γ ⊢[PRAAx] fstT (sndT (run d k x)) ≐ sndT (sndT (run d k x)) :=
   (returned_scaled_sign _ _ _).eqTrans ((sign_scale _ _ _ hd hk).eqTrans (returned_original_sign _ _ _).eqSymm)

@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicParameterRemainder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerParameterExponentialIncrement (shifted)
 open GaussianEulerParameterIncrementObservation (unitF unitData unitProductF unitProductData productCost modelCost)
 open GaussianEulerLogarithmicParameterIncrement (increment linearModel curvature)
@@ -26,9 +26,6 @@ open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_symmetric)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -47,10 +44,7 @@ def denominator (p q r Y : PTm n) : PTm n := (Y*Y)*(unit p*unit q*unit r)
 def auxiliaryCost (j z R S B E T a b h D : PTm n) : PTm n :=
   gain j z R B E T a b h D+observationCost j S E T+observationCost j R E T+observationCost (succ j) R E T
 
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (z R S B E T a b h D X Y : PTm n) :
-    (input z R S B E T a b h D X Y).subst σ = input (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ S)
-      (Syn.subst σ B) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ a) (Syn.subst σ b)
-      (Syn.subst σ h) (Syn.subst σ D) (Syn.subst σ X) (Syn.subst σ Y) := by simp [input]
+ipra_subst input
 
 private theorem multiply_distance (c u v M A D : PTm n) (hD : Γ ⊢[PRAAx] le one D)
     (hc : Γ ⊢[PRAAx] GaussianRationalMetric.bounded c M one) (hd : Γ ⊢[PRAAx] distanceBounded u v A D) : Γ ⊢[PRAAx]

@@ -15,17 +15,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.RationalNormalForm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.RationalIntegerNormalization
 open LeanProofs.IPRA.Analysis.RationalSupMetric (numeratorOf denominatorOf rationalCode)
 open LeanProofs.IPRA.Foundations.GapDecision (zabs)
 open LeanProofs.IPRA.DiophantineNumberTheory
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.AnalyticNumberTheory.Order (gcd_pos_right)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -95,8 +91,8 @@ def wellFormed (c : PTm n) : Fm PTm n :=
 theorem code_parts (a : ZT n) (D : PTm n) :
     Γ ⊢[PRAAx] ((numeratorOf (rationalCode a D)).pos ≐ a.pos) ⋏
       ((numeratorOf (rationalCode a D)).neg ≐ a.neg) :=
-  .andI ((congrFst (fst_pair _ _)).eqTrans (fst_pair _ _))
-    ((congrSnd (fst_pair _ _)).eqTrans (snd_pair _ _))
+  .andI (fst_pair _ _).fstE
+    (fst_pair _ _).sndE
 
 theorem code_reconstructed (a : ZT n) (D : PTm n) (hD : Γ ⊢[PRAAx] le one D) :
     Γ ⊢[PRAAx] rationalCode a D ≐
@@ -187,9 +183,8 @@ theorem well_formed_unique (c d : PTm n)
       (numeratorOf d*ZT.ofNat (denominatorOf d)) := by
     apply ZT.derive
     have v := ZT.toZ_eq h
-    have de := natEq den
     simp only [ZT.toZ_mul,ZT.toZ_ofNat] at v ⊢
-    rw [de] at v
+    rw [natEq den] at v
     exact v
   have num := positive_integer_cancel _ _ _ (denominator_positive d) cross
   have pc := unmixed_parts (numeratorOf c) (Prf.andE₁ (Prf.andE₂ hc))

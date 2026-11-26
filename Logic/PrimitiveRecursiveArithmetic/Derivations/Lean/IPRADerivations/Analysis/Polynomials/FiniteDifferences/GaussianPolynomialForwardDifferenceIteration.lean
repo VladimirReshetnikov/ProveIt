@@ -14,7 +14,7 @@ set_option maxHeartbeats 1100000
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialForwardDifferenceIteration
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
 open LeanProofs.IPRA.Analysis.Products (fact)
@@ -25,10 +25,6 @@ open GaussianRationalReciprocal (power power_zero power_succ)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRationalTranslationStages (remaining remaining_step remaining_positive)
 open GaussianTranslatedNonconstant (recode recode_canonical)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

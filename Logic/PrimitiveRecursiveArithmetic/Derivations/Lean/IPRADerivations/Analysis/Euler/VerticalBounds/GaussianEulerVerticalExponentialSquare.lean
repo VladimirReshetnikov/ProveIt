@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerVerticalExponentialSquare
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaRealValues (projection axisF axis_sample_at axis_regular)
 open GaussianExponentialRealPart (doubleRealF doubleRealData squareF squareData squarePrecision double_real_sample double_real_regular)
 open GaussianNameEquivalence (crossEquivalent cross_trans cross_symm)
@@ -24,9 +24,6 @@ open GaussianRadiusExponentialName (input boundedSamples bounded_samples_at)
 open GaussianRationalNaturalScale (natScale)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianRationalMetric (bounded)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

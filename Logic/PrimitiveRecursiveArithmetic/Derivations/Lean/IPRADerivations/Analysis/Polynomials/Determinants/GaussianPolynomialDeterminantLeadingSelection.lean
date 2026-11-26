@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantLeadingSelection
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminant
   (determinant coefficientTerm coefficientBody coefficient_body_at coefficient_leibniz)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero qmul_canonical)
@@ -26,9 +26,6 @@ open LeanProofs.IPRA.Analysis.GaussianTranslatedNonconstant (recode recode_eq re
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (entry_congr)
 open LeanProofs.IPRA.Foundations.RuntimePermutationWords (count)
-open LeanProofs.IPRA.PTm (monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -36,9 +33,7 @@ def supportedAt (M m L s r : PTm n) : Fm PTm n := .all
   (lt (var 0) (count (Syn.shift m)) ⟶ neg (var 0 ≐ Syn.shift r) ⟶
     coefficientTerm (Syn.shift M) (Syn.shift m) (Syn.shift L) (var 0) (Syn.shift s) ≐ qzero)
 
-@[simp] theorem subst_supportedAt {l : ℕ} (σ : Fin n → PTm l) (M m L s r : PTm n) :
-    (supportedAt M m L s r).subst σ = supportedAt (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L)
-      (Syn.subst σ s) (Syn.subst σ r) := by simp [supportedAt,Syn.subst_shift,Syn.shift_subst]
+ipra_subst supportedAt [Syn.subst_shift, Syn.shift_subst]
 
 theorem supported_at (M m L s r t : PTm n) (h : Γ ⊢[PRAAx] supportedAt M m L s r)
     (ht : Γ ⊢[PRAAx] lt t (count m)) (hne : Γ ⊢[PRAAx] neg (t ≐ r)) :

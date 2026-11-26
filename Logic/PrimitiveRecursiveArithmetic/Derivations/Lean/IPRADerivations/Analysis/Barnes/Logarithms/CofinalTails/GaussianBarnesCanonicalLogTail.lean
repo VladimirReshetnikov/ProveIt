@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Logarithms.FiniteRows.GaussianBarnesCanonicalLogRow
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalFiniteSum
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Sharp finite sums of the original Barnes logarithms
@@ -16,7 +15,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalLogTail
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalLogRow (finiteValue boundNumerator boundDenominator subst_finiteValue subst_boundNumerator)
 open GaussianRationalFiniteSum (sum)
 open GaussianRationalHorner (qzero qadd positive_product zero_represents)
@@ -24,10 +23,6 @@ open GaussianRationalMetric (bounded bounded_of_cleared)
 open GaussianRationalReciprocal (bounded_sum bound_congr)
 open GaussianRationalSyntheticDivision (qadd_congr)
 open GaussianCoefficientNameBounds (bounded_radius_mono)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "nativeBound" => ComplexLogarithmRemainder.bounded
@@ -44,22 +39,15 @@ def value (z B N r L : PTm n) : PTm n := sum body r (data z B N L)
 def intervalDenominator (N r : PTm n) : PTm n := num 3*N*(N+r)
 def tailDenominator (N : PTm n) : PTm n := num 3*N
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B N : PTm n) :
-    (source z R B N).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [source]
+ipra_subst source
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (z B N L : PTm n) :
-    Syn.subst σ (data z B N L) = data (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) (Syn.subst σ L) := by simp [data]
+ipra_subst data
 
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (z B N r L : PTm n) :
-    Syn.subst σ (value z B N r L) =
-      value (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) (Syn.subst σ r) (Syn.subst σ L) := by simp [value]
+ipra_subst value
 
-@[simp] theorem subst_intervalDenominator {m : ℕ} (σ : Fin n → PTm m) (N r : PTm n) :
-    Syn.subst σ (intervalDenominator N r) = intervalDenominator (Syn.subst σ N) (Syn.subst σ r) := by
-  simp [intervalDenominator]
+ipra_subst intervalDenominator
 
-@[simp] theorem subst_tailDenominator {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (tailDenominator N) = tailDenominator (Syn.subst σ N) := by simp [tailDenominator]
+ipra_subst tailDenominator
 
 theorem body_at (z B N L i : PTm n) :
     Γ ⊢[PRAAx] inst2 body i (data z B N L) ≐ finiteValue z B (succ (N+i)) L := by

@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationRelativeExponential
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBoundedConstantProductName (constantF constant_regular)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGaussMultiplicationPowerRate
@@ -27,9 +27,6 @@ open GaussianPositiveRationalLogarithm (logF)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalSyntheticDivision (qone)
 open GaussianRadiusExponentialName (input nameF data sample index query)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -40,14 +37,8 @@ def relativeData (z R B m N : PTm n) : PTm n :=
 def relativeExpF : PR 2 := nameF relativeF
 def relativeExpData (z R B m N : PTm n) : PTm n := data one (relativeData z R B m N)
 
-@[simp] theorem subst_relativeData {l : ℕ} (σ : Fin n → PTm l) (z R B m N : PTm n) :
-    Syn.subst σ (relativeData z R B m N) =
-      relativeData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ m) (Syn.subst σ N) := by
-  simp [relativeData]
-@[simp] theorem subst_relativeExpData {l : ℕ} (σ : Fin n → PTm l) (z R B m N : PTm n) :
-    Syn.subst σ (relativeExpData z R B m N) =
-      relativeExpData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ m) (Syn.subst σ N) := by
-  simp [relativeExpData]
+ipra_subst relativeData
+ipra_subst relativeExpData
 
 theorem relative_sample_bound (z R B m N p : PTm n) (hm : Γ ⊢[PRAAx] le one m)
     (hN : Γ ⊢[PRAAx] le one N)

@@ -15,7 +15,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetBosePrefixRefinementLate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetArctangentQuadrature (fixedData)
 open GaussianBinetBosePrefixQuadrature (cost subst_cost point evaluatorF evaluator_at)
 open GaussianBinetBoseCompact (source arctangent_bound arctangent_samples tag_lower)
@@ -28,9 +28,6 @@ open GaussianRationalHorner (positive_product qmul)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalRiemannRefinement (leftSum termsDistance)
 open GaussianRationalRoundedPower (multiplication_difference)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Atan" => GaussianBinetArctangentQuadrature.nameF

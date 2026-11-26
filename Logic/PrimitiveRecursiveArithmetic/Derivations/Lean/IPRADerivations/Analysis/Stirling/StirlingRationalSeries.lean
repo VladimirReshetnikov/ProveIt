@@ -13,13 +13,9 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.StirlingRationalSeries
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RobbinsSeries (gq g_eq)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -29,9 +25,7 @@ def stepBody : PTm 3 :=
 def foldF : PR 2 := rec2 zero stepBody
 def fold (w u L K : PTm n) : PTm n := ap2 foldF K (pairT w (pairT u L))
 
-@[simp] theorem subst_fold {l : ℕ} (σ : Fin n → PTm l) (w u L K : PTm n) :
-    Syn.subst σ (fold w u L K) = fold (Syn.subst σ w) (Syn.subst σ u) (Syn.subst σ L) (Syn.subst σ K) := by
-  simp [fold]
+ipra_subst fold
 
 theorem fold_zero (w u L : PTm n) : Γ ⊢[PRAAx] fold w u L zero ≐ zero := by
   simpa [fold,foldF] using rec2_zero (Γ := Γ) zero stepBody (pairT w (pairT u L))
@@ -45,8 +39,8 @@ theorem fold_succ (w u L K : PTm n) : Γ ⊢[PRAAx]
       fstT x*fold w u L K + pw (fstT (sndT x)) (succ K)*gq (succ K) (sndT (sndT x)) ≐
       w*fold w u L K + pw u (succ K)*gq (succ K) L :=
     congrAdd (congrMul (fst_pair _ _) (.eqRefl _))
-      (congrMul (congrAp2 powF (.eqRefl _) ((congrFst tail).eqTrans (fst_pair _ _)))
-        (congrAp2 quoF (congrAp2 factF ((congrSnd tail).eqTrans (snd_pair _ _)) (.eqRefl _)) (.eqRefl _)))
+      (congrMul (congrAp2 powF (.eqRefl _) tail.fstE)
+        (congrAp2 quoF (congrAp2 factF tail.sndE (.eqRefl _)) (.eqRefl _)))
   have e : Γ ⊢[PRAAx] fold w u L (succ K) ≐
       fstT x*fold w u L K + pw (fstT (sndT x)) (succ K)*gq (succ K) (sndT (sndT x)) := by
     simpa [x,fold,foldF,stepBody,ConciseIPRA.PTm.subst_succ] using src
@@ -55,10 +49,7 @@ theorem fold_succ (w u L K : PTm n) : Γ ⊢[PRAAx]
 def lowerFormula (w u L k : PTm n) : Fm PTm n :=
   le (u*pw w k*fact L) (num 3*fold w u L (succ k))
 
-@[simp] theorem subst_lowerFormula {l : ℕ} (σ : Fin n → PTm l) (w u L k : PTm n) :
-    (lowerFormula w u L k).subst σ =
-      lowerFormula (Syn.subst σ w) (Syn.subst σ u) (Syn.subst σ L) (Syn.subst σ k) := by
-  simp [lowerFormula]
+ipra_subst lowerFormula
 
 private theorem lower_base (w u L : PTm n) (hL : Γ ⊢[PRAAx] le (num 3) L) :
     Γ ⊢[PRAAx] lowerFormula w u L zero := by
@@ -99,15 +90,9 @@ def upperWithBase (w v u L k : PTm n) : Fm PTm n :=
 
 def upperFormula (v u L k : PTm n) : Fm PTm n := upperWithBase (v+u) v u L k
 
-@[simp] theorem subst_upperWithBase {l : ℕ} (σ : Fin n → PTm l) (w v u L k : PTm n) :
-    (upperWithBase w v u L k).subst σ =
-      upperWithBase (Syn.subst σ w) (Syn.subst σ v) (Syn.subst σ u) (Syn.subst σ L) (Syn.subst σ k) := by
-  simp [upperWithBase]
+ipra_subst upperWithBase
 
-@[simp] theorem subst_upperFormula {l : ℕ} (σ : Fin n → PTm l) (v u L k : PTm n) :
-    (upperFormula v u L k).subst σ =
-      upperFormula (Syn.subst σ v) (Syn.subst σ u) (Syn.subst σ L) (Syn.subst σ k) := by
-  simp [upperFormula]
+ipra_subst upperFormula
 
 private theorem upper_base (v u L : PTm n) (hL : Γ ⊢[PRAAx] le (succ (two*succ (succ zero))) L) :
     Γ ⊢[PRAAx] upperFormula v u L zero := by
@@ -167,13 +152,9 @@ theorem upper (v u L k : PTm n) (hL : Γ ⊢[PRAAx] le (succ (two*succ (succ k))
     Γ ⊢[PRAAx] upperFormula v u L k := by
   have all : Γ ⊢[PRAAx] .all
       (le (succ (two*succ (succ (var 0)))) (Syn.shift L) ⟶ upperFormula (Syn.shift v) (Syn.shift u) (Syn.shift L) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp,subst_le,PTm.subst_mul,ConciseIPRA.PTm.subst_succ,subst_upperFormula,
-        Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift,one,two,ConciseIPRA.PTm.subst_zero]
-      exact .impI (upper_base v u L Prf.hyp0)
-    · simp only [Fm.subst_imp,subst_le,PTm.subst_mul,ConciseIPRA.PTm.subst_succ,subst_upperFormula,
-        Syn.subst_var,Syn.repl_zero,subst_repl_shift,one,two,ConciseIPRA.PTm.subst_zero]
-      refine .impI (upper_step _ _ _ _ Prf.hyp0 (.impE Prf.hyp1 (le_trans ?_ Prf.hyp0)))
+    ipra_qfind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_upperFormula, one, two]
+    · exact .impI (upper_base v u L Prf.hyp0)
+    · refine .impI (upper_step _ _ _ _ Prf.hyp0 (.impE Prf.hyp1 (le_trans ?_ Prf.hyp0)))
       exact le_of_eq_add (d := two) (by ipra_ring)
   have h : Γ ⊢[PRAAx] le (succ (two*succ (succ k))) L ⟶ upperFormula v u L k := by
     simpa only [Fm.subst_imp,subst_le,PTm.subst_mul,ConciseIPRA.PTm.subst_succ,subst_upperFormula,

@@ -15,7 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLowTimeReciprocalReference
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLowTimePowerOrder (multiplier referenceData referenceExpData)
 open GaussianEulerLowerPowerOrder (inputF expF radius)
 open GaussianEulerLowerPowerCoefficients (amplification)
@@ -28,20 +28,14 @@ open ComplexLogarithmRemainder (zeroCode oneCode scale mul add neg)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianNameEquivalence (crossEquivalent cross_trans)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 abbrev targetF : PR 2 := GaussianHarmonicIntegerExponential.originalExponentF
 def targetData (a b : PTm n) : PTm n := GaussianHarmonicIntegerExponential.originalExponentData two b a
 def source (a b : PTm n) : Fm PTm n := GaussianPositiveRationalLogarithm.source a b ⋏ le a b
-@[simp] theorem subst_targetData {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (targetData a b) = targetData (Syn.subst σ a) (Syn.subst σ b) := by simp [targetData,two]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    (source a b).subst σ = source (Syn.subst σ a) (Syn.subst σ b) := by simp [source]
+ipra_subst targetData [two]
+ipra_subst source
 
 theorem multiplier_negative_two : Γ ⊢[PRAAx] (multiplier : PTm n) ≐ qnegative (naturalPoint two) := by
   let s : PTm n := GaussianRootAlgebra.sub zeroCode (scale one oneCode)

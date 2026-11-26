@@ -2,7 +2,6 @@ import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianRationalEulerCo
 import IPRADerivations.Analysis.Polynomials.Interpolation.GaussianRationalGridCoefficientEquality
 import IPRADerivations.Analysis.Exponential.Polynomials.GaussianRationalPolynomialExponentialStability
 import IPRADerivations.Foundations.BoundedSyntaxInduction
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual Euler identity for the original finite polynomial powers
@@ -18,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalPolynomialPowerEuler
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero qmul evaluate)
 open GaussianRationalSyntheticDivision (qmul_congr canonicalCoefficients)
 open GaussianRationalPolynomialProduct (product product_length product_canonical product_evaluation)
@@ -30,10 +29,6 @@ open GaussianRationalNaturalScale (naturalPoint)
 open LeanProofs.IPRA.Foundations.BoundedSyntax (BFm formula)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -128,9 +123,7 @@ Its original predecessor power is stored explicitly, avoiding subtraction
 in the producer or a false zero-power width assertion. -/
 def powerEuler (C N K r : PTm n) : PTm n := scaled
   (product (euler C N) (powerPrefix C N K r) N (r*N)) (naturalPoint (succ r))
-@[simp] theorem subst_powerEuler {l : ℕ} (σ : Fin n → PTm l) (C N K r : PTm n) :
-    Syn.subst σ (powerEuler C N K r) = powerEuler (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ K) (Syn.subst σ r) := by
-  simp [powerEuler]
+ipra_subst powerEuler
 theorem power_euler_length (C N K r : PTm n) : Γ ⊢[PRAAx]
     length (powerEuler C N K r) ≐ succ (succ r*N) :=
   (scaled_length _ _).eqTrans ((product_length _ _ _ _).eqTrans (congrSucc (by ipra_ring)))
@@ -224,9 +217,7 @@ theorem base_euler_coefficient (C N K e : PTm n) (hC : Γ ⊢[PRAAx] length C �
 def lowEqual (P Q D H : PTm n) : Fm PTm n := .all
   (lt (var 0) (succ (Syn.shift H)) ⟶
     exponentCoefficient (Syn.shift P) (Syn.shift D) (var 0) ≐ exponentCoefficient (Syn.shift Q) (Syn.shift D) (var 0))
-@[simp] theorem subst_lowEqual {l : ℕ} (σ : Fin n → PTm l) (P Q D H : PTm n) :
-    (lowEqual P Q D H).subst σ = lowEqual (Syn.subst σ P) (Syn.subst σ Q) (Syn.subst σ D) (Syn.subst σ H) := by
-  simp [lowEqual,Syn.subst_shift,Syn.shift_subst]
+ipra_subst lowEqual [Syn.subst_shift, Syn.shift_subst]
 theorem low_equal_at (P Q D H e : PTm n) (h : Γ ⊢[PRAAx] lowEqual P Q D H)
     (he : Γ ⊢[PRAAx] le e H) : Γ ⊢[PRAAx] exponentCoefficient P D e ≐ exponentCoefficient Q D e := by
   have gate : Γ ⊢[PRAAx] lt e (succ H) ⟶ exponentCoefficient P D e ≐ exponentCoefficient Q D e := by
@@ -347,9 +338,7 @@ def powerLaw (C N K r : PTm n) : Fm PTm n := lt r K ⟶
   lowEqual (euler (powerPrefix C N K (succ r)) (succ r*N)) (powerEuler C N K r) (succ r*N) N
 def powerSyntax (C N K r : PTm n) : BFm n := .imp (.lt r K)
   (lowSyntax (euler (powerPrefix C N K (succ r)) (succ r*N)) (powerEuler C N K r) (succ r*N) N)
-@[simp] theorem subst_powerLaw {l : ℕ} (σ : Fin n → PTm l) (C N K r : PTm n) :
-    (powerLaw C N K r).subst σ = powerLaw (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ K) (Syn.subst σ r) := by
-  simp [powerLaw]
+ipra_subst powerLaw
 theorem power_formula (C N K r : PTm n) : formula (powerSyntax C N K r) = powerLaw C N K r := by
   simp [powerSyntax,powerLaw,formula,low_formula,BFm.lt,BFm.le,lt,le]
 
@@ -446,22 +435,16 @@ def output (C N K r : PTm n) : PTm n := pairT
   (euler (powerPrefix C N K (succ r)) (succ r*N)) (powerEuler C N K r)
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (C N K r : PTm n) : PTm n := PTm.app outputF ![C,N,K,r]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (C N K r : PTm n) :
-    Syn.subst σ (output C N K r) = output (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ K) (Syn.subst σ r) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (C N K r : PTm n) :
-    Syn.subst σ (run C N K r) = run (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ K) (Syn.subst σ r) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (C N K r : PTm n) : Γ ⊢[PRAAx] run C N K r ≐ output C N K r := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![C,N,K,r]
 theorem returned_euler (C N K r : PTm n) : Γ ⊢[PRAAx]
     fstT (run C N K r) ≐ euler (powerPrefix C N K (succ r)) (succ r*N) :=
-  (congrFst (program_at C N K r)).eqTrans (fst_pair _ _)
+  (program_at C N K r).fstE
 theorem returned_target (C N K r : PTm n) : Γ ⊢[PRAAx] sndT (run C N K r) ≐ powerEuler C N K r :=
-  (congrSnd (program_at C N K r)).eqTrans (snd_pair _ _)
+  (program_at C N K r).sndE
 theorem returned_power_euler (C N K r e : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ succ N)
     (hCan : Γ ⊢[PRAAx] canonicalCoefficients C) (hr : Γ ⊢[PRAAx] lt r K) (he : Γ ⊢[PRAAx] le e N) : Γ ⊢[PRAAx]
     exponentCoefficient (fstT (run C N K r)) (succ r*N) e ≐

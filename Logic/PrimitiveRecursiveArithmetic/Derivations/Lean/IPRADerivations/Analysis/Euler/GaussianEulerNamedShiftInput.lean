@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerNamedShiftInput
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNameArithmetic (addF addData add_fast add_at recode_congr)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianGammaEulerHeadShift (shifted)
@@ -29,9 +29,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open RationalValueBounds (upper upper_congr upper_mono upper_triangle)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -39,10 +36,8 @@ local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
 def shiftF (f : PR 2) : PR 2 := addF f constantF
 def shiftData (x : PTm n) : PTm n := addData x qone
 def clock (p : PTm n) : PTm n := GaussianFastValueCut.exponent two p
-@[simp] theorem subst_shiftData {m : ℕ} (σ : Fin n → PTm m) (x : PTm n) :
-    Syn.subst σ (shiftData x) = shiftData (Syn.subst σ x) := by simp [shiftData]
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (p : PTm n) :
-    Syn.subst σ (clock p) = clock (Syn.subst σ p) := by simp [clock]
+ipra_subst shiftData
+ipra_subst clock
 
 theorem clock_later (p : PTm n) : Γ ⊢[PRAAx] le p (clock p) := le_add_right _ _
 

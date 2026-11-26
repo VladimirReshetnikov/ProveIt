@@ -12,16 +12,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductFamilyAppend
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedFiniteProductAppend (lastRow append_cross singleton_cross)
 open GaussianNamedFiniteProductFamily (rowF row_at productData regularRows regular_at radius
   family_bounds family_regular)
 open GaussianNamedFiniteProductName (nameF)
 open GaussianNameArithmetic (multiplyF multiplyData)
 open GaussianNameEquivalence (crossEquivalent)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

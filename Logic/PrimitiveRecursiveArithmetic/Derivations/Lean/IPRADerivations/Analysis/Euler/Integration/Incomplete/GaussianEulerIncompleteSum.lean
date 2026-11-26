@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIncompleteSum
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIncompleteName (lowerF upperF data lower_at upper_at original_regular_names)
 open GaussianEulerIncompleteCofinalRate (source)
 open GaussianEulerIncompleteCutoffParts (lowerData upperData piece_sources)
@@ -26,10 +26,6 @@ open GaussianRationalHorner (qadd positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -37,9 +33,7 @@ local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
 abbrev sumF : PR 2 := addF lowerF upperF
 def sumData (z R B A a b : PTm n) : PTm n := addData (data z R B A a b) (data z R B A a b)
 
-@[simp] theorem subst_sumData {m : ℕ} (σ : Fin n → PTm m) (z R B A a b : PTm n) :
-    Syn.subst σ (sumData z R B A a b) =
-      sumData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ a) (Syn.subst σ b) := by simp [sumData]
+ipra_subst sumData
 
 theorem original_diagonal_sum (t z R B A a b : PTm n) (h : Γ ⊢[PRAAx] source z R B A a b) :
     Γ ⊢[PRAAx] distanceBounded (ap2 nameF t (GaussianEulerImproperName.data z R B A))

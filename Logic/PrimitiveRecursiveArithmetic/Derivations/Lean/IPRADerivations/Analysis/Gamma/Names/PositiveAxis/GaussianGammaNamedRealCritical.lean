@@ -18,7 +18,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNamedRealCritical
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianExponentialSmallPerturbation (smallSamples)
@@ -34,9 +34,6 @@ open GaussianNameRingLaws (zeroF)
 open GaussianNamedInverseRate (independentRate)
 open GaussianRealNameExponentialInjectivity (axisSamples)
 open GaussianSignedNameExponentialOrder (realSamples)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "poleSource" => GaussianGammaNamedPoleFree.source

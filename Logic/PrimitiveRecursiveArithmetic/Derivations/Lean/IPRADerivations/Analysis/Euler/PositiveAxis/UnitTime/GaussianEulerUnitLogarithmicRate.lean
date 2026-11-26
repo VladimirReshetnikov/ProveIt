@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitLogarithmicRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUnitTimeRate (input)
 open GaussianEulerUnitLogarithmicMargin (timeF timeData numerator denominator actual_time_fraction)
 open GaussianEulerUnitLogarithmicComposition (nameF data sample query)
@@ -23,19 +23,14 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
 
 def lipschitz (E : PTm n) : PTm n := E*E
 def cost (E : PTm n) : PTm n := two*E+two
-@[simp] theorem subst_lipschitz {m : ℕ} (σ : Fin n → PTm m) (E : PTm n) :
-    Syn.subst σ (lipschitz E) = lipschitz (Syn.subst σ E) := by simp [lipschitz]
-@[simp] theorem subst_cost {m : ℕ} (σ : Fin n → PTm m) (E : PTm n) :
-    Syn.subst σ (cost E) = cost (Syn.subst σ E) := by simp [cost]
+ipra_subst lipschitz
+ipra_subst cost
 
 theorem diagonal (p a b c d E X Y : PTm n) (h : Γ ⊢[PRAAx] input a b c d E X Y) : Γ ⊢[PRAAx]
     distanceBounded (sample p a b) (sample p c d) ((lipschitz E*X)*unit p+cost E*Y) (Y*unit p) := by

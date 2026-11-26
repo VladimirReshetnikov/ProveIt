@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentNamedInverse
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianArctangentClampedTarget (nativeValue)
 open GaussianArctangentInverseForward (input forward_at)
 open GaussianArctangentInverseSampler (ordinate mesh index raw rawF raw_at index_le mesh_positive)
@@ -26,10 +26,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr)
 open RationalCubeMidpoint (fraction)
 open RationalValueBounds (radius radius_congr radius_triangle radius_symmetric radius_mono)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -131,8 +127,7 @@ def precision (p : PTm n) : PTm n := GaussianFastValueCut.exponent modulus p
 
 theorem precision_later (p : PTm n) : Γ ⊢[PRAAx] le p (precision p) := le_add_right _ _
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (x : PTm n) :
-    Syn.subst σ (data x) = data (Syn.subst σ x) := by simp [data,modulus]
+ipra_subst data [modulus]
 
 theorem name_regular (f : PR 2) (x z : PTm n) (h : Γ ⊢[PRAAx] input f x z) :
     Γ ⊢[PRAAx] pointCN (nameF f) (data x) :=

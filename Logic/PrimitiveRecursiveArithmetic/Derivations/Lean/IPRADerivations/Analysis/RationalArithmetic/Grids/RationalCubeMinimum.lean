@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Grids.RationalCubeGrid
 import IPRADerivations.Analysis.Inequalities.GapRemoval
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual sampled minima on the numerical dyadic cube grid
@@ -16,15 +15,11 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalCubeMinimum
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalCubeGrid (cube point grid count scale radix fraction)
 open RationalArgmin (rationalLE rationalLE_congr)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
-open LeanProofs.IPRA.PTm (pred monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -47,26 +42,16 @@ def index (A : PR 3) (mu : PR 2) (d k x : PTm n) : PTm n :=
 def minimizer (A : PR 3) (mu : PR 2) (d k x : PTm n) : PTm n := point d (mesh mu k x) (index A mu d k x)
 def minimum (A : PR 3) (mu : PR 2) (d k x : PTm n) : PTm n := sample A (minimizer A mu d k x) (precision k) x
 
-@[simp] theorem subst_presentedCube {q : ℕ} (σ : Fin n → PTm q) (y d : PTm n) :
-    (presentedCube y d).subst σ = presentedCube (Syn.subst σ y) (Syn.subst σ d) := by
-  simp [presentedCube,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_precision {q : ℕ} (σ : Fin n → PTm q) (k : PTm n) : Syn.subst σ (precision k) = precision (Syn.subst σ k) := by simp [precision]
-@[simp] theorem subst_mesh {q : ℕ} (σ : Fin n → PTm q) (mu : PR 2) (k x : PTm n) :
-    Syn.subst σ (mesh mu k x) = mesh mu (Syn.subst σ k) (Syn.subst σ x) := by simp [mesh]
-@[simp] theorem subst_horizon {q : ℕ} (σ : Fin n → PTm q) (mu : PR 2) (d k x : PTm n) :
-    Syn.subst σ (horizon mu d k x) = horizon mu (Syn.subst σ d) (Syn.subst σ k) (Syn.subst σ x) := by simp [horizon]
-@[simp] theorem subst_data {q : ℕ} (σ : Fin n → PTm q) (d k x : PTm n) :
-    Syn.subst σ (data d k x) = data (Syn.subst σ d) (Syn.subst σ k) (Syn.subst σ x) := by simp [data]
-@[simp] theorem subst_sample {q : ℕ} (σ : Fin n → PTm q) (A : PR 3) (y p x : PTm n) :
-    Syn.subst σ (sample A y p x) = sample A (Syn.subst σ y) (Syn.subst σ p) (Syn.subst σ x) := by simp [sample]
-@[simp] theorem subst_score {q : ℕ} (σ : Fin n → PTm q) (A : PR 3) (mu : PR 2) (d k x i : PTm n) :
-    Syn.subst σ (score A mu d k x i) = score A mu (Syn.subst σ d) (Syn.subst σ k) (Syn.subst σ x) (Syn.subst σ i) := by simp [score]
-@[simp] theorem subst_index {q : ℕ} (σ : Fin n → PTm q) (A : PR 3) (mu : PR 2) (d k x : PTm n) :
-    Syn.subst σ (index A mu d k x) = index A mu (Syn.subst σ d) (Syn.subst σ k) (Syn.subst σ x) := by simp [index]
-@[simp] theorem subst_minimizer {q : ℕ} (σ : Fin n → PTm q) (A : PR 3) (mu : PR 2) (d k x : PTm n) :
-    Syn.subst σ (minimizer A mu d k x) = minimizer A mu (Syn.subst σ d) (Syn.subst σ k) (Syn.subst σ x) := by simp [minimizer]
-@[simp] theorem subst_minimum {q : ℕ} (σ : Fin n → PTm q) (A : PR 3) (mu : PR 2) (d k x : PTm n) :
-    Syn.subst σ (minimum A mu d k x) = minimum A mu (Syn.subst σ d) (Syn.subst σ k) (Syn.subst σ x) := by simp [minimum]
+ipra_subst presentedCube [Syn.subst_shift, Syn.shift_subst]
+ipra_subst precision
+ipra_subst mesh
+ipra_subst horizon
+ipra_subst data
+ipra_subst sample
+ipra_subst score
+ipra_subst index
+ipra_subst minimizer
+ipra_subst minimum
 
 theorem well_formed_congr {q q' : PTm n} (e : Γ ⊢[PRAAx] q ≐ q') (h : Γ ⊢[PRAAx] RationalNormalForm.wellFormed q) :
     Γ ⊢[PRAAx] RationalNormalForm.wellFormed q' := by
@@ -84,8 +69,8 @@ theorem point_presented (d t w : PTm n) : Γ ⊢[PRAAx] presentedCube (point d t
 
 theorem data_fields (d k x : PTm n) : Γ ⊢[PRAAx] fstT (data d k x) ≐ d ⋏
     (fstT (sndT (data d k x)) ≐ k ⋏ sndT (sndT (data d k x)) ≐ x) :=
-  .andI (fst_pair _ _) (.andI ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
-    ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)))
+  .andI (fst_pair _ _) (.andI (snd_pair _ _).fstE
+    (snd_pair _ _).sndE)
 theorem score_body_at (A : PR 3) (mu : PR 2) (d k x i : PTm n) : Γ ⊢[PRAAx]
     inst2 (scoreBody A mu) i (data d k x) ≐ score A mu d k x i := by
   have e := data_fields (Γ := Γ) d k x
@@ -123,20 +108,12 @@ def continuity (A : PR 3) (mu : PR 2) (d x : PTm n) : Fm PTm n := .all (.all
     .all (.all (.all (continuousAt A mu (Syn.shift (Syn.shift (Syn.shift (Syn.shift (Syn.shift d)))))
       (Syn.shift (Syn.shift (Syn.shift (Syn.shift (Syn.shift x))))) (var 4) (var 3) (var 2) (var 1) (var 0))))))
 
-@[simp] theorem subst_coherentAt {q : ℕ} (σ : Fin n → PTm q) (A : PR 3) (y p l x : PTm n) :
-    (coherentAt A y p l x).subst σ = coherentAt A (Syn.subst σ y) (Syn.subst σ p) (Syn.subst σ l) (Syn.subst σ x) := by simp [coherentAt]
-@[simp] theorem subst_coherence {q : ℕ} (σ : Fin n → PTm q) (A : PR 3) (d x : PTm n) :
-    (coherence A d x).subst σ = coherence A (Syn.subst σ d) (Syn.subst σ x) := by simp [coherence,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_errorNumerator {v : ℕ} (σ : Fin n → PTm v) (l p q : PTm n) :
-    Syn.subst σ (errorNumerator l p q) = errorNumerator (Syn.subst σ l) (Syn.subst σ p) (Syn.subst σ q) := by simp [errorNumerator]
-@[simp] theorem subst_errorDenominator {v : ℕ} (σ : Fin n → PTm v) (l p q : PTm n) :
-    Syn.subst σ (errorDenominator l p q) = errorDenominator (Syn.subst σ l) (Syn.subst σ p) (Syn.subst σ q) := by simp [errorDenominator]
-@[simp] theorem subst_continuousAt {v : ℕ} (σ : Fin n → PTm v) (A : PR 3) (mu : PR 2) (d x y z l p q : PTm n) :
-    (continuousAt A mu d x y z l p q).subst σ = continuousAt A mu (Syn.subst σ d) (Syn.subst σ x)
-      (Syn.subst σ y) (Syn.subst σ z) (Syn.subst σ l) (Syn.subst σ p) (Syn.subst σ q) := by simp [continuousAt,one]
-@[simp] theorem subst_continuity {v : ℕ} (σ : Fin n → PTm v) (A : PR 3) (mu : PR 2) (d x : PTm n) :
-    (continuity A mu d x).subst σ = continuity A mu (Syn.subst σ d) (Syn.subst σ x) := by
-  simp [continuity,Syn.subst_shift,Syn.shift_subst]
+ipra_subst coherentAt
+ipra_subst coherence [Syn.subst_shift, Syn.shift_subst]
+ipra_subst errorNumerator
+ipra_subst errorDenominator
+ipra_subst continuousAt [one]
+ipra_subst continuity [Syn.subst_shift, Syn.shift_subst]
 
 theorem coherence_at (A : PR 3) (d x y p q : PTm n) (h : Γ ⊢[PRAAx] coherence A d x)
     (hy : Γ ⊢[PRAAx] presentedCube y d) : Γ ⊢[PRAAx] coherentAt A y p q x := by
@@ -207,31 +184,25 @@ def output (A : PR 3) (mu : PR 2) (d k x : PTm n) : PTm n := pairT (minimizer A 
   (pairT (minimum A mu d k x) (pairT (index A mu d k x) (pairT (mesh mu k x) (horizon mu d k x))))
 def outputF (A : PR 3) (mu : PR 2) : PR 3 := PTm.toPR (output A mu (var 0) (var 1) (var 2))
 def run (A : PR 3) (mu : PR 2) (d k x : PTm n) : PTm n := app (outputF A mu) ![d,k,x]
-@[simp] theorem subst_output {q : ℕ} (σ : Fin n → PTm q) (A : PR 3) (mu : PR 2) (d k x : PTm n) :
-    Syn.subst σ (output A mu d k x) = output A mu (Syn.subst σ d) (Syn.subst σ k) (Syn.subst σ x) := by simp [output]
-@[simp] theorem subst_run {q : ℕ} (σ : Fin n → PTm q) (A : PR 3) (mu : PR 2) (d k x : PTm n) :
-    Syn.subst σ (run A mu d k x) = run A mu (Syn.subst σ d) (Syn.subst σ k) (Syn.subst σ x) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (A : PR 3) (mu : PR 2) (d k x : PTm n) : Γ ⊢[PRAAx] run A mu d k x ≐ output A mu d k x := by
   simpa [run,outputF,Matrix.cons_val_succ',Matrix.cons_val_zero'] using
     toPR_eq (Γ := Γ) (output A mu (var 0) (var 1) (var 2) : PTm 3) ![d,k,x]
 theorem returned_minimizer (A : PR 3) (mu : PR 2) (d k x : PTm n) : Γ ⊢[PRAAx] fstT (run A mu d k x) ≐ minimizer A mu d k x :=
-  (congrFst (program_at A mu d k x)).eqTrans (fst_pair _ _)
+  (program_at A mu d k x).fstE
 theorem returned_minimum (A : PR 3) (mu : PR 2) (d k x : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run A mu d k x)) ≐ minimum A mu d k x :=
-  (congrFst ((congrSnd (program_at A mu d k x)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at A mu d k x).sndE.fstE
 private theorem returned_tail (A : PR 3) (mu : PR 2) (d k x : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run A mu d k x)) ≐
     pairT (index A mu d k x) (pairT (mesh mu k x) (horizon mu d k x)) :=
-  (congrSnd ((congrSnd (program_at A mu d k x)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at A mu d k x).sndE.sndE
 theorem returned_index (A : PR 3) (mu : PR 2) (d k x : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run A mu d k x))) ≐ index A mu d k x :=
-  (congrFst (returned_tail A mu d k x)).eqTrans (fst_pair _ _)
+  (returned_tail A mu d k x).fstE
 theorem returned_mesh (A : PR 3) (mu : PR 2) (d k x : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (run A mu d k x)))) ≐ mesh mu k x :=
-  (congrFst ((congrSnd (returned_tail A mu d k x)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (returned_tail A mu d k x).sndE.fstE
 theorem returned_horizon (A : PR 3) (mu : PR 2) (d k x : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (run A mu d k x)))) ≐ horizon mu d k x :=
-  (congrSnd ((congrSnd (returned_tail A mu d k x)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (returned_tail A mu d k x).sndE.sndE
 theorem returned_presented (A : PR 3) (mu : PR 2) (d k x : PTm n) : Γ ⊢[PRAAx] presentedCube (fstT (run A mu d k x)) d := by
   have proof := Prf.eqSubst (Γ := Γ) (presentedCube (var 0) (var 1) : Fm PTm 2)
     ![minimizer A mu d k x,d] ![fstT (run A mu d k x),d]

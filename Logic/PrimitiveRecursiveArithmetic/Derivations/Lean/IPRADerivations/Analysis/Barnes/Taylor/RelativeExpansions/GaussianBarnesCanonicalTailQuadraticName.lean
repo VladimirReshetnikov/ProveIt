@@ -16,7 +16,7 @@ set_option maxHeartbeats 550000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalTailQuadraticName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalLogCofinal (source)
 open GaussianBarnesCanonicalLogSchedule (initial initial_positive)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
@@ -31,10 +31,6 @@ open GaussianRationalHorner (qadd qmul ofGaussian positive_product qadd_canonica
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (power bound_congr bounded_product)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qzero_add)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

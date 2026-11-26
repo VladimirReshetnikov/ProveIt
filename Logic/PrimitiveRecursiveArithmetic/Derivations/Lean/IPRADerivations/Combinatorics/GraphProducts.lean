@@ -22,9 +22,7 @@ Not derived: the adjacency of the products and their degrees as counts, and the 
 
 namespace LeanProofs.IPRA.Combinatorics.GraphProducts
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
+open_ipra
 
 variable {n p q : ℕ} {Γ : List (Fm PTm n)}
 

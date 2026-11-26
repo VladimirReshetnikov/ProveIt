@@ -16,7 +16,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerRecurrenceFinite
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianLogGammaEulerHead (nameF data productF productData sumData)
 open GaussianNameArithmetic (addF addData add_fast)
@@ -25,9 +25,6 @@ open GaussianNamedDifferenceQuotientProperness (difference_proper)
 open GaussianPositiveRationalLogarithm (logF)
 open GaussianRightHalfPlaneLogarithm (source)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "F" => GaussianNamedDifference.nameF
@@ -42,10 +39,7 @@ def correctedF : PR 2 := F logF (F G G)
 def correctedData (A B D neg N : PTm n) : PTm n :=
   X (L N one) (X (P (A+succ N*D) B D neg) (P A B D neg))
 
-@[simp] theorem subst_correctedData {m : ℕ} (σ : Fin n → PTm m) (A B D neg N : PTm n) :
-    Syn.subst σ (correctedData A B D neg N) =
-      correctedData (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ neg) (Syn.subst σ N) := by
-  simp [correctedData,one]
+ipra_subst correctedData [one]
 
 theorem shift_source (A D neg : PTm n) (h : Γ ⊢[PRAAx] source A D neg) :
     Γ ⊢[PRAAx] source (A+D) D neg :=

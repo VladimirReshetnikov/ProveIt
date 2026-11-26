@@ -1,7 +1,5 @@
 import IPRADerivations.Probability.Expectation
 import IPRADerivations.Probability.FirstCrossing
-import IPRADerivations.Core.Fubini
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The bounded optional stopping theorem
@@ -30,13 +28,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.OptionalStopping
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Expectation (inst2_mul')
 open LeanProofs.IPRA.Probability.FirstCrossing (ge ge_of_le ge_of_lt)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -278,12 +272,10 @@ theorem optional_stopping {T N x : PTm n}
       (fubini (lift (bR w τ M)) T N x).eqSymm)
     simp only [shift_pairT]
     exact (col_eq _ _ _ _).eqTrans ((Prf.impE hm.allOpen.wk Prf.hyp0).eqTrans (col_eq _ _ _ _).eqSymm)
-  have l0 := natEq (lw_sum (Γ := Γ) (wM0 w M) T N x)
-  have lt' := natEq (lw_sum (Γ := Γ) (wMt w τ M) T N x)
   have a := natEq hA
   have f := natEq hF
   apply deriveNat; ipra_simps
-  linear_combination f - a - lt' + l0
+  linear_combination f - a - natEq (lw_sum (Γ := Γ) (wMt w τ M) T N x) + natEq (lw_sum (Γ := Γ) (wM0 w M) T N x)
 
 end Stopping
 

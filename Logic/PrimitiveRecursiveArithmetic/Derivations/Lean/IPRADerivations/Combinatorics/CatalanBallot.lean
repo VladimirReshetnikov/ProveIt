@@ -1,5 +1,4 @@
 import IPRADerivations.Combinatorics.CatalanHalving
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The ballot factor in the square sum
@@ -20,7 +19,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.CatalanBallot
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial (binom)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (binom_eq mul_cancel)
 open LeanProofs.IPRA.Combinatorics.Stirling (gle gle_of_le)
@@ -30,10 +29,6 @@ open LeanProofs.IPRA.Combinatorics.CatalanHalving (pv pv_zero pv_succ congrAd)
 open LeanProofs.IPRA.Probability.Variance (ad)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (fact_pos)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

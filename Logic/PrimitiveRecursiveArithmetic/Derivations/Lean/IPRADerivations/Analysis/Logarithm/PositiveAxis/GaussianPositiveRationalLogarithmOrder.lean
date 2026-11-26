@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPositiveRationalLogarithmOrder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (S_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S)
 open GaussianCoefficientNameBounds (unit)
@@ -25,11 +25,7 @@ open GaussianRationalHorner (positive_product)
 open RationalArgmin (rationalLE rationalLE_congr transitive eq_le)
 open RationalHarmonicInterval (interval horizon common common_value numerator at_common)
 open RationalValueBounds (upper_of_order)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (monus)
 open Products (fact)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -61,9 +57,9 @@ theorem observation_order (p a c b : PTm n) (h : Γ ⊢[PRAAx] le a c) :
   let L := interval a b Q
   let R := interval c b Q
   have aL : Γ ⊢[PRAAx] fstT (GaussianHarmonicLogarithmName.sample p a b) ≐ RationalArithmetic.recode L :=
-    (congrFst (GaussianHarmonicLogarithmName.sample_at p a b)).eqTrans (fst_pair _ _)
+    (GaussianHarmonicLogarithmName.sample_at p a b).fstE
   have aR : Γ ⊢[PRAAx] fstT (GaussianHarmonicLogarithmName.sample p c b) ≐ RationalArithmetic.recode R :=
-    (congrFst (GaussianHarmonicLogarithmName.sample_at p c b)).eqTrans (fst_pair _ _)
+    (GaussianHarmonicLogarithmName.sample_at p c b).fstE
   exact rationalLE_congr aL.eqSymm aR.eqSymm
     (transitive (eq_le (RationalArithmetic.recode_equal L)) (transitive (interval_order a c b Q h)
       (eq_le (RationalArithmetic.recode_equal R).eqSymm)))

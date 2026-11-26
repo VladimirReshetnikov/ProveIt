@@ -17,16 +17,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalTranslationStages
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (quotient qone canonicalCoefficients)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (evaluate qadd qmul)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qsub)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -35,14 +31,8 @@ def stageStep : PTm 5 := quotient (var 1) (var 4) (remaining (var 3) (var 0))
 def stageF : PR 4 := recDef (var 0 : PTm 3) stageStep
 def stage (C N z j : PTm n) : PTm n := PTm.app stageF ![j,C,N,z]
 
-@[simp] theorem subst_remaining {m : ℕ} (σ : Fin n → PTm m) (N j : PTm n) :
-    Syn.subst σ (remaining N j) = remaining (Syn.subst σ N) (Syn.subst σ j) := by simp [remaining]
-@[simp] theorem subst_stage {m : ℕ} (σ : Fin n → PTm m) (C N z j : PTm n) :
-    Syn.subst σ (stage C N z j) = stage (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z) (Syn.subst σ j) := by
-  simp only [stage,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst remaining
+ipra_subst stage
 
 theorem stage_zero (C N z : PTm n) : Γ ⊢[PRAAx] stage C N z zero ≐ C := by
   have h := rec_zero (Γ := Γ) (var 0 : PTm 3) stageStep ![C,N,z]
@@ -99,20 +89,16 @@ theorem stage_length (C N z j : PTm n) (hLen : Γ ⊢[PRAAx] length C ≐ succ N
           ((remaining_step N (pred j) active).eqTrans (congrSucc (congrMonus (.eqRefl _) shape.eqSymm)))))
 
 def headLaw (C N z j : PTm n) : Fm PTm n := le j N ⟶ entry (stage C N z j) zero ≐ qone
-@[simp] theorem subst_headLaw {m : ℕ} (σ : Fin n → PTm m) (C N z j : PTm n) :
-    (headLaw C N z j).subst σ = headLaw (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z) (Syn.subst σ j) := by
-  simp [headLaw]
+ipra_subst headLaw
 
 /-- Genuine QF induction preserves a literal monic head. It does not need
 canonical input coefficients or a supplied quotient/head invariant. -/
 theorem stage_head (C N z j : PTm n) (hm : Γ ⊢[PRAAx] entry C zero ≐ qone)
     (hj : Γ ⊢[PRAAx] le j N) : Γ ⊢[PRAAx] entry (stage C N z j) zero ≐ qone := by
   have all : Γ ⊢[PRAAx] .all (headLaw (Syn.shift C) (Syn.shift N) (Syn.shift z) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_headLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (((entry_congr (stage_zero C N z) (.eqRefl _)).eqTrans hm).wk)
-    · simp only [subst_headLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_headLaw]
+    · exact .impI (((entry_congr (stage_zero C N z) (.eqRefl _)).eqTrans hm).wk)
+    · refine .impI ?_
       let I := headLaw (Syn.shift C) (Syn.shift N) (Syn.shift z) (var 0)
       let Δ := le (succ (var 0)) (Syn.shift N) :: I :: Γ.map Fm.shift
       have prev : Δ ⊢[PRAAx] entry (stage (Syn.shift C) (Syn.shift N) (Syn.shift z) (var 0)) zero ≐ qone :=
@@ -179,18 +165,17 @@ theorem terminal_monic_evaluation (C N z y : PTm n) (hLen : Γ ⊢[PRAAx] length
 computed stored length as literal returned fields. -/
 def output (C N z j : PTm n) : PTm n := pairT (stage C N z j) (pairT (remaining N j) (length (stage C N z j)))
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (C N z j : PTm n) :
-    Syn.subst σ (output C N z j) = output (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z) (Syn.subst σ j) := by simp [output]
+ipra_subst output
 
 theorem program_at (C N z j : PTm n) : Γ ⊢[PRAAx] PTm.app outputF ![C,N,z,j] ≐ output C N z j := by
   simpa [outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![C,N,z,j]
 
 theorem returned_stage (C N z j : PTm n) : Γ ⊢[PRAAx] fstT (PTm.app outputF ![C,N,z,j]) ≐ stage C N z j :=
-  (congrFst (program_at C N z j)).eqTrans (fst_pair _ _)
+  (program_at C N z j).fstE
 theorem returned_remaining (C N z j : PTm n) : Γ ⊢[PRAAx] fstT (sndT (PTm.app outputF ![C,N,z,j])) ≐ remaining N j :=
-  (congrFst ((congrSnd (program_at C N z j)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at C N z j).sndE.fstE
 theorem returned_length (C N z j : PTm n) : Γ ⊢[PRAAx] sndT (sndT (PTm.app outputF ![C,N,z,j])) ≐ length (stage C N z j) :=
-  (congrSnd ((congrSnd (program_at C N z j)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at C N z j).sndE.sndE
 
 theorem quotient_stages_recursion_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 4
     ((stage (var 0) (var 1) (var 2) zero ≐ var 0) ⋏

@@ -17,7 +17,7 @@ set_option maxHeartbeats 500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaPositiveNamedCritical
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaDigammaDyadicLocation (locationF)
 open GaussianGammaDigammaLocationInput (named_real_source)
@@ -25,9 +25,6 @@ open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
 open GaussianNameRingLaws (zeroF)
 open GaussianNamedInverseRate (independentRate)
 open GaussianNamedPositiveDigamma (source derivativeF derivativeData nameF data digamma_zero_of_derivative_zero)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -1,6 +1,5 @@
 import IPRADerivations.Algebra.QuadraticTowerCoefficients
 import IPRADerivations.Algebra.QuadraticRationalRepresentationInvariance
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Original rational arithmetic on numerical tower coefficient arrays
@@ -17,15 +16,12 @@ set_option linter.unnecessarySeqFocus false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticTowerCoefficientArithmetic
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis
 open RationalArgmin (rationalEq rationalEq_congr)
 open QuadraticTowerCoefficients (width width_succ flatten flatten_length flatten_succ)
 open LeanProofs.IPRA.Foundations.MasterCertificate (sequence entry sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length append append_left append_right entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -36,13 +32,9 @@ def negated (h A : PTm n) : PTm n := sequence negativeBody (width h) A
 def equalValues (h A B : PTm n) : Fm PTm n := .all (lt (var 0) (width (Syn.shift h)) ⟶
   rationalEq (entry (Syn.shift A) (var 0)) (entry (Syn.shift B) (var 0)))
 
-@[simp] theorem subst_added {k : ℕ} (σ : Fin n → PTm k) (h A B : PTm n) :
-    Syn.subst σ (added h A B) = added (Syn.subst σ h) (Syn.subst σ A) (Syn.subst σ B) := by simp [added]
-@[simp] theorem subst_negated {k : ℕ} (σ : Fin n → PTm k) (h A : PTm n) :
-    Syn.subst σ (negated h A) = negated (Syn.subst σ h) (Syn.subst σ A) := by simp [negated]
-@[simp] theorem subst_equalValues {k : ℕ} (σ : Fin n → PTm k) (h A B : PTm n) :
-    (equalValues h A B).subst σ = equalValues (Syn.subst σ h) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [equalValues,Syn.subst_shift,Syn.shift_subst]
+ipra_subst added
+ipra_subst negated
+ipra_subst equalValues [Syn.subst_shift, Syn.shift_subst]
 theorem added_congr {h h' A A' B B' : PTm n} (hh : Γ ⊢[PRAAx] h ≐ h')
     (hA : Γ ⊢[PRAAx] A ≐ A') (hB : Γ ⊢[PRAAx] B ≐ B') : Γ ⊢[PRAAx]
     added h A B ≐ added h' A' B' := by
@@ -157,10 +149,8 @@ theorem negated_involution_at (h A i : PTm n) (hi : Γ ⊢[PRAAx] lt i (width h)
 
 def addNested (h x y : PTm n) : PTm n := added h (flatten h x) (flatten h y)
 def negativeNested (h x : PTm n) : PTm n := negated h (flatten h x)
-@[simp] theorem subst_addNested {k : ℕ} (σ : Fin n → PTm k) (h x y : PTm n) :
-    Syn.subst σ (addNested h x y) = addNested (Syn.subst σ h) (Syn.subst σ x) (Syn.subst σ y) := by simp [addNested]
-@[simp] theorem subst_negativeNested {k : ℕ} (σ : Fin n → PTm k) (h x : PTm n) :
-    Syn.subst σ (negativeNested h x) = negativeNested (Syn.subst σ h) (Syn.subst σ x) := by simp [negativeNested]
+ipra_subst addNested
+ipra_subst negativeNested
 theorem add_nested_length (h x y : PTm n) : Γ ⊢[PRAAx] length (addNested h x y) ≐ width h := added_length _ _ _
 theorem negative_nested_length (h x : PTm n) : Γ ⊢[PRAAx] length (negativeNested h x) ≐ width h := negated_length _ _
 theorem base_index : Γ ⊢[PRAAx] lt (zero : PTm n) (width zero) :=
@@ -208,10 +198,8 @@ def negativeF : PR 2 := PTm.toPR (negated (var 0) (var 1))
 def output (h x y : PTm n) : PTm n := pairT (addNested h x y) (pairT (negativeNested h x) (width h))
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (h x y : PTm n) : PTm n := ap3 outputF h x y
-@[simp] theorem subst_output {k : ℕ} (σ : Fin n → PTm k) (h x y : PTm n) :
-    Syn.subst σ (output h x y) = output (Syn.subst σ h) (Syn.subst σ x) (Syn.subst σ y) := by simp [output]
-@[simp] theorem subst_run {k : ℕ} (σ : Fin n → PTm k) (h x y : PTm n) :
-    Syn.subst σ (run h x y) = run (Syn.subst σ h) (Syn.subst σ x) (Syn.subst σ y) := by simp [run]
+ipra_subst output
+ipra_subst run
 theorem add_program_at (h A B : PTm n) : Γ ⊢[PRAAx] ap3 addF h A B ≐ added h A B := by
   simpa [addF,ap3] using toPR_eq (Γ := Γ) (added (var 0) (var 1) (var 2) : PTm 3) ![h,A,B]
 theorem negative_program_at (h A : PTm n) : Γ ⊢[PRAAx] ap2 negativeF h A ≐ negated h A := by
@@ -219,11 +207,11 @@ theorem negative_program_at (h A : PTm n) : Γ ⊢[PRAAx] ap2 negativeF h A ≐ 
 theorem program_at (h x y : PTm n) : Γ ⊢[PRAAx] run h x y ≐ output h x y := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![h,x,y]
 theorem returned_add (h x y : PTm n) : Γ ⊢[PRAAx] fstT (run h x y) ≐ addNested h x y :=
-  (congrFst (program_at _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _).fstE
 theorem returned_negative (h x y : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run h x y)) ≐ negativeNested h x :=
-  (congrFst ((congrSnd (program_at _ _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _).sndE.fstE
 theorem returned_width (h x y : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run h x y)) ≐ width h :=
-  (congrSnd ((congrSnd (program_at _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at _ _ _).sndE.sndE
 theorem returned_lengths (h x y : PTm n) : Γ ⊢[PRAAx]
     length (fstT (run h x y)) ≐ width h ⋏ length (fstT (sndT (run h x y))) ≐ width h :=
   .andI ((congrFst (returned_add _ _ _)).eqTrans (add_nested_length _ _ _))

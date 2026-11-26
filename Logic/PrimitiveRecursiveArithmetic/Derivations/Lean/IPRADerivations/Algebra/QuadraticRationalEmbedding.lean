@@ -1,5 +1,4 @@
 import IPRADerivations.Algebra.QuadraticRationalCongruence
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Original rational scalars and the actual positive quadratic root
@@ -17,7 +16,7 @@ set_option linter.unnecessarySeqFocus false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticRationalEmbedding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.RationalSupMetric (numeratorOf denominatorOf)
 open LeanProofs.IPRA.Analysis.RationalArgmin (rationalEq left)
 open QuadraticSignCertificates (first second equal negative_first negative_second)
@@ -26,9 +25,6 @@ open QuadraticIntegerEmbedding (integer integer_first integer_second)
 open QuadraticRationalClearing (represents)
 open QuadraticRationalPairArithmetic (positive isZero multiply)
 open QuadraticRationalEqualityOrder (difference equivalent less cross)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -38,16 +34,11 @@ def oneScalar : PTm n := QuadraticRationalPairArithmetic.scalar one
 def embed (q : PTm n) : PTm n := pairT q zeroScalar
 def root : PTm n := pairT zeroScalar oneScalar
 def crossNumerator (q r : PTm n) : ZT n := numeratorOf q*ZT.ofNat (denominatorOf r)-numeratorOf r*ZT.ofNat (denominatorOf q)
-@[simp] theorem subst_zeroScalar {l : ℕ} (σ : Fin n → PTm l) :
-    Syn.subst σ (zeroScalar : PTm n) = (zeroScalar : PTm l) := by simp [zeroScalar]
-@[simp] theorem subst_oneScalar {l : ℕ} (σ : Fin n → PTm l) :
-    Syn.subst σ (oneScalar : PTm n) = (oneScalar : PTm l) := by simp [oneScalar,one]
-@[simp] theorem subst_embed {l : ℕ} (σ : Fin n → PTm l) (q : PTm n) :
-    Syn.subst σ (embed q) = embed (Syn.subst σ q) := by simp [embed]
-@[simp] theorem subst_root {l : ℕ} (σ : Fin n → PTm l) :
-    Syn.subst σ (root : PTm n) = (root : PTm l) := by simp [root]
-@[simp] theorem subst_crossNumerator {l : ℕ} (σ : Fin n → PTm l) (q r : PTm n) :
-    (crossNumerator q r).subst σ = crossNumerator (Syn.subst σ q) (Syn.subst σ r) := by simp [crossNumerator]
+ipra_subst zeroScalar
+ipra_subst oneScalar [one]
+ipra_subst embed
+ipra_subst root
+ipra_subst crossNumerator
 
 theorem zero_scalar_represents (D : PTm n) : Γ ⊢[PRAAx]
     LeanProofs.IPRA.Analysis.RationalArithmetic.represents zeroScalar (ZT.ofNat zero) D := by
@@ -157,20 +148,18 @@ def output (d q : PTm n) : PTm n := pairT (embed q)
   (pairT (QuadraticRationalClearing.sign d (embed q)) (pairT root (multiply d root root)))
 def outputF : PR 2 := PTm.toPR (output (var 0) (var 1))
 def run (d q : PTm n) : PTm n := ap2 outputF d q
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (d q : PTm n) :
-    Syn.subst σ (output d q) = output (Syn.subst σ d) (Syn.subst σ q) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (d q : PTm n) :
-    Syn.subst σ (run d q) = run (Syn.subst σ d) (Syn.subst σ q) := by simp [run]
+ipra_subst output
+ipra_subst run
 theorem program_at (d q : PTm n) : Γ ⊢[PRAAx] run d q ≐ output d q := by
   simpa [run,outputF,ap2] using toPR_eq (Γ := Γ) (output (var 0) (var 1) : PTm 2) ![d,q]
 theorem returned_scalar (d q : PTm n) : Γ ⊢[PRAAx] fstT (run d q) ≐ embed q :=
-  (congrFst (program_at _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _).fstE
 theorem returned_sign (d q : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run d q)) ≐ QuadraticRationalClearing.sign d (embed q) :=
-  (congrFst ((congrSnd (program_at _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _).sndE.fstE
 theorem returned_root (d q : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run d q))) ≐ root :=
-  (congrFst ((congrSnd ((congrSnd (program_at _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _).sndE.sndE.fstE
 theorem returned_square (d q : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run d q))) ≐ multiply d root root :=
-  (congrSnd ((congrSnd ((congrSnd (program_at _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at _ _).sndE.sndE.sndE
 theorem returned_exact_sign (d q : PTm n) (hd : Γ ⊢[PRAAx] le one d) : Γ ⊢[PRAAx]
     fstT (sndT (run d q)) ≐ QuadraticSignCertificates.tag (numeratorOf q) :=
   (returned_sign _ _).eqTrans (embedding_sign _ _ hd)

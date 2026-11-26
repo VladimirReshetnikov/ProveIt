@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIncompleteIntervalRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIncompleteName (upperF)
 open GaussianEulerIncompleteInterval (leftData rightData intervalData sumData)
 open GaussianEulerCompactAdditivity (nameF)
@@ -24,18 +24,12 @@ open GaussianNamedSmallAddendRate (tailSamples)
 open GaussianRationalHorner (canonical)
 open GaussianRationalMetric (bounded)
 open GaussianCoefficientNameBounds (unit)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {ℓ : ℕ} {Γ : List (Fm PTm ℓ)}
 
 def source (k z R B A a C E T : PTm ℓ) : Fm PTm ℓ :=
   GaussianEulerIncompleteInterval.source z R B A a C E T ⋏ (a+C ≐ top k A R*E)
-@[simp] theorem subst_source {m : ℕ} (σ : Fin ℓ → PTm m) (k z R B A a C E T : PTm ℓ) :
-    (source k z R B A a C E T).subst σ = source (Syn.subst σ k) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ A) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by
-  simp [source,top,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst source [top, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient]
 
 theorem upper_canonical (p z R B A a b : PTm ℓ) : Γ ⊢[PRAAx]
     canonical (ap2 upperF p (GaussianEulerIncompleteName.data z R B A a b)) :=

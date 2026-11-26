@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationCofinalProducts
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaGaussShiftedProduct (source)
@@ -28,9 +28,6 @@ open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianRationalSyntheticDivision (qone)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -69,25 +66,12 @@ def rightNameBudget (z R B m d : PTm n) : PTm n :=
     (two*(powerBound z R B m+scaledBound z R B m d))*referenceBound m
 def rightBudget (z R B m d : PTm n) : PTm n := rightRawBudget z R B m d+rightNameBudget z R B m d
 
-@[simp] theorem subst_leftData {l : ℕ} (σ : Fin n → PTm l) (z R B m d : PTm n) :
-    Syn.subst σ (leftData z R B m d) = leftData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ m) (Syn.subst σ d) :=
-  by simp [leftData]
-@[simp] theorem subst_rightData {l : ℕ} (σ : Fin n → PTm l) (z R B m d : PTm n) :
-    Syn.subst σ (rightData z R B m d) = rightData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ m) (Syn.subst σ d) :=
-  by simp [rightData,innerData,referenceData]
-@[simp] theorem subst_leftRaw {l : ℕ} (σ : Fin n → PTm l) (p z R B m a d : PTm n) :
-    Syn.subst σ (leftRaw p z R B m a d) = leftRaw (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ d) := by simp [leftRaw]
-@[simp] theorem subst_rightRaw {l : ℕ} (σ : Fin n → PTm l) (p z R B m a d : PTm n) :
-    Syn.subst σ (rightRaw p z R B m a d) = rightRaw (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ d) := by simp [rightRaw]
-@[simp] theorem subst_leftBudget {l : ℕ} (σ : Fin n → PTm l) (z R B m d : PTm n) :
-    Syn.subst σ (leftBudget z R B m d) = leftBudget (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ m) (Syn.subst σ d) :=
-  by simp [leftBudget,shiftedBound,one,two]
-@[simp] theorem subst_rightBudget {l : ℕ} (σ : Fin n → PTm l) (z R B m d : PTm n) :
-    Syn.subst σ (rightBudget z R B m d) = rightBudget (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ m) (Syn.subst σ d) :=
-  by simp [rightBudget,rightRawBudget,rightNameBudget,innerBudget,finiteReferenceBound,powerBound,scaledBound,referenceBound,
-    referenceData,two]
+ipra_subst leftData
+ipra_subst rightData [innerData, referenceData]
+ipra_subst leftRaw
+ipra_subst rightRaw
+ipra_subst leftBudget [shiftedBound, one, two]
+ipra_subst rightBudget [rightRawBudget, rightNameBudget, innerBudget, finiteReferenceBound, powerBound, scaledBound, referenceBound, referenceData, two]
 
 theorem left_regular (z R B m a d : PTm n) (h : Γ ⊢[PRAAx] source z R B m a d) :
     Γ ⊢[PRAAx] pointCN leftF (leftData z R B m d) :=

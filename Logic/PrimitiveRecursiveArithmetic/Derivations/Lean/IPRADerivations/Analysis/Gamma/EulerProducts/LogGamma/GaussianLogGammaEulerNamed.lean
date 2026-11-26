@@ -16,7 +16,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerNamed
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianLogGammaEulerCofinal (canonicalData)
 open GaussianLogGammaEulerCommonDenominator
@@ -32,9 +32,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRationalL1 (raw_den_positive)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalValueEquality (commonDen)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "F" => GaussianLogGammaEulerCofinal.nameF
@@ -50,9 +47,7 @@ def coefficient (R K : PTm n) : PTm n :=
 
 def gain : PR 2 := PTm.toPR (coefficient (var 0) (var 1) : PTm 2)
 
-@[simp] theorem subst_pointData {m : ℕ} (σ : Fin n → PTm m) (z : PTm n) :
-    Syn.subst σ (pointData z) = pointData (Syn.subst σ z) := by
-  simp [pointData, canonicalData]
+ipra_subst pointData [canonicalData]
 
 theorem rational_data_at (z : PTm n) : Γ ⊢[PRAAx] ap1 rationalData z ≐ pointData z := by
   simpa only [rationalData, ap1, subst_pointData, Syn.subst_var, Matrix.cons_val_zero] using

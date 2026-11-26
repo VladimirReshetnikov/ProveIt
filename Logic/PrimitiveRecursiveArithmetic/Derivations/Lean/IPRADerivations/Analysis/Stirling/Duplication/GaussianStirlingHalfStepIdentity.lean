@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingHalfStepIdentity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
@@ -37,10 +37,6 @@ open GaussianStirlingNames (source point nameF nameData name_regular logGammaF l
   logXF logXData log_x_regular)
 open GaussianStirlingRecurrence (scaleBudget aBudget a_error)
 open GaussianStirlingWallisGammaRatio (halfNumerator half_source)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "L" => logGammaF
@@ -62,15 +58,9 @@ def scaledLogData (r x : PTm n) : PTm n := multiplyData constantF H c (wallData 
 def rightF : PR 2 := addF scaledLogF R
 def rightData (r x : PTm n) : PTm n := addData (scaledLogData r x) (residualData (succ r) one)
 
-@[simp] theorem subst_differenceData {m : ℕ} (σ : Fin n → PTm m) (r : PTm n) :
-    Syn.subst σ (differenceData r) = differenceData (Syn.subst σ r) := by simp [differenceData,two,one]
-@[simp] theorem subst_scaledLogData {m : ℕ} (σ : Fin n → PTm m) (r x : PTm n) :
-    Syn.subst σ (scaledLogData r x) = scaledLogData (Syn.subst σ r) (Syn.subst σ x) :=
-  by simp [scaledLogData,two,one]
-@[simp] theorem subst_rightData {m : ℕ} (σ : Fin n → PTm m) (r x : PTm n) :
-    Syn.subst σ (rightData r x) = rightData (Syn.subst σ r) (Syn.subst σ x) :=
-  by simp [rightData,GaussianStirlingDuplicationResidual.nameData,GaussianStirlingDuplicationResidual.productData,halfRatioData,
-    GaussianStirlingNativeDuplication.halfNumerator,one,two]
+ipra_subst differenceData [two, one]
+ipra_subst scaledLogData [two, one]
+ipra_subst rightData [GaussianStirlingDuplicationResidual.nameData, GaussianStirlingDuplicationResidual.productData, halfRatioData, GaussianStirlingNativeDuplication.halfNumerator, one, two]
 
 theorem integer_source (r : PTm n) : Γ ⊢[PRAAx] source (succ r) one :=
   .andI (zero_lt_succ r) (le_refl one)

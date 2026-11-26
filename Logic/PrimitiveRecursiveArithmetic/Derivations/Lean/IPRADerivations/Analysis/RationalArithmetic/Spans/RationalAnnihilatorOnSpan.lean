@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalAnnihilatorOnSpan
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalOriginalAnnihilator (rowDot dotBody dot_body_at nullRows)
 open RationalRowSpanGaussianEmbedding (matrix matrix_lookup hasCoefficients span_embedding)
 open RationalPolynomialGaussianEmbedding (coefficients coefficient_lookup)
@@ -27,14 +27,10 @@ open RationalAnnihilatorPolynomial (polynomial evaluation_embedding)
 open RationalCurvePointsGaussianEmbedding (functionZeros)
 open GaussianRationalFiberGrouping (abscissa ordinate)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
-@[simp] theorem subst_nullRows {q : ℕ} (σ : Fin n → PTm q) (A R N a : PTm n) :
-    (nullRows A R N a).subst σ = nullRows (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ a) := by
-  simp [nullRows,Syn.subst_shift,Syn.shift_subst]
+ipra_subst nullRows [Syn.subst_shift, Syn.shift_subst]
 
 theorem row_dot_embedding (A R N a r : PTm n) (hr : Γ ⊢[PRAAx] lt r R) : Γ ⊢[PRAAx]
     embed (rowDot A N a r) ≐ GaussianRationalRowElimination.rowDot (matrix A R N) N (coefficients a N) r := by

@@ -14,7 +14,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetBoseFrozenSuffixCut
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetBoseFrozenSuffix (geometry mesh_split fullMesh fullData full_weight columnSegment segmentData segmentBody segment_at suffixValue)
 open GaussianBinetBoseFrozenMatrix (matrix matrix_at cell_at subst_frozenPiNumerator subst_piDenominator)
 open GaussianBinetBoseFrozenTimeRescale (coordinates)
@@ -34,10 +34,6 @@ open GaussianRationalRiemannRefinement (weight)
 open GaussianRationalSyntheticDivision (qmul_congr qsub_congr qadd_sub_cancel)
 open GaussianRightHalfPlaneLogarithm (source)
 open GaussianStirlingConstant (piDenominator)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

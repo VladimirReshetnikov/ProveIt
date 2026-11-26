@@ -24,7 +24,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGeneralPolynomialEvaluation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianGeneralCoefficientNames (generalCN)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (bounded distanceBounded)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (evaluate positive_product)
@@ -34,9 +34,6 @@ open LeanProofs.IPRA.Analysis.GaussianRootApproximationWitness (pointBounds)
 open LeanProofs.IPRA.Analysis.GaussianRationalDistanceOrder (distance_congr distance_triangle_same)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -56,23 +53,13 @@ def observationF (a : PR 3) (point : PR 2) : PR 2 := PTm.toPR (observationBody a
 def input (a : PR 3) (point : PR 2) (N U x y : PTm n) : Fm PTm n :=
   generalCN a N x ⋏ (pointCN point y ⋏ (pointBounds point U y ⋏ le one U))
 
-@[simp] theorem subst_A {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N x : PTm n) :
-    Syn.subst σ (A a N x) = A a (Syn.subst σ N) (Syn.subst σ x) := by simp [A]
-@[simp] theorem subst_C {m : ℕ} (σ : Fin n → PTm m) (N U : PTm n) :
-    Syn.subst σ (C N U) = C (Syn.subst σ N) (Syn.subst σ U) := by simp [C]
-@[simp] theorem subst_M {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N U x : PTm n) :
-    Syn.subst σ (M a N U x) = M a (Syn.subst σ N) (Syn.subst σ U) (Syn.subst σ x) := by simp [M]
-@[simp] theorem subst_T {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N U x : PTm n) :
-    Syn.subst σ (T a N U x) = T a (Syn.subst σ N) (Syn.subst σ U) (Syn.subst σ x) := by simp [T]
-@[simp] theorem subst_observation {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (point : PR 2)
-    (N x y s : PTm n) : Syn.subst σ (observation a point N x y s) =
-      observation a point (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ s) := by simp [observation]
-@[simp] theorem subst_observationData {m : ℕ} (σ : Fin n → PTm m) (N x y : PTm n) :
-    Syn.subst σ (observationData N x y) =
-      observationData (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ y) := by simp [observationData]
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (point : PR 2)
-    (N U x y : PTm n) : (input a point N U x y).subst σ =
-      input a point (Syn.subst σ N) (Syn.subst σ U) (Syn.subst σ x) (Syn.subst σ y) := by simp [input]
+ipra_subst A
+ipra_subst C
+ipra_subst M
+ipra_subst T
+ipra_subst observation
+ipra_subst observationData
+ipra_subst input
 
 /-- Structural congruence through the actual coefficient and Horner programs. -/
 theorem observation_congr (a : PR 3) (point : PR 2) {N N' x x' y y' s s' : PTm n}

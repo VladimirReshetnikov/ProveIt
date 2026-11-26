@@ -17,7 +17,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalLogFactor
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianBarnesCanonicalLogRow (source local_source roundedValue roundedCubic)
 open GaussianBarnesCanonicalFactor (correction powerValue exponentRadius exponentialData)
@@ -32,10 +32,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRationalHorner (ofGaussian qadd qmul positive_product represents_congr ofGaussian_represents)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "L" => GaussianLocalLogarithmName.pointF

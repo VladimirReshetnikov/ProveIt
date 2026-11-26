@@ -1,6 +1,4 @@
 import IPRADerivations.Analysis.RationalArithmetic.Intervals.RationalHausdorff
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Triangle inequality for the actual independently scaled rational outputs
@@ -21,7 +19,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.RationalHausdorffTriangle
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.RationalSupMetric
 open LeanProofs.IPRA.Analysis.RationalHausdorff
 open LeanProofs.IPRA.Foundations
@@ -30,10 +28,6 @@ open LeanProofs.IPRA.Foundations.SequenceComposition (length)
 open LeanProofs.IPRA.Foundations.GapDecision (zabs zabs_congr zabs_tri)
 open LeanProofs.IPRA.Foundations.FiniteHausdorff (sum_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -58,11 +52,10 @@ theorem cross_triangle (x y z k : PTm n) :
     Γ ⊢[PRAAx] le (rationalDenominator y k * zabs (crossNumerator x z k))
       (rationalDenominator z k * zabs (crossNumerator x y k) +
         rationalDenominator x k * zabs (crossNumerator y z k)) := by
-  have identity := ZT.toZ_eq (cross_triangle_identity (Γ := Γ) x y z k)
   have sum : ZT.toZ Γ (ZT.ofNat (rationalDenominator y k) * crossNumerator x z k) =
       ZT.toZ Γ (ZT.ofNat (rationalDenominator z k) * crossNumerator x y k) +
         ZT.toZ Γ (ZT.ofNat (rationalDenominator x k) * crossNumerator y z k) := by
-    simpa only [ZT.toZ_add] using identity
+    simpa only [ZT.toZ_add] using ZT.toZ_eq (cross_triangle_identity (Γ := Γ) x y z k)
   exact le_congr (abs_scale _ _) (congrAdd (abs_scale _ _) (abs_scale _ _)) (zabs_tri sum)
 
 /-- Only the decoded positive middle coordinate denominator is cancelled.
@@ -224,9 +217,7 @@ theorem triangle_checker (S T U d : PTm n)
 def summedRadius (A B C D : PTm n) : PTm n := pairT (A * D + C * B) (B * D)
 def summedRadiusF : PR 4 := PTm.toPR (summedRadius (var 0) (var 1) (var 2) (var 3))
 
-@[simp] theorem subst_summedRadius {m : ℕ} (σ : Fin n → PTm m) (A B C D : PTm n) :
-    Syn.subst σ (summedRadius A B C D) = summedRadius (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ C) (Syn.subst σ D) := by
-  simp [summedRadius]
+ipra_subst summedRadius
 
 theorem summedRadius_at (A B C D : PTm n) :
     Γ ⊢[PRAAx] FiniteQueryDemand.apply4 summedRadiusF A B C D ≐ summedRadius A B C D := by
@@ -236,7 +227,7 @@ theorem summedRadius_at (A B C D : PTm n) :
 theorem summedRadius_positive (A B C D : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hD : Γ ⊢[PRAAx] le one D) :
     Γ ⊢[PRAAx] le one (sndT (FiniteQueryDemand.apply4 summedRadiusF A B C D)) :=
   le_congr (one_mul one)
-    ((congrSnd (summedRadius_at A B C D)).eqTrans (snd_pair _ _)).eqSymm (le_mul_mono hB hD)
+    (summedRadius_at A B C D).sndE.eqSymm (le_mul_mono hB hD)
 
 theorem summed_radius_program_closed :
     ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 4

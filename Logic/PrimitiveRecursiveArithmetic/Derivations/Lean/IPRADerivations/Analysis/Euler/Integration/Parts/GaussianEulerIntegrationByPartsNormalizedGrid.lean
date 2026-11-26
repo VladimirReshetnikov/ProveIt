@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsNormalizedGrid
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegrationByPartsGrid (operatorF endpointF endpoint endpoint_grid_at)
 open GaussianEulerIntegrationByPartsGridObservation (rawF rowCost grid_source)
 open GaussianEulerIntegrationByPartsParameterShiftObservation (primitiveCost)
@@ -30,8 +30,6 @@ open GaussianRationalMetric (qsub qnegative bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr bounded_product bounded_negative)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -40,11 +38,8 @@ def cost (R E T : PTm n) : PTm n := R*rowCost R E T+primitiveCost R E T
 def normalized (p N z B a C E : PTm n) : PTm n := qsub
   (qmul (ofGaussian z B) (quadrature evaluatorF p N a C E (fixedData z B)))
   (quadrature evaluatorF p N a C E (fixedData (shifted z B) B))
-@[simp] theorem subst_cost {m : ℕ} (σ : Fin n → PTm m) (R E T : PTm n) :
-    Syn.subst σ (cost R E T) = cost (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T) := by simp [cost]
-@[simp] theorem subst_normalized {m : ℕ} (σ : Fin n → PTm m) (p N z B a C E : PTm n) :
-    Syn.subst σ (normalized p N z B a C E) = normalized (Syn.subst σ p) (Syn.subst σ N)
-      (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) := by simp [normalized]
+ipra_subst cost
+ipra_subst normalized
 
 theorem shifted_row_error (i p N z R B a C E T : PTm n)
     (h : Γ ⊢[PRAAx] intervalSource z R B a C E T) (hN : Γ ⊢[PRAAx] le one N)

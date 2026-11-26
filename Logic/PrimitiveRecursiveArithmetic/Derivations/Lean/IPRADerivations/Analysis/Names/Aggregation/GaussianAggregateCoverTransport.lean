@@ -15,15 +15,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianAggregateCoverTransport
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianModulusAggregateMap (vector vector_length vector_zero vector_one)
 open GaussianRationalMetric (distanceBounded)
 open RationalHausdorff (pointRadius coordinateRadius originalCover originalClose)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -32,10 +29,8 @@ def vectorList (T : PTm n) : PTm n := sequence listBody (length T) T
 def listShape (T : PTm n) : Fm PTm n := .all
   (lt (var 0) (length (Syn.shift T)) ⟶ length (entry (Syn.shift T) (var 0)) ≐ two)
 
-@[simp] theorem subst_vectorList {l : ℕ} (σ : Fin n → PTm l) (T : PTm n) :
-    Syn.subst σ (vectorList T) = vectorList (Syn.subst σ T) := by simp [vectorList]
-@[simp] theorem subst_listShape {l : ℕ} (σ : Fin n → PTm l) (T : PTm n) :
-    (listShape T).subst σ = listShape (Syn.subst σ T) := by simp [listShape,Syn.subst_shift,Syn.shift_subst]
+ipra_subst vectorList
+ipra_subst listShape [Syn.subst_shift, Syn.shift_subst]
 
 theorem two_cases (i : PTm n) (hi : Γ ⊢[PRAAx] lt i two) : Γ ⊢[PRAAx] i ≐ zero ⋎ i ≐ one := by
   have small : Γ ⊢[PRAAx] le i one := (succ_monus_succ _ _).eqSymm.eqTrans hi

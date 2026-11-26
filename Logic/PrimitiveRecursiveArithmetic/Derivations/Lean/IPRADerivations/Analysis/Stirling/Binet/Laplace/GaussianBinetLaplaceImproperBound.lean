@@ -16,7 +16,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceImproperBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianBinetLaplaceIntegrand (meshGain)
 open GaussianBinetLaplaceStrip (Kernel evaluatorF fixedData)
@@ -31,10 +31,6 @@ open GaussianRationalDistanceOrder (distance_radius_mono distance_triangle_same)
 open GaussianRationalMetric (bounded distanceBounded qsub)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianReconstructionRoots (distance_zero_iff norm_from_distance)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "CofinalF" => evaluatorF Kernel.cofinal

@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPositiveRationalLogarithmVariation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianPositiveRationalLogarithm (source sample logF data name_regular)
 open GaussianPositiveRationalLogarithmProperness (sample_interval_error)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -22,10 +22,6 @@ open RationalHarmonicIntervalVariation (gap)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_symmetric)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -101,11 +97,8 @@ theorem diagonal_native (p a b c d M A D : PTm n)
 
 def input (a b c d M A D : PTm n) : Fm PTm n := source a b ⋏ (source c d ⋏ (le one D ⋏
   (le b (M*a) ⋏ (le d (M*c) ⋏ RationalValueBounds.radius (time a b) (time c d) A D))))
-@[simp] theorem subst_time {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (time a b) = time (Syn.subst σ a) (Syn.subst σ b) := by simp [time]
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (a b c d M A D : PTm n) :
-    (input a b c d M A D).subst σ = input (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d)
-      (Syn.subst σ M) (Syn.subst σ A) (Syn.subst σ D) := by simp [input]
+ipra_subst time
+ipra_subst input
 
 theorem diagonal (p a b c d M A D : PTm n) (h : Γ ⊢[PRAAx] input a b c d M A D) : Γ ⊢[PRAAx]
     distanceBounded (sample p a b) (sample p c d) ((M*A)*unit p+num 17*D) (D*unit p) :=

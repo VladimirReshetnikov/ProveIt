@@ -16,8 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalCofactorBorderedMinors
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (succ app)
+open_ipra
 open RationalMaximalMinors (bestRow rank)
 open RationalSelectedMinors (count normalized normalized_lookup)
 open RationalMinorAugmentation (extendedColumn extended_column_size)
@@ -39,8 +38,6 @@ open LeanProofs.IPRA.Foundations.RuntimePermutationInsertion (slot_congr)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open RationalSupMetric (coordinate normalizedList)
 open RationalIntegerNormalization (normalize)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -48,12 +45,9 @@ def laplaceMinor (P d i r : PTm n) : PTm n := minorTable (bordered P d i) (rank 
 def rationalMinor (P d r : PTm n) : PTm n := normalized P d (bestRow P d) (columnMask P d (supportedColumn P d r))
 def embeddedMinor (P d r : PTm n) : PTm n := matrix (rationalMinor P d r) (rank P d) (rank P d)
 
-@[simp] theorem subst_laplaceMinor {k : ℕ} (σ : Fin n → PTm k) (P d i r : PTm n) :
-    Syn.subst σ (laplaceMinor P d i r) = laplaceMinor (Syn.subst σ P) (Syn.subst σ d) (Syn.subst σ i) (Syn.subst σ r) := by simp [laplaceMinor]
-@[simp] theorem subst_rationalMinor {k : ℕ} (σ : Fin n → PTm k) (P d r : PTm n) :
-    Syn.subst σ (rationalMinor P d r) = rationalMinor (Syn.subst σ P) (Syn.subst σ d) (Syn.subst σ r) := by simp [rationalMinor]
-@[simp] theorem subst_embeddedMinor {k : ℕ} (σ : Fin n → PTm k) (P d r : PTm n) :
-    Syn.subst σ (embeddedMinor P d r) = embeddedMinor (Syn.subst σ P) (Syn.subst σ d) (Syn.subst σ r) := by simp [embeddedMinor]
+ipra_subst laplaceMinor
+ipra_subst rationalMinor
+ipra_subst embeddedMinor
 
 theorem supported_spec (P d r : PTm n) (h : Γ ⊢[PRAAx] lt (rank P d) d) (hr : Γ ⊢[PRAAx] lt r (succ (rank P d))) : Γ ⊢[PRAAx]
     lt (supportedColumn P d r) d ⋏ (RationalSubtupleSpan.bit (extendedColumn P d) (supportedColumn P d r) ≐ one ⋏
@@ -121,27 +115,24 @@ def output (P d i r : PTm n) : PTm n := pairT (laplaceMinor P d i r)
   (pairT (scalarDet (laplaceMinor P d i r) (rank P d)) (pairT (cofactorValue P d r) (lastValue P d i r)))
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (P d i r : PTm n) : PTm n := app outputF ![P,d,i,r]
-@[simp] theorem subst_cofactorValue {k : ℕ} (σ : Fin n → PTm k) (P d r : PTm n) :
-    Syn.subst σ (cofactorValue P d r) = cofactorValue (Syn.subst σ P) (Syn.subst σ d) (Syn.subst σ r) := by simp [cofactorValue,minorValue]
-@[simp] theorem subst_lastValue {k : ℕ} (σ : Fin n → PTm k) (P d i r : PTm n) :
-    Syn.subst σ (lastValue P d i r) = lastValue (Syn.subst σ P) (Syn.subst σ d) (Syn.subst σ i) (Syn.subst σ r) := by simp [lastValue]
-@[simp] theorem subst_output {k : ℕ} (σ : Fin n → PTm k) (P d i r : PTm n) :
-    Syn.subst σ (output P d i r) = output (Syn.subst σ P) (Syn.subst σ d) (Syn.subst σ i) (Syn.subst σ r) := by simp [output]
+ipra_subst cofactorValue [minorValue]
+ipra_subst lastValue
+ipra_subst output
 theorem program_at (P d i r : PTm n) : Γ ⊢[PRAAx] run P d i r ≐ output P d i r := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![P,d,i,r]
 theorem returned_table (P d i r : PTm n) : Γ ⊢[PRAAx] fstT (run P d i r) ≐ laplaceMinor P d i r :=
-  (congrFst (program_at P d i r)).eqTrans (fst_pair _ _)
+  (program_at P d i r).fstE
 theorem returned_tail (P d i r : PTm n) : Γ ⊢[PRAAx] sndT (run P d i r) ≐
     pairT (scalarDet (laplaceMinor P d i r) (rank P d)) (pairT (cofactorValue P d r) (lastValue P d i r)) :=
-  (congrSnd (program_at P d i r)).eqTrans (snd_pair _ _)
+  (program_at P d i r).sndE
 theorem returned_determinant (P d i r : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run P d i r)) ≐ scalarDet (laplaceMinor P d i r) (rank P d) :=
-  (congrFst (returned_tail P d i r)).eqTrans (fst_pair _ _)
+  (returned_tail P d i r).fstE
 theorem returned_source (P d i r : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run P d i r)) ≐ pairT (cofactorValue P d r) (lastValue P d i r) :=
-  (congrSnd (returned_tail P d i r)).eqTrans (snd_pair _ _)
+  (returned_tail P d i r).sndE
 theorem returned_cofactor (P d i r : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run P d i r))) ≐ cofactorValue P d r :=
-  (congrFst (returned_source P d i r)).eqTrans (fst_pair _ _)
+  (returned_source P d i r).fstE
 theorem returned_last (P d i r : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run P d i r))) ≐ lastValue P d i r :=
-  (congrSnd (returned_source P d i r)).eqTrans (snd_pair _ _)
+  (returned_source P d i r).sndE
 theorem returned_minor_value (P d i r : PTm n) (h : Γ ⊢[PRAAx] lt (rank P d) d) (hr : Γ ⊢[PRAAx] lt r (succ (rank P d))) : Γ ⊢[PRAAx]
     fstT (sndT (run P d i r)) ≐ embed (minorValue P d (supportedColumn P d r)) :=
   (returned_determinant P d i r).eqTrans (minor_determinant P d i r h hr)

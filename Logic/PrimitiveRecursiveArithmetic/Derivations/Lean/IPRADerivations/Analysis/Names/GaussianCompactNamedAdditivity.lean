@@ -15,17 +15,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCompactNamedAdditivity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qadd positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianCompactRiemannName (sampledModulus localBody inside evaluatorName nameData sample quadrature mesh precision)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameEquivalence (crossEquivalent)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -67,9 +63,7 @@ theorem right_modulus (F : PR 3) (a C1 C2 E L x : PTm n) (h : Γ ⊢[PRAAx] samp
 
 def input (F : PR 3) (a C1 C2 E L T x : PTm n) : Fm PTm n := le one a ⋏ (le one E ⋏ (le one C1 ⋏ (le one C2 ⋏
   (le (C1+C2) (E*T) ⋏ sampledModulus F a (C1+C2) E L x))))
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (F : PR 3) (a C1 C2 E L T x : PTm n) :
-    (input F a C1 C2 E L T x).subst σ = input F (Syn.subst σ a) (Syn.subst σ C1) (Syn.subst σ C2) (Syn.subst σ E)
-      (Syn.subst σ L) (Syn.subst σ T) (Syn.subst σ x) := by simp [input]
+ipra_subst input
 
 theorem full_input (F : PR 3) (a C1 C2 E L T x : PTm n) (h : Γ ⊢[PRAAx] input F a C1 C2 E L T x) : Γ ⊢[PRAAx]
     GaussianCompactRiemannName.input F a (C1+C2) E L T x :=
@@ -84,9 +78,7 @@ theorem right_input (F : PR 3) (a C1 C2 E L T x : PTm n) (h : Γ ⊢[PRAAx] inpu
     (right_modulus F a C1 C2 E L x h.andE₂.andE₂.andE₂.andE₂.andE₂)))
 
 def refined (F : PR 3) (p a C E L T x : PTm n) : PTm n := quadrature F (precision p T) (C*mesh p L T) a C E x
-@[simp] theorem subst_refined {m : ℕ} (σ : Fin n → PTm m) (F : PR 3) (p a C E L T x : PTm n) :
-    Syn.subst σ (refined F p a C E L T x) = refined F (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ C)
-      (Syn.subst σ E) (Syn.subst σ L) (Syn.subst σ T) (Syn.subst σ x) := by simp [refined]
+ipra_subst refined
 
 /-- Same actual name, genuinely refined by its numerical width. -/
 theorem refinement_distance (F : PR 3) (p a C E L T x : PTm n) (hC : Γ ⊢[PRAAx] le one C)
@@ -133,9 +125,7 @@ def addedSample (F : PR 3) (p a C1 C2 E L T x : PTm n) : PTm n :=
   ap2 (GaussianNameArithmetic.addF (GaussianCompactRiemannName.nameF F) (GaussianCompactRiemannName.nameF F)) p
     (GaussianNameArithmetic.addData (GaussianCompactRiemannName.data a C1 E L T x)
       (GaussianCompactRiemannName.data (a+C1) C2 E L T x))
-@[simp] theorem subst_addedSample {m : ℕ} (σ : Fin n → PTm m) (F : PR 3) (p a C1 C2 E L T x : PTm n) :
-    Syn.subst σ (addedSample F p a C1 C2 E L T x) = addedSample F (Syn.subst σ p) (Syn.subst σ a)
-      (Syn.subst σ C1) (Syn.subst σ C2) (Syn.subst σ E) (Syn.subst σ L) (Syn.subst σ T) (Syn.subst σ x) := by simp [addedSample]
+ipra_subst addedSample
 
 theorem normalized_sample_additivity (F : PR 3) (p a C1 C2 E L T x : PTm n)
     (h : Γ ⊢[PRAAx] input F a C1 C2 E L T x) : Γ ⊢[PRAAx]
@@ -188,31 +178,29 @@ def output (F : PR 3) (p q a C1 C2 E L T x : PTm n) : PTm n :=
   pairT (sample F p a (C1+C2) E L T x) (pairT (addedSample F q a C1 C2 E L T x) (pairT (unit p+unit q) (unit p*unit q)))
 def outputF (F : PR 3) : PR 9 := PTm.toPR (output F (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) (var 7) (var 8))
 def run (F : PR 3) (p q a C1 C2 E L T x : PTm n) : PTm n := PTm.app (outputF F) ![p,q,a,C1,C2,E,L,T,x]
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (F : PR 3) (p q a C1 C2 E L T x : PTm n) :
-    Syn.subst σ (output F p q a C1 C2 E L T x) = output F (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ a)
-      (Syn.subst σ C1) (Syn.subst σ C2) (Syn.subst σ E) (Syn.subst σ L) (Syn.subst σ T) (Syn.subst σ x) := by simp [output]
+ipra_subst output
 theorem program_at (F : PR 3) (p q a C1 C2 E L T x : PTm n) : Γ ⊢[PRAAx]
     run F p q a C1 C2 E L T x ≐ output F p q a C1 C2 E L T x := by
   simpa [run,outputF] using toPR_eq (Γ := Γ)
     (output F (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) (var 7) (var 8) : PTm 9) ![p,q,a,C1,C2,E,L,T,x]
 theorem returned_full (F : PR 3) (p q a C1 C2 E L T x : PTm n) : Γ ⊢[PRAAx]
     fstT (run F p q a C1 C2 E L T x) ≐ sample F p a (C1+C2) E L T x :=
-  (congrFst (program_at F p q a C1 C2 E L T x)).eqTrans (fst_pair _ _)
+  (program_at F p q a C1 C2 E L T x).fstE
 theorem returned_tail (F : PR 3) (p q a C1 C2 E L T x : PTm n) : Γ ⊢[PRAAx]
     sndT (run F p q a C1 C2 E L T x) ≐ pairT (addedSample F q a C1 C2 E L T x) (pairT (unit p+unit q) (unit p*unit q)) :=
-  (congrSnd (program_at F p q a C1 C2 E L T x)).eqTrans (snd_pair _ _)
+  (program_at F p q a C1 C2 E L T x).sndE
 theorem returned_sum (F : PR 3) (p q a C1 C2 E L T x : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run F p q a C1 C2 E L T x)) ≐ addedSample F q a C1 C2 E L T x :=
-  (congrFst (returned_tail F p q a C1 C2 E L T x)).eqTrans (fst_pair _ _)
+  (returned_tail F p q a C1 C2 E L T x).fstE
 theorem returned_budget (F : PR 3) (p q a C1 C2 E L T x : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (run F p q a C1 C2 E L T x)) ≐ pairT (unit p+unit q) (unit p*unit q) :=
-  (congrSnd (returned_tail F p q a C1 C2 E L T x)).eqTrans (snd_pair _ _)
+  (returned_tail F p q a C1 C2 E L T x).sndE
 theorem returned_numerator (F : PR 3) (p q a C1 C2 E L T x : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (run F p q a C1 C2 E L T x))) ≐ unit p+unit q :=
-  (congrFst (returned_budget F p q a C1 C2 E L T x)).eqTrans (fst_pair _ _)
+  (returned_budget F p q a C1 C2 E L T x).fstE
 theorem returned_denominator (F : PR 3) (p q a C1 C2 E L T x : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (sndT (run F p q a C1 C2 E L T x))) ≐ unit p*unit q :=
-  (congrSnd (returned_budget F p q a C1 C2 E L T x)).eqTrans (snd_pair _ _)
+  (returned_budget F p q a C1 C2 E L T x).sndE
 theorem returned_distance (F : PR 3) (p q a C1 C2 E L T x : PTm n) (h : Γ ⊢[PRAAx] input F a C1 C2 E L T x) : Γ ⊢[PRAAx]
     distanceBounded (fstT (run F p q a C1 C2 E L T x)) (fstT (sndT (run F p q a C1 C2 E L T x)))
       (fstT (sndT (sndT (run F p q a C1 C2 E L T x)))) (sndT (sndT (sndT (run F p q a C1 C2 E L T x)))) :=

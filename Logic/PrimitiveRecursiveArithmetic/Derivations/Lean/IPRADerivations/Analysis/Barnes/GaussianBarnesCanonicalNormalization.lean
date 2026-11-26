@@ -15,7 +15,7 @@ set_option maxHeartbeats 500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalNormalization
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (normSq normSq_zero zeroCode)
 open GaussianBarnesCanonicalLogCofinal (source)
 open GaussianBarnesCanonicalValue (nameF data prefixF)
@@ -30,10 +30,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalReciprocal (power powerF qone)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qmul_zero_left qmul_zero_right qone_canonical
   qsub_congr qzero_add qzero_canonical)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "P" => GaussianBarnesCanonicalPrefactor.nameF

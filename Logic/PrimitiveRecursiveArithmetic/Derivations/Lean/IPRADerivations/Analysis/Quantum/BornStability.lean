@@ -1,4 +1,3 @@
-import IPRADerivations.Core.Tactic
 import IPRADerivations.Core.Order
 
 /-! Imported from the packet `analysis/quantum_ipra_2026-11-20`, `lean/BornStability.lean`: the namespace is placed under `LeanProofs.IPRA` and the `#print axioms` lines are dropped (the library audits axioms in `Checks/Axioms.lean`). -/
@@ -7,9 +6,7 @@ import IPRADerivations.Core.Order
 amplitude, proved as a universally closed derivation in object iPRA. -/
 
 namespace LeanProofs.IPRA.Analysis.Quantum.Born
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

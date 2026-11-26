@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Names.GaussianNameRingLaws
 import IPRADerivations.Analysis.Polynomials.Evaluation.GaussianGeneralPolynomialValueName
-import IPRADerivations.Core.SumSplit
 
 /-!
 # Actual numerical-prefix Horner interpretation of polynomial value names
@@ -15,7 +14,7 @@ set_option autoImplicit false
 set_option linter.unusedSimpArgs false
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialNameHorner
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (horner qzero qadd qmul positive_product)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (bounded distanceBounded)
 open LeanProofs.IPRA.Analysis.GaussianGeneralCoefficientNames (generalCN)
@@ -26,10 +25,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalDistanceOrder (distance_congr dist
 open LeanProofs.IPRA.Analysis.GaussianNameEquivalence (crossEquivalent)
 open LeanProofs.IPRA.Analysis.GaussianGeneralPolynomialEvaluation (A C M T subst_T)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -49,19 +44,11 @@ def nameData (a : PR 3) (N U j x y : PTm n) : PTm n :=
 def computedData (a : PR 3) (point : PR 2) (N j x y : PTm n) : PTm n :=
   nameData a N (GaussianNameBounds.U point y) j x y
 
-@[simp] theorem subst_coefficientData {m : ℕ} (σ : Fin n → PTm m) (i x : PTm n) :
-    Syn.subst σ (coefficientData i x) = coefficientData (Syn.subst σ i) (Syn.subst σ x) := by simp [coefficientData]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (N j x y : PTm n) :
-    Syn.subst σ (data N j x y) = data (Syn.subst σ N) (Syn.subst σ j) (Syn.subst σ x) (Syn.subst σ y) := by simp [data]
-@[simp] theorem subst_raw {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (point : PR 2) (N j x y s : PTm n) :
-    Syn.subst σ (raw a point N j x y s) = raw a point (Syn.subst σ N) (Syn.subst σ j)
-      (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ s) := by simp [raw]
-@[simp] theorem subst_nameData {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N U j x y : PTm n) :
-    Syn.subst σ (nameData a N U j x y) = nameData a (Syn.subst σ N) (Syn.subst σ U)
-      (Syn.subst σ j) (Syn.subst σ x) (Syn.subst σ y) := by simp [nameData]
-@[simp] theorem subst_computedData {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (point : PR 2) (N j x y : PTm n) :
-    Syn.subst σ (computedData a point N j x y) = computedData a point (Syn.subst σ N) (Syn.subst σ j)
-      (Syn.subst σ x) (Syn.subst σ y) := by simp [computedData]
+ipra_subst coefficientData
+ipra_subst data
+ipra_subst raw
+ipra_subst nameData
+ipra_subst computedData
 
 theorem coefficient_at (a : PR 3) (i s x : PTm n) : Γ ⊢[PRAAx]
     ap2 (coefficientF a) s (coefficientData i x) ≐ ap3 a i s x := by
@@ -228,15 +215,9 @@ def stepBudget (a : PR 3) (point : PR 2) (N U j x y : PTm n) : PTm n :=
   (T a N U x+one)+GaussianNameRingLaws.three+
     (GaussianNameArithmetic.multiplyModulus (prefixF a point) point (nameData a N U j x y) y+one)+
       (T a N U x+one)*U
-@[simp] theorem subst_productData {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (point : PR 2) (N U j x y : PTm n) :
-    Syn.subst σ (productData a point N U j x y) = productData a point (Syn.subst σ N) (Syn.subst σ U)
-      (Syn.subst σ j) (Syn.subst σ x) (Syn.subst σ y) := by simp [productData]
-@[simp] theorem subst_stepData {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (point : PR 2) (N U j x y : PTm n) :
-    Syn.subst σ (stepData a point N U j x y) = stepData a point (Syn.subst σ N) (Syn.subst σ U)
-      (Syn.subst σ j) (Syn.subst σ x) (Syn.subst σ y) := by simp [stepData]
-@[simp] theorem subst_stepBudget {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (point : PR 2) (N U j x y : PTm n) :
-    Syn.subst σ (stepBudget a point N U j x y) = stepBudget a point (Syn.subst σ N) (Syn.subst σ U)
-      (Syn.subst σ j) (Syn.subst σ x) (Syn.subst σ y) := by simp [stepBudget,GaussianNameRingLaws.three]
+ipra_subst productData
+ipra_subst stepData
+ipra_subst stepBudget [GaussianNameRingLaws.three]
 
 theorem step_fast (a : PR 3) (point : PR 2) (N U j x y : PTm n)
     (hCN : Γ ⊢[PRAAx] generalCN a N x) (hPoint : Γ ⊢[PRAAx] pointCN point y)

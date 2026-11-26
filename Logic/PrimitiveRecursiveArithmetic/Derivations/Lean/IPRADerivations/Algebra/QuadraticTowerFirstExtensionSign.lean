@@ -1,6 +1,5 @@
 import IPRADerivations.Algebra.QuadraticRationalSignDispatch
 import IPRADerivations.Algebra.QuadraticTowerSignEmbedding
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Correctness of the actual first-extension sign-table query
@@ -15,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticTowerFirstExtensionSign
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis
 open QuadraticTowerArrayCodec (arrayHeight normalized)
 open QuadraticTowerScalarBudget (height)
@@ -25,18 +24,13 @@ open QuadraticTowerSignRecipe (read firstTag secondTag thirdTag thirdInput)
 open QuadraticRationalSignDispatch (scalarTag)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def coefficients (A : PTm n) : PTm n := pairT (entry (leftHalf zero A) zero) (entry (rightHalf zero A) zero)
 def radicand (D : PTm n) : PTm n := entry (entry D zero) zero
-@[simp] theorem subst_coefficients {k : ℕ} (σ : Fin n → PTm k) (A : PTm n) :
-    Syn.subst σ (coefficients A) = coefficients (Syn.subst σ A) := by simp [coefficients]
-@[simp] theorem subst_radicand {k : ℕ} (σ : Fin n → PTm k) (D : PTm n) :
-    Syn.subst σ (radicand D) = radicand (Syn.subst σ D) := by simp [radicand]
+ipra_subst coefficients
+ipra_subst radicand
 
 theorem ground_read (B D A : PTm n) (ha : Γ ⊢[PRAAx] arrayHeight zero A B) : Γ ⊢[PRAAx]
     read zero B (QuadraticTowerSignTable.table zero B D) A ≐ scalarTag (entry A zero) :=
@@ -152,12 +146,9 @@ theorem query_sign (B D A : PTm n) (hd : Γ ⊢[PRAAx] radicandsHeight D one B)
 def scalarArray (q : PTm n) : PTm n := QuadraticTowerScalarArrays.scalarArray zero q
 def inputArray (x : PTm n) : PTm n := Foundations.SequenceComposition.append (scalarArray (fstT x)) (scalarArray (sndT x))
 def radicandArray (d : PTm n) : PTm n := QuadraticTowerCoefficients.singleton (scalarArray d)
-@[simp] theorem subst_scalarArray {k : ℕ} (σ : Fin n → PTm k) (q : PTm n) :
-    Syn.subst σ (scalarArray q) = scalarArray (Syn.subst σ q) := by simp [scalarArray]
-@[simp] theorem subst_inputArray {k : ℕ} (σ : Fin n → PTm k) (x : PTm n) :
-    Syn.subst σ (inputArray x) = inputArray (Syn.subst σ x) := by simp [inputArray]
-@[simp] theorem subst_radicandArray {k : ℕ} (σ : Fin n → PTm k) (d : PTm n) :
-    Syn.subst σ (radicandArray d) = radicandArray (Syn.subst σ d) := by simp [radicandArray]
+ipra_subst scalarArray
+ipra_subst inputArray
+ipra_subst radicandArray
 
 theorem input_height (B x : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (ha : Γ ⊢[PRAAx] height (fstT x) B) (hb : Γ ⊢[PRAAx] height (sndT x) B) : Γ ⊢[PRAAx]
@@ -242,25 +233,23 @@ def output (B d x : PTm n) : PTm n := pairT (QuadraticTowerSignTable.query one B
   (pairT (QuadraticRationalNonnegativeRadicand.sign d x) (pairT (inputArray x) (radicandArray d)))
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (B d x : PTm n) : PTm n := ap3 outputF B d x
-@[simp] theorem subst_output {k : ℕ} (σ : Fin n → PTm k) (B d x : PTm n) :
-    Syn.subst σ (output B d x) = output (Syn.subst σ B) (Syn.subst σ d) (Syn.subst σ x) := by simp [output]
-@[simp] theorem subst_run {k : ℕ} (σ : Fin n → PTm k) (B d x : PTm n) :
-    Syn.subst σ (run B d x) = run (Syn.subst σ B) (Syn.subst σ d) (Syn.subst σ x) := by simp [run]
+ipra_subst output
+ipra_subst run
 theorem program_at (B d x : PTm n) : Γ ⊢[PRAAx] run B d x ≐ output B d x := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![B,d,x]
 theorem returned_query (B d x : PTm n) : Γ ⊢[PRAAx] fstT (run B d x) ≐ QuadraticTowerSignTable.query one B (radicandArray d) (inputArray x) :=
-  (congrFst (program_at B d x)).eqTrans (fst_pair _ _)
+  (program_at B d x).fstE
 theorem returned_tail (B d x : PTm n) : Γ ⊢[PRAAx] sndT (run B d x) ≐
     pairT (QuadraticRationalNonnegativeRadicand.sign d x) (pairT (inputArray x) (radicandArray d)) :=
-  (congrSnd (program_at B d x)).eqTrans (snd_pair _ _)
+  (program_at B d x).sndE
 theorem returned_source (B d x : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run B d x)) ≐ QuadraticRationalNonnegativeRadicand.sign d x :=
-  (congrFst (returned_tail B d x)).eqTrans (fst_pair _ _)
+  (returned_tail B d x).fstE
 theorem returned_arrays (B d x : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run B d x)) ≐ pairT (inputArray x) (radicandArray d) :=
-  (congrSnd (returned_tail B d x)).eqTrans (snd_pair _ _)
+  (returned_tail B d x).sndE
 theorem returned_input (B d x : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run B d x))) ≐ inputArray x :=
-  (congrFst (returned_arrays B d x)).eqTrans (fst_pair _ _)
+  (returned_arrays B d x).fstE
 theorem returned_radicands (B d x : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run B d x))) ≐ radicandArray d :=
-  (congrSnd (returned_arrays B d x)).eqTrans (snd_pair _ _)
+  (returned_arrays B d x).sndE
 theorem returned_equal (B d x : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hd : Γ ⊢[PRAAx] height d B) (ha : Γ ⊢[PRAAx] height (fstT x) B) (hb : Γ ⊢[PRAAx] height (sndT x) B)
     (hn : Γ ⊢[PRAAx] QuadraticRationalNonnegativeRadicand.nonnegative d) : Γ ⊢[PRAAx]

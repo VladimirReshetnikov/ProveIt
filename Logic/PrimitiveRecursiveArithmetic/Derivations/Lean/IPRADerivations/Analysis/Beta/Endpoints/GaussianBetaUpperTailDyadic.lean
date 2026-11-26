@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaUpperTailDyadic
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalMetric (bounded)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianRationalHorner (positive_product)
@@ -25,10 +25,6 @@ open GaussianBetaKernelGridComparison (evaluatorF sampleDataBeta)
 open GaussianEulerHalfDecayTailBound (tailNumerator tailDenominator)
 open GaussianCompactRiemannName (quadrature)
 open GaussianBetaFiniteEulerComparison (slack)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

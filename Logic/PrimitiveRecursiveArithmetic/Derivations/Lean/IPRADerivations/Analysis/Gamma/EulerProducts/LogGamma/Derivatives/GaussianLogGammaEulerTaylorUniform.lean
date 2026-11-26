@@ -13,15 +13,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerTaylorUniform
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianLogGammaEulerResidualDomain (native)
 open GaussianLogGammaEulerTaylorCofinal (incrementF incrementData weightedF weightedData)
 open GaussianLogGammaEulerTaylorRows (coefficient)
 open GaussianNamedInverseRate (independentRate)
 open GaussianRightHalfPlaneLogarithmIncrementMargin (smallStep admitted)
 open GaussianRootAlgebra (sub)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Src" => GaussianRightHalfPlaneLogarithm.source

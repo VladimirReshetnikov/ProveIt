@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNativeDerivativeQuotientQuadratic
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (normSq)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF)
@@ -21,9 +21,6 @@ open GaussianL1 (norm1)
 open GaussianNameArithmetic (multiplyF multiplyData)
 open GaussianNamedInverseRate (independentRate)
 open GaussianRationalHorner (ofGaussian positive_product)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

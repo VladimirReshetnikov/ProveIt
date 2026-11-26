@@ -5,7 +5,6 @@ import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalDis
 import IPRADerivations.Analysis.Polynomials.Division.GaussianRationalSyntheticCoefficientValues
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalRelativeTwoTerm
 import IPRADerivations.Algebra.PowerDifference
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Finite telescoping of the actual changing-precision trajectory
@@ -21,17 +20,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGeneralFTATelescope
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianGeneralFTAConstants (R C K rhoNum)
 open LeanProofs.IPRA.Analysis.GaussianGeneralFTATrajectory (trajectory delta)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (bounded distanceBounded qsub qnormSq)
 open LeanProofs.IPRA.Analysis.GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open LeanProofs.IPRA.Analysis.GaussianDescentClockArithmetic (positive_product)
 open LeanProofs.IPRA.Algebra.PowerDifference (gd gd_zero gd_succ power_diff)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -49,26 +44,15 @@ def increments (a : PR 3) (N h x : PTm n) : Fm PTm n := .all
     (scale a (Syn.shift N) (Syn.shift h) (Syn.shift x)*pw (rhoNum (Syn.shift N)) (var 0))
     (pw (K (Syn.shift N)) (var 0)))
 
-@[simp] theorem subst_scale {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x : PTm n) :
-    Syn.subst σ (scale a N h x) = scale a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) := by simp [scale]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x j k : PTm n) :
-    Syn.subst σ (numerator a N h x j k) = numerator a (Syn.subst σ N) (Syn.subst σ h)
-      (Syn.subst σ x) (Syn.subst σ j) (Syn.subst σ k) := by simp [numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (N j k : PTm n) :
-    Syn.subst σ (denominator N j k) = denominator (Syn.subst σ N) (Syn.subst σ j) (Syn.subst σ k) := by simp [denominator]
-@[simp] theorem subst_tailNumerator {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x j : PTm n) :
-    Syn.subst σ (tailNumerator a N h x j) = tailNumerator a (Syn.subst σ N) (Syn.subst σ h)
-      (Syn.subst σ x) (Syn.subst σ j) := by simp [tailNumerator]
-@[simp] theorem subst_tailDenominator {m : ℕ} (σ : Fin n → PTm m) (N j : PTm n) :
-    Syn.subst σ (tailDenominator N j) = tailDenominator (Syn.subst σ N) (Syn.subst σ j) := by simp [tailDenominator]
-@[simp] theorem subst_law {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x j k : PTm n) :
-    (law a N h x j k).subst σ = law a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x)
-      (Syn.subst σ j) (Syn.subst σ k) := by simp [law]
-@[simp] theorem subst_increments {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x : PTm n) :
-    (increments a N h x).subst σ = increments a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) := by
-  simp only [increments,Fm.subst_all,GaussianRationalMetric.subst_bounded,GaussianGeneralFTATrajectory.subst_delta,
-    subst_scale,GaussianGeneralFTAConstants.subst_rhoNum,GaussianGeneralFTAConstants.subst_K,
-    subst_ap2,PTm.subst_mul,Syn.subst_var,Syn.up_zero,Syn.up_succ,Syn.subst_shift,Syn.shift_subst]
+ipra_subst scale
+ipra_subst numerator
+ipra_subst denominator
+ipra_subst tailNumerator
+ipra_subst tailDenominator
+ipra_subst law
+ipra_subst increments [Fm.subst_all, GaussianRationalMetric.subst_bounded, GaussianGeneralFTATrajectory.subst_delta,
+    subst_scale, GaussianGeneralFTAConstants.subst_rhoNum, GaussianGeneralFTAConstants.subst_K, subst_ap2,
+    PTm.subst_mul, Syn.subst_var, Syn.up_zero, Syn.up_succ, Syn.subst_shift, Syn.shift_subst]
 
 theorem denominator_positive (N j m : PTm n) (hK : Γ ⊢[PRAAx] le one (K N)) : Γ ⊢[PRAAx]
     le one (denominator N j m) := GaussianPolynomialPerturbation.power_positive _ _ hK
@@ -141,11 +125,9 @@ theorem finite_bound (a : PR 3) (N h x j m : PTm n)
   have sshift : Γ.map Fm.shift ⊢[PRAAx] increments a (Syn.shift N) (Syn.shift h) (Syn.shift x) := by
     simpa only [Fm.shift,subst_increments,Syn.shift] using hs.shift
   have all : Γ ⊢[PRAAx] .all (law a (Syn.shift N) (Syn.shift h) (Syn.shift x) (Syn.shift j) (var 0)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_law,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact finite_zero a N h x j hK
-    · simp only [subst_law,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact finite_step _ _ _ _ _ _ kshift.wk sshift.wk Prf.hyp0
+    ipra_qfind (le_QF _ _) [subst_law]
+    · exact finite_zero a N h x j hK
+    · exact finite_step _ _ _ _ _ _ kshift.wk sshift.wk Prf.hyp0
   simpa only [subst_law,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE m
 
 theorem geometric_complement (N m : PTm n) (hK : Γ ⊢[PRAAx] le one (K N)) : Γ ⊢[PRAAx]
@@ -214,16 +196,8 @@ def output (a : PR 3) (N h x j ell : PTm n) : PTm n :=
     (pairT (tailNumerator a N h x j) (tailDenominator N j)))
 def outputF (a : PR 3) : PR 5 := PTm.toPR (output a (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (a : PR 3) (N h x j ell : PTm n) : PTm n := PTm.app (outputF a) ![N,h,x,j,ell]
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x j ell : PTm n) :
-    Syn.subst σ (output a N h x j ell) = output a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x)
-      (Syn.subst σ j) (Syn.subst σ ell) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x j ell : PTm n) :
-    Syn.subst σ (run a N h x j ell) = run a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x)
-      (Syn.subst σ j) (Syn.subst σ ell) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (a : PR 3) (N h x j ell : PTm n) : Γ ⊢[PRAAx]
     run a N h x j ell ≐ output a N h x j ell := by
@@ -231,16 +205,16 @@ theorem program_at (a : PR 3) (N h x j ell : PTm n) : Γ ⊢[PRAAx]
     (output a (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![N,h,x,j,ell]
 theorem returned_later (a : PR 3) (N h x j ell : PTm n) : Γ ⊢[PRAAx]
     fstT (run a N h x j ell) ≐ trajectory a N h x ell :=
-  (congrFst (program_at a N h x j ell)).eqTrans (fst_pair _ _)
+  (program_at a N h x j ell).fstE
 theorem returned_earlier (a : PR 3) (N h x j ell : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run a N h x j ell)) ≐ trajectory a N h x j :=
-  (congrFst ((congrSnd (program_at a N h x j ell)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at a N h x j ell).sndE.fstE
 theorem returned_numerator (a : PR 3) (N h x j ell : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (run a N h x j ell))) ≐ tailNumerator a N h x j :=
-  (congrFst ((congrSnd ((congrSnd (program_at a N h x j ell)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at a N h x j ell).sndE.sndE.fstE
 theorem returned_denominator (a : PR 3) (N h x j ell : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (sndT (run a N h x j ell))) ≐ tailDenominator N j :=
-  (congrSnd ((congrSnd ((congrSnd (program_at a N h x j ell)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at a N h x j ell).sndE.sndE.sndE
 
 theorem returned_tail (a : PR 3) (N k h x j ell : PTm n)
     (hSource : Γ ⊢[PRAAx] GaussianGeneralPolynomialSamples.sourceInput a N k h x)

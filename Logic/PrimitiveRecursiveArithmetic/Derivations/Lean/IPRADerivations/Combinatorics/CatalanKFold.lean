@@ -1,7 +1,6 @@
 import IPRADerivations.Combinatorics.CatalanPowers
 import IPRADerivations.Combinatorics.CatalanExtensions
 import IPRADerivations.Foundations.ShiftedInduction
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The `k`-fold Catalan convolution
@@ -37,7 +36,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.CatalanKFold
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial (binom)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel pascal_at)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrBinom)
@@ -47,10 +46,6 @@ open LeanProofs.IPRA.Combinatorics.CatalanExtensions (ballot)
 open LeanProofs.IPRA.Combinatorics.CatalanPowers (T T_zero T_one T_rec)
 open LeanProofs.IPRA.Combinatorics.BellTouchardPower (pair_congr)
 open LeanProofs.IPRA.Foundations.ShiftedInduction (shifted_induction)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

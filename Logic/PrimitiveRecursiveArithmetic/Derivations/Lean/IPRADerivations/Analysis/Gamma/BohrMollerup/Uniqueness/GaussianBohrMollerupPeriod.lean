@@ -16,7 +16,7 @@ set_option maxHeartbeats 2550000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBohrMollerupPeriod
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBohrMollerupPresentation (Presentation argument observe_value observe_recurrence values recurrence normalization)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCompactCutoffAlignment (cross_data_congr)
@@ -25,9 +25,6 @@ open GaussianNameEquivalence (crossEquivalent cross_trans)
 open GaussianNameRingLaws (zeroF zero_fast)
 open GaussianNamedFiniteEqualityChain (allSteps finite_cross)
 open GaussianStirlingGammaLogarithm (source)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -37,9 +34,7 @@ def differenceData (P Q : Presentation) (a b : PTm n) : PTm n :=
 def shiftBody (P Q : Presentation) : PTm 2 :=
   differenceData P Q (fstT (var 1)+sndT (var 1)*var 0) (sndT (var 1))
 
-@[simp] theorem subst_differenceData {m : ℕ} (σ : Fin n → PTm m) (P Q : Presentation) (a b : PTm n) :
-    Syn.subst σ (differenceData P Q a b) = differenceData P Q (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [differenceData]
+ipra_subst differenceData
 
 theorem difference_data_congr (P Q : Presentation) (a b c d : PTm n)
     (ha : Γ ⊢[PRAAx] a ≐ c) (hb : Γ ⊢[PRAAx] b ≐ d) :

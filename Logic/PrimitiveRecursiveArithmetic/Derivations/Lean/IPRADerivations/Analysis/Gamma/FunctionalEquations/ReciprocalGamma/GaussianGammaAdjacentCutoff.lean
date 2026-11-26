@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaAdjacentCutoff
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul ofGaussian)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
@@ -28,9 +28,6 @@ open GaussianGammaCutoffName (exponentData exponentRadius exponentialData head n
 open GaussianGammaCanonicalTailName (source)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -71,12 +68,9 @@ def commonRadius (z R B N : PTm n) : PTm n := exponentRadius z R B (succ N)+one
 def factorProductF : PR 2 := multiplyF exponentialF constantF
 def factorProductData (z R B N : PTm n) : PTm n := multiplyData exponentialF constantF
   (exponentialData z R B (succ N)) (GaussianGammaEulerHead.factor N z B)
-@[simp] theorem subst_localData {l : ℕ} (σ : Fin n → PTm l) (z R B N : PTm n) :
-    Syn.subst σ (localData z R B N) = localData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [localData]
-@[simp] theorem subst_commonRadius {l : ℕ} (σ : Fin n → PTm l) (z R B N : PTm n) :
-    Syn.subst σ (commonRadius z R B N) = commonRadius (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [commonRadius]
-@[simp] theorem subst_factorProductData {l : ℕ} (σ : Fin n → PTm l) (z R B N : PTm n) :
-    Syn.subst σ (factorProductData z R B N) = factorProductData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [factorProductData]
+ipra_subst localData
+ipra_subst commonRadius
+ipra_subst factorProductData
 
 theorem local_exponential_factor (z R B N : PTm n) (h : Γ ⊢[PRAAx] source z R B N) : Γ ⊢[PRAAx]
     crossEquivalent (GaussianRadiusExponentialName.nameF GaussianLocalLogarithmName.pointF) constantF
@@ -186,20 +180,14 @@ theorem adjacent_cutoff_equivalent (z R B N : PTm n) (h : Γ ⊢[PRAAx] source z
 def output (z R B N : PTm n) : PTm n := pairT (data z R B N) (data z R B (succ N))
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (z R B N : PTm n) : PTm n := PTm.app outputF ![z,R,B,N]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (z R B N : PTm n) :
-    Syn.subst σ (output z R B N) = output (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (z R B N : PTm n) :
-    Syn.subst σ (run z R B N) = run (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 theorem program_at (z R B N : PTm n) : Γ ⊢[PRAAx] run z R B N ≐ output z R B N := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![z,R,B,N]
 theorem returned_first (z R B N : PTm n) : Γ ⊢[PRAAx] fstT (run z R B N) ≐ data z R B N :=
-  (congrFst (program_at _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _).fstE
 theorem returned_successor (z R B N : PTm n) : Γ ⊢[PRAAx] sndT (run z R B N) ≐ data z R B (succ N) :=
-  (congrSnd (program_at _ _ _ _)).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _).sndE
 theorem returned_equivalence (z R B N : PTm n) (h : Γ ⊢[PRAAx] source z R B N) : Γ ⊢[PRAAx]
     crossEquivalent nameF nameF (fstT (run z R B N)) (sndT (run z R B N)) := by
   have eq := Prf.eqSubst (Γ := Γ) (crossEquivalent nameF nameF (var 0) (var 1) : Fm PTm 2)

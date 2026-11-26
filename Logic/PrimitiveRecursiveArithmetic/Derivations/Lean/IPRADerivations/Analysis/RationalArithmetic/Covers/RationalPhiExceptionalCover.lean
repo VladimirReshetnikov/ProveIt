@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.RationalArithmetic.Covers.RationalPhiCoverPrefix
-import IPRADerivations.Core.SumSplit
 
 /-!
 # Explicit rational exceptions in the original Phi_s cover bound
@@ -15,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalPhiExceptionalCover
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalPhiSectionNonzero (curveInput)
 open RationalPhiCoverAssignment (sourceCoverBit)
 open RationalCurvePointsGaussianEmbedding (distinct distinctFrom distinct_at)
@@ -26,11 +25,7 @@ open GaussianRationalFiberGrouping (abscissa ordinate)
 open LeanProofs.IPRA.Foundations.BoundedSyntax (BFm formula)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
 
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -48,25 +43,15 @@ def outside (X P : PTm n) : Fm PTm n := .all (lt (var 0) (length (Syn.shift P)) 
   .all (lt (var 0) (length (Syn.shift (Syn.shift X))) ⟶
     neg (pointEqual (entry (Syn.shift (Syn.shift P)) (var 1)) (entry (Syn.shift (Syn.shift X)) (var 0)))))
 
-@[simp] theorem subst_pointEqual {q : ℕ} (σ : Fin n → PTm q) (v w : PTm n) :
-    (pointEqual v w).subst σ = pointEqual (Syn.subst σ v) (Syn.subst σ w) := by simp [pointEqual]
-@[simp] theorem subst_pointCode {q : ℕ} (σ : Fin n → PTm q) (v : PTm n) :
-    Syn.subst σ (pointCode v) = pointCode (Syn.subst σ v) := by simp [pointCode]
-@[simp] theorem subst_pointBit {q : ℕ} (σ : Fin n → PTm q) (v w : PTm n) :
-    Syn.subst σ (pointBit v w) = pointBit (Syn.subst σ v) (Syn.subst σ w) := by simp [pointBit]
-@[simp] theorem subst_test {q : ℕ} (σ : Fin n → PTm q) (g v X : PTm n) :
-    Syn.subst σ (test g v X) = test (Syn.subst σ g) (Syn.subst σ v) (Syn.subst σ X) := by simp [test,Signum.sg,one]
-@[simp] theorem subst_group {q : ℕ} (σ : Fin n → PTm q) (X P g : PTm n) :
-    Syn.subst σ (group X P g) = group (Syn.subst σ X) (Syn.subst σ P) (Syn.subst σ g) := by simp [group]
-@[simp] theorem subst_size {q : ℕ} (σ : Fin n → PTm q) (X P g : PTm n) :
-    Syn.subst σ (size X P g) = size (Syn.subst σ X) (Syn.subst σ P) (Syn.subst σ g) := by simp [size]
-@[simp] theorem subst_remainder {q : ℕ} (σ : Fin n → PTm q) (X P : PTm n) :
-    Syn.subst σ (remainder X P) = remainder (Syn.subst σ X) (Syn.subst σ P) := by simp [remainder]
-@[simp] theorem subst_total {q : ℕ} (σ : Fin n → PTm q) (X P : PTm n) :
-    Syn.subst σ (total X P) = total (Syn.subst σ X) (Syn.subst σ P) := by simp [total]
-@[simp] theorem subst_outside {q : ℕ} (σ : Fin n → PTm q) (X P : PTm n) :
-    (outside X P).subst σ = outside (Syn.subst σ X) (Syn.subst σ P) := by
-  simp [outside,Syn.subst_shift,Syn.shift_subst]
+ipra_subst pointEqual
+ipra_subst pointCode
+ipra_subst pointBit
+ipra_subst test [Signum.sg, one]
+ipra_subst group
+ipra_subst size
+ipra_subst remainder
+ipra_subst total
+ipra_subst outside [Syn.subst_shift, Syn.shift_subst]
 
 theorem point_equal_congr {v v' w w' : PTm n} (hv : Γ ⊢[PRAAx] v ≐ v') (hw : Γ ⊢[PRAAx] w ≐ w')
     (h : Γ ⊢[PRAAx] pointEqual v w) : Γ ⊢[PRAAx] pointEqual v' w' :=
@@ -77,9 +62,9 @@ theorem point_code_equal (v w : PTm n) (h : Γ ⊢[PRAAx] pointEqual v w) : Γ �
     (RationalGaussianEmbedding.scalar_recode_equal _ _ (.andE₂ h))
 theorem point_equal_of_code (v w : PTm n) (h : Γ ⊢[PRAAx] pointCode v ≐ pointCode w) : Γ ⊢[PRAAx] pointEqual v w :=
   .andI (RationalGaussianEmbedding.rational_equal_of_scalar_recode _ _
-    ((fst_pair _ _).eqSymm.eqTrans ((congrFst h).eqTrans (fst_pair _ _))))
+    ((fst_pair _ _).eqSymm.eqTrans h.fstE))
     (RationalGaussianEmbedding.rational_equal_of_scalar_recode _ _
-    ((snd_pair _ _).eqSymm.eqTrans ((congrSnd h).eqTrans (snd_pair _ _))))
+    ((snd_pair _ _).eqSymm.eqTrans h.sndE))
 theorem point_equal_refl (v : PTm n) : Γ ⊢[PRAAx] pointEqual v v := point_equal_of_code v v (.eqRefl _)
 theorem point_equal_symm (v w : PTm n) (h : Γ ⊢[PRAAx] pointEqual v w) : Γ ⊢[PRAAx] pointEqual w v :=
   point_equal_of_code _ _ (point_code_equal _ _ h).eqSymm
@@ -263,9 +248,7 @@ theorem split_bound (X P : PTm n) (hd : Γ ⊢[PRAAx] distinct P) : Γ ⊢[PRAAx
 def outsideCover (A : BFm 2) (f s r X M x : PTm n) : Fm PTm n := .all
   (distinct (var 0) ⟶ pointPowers (Syn.shift f) (Syn.shift r) (var 0) ⟶ extra A (var 0) (Syn.shift x) ⟶
     outside (Syn.shift X) (var 0) ⟶ sourceCoverBit (Syn.shift s) (var 0) (Syn.shift M) ≐ one)
-@[simp] theorem subst_outsideCover {q : ℕ} (σ : Fin n → PTm q) (A : BFm 2) (f s r X M x : PTm n) :
-    (outsideCover A f s r X M x).subst σ = outsideCover A (Syn.subst σ f) (Syn.subst σ s) (Syn.subst σ r)
-      (Syn.subst σ X) (Syn.subst σ M) (Syn.subst σ x) := by simp [outsideCover,Syn.subst_shift,Syn.shift_subst]
+ipra_subst outsideCover [Syn.subst_shift, Syn.shift_subst]
 
 theorem outside_cover_at (A : BFm 2) (f s r X M x Q : PTm n) (h : Γ ⊢[PRAAx] outsideCover A f s r X M x)
     (hd : Γ ⊢[PRAAx] distinct Q) (hp : Γ ⊢[PRAAx] pointPowers f r Q) (he : Γ ⊢[PRAAx] extra A Q x)
@@ -295,35 +278,27 @@ def output (X P : PTm n) : PTm n := pairT (groups X P) (pairT (remainder X P) (p
 def pointBitF : PR 2 := PTm.toPR (pointBit (var 0) (var 1))
 def outputF : PR 2 := PTm.toPR (output (var 0) (var 1))
 def run (X P : PTm n) : PTm n := app outputF ![X,P]
-@[simp] theorem subst_exceptionalTotal {q : ℕ} (σ : Fin n → PTm q) (X P : PTm n) :
-    Syn.subst σ (exceptionalTotal X P) = exceptionalTotal (Syn.subst σ X) (Syn.subst σ P) := by simp [exceptionalTotal]
-@[simp] theorem subst_groups {q : ℕ} (σ : Fin n → PTm q) (X P : PTm n) :
-    Syn.subst σ (groups X P) = groups (Syn.subst σ X) (Syn.subst σ P) := by simp [groups]
-@[simp] theorem subst_output {q : ℕ} (σ : Fin n → PTm q) (X P : PTm n) :
-    Syn.subst σ (output X P) = output (Syn.subst σ X) (Syn.subst σ P) := by simp [output]
-@[simp] theorem subst_run {q : ℕ} (σ : Fin n → PTm q) (X P : PTm n) :
-    Syn.subst σ (run X P) = run (Syn.subst σ X) (Syn.subst σ P) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst exceptionalTotal
+ipra_subst groups
+ipra_subst output
+ipra_subst run
 
 theorem point_bit_program_at (v w : PTm n) : Γ ⊢[PRAAx] app pointBitF ![v,w] ≐ pointBit v w := by
   simpa [pointBitF] using toPR_eq (Γ := Γ) (pointBit (var 0) (var 1) : PTm 2) ![v,w]
 theorem program_at (X P : PTm n) : Γ ⊢[PRAAx] run X P ≐ output X P := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) : PTm 2) ![X,P]
 theorem returned_groups (X P : PTm n) : Γ ⊢[PRAAx] fstT (run X P) ≐ groups X P :=
-  (congrFst (program_at X P)).eqTrans (fst_pair _ _)
+  (program_at X P).fstE
 theorem returned_remainder (X P : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run X P)) ≐ remainder X P :=
-  (congrFst ((congrSnd (program_at X P)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at X P).sndE.fstE
 private theorem returned_tail (X P : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run X P)) ≐ pairT (total X P) (pairT X P) :=
-  (congrSnd ((congrSnd (program_at X P)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at X P).sndE.sndE
 theorem returned_total (X P : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run X P))) ≐ total X P :=
-  (congrFst (returned_tail X P)).eqTrans (fst_pair _ _)
+  (returned_tail X P).fstE
 theorem returned_exceptions (X P : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (run X P)))) ≐ X :=
-  (congrFst ((congrSnd (returned_tail X P)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (returned_tail X P).sndE.fstE
 theorem returned_original (X P : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (run X P)))) ≐ P :=
-  (congrSnd ((congrSnd (returned_tail X P)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (returned_tail X P).sndE.sndE
 theorem returned_partition (X P : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run X P))) ≐ length P :=
   (returned_total X P).eqTrans (cardinal_partition X P)
 

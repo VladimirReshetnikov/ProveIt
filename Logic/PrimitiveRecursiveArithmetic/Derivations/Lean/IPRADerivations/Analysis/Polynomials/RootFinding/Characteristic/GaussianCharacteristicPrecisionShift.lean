@@ -14,21 +14,18 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCharacteristicPrecisionShift
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCharacteristicSensitivity (sensitivity)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianRootSchedule (binaryLength binary_length_correct binary_length_minimal)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalHorner (positive_product)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def clock (N B : PTm n) : PTm n := binaryLength (sensitivity N B)
 
-@[simp] theorem subst_clock {k : ℕ} (σ : Fin n → PTm k) (N B : PTm n) :
-    Syn.subst σ (clock N B) = clock (Syn.subst σ N) (Syn.subst σ B) := by simp [clock]
+ipra_subst clock
 
 theorem clock_sufficient (N B : PTm n) : Γ ⊢[PRAAx] le (sensitivity N B) (unit (clock N B)) :=
   .andE₁ (binary_length_correct _)

@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalPolynomialDegree
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero qadd qmul canonical horner hornerF evaluate)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision
   (qone qadd_congr qmul_congr qzero_canonical qmul_zero_left canonicalCoefficients)
@@ -24,10 +24,6 @@ open LeanProofs.IPRA.Analysis.GaussianTranslatedNonconstant
   (recode recode_congr recode_canonical recode_eq zeroPrefix zero_prefix_at zero_prefix_horner)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -45,24 +41,15 @@ def zeroPolynomial : PTm n := GaussianRationalPolynomialBuffers.zeros one
 def trimmed (C N : PTm n) : PTm n := RationalArithmetic.select (flag C N) zeroPolynomial
   (canonicalTail C (first C N) (succ (degree C N)))
 
-@[simp] theorem subst_first {l : ℕ} (σ : Fin n → PTm l) (C N : PTm n) :
-    Syn.subst σ (first C N) = first (Syn.subst σ C) (Syn.subst σ N) := by simp [first,Search.mu]
-@[simp] theorem subst_flag {l : ℕ} (σ : Fin n → PTm l) (C N : PTm n) :
-    Syn.subst σ (flag C N) = flag (Syn.subst σ C) (Syn.subst σ N) := by simp [flag,Signum.sg]
-@[simp] theorem subst_degree {l : ℕ} (σ : Fin n → PTm l) (C N : PTm n) :
-    Syn.subst σ (degree C N) = degree (Syn.subst σ C) (Syn.subst σ N) := by simp [degree]
-@[simp] theorem subst_nonzeroCoefficients {l : ℕ} (σ : Fin n → PTm l) (C N : PTm n) :
-    (nonzeroCoefficients C N).subst σ = nonzeroCoefficients (Syn.subst σ C) (Syn.subst σ N) := by
-  simp [nonzeroCoefficients,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_allZero {l : ℕ} (σ : Fin n → PTm l) (C N : PTm n) :
-    (allZero C N).subst σ = allZero (Syn.subst σ C) (Syn.subst σ N) := by simp [allZero]
-@[simp] theorem subst_tailData {l : ℕ} (σ : Fin n → PTm l) (C e : PTm n) :
-    Syn.subst σ (tailData C e) = tailData (Syn.subst σ C) (Syn.subst σ e) := by simp [tailData]
-@[simp] theorem subst_canonicalTail {l : ℕ} (σ : Fin n → PTm l) (C e L : PTm n) :
-    Syn.subst σ (canonicalTail C e L) = canonicalTail (Syn.subst σ C) (Syn.subst σ e) (Syn.subst σ L) := by simp [canonicalTail]
-@[simp] theorem subst_zeroPolynomial {l : ℕ} (σ : Fin n → PTm l) : Syn.subst σ (zeroPolynomial : PTm n) = (zeroPolynomial : PTm l) := by simp [zeroPolynomial]
-@[simp] theorem subst_trimmed {l : ℕ} (σ : Fin n → PTm l) (C N : PTm n) :
-    Syn.subst σ (trimmed C N) = trimmed (Syn.subst σ C) (Syn.subst σ N) := by simp [trimmed]
+ipra_subst first [Search.mu]
+ipra_subst flag [Signum.sg]
+ipra_subst degree
+ipra_subst nonzeroCoefficients [Syn.subst_shift, Syn.shift_subst]
+ipra_subst allZero
+ipra_subst tailData
+ipra_subst canonicalTail
+ipra_subst zeroPolynomial
+ipra_subst trimmed
 
 theorem zero_bit_at (C i : PTm n) : inst2 zeroBit i C = eqb (recode (entry C i)) qzero := by simp [zeroBit,inst2]
 theorem first_bound (C N : PTm n) : Γ ⊢[PRAAx] le (first C N) (succ N) :=
@@ -195,21 +182,18 @@ theorem trimmed_nonzero_head (C N : PTm n) (h : Γ ⊢[PRAAx] flag C N ≐ one) 
   exact .impI (.impE (first_nonzero C N (found_of_flag_one C N h)).wk (headCode.wk.eqSymm.eqTrans Prf.hyp0))
 
 def tailLaw (C e L z r : PTm n) : Fm PTm n := le r L ⟶ horner (canonicalTail C e L) z r ≐ horner C z (e+r)
-@[simp] theorem subst_tailLaw {l : ℕ} (σ : Fin n → PTm l) (C e L z r : PTm n) :
-    (tailLaw C e L z r).subst σ = tailLaw (Syn.subst σ C) (Syn.subst σ e) (Syn.subst σ L) (Syn.subst σ z) (Syn.subst σ r) := by simp [tailLaw]
+ipra_subst tailLaw
 
 /-- Genuine guarded QF leading-zero removal preserves raw original values;
 the canonical tail coefficient is simplified only inside normalized qadd. -/
 theorem tail_prefix (C e L z r : PTm n) (hZero : Γ ⊢[PRAAx] zeroPrefix C e)
     (hr : Γ ⊢[PRAAx] le r L) : Γ ⊢[PRAAx] horner (canonicalTail C e L) z r ≐ horner C z (e+r) := by
   have all : Γ ⊢[PRAAx] .all (tailLaw (Syn.shift C) (Syn.shift e) (Syn.shift L) (Syn.shift z) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_tailLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI ((GaussianRationalHorner.horner_zero _ _).eqTrans
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_tailLaw]
+    · exact .impI ((GaussianRationalHorner.horner_zero _ _).eqTrans
         (((congrAp3 hornerF (add_zero e) (.eqRefl C) (.eqRefl z)).eqTrans
           (zero_prefix_horner C z e e hZero (le_refl _))).eqSymm)).wk
-    · simp only [subst_tailLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    · refine .impI ?_
       let Δ := le (succ (var 0)) (Syn.shift L) :: tailLaw (Syn.shift C) (Syn.shift e) (Syn.shift L) (Syn.shift z) (var 0) :: Γ.map Fm.shift
       have ih : Δ ⊢[PRAAx] horner (canonicalTail (Syn.shift C) (Syn.shift e) (Syn.shift L)) (Syn.shift z) (var 0) ≐
           horner (Syn.shift C) (Syn.shift z) (Syn.shift e+var 0) := .impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)
@@ -265,20 +249,18 @@ from this one program rather than substituted as independent certificates. -/
 def output (C N : PTm n) : PTm n := pairT (flag C N) (pairT (first C N) (pairT (degree C N) (trimmed C N)))
 def outputF : PR 2 := PTm.toPR (output (var 0) (var 1))
 def run (C N : PTm n) : PTm n := ap2 outputF C N
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (C N : PTm n) :
-    Syn.subst σ (output C N) = output (Syn.subst σ C) (Syn.subst σ N) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (C N : PTm n) :
-    Syn.subst σ (run C N) = run (Syn.subst σ C) (Syn.subst σ N) := by simp [run]
+ipra_subst output
+ipra_subst run
 theorem program_at (C N : PTm n) : Γ ⊢[PRAAx] run C N ≐ output C N := by
   simpa [run,outputF,ap2] using toPR_eq (Γ := Γ) (output (var 0) (var 1) : PTm 2) ![C,N]
 theorem returned_flag (C N : PTm n) : Γ ⊢[PRAAx] fstT (run C N) ≐ flag C N :=
-  (congrFst (program_at _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _).fstE
 theorem returned_first (C N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run C N)) ≐ first C N :=
-  (congrFst ((congrSnd (program_at _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _).sndE.fstE
 theorem returned_degree (C N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run C N))) ≐ degree C N :=
-  (congrFst ((congrSnd ((congrSnd (program_at _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _).sndE.sndE.fstE
 theorem returned_trim (C N : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run C N))) ≐ trimmed C N :=
-  (congrSnd ((congrSnd ((congrSnd (program_at _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at _ _).sndE.sndE.sndE
 theorem returned_degree_bound (C N : PTm n) : Γ ⊢[PRAAx] le (fstT (sndT (sndT (run C N)))) N :=
   le_congr (returned_degree _ _).eqSymm (.eqRefl _) (degree_le _ _)
 theorem returned_length (C N : PTm n) : Γ ⊢[PRAAx]

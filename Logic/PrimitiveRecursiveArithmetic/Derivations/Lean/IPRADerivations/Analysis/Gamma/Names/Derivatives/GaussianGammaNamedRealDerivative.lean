@@ -16,7 +16,7 @@ set_option maxHeartbeats 600000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNamedRealDerivative
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (re)
 open GaussianCoefficientNameBounds (unit)
 open GaussianEuclideanDistanceName (pointCN)
@@ -25,10 +25,6 @@ open GaussianNameEquivalence (crossEquivalent cross_symm cross_trans)
 open GaussianNamedRightHalfPlane (numerator threshold_budget)
 open GaussianSignedNameExponentialOrder (realSamples)
 open LeanProofs.IPRA.Probability.MedianCounts (congrSg)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "P" => GaussianNamedPositiveDigamma.derivativeF

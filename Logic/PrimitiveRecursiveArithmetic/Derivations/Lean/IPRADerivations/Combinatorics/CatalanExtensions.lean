@@ -1,5 +1,4 @@
 import IPRADerivations.Combinatorics.CatalanBallot
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Ballot, two-fold and Fuss–Catalan identities (`catalan_numbers_ipra_2026-11-16`, Section 7)
@@ -34,15 +33,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.CatalanExtensions
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial (binom)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (binom_zero' mul_cancel pascal_at)
 open LeanProofs.IPRA.Combinatorics.Catalan (cb cat cat_spec cat_zero succ_pos)
 open LeanProofs.IPRA.Combinatorics.CatalanBallot (binom_ratio)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -78,13 +73,9 @@ private abbrev ballotF : Fm PTm 1 :=
   binom (succ (two * var 0)) (var 0) ≐ succ (two * var 0) * cat (var 0)
 
 private theorem ballot₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] ballotF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, PTm.subst_mul, PTm.subst_monus, subst_ap2, Syn.subst_var,
-      Syn.inst_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact ballot_zero
-  · simp only [Fm.subst_eq, PTm.subst_mul, PTm.subst_monus, subst_ap2, Syn.subst_var,
-      Syn.repl_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact ballot_succ _
+  ipra_ind [subst_ap2]
+  · exact ballot_zero
+  · exact ballot_succ _
 
 /-- (7.1), Bertrand's ballot theorem at excess one: `C(2n + 1, n) = (2n + 1) Cat_n`. -/
 theorem ballot (m : PTm n) :

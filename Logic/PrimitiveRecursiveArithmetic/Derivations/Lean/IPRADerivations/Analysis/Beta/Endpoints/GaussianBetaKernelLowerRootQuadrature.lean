@@ -20,7 +20,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaKernelLowerRootQuadrature
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLowerTailRootGrid (rootDenominator rootNumerator timeNumerator timeDenominator)
 open GaussianEulerLowerTailPartition (root_right_guard panelWidth totalWidth)
 open GaussianEulerLowerTailRowBound (stepScale)
@@ -33,10 +33,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -54,11 +50,8 @@ def source (z R B H p q k N : PTm n) : Fm PTm n := GaussianEulerLowerPowerCoeffi
 def originalQuadrature (s z R B H p q k N : PTm n) : PTm n :=
   GaussianLowerRootQuadratureBound.originalQuadrature evaluatorF s H p q k R (sampleDataBeta z B N)
 
-@[simp] theorem subst_lipschitz {m : ℕ} (σ : Fin n → PTm m) (q k R : PTm n) :
-    Syn.subst σ (lipschitz q k R) = lipschitz (Syn.subst σ q) (Syn.subst σ k) (Syn.subst σ R) := by
-  simp [lipschitz,etaDen,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B H p q k N : PTm n) :
-    (source z R B H p q k N).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ H) (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ k) (Syn.subst σ N) := by simp [source]
+ipra_subst lipschitz [etaDen, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst source
 
 private theorem modulus_congr (F : PR 3) (a C E a' C' E' L x : PTm n)
     (ha : Γ ⊢[PRAAx] a ≐ a') (hC : Γ ⊢[PRAAx] C ≐ C') (hE : Γ ⊢[PRAAx] E ≐ E')

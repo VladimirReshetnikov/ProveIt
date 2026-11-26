@@ -15,10 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRootDistanceOrderBudget
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

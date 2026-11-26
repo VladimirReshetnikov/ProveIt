@@ -19,7 +19,7 @@ set_option maxHeartbeats 750000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingGammaLogarithm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale oneCode re im bounded normSq)
 open GaussianGammaReciprocalInverse (gammaF gammaHeight)
 open GaussianGammaCanonicalExponent (constantF constant_at)
@@ -31,10 +31,6 @@ open GaussianEuclideanDistanceName (pointCN fraction fraction_represents)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (ofGaussian_canonical ofGaussian_represents)
 open RationalValueBounds (upper upper_congr upper_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -50,23 +46,13 @@ def gammaRetimedData (a b : PTm n) : PTm n := retimedData (gammaData a b) gammaM
 def logGammaF : PR 2 := GaussianNamedPositiveLogarithm.nameF gammaRetimedF
 def logGammaData (a b : PTm n) : PTm n := GaussianNamedPositiveLogarithm.data (gammaRetimedData a b) gammaLogMargin
 
-@[simp] theorem subst_source {l : ℕ} (σ : Fin n → PTm l) (a b : PTm n) :
-    (source a b).subst σ = source (Syn.subst σ a) (Syn.subst σ b) := by simp [source,one]
-@[simp] theorem subst_arg {l : ℕ} (σ : Fin n → PTm l) (a : PTm n) :
-    Syn.subst σ (arg a) = arg (Syn.subst σ a) := by simp [arg]
-@[simp] theorem subst_gammaData {l : ℕ} (σ : Fin n → PTm l) (a b : PTm n) :
-    Syn.subst σ (gammaData a b) = gammaData (Syn.subst σ a) (Syn.subst σ b) :=
-  by simp [gammaData,GaussianGammaReciprocalInverse.gammaData,GaussianGammaReciprocalInverse.gammaHeight]
-@[simp] theorem subst_gammaMargin {l : ℕ} (σ : Fin n → PTm l) :
-    Syn.subst σ (gammaMargin : PTm n) = (gammaMargin : PTm l) := by simp [gammaMargin]
-@[simp] theorem subst_gammaLogMargin {l : ℕ} (σ : Fin n → PTm l) :
-    Syn.subst σ (gammaLogMargin : PTm n) = (gammaLogMargin : PTm l) := by simp [gammaLogMargin,two]
-@[simp] theorem subst_gammaRetimedData {l : ℕ} (σ : Fin n → PTm l) (a b : PTm n) :
-    Syn.subst σ (gammaRetimedData a b) = gammaRetimedData (Syn.subst σ a) (Syn.subst σ b) :=
-  by simp [gammaRetimedData]
-@[simp] theorem subst_logGammaData {l : ℕ} (σ : Fin n → PTm l) (a b : PTm n) :
-    Syn.subst σ (logGammaData a b) = logGammaData (Syn.subst σ a) (Syn.subst σ b) :=
-  by simp [logGammaData]
+ipra_subst source [one]
+ipra_subst arg
+ipra_subst gammaData [GaussianGammaReciprocalInverse.gammaData, GaussianGammaReciprocalInverse.gammaHeight]
+ipra_subst gammaMargin
+ipra_subst gammaLogMargin [two]
+ipra_subst gammaRetimedData
+ipra_subst logGammaData
 
 theorem source_shift (a b : PTm n) (h : Γ ⊢[PRAAx] source a b) :
     Γ ⊢[PRAAx] source (a+b) b :=
@@ -126,7 +112,7 @@ private theorem native_fixed (r : PTm n) : Γ ⊢[PRAAx]
   change Γ ⊢[PRAAx] pairT (pairT (fstT (fstT z)) (sndT (fstT z)))
     (pairT (sndT (sndT z)) (fstT (sndT z))) ≐ pairT a b
   exact congrPairT
-    (congrPairT ((congrFst p).eqTrans (fst_pair _ _)) ((congrSnd p).eqTrans (snd_pair _ _)))
+    (congrPairT p.fstE p.sndE)
     (congrPairT ((congrSnd q).eqTrans ((snd_pair _ _).eqTrans e.eqSymm))
       ((congrFst q).eqTrans ((fst_pair _ _).eqTrans e)))
 

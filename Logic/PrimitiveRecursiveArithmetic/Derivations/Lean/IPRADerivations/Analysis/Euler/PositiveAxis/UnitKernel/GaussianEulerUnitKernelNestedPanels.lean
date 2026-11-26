@@ -18,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelNestedPanels
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUnitKernelCompactName (nameF data name_regular)
 open GaussianEulerUnitKernelPanelAdditivity (left_source right_source data_congr)
 open GaussianEulerUnitKernelPanelRescaling (source_rescaling original_rescaling)
@@ -29,8 +29,6 @@ open GaussianNameArithmetic (addF addData add_fast add_equivalent)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent cross_to_diagonal cross_trans cross_symm diagonal_refl)
 open GaussianGammaCompactCutoffAlignment (cross_data_congr)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

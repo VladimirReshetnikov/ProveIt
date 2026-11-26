@@ -17,13 +17,11 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGaussEulerFactorFamilies
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaEulerDenominatorGrouping (shiftedNumerator shiftedData)
 open GaussianGammaEulerFullHeadInverse (negExpF negExpData subst_negExpData negative_exponential_regular)
 open GaussianGammaGaussReferenceProduct (argument)
 open GaussianNamedFiniteProductFamily (regularRows rowF productData)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,28 +39,23 @@ abbrev referenceF : PR 2 := GaussianNamedFiniteProductName.nameF (rowF negExpF r
 def shiftedExpData (z B m N : PTm n) : PTm n := productData negExpF shiftedExpBody m (shiftedData z B m N)
 def referenceExpData (m N : PTm n) : PTm n := productData negExpF referenceExpBody m (pairT m N)
 
-@[simp] theorem subst_shiftedExpData {l : ℕ} (σ : Fin n → PTm l) (z B m N : PTm n) :
-    Syn.subst σ (shiftedExpData z B m N) =
-      shiftedExpData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ m) (Syn.subst σ N) := by
-  simp [shiftedExpData,productData,one]
+ipra_subst shiftedExpData [productData, one]
 
-@[simp] theorem subst_referenceExpData {l : ℕ} (σ : Fin n → PTm l) (m N : PTm n) :
-    Syn.subst σ (referenceExpData m N) = referenceExpData (Syn.subst σ m) (Syn.subst σ N) := by
-  simp [referenceExpData,productData,one]
+ipra_subst referenceExpData [productData, one]
 
 theorem shifted_exp_at (r z B m N : PTm n) : Γ ⊢[PRAAx]
     inst2 shiftedExpBody r (shiftedData z B m N) ≐ negExpData (shiftedNumerator z B m r) (B*m) N := by
   let x := shiftedData z B m N
   have tail := snd_pair (Γ := Γ) N (pairT m (pairT z B))
-  have fields := (congrSnd tail).eqTrans (snd_pair _ _)
+  have fields := tail.sndE
   have e := Prf.eqCongr (Γ := Γ) (Ax := PRAAx)
     (negExpData (shiftedNumerator (var 0) (var 1) (var 2) (var 3)) (var 1*var 2) (var 4) : PTm 5)
     (σ := ![fstT (sndT (sndT x)),sndT (sndT (sndT x)),fstT (sndT x),r,fstT x])
     (σ' := ![z,B,m,r,N]) (fun i => by
       fin_cases i
-      · exact (congrFst fields).eqTrans (fst_pair _ _)
-      · exact (congrSnd fields).eqTrans (snd_pair _ _)
-      · exact (congrFst tail).eqTrans (fst_pair _ _)
+      · exact fields.fstE
+      · exact fields.sndE
+      · exact tail.fstE
       · exact .eqRefl _
       · exact fst_pair _ _)
   simpa [shiftedExpBody, shiftedNumerator, inst2, x] using e

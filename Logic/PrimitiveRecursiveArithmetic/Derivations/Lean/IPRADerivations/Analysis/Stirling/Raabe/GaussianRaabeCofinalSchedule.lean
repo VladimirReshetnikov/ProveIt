@@ -15,16 +15,13 @@ set_option maxHeartbeats 880000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRaabeCofinalSchedule
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianFastValueCut (exponent query_budget)
 open GaussianRaabeLogPrimitiveCell (primitive)
 open GaussianRaabeStirlingMesh (biasCost)
 open GaussianRationalHorner (positive_product)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -43,25 +40,15 @@ def clockFor (h N A D : PTm n) : PTm n :=
 
 def clock (h A D : PTm n) : PTm n := clockFor h (count h A D) A D
 
-@[simp] theorem subst_farStart {m : ℕ} (σ : Fin n → PTm m) (h A D : PTm n) :
-    Syn.subst σ (farStart h A D) = farStart (Syn.subst σ h) (Syn.subst σ A) (Syn.subst σ D) := by
-  simp [farStart]
+ipra_subst farStart
 
-@[simp] theorem subst_count {m : ℕ} (σ : Fin n → PTm m) (h A D : PTm n) :
-    Syn.subst σ (count h A D) = count (Syn.subst σ h) (Syn.subst σ A) (Syn.subst σ D) := by
-  simp [count,biasCost,GaussianCompactLogarithmBounds.radius,two,one]
+ipra_subst count [biasCost, GaussianCompactLogarithmBounds.radius, two, one]
 
-@[simp] theorem subst_clockCost {m : ℕ} (σ : Fin n → PTm m) (J N R A D : PTm n) :
-    Syn.subst σ (clockCost J N R A D) =
-      clockCost (Syn.subst σ J) (Syn.subst σ N) (Syn.subst σ R) (Syn.subst σ A) (Syn.subst σ D) := by
-  simp [clockCost,GaussianRaabeRightSide.cost,one,two]
+ipra_subst clockCost [GaussianRaabeRightSide.cost, one, two]
 
-@[simp] theorem subst_clockFor {m : ℕ} (σ : Fin n → PTm m) (h N A D : PTm n) :
-    Syn.subst σ (clockFor h N A D) =
-      clockFor (Syn.subst σ h) (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ D) := by simp [clockFor]
+ipra_subst clockFor
 
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (h A D : PTm n) :
-    Syn.subst σ (clock h A D) = clock (Syn.subst σ h) (Syn.subst σ A) (Syn.subst σ D) := by simp [clock]
+ipra_subst clock
 
 theorem clockFor_later (h N A D : PTm n) : Γ ⊢[PRAAx] le h (clockFor h N A D) := le_add_right _ _
 

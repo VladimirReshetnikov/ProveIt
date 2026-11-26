@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Polynomials.Elimination.ChuVandermonde
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The binomial sum for the Beta function at integers
@@ -27,14 +26,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.BetaBinomialSum
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Analysis.Pochhammer (poch poch_split poch_shift' poch_one)
 open LeanProofs.IPRA.Analysis.ChuVandermonde (TE TO chu_vandermonde congrPoch)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Poles.GaussianGammaPoleZeros
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianGammaShiftTrajectory
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Quantitative pole guards on the punctured unit disk
@@ -15,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaLocalPoleGuards
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Probability.Variance (ad)
 open ComplexLogarithmRemainder (normSq normSq_eval normSq_scale normSq_neg scale oneCode re im bounded)
@@ -23,10 +22,6 @@ open GaussianRootAlgebra
   (equal equal_of_values equal_trans normSq_equal re_add im_add re_scale im_scale re_neg im_neg re_one im_one)
 open GaussianGammaEulerHeadLower (translated poleAt poleGuard)
 open GaussianGammaPoleZeros (poleNumerator)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -38,13 +33,8 @@ def imMagnitude (z : PTm n) : PTm n := ad (im z).pos (im z).neg
 def localMargin (h B A S D : PTm n) : Fm PTm n :=
   le (A+S) D ⋏ (bounded (scale D h) (S*B) ⋏ le ((A*B)*(A*B)) (D*D*normSq h))
 
-@[simp] theorem subst_center {l : ℕ} (σ : Fin n → PTm l) (h B j : PTm n) :
-    Syn.subst σ (center h B j) = center (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ j) := by
-  simp [center,poleNumerator]
-@[simp] theorem subst_localMargin {l : ℕ} (σ : Fin n → PTm l) (h B A S D : PTm n) :
-    (localMargin h B A S D).subst σ =
-      localMargin (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ S) (Syn.subst σ D) := by
-  simp [localMargin,bounded]
+ipra_subst center [poleNumerator]
+ipra_subst localMargin [bounded]
 
 private theorem norm_components (z : PTm n) : Γ ⊢[PRAAx]
     normSq z ≐ reMagnitude z*reMagnitude z+imMagnitude z*imMagnitude z := by
@@ -184,9 +174,7 @@ theorem original_local_pole_guard (h B A S D j L : PTm n) (hm : Γ ⊢[PRAAx] lo
 
 def terminal (h B j : PTm n) : PTm n := GaussianGammaShiftTrajectory.point (center h B j) B (succ j)
 
-@[simp] theorem subst_terminal {l : ℕ} (σ : Fin n → PTm l) (h B j : PTm n) :
-    Syn.subst σ (terminal h B j) = terminal (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ j) := by
-  simp [terminal]
+ipra_subst terminal
 
 theorem terminal_native (h B j : PTm n) : Γ ⊢[PRAAx] equal (terminal h B j) (translated h B one) := by
   apply equal_trans (GaussianGammaShiftTrajectory.point_native (center h B j) B (succ j))

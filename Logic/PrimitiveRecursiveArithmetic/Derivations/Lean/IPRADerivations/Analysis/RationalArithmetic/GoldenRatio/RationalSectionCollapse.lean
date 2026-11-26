@@ -5,7 +5,6 @@ import IPRADerivations.Analysis.LinearAlgebra.Matrices.GaussianRationalMatrixFin
 import IPRADerivations.Analysis.RationalArithmetic.Powers.RationalScalarPowerGaussianEmbedding
 import IPRADerivations.Analysis.Polynomials.Representation.RationalPolynomialGaussianEmbedding
 import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianNormFiberDivisibility
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The collapse polynomial of the original rational section equation
@@ -22,7 +21,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalSectionCollapse
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalGaussianEmbedding (embed scalarZero embed_canonical embed_equal rational_equal_of_embed negative_congr)
 open RationalPolynomialGaussianEmbedding (coefficients coefficients_length coefficient_lookup)
 open GaussianRationalHorner (canonical evaluate qadd qmul qzero)
@@ -34,10 +33,6 @@ open GaussianRationalPolynomialBuffers (leftPad pad_length pad_leading pad_evalu
 open GaussianRationalMonicReduction (evaluate_congr)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open LeanProofs.IPRA.PTm (monus)
-open ConciseIPRA.PTm (zero succ app)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -66,25 +61,14 @@ def curve (f r x y : PTm n) : Fm PTm n :=
   RationalArgmin.rationalEq (RationalScalarPowerGaussianEmbedding.power y r)
     (RationalPolynomialGaussianEmbedding.evaluate f x)
 
-@[simp] theorem subst_negativePolynomial {k : ℕ} (σ : Fin n → PTm k) (C : PTm n) :
-    Syn.subst σ (negativePolynomial C) = negativePolynomial (Syn.subst σ C) := by simp [negativePolynomial]
-@[simp] theorem subst_firstSummand {k : ℕ} (σ : Fin n → PTm k) (P s r m : PTm n) :
-    Syn.subst σ (firstSummand P s r m) = firstSummand (Syn.subst σ P) (Syn.subst σ s) (Syn.subst σ r) (Syn.subst σ m) := by
-  simp [firstSummand]
-@[simp] theorem subst_factor {k : ℕ} (σ : Fin n → PTm k) (a r : PTm n) :
-    Syn.subst σ (factor a r) = factor (Syn.subst σ a) (Syn.subst σ r) := by simp [factor]
-@[simp] theorem subst_secondSummand {k : ℕ} (σ : Fin n → PTm k) (f a r m : PTm n) :
-    Syn.subst σ (secondSummand f a r m) = secondSummand (Syn.subst σ f) (Syn.subst σ a) (Syn.subst σ r) (Syn.subst σ m) := by
-  simp [secondSummand]
-@[simp] theorem subst_polynomial {k : ℕ} (σ : Fin n → PTm k) (P f a s r m : PTm n) :
-    Syn.subst σ (polynomial P f a s r m) = polynomial (Syn.subst σ P) (Syn.subst σ f)
-      (Syn.subst σ a) (Syn.subst σ s) (Syn.subst σ r) (Syn.subst σ m) := by simp [polynomial]
-@[simp] theorem subst_nonzero {k : ℕ} (σ : Fin n → PTm k) (x : PTm n) :
-    (nonzero x).subst σ = nonzero (Syn.subst σ x) := by simp [nonzero]
-@[simp] theorem subst_line {k : ℕ} (σ : Fin n → PTm k) (P a x y : PTm n) :
-    (line P a x y).subst σ = line (Syn.subst σ P) (Syn.subst σ a) (Syn.subst σ x) (Syn.subst σ y) := by simp [line]
-@[simp] theorem subst_curve {k : ℕ} (σ : Fin n → PTm k) (f r x y : PTm n) :
-    (curve f r x y).subst σ = curve (Syn.subst σ f) (Syn.subst σ r) (Syn.subst σ x) (Syn.subst σ y) := by simp [curve]
+ipra_subst negativePolynomial
+ipra_subst firstSummand
+ipra_subst factor
+ipra_subst secondSummand
+ipra_subst polynomial
+ipra_subst nonzero
+ipra_subst line
+ipra_subst curve
 
 theorem negative_evaluation (C z : PTm n) : Γ ⊢[PRAAx]
     evaluate (negativePolynomial C) z ≐ qnegative (evaluate C z) :=
@@ -235,13 +219,7 @@ theorem ordinate_unique (P a x y u v : PTm n) (ha : Γ ⊢[PRAAx] nonzero a)
 
 def polynomialF : PR 6 := PTm.toPR (polynomial (var 0) (var 1) (var 2) (var 3) (var 4) (var 5))
 def run (P f a s r m : PTm n) : PTm n := app polynomialF ![P,f,a,s,r,m]
-@[simp] theorem subst_run {k : ℕ} (σ : Fin n → PTm k) (P f a s r m : PTm n) :
-    Syn.subst σ (run P f a s r m) = run (Syn.subst σ P) (Syn.subst σ f) (Syn.subst σ a)
-      (Syn.subst σ s) (Syn.subst σ r) (Syn.subst σ m) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst run
 
 theorem program_at (P f a s r m : PTm n) : Γ ⊢[PRAAx] run P f a s r m ≐ polynomial P f a s r m := by
   simpa [run,polynomialF] using toPR_eq (Γ := Γ)

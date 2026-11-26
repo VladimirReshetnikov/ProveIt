@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Products.GaussianRationalPolynomialProduct
 import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianRationalMonicReduction
 import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianRationalMonicReconstruction
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # A polynomial-valued monic companion step
@@ -20,7 +19,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialMonicCompanion
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner
   (qzero qadd qmul canonical evaluate horner hornerF)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision
@@ -38,10 +37,6 @@ open LeanProofs.IPRA.Analysis.GaussianCoefficientL1 (subCoefficients sub_lookup)
 open LeanProofs.IPRA.Foundations.MasterCertificate
   (entry sequence sequence_length sequence_decode subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
-open LeanProofs.IPRA.PTm (monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -64,31 +59,15 @@ def rowBody : PTm 2 := app rowF ![fstT (var 1),fstT (sndT (var 1)),
   sndT (sndT (sndT (sndT (var 1)))),var 0]
 def companion (F G m a c : PTm n) : PTm n := sequence rowBody m (data F G m a c)
 
-@[simp] theorem subst_normalizedRow {l : ℕ} (σ : Fin n → PTm l) (C : PTm n) :
-    Syn.subst σ (normalizedRow C) = normalizedRow (Syn.subst σ C) := by simp [normalizedRow]
-@[simp] theorem subst_rowShape {l : ℕ} (σ : Fin n → PTm l) (F m c : PTm n) :
-      (rowShape F m c).subst σ = rowShape (Syn.subst σ F) (Syn.subst σ m) (Syn.subst σ c) := by
-  simp [rowShape,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_nextRow {l : ℕ} (σ : Fin n → PTm l) (G m a r : PTm n) :
-    Syn.subst σ (nextRow G m a r) = nextRow (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ r) := by simp [nextRow,Signum.sg]
-@[simp] theorem subst_topRow {l : ℕ} (σ : Fin n → PTm l) (G : PTm n) :
-    Syn.subst σ (topRow G) = topRow (Syn.subst σ G) := by simp [topRow]
-@[simp] theorem subst_productRow {l : ℕ} (σ : Fin n → PTm l) (F G a c r : PTm n) :
-    Syn.subst σ (productRow F G a c r) = productRow (Syn.subst σ F) (Syn.subst σ G)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ r) := by simp [productRow]
-@[simp] theorem subst_shiftedRow {l : ℕ} (σ : Fin n → PTm l) (G m a c r : PTm n) :
-    Syn.subst σ (shiftedRow G m a c r) = shiftedRow (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ r) := by simp [shiftedRow]
-@[simp] theorem subst_outputRow {l : ℕ} (σ : Fin n → PTm l) (F G m a c r : PTm n) :
-    Syn.subst σ (outputRow F G m a c r) = outputRow (Syn.subst σ F) (Syn.subst σ G)
-      (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ r) := by simp [outputRow]
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (F G m a c : PTm n) :
-    Syn.subst σ (data F G m a c) = data (Syn.subst σ F) (Syn.subst σ G)
-      (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by simp [data]
-@[simp] theorem subst_companion {l : ℕ} (σ : Fin n → PTm l) (F G m a c : PTm n) :
-    Syn.subst σ (companion F G m a c) = companion (Syn.subst σ F) (Syn.subst σ G)
-      (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by simp [companion]
+ipra_subst normalizedRow
+ipra_subst rowShape [Syn.subst_shift, Syn.shift_subst]
+ipra_subst nextRow [Signum.sg]
+ipra_subst topRow
+ipra_subst productRow
+ipra_subst shiftedRow
+ipra_subst outputRow
+ipra_subst data
+ipra_subst companion
 
 theorem row_shape_at (F m c r : PTm n) (hF : Γ ⊢[PRAAx] rowShape F m c)
     (hr : Γ ⊢[PRAAx] lt r m) : Γ ⊢[PRAAx] length (entry F r) ≐ succ c := by
@@ -188,10 +167,10 @@ theorem row_body_at (F G m a c r : PTm n) : Γ ⊢[PRAAx]
     all_goals simp only [Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
       Matrix.head_cons,Matrix.tail_cons,data]
     · exact fst_pair _ _
-    · exact (congrFst e).eqTrans (fst_pair _ _)
-    · exact (congrFst f).eqTrans (fst_pair _ _)
-    · exact (congrFst g).eqTrans (fst_pair _ _)
-    · exact (congrSnd g).eqTrans (snd_pair _ _)
+    · exact e.fstE
+    · exact f.fstE
+    · exact g.fstE
+    · exact g.sndE
     · exact .eqRefl _
   exact h.eqTrans (row_program _ _ _ _ _ _)
 
@@ -256,8 +235,7 @@ convolution product equals the padded top row coefficient by coefficient.
 This is obtained from the finite-convolution constant kernel, not from
 agreement of evaluator values. -/
 def monicRow (c : PTm n) : PTm n := GaussianRationalMonicReduction.constant qone (succ c)
-@[simp] theorem subst_monicRow {l : ℕ} (σ : Fin n → PTm l) (c : PTm n) :
-    Syn.subst σ (monicRow c) = monicRow (Syn.subst σ c) := by simp [monicRow]
+ipra_subst monicRow
 theorem monic_row_length (c : PTm n) : Γ ⊢[PRAAx] length (monicRow c) ≐ succ c :=
   GaussianRationalMonicReduction.constant_length _ _ (succ_monus_succ _ _ |>.eqTrans (zero_le _))
 
@@ -313,13 +291,9 @@ def monicCoefficient (F x i : PTm n) : PTm n :=
 def monicBody : PTm 2 := monicCoefficient (fstT (var 1)) (sndT (var 1)) (var 0)
 def monicValues (F m x : PTm n) : PTm n := sequence monicBody (succ m) (pairT F x)
 
-@[simp] theorem subst_values {l : ℕ} (σ : Fin n → PTm l) (F m x : PTm n) :
-    Syn.subst σ (values F m x) = values (Syn.subst σ F) (Syn.subst σ m) (Syn.subst σ x) := by simp [values]
-@[simp] theorem subst_monicCoefficient {l : ℕ} (σ : Fin n → PTm l) (F x i : PTm n) :
-    Syn.subst σ (monicCoefficient F x i) = monicCoefficient (Syn.subst σ F) (Syn.subst σ x)
-      (Syn.subst σ i) := by simp [monicCoefficient,Signum.sg]
-@[simp] theorem subst_monicValues {l : ℕ} (σ : Fin n → PTm l) (F m x : PTm n) :
-    Syn.subst σ (monicValues F m x) = monicValues (Syn.subst σ F) (Syn.subst σ m) (Syn.subst σ x) := by simp [monicValues]
+ipra_subst values
+ipra_subst monicCoefficient [Signum.sg]
+ipra_subst monicValues
 
 theorem values_body_at (F x r : PTm n) : Γ ⊢[PRAAx]
     inst2 valuesBody r (pairT F x) ≐ evaluate (entry F r) x := by
@@ -417,13 +391,7 @@ theorem curve_step (F G m a c x y : PTm n)
 below use that same program; the Y degree and both X bounds remain numeric. -/
 def companionF : PR 5 := PTm.toPR (companion (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (F G m a c : PTm n) : PTm n := app companionF ![F,G,m,a,c]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (F G m a c : PTm n) :
-    Syn.subst σ (run F G m a c) = run (Syn.subst σ F) (Syn.subst σ G)
-      (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext j
-  fin_cases j <;> rfl
+ipra_subst run
 theorem program_at (F G m a c : PTm n) : Γ ⊢[PRAAx] run F G m a c ≐ companion F G m a c := by
   simpa only [run,companionF,subst_companion,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
     Matrix.cons_val_two,Matrix.cons_val_three,Matrix.cons_val_four,Matrix.head_cons,Matrix.tail_cons] using

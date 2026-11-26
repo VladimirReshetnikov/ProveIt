@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerNamedPowerScalingParameter
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedPositiveReciprocal (swapped_domain)
 open GaussianNamedRightHalfPlane (marginPoint certificate)
 open GaussianNamedPositiveLogarithm (numerator denominator)
@@ -24,9 +24,6 @@ open GaussianGammaCanonicalExponent (constantF constant_at)
 open ComplexLogarithmRemainder (re oneCode)
 open RationalValueBounds (upper upper_of_order upper_congr upper_mono)
 open GaussianCoefficientNameBounds (unit)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -39,9 +36,7 @@ def source (f : PR 2) (z R B A x E T : PTm n) : Fm PTm n :=
   GaussianEulerIntegralGammaIdentification.source z R B A ⋏
     (le one T ⋏ GaussianNamedPositiveLogarithm.source f x E T)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (z R B x E : PTm n) :
-    Syn.subst σ (data z R B x E) = data (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ x) (Syn.subst σ E) := by simp [data]
+ipra_subst data
 
 theorem regular (f : PR 2) (z R B A x E T : PTm n) (hs : Γ ⊢[PRAAx] source f z R B A x E T) :
     Γ ⊢[PRAAx] pointCN (nameF f) (data z R B x E) := by

@@ -13,7 +13,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderEndpointError
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianStirlingAllOrderCenteredBernoulli
   (factor numerator denominator sample sample_value denominator_positive reflected_sample)
 open GaussianStirlingAllOrderBernoulliMesh (lower_endpoint_value)
@@ -25,9 +25,6 @@ open BernoulliBounds (bint bint_eq bden pv zint toZ_zint poly_upper)
 open BernoulliCoefficients (bc_deriv)
 open GaussianEuclideanDistanceName (fraction fraction_represents)
 open RationalArgmin (rationalLE rationalLE_congr)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

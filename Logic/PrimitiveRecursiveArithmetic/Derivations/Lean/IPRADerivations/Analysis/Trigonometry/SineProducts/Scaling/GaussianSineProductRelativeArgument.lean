@@ -13,7 +13,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineProductRelativeArgument
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianSineProductScaledArguments (coefficient nameF data)
 open GaussianSineProductScaledArgumentIdentity (realRootData)
 open ComplexLogarithmRemainder (scale mul oneCode)
@@ -30,16 +30,12 @@ open GaussianRationalDistanceOrder (distance_congr)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianApproximateInverseDistance (multiply_distance)
 open GaussianNamedSincSamples (common_late_distance)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def relative (z B k : PTm n) : PTm n := ofGaussian z (B*k)
 
-@[simp] theorem subst_relative {l : ℕ} (σ : Fin n → PTm l) (z B k : PTm n) :
-    Syn.subst σ (relative z B k) = relative (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ k) := by
-  simp [relative]
+ipra_subst relative
 
 theorem relative_bound (z R B k : PTm n)
     (hB : Γ ⊢[PRAAx] le one B) (hk : Γ ⊢[PRAAx] le one k)

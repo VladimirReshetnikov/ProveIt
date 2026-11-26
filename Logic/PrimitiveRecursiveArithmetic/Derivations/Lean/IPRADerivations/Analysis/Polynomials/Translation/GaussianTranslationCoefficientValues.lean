@@ -15,7 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianTranslationCoefficientValues
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianTranslatedNonconstant (recode recode_congr recode_canonical)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (evaluate canonical)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (quotient qsub_congr qmul_congr)
@@ -24,21 +24,13 @@ open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qsub)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qmul)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def coefficient (C N z j k : PTm n) : PTm n := recode (entry (stage C N z j) (monus (remaining N j) k))
 def translatedCoefficient (C N z j : PTm n) : PTm n := evaluate (stage C N z j) z
-@[simp] theorem subst_coefficient {m : ℕ} (σ : Fin n → PTm m) (C N z j k : PTm n) :
-    Syn.subst σ (coefficient C N z j k) = coefficient (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ z) (Syn.subst σ j) (Syn.subst σ k) := by simp [coefficient]
-@[simp] theorem subst_translatedCoefficient {m : ℕ} (σ : Fin n → PTm m) (C N z j : PTm n) :
-    Syn.subst σ (translatedCoefficient C N z j) = translatedCoefficient (Syn.subst σ C)
-      (Syn.subst σ N) (Syn.subst σ z) (Syn.subst σ j) := by simp [translatedCoefficient]
+ipra_subst coefficient
+ipra_subst translatedCoefficient
 
 theorem coefficient_canonical (C N z j k : PTm n) : Γ ⊢[PRAAx] canonical (coefficient C N z j k) :=
   recode_canonical _
@@ -156,20 +148,8 @@ def coefficientF : PR 5 := PTm.toPR (coefficient (var 0) (var 1) (var 2) (var 3)
 def translatedCoefficientF : PR 4 := PTm.toPR (translatedCoefficient (var 0) (var 1) (var 2) (var 3))
 def run (C N z j k : PTm n) : PTm n := PTm.app coefficientF ![C,N,z,j,k]
 def translatedRun (C N z j : PTm n) : PTm n := PTm.app translatedCoefficientF ![C,N,z,j]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (C N z j k : PTm n) :
-    Syn.subst σ (run C N z j k) = run (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z)
-      (Syn.subst σ j) (Syn.subst σ k) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
-@[simp] theorem subst_translatedRun {m : ℕ} (σ : Fin n → PTm m) (C N z j : PTm n) :
-    Syn.subst σ (translatedRun C N z j) = translatedRun (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ z) (Syn.subst σ j) := by
-  simp only [translatedRun,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst run
+ipra_subst translatedRun
 
 theorem program_at (C N z j k : PTm n) : Γ ⊢[PRAAx] run C N z j k ≐ coefficient C N z j k := by
   simpa [run,coefficientF] using toPR_eq (Γ := Γ)

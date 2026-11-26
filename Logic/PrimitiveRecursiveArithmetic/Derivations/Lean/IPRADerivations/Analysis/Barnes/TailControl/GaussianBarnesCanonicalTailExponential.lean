@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalTailExponential
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalFiniteLog (radius rounding_gain rounded_bound)
 open GaussianBarnesCanonicalLogCofinalRate (initial_source cofinal_clock_budget finite_tail_rate)
 open GaussianBarnesCanonicalLogSchedule (initial length initial_positive)
@@ -26,8 +26,6 @@ open GaussianNamedInverseRate (independentRate)
 open GaussianRadiusExponentialLipschitzRate (factor)
 open GaussianRationalMetric (bounded)
 open GaussianRationalReciprocal (bound_congr)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "F" => GaussianBarnesCanonicalFiniteLog.nameF

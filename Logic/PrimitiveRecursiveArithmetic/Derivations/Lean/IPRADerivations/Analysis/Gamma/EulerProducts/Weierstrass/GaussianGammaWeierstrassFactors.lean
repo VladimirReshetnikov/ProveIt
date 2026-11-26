@@ -20,7 +20,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaWeierstrassFactors
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (ofGaussian qadd qmul qzero canonical)
 open GaussianRationalMetric (bounded distanceBounded qsub qnegative qnegative_canonical)
 open GaussianRationalSyntheticDivision (qone qadd_congr qmul_congr qsub_congr qzero_add)
@@ -33,10 +33,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianGammaCanonicalExponent (harmonicPoint)
 open GaussianScalarExponentialProductTail (rectangleCutoff actual_scalar_product_dyadic)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -56,28 +52,17 @@ def literalPrefix (z B K j : PTm n) : PTm n := qmul (ofGaussian z B) (qprod fact
 def foldedPrefix (z B K j : PTm n) : PTm n :=
   qmul (GaussianGammaEulerHead.head z B j) (scalarSum (harmonicArgument z B j) K)
 
-@[simp] theorem subst_localArgument {m : ℕ} (σ : Fin n → PTm m) (i z B : PTm n) :
-    Syn.subst σ (localArgument i z B) = localArgument (Syn.subst σ i) (Syn.subst σ z) (Syn.subst σ B) := by
-  simp [localArgument]
+ipra_subst localArgument
 
-@[simp] theorem subst_harmonicArgument {m : ℕ} (σ : Fin n → PTm m) (z B i : PTm n) :
-    Syn.subst σ (harmonicArgument z B i) = harmonicArgument (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ i) := by
-  simp [harmonicArgument]
+ipra_subst harmonicArgument
 
-@[simp] theorem subst_factor {m : ℕ} (σ : Fin n → PTm m) (i z B K : PTm n) :
-    Syn.subst σ (factor i z B K) = factor (Syn.subst σ i) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ K) := by
-  simp [factor]
+ipra_subst factor
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (z B K : PTm n) :
-    Syn.subst σ (data z B K) = data (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ K) := by simp [data]
+ipra_subst data
 
-@[simp] theorem subst_literalPrefix {m : ℕ} (σ : Fin n → PTm m) (z B K j : PTm n) :
-    Syn.subst σ (literalPrefix z B K j) = literalPrefix (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ K) (Syn.subst σ j) := by
-  simp [literalPrefix]
+ipra_subst literalPrefix
 
-@[simp] theorem subst_foldedPrefix {m : ℕ} (σ : Fin n → PTm m) (z B K j : PTm n) :
-    Syn.subst σ (foldedPrefix z B K j) = foldedPrefix (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ K) (Syn.subst σ j) := by
-  simp [foldedPrefix]
+ipra_subst foldedPrefix
 
 theorem factor_at (i z B K : PTm n) :
     Γ ⊢[PRAAx] inst2 factorBody i (data z B K) ≐ factor i z B K := by
@@ -90,8 +75,8 @@ theorem factor_at (i z B K : PTm n) :
       fin_cases j
       · exact .eqRefl _
       · exact fst_pair _ _
-      · exact (congrFst tail).eqTrans (fst_pair _ _)
-      · exact (congrSnd tail).eqTrans (snd_pair _ _))
+      · exact tail.fstE
+      · exact tail.sndE)
 
 theorem literal_zero (z B K : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
     Γ ⊢[PRAAx] literalPrefix z B K zero ≐ ofGaussian z B :=
@@ -171,11 +156,9 @@ def amplitude (R : PTm n) : PTm n := (one+R)*pw (num 3) R
 
 def errorBudget (R j : PTm n) : PTm n := R*j*pw (amplitude R) j
 
-@[simp] theorem subst_width {m : ℕ} (σ : Fin n → PTm m) (R N : PTm n) :
-    Syn.subst σ (width R N) = width (Syn.subst σ R) (Syn.subst σ N) := by simp [width]
+ipra_subst width
 
-@[simp] theorem subst_errorBudget {m : ℕ} (σ : Fin n → PTm m) (R j : PTm n) :
-    Syn.subst σ (errorBudget R j) = errorBudget (Syn.subst σ R) (Syn.subst σ j) := by simp [errorBudget,amplitude]
+ipra_subst errorBudget [amplitude]
 
 theorem folded_step_distance (z R B N j p : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hz : Γ ⊢[PRAAx] ComplexLogarithmRemainder.bounded z (R*B)) (hj : Γ ⊢[PRAAx] le j N) :
@@ -233,10 +216,7 @@ def prefixComparison (z R B N p j : PTm n) : Fm PTm n :=
   le j N ⟶ distanceBounded (literalPrefix z B (rectangleCutoff (width R N) p) j)
     (foldedPrefix z B (rectangleCutoff (width R N) p) j) (errorBudget R j) (unit p)
 
-@[simp] theorem subst_prefixComparison {m : ℕ} (σ : Fin n → PTm m) (z R B N p j : PTm n) :
-    (prefixComparison z R B N p j).subst σ = prefixComparison (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ N) (Syn.subst σ p) (Syn.subst σ j) := by
-  simp [prefixComparison,rectangleCutoff,GaussianScalarExponentialProductTail.reserve,GaussianScalarExponentialProductTail.growthExponent,unit]
+ipra_subst prefixComparison [rectangleCutoff, GaussianScalarExponentialProductTail.reserve, GaussianScalarExponentialProductTail.growthExponent, unit]
 
 theorem prefix_comparison_zero (z R B N p : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
     Γ ⊢[PRAAx] prefixComparison z R B N p zero := by
@@ -273,11 +253,9 @@ theorem prefix_comparison (z R B N p j : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     simpa [Fm.shift,Syn.shift] using hz.shift
   have all : Γ ⊢[PRAAx] .all (prefixComparison (Syn.shift z) (Syn.shift R) (Syn.shift B)
       (Syn.shift N) (Syn.shift p) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [subst_prefixComparison,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact prefix_comparison_zero z R B N p hB
-    · simp only [subst_prefixComparison,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact prefix_comparison_step _ _ _ _ _ _ hB'.wk hz'.wk Prf.hyp0
+    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_prefixComparison]
+    · exact prefix_comparison_zero z R B N p hB
+    · exact prefix_comparison_step _ _ _ _ _ _ hB'.wk hz'.wk Prf.hyp0
   have rule : Γ ⊢[PRAAx] prefixComparison z R B N p j := by
     simpa only [subst_prefixComparison,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
   exact .impE rule hj

@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaKernelExponential
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBetaKernelLogarithm (source negativeNumerator localData target radius)
 open GaussianRationalHorner (qadd ofGaussian positive_product)
 open GaussianRationalSyntheticDivision (qone)
@@ -27,10 +27,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameEquivalence (crossEquivalent cross_trans cross_symm cross_at)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,16 +37,11 @@ def expData (a b N T : PTm n) : PTm n := GaussianRadiusExponentialName.data (rad
 def decayData (a b T : PTm n) : PTm n := GaussianRadiusExponentialName.data (radius T) (GaussianEulerIntegrandName.decayPoint a b)
 def constantBound (_a b N : PTm n) : PTm n := b*b*N
 
-@[simp] theorem subst_base {m : ℕ} (σ : Fin n → PTm m) (a b N : PTm n) :
-    Syn.subst σ (base a b N) = base (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by simp [base]
-@[simp] theorem subst_kernel {m : ℕ} (σ : Fin n → PTm m) (a b N : PTm n) :
-    Syn.subst σ (kernel a b N) = kernel (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by simp [kernel]
-@[simp] theorem subst_expData {m : ℕ} (σ : Fin n → PTm m) (a b N T : PTm n) :
-    Syn.subst σ (expData a b N T) = expData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) (Syn.subst σ T) := by simp [expData]
-@[simp] theorem subst_decayData {m : ℕ} (σ : Fin n → PTm m) (a b T : PTm n) :
-    Syn.subst σ (decayData a b T) = decayData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ T) := by simp [decayData,GaussianEulerIntegrandName.decayPoint]
-@[simp] theorem subst_constantBound {m : ℕ} (σ : Fin n → PTm m) (a b N : PTm n) :
-    Syn.subst σ (constantBound a b N) = constantBound (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by simp [constantBound]
+ipra_subst base
+ipra_subst kernel
+ipra_subst expData
+ipra_subst decayData [GaussianEulerIntegrandName.decayPoint]
+ipra_subst constantBound
 
 @[simp] theorem subst_originalDecayData {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
     Syn.subst σ (GaussianEulerIntegrandName.decayData a b) = GaussianEulerIntegrandName.decayData (Syn.subst σ a) (Syn.subst σ b) := by
@@ -158,12 +149,9 @@ theorem original_decay_cross (a b N T : PTm n) (h : Γ ⊢[PRAAx] source a b N) 
 def coefficient (T : PTm n) : PTm n := GaussianRadiusExponentialLipschitzRate.factor (radius T)
 def errorNumerator (p a b N T : PTm n) : PTm n := coefficient T*a*a*unit p+constantBound a b N
 def errorDenominator (p a b N : PTm n) : PTm n := constantBound a b N*unit p
-@[simp] theorem subst_coefficient {m : ℕ} (σ : Fin n → PTm m) (T : PTm n) :
-    Syn.subst σ (coefficient T) = coefficient (Syn.subst σ T) := by simp [coefficient]
-@[simp] theorem subst_errorNumerator {m : ℕ} (σ : Fin n → PTm m) (p a b N T : PTm n) :
-    Syn.subst σ (errorNumerator p a b N T) = errorNumerator (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) (Syn.subst σ T) := by simp [errorNumerator]
-@[simp] theorem subst_errorDenominator {m : ℕ} (σ : Fin n → PTm m) (p a b N : PTm n) :
-    Syn.subst σ (errorDenominator p a b N) = errorDenominator (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by simp [errorDenominator]
+ipra_subst coefficient
+ipra_subst errorNumerator
+ipra_subst errorDenominator
 
 theorem diagonal_kernel_rate (p a b N T : PTm n) (h : Γ ⊢[PRAAx] source a b N) (ht : Γ ⊢[PRAAx] le a (T*b)) : Γ ⊢[PRAAx]
     distanceBounded (ap2 constantF p (kernel a b N)) (ap2 GaussianEulerIntegrandName.decayF p (GaussianEulerIntegrandName.decayData a b))
@@ -231,24 +219,23 @@ def output (p a b N T : PTm n) : PTm n := pairT (kernel a b N)
     (pairT (errorNumerator p a b N T) (errorDenominator p a b N)))
 def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (p a b N T : PTm n) : PTm n := PTm.app outputF ![p,a,b,N,T]
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (p a b N T : PTm n) :
-    Syn.subst σ (output p a b N T) = output (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) (Syn.subst σ T) := by simp [output]
+ipra_subst output
 theorem program_at (p a b N T : PTm n) : Γ ⊢[PRAAx] run p a b N T ≐ output p a b N T := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![p,a,b,N,T]
 theorem returned_kernel (p a b N T : PTm n) : Γ ⊢[PRAAx] fstT (run p a b N T) ≐ kernel a b N :=
-  (congrFst (program_at p a b N T)).eqTrans (fst_pair _ _)
+  (program_at p a b N T).fstE
 theorem returned_tail (p a b N T : PTm n) : Γ ⊢[PRAAx] sndT (run p a b N T) ≐
     pairT (ap2 GaussianEulerIntegrandName.decayF p (GaussianEulerIntegrandName.decayData a b)) (pairT (errorNumerator p a b N T) (errorDenominator p a b N)) :=
-  (congrSnd (program_at p a b N T)).eqTrans (snd_pair _ _)
+  (program_at p a b N T).sndE
 theorem returned_decay (p a b N T : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run p a b N T)) ≐
     ap2 GaussianEulerIntegrandName.decayF p (GaussianEulerIntegrandName.decayData a b) :=
-  (congrFst (returned_tail p a b N T)).eqTrans (fst_pair _ _)
+  (returned_tail p a b N T).fstE
 theorem returned_last (p a b N T : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run p a b N T)) ≐ pairT (errorNumerator p a b N T) (errorDenominator p a b N) :=
-  (congrSnd (returned_tail p a b N T)).eqTrans (snd_pair _ _)
+  (returned_tail p a b N T).sndE
 theorem returned_numerator (p a b N T : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run p a b N T))) ≐ errorNumerator p a b N T :=
-  (congrFst (returned_last p a b N T)).eqTrans (fst_pair _ _)
+  (returned_last p a b N T).fstE
 theorem returned_denominator (p a b N T : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run p a b N T))) ≐ errorDenominator p a b N :=
-  (congrSnd (returned_last p a b N T)).eqTrans (snd_pair _ _)
+  (returned_last p a b N T).sndE
 theorem returned_comparison (p a b N T : PTm n) (h : Γ ⊢[PRAAx] source a b N) (ht : Γ ⊢[PRAAx] le a (T*b)) : Γ ⊢[PRAAx]
     distanceBounded (fstT (run p a b N T)) (fstT (sndT (run p a b N T)))
       (fstT (sndT (sndT (run p a b N T)))) (sndT (sndT (sndT (run p a b N T)))) :=

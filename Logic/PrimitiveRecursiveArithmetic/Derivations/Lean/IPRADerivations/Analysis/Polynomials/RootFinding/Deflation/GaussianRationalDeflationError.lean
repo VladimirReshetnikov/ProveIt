@@ -17,7 +17,7 @@ set_option maxRecDepth 8192
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalDeflationError
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner
   (qzero qadd qmul represents canonical qadd_canonical qmul_canonical qadd_represents qmul_represents
     represents_rescale represents_congr canonical_unique zero_represents positive_product horner evaluate)
@@ -37,9 +37,6 @@ open LeanProofs.IPRA.Analysis.RationalArgmin (rationalLE)
 open LeanProofs.IPRA.Analysis.RationalArithmetic (add multiply)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -176,10 +173,7 @@ open LeanProofs.IPRA.Foundations.MasterCertificate (subst_sequence)
 open LeanProofs.IPRA.Signum (sg)
 
 def residualAt (R N i : PTm n) : PTm n := RationalArithmetic.select (sg (PTm.monus N i)) R qzero
-@[simp] theorem subst_residualAt {m : ℕ} (σ : Fin n → PTm m) (R N i : PTm n) :
-    Syn.subst σ (residualAt R N i) = residualAt (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ i) := by
-  simp only [residualAt,RationalArithmetic.subst_select,sg,PTm.subst_monus,
-    GaussianRationalHorner.subst_qzero,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero]
+ipra_subst residualAt
 theorem residualAt_inside (R N i : PTm n) (hi : Γ ⊢[PRAAx] lt i N) : Γ ⊢[PRAAx] residualAt R N i ≐ qzero :=
   RationalArithmetic.select_one _ _ _ (AnalyticNumberTheory.Totatives.sg_lt hi)
 theorem residualAt_end (R N : PTm n) : Γ ⊢[PRAAx] residualAt R N N ≐ R :=
@@ -192,9 +186,7 @@ theorem residualAt_at (R N i : PTm n) : Γ ⊢[PRAAx] ap3 residualAtF R N i ≐ 
       toPR_eq (Γ := Γ) (residualAt (var 0) (var 1) (var 2) : PTm 3) ![R,N,i]
 def residualBody : PTm 2 := ap3 residualAtF (fstT (var 1)) (sndT (var 1)) (var 0)
 def residualVector (R N : PTm n) : PTm n := sequence residualBody (succ N) (pairT R N)
-@[simp] theorem subst_residualVector {m : ℕ} (σ : Fin n → PTm m) (R N : PTm n) :
-    Syn.subst σ (residualVector R N) = residualVector (Syn.subst σ R) (Syn.subst σ N) := by
-  simp only [residualVector,subst_sequence,subst_pairT,ConciseIPRA.PTm.subst_succ]
+ipra_subst residualVector
 theorem residual_length (R N : PTm n) : Γ ⊢[PRAAx] length (residualVector R N) ≐ succ N := sequence_length _ _ _
 theorem residual_lookup (R N i : PTm n) (hi : Γ ⊢[PRAAx] le i N) : Γ ⊢[PRAAx]
     entry (residualVector R N) i ≐ residualAt R N i := by
@@ -208,11 +200,9 @@ def zeroBody : PTm 2 := natCode zero
   simp only [RationalFiniteSum.term,zeroBody,inst2,GaussianRationalSyntheticBounds.subst_natCode,ConciseIPRA.PTm.subst_zero]
 theorem zero_sum (k x : PTm n) : Γ ⊢[PRAAx] RationalFiniteSum.sum zeroBody k x ≐ natCode zero := by
   have all : Γ ⊢[PRAAx] .all (RationalFiniteSum.sum zeroBody (var 0) (Syn.shift x) ≐ natCode zero) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,RationalFiniteSum.subst_sum,GaussianRationalSyntheticBounds.subst_natCode,ConciseIPRA.PTm.subst_zero,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (RationalFiniteSum.sum_zero _ _).eqTrans scalar_zero_code.eqSymm
-    · simp only [Fm.subst_eq,RationalFiniteSum.subst_sum,GaussianRationalSyntheticBounds.subst_natCode,ConciseIPRA.PTm.subst_zero,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      have step : ((RationalFiniteSum.sum zeroBody (var 0) (Syn.shift x) ≐ natCode zero) :: Γ.map Fm.shift) ⊢[PRAAx]
+    ipra_qfind [RationalFiniteSum.subst_sum, GaussianRationalSyntheticBounds.subst_natCode]
+    · exact (RationalFiniteSum.sum_zero _ _).eqTrans scalar_zero_code.eqSymm
+    · have step : ((RationalFiniteSum.sum zeroBody (var 0) (Syn.shift x) ≐ natCode zero) :: Γ.map Fm.shift) ⊢[PRAAx]
           RationalFiniteSum.sum zeroBody (succ (var 0)) (Syn.shift x) ≐
             add (RationalFiniteSum.sum zeroBody (var 0) (Syn.shift x)) (natCode zero) := by
         simpa only [zero_term] using RationalFiniteSum.sum_succ (Γ := (RationalFiniteSum.sum zeroBody (var 0) (Syn.shift x) ≐ natCode zero) :: Γ.map Fm.shift) zeroBody (var 0) (Syn.shift x)
@@ -270,12 +260,8 @@ theorem padded_recurrence (P z N i : PTm n) (hP : Γ ⊢[PRAAx] length P ≐ suc
 def quotientError (P F z N : PTm n) : PTm n := subCoefficients (quotient P z N) F N
 def inputError (P F z N : PTm n) : PTm n := subCoefficients P (linear F z N) (succ N)
 
-@[simp] theorem subst_quotientError {m : ℕ} (σ : Fin n → PTm m) (P F z N : PTm n) :
-    Syn.subst σ (quotientError P F z N) = quotientError (Syn.subst σ P) (Syn.subst σ F) (Syn.subst σ z) (Syn.subst σ N) := by
-  simp only [quotientError,GaussianCoefficientL1.subst_subCoefficients,GaussianRationalSyntheticDivision.subst_quotient]
-@[simp] theorem subst_inputError {m : ℕ} (σ : Fin n → PTm m) (P F z N : PTm n) :
-    Syn.subst σ (inputError P F z N) = inputError (Syn.subst σ P) (Syn.subst σ F) (Syn.subst σ z) (Syn.subst σ N) := by
-  simp only [inputError,GaussianCoefficientL1.subst_subCoefficients,GaussianRationalLinearProduct.subst_linear,ConciseIPRA.PTm.subst_succ]
+ipra_subst quotientError
+ipra_subst inputError
 
 theorem quotient_error_length (P F z N : PTm n) : Γ ⊢[PRAAx] length (quotientError P F z N) ≐ N :=
   GaussianCoefficientL1.zip_length _ _ _ _
@@ -351,9 +337,7 @@ theorem deflation_error_bound (P F z N : PTm n) (hP : Γ ⊢[PRAAx] length P ≐
 def output (P F z N : PTm n) : PTm n := pairT (inputError P F z N)
   (pairT (quotientError P F z N) (residualVector (evaluate P z) N))
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (P F z N : PTm n) :
-    Syn.subst σ (output P F z N) = output (Syn.subst σ P) (Syn.subst σ F) (Syn.subst σ z) (Syn.subst σ N) := by
-  simp only [output,subst_pairT,subst_inputError,subst_quotientError,subst_residualVector,GaussianRationalHorner.subst_evaluate]
+ipra_subst output
 theorem output_at (P F z N : PTm n) : Γ ⊢[PRAAx] PTm.app outputF ![P,F,z,N] ≐ output P F z N := by
   simpa only [outputF,subst_output,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
     Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using toPR_eq (Γ := Γ)

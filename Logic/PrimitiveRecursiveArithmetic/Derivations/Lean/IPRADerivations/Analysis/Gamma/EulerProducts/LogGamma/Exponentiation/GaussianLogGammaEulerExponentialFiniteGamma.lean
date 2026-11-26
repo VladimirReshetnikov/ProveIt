@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerExponentialFiniteGamma
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaFiniteApproximantName (qF qData exponentialInputData exponential_input)
 open GaussianGammaEulerReciprocalInverse (eulerF eulerData eulerHeight original_euler_inverse)
@@ -21,8 +21,6 @@ open GaussianLogGammaEulerResidualDomain (native source)
 open GaussianNameBounds (U)
 open GaussianNameEquivalence (crossEquivalent cross_symm cross_trans cross_refl)
 open GaussianNameRingLaws (negativeF negativeData)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "E" => GaussianRadiusExponentialName.nameF

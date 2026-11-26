@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetArctangentQuadratureBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetArctangentQuadrature (evaluatorF fixedData nameF data evaluator_at)
 open GaussianCompactRiemannName (grid grid_inside sampleBody sampleData sample_body_at quadrature mesh mesh_positive precision)
 open GaussianRationalRiemannRefinement (termsDistance constantBody sum_distance weight_bound)
@@ -23,9 +23,6 @@ open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianRightHalfPlaneLogarithm (source)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

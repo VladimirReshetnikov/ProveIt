@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRealExponentialPositiveIncrement
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianSignedNameExponentialOrder (realSamples real_sample_at)
 open GaussianNamedPositiveExponentialOrder (positiveSamples positive_at sampleOrder realOrder)
 open GaussianNameArithmetic (addF addData)
@@ -25,16 +25,13 @@ open GaussianRationalHorner (qadd qmul)
 open GaussianRationalSyntheticDivision (qone)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
 
 abbrev retimedF (f : PR 2) : PR 2 := GaussianBoundedConstantProductName.nameF f
 def retimedData (x : PTm n) : PTm n := GaussianBoundedConstantProductName.data two qone x
-@[simp] theorem subst_retimedData {m : ℕ} (σ : Fin n → PTm m) (x : PTm n) :
-    Syn.subst σ (retimedData x) = retimedData (Syn.subst σ x) := by simp [retimedData]
+ipra_subst retimedData
 
 theorem unit_bound : Γ ⊢[PRAAx] GaussianRationalMetric.bounded (qone : PTm n) two one :=
   GaussianCoefficientNameBounds.bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one)

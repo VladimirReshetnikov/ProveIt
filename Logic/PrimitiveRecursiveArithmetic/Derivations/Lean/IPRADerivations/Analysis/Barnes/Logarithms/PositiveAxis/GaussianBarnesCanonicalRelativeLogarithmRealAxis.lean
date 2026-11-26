@@ -9,7 +9,7 @@ set_option maxHeartbeats 550000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalRelativeLogarithmRealAxis
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add im)
 open GaussianBarnesCanonicalPositiveLogarithmRealAxis (real_axis)
 open GaussianBarnesCanonicalRelativeLogIncrement (nameF data)
@@ -17,9 +17,6 @@ open GaussianBarnesCanonicalLogSchedule (initial)
 open GaussianRealNameExponentialInjectivity (axisSamples difference_real_samples)
 open GaussianSignedNameExponentialOrder (realSamples)
 open GaussianStirlingNames (constant_real add_real)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

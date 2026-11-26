@@ -13,8 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalConvexFiniteModulus
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero succ)
+open_ipra
 open RationalCubeMidpoint (fraction fraction_represents)
 open RationalSupMetric (denominatorOf)
 open RationalArgmin (rationalLE denominator_positive)
@@ -26,8 +25,6 @@ open RationalConvexSecants (bound nonnegative scale affine naturalNumerator resc
 open RationalConvexSecantWeights (margin margin_positive modulus dyadic_secant displacement leftPoint rightPoint
   leftWidth rightWidth leftRemainder rightRemainder)
 open RationalConvexEndpointBudget (sample M localModulus actual_two_endpoint_sample_bounds)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔟" t:max => Groth.ι (IPRA.Q.mk _ t)

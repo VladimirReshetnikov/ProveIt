@@ -15,7 +15,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderPairedRefinement
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
 open GaussianEuclideanDistanceName (fraction fraction_order)
 open GaussianRationalHorner (positive_product)
@@ -24,10 +24,6 @@ open GaussianStirlingAllOrderPairedWeight
   (pairWeight pairGap pair_gap gapFraction gapNumerator gapDenominator gap_denominator_positive gap_numerator_positive)
 open RationalArgmin (rationalLE rationalLE_congr transitive)
 open RationalArithmetic (add)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ zero)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

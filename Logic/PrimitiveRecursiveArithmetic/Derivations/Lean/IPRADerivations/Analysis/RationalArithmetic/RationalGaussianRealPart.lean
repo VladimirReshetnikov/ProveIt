@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.RationalGaussianEmbedding
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalFiniteSum
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Real parts and original rational finite sums
@@ -15,15 +14,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalGaussianRealPart
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalGaussianEmbedding (embed scalarZero native embed_represents)
 open RationalSupMetric (numeratorOf denominatorOf)
 open GaussianRationalHorner (qzero qadd qmul)
 open GaussianRationalL1 (rawDen rawGaussian raw_represents raw_den_positive)
 open GaussianRootAlgebra (re_mul im_mul)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -59,8 +55,8 @@ theorem real_product (a b : PTm n) : Γ ⊢[PRAAx]
 theorem real_values (a b : PTm n) (h : Γ ⊢[PRAAx] GaussianRationalValueEquality.valueEqual a b) :
     Γ ⊢[PRAAx] RationalArgmin.rationalEq (fstT a) (fstT b) := by
   have e := GaussianRationalValueEquality.recode_equal_of_equal_values a b h
-  have ea := (congrFst (RationalGaussianEmbedding.recode_pair (Γ := Γ) a)).eqTrans (fst_pair _ _)
-  have eb := (congrFst (RationalGaussianEmbedding.recode_pair (Γ := Γ) b)).eqTrans (fst_pair _ _)
+  have ea := (RationalGaussianEmbedding.recode_pair (Γ := Γ) a).fstE
+  have eb := (RationalGaussianEmbedding.recode_pair (Γ := Γ) b).fstE
   exact RationalGaussianEmbedding.rational_equal_of_scalar_recode _ _
     (ea.eqSymm.eqTrans ((congrFst e).eqTrans eb))
 
@@ -70,10 +66,8 @@ def realSumLaw (t : PTm 2) (N x : PTm n) : Fm PTm n :=
   fstT (GaussianRationalFiniteSum.sum t N x) ≐ RationalFiniteSum.sum (realBody t) N x
 def embedSumLaw (t : PTm 2) (N x : PTm n) : Fm PTm n :=
   embed (RationalFiniteSum.sum t N x) ≐ GaussianRationalFiniteSum.sum (embedBody t) N x
-@[simp] theorem subst_realSumLaw {l : ℕ} (σ : Fin n → PTm l) (t : PTm 2) (N x : PTm n) :
-    (realSumLaw t N x).subst σ = realSumLaw t (Syn.subst σ N) (Syn.subst σ x) := by simp [realSumLaw]
-@[simp] theorem subst_embedSumLaw {l : ℕ} (σ : Fin n → PTm l) (t : PTm 2) (N x : PTm n) :
-    (embedSumLaw t N x).subst σ = embedSumLaw t (Syn.subst σ N) (Syn.subst σ x) := by simp [embedSumLaw]
+ipra_subst realSumLaw
+ipra_subst embedSumLaw
 
 theorem real_sum_step (t : PTm 2) (N x : PTm n)
     (ih : Γ ⊢[PRAAx] fstT (GaussianRationalFiniteSum.sum t N x) ≐ RationalFiniteSum.sum (realBody t) N x) :
@@ -87,12 +81,10 @@ theorem real_sum_step (t : PTm 2) (N x : PTm n)
 theorem real_sum (t : PTm 2) (N x : PTm n) : Γ ⊢[PRAAx]
     fstT (GaussianRationalFiniteSum.sum t N x) ≐ RationalFiniteSum.sum (realBody t) N x := by
   have all : Γ ⊢[PRAAx] .all (realSumLaw t (var 0) (Syn.shift x)) := by
-    refine PRA.qfInd _ (by trivial) ?_ ?_
-    · simp only [subst_realSumLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact ((congrFst (GaussianRationalFiniteSum.sum_zero t x)).eqTrans real_zero).eqTrans
+    ipra_qfind (by trivial) [subst_realSumLaw]
+    · exact ((congrFst (GaussianRationalFiniteSum.sum_zero t x)).eqTrans real_zero).eqTrans
         (rational_sum_zero (realBody t) x).eqSymm
-    · simp only [subst_realSumLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact real_sum_step t (var 0) (Syn.shift x) Prf.hyp0
+    · exact real_sum_step t (var 0) (Syn.shift x) Prf.hyp0
   change Γ ⊢[PRAAx] realSumLaw t N x
   simpa only [subst_realSumLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
 
@@ -114,12 +106,10 @@ theorem embed_sum_step (t : PTm 2) (N x : PTm n)
 theorem embed_sum (t : PTm 2) (N x : PTm n) : Γ ⊢[PRAAx]
     embed (RationalFiniteSum.sum t N x) ≐ GaussianRationalFiniteSum.sum (embedBody t) N x := by
   have all : Γ ⊢[PRAAx] .all (embedSumLaw t (var 0) (Syn.shift x)) := by
-    refine PRA.qfInd _ (by trivial) ?_ ?_
-    · simp only [subst_embedSumLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (embed_congr (rational_sum_zero t x)).eqTrans
+    ipra_qfind (by trivial) [subst_embedSumLaw]
+    · exact (embed_congr (rational_sum_zero t x)).eqTrans
         (RationalGaussianEmbedding.embed_zero.eqTrans (GaussianRationalFiniteSum.sum_zero (embedBody t) x).eqSymm)
-    · simp only [subst_embedSumLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact embed_sum_step t (var 0) (Syn.shift x) Prf.hyp0
+    · exact embed_sum_step t (var 0) (Syn.shift x) Prf.hyp0
   change Γ ⊢[PRAAx] embedSumLaw t N x
   simpa only [subst_embedSumLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
 

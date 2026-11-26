@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsParameterShift
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaEulerHeadShift (shifted)
 open GaussianEulerIntegrandName (coefficient logarithmF powerExponentF powerExponentData powerRadius powerF powerData
   nameF data source power_regular name_regular power_input)
@@ -27,9 +27,6 @@ open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans 
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianRationalHorner (qadd qmul ofGaussian represents canonical_unique represents_congr)
 open GaussianRationalSyntheticDivision (qone)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -97,10 +94,8 @@ def powerProductF : PR 2 := multiplyF constantF powerF
 def powerProductData (z B a b : PTm n) : PTm n := multiplyData constantF powerF (fraction a b) (powerData z B a b)
 def productF : PR 2 := multiplyF constantF nameF
 def productData (z B a b : PTm n) : PTm n := multiplyData constantF nameF (fraction a b) (data z B a b)
-@[simp] theorem subst_powerProductData {m : ℕ} (σ : Fin n → PTm m) (z B a b : PTm n) :
-    Syn.subst σ (powerProductData z B a b) = powerProductData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by simp [powerProductData]
-@[simp] theorem subst_productData {m : ℕ} (σ : Fin n → PTm m) (z B a b : PTm n) :
-    Syn.subst σ (productData z B a b) = productData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by simp [productData]
+ipra_subst powerProductData
+ipra_subst productData
 
 theorem original_power_parameter_shift (z B a b : PTm n) (h : Γ ⊢[PRAAx] source z B a b) : Γ ⊢[PRAAx]
     crossEquivalent powerF powerProductF (powerData (shifted z B) B a b) (powerProductData z B a b) := by

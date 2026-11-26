@@ -17,16 +17,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalHalfAngleRecovery
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHalfAngleIteration (iterate)
 open LeanProofs.IPRA.Analysis.GaussianBalancedRadiusSyntax (unit unit_positive)
 open LeanProofs.IPRA.Analysis.GaussianRationalReciprocal (power powerF bound_congr)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qmul canonical)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (bounded distanceBounded)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -35,14 +31,10 @@ def recovered (q H j : PTm n) : PTm n := power (iterate q H j) (unit j)
 def budget (H J : PTm n) : Fm PTm n := le ((num 400)*unit J*unit J) H
 def law (q H J j : PTm n) : Fm PTm n := distanceBounded (recovered q H j) q (error j) (unit J)
 
-@[simp] theorem subst_error {m : ℕ} (σ : Fin n → PTm m) (j : PTm n) :
-    Syn.subst σ (error j) = error (Syn.subst σ j) := by simp [error]
-@[simp] theorem subst_recovered {m : ℕ} (σ : Fin n → PTm m) (q H j : PTm n) :
-    Syn.subst σ (recovered q H j) = recovered (Syn.subst σ q) (Syn.subst σ H) (Syn.subst σ j) := by simp [recovered]
-@[simp] theorem subst_budget {m : ℕ} (σ : Fin n → PTm m) (H J : PTm n) :
-    (budget H J).subst σ = budget (Syn.subst σ H) (Syn.subst σ J) := by simp [budget]
-@[simp] theorem subst_law {m : ℕ} (σ : Fin n → PTm m) (q H J j : PTm n) :
-    (law q H J j).subst σ = law (Syn.subst σ q) (Syn.subst σ H) (Syn.subst σ J) (Syn.subst σ j) := by simp [law]
+ipra_subst error
+ipra_subst recovered
+ipra_subst budget
+ipra_subst law
 
 theorem unit_succ (j : PTm n) : Γ ⊢[PRAAx] unit (succ j) ≐ two*unit j :=
   (pw_succ two j).eqTrans (mul_comm _ _)
@@ -112,11 +104,9 @@ theorem actual_recovery (q H J j : PTm n) (hH : Γ ⊢[PRAAx] le one H)
   have Bshift : Γ.map Fm.shift ⊢[PRAAx] budget (Syn.shift H) (Syn.shift J) := by
     simpa only [Fm.shift,subst_budget,Syn.shift] using hBudget.shift
   have all : Γ ⊢[PRAAx] .all (law (Syn.shift q) (Syn.shift H) (Syn.shift J) (var 0)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_law,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact recovery_zero q H J hc
-    · simp only [subst_law,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact recovery_step _ _ _ _ Hshift.wk ushift.wk Bshift.wk Prf.hyp0
+    ipra_qfind (le_QF _ _) [subst_law]
+    · exact recovery_zero q H J hc
+    · exact recovery_step _ _ _ _ Hshift.wk ushift.wk Bshift.wk Prf.hyp0
   simpa only [subst_law,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
 
 def output (q H J j : PTm n) : PTm n :=
@@ -124,25 +114,19 @@ def output (q H J j : PTm n) : PTm n :=
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (q H J j : PTm n) : PTm n := PTm.app outputF ![q,H,J,j]
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (q H J j : PTm n) :
-    Syn.subst σ (output q H J j) = output (Syn.subst σ q) (Syn.subst σ H) (Syn.subst σ J) (Syn.subst σ j) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (q H J j : PTm n) :
-    Syn.subst σ (run q H J j) = run (Syn.subst σ q) (Syn.subst σ H) (Syn.subst σ J) (Syn.subst σ j) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (q H J j : PTm n) : Γ ⊢[PRAAx] run q H J j ≐ output q H J j := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![q,H,J,j]
 theorem returned_recovered (q H J j : PTm n) : Γ ⊢[PRAAx] fstT (run q H J j) ≐ recovered q H j :=
-  (congrFst (program_at q H J j)).eqTrans (fst_pair _ _)
+  (program_at q H J j).fstE
 theorem returned_iterate (q H J j : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run q H J j)) ≐ iterate q H j :=
-  (congrFst ((congrSnd (program_at q H J j)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at q H J j).sndE.fstE
 theorem returned_error (q H J j : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run q H J j))) ≐ error j :=
-  (congrFst ((congrSnd ((congrSnd (program_at q H J j)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at q H J j).sndE.sndE.fstE
 theorem returned_denominator (q H J j : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run q H J j))) ≐ unit J :=
-  (congrSnd ((congrSnd ((congrSnd (program_at q H J j)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at q H J j).sndE.sndE.sndE
 
 theorem returned_recovery (q H J j : PTm n) (hH : Γ ⊢[PRAAx] le one H)
     (hc : Γ ⊢[PRAAx] canonical q) (hu : Γ ⊢[PRAAx] GaussianRationalHalfAngle.unit q)

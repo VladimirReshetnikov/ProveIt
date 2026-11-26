@@ -15,7 +15,7 @@ set_option maxHeartbeats 700000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaGaussEulerProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaEulerDenominatorGrouping (shiftedNumerator)
 open GaussianGammaEulerReciprocalInverse (eulerF eulerData eulerHeight)
@@ -29,9 +29,6 @@ open GaussianRationalLinearProduct (add_sub_right)
 open GaussianRationalMetric (bounded distanceBounded qsub)
 open GaussianRationalPowerDifference (bounded_sum_same)
 open GaussianRationalReciprocal (bound_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -61,33 +58,17 @@ def errorBudget (R m d : PTm n) : PTm n := amplification (rowRadius R m d) m
 def threshold (p R m a d : PTm n) : PTm n :=
   GaussianGammaEulerInverseApproximationName.cutoff p (R+one) a (d*m)
 
-@[simp] theorem subst_rowValue {l : ℕ} (σ : Fin n → PTm l) (p r z R B m d N : PTm n) :
-    Syn.subst σ (rowValue p r z R B m d N) = rowValue (Syn.subst σ p) (Syn.subst σ r) (Syn.subst σ z)
-      (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ m) (Syn.subst σ d) (Syn.subst σ N) := by
-  simp [rowValue,shiftedNumerator,one]
+ipra_subst rowValue [shiftedNumerator, one]
 
-@[simp] theorem subst_rowData {l : ℕ} (σ : Fin n → PTm l) (z R B m d N : PTm n) :
-    Syn.subst σ (rowData z R B m d N) = rowData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ m) (Syn.subst σ d) (Syn.subst σ N) := by
-  simp [rowData]
+ipra_subst rowData
 
-@[simp] theorem subst_sample {l : ℕ} (σ : Fin n → PTm l) (p z R B m d N : PTm n) :
-    Syn.subst σ (sample p z R B m d N) = sample (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ m) (Syn.subst σ d) (Syn.subst σ N) := by
-  simp [sample]
+ipra_subst sample
 
-@[simp] theorem subst_rowRadius {l : ℕ} (σ : Fin n → PTm l) (R m d : PTm n) :
-    Syn.subst σ (rowRadius R m d) = rowRadius (Syn.subst σ R) (Syn.subst σ m) (Syn.subst σ d) := by
-  simp [rowRadius,two,one]
+ipra_subst rowRadius [two, one]
 
-@[simp] theorem subst_errorBudget {l : ℕ} (σ : Fin n → PTm l) (R m d : PTm n) :
-    Syn.subst σ (errorBudget R m d) = errorBudget (Syn.subst σ R) (Syn.subst σ m) (Syn.subst σ d) := by
-  simp [errorBudget]
+ipra_subst errorBudget
 
-@[simp] theorem subst_threshold {l : ℕ} (σ : Fin n → PTm l) (p R m a d : PTm n) :
-    Syn.subst σ (threshold p R m a d) =
-      threshold (Syn.subst σ p) (Syn.subst σ R) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ d) := by
-  simp [threshold,one]
+ipra_subst threshold [one]
 
 theorem row_at (p r z R B m d N : PTm n) :
     Γ ⊢[PRAAx] ap3 rowF p r (rowData z R B m d N) ≐ rowValue p r z R B m d N := by
@@ -97,15 +78,15 @@ theorem row_at (p r z R B m d N : PTm n) :
   let tail₃ := sndT tail₂
   let tail₄ := sndT tail₃
   have s₁ : Γ ⊢[PRAAx] tail₁ ≐ pairT R (pairT B (pairT m (pairT d N))) := snd_pair _ _
-  have s₂ : Γ ⊢[PRAAx] tail₂ ≐ pairT B (pairT m (pairT d N)) := (congrSnd s₁).eqTrans (snd_pair _ _)
-  have s₃ : Γ ⊢[PRAAx] tail₃ ≐ pairT m (pairT d N) := (congrSnd s₂).eqTrans (snd_pair _ _)
-  have s₄ : Γ ⊢[PRAAx] tail₄ ≐ pairT d N := (congrSnd s₃).eqTrans (snd_pair _ _)
+  have s₂ : Γ ⊢[PRAAx] tail₂ ≐ pairT B (pairT m (pairT d N)) := s₁.sndE
+  have s₃ : Γ ⊢[PRAAx] tail₃ ≐ pairT m (pairT d N) := s₂.sndE
+  have s₄ : Γ ⊢[PRAAx] tail₄ ≐ pairT d N := s₃.sndE
   have hz : Γ ⊢[PRAAx] fstT x ≐ z := fst_pair _ _
-  have hR : Γ ⊢[PRAAx] fstT tail₁ ≐ R := (congrFst s₁).eqTrans (fst_pair _ _)
-  have hB : Γ ⊢[PRAAx] fstT tail₂ ≐ B := (congrFst s₂).eqTrans (fst_pair _ _)
-  have hm : Γ ⊢[PRAAx] fstT tail₃ ≐ m := (congrFst s₃).eqTrans (fst_pair _ _)
-  have hd : Γ ⊢[PRAAx] fstT tail₄ ≐ d := (congrFst s₄).eqTrans (fst_pair _ _)
-  have hN : Γ ⊢[PRAAx] sndT tail₄ ≐ N := (congrSnd s₄).eqTrans (snd_pair _ _)
+  have hR : Γ ⊢[PRAAx] fstT tail₁ ≐ R := s₁.fstE
+  have hB : Γ ⊢[PRAAx] fstT tail₂ ≐ B := s₂.fstE
+  have hm : Γ ⊢[PRAAx] fstT tail₃ ≐ m := s₃.fstE
+  have hd : Γ ⊢[PRAAx] fstT tail₄ ≐ d := s₄.fstE
+  have hN : Γ ⊢[PRAAx] sndT tail₄ ≐ N := s₄.sndE
   have first : Γ ⊢[PRAAx] ap3 rowF p r x ≐
       rowValue p r (fstT x) (fstT tail₁) (fstT tail₂) (fstT tail₃) (fstT tail₄) (sndT tail₄) := by
     change Γ ⊢[PRAAx] ConciseIPRA.PTm.app (PTm.toPR rowBody) ![p,r,x] ≐ _

@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationLimit
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaGaussShiftedProduct (source)
 open GaussianGaussMultiplicationCofinalProducts
@@ -20,8 +20,6 @@ open GaussianGaussMultiplicationCofinalProducts
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_symmetric distance_triangle_same)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -30,10 +28,7 @@ def finiteAgreement (z R B m a d C : PTm n) : Fm PTm n := .all
     (rightRaw (var 0) (Syn.shift z) (Syn.shift R) (Syn.shift B) (Syn.shift m) (Syn.shift a) (Syn.shift d))
     (Syn.shift C) (unit (var 0)))
 
-@[simp] theorem subst_finiteAgreement {l : ℕ} (σ : Fin n → PTm l) (z R B m a d C : PTm n) :
-    (finiteAgreement z R B m a d C).subst σ =
-      finiteAgreement (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ m)
-        (Syn.subst σ a) (Syn.subst σ d) (Syn.subst σ C) := by simp [finiteAgreement,Syn.subst_shift,Syn.shift_subst]
+ipra_subst finiteAgreement [Syn.subst_shift, Syn.shift_subst]
 
 theorem finite_at (p z R B m a d C : PTm n) (h : Γ ⊢[PRAAx] finiteAgreement z R B m a d C) :
     Γ ⊢[PRAAx] distanceBounded (leftRaw p z R B m a d) (rightRaw p z R B m a d) C (unit p) := by
@@ -43,10 +38,7 @@ theorem finite_at (p z R B m a d C : PTm n) (h : Γ ⊢[PRAAx] finiteAgreement z
 
 def diagonalBudget (z R B m d C : PTm n) : PTm n := (leftBudget z R B m d+C)+rightBudget z R B m d
 
-@[simp] theorem subst_diagonalBudget {l : ℕ} (σ : Fin n → PTm l) (z R B m d C : PTm n) :
-    Syn.subst σ (diagonalBudget z R B m d C) =
-      diagonalBudget (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ m) (Syn.subst σ d) (Syn.subst σ C) :=
-  by simp [diagonalBudget]
+ipra_subst diagonalBudget
 
 theorem cofinal_error (p z R B m a d C : PTm n) (hs : Γ ⊢[PRAAx] source z R B m a d)
     (hm : Γ ⊢[PRAAx] distanceBounded (leftRaw p z R B m a d) (rightRaw p z R B m a d) C (unit p)) :

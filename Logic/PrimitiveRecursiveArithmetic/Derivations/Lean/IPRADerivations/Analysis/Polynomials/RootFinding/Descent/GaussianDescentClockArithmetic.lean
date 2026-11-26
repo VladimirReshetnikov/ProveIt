@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.FiniteOperations.GaussianProductStability
 import IPRADerivations.Analysis.RationalArithmetic.RationalClosure
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Exact finite arithmetic of the rational-descent clock
@@ -17,13 +16,9 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianDescentClockArithmetic
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Analysis.RationalIntegerNormalization (positive_form)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -35,20 +30,14 @@ def ceiling (s t : PTm n) : PTm n := quo (s+pred t) t
 def blocks (a b e f : PTm n) : PTm n := ceiling (a*f) (b*e)
 def clock (d a b e f : PTm n) : PTm n := rateDenominator d*blocks a b e f
 
-@[simp] theorem subst_four {m : ℕ} (σ : Fin n → PTm m) : Syn.subst σ (four : PTm n) = (four : PTm m) := by simp [four]
-@[simp] theorem subst_descentD {m : ℕ} (σ : Fin n → PTm m) (d : PTm n) :
-    Syn.subst σ (descentD d) = descentD (Syn.subst σ d) := by simp [descentD]
-@[simp] theorem subst_rateDenominator {m : ℕ} (σ : Fin n → PTm m) (d : PTm n) :
-    Syn.subst σ (rateDenominator d) = rateDenominator (Syn.subst σ d) := by simp [rateDenominator]
-@[simp] theorem subst_ceiling {m : ℕ} (σ : Fin n → PTm m) (s t : PTm n) :
-    Syn.subst σ (ceiling s t) = ceiling (Syn.subst σ s) (Syn.subst σ t) := by simp [ceiling]
-@[simp] theorem subst_blocks {m : ℕ} (σ : Fin n → PTm m) (a b e f : PTm n) :
-    Syn.subst σ (blocks a b e f) = blocks (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ e) (Syn.subst σ f) := by simp [blocks]
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (d a b e f : PTm n) :
-    Syn.subst σ (clock d a b e f) = clock (Syn.subst σ d) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ e) (Syn.subst σ f) := by simp [clock]
+ipra_subst four
+ipra_subst descentD
+ipra_subst rateDenominator
+ipra_subst ceiling
+ipra_subst blocks
+ipra_subst clock
 
-theorem positive_product (a b : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hb : Γ ⊢[PRAAx] le one b) :
-    Γ ⊢[PRAAx] le one (a*b) := le_congr (one_mul one) (.eqRefl _) (le_mul_mono ha hb)
+alias positive_product := Common.one_le_mul
 
 theorem four_positive : Γ ⊢[PRAAx] le one (four : PTm n) :=
   positive_product two two (le_succ_self one) (le_succ_self one)
@@ -63,14 +52,10 @@ theorem bernoulli (a k : PTm n) : Γ ⊢[PRAAx]
     le (pw a k*(a+succ k)) (pw (succ a) (succ k)) := by
   have all : Γ ⊢[PRAAx] .all (le (pw (Syn.shift a) (var 0)*(Syn.shift a+succ (var 0)))
       (pw (succ (Syn.shift a)) (succ (var 0)))) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le,PTm.subst_mul,PTm.subst_add,subst_ap2,ConciseIPRA.PTm.subst_succ,
-        Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact le_congr ((congrMul (pw_zero a) (.eqRefl _)).eqTrans (one_mul _)).eqSymm
+    ipra_qfind (le_QF _ _) [subst_le, subst_ap2]
+    · exact le_congr ((congrMul (pw_zero a) (.eqRefl _)).eqTrans (one_mul _)).eqSymm
         (pw_one (succ a)).eqSymm (le_of_eq_add (d := zero) (by ipra_ring))
-    · simp only [subst_le,PTm.subst_mul,PTm.subst_add,subst_ap2,ConciseIPRA.PTm.subst_succ,
-        Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      let Δ := le (pw (Syn.shift a) (var 0)*(Syn.shift a+succ (var 0)))
+    · let Δ := le (pw (Syn.shift a) (var 0)*(Syn.shift a+succ (var 0)))
         (pw (succ (Syn.shift a)) (succ (var 0))) :: Γ.map Fm.shift
       have step : Δ ⊢[PRAAx] le
           (pw (Syn.shift a) (succ (var 0))*(Syn.shift a+succ (succ (var 0))))
@@ -99,11 +84,9 @@ theorem block_decay (M : PTm n) (hM : Γ ⊢[PRAAx] le one M) : Γ ⊢[PRAAx]
 theorem power_composition (a M K : PTm n) : Γ ⊢[PRAAx] pw (pw a M) K ≐ pw a (M*K) := by
   have all : Γ ⊢[PRAAx] .all (pw (pw (Syn.shift a) (Syn.shift M)) (var 0) ≐
       pw (Syn.shift a) (Syn.shift M*var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,PTm.subst_mul,subst_ap2,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (pw_zero _).eqTrans ((congrAp2 powF (mul_zero M) (.eqRefl _)).eqTrans (pw_zero _)).eqSymm
-    · simp only [Fm.subst_eq,PTm.subst_mul,subst_ap2,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact (pw_succ _ _).eqTrans ((congrMul Prf.hyp0 (.eqRefl _)).eqTrans
+    ipra_qfind [subst_ap2]
+    · exact (pw_zero _).eqTrans ((congrAp2 powF (mul_zero M) (.eqRefl _)).eqTrans (pw_zero _)).eqSymm
+    · exact (pw_succ _ _).eqTrans ((congrMul Prf.hyp0 (.eqRefl _)).eqTrans
         ((pw_add _ _ _).eqSymm.eqTrans (congrAp2 powF (by ipra_ring) (.eqRefl _))))
   simpa only [Fm.subst_eq,PTm.subst_mul,subst_ap2,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using Prf.allE K all
 

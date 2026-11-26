@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalMonicCompanion
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner
   (qzero qadd qmul canonical horner hornerF evaluate represents positive_product)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision
@@ -32,9 +32,6 @@ open LeanProofs.IPRA.Analysis.GaussianCoefficientL1
   (subCoefficients sub_lookup)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,21 +40,17 @@ theorem sub_length (C E L : PTm n) : Γ ⊢[PRAAx] length (subCoefficients C E L
 
 def differenceLaw (C E L z r : PTm n) : Fm PTm n := le r L ⟶
   horner (subCoefficients C E L) z r ≐ qsub (horner C z r) (horner E z r)
-@[simp] theorem subst_differenceLaw {m : ℕ} (σ : Fin n → PTm m) (C E L z r : PTm n) :
-    (differenceLaw C E L z r).subst σ = differenceLaw (Syn.subst σ C) (Syn.subst σ E)
-      (Syn.subst σ L) (Syn.subst σ z) (Syn.subst σ r) := by simp [differenceLaw]
+ipra_subst differenceLaw
 
 theorem difference_prefix (C E L z r : PTm n) (hr : Γ ⊢[PRAAx] le r L) : Γ ⊢[PRAAx]
     horner (subCoefficients C E L) z r ≐ qsub (horner C z r) (horner E z r) := by
   have all : Γ ⊢[PRAAx] .all (differenceLaw (Syn.shift C) (Syn.shift E) (Syn.shift L) (Syn.shift z) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_differenceLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI ((GaussianRationalHorner.horner_zero _ _).eqTrans
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_differenceLaw]
+    · exact .impI ((GaussianRationalHorner.horner_zero _ _).eqTrans
         ((GaussianCoefficientNormOrder.qsub_self qzero).eqSymm.eqTrans
           (qsub_congr (GaussianRationalHorner.horner_zero C z).eqSymm
             (GaussianRationalHorner.horner_zero E z).eqSymm)))
-    · simp only [subst_differenceLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    · refine .impI ?_
       let Δ := le (succ (var 0)) (Syn.shift L) ::
         differenceLaw (Syn.shift C) (Syn.shift E) (Syn.shift L) (Syn.shift z) (var 0) :: Γ.map Fm.shift
       have ih : Δ ⊢[PRAAx] horner (subCoefficients (Syn.shift C) (Syn.shift E) (Syn.shift L)) (Syn.shift z) (var 0) ≐
@@ -101,21 +94,18 @@ theorem raw_unit_difference (q : PTm n) : Γ ⊢[PRAAx] qsub q (qmul q qone) ≐
 
 def tailLaw (C D z r : PTm n) : Fm PTm n := le r D ⟶
   horner C z (succ r) ≐ horner (segment C one D) z r
-@[simp] theorem subst_tailLaw {m : ℕ} (σ : Fin n → PTm m) (C D z r : PTm n) :
-    (tailLaw C D z r).subst σ = tailLaw (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ z) (Syn.subst σ r) := by simp [tailLaw]
+ipra_subst tailLaw
 
 theorem zero_head_prefix (C D z r : PTm n) (hHead : Γ ⊢[PRAAx] entry C zero ≐ qzero)
     (hr : Γ ⊢[PRAAx] le r D) : Γ ⊢[PRAAx]
     horner C z (succ r) ≐ horner (segment C one D) z r := by
   have all : Γ ⊢[PRAAx] .all (tailLaw (Syn.shift C) (Syn.shift D) (Syn.shift z) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_tailLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI ((GaussianRationalHorner.horner_succ C z zero).eqTrans
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_tailLaw]
+    · exact .impI ((GaussianRationalHorner.horner_succ C z zero).eqTrans
         ((qadd_congr ((qmul_congr (GaussianRationalHorner.horner_zero C z) (.eqRefl _)).eqTrans
           (qmul_zero_left z)) hHead).eqTrans
             ((qzero_add qzero qzero_canonical).eqTrans (GaussianRationalHorner.horner_zero _ _).eqSymm))).wk
-    · simp only [subst_tailLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    · refine .impI ?_
       let Δ := le (succ (var 0)) (Syn.shift D) :: tailLaw (Syn.shift C) (Syn.shift D) (Syn.shift z) (var 0) :: Γ.map Fm.shift
       have ih : Δ ⊢[PRAAx] horner (Syn.shift C) (Syn.shift z) (succ (var 0)) ≐
           horner (segment (Syn.shift C) one (Syn.shift D)) (Syn.shift z) (var 0) :=
@@ -142,12 +132,9 @@ def fullDifference (P R D : PTm n) : PTm n :=
   subCoefficients (appendZero R) (scaled P (lead R)) (succ D)
 def companionY (P R D : PTm n) : PTm n := segment (fullDifference P R D) one D
 
-@[simp] theorem subst_lead {m : ℕ} (σ : Fin n → PTm m) (R : PTm n) :
-    Syn.subst σ (lead R) = lead (Syn.subst σ R) := by simp [lead]
-@[simp] theorem subst_fullDifference {m : ℕ} (σ : Fin n → PTm m) (P R D : PTm n) :
-    Syn.subst σ (fullDifference P R D) = fullDifference (Syn.subst σ P) (Syn.subst σ R) (Syn.subst σ D) := by simp [fullDifference]
-@[simp] theorem subst_companionY {m : ℕ} (σ : Fin n → PTm m) (P R D : PTm n) :
-    Syn.subst σ (companionY P R D) = companionY (Syn.subst σ P) (Syn.subst σ R) (Syn.subst σ D) := by simp [companionY]
+ipra_subst lead
+ipra_subst fullDifference
+ipra_subst companionY
 
 theorem companion_length (P R D : PTm n) : Γ ⊢[PRAAx] length (companionY P R D) ≐ D := segment_length _ _ _
 
@@ -232,8 +219,7 @@ theorem companion_evaluation (P R D z : PTm n) (hD : Γ ⊢[PRAAx] le one D)
 
 def companionF : PR 3 := PTm.toPR (companionY (var 0) (var 1) (var 2))
 def run (P R D : PTm n) : PTm n := ap3 companionF P R D
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (P R D : PTm n) :
-    Syn.subst σ (run P R D) = run (Syn.subst σ P) (Syn.subst σ R) (Syn.subst σ D) := by simp [run]
+ipra_subst run
 
 theorem program_at (P R D : PTm n) : Γ ⊢[PRAAx] run P R D ≐ companionY P R D := by
   simpa [run,companionF,ap3] using toPR_eq (Γ := Γ) (companionY (var 0) (var 1) (var 2) : PTm 3) ![P,R,D]

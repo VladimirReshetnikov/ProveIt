@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaGaussReferenceEulerProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianGammaEulerReciprocalInverse (eulerF eulerData eulerHeight)
 open GaussianGammaFiniteApproximantName (qF qData)
@@ -27,9 +27,6 @@ open GaussianRationalLinearProduct (add_sub_right)
 open GaussianRationalMetric (bounded distanceBounded qsub)
 open GaussianRationalPowerDifference (bounded_sum_same)
 open GaussianRationalReciprocal (bound_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -43,24 +40,17 @@ def rowRadius (m : PTm n) : PTm n := GaussianGammaGaussReferenceProduct.rowRadiu
 def errorBudget (m : PTm n) : PTm n := amplification (rowRadius m) m
 def threshold (p m : PTm n) : PTm n := GaussianGammaEulerInverseApproximationName.cutoff p one one m
 
-@[simp] theorem subst_rowValue {l : ℕ} (σ : Fin n → PTm l) (p r m N : PTm n) :
-    Syn.subst σ (rowValue p r m N) = rowValue (Syn.subst σ p) (Syn.subst σ r) (Syn.subst σ m) (Syn.subst σ N) := by
-  simp [rowValue,one]
+ipra_subst rowValue [one]
 
-@[simp] theorem subst_rowData {l : ℕ} (σ : Fin n → PTm l) (m N : PTm n) :
-    Syn.subst σ (rowData m N) = rowData (Syn.subst σ m) (Syn.subst σ N) := by simp [rowData]
+ipra_subst rowData
 
-@[simp] theorem subst_sample {l : ℕ} (σ : Fin n → PTm l) (p m N : PTm n) :
-    Syn.subst σ (sample p m N) = sample (Syn.subst σ p) (Syn.subst σ m) (Syn.subst σ N) := by simp [sample]
+ipra_subst sample
 
-@[simp] theorem subst_rowRadius {l : ℕ} (σ : Fin n → PTm l) (m : PTm n) :
-    Syn.subst σ (rowRadius m) = rowRadius (Syn.subst σ m) := by simp [rowRadius,two,one]
+ipra_subst rowRadius [two, one]
 
-@[simp] theorem subst_errorBudget {l : ℕ} (σ : Fin n → PTm l) (m : PTm n) :
-    Syn.subst σ (errorBudget m) = errorBudget (Syn.subst σ m) := by simp [errorBudget]
+ipra_subst errorBudget
 
-@[simp] theorem subst_threshold {l : ℕ} (σ : Fin n → PTm l) (p m : PTm n) :
-    Syn.subst σ (threshold p m) = threshold (Syn.subst σ p) (Syn.subst σ m) := by simp [threshold,one]
+ipra_subst threshold [one]
 
 theorem row_at (p r m N : PTm n) : Γ ⊢[PRAAx] ap3 rowF p r (rowData m N) ≐ rowValue p r m N := by
   let x := rowData m N

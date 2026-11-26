@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalUnitInverseExpansion
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner
   (qadd qmul qadd_canonical qadd_represents qmul_represents represents positive_product canonical_unique represents_congr represents_rescale)
 open GaussianRationalMetric (qsub bounded qsub_canonical qsub_represents)
@@ -26,9 +26,6 @@ open GaussianRationalReciprocal
 open GaussianCoefficientNameBounds (bounded_radius_mono)
 open ComplexLogarithmRemainder (oneCode scale)
 open GaussianRootAlgebra (equal_of_values re_add im_add re_sub im_sub re_mul im_mul re_scale im_scale re_one im_one)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

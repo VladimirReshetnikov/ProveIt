@@ -1,5 +1,4 @@
 import IPRADerivations.Algebra.PowerDifference
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The second-order increment of a power
@@ -29,13 +28,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.PowerIncrement
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Algebra.PowerDifference (gd gd_zero gd_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -97,13 +92,9 @@ theorem second_step {x y i : PTm n} (ih : Γ ⊢[PRAAx] Second x y i) : Γ ⊢[P
 private abbrev secF : Fm PTm 3 := Second (var 1) (var 2) (var 0)
 
 private theorem sec₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] secF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-      Syn.inst_zero, Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact second_base _ _
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-      Syn.repl_zero, repl_one, repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact second_step Prf.hyp0
+  ipra_ind [subst_ap2, subst_pairT]
+  · exact second_base _ _
+  · exact second_step Prf.hyp0
 
 /-- `eq:power2` with `(x − y)²` expanded:
 `x^{i+1} + (i+1) y^i y + 2xy · kd = y^{i+1} + (i+1) y^i x + (x² + y²) · kd`. -/
@@ -143,13 +134,9 @@ theorem gd_kd_step {x y i : PTm n} (ih : Γ ⊢[PRAAx] GdKd x y i) : Γ ⊢[PRAA
 private abbrev gkF : Fm PTm 3 := GdKd (var 1) (var 2) (var 0)
 
 private theorem gk₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] gkF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-      Syn.inst_zero, Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact gd_kd_base _ _
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-      Syn.repl_zero, repl_one, repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact gd_kd_step Prf.hyp0
+  ipra_ind [subst_ap2, subst_pairT]
+  · exact gd_kd_base _ _
+  · exact gd_kd_step Prf.hyp0
 
 /-- `∑_{r ≤ i} x^{i−r} y^r = (i + 1) y^i + (x − y) · kd x y i`, written without subtraction. -/
 theorem gd_kd (x y i : PTm n) : Γ ⊢[PRAAx] GdKd x y i := by
@@ -177,15 +164,9 @@ private abbrev klF : Fm PTm 4 :=
     le (two * var 3 * kd (var 1) (var 2) (var 0)) (var 0 * succ (var 0) * pw (var 3) (var 0)))
 
 private theorem kl₀ : ([] : List (Fm PTm 4)) ⊢[PRAAx] klF := by
-  refine ind _ ⟨le_QF _ _, ⟨le_QF _ _, le_QF _ _⟩⟩ ?_ ?_
-  · simp only [Fm.subst_imp, subst_le, Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, inst_three, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact .impI (.impI (kd_le_base _ _ _))
-  · simp only [Fm.subst_imp, subst_le, Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul,
-      Syn.subst_var, Syn.repl_zero, repl_one, repl_two, repl_three, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    refine .impI (.impI ?_)
+  ipra_ind (⟨le_QF _ _, ⟨le_QF _ _, le_QF _ _⟩⟩) [subst_le, subst_ap2, subst_pairT]
+  · exact .impI (.impI (kd_le_base _ _ _))
+  · refine .impI (.impI ?_)
     exact kd_le_step Prf.hyp1 Prf.hyp0 (.impE (.impE Prf.hyp1.wk Prf.hyp1) Prf.hyp0)
 
 /-- For `x, y ≤ R`: `2R ∑_{ℓ<i} (ℓ + 1) x^(i−1−ℓ) y^ℓ ≤ i (i + 1) R^i`. -/

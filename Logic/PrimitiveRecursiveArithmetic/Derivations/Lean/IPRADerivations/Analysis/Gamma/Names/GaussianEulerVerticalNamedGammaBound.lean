@@ -2,7 +2,6 @@ import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalNamedR
 import IPRADerivations.Analysis.Gamma.Integrals.GaussianEulerVerticalGammaBound
 import IPRADerivations.Analysis.Gamma.Names.PositiveAxis.GaussianNamedGammaPositiveLower
 import IPRADerivations.Analysis.Names.RationalReciprocalPowerName
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Vertical domination at arbitrary regular named Gamma inputs
@@ -18,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerVerticalNamedGammaBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedRightHalfPlane (source radius numerator denominator threshold)
 open GaussianGammaRealValues (axisF)
 open GaussianNamedGamma (nameF data)
@@ -35,10 +34,6 @@ open GaussianEuclideanDistanceName (fraction fraction_represents)
 open RationalGaussianEmbedding (embed scalarZero)
 open RationalValueBounds (upper upper_of_radius radius_symmetric upper_triangle upper_congr upper_mono)
 open GaussianRationalSlackRemoval (slack slack_removal_at)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

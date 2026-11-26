@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantStageError
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianPolynomialDeterminantTerms
   (tableShape factor factor_length stage stage_zero stage_succ stage_length signPoint term)
 open GaussianPolynomialDeterminantStageNorm (factorBounds factor_at stage_norm sign_norm)
@@ -29,9 +29,6 @@ open GaussianPolynomialDeterminantNorm (natural_scale_zero)
 open RationalArgmin (rationalLE rationalLE_congr reflexive transitive)
 open RationalArithmetic (add multiply multiply_monotone)
 open RationalAlgebra (add_congr multiply_congr multiply_add multiply_associative multiply_commutative)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -49,25 +46,13 @@ def stageDifference (A B m L w j : PTm n) : PTm n :=
 def errorLaw (A B m L w R E j : PTm n) : Fm PTm n :=
   le j m ⟶ rationalLE (coefficientNorm (stageDifference A B m L w j)) (multiply (natCode (budget R one j)) E)
 
-@[simp] theorem subst_factorDifference {k : ℕ} (σ : Fin n → PTm k) (A B m L w j : PTm n) :
-    Syn.subst σ (factorDifference A B m L w j) =
-      factorDifference (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ m)
-        (Syn.subst σ L) (Syn.subst σ w) (Syn.subst σ j) := by simp [factorDifference]
+ipra_subst factorDifference
 
-@[simp] theorem subst_factorDifferences {k : ℕ} (σ : Fin n → PTm k) (A B m L w E : PTm n) :
-    (factorDifferences A B m L w E).subst σ =
-      factorDifferences (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ m)
-        (Syn.subst σ L) (Syn.subst σ w) (Syn.subst σ E) := by
-  simp [factorDifferences, Syn.subst_shift, Syn.shift_subst]
+ipra_subst factorDifferences [Syn.subst_shift, Syn.shift_subst]
 
-@[simp] theorem subst_stageDifference {k : ℕ} (σ : Fin n → PTm k) (A B m L w j : PTm n) :
-    Syn.subst σ (stageDifference A B m L w j) =
-      stageDifference (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ m)
-        (Syn.subst σ L) (Syn.subst σ w) (Syn.subst σ j) := by simp [stageDifference]
+ipra_subst stageDifference
 
-@[simp] theorem subst_errorLaw {k : ℕ} (σ : Fin n → PTm k) (A B m L w R E j : PTm n) :
-    (errorLaw A B m L w R E j).subst σ = errorLaw (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ m)
-      (Syn.subst σ L) (Syn.subst σ w) (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ j) := by simp [errorLaw]
+ipra_subst errorLaw
 
 theorem factor_difference_at (A B m L w E j : PTm n) (h : Γ ⊢[PRAAx] factorDifferences A B m L w E)
     (hj : Γ ⊢[PRAAx] lt j m) : Γ ⊢[PRAAx] rationalLE (coefficientNorm (factorDifference A B m L w j)) E := by
@@ -148,11 +133,9 @@ theorem stage_error (A B m L w R E j : PTm n)
     Γ ⊢[PRAAx] rationalLE (coefficientNorm (stageDifference A B m L w j)) (multiply (natCode (budget R one j)) E) := by
   have all : Γ ⊢[PRAAx] .all (errorLaw (Syn.shift A) (Syn.shift B) (Syn.shift m) (Syn.shift L)
       (Syn.shift w) (Syn.shift R) (Syn.shift E) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [subst_errorLaw, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      exact error_zero _ _ _ _ _ _ _
-    · simp only [subst_errorLaw, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      apply error_step _ _ _ _ _ _ _ _ _ _ _ _ _ Prf.hyp0
+    ipra_qfind (⟨le_QF _ _, le_QF _ _⟩) [subst_errorLaw]
+    · exact error_zero _ _ _ _ _ _ _
+    · apply error_step _ _ _ _ _ _ _ _ _ _ _ _ _ Prf.hyp0
       · simpa only [Fm.shift, Syn.shift, GaussianPolynomialDeterminantTerms.subst_tableShape] using ha.shift.wk
       · simpa only [Fm.shift, Syn.shift, GaussianPolynomialDeterminantTerms.subst_tableShape] using hb.shift.wk
       · simpa only [Fm.shift, Syn.shift, GaussianPolynomialDeterminantStageNorm.subst_factorBounds] using hfa.shift.wk

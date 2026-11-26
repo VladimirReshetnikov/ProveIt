@@ -14,17 +14,13 @@ set_option maxHeartbeats 600000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliGridMean
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
+open_ipra
 open BernoulliBounds (bden bden_pos bint pv toZ_zint)
 open GaussianStirlingAllOrderBernoulliMesh (lower_endpoint_value)
 open GaussianStirlingAllOrderCenteredBernoulli (sample numerator denominator factor sample_value sample_canonical)
 open RationalFiniteSum (term canonical_equal)
 open RationalIntegerNormalization (normalize normalize_preserves_value)
 open RationalNormalForm (normalize_well_formed)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -20,7 +20,7 @@ set_option maxHeartbeats 330000
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerNamedRecurrence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEulerNamedShiftInput (shiftF shiftData clock_later)
 open GaussianEuclideanDistanceName (pointCN)
@@ -36,9 +36,6 @@ open GaussianNamedRightHalfPlaneSigned (certificate realNumerator imagNumerator 
 open GaussianRationalDistanceOrder (distance_radius_mono)
 open GaussianRationalHorner (ofGaussian_canonical positive_product)
 open GaussianRationalMetric (distanceBounded)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -59,9 +56,7 @@ def nameF (f : PR 2) : PR 2 := diffF (gammaF (shiftF f)) (gammaF f)
 
 def data (x M R S : PTm n) : PTm n := diffData (gammaData (shiftData x) M S) (gammaData x M R)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (x M R S : PTm n) :
-    Syn.subst σ (data x M R S) = data (Syn.subst σ x) (Syn.subst σ M) (Syn.subst σ R) (Syn.subst σ S) := by
-  simp [data]
+ipra_subst data
 
 private theorem rational_regular (q R K : PTm n) (h : Γ ⊢[PRAAx] certificate q R K) : Γ ⊢[PRAAx] pointCN C (dat q) :=
   canonical_regular _ _ _ _ h.andE₁.andE₁

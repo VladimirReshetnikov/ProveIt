@@ -1,5 +1,4 @@
 import IPRADerivations.Combinatorics.CatalanGrowth
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The Wallis bounds for the central binomial coefficient
@@ -26,12 +25,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.WallisCentral
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Catalan
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -74,13 +69,9 @@ private abbrev upF : Fm PTm 1 :=
   le (pw sixteen (succ (var 0))) (four * succ (var 0) * (cb (succ (var 0)) * cb (succ (var 0))))
 
 private theorem up₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] upF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [subst_le, Fm.subst_eq, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, subst_ap2,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact upper_base
-  · simp only [subst_le, Fm.subst_eq, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, subst_ap2,
-      Syn.subst_var, Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact upper_step Prf.hyp0
+  ipra_ind [subst_le, subst_ap2]
+  · exact upper_base
+  · exact upper_step Prf.hyp0
 
 /-- `16^n ≤ 4 n C(2n, n)²` for `n = k + 1`. -/
 theorem wallis_upper (k : PTm n) :
@@ -117,13 +108,9 @@ private abbrev loF : Fm PTm 1 :=
     (three * pw sixteen (succ (var 0)))
 
 private theorem lo₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] loF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [subst_le, Fm.subst_eq, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, subst_ap2,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact lower_base
-  · simp only [subst_le, Fm.subst_eq, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, subst_ap2,
-      Syn.subst_var, Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact lower_step Prf.hyp0
+  ipra_ind [subst_le, subst_ap2]
+  · exact lower_base
+  · exact lower_step Prf.hyp0
 
 /-- `4 (2n + 1) C(2n, n)² ≤ 3 · 16^n` for `n = k + 1`. -/
 theorem wallis_lower (k : PTm n) :

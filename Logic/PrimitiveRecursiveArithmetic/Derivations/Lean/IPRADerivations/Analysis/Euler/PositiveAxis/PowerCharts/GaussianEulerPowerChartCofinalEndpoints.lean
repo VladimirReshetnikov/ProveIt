@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.GaussianEulerPowerChartRationalPowers
 import IPRADerivations.AnalyticNumberTheory.Order
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Explicit cofinal endpoints for the original rational power chart
@@ -14,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPowerChartCofinalEndpoints
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPositivePowerChart (parameters)
 open GaussianEulerPowerChartRationalPowers (original_chart_value chart_proper)
 open GaussianGammaCanonicalExponent (constantF)
@@ -23,10 +22,6 @@ open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (positive_product)
 open LeanProofs.IPRA.AnalyticNumberTheory.Order (pw_one_base)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

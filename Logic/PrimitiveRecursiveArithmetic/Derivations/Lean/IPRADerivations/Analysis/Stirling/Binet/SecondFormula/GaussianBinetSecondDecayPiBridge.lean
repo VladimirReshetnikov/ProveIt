@@ -17,7 +17,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetSecondDecayPiBridge
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetSecondDecayPointwise (frozenPiNumerator angle row)
 open GaussianBinetBoseExponential (expF expData scaleF scaleData scaleBudget expRadius)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
@@ -35,10 +35,6 @@ open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRightHalfPlaneLogarithm (source)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianStirlingConstant (piNumerator piDenominator)
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -51,9 +47,7 @@ def radius (m T : PTm n) : PTm n := cap m T*U Pi zero
 def budget (m T : PTm n) : PTm n :=
   GaussianRadiusExponentialLipschitzRate.factor (radius m T)*(cap m T*(zero+two))
 
-@[simp] theorem subst_budget {k : ℕ} (σ : Fin n → PTm k) (m T : PTm n) :
-    Syn.subst σ (budget m T) = budget (Syn.subst σ m) (Syn.subst σ T) := by
-  simp [budget,radius,cap,one,two]
+ipra_subst budget [radius, cap, one, two]
 
 theorem budget_monotone (m M T : PTm n) (hm : Γ ⊢[PRAAx] le m M) :
     Γ ⊢[PRAAx] le (budget m T) (budget M T) := by

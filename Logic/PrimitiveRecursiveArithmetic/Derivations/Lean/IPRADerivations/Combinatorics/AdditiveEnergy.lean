@@ -17,9 +17,7 @@ Not derived: the two covering estimates of result 59 (the Ruzsa triangle inequal
 
 namespace LeanProofs.IPRA.Combinatorics.AdditiveEnergy
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
+open_ipra
 
 variable {n a b m : ℕ} {Γ : List (Fm PTm n)}
 
@@ -37,8 +35,7 @@ theorem total (T : Fin a → Fin b → Fin m → ZT n)
     (hT : ∀ x y, Γ ⊢[PRAAx] ZT.eq (ZT.sumFin fun s => T x y s) (ZT.natLit 1)) :
     Γ ⊢[PRAAx] ZT.eq (ZT.sumFin fun s => ZT.sumFin fun x => ZT.sumFin fun y => T x y s) (ZT.natLit (a * b)) := by
   have hT1 : ∀ x y, ∑ s, ZT.toZ Γ (T x y s) = 1 := fun x y => by
-    have h := ZT.toZ_eq (hT x y)
-    simpa only [ZT.toZ_sumFin, ZT.toZ_natLit, Nat.cast_one] using h
+    simpa only [ZT.toZ_sumFin, ZT.toZ_natLit, Nat.cast_one] using ZT.toZ_eq (hT x y)
   have e := total_sum (fun x y s => ZT.toZ Γ (T x y s)) hT1
   beta_reduce at e
   apply ZT.derive
@@ -53,8 +50,7 @@ theorem energy (T : Fin a → Fin b → Fin m → ZT n)
     Γ ⊢[PRAAx] zle (ZT.natLit (a * b * (a * b)))
       (ZT.natLit m * ZT.sumFin fun s => ZT.sq (ZT.sumFin fun x => ZT.sumFin fun y => T x y s)) := by
   have hT1 : ∀ x y, ∑ s, ZT.toZ Γ (T x y s) = 1 := fun x y => by
-    have h := ZT.toZ_eq (hT x y)
-    simpa only [ZT.toZ_sumFin, ZT.toZ_natLit, Nat.cast_one] using h
+    simpa only [ZT.toZ_sumFin, ZT.toZ_natLit, Nat.cast_one] using ZT.toZ_eq (hT x y)
   have e := total_sum (fun x y s => ZT.toZ Γ (T x y s)) hT1
   beta_reduce at e
   have hc := cauchy_int (Γ := Γ) (fun s => ZT.sumFin fun x => ZT.sumFin fun y => T x y s)

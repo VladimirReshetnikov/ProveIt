@@ -1,7 +1,6 @@
 import IPRADerivations.Combinatorics.BinomialTheorem
 import IPRADerivations.Combinatorics.Fibonacci
 import IPRADerivations.Probability.Independence
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The binomial transform and the Fibonacci convolution
@@ -25,16 +24,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.BinomialTransform
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (binom_zero' binom_self' pascal_at)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrBinom)
 open LeanProofs.IPRA.Combinatorics.Fibonacci
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -176,13 +171,9 @@ private abbrev convF : Fm PTm 1 :=
   (Am (var 0) ≐ fibS (two * var 0)) ⋏ (Bm (var 0) ≐ fib (two * var 0))
 
 private theorem conv₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] convF := by
-  refine ind _ ⟨trivial, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_and, Fm.subst_eq, subst_ap1, subst_ap2, subst_pairT, PTm.subst_mul, PTm.subst_add,
-      PTm.subst_monus, subst_fibS, subst_fib, Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact conv_base
-  · simp only [Fm.subst_and, Fm.subst_eq, subst_ap1, subst_ap2, subst_pairT, PTm.subst_mul, PTm.subst_add,
-      PTm.subst_monus, subst_fibS, subst_fib, Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact conv_step Prf.hyp0
+  ipra_ind (⟨trivial, trivial⟩) [subst_ap1, subst_ap2, subst_pairT, subst_fibS, subst_fib]
+  · exact conv_base
+  · exact conv_step Prf.hyp0
 
 /-- The binomial convolution: `∑_{k ≤ m} C(m, k) F_{k+1} = F_{2m+1}` and
 `∑_{k ≤ m} C(m, k) F_k = F_{2m}`. -/
@@ -213,9 +204,8 @@ theorem luc_convolution (m : PTm n) : Γ ⊢[PRAAx] Lm m ≐ luc (two * m) := by
     refine sum_scale _ _ _ _ _ _ (.allI (.impI ?_))
     rw [two_shift]
     exact luc_pt _ _
-  have s₂ := natEq s₂'
   have c := fib_convolution (Γ := Γ) m
-  ipra_lc -natEq (sum_add (Γ := Γ) (bgB lB) (bgB fbB) (succ m) (pairT m zero)) + s₂ + 2 * natEq (Prf.andE₁ c) -
+  ipra_lc -natEq (sum_add (Γ := Γ) (bgB lB) (bgB fbB) (succ m) (pairT m zero)) + natEq s₂' + 2 * natEq (Prf.andE₁ c) -
     natEq (Prf.andE₂ c) - natEq (luc_eq (Γ := Γ) (two * m))
 
 end LeanProofs.IPRA.Combinatorics.BinomialTransform

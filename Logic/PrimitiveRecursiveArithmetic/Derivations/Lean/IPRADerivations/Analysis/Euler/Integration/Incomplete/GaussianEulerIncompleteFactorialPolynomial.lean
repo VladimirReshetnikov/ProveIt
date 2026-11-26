@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIncompleteFactorialPolynomial
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qadd qmul represents represents_congr canonical_unique)
 open GaussianRationalSyntheticDivision (qone qone_canonical qadd_congr qmul_congr)
 open GaussianRationalNaturalScale (natScale naturalPoint natScale_canonical natScale_congr)
@@ -24,9 +24,6 @@ open GaussianRationalPolynomialExponential (scalarSum scalarBody inverseFactoria
 open GaussianRationalReciprocal (power)
 open GaussianPositiveRationalLogarithm (fraction)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -34,10 +31,8 @@ def value (N q : PTm n) : PTm n := natScale (fact N) (scalarSum q N)
 def valueF : PR 2 := PTm.toPR (value (var 0) (var 1))
 def polynomial (N a b : PTm n) : PTm n := value N (fraction a b)
 def polynomialF : PR 3 := PTm.toPR (polynomial (var 0) (var 1) (var 2))
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (N q : PTm n) :
-    Syn.subst σ (value N q) = value (Syn.subst σ N) (Syn.subst σ q) := by simp [value,fact]
-@[simp] theorem subst_polynomial {m : ℕ} (σ : Fin n → PTm m) (N a b : PTm n) :
-    Syn.subst σ (polynomial N a b) = polynomial (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ b) := by simp [polynomial]
+ipra_subst value [fact]
+ipra_subst polynomial
 
 theorem inverse_factorial_cancellation (N : PTm n) : Γ ⊢[PRAAx]
     natScale (fact N) (inverseFactorial N) ≐ qone := by

@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianShrinkingGridCoefficientSensitivity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (evaluate qmul)
 open GaussianRationalMetric (bounded distanceBounded qsub)
 open GaussianRationalSyntheticDivision (qmul_congr qsub_congr)
@@ -32,10 +32,6 @@ open GaussianRationalSyntheticBounds (natCode)
 open RationalArgmin (rationalLE)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -46,15 +42,9 @@ def observationsClose (C D N M d H E : PTm n) : Fm PTm n := .all
     (qL1 (qsub (observation (Syn.shift C) (Syn.shift N) (Syn.shift d) (Syn.shift H) (var 0))
       (observation (Syn.shift D) (Syn.shift M) (Syn.shift d) (Syn.shift H) (var 0)))) (Syn.shift E))
 
-@[simp] theorem subst_polynomial {l : ℕ} (σ : Fin n → PTm l) (C N d H : PTm n) :
-    Syn.subst σ (polynomial C N d H) = polynomial (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ d) (Syn.subst σ H) := by simp [polynomial]
-@[simp] theorem subst_observation {l : ℕ} (σ : Fin n → PTm l) (C N d H s : PTm n) :
-    Syn.subst σ (observation C N d H s) = observation (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ d) (Syn.subst σ H)
-      (Syn.subst σ s) := by simp [observation]
-@[simp] theorem subst_observationsClose {l : ℕ} (σ : Fin n → PTm l) (C D N M d H E : PTm n) :
-    (observationsClose C D N M d H E).subst σ = observationsClose (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ N)
-      (Syn.subst σ M) (Syn.subst σ d) (Syn.subst σ H) (Syn.subst σ E) := by
-  simp [observationsClose,Syn.subst_shift,Syn.shift_subst]
+ipra_subst polynomial
+ipra_subst observation
+ipra_subst observationsClose [Syn.subst_shift, Syn.shift_subst]
 
 theorem original_evaluation (C N d H s : PTm n) (hd : Γ ⊢[PRAAx] le d N) : Γ ⊢[PRAAx]
     GaussianLagrangeInterpolation.observation (polynomial C N d H) s ≐ observation C N d H s :=

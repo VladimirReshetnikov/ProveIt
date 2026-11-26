@@ -13,7 +13,7 @@ set_option maxHeartbeats 700000
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerRepresentation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (re im eval_re_code eval_im_code)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaAdjacentCutoff (multiply_cross)
@@ -35,10 +35,6 @@ open GaussianRightHalfPlaneLogarithmOffset (signedImag)
 open RationalArithmetic (select_zero select_one)
 open RationalNormalForm (denominator_positive positive_integer_cancel)
 open RationalSupMetric (denominatorOf)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -55,15 +51,9 @@ local notation "residualBody" => GaussianLogGammaEulerFactorSum.residualBody
 def sameValue (A B D neg a b d sign : PTm n) : Fm PTm n :=
   (A*d ≐ a*D) ⋏ ((B*d ≐ b*D) ⋏ ((neg ≐ sign) ⋎ ((B ≐ zero) ⋏ (b ≐ zero))))
 
-@[simp] theorem subst_sameValue {m : ℕ} (σ : Fin n → PTm m) (A B D neg a b d sign : PTm n) :
-    (sameValue A B D neg a b d sign).subst σ = sameValue (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D)
-      (Syn.subst σ neg) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ d) (Syn.subst σ sign) := by
-  simp [sameValue]
+ipra_subst sameValue
 
-@[simp] theorem subst_argument {m : ℕ} (σ : Fin n → PTm m) (A B D neg : PTm n) :
-    Syn.subst σ (argument A B D neg) =
-      argument (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ neg) := by
-  simp [argument,ZT.subst,ZT.ofNat]
+ipra_subst argument [ZT.subst, ZT.ofNat]
 
 private theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (A D neg : PTm n) :
     (source A D neg).subst σ = source (Syn.subst σ A) (Syn.subst σ D) (Syn.subst σ neg) := by

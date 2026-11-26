@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerConvergence
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # A primitive-recursive C10 cutoff for the folded Euler approximants
@@ -14,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaEulerApproximationName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaFiniteApproximantName (qF qData)
 open GaussianGammaPerturbationExponent (numerator)
 open GaussianGammaC9Bound (majorant)
@@ -25,10 +24,6 @@ open GaussianRationalDistanceOrder (distance_radius_mono distance_congr)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameEquivalence (crossEquivalent cross_trans cross_symm)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -37,10 +32,8 @@ def rate (R : PTm n) : PTm n := num 3*majorant R*numerator R
 def cutoff (p R : PTm n) : PTm n := two*R+numerator R+rate R*unit (succ p)
 def observation (p z R B : PTm n) : PTm n := ap2 qF (succ p) (qData z B (cutoff p R))
 
-@[simp] theorem subst_rate {l : ℕ} (σ : Fin n → PTm l) (R : PTm n) :
-    Syn.subst σ (rate R) = rate (Syn.subst σ R) := by simp [rate]
-@[simp] theorem subst_cutoff {l : ℕ} (σ : Fin n → PTm l) (p R : PTm n) :
-    Syn.subst σ (cutoff p R) = cutoff (Syn.subst σ p) (Syn.subst σ R) := by simp [cutoff, unit]
+ipra_subst rate
+ipra_subst cutoff [unit]
 @[simp] theorem subst_observation {l : ℕ} (σ : Fin n → PTm l) (p z R B : PTm n) :
     Syn.subst σ (observation p z R B) = observation (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) := by
   simp [observation, qData, GaussianGammaFiniteApproximantName.approximantData,
@@ -81,8 +74,7 @@ def data (z R B : PTm n) : PTm n := pairT z (pairT R B)
 def nameF : PR 2 := PTm.toPR (observation (var 0) (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))) : PTm 2)
 def sample (p z R B : PTm n) : PTm n := ap2 nameF p (data z R B)
 
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (z R B : PTm n) :
-    Syn.subst σ (data z R B) = data (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) := by simp [data]
+ipra_subst data
 
 theorem observation_congr {p p' z z' R R' B B' : PTm n}
     (hp : Γ ⊢[PRAAx] p ≐ p') (hz : Γ ⊢[PRAAx] z ≐ z') (hR : Γ ⊢[PRAAx] R ≐ R') (hB : Γ ⊢[PRAAx] B ≐ B') :
@@ -97,8 +89,8 @@ theorem sample_at (p z R B : PTm n) : Γ ⊢[PRAAx] sample p z R B ≐ observati
     simpa only [sample, nameF, ap2, subst_observation, subst_fstT, subst_sndT, Syn.subst_var,
       Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] using raw
   have tail := snd_pair (Γ := Γ) z (pairT R B)
-  exact e.eqTrans (observation_congr (.eqRefl _) (fst_pair _ _) ((congrFst tail).eqTrans (fst_pair _ _))
-    ((congrSnd tail).eqTrans (snd_pair _ _)))
+  exact e.eqTrans (observation_congr (.eqRefl _) (fst_pair _ _) tail.fstE
+    tail.sndE)
 
 theorem named_equivalence (z R B : PTm n) (h : Γ ⊢[PRAAx] GaussianGammaCanonicalExponent.source z R B) :
     Γ ⊢[PRAAx] crossEquivalent nameF GaussianGammaC7Name.nameF (data z R B) (GaussianGammaC7Name.data z R B) := by

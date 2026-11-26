@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentPiMargins
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaHalfWallisConvergence (twiceWallis original_Wallis_rate)
 open GaussianGammaHalfWallisRate (pairOdd evenSquare df_positive)
 open GaussianGammaHalfSqrtBrackets (fraction_first_represents)
@@ -28,10 +28,6 @@ open RationalValueBounds (upper upper_order_left upper_order_right)
 open GaussianCoefficientNameBounds (unit)
 open PolynomialBisection (zle_congr zle_scale_cancel)
 open WallisFinite (da db da_zero da_succ db_zero db_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -69,27 +65,23 @@ private theorem even_literal (k : ℕ) : Γ ⊢[PRAAx] db (num k) ≐ evenProduc
     ring
 
 private theorem lower_clear : Γ ⊢[PRAAx] le (pairOdd (num 5)*lowerNum) ((two*evenSquare (num 5))*lowerDen) := by
-  have d5 := natEq (odd_literal (Γ := Γ) 5)
-  have d6 := natEq (show Γ ⊢[PRAAx] da (succ (num 5)) ≐ oddProduct 6 from odd_literal 6)
   have e5 := natEq (even_literal (Γ := Γ) 5)
   apply le_of_eq_add (d := num 15*num 15*(num 38*num 10*num 10+num 41))
   apply deriveNat
   unfold pairOdd evenSquare lowerNum lowerDen
   ipra_simps
-  rw [d5,d6,e5]
+  rw [natEq (odd_literal (Γ := Γ) 5),natEq (show Γ ⊢[PRAAx] da (succ (num 5)) ≐ oddProduct 6 from odd_literal 6),e5]
   simp only [oddProduct,evenProduct]
   ipra_simps
   ring
 
 private theorem upper_clear : Γ ⊢[PRAAx] le (num 10*(two*evenSquare (num 5))) (num 31*pairOdd (num 5)) := by
-  have d5 := natEq (odd_literal (Γ := Γ) 5)
-  have d6 := natEq (show Γ ⊢[PRAAx] da (succ (num 5)) ≐ oddProduct 6 from odd_literal 6)
   have e5 := natEq (even_literal (Γ := Γ) 5)
   apply le_of_eq_add (d := num 15*num 15*(num 42*num 10*num 10*num 10+num 7*num 10*num 10+num 9))
   apply deriveNat
   unfold pairOdd evenSquare
   ipra_simps
-  rw [d5,d6,e5]
+  rw [natEq (odd_literal (Γ := Γ) 5),natEq (show Γ ⊢[PRAAx] da (succ (num 5)) ≐ oddProduct 6 from odd_literal 6),e5]
   simp only [oddProduct,evenProduct]
   ipra_simps
   ring

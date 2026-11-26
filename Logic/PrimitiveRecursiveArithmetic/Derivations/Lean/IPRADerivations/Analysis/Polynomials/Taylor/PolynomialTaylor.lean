@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Evaluation.PolynomialLipschitz
 import IPRADerivations.Analysis.RationalArithmetic.PowerIncrement
-import IPRADerivations.Core.OrderCertificates
 
 /-!
 # The second-order Taylor estimate of a polynomial
@@ -28,15 +27,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.PolynomialTaylor
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.PolynomialLipschitz (polyB lipB poly_at lip_at)
 open LeanProofs.IPRA.Analysis.PowerIncrement (power_inc_lower power_inc_upper)
 open LeanProofs.IPRA.Analysis.PowerGap (shift_le')
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -150,16 +145,12 @@ theorem up_step {D a h R x : PTm n} (hR : Γ ⊢[PRAAx] le (a + h) R) (ih : Γ �
 /-- `P(a) + h P′(a) ≤ P(a + h)`. -/
 theorem taylor_lower (a h x D : PTm n) : Γ ⊢[PRAAx] LowInv c D a h x := by
   have hall : Γ ⊢[PRAAx] Fm.all (LowInv c (Syn.var 0) (Syn.shift a) (Syn.shift h) (Syn.shift x)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
-      have z1 := natEq (sum_zero (Γ := Γ) (polyB c) (pairT a x))
+    ipra_qfind (le_QF _ _) [subst_le, subst_ap2, subst_pairT]
+    · have z1 := natEq (sum_zero (Γ := Γ) (polyB c) (pairT a x))
       have z2 := natEq (sum_zero (Γ := Γ) (lipB c) (pairT a x))
       have z3 := natEq (sum_zero (Γ := Γ) (polyB c) (pairT (a + h) x))
       ipra_le 0 using rw [z1, z2, z3]; ring
-    · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      exact low_step Prf.hyp0
+    · exact low_step Prf.hyp0
   have h2 := Prf.allE D hall
   simpa only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
     Syn.inst_zero, Syn.subst_inst_shift] using h2
@@ -169,17 +160,13 @@ theorem taylor_upper {a h R x : PTm n} (hR : Γ ⊢[PRAAx] le (a + h) R) (D : PT
     Γ ⊢[PRAAx] UpInv c D a h R x := by
   have hall : Γ ⊢[PRAAx] Fm.all (UpInv c (Syn.var 0) (Syn.shift a) (Syn.shift h) (Syn.shift R)
       (Syn.shift x)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      have z1 := natEq (sum_zero (Γ := Γ) (polyB c) (pairT a x))
+    ipra_qfind (le_QF _ _) [subst_le, subst_ap2, subst_pairT]
+    · have z1 := natEq (sum_zero (Γ := Γ) (polyB c) (pairT a x))
       have z2 := natEq (sum_zero (Γ := Γ) (lipB c) (pairT a x))
       have z3 := natEq (sum_zero (Γ := Γ) (polyB c) (pairT (a + h) x))
       have z4 := natEq (sum_zero (Γ := Γ) (d2B c) (pairT R x))
       ipra_le 0 using rw [z1, z2, z3, z4]; ring
-    · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      have hR' := shift_le' hR
+    · have hR' := shift_le' hR
       have e : Syn.shift (a + h) = Syn.shift a + Syn.shift h := by simp [Syn.shift]
       rw [e] at hR'
       exact up_step hR'.wk Prf.hyp0

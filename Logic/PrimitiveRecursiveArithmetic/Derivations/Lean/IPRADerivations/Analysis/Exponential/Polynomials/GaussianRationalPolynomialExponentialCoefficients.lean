@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Exponential.Polynomials.GaussianRationalPolynomialExponentialStability
 import IPRADerivations.Analysis.Polynomials.Products.GaussianRationalPolynomialProductDegree
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual finite coefficient sums of the literal polynomial exponential
@@ -17,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalPolynomialExponentialCoefficients
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero qmul canonical)
 open GaussianRationalSyntheticDivision (qone qzero_canonical qadd_congr qmul_congr canonicalCoefficients canonical_coefficient_at)
 open GaussianRationalPolynomialPowers (powerPrefix prefix_length prefix_canonical prefix_zero)
@@ -27,10 +26,6 @@ open GaussianRationalPolynomialExponentialStability (coefficient exponent_congr)
 open GaussianRationalFiniteSum (sum)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,14 +35,9 @@ def data (C N K e : PTm n) : PTm n := pairT C (pairT N (pairT K e))
 def termBody : PTm 2 := term (fstT (var 1)) (fstT (sndT (var 1)))
   (fstT (sndT (sndT (var 1)))) (sndT (sndT (sndT (var 1)))) (var 0)
 def coefficientSum (C N K e j : PTm n) : PTm n := sum termBody (succ j) (data C N K e)
-@[simp] theorem subst_term {l : ℕ} (σ : Fin n → PTm l) (C N K e k : PTm n) :
-    Syn.subst σ (term C N K e k) = term (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ K) (Syn.subst σ e) (Syn.subst σ k) := by
-  simp [term]
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (C N K e : PTm n) :
-    Syn.subst σ (data C N K e) = data (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ K) (Syn.subst σ e) := by simp [data]
-@[simp] theorem subst_coefficientSum {l : ℕ} (σ : Fin n → PTm l) (C N K e j : PTm n) :
-    Syn.subst σ (coefficientSum C N K e j) = coefficientSum (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ K) (Syn.subst σ e) (Syn.subst σ j) := by simp [coefficientSum]
+ipra_subst term
+ipra_subst data
+ipra_subst coefficientSum
 
 theorem term_congr {C C' N N' K K' e e' k k' : PTm n} (hC : Γ ⊢[PRAAx] C ≐ C')
     (hN : Γ ⊢[PRAAx] N ≐ N') (hK : Γ ⊢[PRAAx] K ≐ K') (he : Γ ⊢[PRAAx] e ≐ e')
@@ -58,8 +48,8 @@ theorem term_at (C N K e k : PTm n) : Γ ⊢[PRAAx]
   simp only [termBody,inst2,subst_term,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
   have h1 := snd_pair (Γ := Γ) C (pairT N (pairT K e))
   have h2 := (congrSnd h1).eqTrans (snd_pair N (pairT K e))
-  exact term_congr (fst_pair _ _) ((congrFst h1).eqTrans (fst_pair _ _))
-    ((congrFst h2).eqTrans (fst_pair _ _)) ((congrSnd h2).eqTrans (snd_pair _ _)) (.eqRefl _)
+  exact term_congr (fst_pair _ _) h1.fstE
+    h2.fstE h2.sndE (.eqRefl _)
 
 theorem exponent_canonical (C N e : PTm n) (hC : Γ ⊢[PRAAx] canonicalCoefficients C)
     (hL : Γ ⊢[PRAAx] length C ≐ succ N) : Γ ⊢[PRAAx] canonical (exponentCoefficient C N e) := by
@@ -109,9 +99,7 @@ theorem sum_zero (C N K e : PTm n) : Γ ⊢[PRAAx] coefficient C N K zero e ≐ 
   exact (coefficient_zero C N K e).eqTrans hs.eqSymm
 
 def sumLaw (C N K e j : PTm n) : Fm PTm n := coefficient C N K j e ≐ coefficientSum C N K e j
-@[simp] theorem subst_sumLaw {l : ℕ} (σ : Fin n → PTm l) (C N K e j : PTm n) :
-    (sumLaw C N K e j).subst σ = sumLaw (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ K)
-      (Syn.subst σ e) (Syn.subst σ j) := by simp [sumLaw]
+ipra_subst sumLaw
 
 theorem sum_step (C N K e j : PTm n) (he : Γ ⊢[PRAAx] le e N) (ih : Γ ⊢[PRAAx] sumLaw C N K e j) :
     Γ ⊢[PRAAx] sumLaw C N K e (succ j) :=
@@ -124,11 +112,9 @@ theorem coefficient_sum (C N K e j : PTm n) (he : Γ ⊢[PRAAx] le e N) : Γ ⊢
   have hn : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift e) (Syn.shift N) := by
     simpa only [Fm.shift,subst_le,Syn.shift] using he.shift
   have all : Γ ⊢[PRAAx] .all (sumLaw (Syn.shift C) (Syn.shift N) (Syn.shift K) (Syn.shift e) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_sumLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact sum_zero C N K e
-    · simp only [subst_sumLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact sum_step _ _ _ _ _ hn.wk Prf.hyp0
+    ipra_qfind [subst_sumLaw]
+    · exact sum_zero C N K e
+    · exact sum_step _ _ _ _ _ hn.wk Prf.hyp0
   change Γ ⊢[PRAAx] sumLaw C N K e j
   simpa only [subst_sumLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
 
@@ -148,14 +134,8 @@ def output (C N K e : PTm n) : PTm n := pairT
   (exponentCoefficient (GaussianRationalPolynomialExponential.polynomial C N K) (K*N) e) (coefficientSum C N K e e)
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (C N K e : PTm n) : PTm n := PTm.app outputF ![C,N,K,e]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (C N K e : PTm n) :
-    Syn.subst σ (output C N K e) = output (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ K) (Syn.subst σ e) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (C N K e : PTm n) :
-    Syn.subst σ (run C N K e) = run (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ K) (Syn.subst σ e) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem sum_program_at (C N K e j : PTm n) : Γ ⊢[PRAAx]
     PTm.app sumF ![C,N,K,e,j] ≐ coefficientSum C N K e j := by
@@ -164,9 +144,9 @@ theorem program_at (C N K e : PTm n) : Γ ⊢[PRAAx] run C N K e ≐ output C N 
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![C,N,K,e]
 theorem returned_coefficient (C N K e : PTm n) : Γ ⊢[PRAAx]
     fstT (run C N K e) ≐ exponentCoefficient (GaussianRationalPolynomialExponential.polynomial C N K) (K*N) e :=
-  (congrFst (program_at C N K e)).eqTrans (fst_pair _ _)
+  (program_at C N K e).fstE
 theorem returned_sum (C N K e : PTm n) : Γ ⊢[PRAAx] sndT (run C N K e) ≐ coefficientSum C N K e e :=
-  (congrSnd (program_at C N K e)).eqTrans (snd_pair _ _)
+  (program_at C N K e).sndE
 theorem returned_agreement (C N K e : PTm n) (hC : Γ ⊢[PRAAx] entry C N ≐ qzero)
     (he : Γ ⊢[PRAAx] le e N) (hK : Γ ⊢[PRAAx] le e K) : Γ ⊢[PRAAx]
     fstT (run C N K e) ≐ sndT (run C N K e) :=

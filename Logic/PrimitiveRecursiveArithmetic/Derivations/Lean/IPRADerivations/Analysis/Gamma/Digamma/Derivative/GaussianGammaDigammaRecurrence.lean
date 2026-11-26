@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaRecurrence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaAdjacentCutoff (multiply_cross)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
@@ -26,8 +26,6 @@ open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (qmul positive_product canonical_unique ofGaussian_canonical ofGaussian_represents)
 open GaussianRationalSyntheticDivision (qone qone_canonical)
 open GaussianStirlingGammaLogarithm (arg source source_shift gammaData gamma_regular gamma_source)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "IF" => GaussianEulerLogarithmicImproperName.nameF
@@ -38,8 +36,7 @@ local notation "dd" => GaussianGammaDigammaNative.data
 def nameF : PR 2 := addF DF constantF
 def data (a b : PTm n) : PTm n := addData (dd a b) (fraction b a)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (data a b) = data (Syn.subst σ a) (Syn.subst σ b) := by simp [data]
+ipra_subst data
 
 theorem name_regular (a b : PTm n) (hs : Γ ⊢[PRAAx] source a b) :
     Γ ⊢[PRAAx] pointCN nameF (data a b) :=

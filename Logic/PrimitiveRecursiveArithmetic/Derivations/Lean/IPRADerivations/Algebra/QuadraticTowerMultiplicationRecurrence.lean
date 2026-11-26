@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationRecurrence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis
 open QuadraticTowerCoefficients (width singleton)
 open QuadraticTowerArrayCodec (arrayHeight normalized)
@@ -24,9 +24,6 @@ open QuadraticTowerCoefficientArithmetic (added equalValues)
 open QuadraticTowerMultiplicationTable (lookup budget recipe leftHalf rightHalf query)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length append entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -71,10 +68,8 @@ def firstComponent (h B T D A C : PTm n) : PTm n := added h
 def secondComponent (h B T D A C : PTm n) : PTm n := added h
   (lookup h (budget h B D) T (leftHalf h A) (rightHalf h C))
   (lookup h (budget h B D) T (rightHalf h A) (leftHalf h C))
-@[simp] theorem subst_firstComponent {k : ℕ} (σ : Fin n → PTm k) (h B T D A C : PTm n) :
-    Syn.subst σ (firstComponent h B T D A C) = firstComponent (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ T) (Syn.subst σ D) (Syn.subst σ A) (Syn.subst σ C) := by simp [firstComponent]
-@[simp] theorem subst_secondComponent {k : ℕ} (σ : Fin n → PTm k) (h B T D A C : PTm n) :
-    Syn.subst σ (secondComponent h B T D A C) = secondComponent (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ T) (Syn.subst σ D) (Syn.subst σ A) (Syn.subst σ C) := by simp [secondComponent]
+ipra_subst firstComponent
+ipra_subst secondComponent
 theorem recipe_components (h B T D A C : PTm n) : Γ ⊢[PRAAx]
     recipe h B T D A C ≐ append (firstComponent h B T D A C) (secondComponent h B T D A C) := .eqRefl _
 
@@ -152,8 +147,7 @@ theorem normalized_singleton (q : PTm n) (hq : Γ ⊢[PRAAx] RationalNormalForm.
         (RationalNormalForm.normalize_fixed_point q hq)))
 
 def outputFixed (h B D A C : PTm n) : Fm PTm n := normalized h (query h B D A C) ≐ query h B D A C
-@[simp] theorem subst_outputFixed {k : ℕ} (σ : Fin n → PTm k) (h B D A C : PTm n) :
-    (outputFixed h B D A C).subst σ = outputFixed (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ A) (Syn.subst σ C) := by simp [outputFixed]
+ipra_subst outputFixed
 theorem fixed_depth_congr {h k : PTm n} (B D A C : PTm n) (e : Γ ⊢[PRAAx] h ≐ k)
     (p : Γ ⊢[PRAAx] outputFixed h B D A C) : Γ ⊢[PRAAx] outputFixed k B D A C := by
   have proof := Prf.eqSubst (Γ := Γ) (Ax := PRAAx) (outputFixed (var 0) (var 1) (var 2) (var 3) (var 4) : Fm PTm 5)

@@ -15,24 +15,19 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianZeroResidualContraction
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (evaluate positive_product)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qnormSq)
 open LeanProofs.IPRA.Analysis.GaussianDescentClock
   (residualNumerator residualDenominator contractionSquare value_represents)
 open LeanProofs.IPRA.Analysis.GaussianDescentClockArithmetic (rateDenominator rate_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def comparison (N C z : PTm n) : Fm PTm n := RationalArgmin.rationalLE
   (qnormSq (evaluate C z)) (RationalArithmetic.multiply (contractionSquare N) (qnormSq (evaluate C z)))
 
-@[simp] theorem subst_comparison {m : ℕ} (σ : Fin n → PTm m) (N C z : PTm n) :
-    (comparison N C z).subst σ = comparison (Syn.subst σ N) (Syn.subst σ C) (Syn.subst σ z) := by simp [comparison]
+ipra_subst comparison
 
 theorem residual_alias (C z : PTm n) : Γ ⊢[PRAAx]
     residualNumerator C z ≐ GaussianTranslatedBalancedRadius.residual C z := .eqRefl _
@@ -71,18 +66,16 @@ def output (N C z : PTm n) : PTm n := pairT (qnormSq (evaluate C z))
   (RationalArithmetic.multiply (contractionSquare N) (qnormSq (evaluate C z)))
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (N C z : PTm n) : PTm n := ap3 outputF N C z
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (N C z : PTm n) :
-    Syn.subst σ (output N C z) = output (Syn.subst σ N) (Syn.subst σ C) (Syn.subst σ z) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (N C z : PTm n) :
-    Syn.subst σ (run N C z) = run (Syn.subst σ N) (Syn.subst σ C) (Syn.subst σ z) := by simp [run]
+ipra_subst output
+ipra_subst run
 
 theorem program_at (N C z : PTm n) : Γ ⊢[PRAAx] run N C z ≐ output N C z := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![N,C,z]
 theorem returned_left (N C z : PTm n) : Γ ⊢[PRAAx] fstT (run N C z) ≐ qnormSq (evaluate C z) :=
-  (congrFst (program_at N C z)).eqTrans (fst_pair _ _)
+  (program_at N C z).fstE
 theorem returned_right (N C z : PTm n) : Γ ⊢[PRAAx] sndT (run N C z) ≐
     RationalArithmetic.multiply (contractionSquare N) (qnormSq (evaluate C z)) :=
-  (congrSnd (program_at N C z)).eqTrans (snd_pair _ _)
+  (program_at N C z).sndE
 
 theorem actual_zero_residual_contraction_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3
     (residualNumerator (var 1) (var 2) ≐ zero ⟶ comparison (var 0) (var 1) (var 2)) :=

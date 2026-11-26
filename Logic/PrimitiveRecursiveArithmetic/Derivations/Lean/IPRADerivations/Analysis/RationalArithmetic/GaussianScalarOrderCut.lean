@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Names.Order.GaussianFastValueCut
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalSyntheticBounds
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Scalar radius cuts and actual two-name Gaussian order
@@ -19,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianScalarOrderCut
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (bounded qnormSq squaredTolerance)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (positive_product scalar_congr)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticBounds (natCode natCode_represents)
@@ -27,9 +26,6 @@ open LeanProofs.IPRA.Analysis.RationalArithmetic (represents add multiply)
 open LeanProofs.IPRA.Analysis.RationalArgmin (rationalLE)
 open LeanProofs.IPRA.Analysis.RationalIntegerNormalization (normalize normalize_preserves_value)
 open LeanProofs.IPRA.Analysis.GaussianCoefficientNameBounds (unit unit_positive subst_unit)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,15 +37,10 @@ def jointCut (g rhs : PR 2) (gx rx : PTm n) : Fm PTm n := .all (.all
   (normLE (ap2 g (var 1) (Syn.shift (Syn.shift gx)))
     (slackScalar (ap2 rhs (var 0) (Syn.shift (Syn.shift rx))) (var 1) (var 0))))
 
-@[simp] theorem subst_normLE {m : ℕ} (σ : Fin n → PTm m) (g r : PTm n) :
-    (normLE g r).subst σ = normLE (Syn.subst σ g) (Syn.subst σ r) := by simp [normLE]
-@[simp] theorem subst_unitCode {m : ℕ} (σ : Fin n → PTm m) (k : PTm n) :
-    Syn.subst σ (unitCode k) = unitCode (Syn.subst σ k) := by simp [unitCode]
-@[simp] theorem subst_slackScalar {m : ℕ} (σ : Fin n → PTm m) (r k j : PTm n) :
-    Syn.subst σ (slackScalar r k j) = slackScalar (Syn.subst σ r) (Syn.subst σ k) (Syn.subst σ j) := by simp [slackScalar]
-@[simp] theorem subst_jointCut {m : ℕ} (σ : Fin n → PTm m) (g rhs : PR 2) (gx rx : PTm n) :
-    (jointCut g rhs gx rx).subst σ = jointCut g rhs (Syn.subst σ gx) (Syn.subst σ rx) := by
-  simp [jointCut,Syn.subst_shift,Syn.shift_subst]
+ipra_subst normLE
+ipra_subst unitCode
+ipra_subst slackScalar
+ipra_subst jointCut [Syn.subst_shift, Syn.shift_subst]
 
 theorem normLE_congr {g g' r r' : PTm n} (hg : Γ ⊢[PRAAx] g ≐ g') (hr : Γ ⊢[PRAAx] r ≐ r')
     (h : Γ ⊢[PRAAx] normLE g r) : Γ ⊢[PRAAx] normLE g' r' := by

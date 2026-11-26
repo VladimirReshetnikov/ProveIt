@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalPrefactorShiftAlgebra
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalCorrectionShift (halfShift)
 open GaussianBarnesCanonicalPrefactor (negativeHalf)
 open GaussianBarnesCanonicalShiftChart (translated_difference negative_half_mul_sum)
@@ -27,8 +27,6 @@ open GaussianRationalReciprocal (qone)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qsub_congr)
 open GaussianReciprocalHorner (qmul_associative qmul_one_right)
 open GaussianRationalRoundedPower (multiplication_difference)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

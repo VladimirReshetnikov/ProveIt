@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicPathCompactRows
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLogarithmicPathCompactTaylor (point numerator denominator)
 open GaussianEulerDerivativeParameterPath (increment)
 open GaussianRationalHorner (positive_product)
@@ -24,9 +24,6 @@ open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRationalSyntheticDivision (qsub_congr qmul_congr)
 open GaussianRationalParameterTelescope (localRows forward)
 open GaussianRationalFiniteSum (multiply_body_at)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -49,16 +46,9 @@ def bodyF : PR 2 := PTm.toPR body
     Syn.subst σ (point p i j z R B h D N a C E T) = point (Syn.subst σ p) (Syn.subst σ i) (Syn.subst σ j)
       (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ h) (Syn.subst σ D) (Syn.subst σ N)
       (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by simp [GaussianEulerLogarithmicPathCompactTaylor.point]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B A h D a C E T N : PTm n) :
-    (source z R B A h D a C E T N).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ A) (Syn.subst σ h) (Syn.subst σ D) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E)
-      (Syn.subst σ T) (Syn.subst σ N) := by simp [source]
-@[simp] theorem subst_fixedData {m : ℕ} (σ : Fin n → PTm m) (p j z R B h D N a C E T : PTm n) :
-    Syn.subst σ (fixedData p j z R B h D N a C E T) = fixedData (Syn.subst σ p) (Syn.subst σ j) (Syn.subst σ z)
-      (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ h) (Syn.subst σ D) (Syn.subst σ N) (Syn.subst σ a)
-      (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by simp [fixedData]
-@[simp] theorem subst_bodyTerm {m : ℕ} (σ : Fin n → PTm m) (i x : PTm n) :
-    Syn.subst σ (bodyTerm i x) = bodyTerm (Syn.subst σ i) (Syn.subst σ x) := by simp [bodyTerm]
+ipra_subst source
+ipra_subst fixedData
+ipra_subst bodyTerm
 
 theorem body_term_at (i p j z R B h D N a C E T : PTm n) : Γ ⊢[PRAAx]
     bodyTerm i (fixedData p j z R B h D N a C E T) ≐ point p i j z R B h D N a C E T := by
@@ -67,74 +57,74 @@ theorem body_term_at (i p j z R B h D N a C E T : PTm n) : Γ ⊢[PRAAx]
     (pairT (pairT (pairT B h) (pairT D N)) (pairT (pairT a C) (pairT E T)))
   have r := snd_pair (Γ := Γ) (pairT (pairT p j) (pairT z R))
     (pairT (pairT (pairT B h) (pairT D N)) (pairT (pairT a C) (pairT E T)))
-  have pj := (congrFst l).eqTrans (fst_pair _ _)
-  have zr := (congrSnd l).eqTrans (snd_pair _ _)
-  have bd := (congrFst r).eqTrans (fst_pair _ _)
-  have ae := (congrSnd r).eqTrans (snd_pair _ _)
-  have bh := (congrFst bd).eqTrans (fst_pair _ _)
-  have dn := (congrSnd bd).eqTrans (snd_pair _ _)
-  have ac := (congrFst ae).eqTrans (fst_pair _ _)
-  have et := (congrSnd ae).eqTrans (snd_pair _ _)
+  have pj := l.fstE
+  have zr := l.sndE
+  have bd := r.fstE
+  have ae := r.sndE
+  have bh := bd.fstE
+  have dn := bd.sndE
+  have ac := ae.fstE
+  have et := ae.sndE
   have step0 : Γ ⊢[PRAAx]
       point (fstT (fstT (fstT x))) (i) (sndT (fstT (fstT x))) (fstT (sndT (fstT x))) (sndT (sndT (fstT x))) (fstT (fstT (fstT (sndT x)))) (sndT (fstT (fstT (sndT x)))) (fstT (sndT (fstT (sndT x)))) (sndT (sndT (fstT (sndT x)))) (fstT (fstT (sndT (sndT x)))) (sndT (fstT (sndT (sndT x)))) (fstT (sndT (sndT (sndT x)))) (sndT (sndT (sndT (sndT x)))) ≐
       point (p) (i) (sndT (fstT (fstT x))) (fstT (sndT (fstT x))) (sndT (sndT (fstT x))) (fstT (fstT (fstT (sndT x)))) (sndT (fstT (fstT (sndT x)))) (fstT (sndT (fstT (sndT x)))) (sndT (sndT (fstT (sndT x)))) (fstT (fstT (sndT (sndT x)))) (sndT (fstT (sndT (sndT x)))) (fstT (sndT (sndT (sndT x)))) (sndT (sndT (sndT (sndT x)))) := by
     simpa only [subst_point,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift,x,fixedData] using
-      Prf.eqCongr1 (point (var 0) (Syn.shift (i)) (Syn.shift (sndT (fstT (fstT x)))) (Syn.shift (fstT (sndT (fstT x)))) (Syn.shift (sndT (sndT (fstT x)))) (Syn.shift (fstT (fstT (fstT (sndT x))))) (Syn.shift (sndT (fstT (fstT (sndT x))))) (Syn.shift (fstT (sndT (fstT (sndT x))))) (Syn.shift (sndT (sndT (fstT (sndT x))))) (Syn.shift (fstT (fstT (sndT (sndT x))))) (Syn.shift (sndT (fstT (sndT (sndT x))))) (Syn.shift (fstT (sndT (sndT (sndT x))))) (Syn.shift (sndT (sndT (sndT (sndT x)))))) ((congrFst pj).eqTrans (fst_pair _ _))
+      Prf.eqCongr1 (point (var 0) (Syn.shift (i)) (Syn.shift (sndT (fstT (fstT x)))) (Syn.shift (fstT (sndT (fstT x)))) (Syn.shift (sndT (sndT (fstT x)))) (Syn.shift (fstT (fstT (fstT (sndT x))))) (Syn.shift (sndT (fstT (fstT (sndT x))))) (Syn.shift (fstT (sndT (fstT (sndT x))))) (Syn.shift (sndT (sndT (fstT (sndT x))))) (Syn.shift (fstT (fstT (sndT (sndT x))))) (Syn.shift (sndT (fstT (sndT (sndT x))))) (Syn.shift (fstT (sndT (sndT (sndT x))))) (Syn.shift (sndT (sndT (sndT (sndT x)))))) pj.fstE
   have step2 : Γ ⊢[PRAAx]
       point (p) (i) (sndT (fstT (fstT x))) (fstT (sndT (fstT x))) (sndT (sndT (fstT x))) (fstT (fstT (fstT (sndT x)))) (sndT (fstT (fstT (sndT x)))) (fstT (sndT (fstT (sndT x)))) (sndT (sndT (fstT (sndT x)))) (fstT (fstT (sndT (sndT x)))) (sndT (fstT (sndT (sndT x)))) (fstT (sndT (sndT (sndT x)))) (sndT (sndT (sndT (sndT x)))) ≐
       point (p) (i) (j) (fstT (sndT (fstT x))) (sndT (sndT (fstT x))) (fstT (fstT (fstT (sndT x)))) (sndT (fstT (fstT (sndT x)))) (fstT (sndT (fstT (sndT x)))) (sndT (sndT (fstT (sndT x)))) (fstT (fstT (sndT (sndT x)))) (sndT (fstT (sndT (sndT x)))) (fstT (sndT (sndT (sndT x)))) (sndT (sndT (sndT (sndT x)))) := by
     simpa only [subst_point,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift,x,fixedData] using
-      Prf.eqCongr1 (point (Syn.shift (p)) (Syn.shift (i)) (var 0) (Syn.shift (fstT (sndT (fstT x)))) (Syn.shift (sndT (sndT (fstT x)))) (Syn.shift (fstT (fstT (fstT (sndT x))))) (Syn.shift (sndT (fstT (fstT (sndT x))))) (Syn.shift (fstT (sndT (fstT (sndT x))))) (Syn.shift (sndT (sndT (fstT (sndT x))))) (Syn.shift (fstT (fstT (sndT (sndT x))))) (Syn.shift (sndT (fstT (sndT (sndT x))))) (Syn.shift (fstT (sndT (sndT (sndT x))))) (Syn.shift (sndT (sndT (sndT (sndT x)))))) ((congrSnd pj).eqTrans (snd_pair _ _))
+      Prf.eqCongr1 (point (Syn.shift (p)) (Syn.shift (i)) (var 0) (Syn.shift (fstT (sndT (fstT x)))) (Syn.shift (sndT (sndT (fstT x)))) (Syn.shift (fstT (fstT (fstT (sndT x))))) (Syn.shift (sndT (fstT (fstT (sndT x))))) (Syn.shift (fstT (sndT (fstT (sndT x))))) (Syn.shift (sndT (sndT (fstT (sndT x))))) (Syn.shift (fstT (fstT (sndT (sndT x))))) (Syn.shift (sndT (fstT (sndT (sndT x))))) (Syn.shift (fstT (sndT (sndT (sndT x))))) (Syn.shift (sndT (sndT (sndT (sndT x)))))) pj.sndE
   have step3 : Γ ⊢[PRAAx]
       point (p) (i) (j) (fstT (sndT (fstT x))) (sndT (sndT (fstT x))) (fstT (fstT (fstT (sndT x)))) (sndT (fstT (fstT (sndT x)))) (fstT (sndT (fstT (sndT x)))) (sndT (sndT (fstT (sndT x)))) (fstT (fstT (sndT (sndT x)))) (sndT (fstT (sndT (sndT x)))) (fstT (sndT (sndT (sndT x)))) (sndT (sndT (sndT (sndT x)))) ≐
       point (p) (i) (j) (z) (sndT (sndT (fstT x))) (fstT (fstT (fstT (sndT x)))) (sndT (fstT (fstT (sndT x)))) (fstT (sndT (fstT (sndT x)))) (sndT (sndT (fstT (sndT x)))) (fstT (fstT (sndT (sndT x)))) (sndT (fstT (sndT (sndT x)))) (fstT (sndT (sndT (sndT x)))) (sndT (sndT (sndT (sndT x)))) := by
     simpa only [subst_point,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift,x,fixedData] using
-      Prf.eqCongr1 (point (Syn.shift (p)) (Syn.shift (i)) (Syn.shift (j)) (var 0) (Syn.shift (sndT (sndT (fstT x)))) (Syn.shift (fstT (fstT (fstT (sndT x))))) (Syn.shift (sndT (fstT (fstT (sndT x))))) (Syn.shift (fstT (sndT (fstT (sndT x))))) (Syn.shift (sndT (sndT (fstT (sndT x))))) (Syn.shift (fstT (fstT (sndT (sndT x))))) (Syn.shift (sndT (fstT (sndT (sndT x))))) (Syn.shift (fstT (sndT (sndT (sndT x))))) (Syn.shift (sndT (sndT (sndT (sndT x)))))) ((congrFst zr).eqTrans (fst_pair _ _))
+      Prf.eqCongr1 (point (Syn.shift (p)) (Syn.shift (i)) (Syn.shift (j)) (var 0) (Syn.shift (sndT (sndT (fstT x)))) (Syn.shift (fstT (fstT (fstT (sndT x))))) (Syn.shift (sndT (fstT (fstT (sndT x))))) (Syn.shift (fstT (sndT (fstT (sndT x))))) (Syn.shift (sndT (sndT (fstT (sndT x))))) (Syn.shift (fstT (fstT (sndT (sndT x))))) (Syn.shift (sndT (fstT (sndT (sndT x))))) (Syn.shift (fstT (sndT (sndT (sndT x))))) (Syn.shift (sndT (sndT (sndT (sndT x)))))) zr.fstE
   have step4 : Γ ⊢[PRAAx]
       point (p) (i) (j) (z) (sndT (sndT (fstT x))) (fstT (fstT (fstT (sndT x)))) (sndT (fstT (fstT (sndT x)))) (fstT (sndT (fstT (sndT x)))) (sndT (sndT (fstT (sndT x)))) (fstT (fstT (sndT (sndT x)))) (sndT (fstT (sndT (sndT x)))) (fstT (sndT (sndT (sndT x)))) (sndT (sndT (sndT (sndT x)))) ≐
       point (p) (i) (j) (z) (R) (fstT (fstT (fstT (sndT x)))) (sndT (fstT (fstT (sndT x)))) (fstT (sndT (fstT (sndT x)))) (sndT (sndT (fstT (sndT x)))) (fstT (fstT (sndT (sndT x)))) (sndT (fstT (sndT (sndT x)))) (fstT (sndT (sndT (sndT x)))) (sndT (sndT (sndT (sndT x)))) := by
     simpa only [subst_point,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift,x,fixedData] using
-      Prf.eqCongr1 (point (Syn.shift (p)) (Syn.shift (i)) (Syn.shift (j)) (Syn.shift (z)) (var 0) (Syn.shift (fstT (fstT (fstT (sndT x))))) (Syn.shift (sndT (fstT (fstT (sndT x))))) (Syn.shift (fstT (sndT (fstT (sndT x))))) (Syn.shift (sndT (sndT (fstT (sndT x))))) (Syn.shift (fstT (fstT (sndT (sndT x))))) (Syn.shift (sndT (fstT (sndT (sndT x))))) (Syn.shift (fstT (sndT (sndT (sndT x))))) (Syn.shift (sndT (sndT (sndT (sndT x)))))) ((congrSnd zr).eqTrans (snd_pair _ _))
+      Prf.eqCongr1 (point (Syn.shift (p)) (Syn.shift (i)) (Syn.shift (j)) (Syn.shift (z)) (var 0) (Syn.shift (fstT (fstT (fstT (sndT x))))) (Syn.shift (sndT (fstT (fstT (sndT x))))) (Syn.shift (fstT (sndT (fstT (sndT x))))) (Syn.shift (sndT (sndT (fstT (sndT x))))) (Syn.shift (fstT (fstT (sndT (sndT x))))) (Syn.shift (sndT (fstT (sndT (sndT x))))) (Syn.shift (fstT (sndT (sndT (sndT x))))) (Syn.shift (sndT (sndT (sndT (sndT x)))))) zr.sndE
   have step5 : Γ ⊢[PRAAx]
       point (p) (i) (j) (z) (R) (fstT (fstT (fstT (sndT x)))) (sndT (fstT (fstT (sndT x)))) (fstT (sndT (fstT (sndT x)))) (sndT (sndT (fstT (sndT x)))) (fstT (fstT (sndT (sndT x)))) (sndT (fstT (sndT (sndT x)))) (fstT (sndT (sndT (sndT x)))) (sndT (sndT (sndT (sndT x)))) ≐
       point (p) (i) (j) (z) (R) (B) (sndT (fstT (fstT (sndT x)))) (fstT (sndT (fstT (sndT x)))) (sndT (sndT (fstT (sndT x)))) (fstT (fstT (sndT (sndT x)))) (sndT (fstT (sndT (sndT x)))) (fstT (sndT (sndT (sndT x)))) (sndT (sndT (sndT (sndT x)))) := by
     simpa only [subst_point,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift,x,fixedData] using
-      Prf.eqCongr1 (point (Syn.shift (p)) (Syn.shift (i)) (Syn.shift (j)) (Syn.shift (z)) (Syn.shift (R)) (var 0) (Syn.shift (sndT (fstT (fstT (sndT x))))) (Syn.shift (fstT (sndT (fstT (sndT x))))) (Syn.shift (sndT (sndT (fstT (sndT x))))) (Syn.shift (fstT (fstT (sndT (sndT x))))) (Syn.shift (sndT (fstT (sndT (sndT x))))) (Syn.shift (fstT (sndT (sndT (sndT x))))) (Syn.shift (sndT (sndT (sndT (sndT x)))))) ((congrFst bh).eqTrans (fst_pair _ _))
+      Prf.eqCongr1 (point (Syn.shift (p)) (Syn.shift (i)) (Syn.shift (j)) (Syn.shift (z)) (Syn.shift (R)) (var 0) (Syn.shift (sndT (fstT (fstT (sndT x))))) (Syn.shift (fstT (sndT (fstT (sndT x))))) (Syn.shift (sndT (sndT (fstT (sndT x))))) (Syn.shift (fstT (fstT (sndT (sndT x))))) (Syn.shift (sndT (fstT (sndT (sndT x))))) (Syn.shift (fstT (sndT (sndT (sndT x))))) (Syn.shift (sndT (sndT (sndT (sndT x)))))) bh.fstE
   have step6 : Γ ⊢[PRAAx]
       point (p) (i) (j) (z) (R) (B) (sndT (fstT (fstT (sndT x)))) (fstT (sndT (fstT (sndT x)))) (sndT (sndT (fstT (sndT x)))) (fstT (fstT (sndT (sndT x)))) (sndT (fstT (sndT (sndT x)))) (fstT (sndT (sndT (sndT x)))) (sndT (sndT (sndT (sndT x)))) ≐
       point (p) (i) (j) (z) (R) (B) (h) (fstT (sndT (fstT (sndT x)))) (sndT (sndT (fstT (sndT x)))) (fstT (fstT (sndT (sndT x)))) (sndT (fstT (sndT (sndT x)))) (fstT (sndT (sndT (sndT x)))) (sndT (sndT (sndT (sndT x)))) := by
     simpa only [subst_point,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift,x,fixedData] using
-      Prf.eqCongr1 (point (Syn.shift (p)) (Syn.shift (i)) (Syn.shift (j)) (Syn.shift (z)) (Syn.shift (R)) (Syn.shift (B)) (var 0) (Syn.shift (fstT (sndT (fstT (sndT x))))) (Syn.shift (sndT (sndT (fstT (sndT x))))) (Syn.shift (fstT (fstT (sndT (sndT x))))) (Syn.shift (sndT (fstT (sndT (sndT x))))) (Syn.shift (fstT (sndT (sndT (sndT x))))) (Syn.shift (sndT (sndT (sndT (sndT x)))))) ((congrSnd bh).eqTrans (snd_pair _ _))
+      Prf.eqCongr1 (point (Syn.shift (p)) (Syn.shift (i)) (Syn.shift (j)) (Syn.shift (z)) (Syn.shift (R)) (Syn.shift (B)) (var 0) (Syn.shift (fstT (sndT (fstT (sndT x))))) (Syn.shift (sndT (sndT (fstT (sndT x))))) (Syn.shift (fstT (fstT (sndT (sndT x))))) (Syn.shift (sndT (fstT (sndT (sndT x))))) (Syn.shift (fstT (sndT (sndT (sndT x))))) (Syn.shift (sndT (sndT (sndT (sndT x)))))) bh.sndE
   have step7 : Γ ⊢[PRAAx]
       point (p) (i) (j) (z) (R) (B) (h) (fstT (sndT (fstT (sndT x)))) (sndT (sndT (fstT (sndT x)))) (fstT (fstT (sndT (sndT x)))) (sndT (fstT (sndT (sndT x)))) (fstT (sndT (sndT (sndT x)))) (sndT (sndT (sndT (sndT x)))) ≐
       point (p) (i) (j) (z) (R) (B) (h) (D) (sndT (sndT (fstT (sndT x)))) (fstT (fstT (sndT (sndT x)))) (sndT (fstT (sndT (sndT x)))) (fstT (sndT (sndT (sndT x)))) (sndT (sndT (sndT (sndT x)))) := by
     simpa only [subst_point,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift,x,fixedData] using
-      Prf.eqCongr1 (point (Syn.shift (p)) (Syn.shift (i)) (Syn.shift (j)) (Syn.shift (z)) (Syn.shift (R)) (Syn.shift (B)) (Syn.shift (h)) (var 0) (Syn.shift (sndT (sndT (fstT (sndT x))))) (Syn.shift (fstT (fstT (sndT (sndT x))))) (Syn.shift (sndT (fstT (sndT (sndT x))))) (Syn.shift (fstT (sndT (sndT (sndT x))))) (Syn.shift (sndT (sndT (sndT (sndT x)))))) ((congrFst dn).eqTrans (fst_pair _ _))
+      Prf.eqCongr1 (point (Syn.shift (p)) (Syn.shift (i)) (Syn.shift (j)) (Syn.shift (z)) (Syn.shift (R)) (Syn.shift (B)) (Syn.shift (h)) (var 0) (Syn.shift (sndT (sndT (fstT (sndT x))))) (Syn.shift (fstT (fstT (sndT (sndT x))))) (Syn.shift (sndT (fstT (sndT (sndT x))))) (Syn.shift (fstT (sndT (sndT (sndT x))))) (Syn.shift (sndT (sndT (sndT (sndT x)))))) dn.fstE
   have step8 : Γ ⊢[PRAAx]
       point (p) (i) (j) (z) (R) (B) (h) (D) (sndT (sndT (fstT (sndT x)))) (fstT (fstT (sndT (sndT x)))) (sndT (fstT (sndT (sndT x)))) (fstT (sndT (sndT (sndT x)))) (sndT (sndT (sndT (sndT x)))) ≐
       point (p) (i) (j) (z) (R) (B) (h) (D) (N) (fstT (fstT (sndT (sndT x)))) (sndT (fstT (sndT (sndT x)))) (fstT (sndT (sndT (sndT x)))) (sndT (sndT (sndT (sndT x)))) := by
     simpa only [subst_point,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift,x,fixedData] using
-      Prf.eqCongr1 (point (Syn.shift (p)) (Syn.shift (i)) (Syn.shift (j)) (Syn.shift (z)) (Syn.shift (R)) (Syn.shift (B)) (Syn.shift (h)) (Syn.shift (D)) (var 0) (Syn.shift (fstT (fstT (sndT (sndT x))))) (Syn.shift (sndT (fstT (sndT (sndT x))))) (Syn.shift (fstT (sndT (sndT (sndT x))))) (Syn.shift (sndT (sndT (sndT (sndT x)))))) ((congrSnd dn).eqTrans (snd_pair _ _))
+      Prf.eqCongr1 (point (Syn.shift (p)) (Syn.shift (i)) (Syn.shift (j)) (Syn.shift (z)) (Syn.shift (R)) (Syn.shift (B)) (Syn.shift (h)) (Syn.shift (D)) (var 0) (Syn.shift (fstT (fstT (sndT (sndT x))))) (Syn.shift (sndT (fstT (sndT (sndT x))))) (Syn.shift (fstT (sndT (sndT (sndT x))))) (Syn.shift (sndT (sndT (sndT (sndT x)))))) dn.sndE
   have step9 : Γ ⊢[PRAAx]
       point (p) (i) (j) (z) (R) (B) (h) (D) (N) (fstT (fstT (sndT (sndT x)))) (sndT (fstT (sndT (sndT x)))) (fstT (sndT (sndT (sndT x)))) (sndT (sndT (sndT (sndT x)))) ≐
       point (p) (i) (j) (z) (R) (B) (h) (D) (N) (a) (sndT (fstT (sndT (sndT x)))) (fstT (sndT (sndT (sndT x)))) (sndT (sndT (sndT (sndT x)))) := by
     simpa only [subst_point,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift,x,fixedData] using
-      Prf.eqCongr1 (point (Syn.shift (p)) (Syn.shift (i)) (Syn.shift (j)) (Syn.shift (z)) (Syn.shift (R)) (Syn.shift (B)) (Syn.shift (h)) (Syn.shift (D)) (Syn.shift (N)) (var 0) (Syn.shift (sndT (fstT (sndT (sndT x))))) (Syn.shift (fstT (sndT (sndT (sndT x))))) (Syn.shift (sndT (sndT (sndT (sndT x)))))) ((congrFst ac).eqTrans (fst_pair _ _))
+      Prf.eqCongr1 (point (Syn.shift (p)) (Syn.shift (i)) (Syn.shift (j)) (Syn.shift (z)) (Syn.shift (R)) (Syn.shift (B)) (Syn.shift (h)) (Syn.shift (D)) (Syn.shift (N)) (var 0) (Syn.shift (sndT (fstT (sndT (sndT x))))) (Syn.shift (fstT (sndT (sndT (sndT x))))) (Syn.shift (sndT (sndT (sndT (sndT x)))))) ac.fstE
   have step10 : Γ ⊢[PRAAx]
       point (p) (i) (j) (z) (R) (B) (h) (D) (N) (a) (sndT (fstT (sndT (sndT x)))) (fstT (sndT (sndT (sndT x)))) (sndT (sndT (sndT (sndT x)))) ≐
       point (p) (i) (j) (z) (R) (B) (h) (D) (N) (a) (C) (fstT (sndT (sndT (sndT x)))) (sndT (sndT (sndT (sndT x)))) := by
     simpa only [subst_point,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift,x,fixedData] using
-      Prf.eqCongr1 (point (Syn.shift (p)) (Syn.shift (i)) (Syn.shift (j)) (Syn.shift (z)) (Syn.shift (R)) (Syn.shift (B)) (Syn.shift (h)) (Syn.shift (D)) (Syn.shift (N)) (Syn.shift (a)) (var 0) (Syn.shift (fstT (sndT (sndT (sndT x))))) (Syn.shift (sndT (sndT (sndT (sndT x)))))) ((congrSnd ac).eqTrans (snd_pair _ _))
+      Prf.eqCongr1 (point (Syn.shift (p)) (Syn.shift (i)) (Syn.shift (j)) (Syn.shift (z)) (Syn.shift (R)) (Syn.shift (B)) (Syn.shift (h)) (Syn.shift (D)) (Syn.shift (N)) (Syn.shift (a)) (var 0) (Syn.shift (fstT (sndT (sndT (sndT x))))) (Syn.shift (sndT (sndT (sndT (sndT x)))))) ac.sndE
   have step11 : Γ ⊢[PRAAx]
       point (p) (i) (j) (z) (R) (B) (h) (D) (N) (a) (C) (fstT (sndT (sndT (sndT x)))) (sndT (sndT (sndT (sndT x)))) ≐
       point (p) (i) (j) (z) (R) (B) (h) (D) (N) (a) (C) (E) (sndT (sndT (sndT (sndT x)))) := by
     simpa only [subst_point,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift,x,fixedData] using
-      Prf.eqCongr1 (point (Syn.shift (p)) (Syn.shift (i)) (Syn.shift (j)) (Syn.shift (z)) (Syn.shift (R)) (Syn.shift (B)) (Syn.shift (h)) (Syn.shift (D)) (Syn.shift (N)) (Syn.shift (a)) (Syn.shift (C)) (var 0) (Syn.shift (sndT (sndT (sndT (sndT x)))))) ((congrFst et).eqTrans (fst_pair _ _))
+      Prf.eqCongr1 (point (Syn.shift (p)) (Syn.shift (i)) (Syn.shift (j)) (Syn.shift (z)) (Syn.shift (R)) (Syn.shift (B)) (Syn.shift (h)) (Syn.shift (D)) (Syn.shift (N)) (Syn.shift (a)) (Syn.shift (C)) (var 0) (Syn.shift (sndT (sndT (sndT (sndT x)))))) et.fstE
   have step12 : Γ ⊢[PRAAx]
       point (p) (i) (j) (z) (R) (B) (h) (D) (N) (a) (C) (E) (sndT (sndT (sndT (sndT x)))) ≐
       point (p) (i) (j) (z) (R) (B) (h) (D) (N) (a) (C) (E) (T) := by
     simpa only [subst_point,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift,x,fixedData] using
-      Prf.eqCongr1 (point (Syn.shift (p)) (Syn.shift (i)) (Syn.shift (j)) (Syn.shift (z)) (Syn.shift (R)) (Syn.shift (B)) (Syn.shift (h)) (Syn.shift (D)) (Syn.shift (N)) (Syn.shift (a)) (Syn.shift (C)) (Syn.shift (E)) (var 0)) ((congrSnd et).eqTrans (snd_pair _ _))
+      Prf.eqCongr1 (point (Syn.shift (p)) (Syn.shift (i)) (Syn.shift (j)) (Syn.shift (z)) (Syn.shift (R)) (Syn.shift (B)) (Syn.shift (h)) (Syn.shift (D)) (Syn.shift (N)) (Syn.shift (a)) (Syn.shift (C)) (Syn.shift (E)) (var 0)) et.sndE
   exact step0.eqTrans (step2.eqTrans (step3.eqTrans (step4.eqTrans (step5.eqTrans (step6.eqTrans (step7.eqTrans (step8.eqTrans (step9.eqTrans (step10.eqTrans (step11.eqTrans (step12)))))))))))
 
 theorem body_at (i p j z R B h D N a C E T : PTm n) : Γ ⊢[PRAAx]

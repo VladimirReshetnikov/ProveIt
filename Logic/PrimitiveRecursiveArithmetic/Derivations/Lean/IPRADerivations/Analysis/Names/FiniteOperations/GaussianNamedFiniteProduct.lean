@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedFiniteProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (bounded_radius_mono)
 open GaussianNameArithmetic (product_distance)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
@@ -26,9 +26,6 @@ open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalPowerDifference (distance_refl_zero)
 open GaussianRationalReciprocal (qone qone_bounded bounded_product bound_congr)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -46,26 +43,15 @@ def rowDistance (f g : PR 3) (p q N E K x y : PTm n) : Fm PTm n := .all
 def radius (R i : PTm n) : PTm n := pw (R+one) i
 def amplification (R i : PTm n) : PTm n := i*radius R i
 
-@[simp] theorem subst_sample {l : ℕ} (σ : Fin n → PTm l) (f : PR 3) (p N x : PTm n) :
-    Syn.subst σ (sample f p N x) = sample f (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ x) := by
-  simp [sample]
+ipra_subst sample
 
-@[simp] theorem subst_rowBoundsAt {l : ℕ} (σ : Fin n → PTm l) (f : PR 3) (p N R x : PTm n) :
-    (rowBoundsAt f p N R x).subst σ = rowBoundsAt f (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ R) (Syn.subst σ x) := by
-  simp [rowBoundsAt,one,Syn.subst_shift,Syn.shift_subst]
+ipra_subst rowBoundsAt [one, Syn.subst_shift, Syn.shift_subst]
 
-@[simp] theorem subst_rowDistance {l : ℕ} (σ : Fin n → PTm l) (f g : PR 3) (p q N E K x y : PTm n) :
-    (rowDistance f g p q N E K x y).subst σ = rowDistance f g (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ N)
-      (Syn.subst σ E) (Syn.subst σ K) (Syn.subst σ x) (Syn.subst σ y) := by
-  simp [rowDistance,Syn.subst_shift,Syn.shift_subst]
+ipra_subst rowDistance [Syn.subst_shift, Syn.shift_subst]
 
-@[simp] theorem subst_radius {l : ℕ} (σ : Fin n → PTm l) (R i : PTm n) :
-    Syn.subst σ (radius R i) = radius (Syn.subst σ R) (Syn.subst σ i) := by
-  simp [radius,one]
+ipra_subst radius [one]
 
-@[simp] theorem subst_amplification {l : ℕ} (σ : Fin n → PTm l) (R i : PTm n) :
-    Syn.subst σ (amplification R i) = amplification (Syn.subst σ R) (Syn.subst σ i) := by
-  simp [amplification]
+ipra_subst amplification
 
 theorem sample_zero (f : PR 3) (p x : PTm n) : Γ ⊢[PRAAx] sample f p zero x ≐ qone :=
   product_zero _ _
@@ -114,10 +100,7 @@ def prefixLaw (f g : PR 3) (p q N R E K x y i : PTm n) : Fm PTm n := le i N ⟶
   ((bounded (sample f p i x) (radius R i) one ⋏ bounded (sample g q i y) (radius R i) one) ⋏
     distanceBounded (sample f p i x) (sample g q i y) (amplification R i*E) K)
 
-@[simp] theorem subst_prefixLaw {l : ℕ} (σ : Fin n → PTm l) (f g : PR 3) (p q N R E K x y i : PTm n) :
-    (prefixLaw f g p q N R E K x y i).subst σ = prefixLaw f g (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ N)
-      (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ K) (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ i) := by
-  simp [prefixLaw,one]
+ipra_subst prefixLaw [one]
 
 private theorem prefix_zero (f g : PR 3) (p q N R E K x y : PTm n) (hk : Γ ⊢[PRAAx] le one K) :
     Γ ⊢[PRAAx] prefixLaw f g p q N R E K x y zero := by

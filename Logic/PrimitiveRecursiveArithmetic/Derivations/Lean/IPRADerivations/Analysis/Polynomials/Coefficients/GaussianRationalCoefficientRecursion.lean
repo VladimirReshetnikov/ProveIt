@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul canonical ofGaussian represents canonical_unique)
 open GaussianRationalSyntheticDivision (qone qmul_congr canonicalCoefficients rescale_to)
 open GaussianRationalNaturalScale (natScale naturalPoint)
@@ -24,16 +24,11 @@ open GaussianRationalLowCoefficientConvolution (exponentCoefficient getP getQ ge
 open GaussianRationalFiniteSum (sum)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
 open LeanProofs.IPRA.Foundations.BoundedSyntax (BFm formula)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def inversePoint (t : PTm n) : PTm n := ofGaussian ComplexLogarithmRemainder.oneCode t
-@[simp] theorem subst_inversePoint {l : ℕ} (σ : Fin n → PTm l) (t : PTm n) :
-    Syn.subst σ (inversePoint t) = inversePoint (Syn.subst σ t) := by simp [inversePoint]
+ipra_subst inversePoint
 
 theorem inverse_multiplier (t : PTm n) (ht : Γ ⊢[PRAAx] le one t) : Γ ⊢[PRAAx]
     qmul (inversePoint t) (naturalPoint t) ≐ qone := by
@@ -69,12 +64,8 @@ def priorTerm (P D C B e j : PTm n) : PTm n :=
   qmul (exponentCoefficient C B j) (exponentCoefficient P D (monus e j))
 def priorBody : PTm 2 := priorTerm (getP (var 1)) (getN (var 1)) (getQ (var 1)) (getM (var 1)) (getE (var 1)) (var 0)
 def priorSum (P D C B e : PTm n) : PTm n := sum priorBody e (data P C D B e)
-@[simp] theorem subst_priorTerm {l : ℕ} (σ : Fin n → PTm l) (P D C B e j : PTm n) :
-    Syn.subst σ (priorTerm P D C B e j) = priorTerm (Syn.subst σ P) (Syn.subst σ D) (Syn.subst σ C)
-      (Syn.subst σ B) (Syn.subst σ e) (Syn.subst σ j) := by simp [priorTerm]
-@[simp] theorem subst_priorSum {l : ℕ} (σ : Fin n → PTm l) (P D C B e : PTm n) :
-    Syn.subst σ (priorSum P D C B e) = priorSum (Syn.subst σ P) (Syn.subst σ D)
-      (Syn.subst σ C) (Syn.subst σ B) (Syn.subst σ e) := by simp [priorSum]
+ipra_subst priorTerm
+ipra_subst priorSum
 theorem prior_at (P D C B e j : PTm n) : Γ ⊢[PRAAx]
     inst2 priorBody j (data P C D B e) ≐ priorTerm P D C B e j := by
   simp only [priorBody,inst2,subst_priorTerm,GaussianRationalLowCoefficientConvolution.getP,
@@ -94,12 +85,8 @@ def recursion (P D C B R : PTm n) : Fm PTm n := .all
 def prefixEqual (C B F E r : PTm n) : Fm PTm n := .all
   (lt (var 0) (succ (Syn.shift r)) ⟶ exponentCoefficient (Syn.shift C) (Syn.shift B) (var 0) ≐
     exponentCoefficient (Syn.shift F) (Syn.shift E) (var 0))
-@[simp] theorem subst_recursion {l : ℕ} (σ : Fin n → PTm l) (P D C B R : PTm n) :
-    (recursion P D C B R).subst σ = recursion (Syn.subst σ P) (Syn.subst σ D)
-      (Syn.subst σ C) (Syn.subst σ B) (Syn.subst σ R) := by simp [recursion,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_prefixEqual {l : ℕ} (σ : Fin n → PTm l) (C B F E r : PTm n) :
-    (prefixEqual C B F E r).subst σ = prefixEqual (Syn.subst σ C) (Syn.subst σ B)
-      (Syn.subst σ F) (Syn.subst σ E) (Syn.subst σ r) := by simp [prefixEqual,Syn.subst_shift,Syn.shift_subst]
+ipra_subst recursion [Syn.subst_shift, Syn.shift_subst]
+ipra_subst prefixEqual [Syn.subst_shift, Syn.shift_subst]
 
 theorem recursion_at (P D C B R e : PTm n) (h : Γ ⊢[PRAAx] recursion P D C B R)
     (he : Γ ⊢[PRAAx] le e R) : Γ ⊢[PRAAx]
@@ -173,9 +160,7 @@ def uniqueLaw (_P _D C B F E R r : PTm n) : Fm PTm n := le r R ⟶ prefixEqual C
 def prefixSyntax (C B F E r : PTm n) : BFm n := .all (succ r) (.eq
   (exponentCoefficient (Syn.shift C) (Syn.shift B) (var 0)) (exponentCoefficient (Syn.shift F) (Syn.shift E) (var 0)))
 def uniqueSyntax (_P _D C B F E R r : PTm n) : BFm n := .imp (.le r R) (prefixSyntax C B F E r)
-@[simp] theorem subst_uniqueLaw {l : ℕ} (σ : Fin n → PTm l) (P D C B F E R r : PTm n) :
-    (uniqueLaw P D C B F E R r).subst σ = uniqueLaw (Syn.subst σ P) (Syn.subst σ D) (Syn.subst σ C) (Syn.subst σ B)
-      (Syn.subst σ F) (Syn.subst σ E) (Syn.subst σ R) (Syn.subst σ r) := by simp [uniqueLaw]
+ipra_subst uniqueLaw
 theorem prefix_formula (C B F E r : PTm n) : formula (prefixSyntax C B F E r) = prefixEqual C B F E r := by
   simp [prefixSyntax,prefixEqual,formula]
 theorem unique_formula (P D C B F E R r : PTm n) : formula (uniqueSyntax P D C B F E R r) = uniqueLaw P D C B F E R r := by
@@ -229,9 +214,7 @@ def input (P D C B F E R : PTm n) : Fm PTm n :=
   (length C ≐ succ B ⋏ canonicalCoefficients C) ⋏
   ((length F ≐ succ E ⋏ canonicalCoefficients F) ⋏
     (recursion P D C B R ⋏ (recursion P D F E R ⋏ exponentCoefficient C B zero ≐ exponentCoefficient F E zero)))
-@[simp] theorem subst_input {l : ℕ} (σ : Fin n → PTm l) (P D C B F E R : PTm n) :
-    (input P D C B F E R).subst σ = input (Syn.subst σ P) (Syn.subst σ D) (Syn.subst σ C) (Syn.subst σ B)
-      (Syn.subst σ F) (Syn.subst σ E) (Syn.subst σ R) := by simp [input]
+ipra_subst input
 theorem unique_of_input (P D C B F E R : PTm n) (h : Γ ⊢[PRAAx] input P D C B F E R) :
     Γ ⊢[PRAAx] prefixEqual C B F E R :=
   uniqueness P D C B F E R (Prf.andE₁ (Prf.andE₁ h)) (Prf.andE₂ (Prf.andE₁ h))
@@ -247,16 +230,8 @@ def priorF : PR 5 := PTm.toPR (priorSum (var 0) (var 1) (var 2) (var 3) (var 4))
 def comparison (C B F E i : PTm n) : PTm n := pairT (exponentCoefficient C B i) (exponentCoefficient F E i)
 def comparisonF : PR 5 := PTm.toPR (comparison (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (C B F E i : PTm n) : PTm n := PTm.app comparisonF ![C,B,F,E,i]
-@[simp] theorem subst_comparison {l : ℕ} (σ : Fin n → PTm l) (C B F E i : PTm n) :
-    Syn.subst σ (comparison C B F E i) = comparison (Syn.subst σ C) (Syn.subst σ B)
-      (Syn.subst σ F) (Syn.subst σ E) (Syn.subst σ i) := by simp [comparison]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (C B F E i : PTm n) :
-    Syn.subst σ (run C B F E i) = run (Syn.subst σ C) (Syn.subst σ B)
-      (Syn.subst σ F) (Syn.subst σ E) (Syn.subst σ i) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext j
-  fin_cases j <;> rfl
+ipra_subst comparison
+ipra_subst run
 
 theorem inverse_program_at (t : PTm n) : Γ ⊢[PRAAx] ap1 inverseF t ≐ inversePoint t := by
   simpa [inverseF,ap1] using toPR_eq (Γ := Γ) (inversePoint (var 0) : PTm 1) ![t]
@@ -265,9 +240,9 @@ theorem prior_program_at (P D C B e : PTm n) : Γ ⊢[PRAAx] PTm.app priorF ![P,
 theorem program_at (C B F E i : PTm n) : Γ ⊢[PRAAx] run C B F E i ≐ comparison C B F E i := by
   simpa [run,comparisonF] using toPR_eq (Γ := Γ) (comparison (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![C,B,F,E,i]
 theorem returned_left (C B F E i : PTm n) : Γ ⊢[PRAAx] fstT (run C B F E i) ≐ exponentCoefficient C B i :=
-  (congrFst (program_at C B F E i)).eqTrans (fst_pair _ _)
+  (program_at C B F E i).fstE
 theorem returned_right (C B F E i : PTm n) : Γ ⊢[PRAAx] sndT (run C B F E i) ≐ exponentCoefficient F E i :=
-  (congrSnd (program_at C B F E i)).eqTrans (snd_pair _ _)
+  (program_at C B F E i).sndE
 theorem returned_agreement (P D C B F E R i : PTm n) (h : Γ ⊢[PRAAx] input P D C B F E R)
     (hi : Γ ⊢[PRAAx] le i R) : Γ ⊢[PRAAx] fstT (run C B F E i) ≐ sndT (run C B F E i) :=
   (returned_left C B F E i).eqTrans ((coefficient_unique P D C B F E R i h hi).eqTrans (returned_right C B F E i).eqSymm)

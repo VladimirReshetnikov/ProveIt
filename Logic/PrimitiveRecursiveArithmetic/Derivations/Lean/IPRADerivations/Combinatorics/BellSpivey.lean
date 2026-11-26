@@ -4,7 +4,6 @@ import IPRADerivations.AnalyticNumberTheory.Order
 import IPRADerivations.Combinatorics.BellStirling
 import IPRADerivations.AnalyticNumberTheory.PhiLower
 import IPRADerivations.Analysis.RationalArithmetic.PowerSums
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Spivey's identity
@@ -35,7 +34,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.BellSpivey
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (fact_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.Order (pw_one_base)
@@ -55,10 +54,6 @@ open LeanProofs.IPRA.Combinatorics.StirlingBinomial (stir_rec)
 open LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct (eq_of_viol viol_of_eq)
 open LeanProofs.IPRA.Analysis.PowerSums (sum_le)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -246,7 +241,7 @@ theorem row_pt {k N j : PTm n} (hk : Γ ⊢[PRAAx] le k N) :
       (pairT (Syn.shift N) (Syn.shift j))
     have s := snd_pair (Γ := (lt (var 0) (Syn.shift (succ N)) :: Γ.map Fm.shift)) (Syn.shift k)
       (pairT (Syn.shift N) (Syn.shift j))
-    have fN := (congrFst s).eqTrans (fst_pair _ _); have sJ := (congrSnd s).eqTrans (snd_pair _ _)
+    have fN := s.fstE; have sJ := s.sndE
     exact congrMul (congrMul (congrGb fN f) (congrPw sJ (congrMonus fN f))) (congrMul (congrGb f (.eqRefl _)) (.eqRefl _))
   exact sc.eqTrans ((congrMul (.eqRefl _) ((bi_ext hk).eqTrans (bi_bell k))).eqTrans (t_at _ _ _).eqSymm)
 
@@ -264,7 +259,7 @@ theorem col_pt (i N j : PTm n) :
       (pairT (Syn.shift N) (Syn.shift j))
     have s := snd_pair (Γ := (lt (var 0) (Syn.shift (succ N)) :: Γ.map Fm.shift)) (Syn.shift i)
       (pairT (Syn.shift N) (Syn.shift j))
-    have fN := (congrFst s).eqTrans (fst_pair _ _); have sJ := (congrSnd s).eqTrans (snd_pair _ _)
+    have fN := s.fstE; have sJ := s.sndE
     refine (congrMul (congrMul (congrGb fN (.eqRefl _)) (congrPw sJ (congrMonus fN (.eqRefl _))))
       (congrMul (congrGb (.eqRefl _) f) (congrBell f))).eqTrans ?_
     refine .eqTrans ?_ (congrMul (.eqRefl _) (cv_at _ _ _ _)).eqSymm
@@ -502,13 +497,9 @@ theorem psi_step {M m : PTm n} (ih : Γ ⊢[PRAAx] ap2 (sumF vB) (monus M m) m �
 private abbrev psiF : Fm PTm 2 := ap2 (sumF vB) (monus (var 1) (var 0)) (var 0) ≐ zero
 
 private theorem psi₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] psiF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_monus, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact psi_base _
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_monus, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact psi_step Prf.hyp0
+  ipra_ind [subst_ap2]
+  · exact psi_base _
+  · exact psi_step Prf.hyp0
 
 /-- `eq:spivey`: `B_{n+m} = ∑_{j ≤ m} S(m, j) ∑_{k ≤ n} C(n, k) j^{n−k} B_k`. -/
 theorem spivey (N m : PTm n) : Γ ⊢[PRAAx] F N m ≐ bell (N + m) := by

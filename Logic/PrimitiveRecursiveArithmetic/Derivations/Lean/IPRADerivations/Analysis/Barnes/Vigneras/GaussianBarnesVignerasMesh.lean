@@ -15,7 +15,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesVignerasMesh
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Common (pos_of_one_le)
 open LeanProofs.IPRA.DiophantineNumberTheory.DigitCode (rem_small)
 open GaussianBarnesVignerasCyclicDerivative (LowerJet clock)
@@ -26,9 +26,6 @@ open GaussianRationalL1 (rawGaussian rawDen raw_den_positive raw_represents)
 open GaussianRationalMetric (distanceBounded)
 open GaussianSignedObservationReadback (realProjection)
 open RationalGaussianEmbedding (axis canonical_axis_roundtrip embed embed_canonical)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

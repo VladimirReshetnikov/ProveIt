@@ -27,10 +27,8 @@ relations with `z = 0`.
 
 namespace LeanProofs.IPRA.Geometry.SphericalQuadrantal
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Geometry.SphericalCore
-open Syn
-open scoped Fm
 
 /-! ## The ring-level certificates -/
 

@@ -13,14 +13,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianScalarRadiusProductBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (positive_product represents)
 open GaussianRationalMetric (bounded)
 open GaussianRationalL1 (rawGaussian rawDen raw_represents raw_den_positive)
 open RationalGaussianEmbedding (native)
 open ComplexLogarithmRemainder (normSq mul)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

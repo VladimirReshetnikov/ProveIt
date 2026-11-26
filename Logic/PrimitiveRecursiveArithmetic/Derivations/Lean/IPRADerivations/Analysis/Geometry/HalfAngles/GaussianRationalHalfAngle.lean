@@ -6,7 +6,6 @@ import IPRADerivations.Analysis.RationalArithmetic.GaussianIntegerCircleProjecti
 import IPRADerivations.Combinatorics.FiniteBijection
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerDifference
 import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianReconstructionRoots
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # An actual principal rational half-angle step
@@ -22,7 +21,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalHalfAngle
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder (re im code normSq normSq_eval)
 open LeanProofs.IPRA.Analysis.GaussianRationalL1 (rawDen rawGaussian raw_den_positive raw_represents)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (represents positive_product)
@@ -32,10 +31,6 @@ open LeanProofs.IPRA.Analysis.RationalIntegerNormalization (positivePart)
 open LeanProofs.IPRA.Foundations.GapDecision (zabs zabs_sq zabs_neg)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Signum (sg)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -52,26 +47,16 @@ def circleL (q H : PTm n) : PTm n := grid q H+plusRoot q H
 def half (q H : PTm n) : PTm n :=
   GaussianRationalCircleParametrization.point (circleL q H) (minusRoot q H) (negativeBit q)
 
-@[simp] theorem subst_unit {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    (unit q).subst σ = unit (Syn.subst σ q) := by simp [unit]
-@[simp] theorem subst_base {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    Syn.subst σ (base q) = base (Syn.subst σ q) := by simp [base]
-@[simp] theorem subst_plus {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    Syn.subst σ (plus q) = plus (Syn.subst σ q) := by simp [plus]
-@[simp] theorem subst_minus {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    Syn.subst σ (minus q) = minus (Syn.subst σ q) := by simp [minus]
-@[simp] theorem subst_negativeBit {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    Syn.subst σ (negativeBit q) = negativeBit (Syn.subst σ q) := by simp [negativeBit,ComplexLogarithmRemainder.im,ZT.subst]
-@[simp] theorem subst_grid {m : ℕ} (σ : Fin n → PTm m) (q H : PTm n) :
-    Syn.subst σ (grid q H) = grid (Syn.subst σ q) (Syn.subst σ H) := by simp [grid]
-@[simp] theorem subst_plusRoot {m : ℕ} (σ : Fin n → PTm m) (q H : PTm n) :
-    Syn.subst σ (plusRoot q H) = plusRoot (Syn.subst σ q) (Syn.subst σ H) := by simp [plusRoot]
-@[simp] theorem subst_minusRoot {m : ℕ} (σ : Fin n → PTm m) (q H : PTm n) :
-    Syn.subst σ (minusRoot q H) = minusRoot (Syn.subst σ q) (Syn.subst σ H) := by simp [minusRoot]
-@[simp] theorem subst_circleL {m : ℕ} (σ : Fin n → PTm m) (q H : PTm n) :
-    Syn.subst σ (circleL q H) = circleL (Syn.subst σ q) (Syn.subst σ H) := by simp [circleL]
-@[simp] theorem subst_half {m : ℕ} (σ : Fin n → PTm m) (q H : PTm n) :
-    Syn.subst σ (half q H) = half (Syn.subst σ q) (Syn.subst σ H) := by simp [half]
+ipra_subst unit
+ipra_subst base
+ipra_subst plus
+ipra_subst minus
+ipra_subst negativeBit [ComplexLogarithmRemainder.im, ZT.subst]
+ipra_subst grid
+ipra_subst plusRoot
+ipra_subst minusRoot
+ipra_subst circleL
+ipra_subst half
 
 theorem negative_bit_boolean (q : PTm n) : Γ ⊢[PRAAx]
     (negativeBit q ≐ zero) ⋎ (negativeBit q ≐ one) := Combinatorics.FiniteBijection.sg_bit _
@@ -249,20 +234,13 @@ def floorPoint (q H : PTm n) : PTm n := GaussianRationalHorner.ofGaussian (floor
 def circleDen (q H : PTm n) : PTm n := GaussianRationalCircleParametrization.denominator (circleL q H) (minusRoot q H)
 def circleNumerator (q H : PTm n) : PTm n := GaussianRationalCircleParametrization.numerator (circleL q H) (minusRoot q H) (negativeBit q)
 
-@[simp] theorem subst_plusDeficit {m : ℕ} (σ : Fin n → PTm m) (q H : PTm n) :
-    Syn.subst σ (plusDeficit q H) = plusDeficit (Syn.subst σ q) (Syn.subst σ H) := by simp [plusDeficit]
-@[simp] theorem subst_minusDeficit {m : ℕ} (σ : Fin n → PTm m) (q H : PTm n) :
-    Syn.subst σ (minusDeficit q H) = minusDeficit (Syn.subst σ q) (Syn.subst σ H) := by simp [minusDeficit]
-@[simp] theorem subst_deficit {m : ℕ} (σ : Fin n → PTm m) (q H : PTm n) :
-    Syn.subst σ (deficit q H) = deficit (Syn.subst σ q) (Syn.subst σ H) := by simp [deficit]
-@[simp] theorem subst_floorNumerator {m : ℕ} (σ : Fin n → PTm m) (q H : PTm n) :
-    Syn.subst σ (floorNumerator q H) = floorNumerator (Syn.subst σ q) (Syn.subst σ H) := by simp [floorNumerator]
-@[simp] theorem subst_floorPoint {m : ℕ} (σ : Fin n → PTm m) (q H : PTm n) :
-    Syn.subst σ (floorPoint q H) = floorPoint (Syn.subst σ q) (Syn.subst σ H) := by simp [floorPoint]
-@[simp] theorem subst_circleDen {m : ℕ} (σ : Fin n → PTm m) (q H : PTm n) :
-    Syn.subst σ (circleDen q H) = circleDen (Syn.subst σ q) (Syn.subst σ H) := by simp [circleDen]
-@[simp] theorem subst_circleNumerator {m : ℕ} (σ : Fin n → PTm m) (q H : PTm n) :
-    Syn.subst σ (circleNumerator q H) = circleNumerator (Syn.subst σ q) (Syn.subst σ H) := by simp [circleNumerator]
+ipra_subst plusDeficit
+ipra_subst minusDeficit
+ipra_subst deficit
+ipra_subst floorNumerator
+ipra_subst floorPoint
+ipra_subst circleDen
+ipra_subst circleNumerator
 
 theorem roots_deficit (q H : PTm n) (h : Γ ⊢[PRAAx] unit q) : Γ ⊢[PRAAx]
     plusRoot q H*plusRoot q H+minusRoot q H*minusRoot q H+deficit q H ≐ grid q H*grid q H := by
@@ -630,8 +608,7 @@ theorem half_square_accuracy_of_budget (q H J : PTm n) (hH : Γ ⊢[PRAAx] le on
       (le_congr (by ipra_ring) (by ipra_ring) hBudget))
 
 def precision (J : PTm n) : PTm n := pw two (two*J+num 10)
-@[simp] theorem subst_precision {m : ℕ} (σ : Fin n → PTm m) (J : PTm n) :
-    Syn.subst σ (precision J) = precision (Syn.subst σ J) := by simp [precision]
+ipra_subst precision
 
 theorem two_power_ten : Γ ⊢[PRAAx] pw (two : PTm n) (num 10) ≐ num 1024 := by
   ipra_lc natEq (((congrAp2 powF (by ipra_ring : Γ ⊢[PRAAx] num 10 ≐ succ (num 9)) (.eqRefl (two : PTm n))).eqTrans (pw_succ two (num 9))))+
@@ -674,10 +651,8 @@ def output (q H : PTm n) : PTm n := pairT (half q H)
 def outputF : PR 2 := PTm.toPR (output (var 0) (var 1))
 def run (q H : PTm n) : PTm n := ap2 outputF q H
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (q H : PTm n) :
-    Syn.subst σ (output q H) = output (Syn.subst σ q) (Syn.subst σ H) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (q H : PTm n) :
-    Syn.subst σ (run q H) = run (Syn.subst σ q) (Syn.subst σ H) := by simp [run]
+ipra_subst output
+ipra_subst run
 
 theorem half_at (q H : PTm n) : Γ ⊢[PRAAx] ap2 halfF q H ≐ half q H := by
   simpa [halfF,ap2] using toPR_eq (Γ := Γ) (half (var 0) (var 1) : PTm 2) ![q,H]
@@ -686,15 +661,15 @@ theorem program_at (q H : PTm n) : Γ ⊢[PRAAx] run q H ≐ output q H := by
   simpa [run,outputF,ap2] using toPR_eq (Γ := Γ) (output (var 0) (var 1) : PTm 2) ![q,H]
 
 theorem returned_point (q H : PTm n) : Γ ⊢[PRAAx] fstT (run q H) ≐ half q H :=
-  (congrFst (program_at q H)).eqTrans (fst_pair _ _)
+  (program_at q H).fstE
 theorem returned_parameter (q H : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run q H)) ≐ circleL q H :=
-  (congrFst ((congrSnd (program_at q H)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at q H).sndE.fstE
 theorem returned_root (q H : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run q H))) ≐ minusRoot q H :=
-  (congrFst ((congrSnd ((congrSnd (program_at q H)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at q H).sndE.sndE.fstE
 theorem returned_sign (q H : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (run q H)))) ≐ negativeBit q :=
-  (congrFst ((congrSnd ((congrSnd ((congrSnd (program_at q H)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at q H).sndE.sndE.sndE.fstE
 theorem returned_denominator (q H : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (run q H)))) ≐ circleDen q H :=
-  (congrSnd ((congrSnd ((congrSnd ((congrSnd (program_at q H)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at q H).sndE.sndE.sndE.sndE
 
 theorem returned_accuracy (q H J : PTm n) (hH : Γ ⊢[PRAAx] le one H) (h : Γ ⊢[PRAAx] unit q)
     (hBudget : Γ ⊢[PRAAx] le ((num 400)*pw two J*pw two J) H) : Γ ⊢[PRAAx]

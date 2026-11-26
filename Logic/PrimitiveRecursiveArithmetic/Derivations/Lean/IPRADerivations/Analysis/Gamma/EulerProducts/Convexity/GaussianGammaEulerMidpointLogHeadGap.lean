@@ -16,7 +16,7 @@ set_option maxHeartbeats 1100000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaEulerMidpointLogHeadGap
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianGammaEulerMidpointHeadGap (large small gap gap_split head_gap square_power)
 open GaussianGammaEulerRationalHead (numerator denominator)
@@ -30,9 +30,6 @@ open GaussianNamedPositiveExponentialOrder (realOrder)
 open GaussianNaturalScaleProductName (productF productData)
 open GaussianPositiveRationalLogarithm (logF data source fraction name_regular)
 open GaussianRationalHorner (positive_product)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "L" => productF logF
@@ -41,8 +38,7 @@ def margin (a d : PTm n) : PTm n := fraction (gap a d) (large a d)
 def centerData (N a d b : PTm n) : PTm n := productData logF two (headLogData N (a+d) (two*b))
 def weightedData (N a d b : PTm n) : PTm n := addData (headLogData N a b) (headLogData N d b)
 
-@[simp] theorem subst_margin {m : ℕ} (σ : Fin n → PTm m) (a d : PTm n) :
-    Syn.subst σ (margin a d) = margin (Syn.subst σ a) (Syn.subst σ d) := by simp [margin]
+ipra_subst margin
 
 theorem data_congr {a b c d : PTm n} (ha : Γ ⊢[PRAAx] a ≐ c) (hb : Γ ⊢[PRAAx] b ≐ d) :
     Γ ⊢[PRAAx] data a b ≐ data c d := by

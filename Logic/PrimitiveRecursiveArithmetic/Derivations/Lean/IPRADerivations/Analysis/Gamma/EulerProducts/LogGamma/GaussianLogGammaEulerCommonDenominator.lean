@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerCommonDenominator
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open ComplexLogarithmRemainder (eval_im_code eval_re_code normSq scale)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -35,10 +35,6 @@ open GaussianRightHalfPlaneLogarithmOffset (signedImag)
 open GaussianRootAlgebra
   (equal equal_of_values equal_re equal_im equal_symm equal_trans im_scale normSq_equal re_scale)
 open RationalArithmetic (select select_zero select_one)
-open ConciseIPRA.PTm (succ zero)
-open LeanProofs.IPRA.PTm (num pred)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -58,25 +54,15 @@ def displacement (q r : PTm n) : PTm n :=
 
 def sizeBound (R S : PTm n) : PTm n := two*(R+S)
 
-@[simp] theorem subst_commonReal {m : ℕ} (σ : Fin n → PTm m) (q r : PTm n) :
-    Syn.subst σ (commonReal q r) = commonReal (Syn.subst σ q) (Syn.subst σ r) := by
-  simp [commonReal]
+ipra_subst commonReal
 
-@[simp] theorem subst_commonImag {m : ℕ} (σ : Fin n → PTm m) (q r : PTm n) :
-    Syn.subst σ (commonImag q r) = commonImag (Syn.subst σ q) (Syn.subst σ r) := by
-  simp [commonImag]
+ipra_subst commonImag
 
-@[simp] theorem subst_commonNative {m : ℕ} (σ : Fin n → PTm m) (q r : PTm n) :
-    Syn.subst σ (commonNative q r) = commonNative (Syn.subst σ q) (Syn.subst σ r) := by
-  simp [commonNative]
+ipra_subst commonNative
 
-@[simp] theorem subst_displacement {m : ℕ} (σ : Fin n → PTm m) (q r : PTm n) :
-    Syn.subst σ (displacement q r) = displacement (Syn.subst σ q) (Syn.subst σ r) := by
-  simp [displacement]
+ipra_subst displacement
 
-@[simp] theorem subst_sizeBound {m : ℕ} (σ : Fin n → PTm m) (R S : PTm n) :
-    Syn.subst σ (sizeBound R S) = sizeBound (Syn.subst σ R) (Syn.subst σ S) := by
-  simp [sizeBound]
+ipra_subst sizeBound
 
 private theorem signed_scale (k B neg : PTm n) (h : Γ ⊢[PRAAx] neg ≐ zero ⋎ neg ≐ one) :
     Γ ⊢[PRAAx] ZT.eq (signedImag (k*B) neg) (ZT.ofNat k * signedImag B neg) := by
@@ -217,9 +203,7 @@ theorem radius_from_distance (q r R S K P Qd : PTm n)
 def continuityRadius (δ : PTm n) : PTm n :=
   select (eqb (normSq δ) zero) (stepRadius δ) zero
 
-@[simp] theorem subst_continuityRadius {m : ℕ} (σ : Fin n → PTm m) (δ : PTm n) :
-    Syn.subst σ (continuityRadius δ) = continuityRadius (Syn.subst σ δ) := by
-  simp [continuityRadius]
+ipra_subst continuityRadius
 
 theorem continuity_radius_from_distance (q r R S K P Qd : PTm n)
     (hq : Γ ⊢[PRAAx] certificate q R K) (hr : Γ ⊢[PRAAx] certificate r S K)

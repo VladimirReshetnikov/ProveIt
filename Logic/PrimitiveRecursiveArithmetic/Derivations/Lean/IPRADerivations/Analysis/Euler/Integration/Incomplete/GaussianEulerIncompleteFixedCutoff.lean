@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIncompleteFixedCutoff
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIncompleteCofinalRate (source)
 open GaussianEulerIncompleteName (lowerF upperF data lower_at upper_at original_observations original_regular_names)
 open GaussianEulerIncompleteCutoffParts (lowerData upperData piece_sources)
@@ -28,10 +28,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianExponentialReference (unit_monotone)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -39,9 +35,7 @@ local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
 def input (s k z R B A a b : PTm n) : Fm PTm n :=
   source z R B A a b ⋏ le (GaussianEulerIncompleteCutoff.clock s a b) k
 
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (s k z R B A a b : PTm n) :
-    (input s k z R B A a b).subst σ = input (Syn.subst σ s) (Syn.subst σ k) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ a) (Syn.subst σ b) := by simp [input]
+ipra_subst input
 
 private theorem join_cutoff (t u v K H x y z : PTm n) (hH : Γ ⊢[PRAAx] le one H)
     (hu : Γ ⊢[PRAAx] le t u) (hv : Γ ⊢[PRAAx] le t v)

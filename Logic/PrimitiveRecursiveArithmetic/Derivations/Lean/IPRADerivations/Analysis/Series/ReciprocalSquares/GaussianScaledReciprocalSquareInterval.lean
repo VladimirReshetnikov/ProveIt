@@ -16,7 +16,7 @@ set_option maxHeartbeats 600000
 
 namespace LeanProofs.IPRA.Analysis.GaussianScaledReciprocalSquareInterval
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode normSq_one)
 open GaussianCoefficientNameBounds (bounded_radius_mono)
 open GaussianRationalFiniteSum (sum multiplyBody multiply_body_at sum_multiply sum_canonical)
@@ -26,9 +26,6 @@ open GaussianRationalNaturalScale (naturalPoint)
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalReciprocal (bounded_product bound_congr)
 open GaussianReciprocalSquareInterval (rowsBounded)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

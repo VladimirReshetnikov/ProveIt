@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIncompleteRadiusAlignment
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaIntegralCutoffs (height etaDen top tailCoefficient)
 open GaussianEulerIncompleteCutoff (clock denominator splitPoint lowerWidth upperWidth)
 open GaussianEulerIncompleteCutoffParts (lowerData upperData piece_sources)
@@ -26,14 +26,11 @@ open GaussianNameEquivalence (crossEquivalent cross_at)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalHorner (positive_product)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def cutoff (m U : PTm n) : PTm n := m+tailCoefficient U
-@[simp] theorem subst_cutoff {l : ℕ} (σ : Fin n → PTm l) (m U : PTm n) :
-    Syn.subst σ (cutoff m U) = cutoff (Syn.subst σ m) (Syn.subst σ U) := by simp [cutoff,tailCoefficient]
+ipra_subst cutoff [tailCoefficient]
 
 theorem cutoff_later (m U : PTm n) : Γ ⊢[PRAAx] le m (cutoff m U) := le_add_right _ _
 

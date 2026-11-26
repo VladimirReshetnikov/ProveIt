@@ -14,7 +14,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceSharpTail
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetLaplaceDomination (realDecay realNumerator realDenominator nonnegative_real_radius)
 open GaussianBinetLaplaceStrip (Kernel evaluatorF nameF data source subst_data fixedData)
 open GaussianBinetLaplaceStripTail (tailNumerator tailDenominator)
@@ -28,10 +28,6 @@ open GaussianRationalHorner (positive_product qzero)
 open GaussianRationalMetric (bounded)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianRealExponentialPositiveRepresentative (positiveF positiveData sample_nonnegative sample_canonical)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "twelve" => num 12

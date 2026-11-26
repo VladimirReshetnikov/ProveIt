@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalQuadratureSquareComparison
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalQuadratureSquarePartition (lowerNumerator widthNumerator intervalDenominator fineCount cellCap cutData cutF cutGap)
 open GaussianRationalQuadratureSquareGridDistance (mappedTime targetGrid)
 open GaussianRationalQuadratureSquareJacobian (pullF)
@@ -29,9 +29,6 @@ open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNamedInverseRate (rateNumerator rateDenominator denominator_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -48,28 +45,14 @@ def coarseSum (F : PR 3) (p N c d a C E x : PTm n) : PTm n :=
 def squareSum (F : PR 3) (p N c d a C E x : PTm n) : PTm n :=
   qmul (weight (widthNumerator c a C) (intervalDenominator d E) (fineCount N c a C)) (coarseSum F p N c d a C E x)
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (F : PR 3) (N c d a C E L T x : PTm n) :
-    (source F N c d a C E L T x).subst σ = source F (Syn.subst σ N) (Syn.subst σ c) (Syn.subst σ d) (Syn.subst σ a)
-      (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ L) (Syn.subst σ T) (Syn.subst σ x) := by simp [source]
-@[simp] theorem subst_pointDenominator {m : ℕ} (σ : Fin n → PTm m) (N d E : PTm n) :
-    Syn.subst σ (pointDenominator N d E) = pointDenominator (Syn.subst σ N) (Syn.subst σ d) (Syn.subst σ E) := by simp [pointDenominator]
-@[simp] theorem subst_rowNumerator {m : ℕ} (σ : Fin n → PTm m) (p N c d a C E L : PTm n) :
-    Syn.subst σ (rowNumerator p N c d a C E L) = rowNumerator (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ c) (Syn.subst σ d)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ L) := by simp [rowNumerator]
-@[simp] theorem subst_rowDenominator {m : ℕ} (σ : Fin n → PTm m) (p N d E : PTm n) :
-    Syn.subst σ (rowDenominator p N d E) = rowDenominator (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ d) (Syn.subst σ E) := by simp [rowDenominator]
-@[simp] theorem subst_fineData {m : ℕ} (σ : Fin n → PTm m) (p N c d a C E x : PTm n) :
-    Syn.subst σ (fineData p N c d a C E x) = fineData (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ c) (Syn.subst σ d)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ x) := by simp [fineData]
-@[simp] theorem subst_coarseData {m : ℕ} (σ : Fin n → PTm m) (p N c d a C E x : PTm n) :
-    Syn.subst σ (coarseData p N c d a C E x) = coarseData (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ c) (Syn.subst σ d)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ x) := by simp [coarseData]
-@[simp] theorem subst_coarseSum {m : ℕ} (σ : Fin n → PTm m) (F : PR 3) (p N c d a C E x : PTm n) :
-    Syn.subst σ (coarseSum F p N c d a C E x) = coarseSum F (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ c) (Syn.subst σ d)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ x) := by simp [coarseSum]
-@[simp] theorem subst_squareSum {m : ℕ} (σ : Fin n → PTm m) (F : PR 3) (p N c d a C E x : PTm n) :
-    Syn.subst σ (squareSum F p N c d a C E x) = squareSum F (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ c) (Syn.subst σ d)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ x) := by simp [squareSum]
+ipra_subst source
+ipra_subst pointDenominator
+ipra_subst rowNumerator
+ipra_subst rowDenominator
+ipra_subst fineData
+ipra_subst coarseData
+ipra_subst coarseSum
+ipra_subst squareSum
 
 theorem point_denominator_positive (F : PR 3) (N c d a C E L T x : PTm n) (hs : Γ ⊢[PRAAx] source F N c d a C E L T x) : Γ ⊢[PRAAx]
     le one (pointDenominator N d E) := positive_product _ _

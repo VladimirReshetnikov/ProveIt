@@ -19,7 +19,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetWeightedExponentialAlgebra
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale oneCode)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner
@@ -28,9 +28,6 @@ open GaussianRationalMetric (bounded qsub qsub_canonical qsub_represents)
 open GaussianRationalReciprocal (bounded_negative qone_represents_scaled)
 open GaussianRationalSyntheticDivision (qone qsub_congr rescale_to)
 open GaussianRootAlgebra (sub equal_refl equal_of_values re_sub im_sub re_mul im_mul re_scale im_scale re_one im_one)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -45,21 +42,13 @@ def inverseScale (a b : PTm n) : PTm n := fraction b (two*a*a)
 def correction (a b N : PTm n) : PTm n := fraction (two*a*a) (b*N*N)
 def cap (a b : PTm n) : PTm n := (two*a+two*b)+a
 
-@[simp] theorem subst_tagWeight {m : ℕ} (σ : Fin n → PTm m) (j N : PTm n) :
-    Syn.subst σ (tagWeight j N) = tagWeight (Syn.subst σ j) (Syn.subst σ N) := by simp [tagWeight,one,two]
-@[simp] theorem subst_primitiveCoefficient {m : ℕ} (σ : Fin n → PTm m) (a b j N : PTm n) :
-    Syn.subst σ (primitiveCoefficient a b j N) =
-      primitiveCoefficient (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ j) (Syn.subst σ N) := by simp [primitiveCoefficient,one,two]
-@[simp] theorem subst_leftCoefficient {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (leftCoefficient a b) = leftCoefficient (Syn.subst σ a) (Syn.subst σ b) := by simp [leftCoefficient,one,two]
-@[simp] theorem subst_rightCoefficient {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (rightCoefficient a b) = rightCoefficient (Syn.subst σ a) (Syn.subst σ b) := by simp [rightCoefficient,one,two]
-@[simp] theorem subst_panelScale {m : ℕ} (σ : Fin n → PTm m) (a b N : PTm n) :
-    Syn.subst σ (panelScale a b N) = panelScale (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by simp [panelScale,two]
-@[simp] theorem subst_inverseScale {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (inverseScale a b) = inverseScale (Syn.subst σ a) (Syn.subst σ b) := by simp [inverseScale,two]
-@[simp] theorem subst_cap {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (cap a b) = cap (Syn.subst σ a) (Syn.subst σ b) := by simp [cap,two]
+ipra_subst tagWeight [one, two]
+ipra_subst primitiveCoefficient [one, two]
+ipra_subst leftCoefficient [one, two]
+ipra_subst rightCoefficient [one, two]
+ipra_subst panelScale [two]
+ipra_subst inverseScale [two]
+ipra_subst cap [two]
 
 private theorem rescaled_fraction (a B N : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
     Γ ⊢[PRAAx] represents (fraction a B) (scale (a*N) oneCode) (B*N) :=

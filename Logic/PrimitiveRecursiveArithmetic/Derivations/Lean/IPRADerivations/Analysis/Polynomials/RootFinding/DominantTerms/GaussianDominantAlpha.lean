@@ -2,8 +2,6 @@ import IPRADerivations.Analysis.RationalArithmetic.Directions.GaussianRationalDi
 import IPRADerivations.Analysis.RationalArithmetic.Directions.GaussianRationalPhaseCertificate
 import IPRADerivations.Analysis.Inequalities.RationalNonnegativePowers
 import IPRADerivations.Analysis.Polynomials.RootFinding.DominantTerms.GaussianDominantScalarOrder
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The computed rational amplitude of a dominant pair
@@ -21,16 +19,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianDominantAlpha
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder (normSq)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (positive_product represents)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qnormSq)
 open LeanProofs.IPRA.Analysis.GaussianRationalL1 (rawGaussian rawDen raw_den_positive raw_represents)
 open LeanProofs.IPRA.Analysis.GaussianRationalDirectionNormalizer (norm sixtyFour sixtyFive)
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (fraction fraction_represents)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -50,20 +45,13 @@ def radialLower (b0 bk A B k D : PTm n) : Fm PTm n :=
   RationalArgmin.rationalLE (qnormSq b0)
     (RationalArithmetic.multiply (fraction (D*D) one) (radialScore bk A B k))
 
-@[simp] theorem subst_phase {m : ℕ} (σ : Fin n → PTm m) (b0 bk : PTm n) :
-    Syn.subst σ (phase b0 bk) = phase (Syn.subst σ b0) (Syn.subst σ bk) := by simp [phase]
-@[simp] theorem subst_radialScore {m : ℕ} (σ : Fin n → PTm m) (bk A B k : PTm n) :
-    Syn.subst σ (radialScore bk A B k) = radialScore (Syn.subst σ bk) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ k) := by simp [radialScore]
-@[simp] theorem subst_P {m : ℕ} (σ : Fin n → PTm m) (b0 bk A k H : PTm n) :
-    Syn.subst σ (P b0 bk A k H) = P (Syn.subst σ b0) (Syn.subst σ bk) (Syn.subst σ A) (Syn.subst σ k) (Syn.subst σ H) := by simp [P]
-@[simp] theorem subst_Q {m : ℕ} (σ : Fin n → PTm m) (b0 bk B k H : PTm n) :
-    Syn.subst σ (Q b0 bk B k H) = Q (Syn.subst σ b0) (Syn.subst σ bk) (Syn.subst σ B) (Syn.subst σ k) (Syn.subst σ H) := by simp [Q]
-@[simp] theorem subst_alpha {m : ℕ} (σ : Fin n → PTm m) (b0 bk A B k H : PTm n) :
-    Syn.subst σ (alpha b0 bk A B k H) = alpha (Syn.subst σ b0) (Syn.subst σ bk) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ k) (Syn.subst σ H) := by simp [alpha]
-@[simp] theorem subst_radialUpper {m : ℕ} (σ : Fin n → PTm m) (b0 bk A B k : PTm n) :
-    (radialUpper b0 bk A B k).subst σ = radialUpper (Syn.subst σ b0) (Syn.subst σ bk) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ k) := by simp [radialUpper]
-@[simp] theorem subst_radialLower {m : ℕ} (σ : Fin n → PTm m) (b0 bk A B k D : PTm n) :
-    (radialLower b0 bk A B k D).subst σ = radialLower (Syn.subst σ b0) (Syn.subst σ bk) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ k) (Syn.subst σ D) := by simp [radialLower]
+ipra_subst phase
+ipra_subst radialScore
+ipra_subst P
+ipra_subst Q
+ipra_subst alpha
+ipra_subst radialUpper
+ipra_subst radialLower
 
 theorem phase_represents (b0 bk : PTm n) : Γ ⊢[PRAAx]
     represents (phase b0 bk)
@@ -304,9 +292,7 @@ def certificate (b0 bk A B k H D : PTm n) : Fm PTm n :=
   le one (Q b0 bk B k H) ⋏ (le one (P b0 bk A k H) ⋏
     (le (P b0 bk A k H) (Q b0 bk B k H) ⋏
       le (sixtyFour*Q b0 bk B k H) (sixtyFive*D*P b0 bk A k H)))
-@[simp] theorem subst_certificate {m : ℕ} (σ : Fin n → PTm m) (b0 bk A B k H D : PTm n) :
-    (certificate b0 bk A B k H D).subst σ = certificate (Syn.subst σ b0) (Syn.subst σ bk)
-      (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ k) (Syn.subst σ H) (Syn.subst σ D) := by simp [certificate]
+ipra_subst certificate
 
 theorem alpha_bounds (b0 bk A B k H D : PTm n)
     (hA : Γ ⊢[PRAAx] le one A) (hB : Γ ⊢[PRAAx] le one B)
@@ -322,9 +308,7 @@ def input (b0 bk A B k H D : PTm n) : Fm PTm n :=
   le one A ⋏ (le one B ⋏ (le sixtyFour H ⋏ (le one D ⋏
     (le one (norm b0) ⋏ (le one (norm bk) ⋏
       (radialUpper b0 bk A B k ⋏ radialLower b0 bk A B k D))))))
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (b0 bk A B k H D : PTm n) :
-    (input b0 bk A B k H D).subst σ = input (Syn.subst σ b0) (Syn.subst σ bk)
-      (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ k) (Syn.subst σ H) (Syn.subst σ D) := by simp [input]
+ipra_subst input
 
 theorem from_input (b0 bk A B k H D : PTm n) (h : Γ ⊢[PRAAx] input b0 bk A B k H D) : Γ ⊢[PRAAx]
     certificate b0 bk A B k H D := by
@@ -343,32 +327,24 @@ def output (b0 bk A B k H : PTm n) : PTm n := pairT (phase b0 bk)
 def outputF : PR 6 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5))
 def run (b0 bk A B k H : PTm n) : PTm n := PTm.app outputF ![b0,bk,A,B,k,H]
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (b0 bk A B k H : PTm n) :
-    Syn.subst σ (output b0 bk A B k H) = output (Syn.subst σ b0) (Syn.subst σ bk)
-      (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ k) (Syn.subst σ H) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (b0 bk A B k H : PTm n) :
-    Syn.subst σ (run b0 bk A B k H) = run (Syn.subst σ b0) (Syn.subst σ bk)
-      (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ k) (Syn.subst σ H) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (b0 bk A B k H : PTm n) : Γ ⊢[PRAAx] run b0 bk A B k H ≐ output b0 bk A B k H := by
   simpa [run,outputF] using toPR_eq (Γ := Γ)
     (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) ![b0,bk,A,B,k,H]
 
 theorem returned_phase (b0 bk A B k H : PTm n) : Γ ⊢[PRAAx] fstT (run b0 bk A B k H) ≐ phase b0 bk :=
-  (congrFst (program_at b0 bk A B k H)).eqTrans (fst_pair _ _)
+  (program_at b0 bk A B k H).fstE
 theorem returned_numerator (b0 bk A B k H : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run b0 bk A B k H)) ≐ P b0 bk A k H :=
-  (congrFst ((congrSnd (program_at b0 bk A B k H)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at b0 bk A B k H).sndE.fstE
 theorem returned_denominator (b0 bk A B k H : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run b0 bk A B k H))) ≐ Q b0 bk B k H :=
-  (congrFst ((congrSnd ((congrSnd (program_at b0 bk A B k H)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at b0 bk A B k H).sndE.sndE.fstE
 theorem returned_alpha (b0 bk A B k H : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (run b0 bk A B k H)))) ≐ alpha b0 bk A B k H :=
-  (congrFst ((congrSnd ((congrSnd ((congrSnd (program_at b0 bk A B k H)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at b0 bk A B k H).sndE.sndE.sndE.fstE
 theorem returned_normalizer (b0 bk A B k H : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (run b0 bk A B k H)))) ≐
     GaussianRationalDirectionNormalizer.normalizer (phase b0 bk) H :=
-  (congrSnd ((congrSnd ((congrSnd ((congrSnd (program_at b0 bk A B k H)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at b0 bk A B k H).sndE.sndE.sndE.sndE
 
 theorem actual_phase_norm_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2
     (represents (phase (var 0) (var 1))

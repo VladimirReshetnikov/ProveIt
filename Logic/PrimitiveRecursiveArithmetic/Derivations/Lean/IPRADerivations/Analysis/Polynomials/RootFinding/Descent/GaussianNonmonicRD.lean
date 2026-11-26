@@ -21,15 +21,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNonmonicRD
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianBalancedRadius (inputContract)
 open LeanProofs.IPRA.Analysis.GaussianRationalTranslation (translated)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (evaluate canonical qadd)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qnormSq)
 open LeanProofs.IPRA.Analysis.GaussianDescentClock (residualNumerator)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -37,10 +34,8 @@ def step : PR 3 := GaussianMonicRD.step
 def delta (N C z : PTm n) : PTm n := GaussianMonicRD.delta N C z
 def next (N C z : PTm n) : PTm n := GaussianMonicRD.next N C z
 
-@[simp] theorem subst_delta {m : ℕ} (σ : Fin n → PTm m) (N C z : PTm n) :
-    Syn.subst σ (delta N C z) = delta (Syn.subst σ N) (Syn.subst σ C) (Syn.subst σ z) := by simp [delta]
-@[simp] theorem subst_next {m : ℕ} (σ : Fin n → PTm m) (N C z : PTm n) :
-    Syn.subst σ (next N C z) = next (Syn.subst σ N) (Syn.subst σ C) (Syn.subst σ z) := by simp [next]
+ipra_subst delta
+ipra_subst next
 
 theorem positive_input (C N z : PTm n) (hInput : Γ ⊢[PRAAx] inputContract C N)
     (hPositive : Γ ⊢[PRAAx] le one (residualNumerator C z)) : Γ ⊢[PRAAx]

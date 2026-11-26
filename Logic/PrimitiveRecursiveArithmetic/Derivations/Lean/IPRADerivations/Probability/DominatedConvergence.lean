@@ -1,6 +1,5 @@
 import IPRADerivations.Probability.TruncationEstimate
 import IPRADerivations.Geometry.HypercubeSplit
-import IPRADerivations.Core.ProdLemmas
 
 /-!
 # Effective dominated convergence: the modulus composition
@@ -30,13 +29,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.DominatedConvergence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.TruncationEstimate (TInv truncation)
 open LeanProofs.IPRA.Geometry.HypercubeSplit (le_cancel_pos)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

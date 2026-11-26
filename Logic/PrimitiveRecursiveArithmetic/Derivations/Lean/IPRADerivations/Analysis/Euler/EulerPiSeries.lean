@@ -27,7 +27,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.EulerPiSeries
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.BaselQuadrature (uq lift4 inst2_lift4 Qb inst_Qb)
 open LeanProofs.IPRA.Analysis.BaselCore (sum_lin)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
@@ -36,10 +36,6 @@ open LeanProofs.IPRA.Analysis.WallisFinite (da db bB da_zero db_zero da_succ)
 open LeanProofs.IPRA.Analysis.EvenPowerIntegrals
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -200,15 +196,9 @@ private abbrev hoF : Fm PTm 3 :=
   le (two * (succ (var 1) * succ (var 1))) (var 2) ⟶ Horner (var 0) (var 1) (var 2)
 
 private theorem ho₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] hoF := by
-  refine ind _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact .impI (horner_base _ _)
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul,
-      Syn.subst_var, Syn.repl_zero, repl_one, repl_two, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact .impI (horner_step Prf.hyp0 (Prf.impE Prf.hyp1 Prf.hyp0))
+  ipra_ind (⟨le_QF _ _, trivial⟩) [subst_le, subst_ap2, subst_pairT]
+  · exact .impI (horner_base _ _)
+  · exact .impI (horner_step Prf.hyp0 (Prf.impE Prf.hyp1 Prf.hyp0))
 
 theorem horner {M₀ L : PTm n} (hL : Γ ⊢[PRAAx] le (two * (succ M₀ * succ M₀)) L) (N : PTm n) :
     Γ ⊢[PRAAx] Horner N M₀ L := by
@@ -268,13 +258,9 @@ theorem eu_step {N M : PTm n} (ih : Γ ⊢[PRAAx] EInv N M) : Γ ⊢[PRAAx] EInv
 private abbrev euFm : Fm PTm 2 := EInv (var 0) (var 1)
 
 private theorem eu₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] euFm := by
-  refine ind _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_and, subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, PTm.subst_num,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact eu_base _
-  · simp only [Fm.subst_and, subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, PTm.subst_num,
-      Syn.subst_var, Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact eu_step Prf.hyp0
+  ipra_ind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2, subst_pairT]
+  · exact eu_base _
+  · exact eu_step Prf.hyp0
 
 theorem eu_all (N M : PTm n) : Γ ⊢[PRAAx] EInv N M := by
   have h := inst (Γ := Γ) eu₀ (![N, M] : Fin 2 → PTm n)

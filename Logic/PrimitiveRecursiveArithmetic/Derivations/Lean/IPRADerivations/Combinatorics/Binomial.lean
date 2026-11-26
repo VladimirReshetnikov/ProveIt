@@ -21,13 +21,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.Binomial
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (fact_pos eq_succ_pred)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {m : ℕ} {Γ : List (Fm PTm m)}
 
@@ -147,15 +143,11 @@ where
 
 /-- `T(n) = 0` for every `n`: `k! (n − k)!` divides `n!` for all `k ≤ n`. -/
 theorem binom_open : ([] : List (Fm PTm 1)) ⊢[PRAAx] T (var 0) ≐ zero := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    refine (sum_succ' rBody zero zero).eqTrans ((congrAdd (sum_zero _ _) ?_).eqTrans (add_zero _))
+  ipra_ind [subst_ap2]
+  · refine (sum_succ' rBody zero zero).eqTrans ((congrAdd (sum_zero _ _) ?_).eqTrans (add_zero _))
     rw [inst2_r]
     exact rem_zero_of_eq (bden_pos _ _) (bden_zero _)
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    refine sum_zero_of_bounded rBody _ _ (.allI ?_)
+  · refine sum_zero_of_bounded rBody _ _ (.allI ?_)
     simpa [Fm.shift, Syn.shift, inst2_r] using key
 
 /-! ## Consequences -/

@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicImproperName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLogarithmicCutoffCauchy (source observation)
 open GaussianEulerLogarithmicCommonCutoff (cutoff)
 open GaussianEulerCutoffCauchyComparison (clock)
@@ -22,9 +22,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
 open GaussianRationalHorner (canonical positive_product)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -34,12 +31,8 @@ private def reader (p d : PTm n) : PTm n := sample p (fstT d) (fstT (sndT d)) (f
   (fstT (sndT (sndT (sndT d)))) (sndT (sndT (sndT (sndT d))))
 def nameF : PR 2 := PTm.toPR (reader (var 0) (var 1))
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (j z R B A : PTm n) :
-    Syn.subst σ (data j z R B A) = data (Syn.subst σ j) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ A) := by simp [data]
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (p j z R B A : PTm n) :
-    Syn.subst σ (sample p j z R B A) = sample (Syn.subst σ p) (Syn.subst σ j) (Syn.subst σ z)
-      (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) := by simp [sample]
+ipra_subst data
+ipra_subst sample
 
 theorem name_at (p j z R B A : PTm n) : Γ ⊢[PRAAx] ap2 nameF p (data j z R B A) ≐ sample p j z R B A := by
   let x := data j z R B A

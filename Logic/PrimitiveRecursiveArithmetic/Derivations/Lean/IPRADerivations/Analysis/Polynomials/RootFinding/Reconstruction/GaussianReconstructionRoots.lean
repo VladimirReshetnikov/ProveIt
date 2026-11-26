@@ -19,7 +19,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianReconstructionRoots
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalReconstruction
   (reconstruct factors factorsF factorData product factors_succ subst_factors)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner
@@ -35,10 +35,6 @@ open LeanProofs.IPRA.Analysis.GaussianRootAlgebra
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder (scale zeroCode)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -47,13 +43,9 @@ zero, regardless of the remaining point codes. -/
 theorem zero_after (S N z K r : PTm n)
     (h : Γ ⊢[PRAAx] factors S N z K ≐ qzero) : Γ ⊢[PRAAx] factors S N z (K+r) ≐ qzero := by
   have all : Γ ⊢[PRAAx] .all (factors (Syn.shift S) (Syn.shift N) (Syn.shift z) (Syn.shift K+var 0) ≐ qzero) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,subst_factors,GaussianRationalHorner.subst_qzero,PTm.subst_add,
-        Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (congrAp2 factorsF (add_zero K) (.eqRefl _)).eqTrans h
-    · simp only [Fm.subst_eq,subst_factors,GaussianRationalHorner.subst_qzero,PTm.subst_add,
-        Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact (congrAp2 factorsF (add_succ _ _) (.eqRefl _)).eqTrans
+    ipra_qfind [subst_factors, GaussianRationalHorner.subst_qzero]
+    · exact (congrAp2 factorsF (add_zero K) (.eqRefl _)).eqTrans h
+    · exact (congrAp2 factorsF (add_succ _ _) (.eqRefl _)).eqTrans
         ((factors_succ _ _ _ _).eqTrans ((qmul_congr (.eqRefl _) Prf.hyp0).eqTrans
           (GaussianRationalSyntheticDivision.qmul_zero_right _)))
   simpa only [Fm.subst_eq,subst_factors,GaussianRationalHorner.subst_qzero,PTm.subst_add,

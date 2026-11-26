@@ -14,16 +14,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaFiniteEulerAtCutoff
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBetaFiniteEulerComparison (source slack supportWidth supportCells gridPrecision)
 open GaussianBetaPrimitiveGridUnscale (quadrature scaledEndpoint demand)
 open GaussianGammaIntegralCutoffs (etaDen eta_den_positive)
 open GaussianCoefficientNameBounds (unit)
 open GaussianRationalMetric (distanceBounded bounded)
 open GaussianGammaEulerReciprocalInverse (eulerF eulerData)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

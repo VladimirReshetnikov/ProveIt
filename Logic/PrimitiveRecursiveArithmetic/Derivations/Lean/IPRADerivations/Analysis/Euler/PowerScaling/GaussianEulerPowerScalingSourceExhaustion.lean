@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingSourceExhaustion
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPowerScalingCofinalObservation (grid)
 open GaussianEulerPowerChartCofinalSchedule (source cutoffSize)
 open GaussianEulerPowerChartCofinalEndpoints (lowerDenominator upperNumerator)
@@ -20,9 +20,6 @@ open GaussianGammaIntegralCutoffs (height top tailCoefficient)
 open GaussianEulerCompactExhaustionScaled (cutoff)
 open GaussianFastValueCut (exponent)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

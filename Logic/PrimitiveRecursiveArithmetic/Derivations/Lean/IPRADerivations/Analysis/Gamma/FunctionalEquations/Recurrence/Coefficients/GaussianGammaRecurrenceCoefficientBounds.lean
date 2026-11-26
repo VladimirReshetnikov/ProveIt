@@ -18,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaRecurrenceCoefficientBounds
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalMetric (bounded)
 open GaussianRationalLowCoefficientConvolution (exponent_inside)
 open GaussianGammaFiniteCoefficientPolynomial (polynomial totalDegree)
@@ -26,10 +26,6 @@ open GaussianGammaFiniteCoefficientStability (fixedCoefficient)
 open GaussianGammaRecurrenceWeights (weight)
 open GaussianGammaRecurrenceWeightName (nameF data)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -48,10 +44,8 @@ def fullBound (m : PTm n) : PTm n := GaussianNameBounds.U nameF (data zero m)
 def boundBody : PTm 2 := fullBound (var 0)
 def uniformWeightBound (e : PTm n) : PTm n := one+
   LeanProofs.IPRA.Foundations.FiniteQueryDemand.finiteMaximum boundBody (succ e) zero
-@[simp] theorem subst_fullBound {l : ℕ} (σ : Fin n → PTm l) (m : PTm n) :
-    Syn.subst σ (fullBound m) = fullBound (Syn.subst σ m) := by simp [fullBound]
-@[simp] theorem subst_uniformWeightBound {l : ℕ} (σ : Fin n → PTm l) (e : PTm n) :
-    Syn.subst σ (uniformWeightBound e) = uniformWeightBound (Syn.subst σ e) := by simp [uniformWeightBound]
+ipra_subst fullBound
+ipra_subst uniformWeightBound
 
 theorem bound_body_at (m : PTm n) : Γ ⊢[PRAAx] inst2 boundBody m zero ≐ fullBound m := by
   simp only [boundBody,inst2,subst_fullBound,Syn.subst_var,Matrix.cons_val_zero]

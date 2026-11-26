@@ -16,7 +16,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceFrequencySuffix
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetKernelFrequencyGrid (cofinalBody originalData physical_row_at)
 open GaussianBinetLaplaceIntegrand (cofinal_bound meshGain)
 open GaussianBinetLaplaceOrderedPrefixes (prefixData width)
@@ -32,10 +32,6 @@ open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianRationalRiemannRefinement (termsDistance sum_distance weight weight_bound constantBody)
 open GaussianRationalSyntheticDivision (qadd_sub_cancel qsub_congr qmul_congr)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (monus num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "F" => evaluatorF GaussianBinetLaplaceStrip.Kernel.cofinal
@@ -54,22 +50,11 @@ def suffixValue (q N X Y D sign R L J : PTm n) : PTm n :=
   qmul (weight (width D L) one N)
     (sum (offB cofinalBody) (monus N J) (pairT J (originalData q N X Y D sign R (width D L) (width D L))))
 
-@[simp] theorem subst_wholeValue {m : ℕ} (σ : Fin n → PTm m) (q N X Y D sign R L : PTm n) :
-    Syn.subst σ (wholeValue q N X Y D sign R L) =
-      wholeValue (Syn.subst σ q) (Syn.subst σ N) (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D)
-        (Syn.subst σ sign) (Syn.subst σ R) (Syn.subst σ L) := by simp [wholeValue,width,one]
+ipra_subst wholeValue [width, one]
 
-@[simp] theorem subst_prefixValue {m : ℕ} (σ : Fin n → PTm m) (q N X Y D sign R L J : PTm n) :
-    Syn.subst σ (prefixValue q N X Y D sign R L J) =
-      prefixValue (Syn.subst σ q) (Syn.subst σ N) (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D)
-        (Syn.subst σ sign) (Syn.subst σ R) (Syn.subst σ L) (Syn.subst σ J) := by
-  simp [prefixValue,originalData,width,one]
+ipra_subst prefixValue [originalData, width, one]
 
-@[simp] theorem subst_suffixValue {m : ℕ} (σ : Fin n → PTm m) (q N X Y D sign R L J : PTm n) :
-    Syn.subst σ (suffixValue q N X Y D sign R L J) =
-      suffixValue (Syn.subst σ q) (Syn.subst σ N) (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D)
-        (Syn.subst σ sign) (Syn.subst σ R) (Syn.subst σ L) (Syn.subst σ J) := by
-  simp [suffixValue,originalData,width,one]
+ipra_subst suffixValue [originalData, width, one]
 
 theorem split_value (q N X Y D sign R L J : PTm n) (hJ : Γ ⊢[PRAAx] le J N) :
     Γ ⊢[PRAAx] wholeValue q N X Y D sign R L ≐
@@ -137,10 +122,7 @@ theorem discard_prefix_error (q N X Y D sign R L J E : PTm n)
 def meshBudget (t R D L : PTm n) : PTm n :=
   unit (t+num 6)*meshGain R (width D L)*(width D L)*(width D L)
 
-@[simp] theorem subst_meshBudget {m : ℕ} (σ : Fin n → PTm m) (t R D L : PTm n) :
-    Syn.subst σ (meshBudget t R D L) =
-      meshBudget (Syn.subst σ t) (Syn.subst σ R) (Syn.subst σ D) (Syn.subst σ L) := by
-  simp [meshBudget,width,one]
+ipra_subst meshBudget [width, one]
 
 /-- Use the common refinement of the original compact sampler and the
 given physical grid. The actual count `N` can be any sufficiently large count. -/
@@ -188,18 +170,11 @@ def errorNumerator (p t X D L E : PTm n) : PTm n :=
   (rateNumerator D (tailDenominator X L) p t+num 6*tailDenominator X L*unit p)*(two*E)+
     rateDenominator (tailDenominator X L) p t
 
-@[simp] theorem subst_tailDenominator {m : ℕ} (σ : Fin n → PTm m) (X L : PTm n) :
-    Syn.subst σ (tailDenominator X L) = tailDenominator (Syn.subst σ X) (Syn.subst σ L) := by simp [tailDenominator]
+ipra_subst tailDenominator
 
-@[simp] theorem subst_errorDenominator {m : ℕ} (σ : Fin n → PTm m) (p t X L E : PTm n) :
-    Syn.subst σ (errorDenominator p t X L E) =
-      errorDenominator (Syn.subst σ p) (Syn.subst σ t) (Syn.subst σ X) (Syn.subst σ L) (Syn.subst σ E) := by
-  simp [errorDenominator,two,one]
+ipra_subst errorDenominator [two, one]
 
-@[simp] theorem subst_errorNumerator {m : ℕ} (σ : Fin n → PTm m) (p t X D L E : PTm n) :
-    Syn.subst σ (errorNumerator p t X D L E) =
-      errorNumerator (Syn.subst σ p) (Syn.subst σ t) (Syn.subst σ X) (Syn.subst σ D)
-        (Syn.subst σ L) (Syn.subst σ E) := by simp [errorNumerator,two,one]
+ipra_subst errorNumerator [two, one]
 
 private theorem positive_tail (X L : PTm n) (hX : Γ ⊢[PRAAx] le one X) :
     Γ ⊢[PRAAx] le one (tailDenominator X L) :=

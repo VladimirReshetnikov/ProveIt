@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDensityMeanVariance
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegralGammaIdentification (source)
 open GaussianGammaRepeatedShift (risingProduct prefix_zero prefix_succ)
 open GaussianGammaEulerHeadShift (linear)
@@ -27,10 +27,6 @@ open GaussianNameArithmetic (multiplyF multiplyData multiply_fast)
 open GaussianNameEquivalence (crossEquivalent cross_trans cross_at)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianCoefficientNameBounds (unit)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "M" => GaussianGammaDensityMomentName.nameF
@@ -93,8 +89,7 @@ def varianceF : PR 2 := GaussianNamedDifference.nameF M (multiplyF M M)
 def varianceData (z R B A : PTm n) : PTm n := GaussianNamedDifference.data
   (GaussianGammaDensityMomentName.data z R B A two)
   (multiplyData M M (GaussianGammaDensityMomentName.data z R B A one) (GaussianGammaDensityMomentName.data z R B A one))
-@[simp] theorem subst_varianceData {m : ℕ} (σ : Fin n → PTm m) (z R B A : PTm n) :
-    Syn.subst σ (varianceData z R B A) = varianceData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) := by simp [varianceData]
+ipra_subst varianceData
 
 theorem variance_regular (z R B A : PTm n) (h : Γ ⊢[PRAAx] source z R B A) : Γ ⊢[PRAAx]
     pointCN varianceF (varianceData z R B A) :=

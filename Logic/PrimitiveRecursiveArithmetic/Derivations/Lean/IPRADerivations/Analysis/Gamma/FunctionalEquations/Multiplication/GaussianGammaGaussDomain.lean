@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaGaussDomain
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open ComplexLogarithmRemainder (bounded bounded_add bounded_scale bounded_mono normSq normSq_one scale oneCode)
 open GaussianGammaEulerDenominatorGrouping (shiftedNumerator translated_shift)
@@ -22,16 +22,12 @@ open GaussianGammaEulerHeadLower (translated poleAt poleGuard pole_at)
 open GaussianGammaReciprocalInverse (source)
 open GaussianRationalHorner (positive_product)
 open GaussianRootAlgebra (normSq_equal)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def scaledRadius (R m : PTm n) : PTm n := m*(R+two)
 
-@[simp] theorem subst_scaledRadius {l : ℕ} (σ : Fin n → PTm l) (R m : PTm n) :
-    Syn.subst σ (scaledRadius R m) = scaledRadius (Syn.subst σ R) (Syn.subst σ m) := by
-  simp [scaledRadius,two,one]
+ipra_subst scaledRadius [two, one]
 
 theorem shifted_disk (z R B m r : PTm n) (hz : Γ ⊢[PRAAx] bounded z (R*B))
     (hr : Γ ⊢[PRAAx] le r m) : Γ ⊢[PRAAx] bounded (shiftedNumerator z B m r) ((R+one)*(B*m)) := by

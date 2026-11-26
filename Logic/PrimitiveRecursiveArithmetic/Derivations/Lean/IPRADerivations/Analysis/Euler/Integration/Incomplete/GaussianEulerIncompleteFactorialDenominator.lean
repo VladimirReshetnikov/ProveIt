@@ -17,17 +17,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIncompleteFactorialDenominator
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIncompleteFactorialPolynomial (polynomial polynomial_zero polynomial_succ)
 open GaussianDominantPairAlgebra (radiusPoint radiusNumerator radius_represents radius_congr radius_multiply radius_power)
 open GaussianRationalHorner (qadd canonical_unique represents_congr positive_product)
 open GaussianRationalSyntheticDivision (qone qadd_congr qmul_congr)
 open GaussianRationalNaturalScale (natScale)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -39,14 +35,10 @@ def denominator (N b : PTm n) : PTm n := pw b N
 def quotient (N j : PTm n) : PTm n := quo (fact N) (fact j)
 def normalForm (N a b : PTm n) : Fm PTm n := polynomial N a b ≐ radiusPoint (numerator N a b) (denominator N b)
 
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (N a b : PTm n) :
-    Syn.subst σ (numerator N a b) = numerator (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ b) := by simp [numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (N b : PTm n) :
-    Syn.subst σ (denominator N b) = denominator (Syn.subst σ N) (Syn.subst σ b) := by simp [denominator]
-@[simp] theorem subst_quotient {m : ℕ} (σ : Fin n → PTm m) (N j : PTm n) :
-    Syn.subst σ (quotient N j) = quotient (Syn.subst σ N) (Syn.subst σ j) := by simp [quotient,fact]
-@[simp] theorem subst_normalForm {m : ℕ} (σ : Fin n → PTm m) (N a b : PTm n) :
-    (normalForm N a b).subst σ = normalForm (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ b) := by simp [normalForm]
+ipra_subst numerator
+ipra_subst denominator
+ipra_subst quotient [fact]
+ipra_subst normalForm
 
 theorem numerator_zero (a b : PTm n) : Γ ⊢[PRAAx] numerator zero a b ≐ one := by
   simpa [numerator,numeratorF] using rec2_zero (Γ := Γ) (one : PTm 1) stepBody (pairT a b)
@@ -154,18 +146,17 @@ theorem quotient_succ (N j : PTm n) (hj : Γ ⊢[PRAAx] le j N) : Γ ⊢[PRAAx]
 def output (N a b : PTm n) : PTm n := pairT (polynomial N a b) (pairT (numerator N a b) (denominator N b))
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (N a b : PTm n) : PTm n := ap3 outputF N a b
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (N a b : PTm n) :
-    Syn.subst σ (output N a b) = output (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ b) := by simp [output]
+ipra_subst output
 theorem program_at (N a b : PTm n) : Γ ⊢[PRAAx] run N a b ≐ output N a b := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![N,a,b]
 theorem returned_value (N a b : PTm n) : Γ ⊢[PRAAx] fstT (run N a b) ≐ polynomial N a b :=
-  (congrFst (program_at N a b)).eqTrans (fst_pair _ _)
+  (program_at N a b).fstE
 theorem returned_tail (N a b : PTm n) : Γ ⊢[PRAAx] sndT (run N a b) ≐ pairT (numerator N a b) (denominator N b) :=
-  (congrSnd (program_at N a b)).eqTrans (snd_pair _ _)
+  (program_at N a b).sndE
 theorem returned_numerator (N a b : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run N a b)) ≐ numerator N a b :=
-  (congrFst (returned_tail N a b)).eqTrans (fst_pair _ _)
+  (returned_tail N a b).fstE
 theorem returned_denominator (N a b : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run N a b)) ≐ denominator N b :=
-  (congrSnd (returned_tail N a b)).eqTrans (snd_pair _ _)
+  (returned_tail N a b).sndE
 
 theorem actual_incomplete_factorial_polynomial_ideal_denominator_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3
     (le one (var 2) ⟶ polynomial (var 0) (var 1) (var 2) ≐ radiusPoint (numerator (var 0) (var 1) (var 2)) (pw (var 2) (var 0))) :=

@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaPoleFactorContinuity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (neg scale normSq)
 open GaussianGammaEulerHead (factor product product_step)
 open GaussianRationalHorner (ofGaussian qmul positive_product)
@@ -25,9 +25,6 @@ open GaussianRationalSyntheticDivision (qone qone_canonical qmul_congr)
 open GaussianRationalMetric (bounded distanceBounded qsub)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -36,13 +33,9 @@ def input (h B A D : PTm n) : Fm PTm n := le one B ⋏ (le one D ⋏
   (le A D ⋏ ComplexLogarithmRemainder.bounded (scale D h) (A*B)))
 def correction (h B j : PTm n) : PTm n := product (ComplexLogarithmRemainder.neg h) B j
 def budget (A j : PTm n) : PTm n := A*j*unit j
-@[simp] theorem subst_input {l : ℕ} (σ : Fin n → PTm l) (h B A D : PTm n) :
-    (input h B A D).subst σ = input (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ D) := by
-  simp [input,ComplexLogarithmRemainder.bounded]
-@[simp] theorem subst_correction {l : ℕ} (σ : Fin n → PTm l) (h B j : PTm n) :
-    Syn.subst σ (correction h B j) = correction (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ j) := by simp [correction]
-@[simp] theorem subst_budget {l : ℕ} (σ : Fin n → PTm l) (A j : PTm n) :
-    Syn.subst σ (budget A j) = budget (Syn.subst σ A) (Syn.subst σ j) := by simp [budget]
+ipra_subst input [ComplexLogarithmRemainder.bounded]
+ipra_subst correction
+ipra_subst budget
 
 theorem factor_difference (h B i : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx]
     qsub (factor i (ComplexLogarithmRemainder.neg h) B) qone ≐ ofGaussian (ComplexLogarithmRemainder.neg h) (B*succ i) := by
@@ -127,13 +120,10 @@ theorem correction_error (h B A D j : PTm n) (hi : Γ ⊢[PRAAx] input h B A D) 
     simpa [Fm.shift,Syn.shift] using hi.shift
   have hall : Γ ⊢[PRAAx] .all (distanceBounded
       (correction (Syn.shift h) (Syn.shift B) (var 0)) qone (budget (Syn.shift A) (var 0)) (Syn.shift D)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [GaussianRationalMetric.subst_distanceBounded,subst_correction,subst_budget,
-        GaussianRationalSyntheticDivision.subst_qone,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact error_zero h B A D hi.andE₂.andE₁
-    · simp only [GaussianRationalMetric.subst_distanceBounded,subst_correction,subst_budget,
-        GaussianRationalSyntheticDivision.subst_qone,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact error_step _ _ _ _ _ hs.wk Prf.hyp0
+    ipra_qfind [GaussianRationalMetric.subst_distanceBounded, subst_correction, subst_budget,
+        GaussianRationalSyntheticDivision.subst_qone]
+    · exact error_zero h B A D hi.andE₂.andE₁
+    · exact error_step _ _ _ _ _ hs.wk Prf.hyp0
   simpa only [GaussianRationalMetric.subst_distanceBounded,subst_correction,subst_budget,
     GaussianRationalSyntheticDivision.subst_qone,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using hall.allE j
 /-- Both original factor constructors normalize the SAME native value. -/
@@ -155,17 +145,14 @@ theorem pole_factor_code (h B i : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[
     (GaussianGammaEulerHeadLower.factor_represents _ _ _ hB)
 
 def sameProduct (h B j : PTm n) : Fm PTm n := correction h B j ≐ GaussianGammaPoleFiniteFactors.factorProduct h B j
-@[simp] theorem subst_sameProduct {l : ℕ} (σ : Fin n → PTm l) (h B j : PTm n) :
-    (sameProduct h B j).subst σ = sameProduct (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ j) := by simp [sameProduct]
+ipra_subst sameProduct
 
 theorem correction_is_original_product (h B j : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx] sameProduct h B j := by
   have bs : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift B) := by simpa [Fm.shift,Syn.shift] using hB.shift
   have hall : Γ ⊢[PRAAx] .all (sameProduct (Syn.shift h) (Syn.shift B) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_sameProduct,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (correction_zero h B).eqTrans (GaussianRationalFiniteProduct.product_zero _ _).eqSymm
-    · simp only [subst_sameProduct,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact (correction_succ _ _ _).eqTrans ((qmul_congr Prf.hyp0 (pole_factor_code _ _ _ bs.wk).eqSymm).eqTrans
+    ipra_qfind [subst_sameProduct]
+    · exact (correction_zero h B).eqTrans (GaussianRationalFiniteProduct.product_zero _ _).eqSymm
+    · exact (correction_succ _ _ _).eqTrans ((qmul_congr Prf.hyp0 (pole_factor_code _ _ _ bs.wk).eqSymm).eqTrans
         (GaussianGammaPoleFiniteFactors.factor_succ _ _ _).eqSymm)
   simpa only [subst_sameProduct,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using hall.allE j
 
@@ -202,27 +189,20 @@ def output (h B A D j : PTm n) : PTm n := pairT (GaussianGammaPoleFiniteFactors.
     (pairT (GaussianGammaPoleFiniteFactors.signedFactorial j) (pairT (budget A j) D)))
 def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (h B A D j : PTm n) : PTm n := PTm.app outputF ![h,B,A,D,j]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (h B A D j : PTm n) :
-    Syn.subst σ (output h B A D j) = output (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ D) (Syn.subst σ j) :=
-  by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (h B A D j : PTm n) :
-    Syn.subst σ (run h B A D j) = run (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ D) (Syn.subst σ j) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext k
-  fin_cases k <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (h B A D j : PTm n) : Γ ⊢[PRAAx] run h B A D j ≐ output h B A D j := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![h,B,A,D,j]
 theorem returned_correction (h B A D j : PTm n) : Γ ⊢[PRAAx]
     fstT (run h B A D j) ≐ GaussianGammaPoleFiniteFactors.factorProduct h B j :=
-  (congrFst (program_at h B A D j)).eqTrans (fst_pair _ _)
+  (program_at h B A D j).fstE
 theorem returned_quotient (h B A D j : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run h B A D j)) ≐ GaussianGammaPoleFiniteFactors.differenceProduct h B j :=
-  (congrFst ((congrSnd (program_at h B A D j)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at h B A D j).sndE.fstE
 theorem returned_signed_factorial (h B A D j : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (run h B A D j))) ≐ GaussianGammaPoleFiniteFactors.signedFactorial j :=
-  (congrFst ((congrSnd ((congrSnd (program_at h B A D j)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at h B A D j).sndE.sndE.fstE
 
 theorem returned_correction_error (h B A D j : PTm n) (hi : Γ ⊢[PRAAx] input h B A D) : Γ ⊢[PRAAx]
     distanceBounded (fstT (run h B A D j)) qone (budget A j) D :=

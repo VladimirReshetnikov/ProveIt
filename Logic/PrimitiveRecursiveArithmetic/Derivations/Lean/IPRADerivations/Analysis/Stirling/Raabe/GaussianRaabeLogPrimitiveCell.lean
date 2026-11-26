@@ -16,7 +16,7 @@ set_option maxHeartbeats 700000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRaabeLogPrimitiveCell
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (normSq normSq_one normSq_scale oneCode scale)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianPositiveRationalLogarithm (fraction sample)
@@ -27,9 +27,6 @@ open GaussianRationalMetric (bounded bounded_of_cleared distanceBounded qsub)
 open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianRationalSyntheticDivision (qadd_congr qadd_sub_cancel qmul_congr qsub_congr)
 open GaussianStirlingOddCoefficients (fraction_add_same fraction_equal fraction_product)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,13 +38,9 @@ def numerator (p A H : PTm n) : PTm n := (two*A+H)*(H*H)*unit p+two*(A+H)*(A*A)
 
 def denominator (p A D : PTm n) : PTm n := D*(A*A)*unit p
 
-@[simp] theorem subst_primitive {m : ℕ} (σ : Fin n → PTm m) (p A D : PTm n) :
-    Syn.subst σ (primitive p A D) = primitive (Syn.subst σ p) (Syn.subst σ A) (Syn.subst σ D) := by
-  simp [primitive]
+ipra_subst primitive
 
-@[simp] theorem subst_area {m : ℕ} (σ : Fin n → PTm m) (p A D H : PTm n) :
-    Syn.subst σ (area p A D H) = area (Syn.subst σ p) (Syn.subst σ A) (Syn.subst σ D) (Syn.subst σ H) := by
-  simp [area]
+ipra_subst area
 
 theorem fraction_bound (A D : PTm n) (hD : Γ ⊢[PRAAx] le one D) :
     Γ ⊢[PRAAx] bounded (fraction A D) A D := by

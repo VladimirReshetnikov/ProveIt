@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Taylor.CenteredCharts.GaussianBarnesCanonicalFiniteCentralExponential
 import IPRADerivations.Analysis.Gamma.GaussianGammaEncodingRescaling
 import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaExponentStep
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Chart independence of the retained Barnes exponent
@@ -16,7 +15,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalPrefixChart
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale)
 open GaussianBarnesCanonicalCorrectionShift (body body_at parameters total)
 open GaussianBarnesCanonicalFactor (correction)
@@ -27,10 +26,6 @@ open GaussianGammaFiniteApproximantName (exponentialInputData)
 open GaussianNameArithmetic (addData)
 open GaussianRationalHorner (ofGaussian positive_product qmul)
 open GaussianRationalSyntheticDivision (qmul_congr qsub_congr)
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (pred)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

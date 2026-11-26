@@ -16,7 +16,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceIntegrandShift
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetKernelRows (inputData)
 open GaussianBinetLaplaceExponentialShift (shift_multiply shifted_source)
 open GaussianBinetLaplaceIntegrand (cofinalF cofinalData input)
@@ -29,8 +29,6 @@ open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
 open GaussianNameRingLaws (multiply_associative multiply_commutative multiply_one_left oneF one_at one_fast)
 open GaussianNamedDifferenceQuotientProperness (difference_proper)
 open GaussianRationalSyntheticDivision (qone)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "E" => GaussianBinetLaplaceExponential.nameF
@@ -50,20 +48,11 @@ def factoredF : PR 2 := multiplyF E W
 def factoredData (X Y D sign R T A B : PTm n) : PTm n :=
   multiplyData E W (eData X Y D sign R T A B) (wData A B)
 
-@[simp] theorem subst_differenceData {m : ℕ} (σ : Fin n → PTm m) (X Y D sign R T A B : PTm n) :
-    Syn.subst σ (differenceData X Y D sign R T A B) =
-      differenceData (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ R)
-        (Syn.subst σ T) (Syn.subst σ A) (Syn.subst σ B) := by simp [differenceData,one]
+ipra_subst differenceData [one]
 
-@[simp] theorem subst_differenceDataWithRadius {m : ℕ} (σ : Fin n → PTm m) (X Y D sign R S T A B : PTm n) :
-    Syn.subst σ (differenceDataWithRadius X Y D sign R S T A B) =
-      differenceDataWithRadius (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ R)
-        (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ A) (Syn.subst σ B) := by simp [differenceDataWithRadius]
+ipra_subst differenceDataWithRadius
 
-@[simp] theorem subst_factoredData {m : ℕ} (σ : Fin n → PTm m) (X Y D sign R T A B : PTm n) :
-    Syn.subst σ (factoredData X Y D sign R T A B) =
-      factoredData (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ R)
-        (Syn.subst σ T) (Syn.subst σ A) (Syn.subst σ B) := by simp [factoredData]
+ipra_subst factoredData
 
 private theorem one_constant (x : PTm n) : Γ ⊢[PRAAx] crossEquivalent constantF oneF qone x := by
   apply GaussianNameConjugation.equal_samples_cross _ _ _ _ (constant_regular _) (one_fast x)

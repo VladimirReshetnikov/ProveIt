@@ -19,7 +19,7 @@ set_option maxHeartbeats 2400000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeProductDerivativeCorrection
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale oneCode)
 open GaussianGammaLocalPoleGuards (center)
 open GaussianGammaNegativeCriticalCorrection (bottomDen correction guard positiveSum row row_den_positive)
@@ -36,10 +36,6 @@ open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qsub_congr qzero_add qzero_canonical qone qmul_zero_right)
 open GaussianReciprocalHorner (qadd_commutative qmul_associative qmul_one_right)
 open GaussianStirlingGammaLogarithm (arg)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -100,9 +96,7 @@ def prefixLaw (a b j : PTm n) : Fm PTm n :=
   prefixDifference (arg a) (arg a) b j ≐
     qmul (differenceProduct (arg a) b j) (qsub qzero (positiveSum a b j))
 
-@[simp] theorem subst_prefixLaw {m : ℕ} (σ : Fin n → PTm m) (a b j : PTm n) :
-    (prefixLaw a b j).subst σ = prefixLaw (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ j) := by
-  simp [prefixLaw]
+ipra_subst prefixLaw
 
 private theorem law_zero (a b : PTm n) : Γ ⊢[PRAAx] prefixLaw a b zero := by
   have sum : Γ ⊢[PRAAx] positiveSum a b zero ≐ qzero :=

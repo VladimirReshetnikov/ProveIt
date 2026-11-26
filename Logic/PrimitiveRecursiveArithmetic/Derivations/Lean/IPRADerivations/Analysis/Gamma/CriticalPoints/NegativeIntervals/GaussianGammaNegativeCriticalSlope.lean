@@ -15,7 +15,7 @@ set_option maxHeartbeats 1600000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeCriticalSlope
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianGammaNegativeCriticalCorrection (correction guard)
@@ -32,10 +32,6 @@ open GaussianRationalSyntheticDivision (qadd_congr)
 open GaussianStirlingGammaFractionalIncrementObservations (scalar_upper)
 open GaussianStirlingTailComparison (point_add_upper_same)
 open RationalValueBounds (upper upper_mono upper_triangle)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (monus num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -46,11 +42,8 @@ def coefficient (N K : PTm n) : PTm n := two+succ (succ N)*(K*K)
 def cap (a c N K : PTm n) : PTm n := coefficient N K*monus c a
 def raw (p a b N : PTm n) : PTm n := qadd (ap2 DF p (dd (b+a) b)) (correction a b N)
 
-@[simp] theorem subst_coefficient {k : ℕ} (σ : Fin n → PTm k) (N K : PTm n) :
-    Syn.subst σ (coefficient N K) = coefficient (Syn.subst σ N) (Syn.subst σ K) := by simp [coefficient]
-@[simp] theorem subst_cap {k : ℕ} (σ : Fin n → PTm k) (a c N K : PTm n) :
-    Syn.subst σ (cap a c N K) = cap (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ N) (Syn.subst σ K) :=
-  by simp [cap]
+ipra_subst coefficient
+ipra_subst cap
 
 theorem left_guard (a c b : PTm n) (h : Γ ⊢[PRAAx] ordered a c b) :
     Γ ⊢[PRAAx] guard a b :=

@@ -18,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerQuadraticLowerEndpoint
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaIntegralCutoffs (height etaDen top)
 open GaussianEulerIncompleteName (lowerF upperF)
 open GaussianGammaReciprocalInverse (gammaF gammaData)
@@ -27,9 +27,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianNamedInverseRate (independentRate rate_at rateNumerator rateDenominator)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {ℓ : ℕ} {Γ : List (Fm PTm ℓ)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -44,24 +41,12 @@ def gridDenominator (n A R d M : PTm ℓ) : PTm ℓ := d*(etaDen n A R*M)*(etaDe
 def gridData (n M z R B A c d : PTm ℓ) : PTm ℓ :=
   GaussianEulerIncompleteName.data z R B A (c*M*M) (gridDenominator n A R d M)
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin ℓ → PTm m) (z R B A c d : PTm ℓ) :
-    (source z R B A c d).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ A) (Syn.subst σ c) (Syn.subst σ d) := by simp [source]
-@[simp] theorem subst_minimumIndex {m : ℕ} (σ : Fin ℓ → PTm m) (k c d : PTm ℓ) :
-    Syn.subst σ (minimumIndex k c d) = minimumIndex (Syn.subst σ k) (Syn.subst σ c) (Syn.subst σ d) := by simp [minimumIndex]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin ℓ → PTm m) (n A R d : PTm ℓ) :
-    Syn.subst σ (denominator n A R d) = denominator (Syn.subst σ n) (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ d) := by
-  simp [denominator,etaDen,height,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin ℓ → PTm m) (n z R B A c d : PTm ℓ) :
-    Syn.subst σ (data n z R B A c d) = data (Syn.subst σ n) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ A) (Syn.subst σ c) (Syn.subst σ d) := by simp [data]
-@[simp] theorem subst_gridDenominator {m : ℕ} (σ : Fin ℓ → PTm m) (n A R d M : PTm ℓ) :
-    Syn.subst σ (gridDenominator n A R d M) = gridDenominator (Syn.subst σ n) (Syn.subst σ A)
-      (Syn.subst σ R) (Syn.subst σ d) (Syn.subst σ M) := by
-  simp [gridDenominator,etaDen,height,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_gridData {m : ℕ} (σ : Fin ℓ → PTm m) (n M z R B A c d : PTm ℓ) :
-    Syn.subst σ (gridData n M z R B A c d) = gridData (Syn.subst σ n) (Syn.subst σ M) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ c) (Syn.subst σ d) := by simp [gridData]
+ipra_subst source
+ipra_subst minimumIndex
+ipra_subst denominator [etaDen, height, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst data
+ipra_subst gridDenominator [etaDen, height, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst gridData
 
 theorem index_after (k c d : PTm ℓ) : Γ ⊢[PRAAx] le k (minimumIndex k c d) :=
   le_of_eq_add (d := c+d) (by unfold minimumIndex; ipra_ring)

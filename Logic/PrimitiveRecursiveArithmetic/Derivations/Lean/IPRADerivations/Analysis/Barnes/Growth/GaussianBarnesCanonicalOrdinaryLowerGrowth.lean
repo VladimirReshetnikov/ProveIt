@@ -14,7 +14,7 @@ set_option maxHeartbeats 750000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalOrdinaryLowerGrowth
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open BarnesDyadicRadius (bracket threshold_le_index)
 open GaussianBarnesCanonicalDyadicLowerGrowth
   (centerIndex diskRadius lowerExponent radius_readback inside_disk exponent_sample_lower valueIdentity)
@@ -23,10 +23,6 @@ open GaussianBarnesCanonicalIntegerValues (original_integer_value)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalLowerBounds (lower)
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (monus num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

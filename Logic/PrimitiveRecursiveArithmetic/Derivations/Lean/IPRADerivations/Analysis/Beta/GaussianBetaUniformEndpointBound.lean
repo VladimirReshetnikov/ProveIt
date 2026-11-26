@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaUniformEndpointBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBetaAllDegreeEulerInverse (source endpointF endpointData)
 open GaussianBetaUpperEndpointName (upperSample endpointConstant)
 open GaussianEulerIntegrandName (powerF powerData)
@@ -24,19 +24,12 @@ open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (bounded)
 open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianExponentialSmallPerturbation (smallSamples)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def endpointBound (R A N : PTm n) : PTm n := N*GaussianEulerBetaProductValue.denominator A N*
   GaussianEulerCompactPowerMajorant.majorant R one N
-@[simp] theorem subst_endpointBound {m : ℕ} (σ : Fin n → PTm m) (R A N : PTm n) :
-    Syn.subst σ (endpointBound R A N) = endpointBound (Syn.subst σ R) (Syn.subst σ A) (Syn.subst σ N) := by
-  simp [endpointBound,GaussianEulerCompactPowerMajorant.majorant,GaussianEulerCompactPowerMajorant.exponentRadius,
-    GaussianCompactLogarithmBounds.radius,one]
+ipra_subst endpointBound [GaussianEulerCompactPowerMajorant.majorant, GaussianEulerCompactPowerMajorant.exponentRadius, GaussianCompactLogarithmBounds.radius, one]
 
 theorem endpoint_bound_positive (R A N : PTm n) (hA : Γ ⊢[PRAAx] le one A) (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[PRAAx]
     le one (endpointBound R A N) := by

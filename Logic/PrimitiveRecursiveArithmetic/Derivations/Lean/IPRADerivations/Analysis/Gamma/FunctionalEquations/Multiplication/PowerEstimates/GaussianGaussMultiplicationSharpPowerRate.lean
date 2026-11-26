@@ -12,20 +12,17 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationSharpPowerRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGaussMultiplicationPowerRate (amplification powerF)
 open GaussianGaussMultiplicationPowerPerturbation (rowData)
 open GaussianNamedInverseRate (independentRate)
 open GaussianNamedMultiplyRate (sampleBound)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def coefficient (R m : PTm n) : PTm n := two*amplification R m*GaussianGaussMultiplicationLimitMajorant.height R m
 
-@[simp] theorem subst_coefficient {l : ℕ} (σ : Fin n → PTm l) (R m : PTm n) :
-    Syn.subst σ (coefficient R m) = coefficient (Syn.subst σ R) (Syn.subst σ m) := by simp [coefficient]
+ipra_subst coefficient
 
 theorem sharp_rate (z R B m N : PTm n) (hm : Γ ⊢[PRAAx] le one m) (hN : Γ ⊢[PRAAx] le one N)
     (hA : Γ ⊢[PRAAx] le (amplification R m) N) (hB : Γ ⊢[PRAAx] le one B)

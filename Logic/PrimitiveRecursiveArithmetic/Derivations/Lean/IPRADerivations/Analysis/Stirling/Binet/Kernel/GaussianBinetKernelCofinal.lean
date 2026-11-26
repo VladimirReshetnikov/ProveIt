@@ -13,7 +13,7 @@ set_option maxHeartbeats 600000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetKernelCofinal
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetKernelRows (inputData rowF rowBody regular_rows subst_inputData)
 open GaussianBinetKernelTail (finiteF finiteData ordered_observations)
 open GaussianBinetKernelTailMajorant (eight_positive)
@@ -24,10 +24,6 @@ open GaussianNamedLipschitzRate (diagonalEnvelope diagonalNumerator diagonalDeno
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "eight" => num 8
@@ -36,12 +32,9 @@ def cutoff (p : PTm n) : PTm n := unit p
 def sample (p A B : PTm n) : PTm n := ap2 finiteF (succ p) (finiteData (cutoff p) A B)
 def nameF : PR 2 := PTm.toPR (sample (var 0) (fstT (var 1)) (sndT (var 1)) : PTm 2)
 
-@[simp] theorem subst_cutoff {m : ℕ} (σ : Fin n → PTm m) (p : PTm n) :
-    Syn.subst σ (cutoff p) = cutoff (Syn.subst σ p) := by simp [cutoff]
+ipra_subst cutoff
 
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (p A B : PTm n) :
-    Syn.subst σ (sample p A B) = sample (Syn.subst σ p) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [sample, finiteData]
+ipra_subst sample [finiteData]
 
 theorem sample_at (p A B : PTm n) : Γ ⊢[PRAAx] ap2 nameF p (inputData A B) ≐ sample p A B := by
   let x := inputData A B

@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRobinLogarithmParity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRobinOddLogarithm (oddIndex oddSum term)
 open GaussianFiniteLogarithmPolynomial (coefficient coefficient_represents sourceTerm source_term_at value)
 open GaussianRationalHorner
@@ -31,9 +31,6 @@ open GaussianRationalReciprocal (power)
 open GaussianIntegerFractionPowers (power_represents)
 open GaussianIntegerFractionPowers (parityScalar parity_scalar_re parity_scalar_im parity_scalar_succ negative_power)
 open LogarithmExponentialCoefficients (evenBit oddBit)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -42,25 +39,20 @@ def native (a : PTm n) : PTm n := scale a oneCode
 def plusArgument (a b : PTm n) : PTm n := ofGaussian (native a) b
 def minusArgument (a b : PTm n) : PTm n := ofGaussian (ComplexLogarithmRemainder.neg (native a)) b
 
-@[simp] theorem subst_native {m : ℕ} (σ : Fin n → PTm m) (a : PTm n) :
-    Syn.subst σ (native a) = native (Syn.subst σ a) := by simp [native]
-@[simp] theorem subst_plusArgument {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (plusArgument a b) = plusArgument (Syn.subst σ a) (Syn.subst σ b) := by simp [plusArgument]
-@[simp] theorem subst_minusArgument {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (minusArgument a b) = minusArgument (Syn.subst σ a) (Syn.subst σ b) := by simp [minusArgument]
+ipra_subst native
+ipra_subst plusArgument
+ipra_subst minusArgument
 
 def realPowerLaw (a j : PTm n) : Fm PTm n :=
   equal (ComplexLogarithmRemainder.power (native a) j) (native (pw a j))
 
-@[simp] theorem subst_realPowerLaw {m : ℕ} (σ : Fin n → PTm m) (a j : PTm n) :
-    (realPowerLaw a j).subst σ = realPowerLaw (Syn.subst σ a) (Syn.subst σ j) := by simp [realPowerLaw]
+ipra_subst realPowerLaw
 
 theorem real_power_zero (a : PTm n) : Γ ⊢[PRAAx] realPowerLaw a zero := by
   have hp := values_of_code (ComplexLogarithmRemainder.power_zero (Γ := Γ) (native a))
-  have hn := natEq (pw_zero (Γ := Γ) a)
   apply equal_of_values
   · rw [hp.1,re_one]
-    simp only [native,re_scale,re_one,hn,Q.mk_one,map_one]
+    simp only [native,re_scale,re_one,natEq (pw_zero (Γ := Γ) a),Q.mk_one,map_one]
     ring
   · rw [hp.2,im_one]
     simp only [native,im_scale,im_one]
@@ -69,13 +61,12 @@ theorem real_power_zero (a : PTm n) : Γ ⊢[PRAAx] realPowerLaw a zero := by
 theorem real_power_step (a j : PTm n) (ih : Γ ⊢[PRAAx] realPowerLaw a j) :
     Γ ⊢[PRAAx] realPowerLaw a (succ j) := by
   have h := values_of_code (ComplexLogarithmRemainder.power_succ (Γ := Γ) (native a) j)
-  have e := natEq (pw_succ (Γ := Γ) a j)
   have hr := equal_re ih
   have hi := equal_im ih
   apply equal_of_values
   · rw [h.1,re_mul,hr,hi]
     simp only [native,re_scale,im_scale,re_one,im_one]
-    rw [e]
+    rw [natEq (pw_succ (Γ := Γ) a j)]
     ipra_simps
     ring
   · rw [h.2,im_mul,hr,hi]
@@ -84,16 +75,13 @@ theorem real_power_step (a j : PTm n) (ih : Γ ⊢[PRAAx] realPowerLaw a j) :
 
 theorem real_power (a j : PTm n) : Γ ⊢[PRAAx] realPowerLaw a j := by
   have formula : Γ ⊢[PRAAx] .all (realPowerLaw (Syn.shift a) (var 0)) := by
-    refine PRA.qfInd _ ⟨trivial,trivial⟩ ?_ ?_
-    · simp only [subst_realPowerLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact real_power_zero a
-    · simp only [subst_realPowerLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact real_power_step _ _ Prf.hyp0
+    ipra_qfind (⟨trivial,trivial⟩) [subst_realPowerLaw]
+    · exact real_power_zero a
+    · exact real_power_step _ _ Prf.hyp0
   simpa only [subst_realPowerLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using formula.allE j
 
 def evenLaw (K : PTm n) : Fm PTm n := evenBit (two*K) ≐ one ⋏ oddBit (two*K) ≐ zero
-@[simp] theorem subst_evenLaw {m : ℕ} (σ : Fin n → PTm m) (K : PTm n) :
-    (evenLaw K).subst σ = evenLaw (Syn.subst σ K) := by simp [evenLaw,evenBit,oddBit]
+ipra_subst evenLaw [evenBit, oddBit]
 
 theorem parity_congr {x y : PTm n} (d : PTm n) (h : Γ ⊢[PRAAx] x ≐ y) : Γ ⊢[PRAAx]
     eqb (rem x two) d ≐ eqb (rem y two) d := by
@@ -102,14 +90,12 @@ theorem parity_congr {x y : PTm n} (d : PTm n) (h : Γ ⊢[PRAAx] x ≐ y) : Γ 
 
 theorem even_twice (K : PTm n) : Γ ⊢[PRAAx] evenLaw K := by
   have hall : Γ ⊢[PRAAx] .all (evenLaw (var 0)) := by
-    refine PRA.qfInd _ ⟨trivial,trivial⟩ ?_ ?_
-    · simp only [subst_evenLaw,Syn.subst_var,Syn.inst_zero]
-      have e : Γ ⊢[PRAAx] two*zero ≐ zero := by ipra_ring
+    ipra_qfind (⟨trivial,trivial⟩) [subst_evenLaw]
+    · have e : Γ ⊢[PRAAx] two*zero ≐ zero := by ipra_ring
       exact .andI
         ((parity_congr zero e).eqTrans LogarithmExponentialCoefficients.evenBit_zero)
         ((parity_congr one e).eqTrans LogarithmExponentialCoefficients.oddBit_zero)
-    · simp only [subst_evenLaw,Syn.subst_var,Syn.repl_zero]
-      let C := evenLaw (var 0) :: Γ.map Fm.shift
+    · let C := evenLaw (var 0) :: Γ.map Fm.shift
       let j : PTm (n+1) := var 0
       have e : C ⊢[PRAAx] two*succ j ≐ succ (succ (two*j)) := by ipra_ring
       have p := AnalyticNumberTheory.Mobius.par_succ (Γ := C) (two*j)
@@ -247,8 +233,7 @@ theorem log_two_steps (w K : PTm n) : Γ ⊢[PRAAx]
 
 def parityLaw (a b K : PTm n) : Fm PTm n :=
   qsub (value (two*K) (plusArgument a b)) (value (two*K) (minusArgument a b)) ≐ oddSum a b K
-@[simp] theorem subst_parityLaw {m : ℕ} (σ : Fin n → PTm m) (a b K : PTm n) :
-    (parityLaw a b K).subst σ = parityLaw (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ K) := by simp [parityLaw]
+ipra_subst parityLaw
 
 theorem parity_zero (a b : PTm n) : Γ ⊢[PRAAx] parityLaw a b zero := by
   have e : Γ ⊢[PRAAx] two*zero ≐ zero := by ipra_ring
@@ -279,11 +264,9 @@ theorem parity_step (a b K : PTm n) (hb : Γ ⊢[PRAAx] le one b) (ih : Γ ⊢[P
 theorem parity_identity (a b K : PTm n) (hb : Γ ⊢[PRAAx] le one b) : Γ ⊢[PRAAx] parityLaw a b K := by
   have hs : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift b) := by simpa [Fm.shift,Syn.shift] using hb.shift
   have all : Γ ⊢[PRAAx] .all (parityLaw (Syn.shift a) (Syn.shift b) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_parityLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact parity_zero a b
-    · simp only [subst_parityLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact parity_step _ _ _ hs.wk Prf.hyp0
+    ipra_qfind [subst_parityLaw]
+    · exact parity_zero a b
+    · exact parity_step _ _ _ hs.wk Prf.hyp0
   simpa only [subst_parityLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE K
 
 theorem original_Robin_logarithm_parity_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3

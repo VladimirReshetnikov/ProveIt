@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSuperellipticCoverPoints
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.FiniteCoverAssignment
   (group indices group_length group_lookup index_bound indices_increasing subst_group)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
@@ -27,8 +27,6 @@ open GaussianSuperellipticNormDegree (pointPowers point_power_at)
 open GaussianSuperellipticSubspaceWitness (points)
 open GaussianRationalReciprocal (power powerF subst_power)
 open GaussianRationalHorner (evaluate subst_evaluate)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

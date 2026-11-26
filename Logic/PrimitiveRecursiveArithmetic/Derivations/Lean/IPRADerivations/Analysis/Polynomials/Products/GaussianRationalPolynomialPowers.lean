@@ -22,15 +22,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalPolynomialPowers
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (evaluate)
 open GaussianRationalSyntheticDivision (canonicalCoefficients qmul_congr)
 open GaussianRationalMonicReduction (evaluate_congr)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -39,12 +36,10 @@ def table (C K : PTm n) : PTm n := GaussianRationalFiberVandermonde.table tableB
 def powerPrefix (C N K j : PTm n) : PTm n := GaussianPolynomialDeterminantTerms.stage (table C K) K N zero j
 def power (C N K : PTm n) : PTm n := powerPrefix C N K K
 
-@[simp] theorem subst_table {m : ℕ} (σ : Fin n → PTm m) (C K : PTm n) :
-    Syn.subst σ (table C K) = table (Syn.subst σ C) (Syn.subst σ K) := by simp [table]
+ipra_subst table
 @[simp] theorem subst_prefix {m : ℕ} (σ : Fin n → PTm m) (C N K j : PTm n) :
     Syn.subst σ (powerPrefix C N K j) = powerPrefix (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ K) (Syn.subst σ j) := by simp [powerPrefix]
-@[simp] theorem subst_power {m : ℕ} (σ : Fin n → PTm m) (C N K : PTm n) :
-    Syn.subst σ (power C N K) = power (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ K) := by simp [power]
+ipra_subst power
 
 theorem table_lookup (C K r j : PTm n) (hr : Γ ⊢[PRAAx] lt r K) (hj : Γ ⊢[PRAAx] lt j K) :
     Γ ⊢[PRAAx] GaussianPolynomialDeterminantTerms.cell (table C K) r j ≐ C := by
@@ -107,9 +102,7 @@ theorem prefix_coefficient_succ (C N K j s : PTm n) (hj : Γ ⊢[PRAAx] lt j K)
 def scalarLaw (C N K z j : PTm n) : Fm PTm n := le j K ⟶
   GaussianPolynomialDeterminantTerms.scalarProduct (table C K) K N zero z j ≐
     GaussianRationalReciprocal.power (evaluate C z) j
-@[simp] theorem subst_scalarLaw {m : ℕ} (σ : Fin n → PTm m) (C N K z j : PTm n) :
-    (scalarLaw C N K z j).subst σ = scalarLaw
-      (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ K) (Syn.subst σ z) (Syn.subst σ j) := by simp [scalarLaw]
+ipra_subst scalarLaw
 
 /-- A genuine guarded QF induction compares the SAME scalar fold with the
 existing actual scalar power, retaining the original cap. -/
@@ -117,12 +110,10 @@ theorem scalar_prefix (C N K z j : PTm n) (hj : Γ ⊢[PRAAx] le j K) : Γ ⊢[P
     GaussianPolynomialDeterminantTerms.scalarProduct (table C K) K N zero z j ≐
       GaussianRationalReciprocal.power (evaluate C z) j := by
   have all : Γ ⊢[PRAAx] .all (scalarLaw (Syn.shift C) (Syn.shift N) (Syn.shift K) (Syn.shift z) (var 0)) := by
-    refine PRA.qfInd _ (by trivial) ?_ ?_
-    · simp only [subst_scalarLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI ((GaussianPolynomialDeterminantTerms.scalar_zero _ _ _ _ _).eqTrans
+    ipra_qfind (by trivial) [subst_scalarLaw]
+    · exact .impI ((GaussianPolynomialDeterminantTerms.scalar_zero _ _ _ _ _).eqTrans
         (GaussianRationalReciprocal.power_zero _).eqSymm)
-    · simp only [subst_scalarLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    · refine .impI ?_
       let Δ := le (succ (var 0)) (Syn.shift K) ::
         scalarLaw (Syn.shift C) (Syn.shift N) (Syn.shift K) (Syn.shift z) (var 0) :: Γ.map Fm.shift
       have hk : Δ ⊢[PRAAx] lt (var 0) (Syn.shift K) := Prf.hyp0
@@ -151,19 +142,8 @@ def prefixF : PR 4 := PTm.toPR (powerPrefix (var 0) (var 1) (var 2) (var 3))
 def powerF : PR 3 := PTm.toPR (power (var 0) (var 1) (var 2))
 def prefixRun (C N K j : PTm n) : PTm n := PTm.app prefixF ![C,N,K,j]
 def run (C N K : PTm n) : PTm n := PTm.app powerF ![C,N,K]
-@[simp] theorem subst_prefixRun {m : ℕ} (σ : Fin n → PTm m) (C N K j : PTm n) :
-    Syn.subst σ (prefixRun C N K j) = prefixRun
-      (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ K) (Syn.subst σ j) := by
-  simp only [prefixRun,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (C N K : PTm n) :
-    Syn.subst σ (run C N K) = run (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ K) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst prefixRun
+ipra_subst run
 
 theorem prefix_program_at (C N K j : PTm n) : Γ ⊢[PRAAx] prefixRun C N K j ≐ powerPrefix C N K j := by
   simpa [prefixRun,prefixF] using toPR_eq (Γ := Γ)

@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaUnitCoefficientMass
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaReciprocalDegreeCells (degree)
 open GaussianGammaFiniteCoefficientPolynomial (polynomial totalDegree)
 open GaussianRationalSyntheticDivision (qone)
@@ -22,15 +22,11 @@ open GaussianRationalPolynomialDilation (weightedNorm)
 open GaussianRationalSyntheticBounds (natCode)
 open GaussianGammaInputStaticNorm (unit_weighted_norm)
 open RationalArgmin (rationalLE)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def budget (R : PTm n) : PTm n := pw two (two*R)*pw (succ two) (two*R+two)
-@[simp] theorem subst_budget {l : ℕ} (σ : Fin n → PTm l) (R : PTm n) :
-    Syn.subst σ (budget R) = budget (Syn.subst σ R) := by simp [budget]
+ipra_subst budget
 
 theorem exponential_norm (q R L K : PTm n) (hR : Γ ⊢[PRAAx] le one R) : Γ ⊢[PRAAx]
     rationalLE (coefficientNorm (GaussianGammaExponentCoefficientPolynomial.exponential q R L K))

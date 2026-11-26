@@ -16,7 +16,7 @@ set_option maxHeartbeats 1800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaMinimumRationalBase
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaDigammaDyadicLocation (lower)
 open GaussianGammaDigammaDyadicMesh (grid grid_positive)
@@ -34,9 +34,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianStirlingGammaLogarithm (arg euler_real_source)
 open GaussianStirlingRationalTelescopers (fraction_same)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "IF" => GaussianEulerLogarithmicImproperName.nameF
@@ -47,21 +44,13 @@ def denominator (k d : PTm n) : PTm n := d*grid k
 def residualCost : PTm n := derivativeBudget+one
 def minimumCost (M : PTm n) : PTm n := rateCost M residualCost
 
-@[simp] theorem subst_baseNumerator {m : ℕ} (σ : Fin n → PTm m) (k d : PTm n) :
-    Syn.subst σ (baseNumerator k d) = baseNumerator (Syn.subst σ k) (Syn.subst σ d) := by
-  simp [baseNumerator]
-@[simp] theorem subst_targetNumerator {m : ℕ} (σ : Fin n → PTm m) (k c : PTm n) :
-    Syn.subst σ (targetNumerator k c) = targetNumerator (Syn.subst σ k) (Syn.subst σ c) := by
-  simp [targetNumerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (k d : PTm n) :
-    Syn.subst σ (denominator k d) = denominator (Syn.subst σ k) (Syn.subst σ d) := by
-  simp [denominator]
+ipra_subst baseNumerator
+ipra_subst targetNumerator
+ipra_subst denominator
 @[simp] theorem subst_residualCost {m : ℕ} (σ : Fin n → PTm m) :
     Syn.subst σ (residualCost : PTm n) = (residualCost : PTm m) := by
   simp [residualCost,one]
-@[simp] theorem subst_minimumCost {m : ℕ} (σ : Fin n → PTm m) (M : PTm n) :
-    Syn.subst σ (minimumCost M) = minimumCost (Syn.subst σ M) := by
-  simp [minimumCost]
+ipra_subst minimumCost
 
 theorem base_source (k d : PTm n) (hd : Γ ⊢[PRAAx] le one d) :
     Γ ⊢[PRAAx] GaussianStirlingGammaLogarithm.source (baseNumerator k d) (denominator k d) :=

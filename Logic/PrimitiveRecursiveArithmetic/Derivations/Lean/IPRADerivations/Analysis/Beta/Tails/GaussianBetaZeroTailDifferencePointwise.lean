@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaZeroTailDifferencePointwise
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUpperPowerOrder (source)
 open GaussianEulerIntegrandName (sample)
 open GaussianBetaEulerTailDifferencePointwise (numerator denominator scalarMajorant)
@@ -21,20 +21,14 @@ open GaussianRationalMetric (qsub distanceBounded)
 open GaussianRationalHorner (positive_product qzero)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def row (p z B a b N : PTm n) : PTm n := ap3 GaussianBetaZeroExtension.evaluatorF p (pairT a b)
   (GaussianBetaKernelGridComparison.sampleDataBeta z B N)
 def difference (p z B a b N : PTm n) : PTm n := qsub (row p z B a b N) (sample p z B a b)
-@[simp] theorem subst_row {m : ℕ} (σ : Fin n → PTm m) (p z B a b N : PTm n) :
-    Syn.subst σ (row p z B a b N) = row (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by simp [row]
-@[simp] theorem subst_difference {m : ℕ} (σ : Fin n → PTm m) (p z B a b N : PTm n) :
-    Syn.subst σ (difference p z B a b N) = difference (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by simp [difference]
+ipra_subst row
+ipra_subst difference
 
 theorem exterior_pointwise (p q z R B a b N : PTm n) (h : Γ ⊢[PRAAx] source z R B a b)
     (ht : Γ ⊢[PRAAx] lt (b*N) a) : Γ ⊢[PRAAx]

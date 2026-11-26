@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalCrossedProductSums
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (fraction subst_fraction)
 open RationalAlgebra (add_congr add_associative add_commutative multiply_congr multiply_commutative
   multiply_add multiply_associative)
@@ -25,8 +25,6 @@ open RationalNormalForm (wellFormed)
 open RationalSumAdditivity (addedBody addedSum added_term sum_additive)
 open RationalSumConstants (constantBody term_constant sum_constant)
 open RationalSumLinearity (scaledBody scaledSum scaled_term sum_homogeneous)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

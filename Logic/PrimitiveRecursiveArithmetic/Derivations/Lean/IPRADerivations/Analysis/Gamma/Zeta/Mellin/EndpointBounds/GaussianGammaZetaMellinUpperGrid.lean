@@ -16,7 +16,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinUpperGrid
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCompactRiemannName (quadrature sampleBody sampleData sample_body_at grid)
 open GaussianEulerUpperPowerCoefficients (source subst_source)
 open GaussianGammaZetaMellinGrid (evaluatorF fixedData sample_at subst_fixedData)
@@ -26,8 +26,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalSumMajorant (majorized majorized_congr termsMajorized)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

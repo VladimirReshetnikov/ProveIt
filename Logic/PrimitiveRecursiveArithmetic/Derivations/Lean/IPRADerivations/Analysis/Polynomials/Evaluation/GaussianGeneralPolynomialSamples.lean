@@ -20,7 +20,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGeneralPolynomialSamples
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianGeneralCoefficientNames
   (generalCN apart tailApart referencePrecision lambdaDenominator)
 open LeanProofs.IPRA.Analysis.GaussianCoefficientNameBounds (unit)
@@ -28,10 +28,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalHorner (evaluate qzero)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (bounded distanceBounded)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode subst_entry subst_sequence)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,12 +37,9 @@ def sampleBody (a : PR 3) : PTm 2 := ap3 a (monus (fstT (var 1)) (var 0))
 def sample (a : PR 3) (N s x : PTm n) : PTm n := sequence (sampleBody a) (succ N) (data N s x)
 def sourceInput (a : PR 3) (N k h x : PTm n) : Fm PTm n :=
   generalCN a N x ⋏ (le one k ⋏ (le k N ⋏ apart a k h x))
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (N s x : PTm n) :
-    Syn.subst σ (data N s x) = data (Syn.subst σ N) (Syn.subst σ s) (Syn.subst σ x) := by simp [data]
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N s x : PTm n) :
-    Syn.subst σ (sample a N s x) = sample a (Syn.subst σ N) (Syn.subst σ s) (Syn.subst σ x) := by simp [sample]
-@[simp] theorem subst_sourceInput {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N k h x : PTm n) :
-    (sourceInput a N k h x).subst σ = sourceInput a (Syn.subst σ N) (Syn.subst σ k) (Syn.subst σ h) (Syn.subst σ x) := by simp [sourceInput]
+ipra_subst data
+ipra_subst sample
+ipra_subst sourceInput
 
 theorem sample_body_at (a : PR 3) (N s x i : PTm n) : Γ ⊢[PRAAx]
     inst2 (sampleBody a) i (data N s x) ≐ ap3 a (monus N i) s x := by

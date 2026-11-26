@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedDampingPowerPositive
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedDampingPowerChart (source nameF data powerF powerData exponentRadius)
 open GaussianNamedDampingPowerRealSamples (powerDenominator power_real original_power_lower)
 open GaussianPositiveRealArithmetic (positive positive_congr sign)
@@ -25,10 +25,6 @@ open GaussianEuclideanDistanceName (fraction)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalL1 (nonnegative_of_lower nonnegative_of_representation)
 open RationalValueBounds (upper)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

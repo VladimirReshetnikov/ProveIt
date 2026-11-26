@@ -17,15 +17,11 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderCenteredBernoulli
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open BernoulliBounds (bden bden_pos bint pv zint toZ_zint)
 open GaussianStirlingAllOrderBernoulliMesh (mesh_reflection even_endpoints)
 open RationalIntegerNormalization (normalize normalize_preserves_value)
 open RationalNormalForm (normalize_well_formed)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

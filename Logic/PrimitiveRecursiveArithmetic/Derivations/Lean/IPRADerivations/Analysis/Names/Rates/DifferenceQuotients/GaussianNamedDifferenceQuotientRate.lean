@@ -15,7 +15,7 @@ set_option maxHeartbeats 500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedDifferenceQuotientRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianBoundedConstantProductName (constantF constant_at constant_regular)
 open GaussianNameBounds (U sample_bound subst_U)
@@ -26,9 +26,6 @@ open GaussianNamedInverseRate (independentRate)
 open GaussianNamedMultiplyRate (sampleBound)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalMetric (bounded)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -13,8 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderSignedBoundsTransport
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open LeanProofs.IPRA.PTm (num)
+open_ipra
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianNameEquivalence (crossEquivalent cross_trans cross_symm)
 open GaussianNamedNaturalScaleOrder (reflect_strict)
@@ -38,8 +37,6 @@ open GaussianStirlingMultiplicativeBoundsStrictOrder (strictOrder strict_transpo
 open GaussianArctangentExponentialPeriod (constant_product)
 open RationalGaussianEmbedding (embed_multiply embed_canonical)
 open RationalGaussianRealPart (embed_congr)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -49,9 +46,7 @@ local notation "idata" => GaussianStirlingAllOrderImproperName.data
 
 def orientedCap (m : ℕ) (A B : PTm n) : PTm n := qmul (orientationPoint m) (correction m A B)
 
-@[simp] theorem subst_orientedCap {l : ℕ} (σ : Fin n → PTm l) (m : ℕ) (A B : PTm n) :
-    Syn.subst σ (orientedCap m A B) = orientedCap m (Syn.subst σ A) (Syn.subst σ B) :=
-  by simp [orientedCap]
+ipra_subst orientedCap
 
 theorem scaled_cap_exact (m : ℕ) (A B : PTm n) (hA : Γ ⊢[PRAAx] le one A) :
     Γ ⊢[PRAAx] qmul (naturalPoint (num (2*m+2))) (orientedCap m A B) ≐ weightedPrimitive m A B := by

@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalFiniteTaylorFirstPolynomial
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalFiniteCentralExponential (finiteNameF finiteData)
 open GaussianBarnesCanonicalFiniteTaylorGrid (polynomial)
 open GaussianBarnesCanonicalFiniteTaylorGridObservations (polynomialGrid scaledPolynomial)
@@ -32,9 +32,6 @@ open GaussianRationalNaturalScale (natScale_zero natScale_one_canonical)
 open GaussianTranslatedNonconstant (recode recode_eq)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

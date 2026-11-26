@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Optimization.Convexity.RationalConvexEndpointBudget
 import IPRADerivations.Analysis.Inequalities.RationalNonnegativePowers
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The two-endpoint clock is independent of a common denominator
@@ -16,15 +15,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalConvexClockRescale
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalCubeMidpoint (fraction fraction_represents)
 open RationalConvexSecantWeights (leftPoint rightPoint margin margin_positive budget modulus)
 open RationalConvexEndpointBudget (coarseBudget M localModulus)
 open RationalNonnegativePowers (fraction_congr)
 open GaussianDescentClockArithmetic (ceiling ceiling_lower ceiling_least subst_ceiling)
 open LeanProofs.IPRA.Foundations.FiniteObservations.MetricKernel (meet meet_left meet_right)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

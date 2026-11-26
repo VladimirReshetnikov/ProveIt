@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicCutoffCauchy
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLogarithmicIntervalName (nameF name_regular)
 open GaussianEulerLogarithmicCutoffSplit (fullData lowerData upperData)
 open GaussianEulerLogarithmicCommonCutoff (cutoff)
@@ -24,10 +24,6 @@ open GaussianRationalHorner (canonical positive_product qzero qadd)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianNameEquivalence (point_at)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -38,11 +34,8 @@ def pairNumerator (s t r : PTm n) : PTm n :=
   unit t*unit (r+num 6)+num 9*unit s*unit (r+num 6)+two*unit s*unit t
 def pairDenominator (s t r : PTm n) : PTm n := unit s*unit t*unit (r+num 6)
 
-@[simp] theorem subst_observation {m : ℕ} (σ : Fin n → PTm m) (p j z R B A k : PTm n) :
-    Syn.subst σ (observation p j z R B A k) = observation (Syn.subst σ p) (Syn.subst σ j)
-      (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ k) := by simp [observation]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B A : PTm n) :
-    (source z R B A).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) := by simp [source]
+ipra_subst observation
+ipra_subst source
 
 theorem observation_regular (j z R B A k : PTm n) (h : Γ ⊢[PRAAx] source z R B A) :
     Γ ⊢[PRAAx] GaussianEuclideanDistanceName.pointCN nameF (fullData j z R B A k) :=

@@ -1,4 +1,5 @@
 import IPRADerivations.Core.Order
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Pairing and simultaneous recursion in iPRA
@@ -36,8 +37,7 @@ abbrev one : PTm n := succ zero
 /-- `eqb a b = 1` if `a = b` and `0` otherwise. -/
 def eqb (a b : PTm n) : PTm n := monus one (monus a b + monus b a)
 
-@[simp] theorem subst_eqb {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (eqb a b) = eqb (Syn.subst σ a) (Syn.subst σ b) := by simp [eqb]
+ipra_subst eqb
 
 theorem eqb_of_eq {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) : Γ ⊢[PRAAx] eqb a b ≐ one := by
   unfold eqb
@@ -84,17 +84,13 @@ abbrev isqrtInv : Fm PTm 1 :=
     lt (var 0) ((isqrt (var 0) + one) * (isqrt (var 0) + one))
 
 private theorem isqrt_spec₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] isqrtInv := by
-  refine ind _ ⟨le_QF _ _, lt_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_and, subst_le, subst_lt, PTm.subst_mul, PTm.subst_add, subst_ap1,
-      Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have e := isqrt_zero (Γ := ([] : List (Fm PTm 0)))
+  ipra_ind (⟨le_QF _ _, lt_QF _ _⟩) [subst_le, subst_lt, subst_ap1]
+  · have e := isqrt_zero (Γ := ([] : List (Fm PTm 0)))
     refine .andI ?_ ?_
     · exact le_congr (((congrMul e e).eqTrans (mul_zero _)).eqSymm) (.eqRefl _) (le_refl _)
     · refine le_congr (.eqRefl _) ?_ (le_refl one)
       exact (deriveNat (by have e' := natEq e; ipra_simps; rw [e']; ring)).eqSymm
-  · simp only [Fm.subst_and, subst_le, subst_lt, PTm.subst_mul, PTm.subst_add, subst_ap1,
-      Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    -- Context [isqrtInv]; r = isqrt v, r' = isqrt (S v).
+  · -- Context [isqrtInv]; r = isqrt v, r' = isqrt (S v).
     have hI₁ : [isqrtInv] ⊢[PRAAx] le (isqrt (var 0) * isqrt (var 0)) (var 0) := .andE₁ Prf.hyp0
     have hI₂ : [isqrtInv] ⊢[PRAAx] lt (var 0) ((isqrt (var 0) + one) * (isqrt (var 0) + one)) :=
       .andE₂ Prf.hyp0
@@ -164,12 +160,9 @@ def fstT (z : PTm n) : PTm n := monus z (isqrt z * isqrt z)
 /-- The second projection. -/
 def sndT (z : PTm n) : PTm n := monus (isqrt z) (fstT z)
 
-@[simp] theorem subst_pairT {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (pairT a b) = pairT (Syn.subst σ a) (Syn.subst σ b) := by simp [pairT]
-@[simp] theorem subst_fstT {m : ℕ} (σ : Fin n → PTm m) (z : PTm n) :
-    Syn.subst σ (fstT z) = fstT (Syn.subst σ z) := by simp [fstT]
-@[simp] theorem subst_sndT {m : ℕ} (σ : Fin n → PTm m) (z : PTm n) :
-    Syn.subst σ (sndT z) = sndT (Syn.subst σ z) := by simp [sndT]
+ipra_subst pairT
+ipra_subst fstT
+ipra_subst sndT
 
 theorem isqrt_pair (a b : PTm n) : Γ ⊢[PRAAx] isqrt (pairT a b) ≐ a + b := by
   refine isqrt_unique (le_add_right _ _) ?_
@@ -195,6 +188,14 @@ theorem congrFst {z z' : PTm n} (h : Γ ⊢[PRAAx] z ≐ z') : Γ ⊢[PRAAx] fst
 theorem congrSnd {z z' : PTm n} (h : Γ ⊢[PRAAx] z ≐ z') : Γ ⊢[PRAAx] sndT z ≐ sndT z' := by
   unfold sndT
   exact congrMonus (congrAp1 isqrtF h) (congrFst h)
+
+/-- The first component of a term that equals a pair: `h.fstE`. -/
+theorem _root_.LeanProofs.ConciseIPRA.Prf.fstE {z a b : PTm n} (h : Γ ⊢[PRAAx] z ≐ pairT a b) :
+    Γ ⊢[PRAAx] fstT z ≐ a := (congrFst h).eqTrans (fst_pair a b)
+
+/-- The second component of a term that equals a pair: `h.sndE`. -/
+theorem _root_.LeanProofs.ConciseIPRA.Prf.sndE {z a b : PTm n} (h : Γ ⊢[PRAAx] z ≐ pairT a b) :
+    Γ ⊢[PRAAx] sndT z ≐ b := (congrSnd h).eqTrans (snd_pair a b)
 
 /-! ## Simultaneous recursion -/
 

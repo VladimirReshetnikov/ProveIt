@@ -15,7 +15,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalHigherMercatorSum
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalHigherRows (coefficient previous degree)
 open GaussianBarnesCanonicalHigherRelative (term_binding)
 open GaussianBarnesCanonicalRelativeStep (source relative)
@@ -26,8 +26,6 @@ open GaussianRationalFiniteSum (sum sum_index_congr sum_multiply multiply_body_a
 open GaussianRationalHorner (qadd qmul ofGaussian)
 open GaussianRationalReciprocal (power powerF)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -15,7 +15,7 @@ set_option maxHeartbeats 1250000
 
 namespace LeanProofs.IPRA.Analysis.GaussianDiscretePeriodicThirdFloor
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianDiscretePeriodicDerivativeSchedule (padding)
 open GaussianDiscreteDerivativeRounding (body latticeScale sample_at)
 open SignedDiscreteDerivativeOperators (divisor subst_divisor)
@@ -29,10 +29,6 @@ open GaussianRootAlgebra (equal_re re_scale re_zero)
 open RationalValueBounds (upper upper_mono)
 open SignedGridStepBounds (neg_order)
 open PolynomialBisection (zle_congr zle_trans)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -22,16 +22,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaEulerHeadLower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianGammaEulerHead (factor head run head_zero head_succ program_at)
 open GaussianRationalHorner (represents positive_product)
 open GaussianRationalLowerBounds (lower lower_congr lower_from_representation product_lower)
 open ComplexLogarithmRemainder (normSq scale oneCode)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,15 +40,10 @@ def poleGuard (z B a d N : PTm n) : Fm PTm n := .all
 def prefixLower (z B a d N : PTm n) : Fm PTm n :=
   lower (head z B N) (pw a (succ N)) (pw d (succ N)*fact N)
 
-@[simp] theorem subst_translated {m : ℕ} (σ : Fin n → PTm m) (z B k : PTm n) :
-    Syn.subst σ (translated z B k) = translated (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ k) := by simp [translated]
-@[simp] theorem subst_poleAt {m : ℕ} (σ : Fin n → PTm m) (z B a d k : PTm n) :
-    (poleAt z B a d k).subst σ = poleAt (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ d) (Syn.subst σ k) := by simp [poleAt]
-@[simp] theorem subst_poleGuard {m : ℕ} (σ : Fin n → PTm m) (z B a d N : PTm n) :
-    (poleGuard z B a d N).subst σ = poleGuard (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ d) (Syn.subst σ N) := by
-  simp [poleGuard,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_prefixLower {m : ℕ} (σ : Fin n → PTm m) (z B a d N : PTm n) :
-    (prefixLower z B a d N).subst σ = prefixLower (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ d) (Syn.subst σ N) := by simp [prefixLower,fact]
+ipra_subst translated
+ipra_subst poleAt
+ipra_subst poleGuard [Syn.subst_shift, Syn.shift_subst]
+ipra_subst prefixLower [fact]
 
 theorem pole_at (z B a d N k : PTm n) (h : Γ ⊢[PRAAx] poleGuard z B a d N)
     (hk : Γ ⊢[PRAAx] le k N) : Γ ⊢[PRAAx] poleAt z B a d k := by
@@ -113,11 +105,9 @@ theorem prefix_lower (z B a d N : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hd : Γ 
     simpa [Fm.shift,Syn.shift] using h.shift
   have all : Γ ⊢[PRAAx] .all (le (var 0) (Syn.shift N) ⟶
       prefixLower (Syn.shift z) (Syn.shift B) (Syn.shift a) (Syn.shift d) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp,subst_le,subst_prefixLower,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (prefix_lower_zero z B a d hB.wk hd.wk (pole_at z B a d N zero h.wk (zero_le N)))
-    · simp only [Fm.subst_imp,subst_le,subst_prefixLower,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact .impI (prefix_lower_step _ _ _ _ _ bs.wk.wk ds.wk.wk (pole_at _ _ _ _ _ _ hs.wk.wk Prf.hyp0)
+    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_le, subst_prefixLower]
+    · exact .impI (prefix_lower_zero z B a d hB.wk hd.wk (pole_at z B a d N zero h.wk (zero_le N)))
+    · exact .impI (prefix_lower_step _ _ _ _ _ bs.wk.wk ds.wk.wk (pole_at _ _ _ _ _ _ hs.wk.wk Prf.hyp0)
         (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)))
   have last : Γ ⊢[PRAAx] le N N ⟶ prefixLower z B a d N := by
     simpa only [Fm.subst_imp,subst_le,subst_prefixLower,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N

@@ -13,7 +13,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingRobbinsFinite
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianNameEquivalence (cross_refl)
@@ -31,10 +31,6 @@ open GaussianStirlingTailComparison (point_add_upper_same point_add_order point_
 open GaussianStirlingTelescope (rawSum shifted shifted_source)
 open RationalArgmin (rationalLE_congr)
 open RationalValueBounds (upper upper_congr upper_mono upper_order_left)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "D" => GaussianStirlingDifference.nameF
@@ -43,8 +39,7 @@ local notation "A" => GaussianStirlingNames.nameF
 local notation "G" => GaussianNamedDifference.nameF A A
 
 def lowerCap (N a b : PTm n) : PTm n := qadd (lowerDifference a b (succ N)) (lowerMargin a b)
-@[simp] theorem subst_lowerCap {l : ℕ} (σ : Fin n → PTm l) (N a b : PTm n) :
-    Syn.subst σ (lowerCap N a b) = lowerCap (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ b) := by simp [lowerCap]
+ipra_subst lowerCap
 
 private theorem lower_step (a b N : PTm n) (ha : Γ ⊢[PRAAx] le one a) :
     Γ ⊢[PRAAx] qadd (lowerDifference a b N) (lowerDifference (shifted a b N) b one) ≐ lowerDifference a b (succ N) := by
@@ -93,9 +88,7 @@ private theorem weak_lower (p a b : PTm n) (hs : Γ ⊢[PRAAx] source a b) (hba 
 
 def rawLower (p N a b : PTm n) : Fm PTm n :=
   upper (fstT (lowerCap N a b)) (fstT (rawSum p (succ N) a b)) (succ N) (unit p)
-@[simp] theorem subst_rawLower {l : ℕ} (σ : Fin n → PTm l) (p N a b : PTm n) :
-    (rawLower p N a b).subst σ = rawLower (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [rawLower]
+ipra_subst rawLower
 
 private theorem raw_succ (p N a b : PTm n) (hs : Γ ⊢[PRAAx] source a b) (hba : Γ ⊢[PRAAx] le b a)
     (h : Γ ⊢[PRAAx] rawLower p N a b) : Γ ⊢[PRAAx] rawLower p (succ N) a b := by
@@ -111,11 +104,9 @@ theorem raw_lower (p N a b : PTm n) (hs : Γ ⊢[PRAAx] source a b) (hba : Γ �
     Γ ⊢[PRAAx] rawLower p N a b := by
   let sh (x : PTm n) := Syn.shift x
   have hall : Γ ⊢[PRAAx] .all (rawLower (sh p) (var 0) (sh a) (sh b)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_rawLower,sh,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact upper_congr (.eqRefl _) (congrFst (raw_first p a b).eqSymm) (.eqRefl _) (.eqRefl _) (robbins_sample_lower p a b hs hba)
-    · simp only [subst_rawLower,sh,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      let Δ := rawLower (sh p) (var 0) (sh a) (sh b) :: Γ.map Fm.shift
+    ipra_qfind (le_QF _ _) [subst_rawLower, sh]
+    · exact upper_congr (.eqRefl _) (congrFst (raw_first p a b).eqSymm) (.eqRefl _) (.eqRefl _) (robbins_sample_lower p a b hs hba)
+    · let Δ := rawLower (sh p) (var 0) (sh a) (sh b) :: Γ.map Fm.shift
       have hs' : Δ ⊢[PRAAx] source (sh a) (sh b) := by simpa [Δ,sh,Fm.shift,Syn.shift] using hs.shift.wk
       have hb' : Δ ⊢[PRAAx] le (sh b) (sh a) := by simpa [Δ,sh,Fm.shift,Syn.shift] using hba.shift.wk
       exact raw_succ _ _ _ _ hs' hb' Prf.hyp0

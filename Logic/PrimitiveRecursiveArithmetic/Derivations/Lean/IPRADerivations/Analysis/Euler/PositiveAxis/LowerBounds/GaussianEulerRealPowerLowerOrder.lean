@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerRealPowerLowerOrder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegrandName (coefficient powerExponentF powerExponentData powerRadius powerF powerData)
 open GaussianEulerUpperPowerOrder (inputF expF product_input product_real_samples)
 open GaussianRationalHorner (qmul represents canonical_unique represents_congr)
@@ -27,9 +27,6 @@ open GaussianNameEquivalence (crossEquivalent cross_trans cross_symm)
 open GaussianNamedPositiveExponentialOrder (sampleOrder realOrder)
 open ComplexLogarithmRemainder (re im oneCode scale)
 open RationalGaussianEmbedding (axis)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -45,17 +42,12 @@ def coefficientData (z R B a b : PTm n) : PTm n := GaussianBoundedConstantProduc
 def radius (R a : PTm n) : PTm n := amplification R*GaussianHarmonicLogarithmName.radius one a
 def referenceExpData (R a b : PTm n) : PTm n := GaussianRadiusExponentialName.data (radius R a) (referenceData R a b)
 def coefficientExpData (z R B a b : PTm n) : PTm n := GaussianRadiusExponentialName.data (radius R a) (coefficientData z R B a b)
-@[simp] theorem subst_realNonnegative {m : ℕ} (σ : Fin n → PTm m) (z : PTm n) :
-    (realNonnegative z).subst σ = realNonnegative (Syn.subst σ z) := by
-  simp [realNonnegative]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B a b : PTm n) :
-    (source z R B a b).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by simp [source]
-@[simp] theorem subst_reference {m : ℕ} (σ : Fin n → PTm m) : Syn.subst σ (reference : PTm n) = (reference : PTm m) := by simp [reference,qone]
-@[simp] theorem subst_amplification {m : ℕ} (σ : Fin n → PTm m) (R : PTm n) : Syn.subst σ (amplification R) = amplification (Syn.subst σ R) := by simp [amplification]
-@[simp] theorem subst_referenceData {m : ℕ} (σ : Fin n → PTm m) (R a b : PTm n) :
-    Syn.subst σ (referenceData R a b) = referenceData (Syn.subst σ R) (Syn.subst σ a) (Syn.subst σ b) := by simp [referenceData]
-@[simp] theorem subst_coefficientData {m : ℕ} (σ : Fin n → PTm m) (z R B a b : PTm n) :
-    Syn.subst σ (coefficientData z R B a b) = coefficientData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by simp [coefficientData]
+ipra_subst realNonnegative
+ipra_subst source
+ipra_subst reference [qone]
+ipra_subst amplification
+ipra_subst referenceData
+ipra_subst coefficientData
 
 theorem coefficient_axis (z B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hi : Γ ⊢[PRAAx] ZT.eq (im z) (ZT.ofNat zero)) : Γ ⊢[PRAAx] axis (coefficient z B) := by
@@ -64,9 +56,8 @@ theorem coefficient_axis (z B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
   have fixed : Γ ⊢[PRAAx] GaussianRootAlgebra.equal (GaussianRationalReciprocal.conjugate g) g := by
     apply GaussianRootAlgebra.equal_of_values
     · simp only [GaussianRationalReciprocal.re_conjugate]
-    · have e := ZT.toZ_eq hi
-      simp only [GaussianRationalReciprocal.im_conjugate,g,GaussianRootAlgebra.im_sub,GaussianRootAlgebra.im_scale,GaussianRootAlgebra.im_one]
-      rw [e]
+    · simp only [GaussianRationalReciprocal.im_conjugate,g,GaussianRootAlgebra.im_sub,GaussianRootAlgebra.im_scale,GaussianRootAlgebra.im_one]
+      rw [ZT.toZ_eq hi]
       ipra_simps
       ring
   have eq : Γ ⊢[PRAAx] point (coefficient z B) ≐ coefficient z B :=

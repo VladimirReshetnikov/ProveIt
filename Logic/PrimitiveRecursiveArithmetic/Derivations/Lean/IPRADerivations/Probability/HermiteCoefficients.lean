@@ -2,8 +2,6 @@ import IPRADerivations.Probability.NormalMoments
 import IPRADerivations.Probability.BinomialLaw
 import IPRADerivations.Foundations.HurwitzProduct
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The coefficient array of the Hermite polynomials and of the raw normal moments
@@ -41,7 +39,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.HermiteCoefficients
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Combinatorics.Binomial
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (binom_eq mul_cancel pascal_at binom_zero' binom_self')
@@ -49,10 +47,6 @@ open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrBinom)
 open LeanProofs.IPRA.Probability.BinomialLaw (absorption)
 open LeanProofs.IPRA.Probability.NormalMoments (df df_zero df_succ df_fact)
 open LeanProofs.IPRA.Foundations.HurwitzProduct (succ_monus_of_le)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

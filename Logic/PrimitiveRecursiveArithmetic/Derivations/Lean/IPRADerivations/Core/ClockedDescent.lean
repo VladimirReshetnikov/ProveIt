@@ -105,14 +105,10 @@ private def invF (P : Fm PTm 1) (D r : PTm 1) : Fm PTm 2 :=
 
 private theorem inv₀ (hP : P.QF) (hstep : ([] : List (Fm PTm 1)) ⊢[PRAAx] P ⟶ (Pat P D ⋏ lt (inst1 r D) r)) :
     ([] : List (Fm PTm 2)) ⊢[PRAAx] invF P D r := by
-  refine ind _ ⟨Pat_QF hP _, Pat_QF hP _, le_QF _ _⟩ ?_ ?_
-  · simp only [invF, Fm.subst_imp, Fm.subst_and, subst_Pat, subst_le, subst_orb, subst_inst1, PTm.subst_add,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one]
-    refine .impI (.andI (Pat_congr (orb_zero _).eqSymm Prf.hyp0) ?_)
+  ipra_ind (⟨Pat_QF hP _, Pat_QF hP _, le_QF _ _⟩) [invF, subst_Pat, subst_le, subst_orb, subst_inst1]
+  · refine .impI (.andI (Pat_congr (orb_zero _).eqSymm Prf.hyp0) ?_)
     exact le_congr ((inst1_congr r (orb_zero _)).eqSymm.eqTrans (add_zero _).eqSymm) (.eqRefl _) (le_refl _)
-  · simp only [invF, Fm.subst_imp, Fm.subst_and, subst_Pat, subst_le, subst_orb, subst_inst1, PTm.subst_add,
-      Syn.subst_var, Syn.repl_zero, repl_one]
-    exact .impI (inv_step hstep (Prf.impE Prf.hyp1 Prf.hyp0))
+  · exact .impI (inv_step hstep (Prf.impE Prf.hyp1 Prf.hyp0))
 
 /-- `lem:clocked`: no state satisfies `P`. -/
 theorem clocked_at (hP : P.QF) (hstep : ([] : List (Fm PTm 1)) ⊢[PRAAx] P ⟶ (Pat P D ⋏ lt (inst1 r D) r))

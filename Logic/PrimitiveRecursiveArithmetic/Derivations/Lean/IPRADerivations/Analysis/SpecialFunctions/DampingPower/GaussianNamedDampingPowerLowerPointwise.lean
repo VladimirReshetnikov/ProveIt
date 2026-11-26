@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedDampingPowerLowerPointwise
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedDampingPowerIntegrand (nameF data)
 open GaussianEulerIntegrandName (powerF powerData)
 open GaussianEulerDampedNamedIntegrand (decayF decayData)
@@ -24,10 +24,6 @@ open GaussianRationalHorner (qmul qmul_canonical positive_product)
 open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianRationalSlackRemoval (slack slack_removal_at)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

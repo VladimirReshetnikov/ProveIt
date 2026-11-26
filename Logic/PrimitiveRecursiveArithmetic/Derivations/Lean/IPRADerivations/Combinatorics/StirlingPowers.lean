@@ -1,7 +1,6 @@
 import IPRADerivations.Combinatorics.Stirling
 import IPRADerivations.Core.ProdLemmas
 import IPRADerivations.Probability.Independence
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Powers as sums of falling factorials
@@ -21,15 +20,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.StirlingPowers
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Bell (nth)
 open LeanProofs.IPRA.Combinatorics.Stirling
   (stir stir_zero stir_above stir_succ_zero stir_succ_succ RF congrNth)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -140,7 +135,6 @@ theorem pf_step {N X : PTm n} (ih : Γ ⊢[PRAAx] Am N X ≐ pw X N) :
     rw [e₃] at *
     exact step_pt _ ((succ_monus_succ _ _).eqSymm.eqTrans Prf.hyp0)
   have E2 := natEq (sum_add (Γ := Γ) (shiftBody wB) uB (succ N) (pairT N X))
-  have E3 := natEq (wsum (Γ := Γ) N X)
   have E4 := natEq (sum_add (Γ := Γ) uB wB (succ N) (pairT N X))
   have E5' : Γ ⊢[PRAAx] ap2 (sumF (addBody uB wB)) (succ N) (pairT N X) ≐ X * Am N X := by
     refine sum_scale _ _ _ _ _ _ (.allI (.impI ?_))
@@ -149,19 +143,15 @@ theorem pf_step {N X : PTm n} (ih : Γ ⊢[PRAAx] Am N X ≐ pw X N) :
   have E1 := natEq E1'; have E5 := natEq E5'
   have i := natEq ih; have P := natEq (pw_succ (Γ := Γ) X N)
   apply deriveNat; ipra_simps
-  linear_combination E0 + T0 + E1 + E2 + E3 - E4 + E5 + 𝔞(X) * i - P
+  linear_combination E0 + T0 + E1 + E2 + natEq (wsum (Γ := Γ) N X) - E4 + E5 + 𝔞(X) * i - P
 
 /-- Variables: `0 = N` (induction), `1 = X`. -/
 private abbrev pfF : Fm PTm 2 := Am (var 0) (var 1) ≐ pw (var 1) (var 0)
 
 private theorem pf₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] pfF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-    exact pf_base _
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-    exact pf_step Prf.hyp0
+  ipra_ind [subst_ap2, subst_pairT]
+  · exact pf_base _
+  · exact pf_step Prf.hyp0
 
 /-- `eq:power-falling`: `∑_{k ≤ N} S(N, k) (X)_k = X^N`. -/
 theorem stirling_powers (N X : PTm n) : Γ ⊢[PRAAx] Am N X ≐ pw X N := by

@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaHigherCoefficientName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaFixedCoefficientVariation (modulus fixed_coefficient_distance)
 open GaussianGammaInputPrecisionNorm (radiusNumerator radiusDenominator denominator_positive)
 open GaussianGammaFiniteCoefficientStability (cofinalObservation fixedCoefficient)
@@ -25,9 +25,6 @@ open GaussianRationalHorner (canonical)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,16 +35,11 @@ def nameF : PR 2 := GaussianFastValueCut.nameF rawF
 def data (e : PTm n) : PTm n := GaussianFastValueCut.nameData (modulusData e) e
 def clock (p e : PTm n) : PTm n := GaussianFastValueCut.exponent (modulusData e) p
 def sample (p e : PTm n) : PTm n := ap2 nameF p (data e)
-@[simp] theorem subst_rawValue {m : ℕ} (σ : Fin n → PTm m) (p e : PTm n) :
-    Syn.subst σ (rawValue p e) = rawValue (Syn.subst σ p) (Syn.subst σ e) := by simp [rawValue]
-@[simp] theorem subst_modulusData {m : ℕ} (σ : Fin n → PTm m) (e : PTm n) :
-    Syn.subst σ (modulusData e) = modulusData (Syn.subst σ e) := by simp [modulusData]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (e : PTm n) :
-    Syn.subst σ (data e) = data (Syn.subst σ e) := by simp [data]
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (p e : PTm n) :
-    Syn.subst σ (clock p e) = clock (Syn.subst σ p) (Syn.subst σ e) := by simp [clock]
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (p e : PTm n) :
-    Syn.subst σ (sample p e) = sample (Syn.subst σ p) (Syn.subst σ e) := by simp [sample]
+ipra_subst rawValue
+ipra_subst modulusData
+ipra_subst data
+ipra_subst clock
+ipra_subst sample
 
 theorem raw_at (p e : PTm n) : Γ ⊢[PRAAx] ap2 rawF p e ≐ rawValue p e := by
   simpa only [rawF,ap2,subst_rawValue,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using

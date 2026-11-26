@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPiRationalScaleFactors
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (eval_re_code eval_im_code)
 open GaussianBoundedConstantProductName (constantF constant_regular)
 open GaussianEuclideanDistanceName (pointCN)
@@ -26,8 +26,6 @@ open GaussianRationalHorner (qmul ofGaussian_represents ofGaussian_canonical qmu
   canonical_unique represents_congr)
 open GaussianRootAlgebra (equal equal_of_values re_mul im_mul re_neg im_neg)
 open GaussianSineProductImaginaryLogDerivative (rationalReal realNumerator)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Pi" => GaussianGammaHalfPiName.nameF

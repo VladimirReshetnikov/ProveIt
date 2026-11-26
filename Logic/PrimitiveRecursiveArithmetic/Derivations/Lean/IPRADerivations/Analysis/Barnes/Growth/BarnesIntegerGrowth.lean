@@ -1,8 +1,6 @@
 import IPRADerivations.Analysis.Barnes.BarnesInteger
 import IPRADerivations.AnalyticNumberTheory.EtaSchedule
 import IPRADerivations.AnalyticNumberTheory.RSA
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # A lower-growth witness for the integer Barnes sequence

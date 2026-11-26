@@ -141,10 +141,8 @@ theorem unit_gram_det {L H : Mat k n}
   refine ZT.derive ?_
   rw [Mat.toZ_det, e, ZT.toZ_natLit, Nat.cast_one]
   refine unit_gram_ring _ (fun i j h => ?_) (fun i => ?_)
-  · have e₁ := ZT.toZ_eq (hlow i j h)
-    simpa using e₁
-  · have e₁ := ZT.toZ_eq (hdiag i)
-    simpa using e₁
+  · simpa using ZT.toZ_eq (hlow i j h)
+  · simpa using ZT.toZ_eq (hdiag i)
 
 /-- The Gram matrix of the rows `1, …, k` of a `(k + 1) × (k + 1)` matrix. -/
 def rowGram (N : Mat (k + 1) n) : Mat k n := fun i j => Vec.dot (N i.succ) (N j.succ)

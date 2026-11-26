@@ -1,6 +1,5 @@
 import IPRADerivations.Combinatorics.LegendreFact
 import IPRADerivations.Combinatorics.Catalan
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The prime valuation of a Catalan number
@@ -22,7 +21,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.CatalanValuation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Catalan (cb cb_fact cat cat_spec)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
@@ -31,10 +30,6 @@ open LeanProofs.IPRA.Combinatorics.LegendreDigits (qB' legendre_digits pos_mul')
 open LeanProofs.IPRA.Combinatorics.LegendreFact (legendre_fact)
 open LeanProofs.IPRA.Probability.SortingBound (fct fact_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.BinomialThree (pos_of_one_le)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -33,12 +33,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.RiemannRefinement
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.FiniteCalculus (cell_upper cell_lower)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -210,9 +206,7 @@ theorem refDn_step {f : PTm 2} {k r x D : PTm n}
     (ih : Γ ⊢[PRAAx] RefDn f k r x D) : Γ ⊢[PRAAx] RefDn f (succ k) r x D := by
   have eS := natEq (fine_succ (Γ := Γ) f k r x)
   have eC := natEq (sum_succ' (Γ := Γ) (crsB f) k (pairT r x))
-  have eA := natEq (crs_at (Γ := Γ) f k r x)
-  have eO := natEq (off_zero (Γ := Γ) f (k * r) x)
-  ipra_le sl ih + sl c using rw [eS, eC, eA, eO]; ring
+  ipra_le sl ih + sl c using rw [eS, eC, natEq (crs_at (Γ := Γ) f k r x), natEq (off_zero (Γ := Γ) f (k * r) x)]; ring
 
 /-- `eq:refine`, upper half: if `f(j + 1) ≤ f(j) + D` for `j < N r`, then
 `2 ∑_{i < N r} f(i) + D N r ≤ 2 r ∑_{k<N} f(k r) + D N r²`. -/
@@ -220,13 +214,9 @@ theorem refine_upper (f : PTm 2) (x N r D : PTm n) (h : Γ ⊢[PRAAx] StepUp f x
     Γ ⊢[PRAAx] RefUp f N r x D := by
   have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
       RefUp f (var 0) (Syn.shift r) (Syn.shift x) (Syn.shift D)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      exact .impI (refUp_base f r x D)
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2, subst_pairT]
+    · exact .impI (refUp_base f r x D)
+    · refine .impI ?_
       have hk : (le (succ (var 0)) (Syn.shift N) ::
           (le (var 0) (Syn.shift N) ⟶ RefUp f (var 0) (Syn.shift r) (Syn.shift x) (Syn.shift D)) ::
           Γ.map Fm.shift) ⊢[PRAAx] le (succ (var 0)) (Syn.shift N) := Prf.hyp0
@@ -255,13 +245,9 @@ theorem refine_lower (f : PTm 2) (x N r D : PTm n) (h : Γ ⊢[PRAAx] StepDn f x
     Γ ⊢[PRAAx] RefDn f N r x D := by
   have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
       RefDn f (var 0) (Syn.shift r) (Syn.shift x) (Syn.shift D)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      exact .impI (refDn_base f r x D)
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2, subst_pairT]
+    · exact .impI (refDn_base f r x D)
+    · refine .impI ?_
       have hk : (le (succ (var 0)) (Syn.shift N) ::
           (le (var 0) (Syn.shift N) ⟶ RefDn f (var 0) (Syn.shift r) (Syn.shift x) (Syn.shift D)) ::
           Γ.map Fm.shift) ⊢[PRAAx] le (succ (var 0)) (Syn.shift N) := Prf.hyp0

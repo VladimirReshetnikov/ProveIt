@@ -14,15 +14,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalDerivativeTargetRescale
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaNegativeCriticalCorrection (guard)
 open GaussianGammaNegativeIntervalDerivativeTarget (nameF data)
 open GaussianGammaNegativeIntervalNative (negative_regular)
 open GaussianGammaNegativeIntervalRescale (guard_rescale)
 open GaussianGammaReciprocalInverse (gammaF)
 open GaussianNameEquivalence (crossEquivalent)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

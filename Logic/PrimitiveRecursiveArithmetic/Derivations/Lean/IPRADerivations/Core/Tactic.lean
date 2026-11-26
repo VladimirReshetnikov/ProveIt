@@ -1,4 +1,5 @@
 import IPRADerivations.Core.Integers
+import IPRADerivations.Core.Header
 
 /-!
 # Conveniences for stating and deriving iPRA theorems

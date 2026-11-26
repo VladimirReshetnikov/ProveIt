@@ -14,14 +14,10 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCompactSafeGridComparison
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCompactRiemannName (quadrature sampledModulus)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalHorner (qzero)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -29,14 +25,9 @@ def safeCount (K : PTm n) : PTm n := succ (pred K)
 def numerator (p q K H E L : PTm n) : PTm n := GaussianCompactUniformGridComparison.numerator p q (safeCount K) H K E L
 def denominator (p q K H E : PTm n) : PTm n := GaussianCompactUniformGridComparison.denominator p q (safeCount K) H E
 
-@[simp] theorem subst_safeCount {m : ℕ} (σ : Fin n → PTm m) (K : PTm n) :
-    Syn.subst σ (safeCount K) = safeCount (Syn.subst σ K) := by simp [safeCount]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (p q K H E L : PTm n) :
-    Syn.subst σ (numerator p q K H E L) = numerator (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ K)
-      (Syn.subst σ H) (Syn.subst σ E) (Syn.subst σ L) := by simp [numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (p q K H E : PTm n) :
-    Syn.subst σ (denominator p q K H E) = denominator (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ K)
-      (Syn.subst σ H) (Syn.subst σ E) := by simp [denominator]
+ipra_subst safeCount
+ipra_subst numerator
+ipra_subst denominator
 
 theorem safe_positive (K : PTm n) : Γ ⊢[PRAAx] le one (safeCount K) := zero_lt_succ _
 

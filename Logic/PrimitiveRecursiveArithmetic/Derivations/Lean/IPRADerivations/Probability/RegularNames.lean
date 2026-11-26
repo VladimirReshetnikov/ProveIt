@@ -21,12 +21,8 @@ natural terms (distances cleared by a common scale `J`, precisions `2^{-k}` as n
 
 namespace LeanProofs.IPRA.Probability.RegularNames
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.FiniteObservations.MetricKernel (meet meet_left meet_right)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -60,14 +56,12 @@ theorem lipschitz_test_pt {D δ L M C J : PTm n} (hlip : Γ ⊢[PRAAx] le (J * D
     Γ ⊢[PRAAx] le (J * D) (C * meet J δ) := by
   refine .orE (le_total J δ) ?_ ?_
   · have h : (le J δ :: Γ) ⊢[PRAAx] le J δ := Prf.hyp0
-    have e := natEq (meet_left h)
     have hbd' := hbd.wk (ψ := le J δ)
     have hM' := hM.wk (ψ := le J δ)
-    ipra_le 𝔟 J * sl hbd' + 𝔟 J * sl hM' with 𝔟 C * e
+    ipra_le 𝔟 J * sl hbd' + 𝔟 J * sl hM' with 𝔟 C * natEq (meet_left h)
   · have h : (le δ J :: Γ) ⊢[PRAAx] le δ J := Prf.hyp0
-    have e := natEq (meet_right h)
     have hlip' := hlip.wk (ψ := le δ J)
     have hL' := hL.wk (ψ := le δ J)
-    ipra_le sl hlip' + sl hL' * 𝔟 δ with 𝔟 C * e
+    ipra_le sl hlip' + sl hL' * 𝔟 δ with 𝔟 C * natEq (meet_right h)
 
 end LeanProofs.IPRA.Probability.RegularNames

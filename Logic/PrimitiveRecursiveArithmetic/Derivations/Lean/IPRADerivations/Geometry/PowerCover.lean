@@ -1,5 +1,4 @@
 import IPRADerivations.Geometry.LocalizationWitness
-import IPRADerivations.Core.Pairing
 
 /-!
 # The power-cover constructor for every exponent
@@ -26,12 +25,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Geometry.PowerCover
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Geometry.LocalizationWitness (cover_step)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -115,15 +110,15 @@ theorem st_succ (k x : PTm n) :
 
 theorem toZ_D0_of {s a b c e : PTm n} (h : Γ ⊢[PRAAx] s ≐ pairT (pairT a b) (pairT c e)) :
     ZT.toZ Γ (D0 s) = Groth.ι (Q.mk Γ a) - Groth.ι (Q.mk Γ b) := by
-  have ha := natEq ((congrFst (congrFst h)).eqTrans ((congrFst (fst_pair _ _)).eqTrans (fst_pair _ _)))
-  have hb := natEq ((congrSnd (congrFst h)).eqTrans ((congrSnd (fst_pair _ _)).eqTrans (snd_pair _ _)))
+  have ha := natEq ((congrFst (congrFst h)).eqTrans (fst_pair _ _).fstE)
+  have hb := natEq ((congrSnd (congrFst h)).eqTrans (fst_pair _ _).sndE)
   show Groth.ι (Q.mk Γ (fstT (fstT s))) - Groth.ι (Q.mk Γ (sndT (fstT s))) = _
   rw [ha, hb]
 
 theorem toZ_D1_of {s a b c e : PTm n} (h : Γ ⊢[PRAAx] s ≐ pairT (pairT a b) (pairT c e)) :
     ZT.toZ Γ (D1 s) = Groth.ι (Q.mk Γ c) - Groth.ι (Q.mk Γ e) := by
-  have hc := natEq ((congrFst (congrSnd h)).eqTrans ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)))
-  have he := natEq ((congrSnd (congrSnd h)).eqTrans ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)))
+  have hc := natEq ((congrFst (congrSnd h)).eqTrans (snd_pair _ _).fstE)
+  have he := natEq ((congrSnd (congrSnd h)).eqTrans (snd_pair _ _).sndE)
   show Groth.ι (Q.mk Γ (fstT (sndT s))) - Groth.ι (Q.mk Γ (sndT (sndT s))) = _
   rw [hc, he]
 
@@ -134,18 +129,14 @@ theorem toZ_D1_succ (k x : PTm n) :
     ZT.toZ Γ (D1 (st (succ k) x)) = ZT.toZ Γ (NX1 (st k x) x k) := toZ_D1_of (st_succ k x)
 
 theorem toZ_D0_zero (x : PTm n) : ZT.toZ Γ (D0 (st zero x)) = ZT.toZ Γ (C0 x) := by
-  have ha := natEq (congrFst (congrFst (st_zero (Γ := Γ) x)))
-  have hb := natEq (congrSnd (congrFst (st_zero (Γ := Γ) x)))
   show Groth.ι (Q.mk Γ (fstT (fstT (st zero x)))) - Groth.ι (Q.mk Γ (sndT (fstT (st zero x)))) =
     Groth.ι (Q.mk Γ (fstT (fstT (fstT x)))) - Groth.ι (Q.mk Γ (sndT (fstT (fstT x))))
-  rw [ha, hb]
+  rw [natEq (congrFst (congrFst (st_zero (Γ := Γ) x))), natEq (congrSnd (congrFst (st_zero (Γ := Γ) x)))]
 
 theorem toZ_D1_zero (x : PTm n) : ZT.toZ Γ (D1 (st zero x)) = ZT.toZ Γ (C1 x) := by
-  have hc := natEq (congrFst (congrSnd (st_zero (Γ := Γ) x)))
-  have he := natEq (congrSnd (congrSnd (st_zero (Γ := Γ) x)))
   show Groth.ι (Q.mk Γ (fstT (sndT (st zero x)))) - Groth.ι (Q.mk Γ (sndT (sndT (st zero x)))) =
     Groth.ι (Q.mk Γ (fstT (sndT (fstT x)))) - Groth.ι (Q.mk Γ (sndT (sndT (fstT x))))
-  rw [hc, he]
+  rw [natEq (congrFst (congrSnd (st_zero (Γ := Γ) x))), natEq (congrSnd (congrSnd (st_zero (Γ := Γ) x)))]
 
 /-! ## The invariant -/
 
@@ -189,13 +180,9 @@ theorem Inv_subst {m : ℕ} (σ : Fin n → PTm m) (s x k : PTm n) :
     (Inv s x k).subst σ = Inv (Syn.subst σ s) (Syn.subst σ x) (Syn.subst σ k) := by simp [Inv]
 
 private theorem cov₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] covF := by
-  refine ind _ ⟨trivial, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Cover_subst, Inv_subst, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (inv_base Prf.hyp0)
-  · simp only [Fm.subst_imp, Cover_subst, Inv_subst, subst_ap2, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (inv_step Prf.hyp0 (.impE Prf.hyp1 Prf.hyp0))
+  ipra_ind (⟨trivial, trivial⟩) [Cover_subst, Inv_subst, subst_ap2]
+  · exact .impI (inv_base Prf.hyp0)
+  · exact .impI (inv_step Prf.hyp0 (.impE Prf.hyp1 Prf.hyp0))
 
 /-- `thm:power-cover` for two generators and every exponent: with `(d₀, d₁) = st k x`,
 `d₀ f₀^(k+1) + d₁ f₁^(k+1) = 1`. -/

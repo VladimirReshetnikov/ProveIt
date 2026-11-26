@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerVerticalShiftedRadius
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerVerticalRealRadius (gap gap_identity denominator denominator_positive)
 open GaussianEuclideanDistanceName (fraction fraction_represents)
 open GaussianRationalL1 (rawGaussian rawDen raw_represents raw_den_positive)
@@ -24,8 +24,6 @@ open RationalRepresentedUpper (left right to_signed from_signed)
 open RationalValueBounds (upper)
 open ComplexLogarithmRemainder (re)
 open PolynomialBisection (slack)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

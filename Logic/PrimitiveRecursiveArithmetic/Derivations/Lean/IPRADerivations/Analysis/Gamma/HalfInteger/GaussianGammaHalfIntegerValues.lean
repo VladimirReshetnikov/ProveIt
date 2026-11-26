@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaHalfIntegerValues
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaHalfIntegerDomain (argument radius half_source)
 open ComplexLogarithmRemainder (oneCode)
 open GaussianGammaHalfRisingFactorial (factorialValue)
@@ -26,8 +26,6 @@ open GaussianNameEquivalence (crossEquivalent cross_refl cross_trans cross_at)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianCoefficientNameBounds (unit)
 open GaussianRationalMetric (distanceBounded)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,15 +36,10 @@ def valueData (N : PTm n) : PTm n := multiplyData constantF gammaF (factorialVal
 abbrev gaussianValueF : PR 2 := multiplyF GaussianEulerSquareFactorInverse.inverseFactorF valueF
 def gaussianValueData (N c d : PTm n) : PTm n := multiplyData GaussianEulerSquareFactorInverse.inverseFactorF valueF
   (GaussianEulerSquareFactorInverse.inverseFactorData (argument N) two c d) (valueData N)
-@[simp] theorem subst_baseData {m : ℕ} (σ : Fin n → PTm m) : Syn.subst σ (baseData : PTm n) = (baseData : PTm m) := by
-  simp [baseData,GaussianGammaReciprocalInverse.gammaData,GaussianGammaReciprocalInverse.gammaHeight]
-@[simp] theorem subst_gammaInput {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (gammaInput N) = gammaInput (Syn.subst σ N) := by
-  simp [gammaInput,GaussianGammaReciprocalInverse.gammaData,GaussianGammaReciprocalInverse.gammaHeight]
-@[simp] theorem subst_valueData {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (valueData N) = valueData (Syn.subst σ N) := by simp [valueData]
-@[simp] theorem subst_gaussianValueData {m : ℕ} (σ : Fin n → PTm m) (N c d : PTm n) :
-    Syn.subst σ (gaussianValueData N c d) = gaussianValueData (Syn.subst σ N) (Syn.subst σ c) (Syn.subst σ d) := by simp [gaussianValueData]
+ipra_subst baseData [GaussianGammaReciprocalInverse.gammaData, GaussianGammaReciprocalInverse.gammaHeight]
+ipra_subst gammaInput [GaussianGammaReciprocalInverse.gammaData, GaussianGammaReciprocalInverse.gammaHeight]
+ipra_subst valueData
+ipra_subst gaussianValueData
 
 theorem base_regular : Γ ⊢[PRAAx] pointCN gammaF (baseData : PTm n) :=
   gamma_regular oneCode one two one two (GaussianGammaDensityDomain.base_gamma_source oneCode one two two half_source)

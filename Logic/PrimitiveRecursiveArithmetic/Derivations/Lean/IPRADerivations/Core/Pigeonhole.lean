@@ -93,9 +93,7 @@ open LeanProofs.IPRA.AnalyticNumberTheory.Fermat (subst_up_shift')
 def noRep (S : PTm 2) (M x : PTm n) : Fm PTm n :=
   Fm.all (lt (var 0) (Syn.shift M) ⟶ (inst2 (EB S) (var 0) (Syn.shift x) ≐ zero))
 
-@[simp] theorem subst_noRep {m : ℕ} (σ : Fin n → PTm m) (S : PTm 2) (M x : PTm n) :
-    (noRep S M x).subst σ = noRep S (Syn.subst σ M) (Syn.subst σ x) := by
-  simp [noRep, subst_up_shift', Syn.up]
+ipra_subst noRep [subst_up_shift', Syn.up]
 
 theorem shift_noRep {M x : PTm n} (h : Γ ⊢[PRAAx] noRep S M x) :
     Γ.map Fm.shift ⊢[PRAAx] noRep S (Syn.shift M) (Syn.shift x) := by

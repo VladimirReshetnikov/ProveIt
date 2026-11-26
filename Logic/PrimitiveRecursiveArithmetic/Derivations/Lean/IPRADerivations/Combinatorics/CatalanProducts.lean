@@ -1,6 +1,5 @@
 import IPRADerivations.Combinatorics.Catalan
 import IPRADerivations.Combinatorics.BellTriangle
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Product form, the form `C(2n, n − 1) / n` and the central binomial bound (`catalan_numbers_ipra_2026-11-16`)
@@ -28,16 +27,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.CatalanProducts
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel catalan_ratio_open)
 open LeanProofs.IPRA.Combinatorics.BellTriangle (binom_symm)
 open LeanProofs.IPRA.Combinatorics.Catalan
 open LeanProofs.IPRA.Analysis.Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -74,13 +69,9 @@ theorem fact_prod_step {N : PTm n} (ih : Γ ⊢[PRAAx] fact (succ N) * cat N ≐
 abbrev factProdFormula : Fm PTm 1 := fact (succ (var 0)) * cat (var 0) ≐ oddProd (var 0)
 
 private theorem fact_prod₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] factProdFormula := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, subst_ap2, Syn.subst_var,
-      Syn.inst_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact fact_prod_base
-  · simp only [Fm.subst_eq, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, subst_ap2, Syn.subst_var,
-      Syn.repl_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact fact_prod_step Prf.hyp0
+  ipra_ind [subst_ap2]
+  · exact fact_prod_base
+  · exact fact_prod_step Prf.hyp0
 
 /-- (2.7): `(n + 1)! Cat_n = ∏_{j<n} (4j + 2)`. -/
 theorem cat_fact_prod (N : PTm n) : Γ ⊢[PRAAx] fact (succ N) * cat N ≐ oddProd N := by
@@ -148,13 +139,9 @@ abbrev cbSqFormula : Fm PTm 1 :=
   le (succ (var 0) * (cb (var 0) * cb (var 0))) (pw sixteen (var 0))
 
 private theorem cb_sq₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] cbSqFormula := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, subst_ap2, Syn.subst_var,
-      Syn.inst_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact cb_sq_base
-  · simp only [subst_le, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, subst_ap2, Syn.subst_var,
-      Syn.repl_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact cb_sq_step Prf.hyp0
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2]
+  · exact cb_sq_base
+  · exact cb_sq_step Prf.hyp0
 
 /-- (4.5): `(m + 1) C(2m, m)² ≤ 16^m`. -/
 theorem cb_sq_bound (m : PTm n) : Γ ⊢[PRAAx] le (succ m * (cb m * cb m)) (pw sixteen m) := by

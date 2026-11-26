@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaRisingFactorial
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaShiftTrajectory (point point_source)
 open GaussianGammaRepeatedShift (risingProduct)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
@@ -26,8 +26,6 @@ open GaussianNameRingLaws (oneF)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianRationalMetric (distanceBounded)
 open GaussianCoefficientNameBounds (unit)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,15 +38,9 @@ def risingData (z R B d N : PTm n) : PTm n := multiplyData constantF gammaF
   (risingProduct z B N) (gammaData z R B d)
 def endpointData (z R B f N : PTm n) : PTm n := gammaData (point z B N) (R+N) B f
 
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (z R B a d e f N : PTm n) :
-    (input z R B a d e f N).subst σ = input (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ d) (Syn.subst σ e) (Syn.subst σ f) (Syn.subst σ N) := by simp [input]
-@[simp] theorem subst_risingData {m : ℕ} (σ : Fin n → PTm m) (z R B d N : PTm n) :
-    Syn.subst σ (risingData z R B d N) = risingData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ d) (Syn.subst σ N) := by simp [risingData,gammaData,gammaHeight]
-@[simp] theorem subst_endpointData {m : ℕ} (σ : Fin n → PTm m) (z R B f N : PTm n) :
-    Syn.subst σ (endpointData z R B f N) = endpointData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ f) (Syn.subst σ N) := by simp [endpointData,gammaData,gammaHeight]
+ipra_subst input
+ipra_subst risingData [gammaData, gammaHeight]
+ipra_subst endpointData [gammaData, gammaHeight]
 
 theorem endpoint_source (z R B a d e f N : PTm n) (h : Γ ⊢[PRAAx] input z R B a d e f N) : Γ ⊢[PRAAx]
     GaussianGammaReciprocalInverse.source (point z B N) (R+N) B e f :=
@@ -111,16 +103,8 @@ def output (p q z R B d f N : PTm n) : PTm n := pairT (ap2 gammaF p (endpointDat
   (pairT (risingProduct z B N) (ap2 risingF q (risingData z R B d N)))
 def outputF : PR 8 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) (var 7))
 def run (p q z R B d f N : PTm n) : PTm n := PTm.app outputF ![p,q,z,R,B,d,f,N]
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (p q z R B d f N : PTm n) :
-    Syn.subst σ (output p q z R B d f N) = output (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ z)
-      (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ d) (Syn.subst σ f) (Syn.subst σ N) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (p q z R B d f N : PTm n) :
-    Syn.subst σ (run p q z R B d f N) = run (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ z)
-      (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ d) (Syn.subst σ f) (Syn.subst σ N) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (p q z R B d f N : PTm n) : Γ ⊢[PRAAx] run p q z R B d f N ≐ output p q z R B d f N := by
   have decoded : Syn.subst ![p,q,z,R,B,d,f,N]
@@ -132,13 +116,13 @@ theorem program_at (p q z R B d f N : PTm n) : Γ ⊢[PRAAx] run p q z R B d f N
 
 theorem returned_endpoint (p q z R B d f N : PTm n) : Γ ⊢[PRAAx]
     fstT (run p q z R B d f N) ≐ ap2 gammaF p (endpointData z R B f N) :=
-  (congrFst (program_at p q z R B d f N)).eqTrans (fst_pair _ _)
+  (program_at p q z R B d f N).fstE
 theorem returned_product (p q z R B d f N : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run p q z R B d f N)) ≐ risingProduct z B N :=
-  (congrFst ((congrSnd (program_at p q z R B d f N)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at p q z R B d f N).sndE.fstE
 theorem returned_candidate (p q z R B d f N : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (run p q z R B d f N)) ≐ ap2 risingF q (risingData z R B d N) :=
-  (congrSnd ((congrSnd (program_at p q z R B d f N)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at p q z R B d f N).sndE.sndE
 theorem returned_distance (p q z R B a d e f N : PTm n) (h : Γ ⊢[PRAAx] input z R B a d e f N) : Γ ⊢[PRAAx]
     distanceBounded (fstT (run p q z R B d f N)) (sndT (sndT (run p q z R B d f N)))
       (unit p+unit q) (unit p*unit q) :=

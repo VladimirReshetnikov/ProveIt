@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalTailFiniteSplit
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalFubini
 import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalExponent
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Uniform finite degree rearrangement of the original canonical Gamma tail
@@ -19,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaFiniteDegreeRearrangement
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (ofGaussian canonical represents_congr canonical_unique ofGaussian_represents ofGaussian_canonical
   qmul_canonical positive_product)
 open GaussianRationalSyntheticDivision (qadd_congr qsub_congr qadd_sub_cancel)
@@ -27,15 +26,11 @@ open GaussianRationalFiniteSum (sum sum_canonical sum_index_congr sum_congr_boun
 open GaussianFiniteLogarithmPolynomial (sourceTerm value coefficient)
 open GaussianGammaCanonicalTailFiniteSplit (term gaussianSum)
 open GaussianRationalMetric (bounded)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def localSeries (z D L : PTm n) : PTm n := sum (shiftBody sourceTerm) (succ L) (ofGaussian z D)
-@[simp] theorem subst_localSeries {m : ℕ} (σ : Fin n → PTm m) (z D L : PTm n) :
-    Syn.subst σ (localSeries z D L) = localSeries (Syn.subst σ z) (Syn.subst σ D) (Syn.subst σ L) := by simp [localSeries]
+ipra_subst localSeries
 
 theorem linear_term (z D : PTm n) (hD : Γ ⊢[PRAAx] le one D) : Γ ⊢[PRAAx]
     inst2 sourceTerm zero (ofGaussian z D) ≐ ofGaussian z D := by
@@ -66,14 +61,9 @@ def degreeTerm (z B N i j : PTm n) : PTm n :=
 def matrix : PTm 3 := degreeTerm (fstT (var 2)) (fstT (sndT (var 2))) (sndT (sndT (var 2))) (var 0) (var 1)
 def degreeMajor (z B N r L : PTm n) : PTm n :=
   GaussianRationalFubini.columnFirst matrix r (succ L) (matrixData z B N)
-@[simp] theorem subst_matrixData {m : ℕ} (σ : Fin n → PTm m) (z B N : PTm n) :
-    Syn.subst σ (matrixData z B N) = matrixData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by simp [matrixData]
-@[simp] theorem subst_degreeTerm {m : ℕ} (σ : Fin n → PTm m) (z B N i j : PTm n) :
-    Syn.subst σ (degreeTerm z B N i j) = degreeTerm (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) (Syn.subst σ i) (Syn.subst σ j) := by
-  simp [degreeTerm]
-@[simp] theorem subst_degreeMajor {m : ℕ} (σ : Fin n → PTm m) (z B N r L : PTm n) :
-    Syn.subst σ (degreeMajor z B N r L) = degreeMajor (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) (Syn.subst σ r) (Syn.subst σ L) := by
-  simp [degreeMajor]
+ipra_subst matrixData
+ipra_subst degreeTerm
+ipra_subst degreeMajor
 
 theorem degree_term_congr {z z' B B' N N' i i' j j' : PTm n}
     (hz : Γ ⊢[PRAAx] z ≐ z') (hB : Γ ⊢[PRAAx] B ≐ B') (hN : Γ ⊢[PRAAx] N ≐ N')
@@ -85,8 +75,8 @@ theorem matrix_entry (i j z B N : PTm n) : Γ ⊢[PRAAx]
     inst3 matrix i j (matrixData z B N) ≐ degreeTerm z B N i j := by
   simp only [matrix,inst3,subst_degreeTerm,subst_fstT,subst_sndT,Syn.subst_var,
     Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two]
-  exact degree_term_congr (fst_pair _ _) ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
-    ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)) (.eqRefl _) (.eqRefl _)
+  exact degree_term_congr (fst_pair _ _) (snd_pair _ _).fstE
+    (snd_pair _ _).sndE (.eqRefl _) (.eqRefl _)
 
 theorem original_degree_entry (i j z B N : PTm n) : Γ ⊢[PRAAx]
     inst3 matrix i j (matrixData z B N) ≐
@@ -152,9 +142,7 @@ theorem original_two_radius_rearranged_bound (z R B r L : PTm n)
 /-- The existing fixed Fubini program is specialized to the actual Gamma
 Taylor cell, and returns both orders of the same finite rectangle. -/
 def run (z B N r L : PTm n) : PTm n := GaussianRationalFubini.run matrix r (succ L) (matrixData z B N)
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (z B N r L : PTm n) :
-    Syn.subst σ (run z B N r L) = run (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) (Syn.subst σ r) (Syn.subst σ L) := by
-  simp [run]
+ipra_subst run
 theorem returned_original_value (z B N r L : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx]
     fstT (run z B N r L) ≐ GaussianGammaCanonicalTailFiniteSplit.value z B N r L :=
   (GaussianRationalFubini.returned_rows matrix r (succ L) (matrixData z B N)).eqTrans

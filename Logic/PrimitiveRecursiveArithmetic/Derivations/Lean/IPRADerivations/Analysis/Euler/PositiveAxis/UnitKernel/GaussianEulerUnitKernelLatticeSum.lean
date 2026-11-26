@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitKernel.GaussianEulerUnitKernelCompactName
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The original rational unit kernel on a uniform rational lattice
@@ -13,14 +12,11 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelLatticeSum
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCompactRiemannName (sampleData field0 field1 field2 field3 field4)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (qmul)
 open GaussianRationalFiniteSum (sum)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -30,15 +26,9 @@ def body : PTm 2 := row (var 0) (field0 (var 1)) (field2 (var 1)) (field3 (var 1
 def data (p z B a M : PTm n) : PTm n := sampleData p a z B M zero
 def lattice (p K z B a M : PTm n) : PTm n := qmul (fraction one M) (sum body K (data p z B a M))
 
-@[simp] theorem subst_row {m : ℕ} (σ : Fin n → PTm m) (i p z B a M : PTm n) :
-    Syn.subst σ (row i p z B a M) = row (Syn.subst σ i) (Syn.subst σ p) (Syn.subst σ z)
-      (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ M) := by simp [row]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (p z B a M : PTm n) :
-    Syn.subst σ (data p z B a M) = data (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ M) :=
-  by simp [data]
-@[simp] theorem subst_lattice {m : ℕ} (σ : Fin n → PTm m) (p K z B a M : PTm n) :
-    Syn.subst σ (lattice p K z B a M) = lattice (Syn.subst σ p) (Syn.subst σ K) (Syn.subst σ z)
-      (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ M) := by simp [lattice]
+ipra_subst row
+ipra_subst data
+ipra_subst lattice
 
 theorem row_at (i p z B a M : PTm n) : Γ ⊢[PRAAx] inst2 body i (data p z B a M) ≐ row i p z B a M := by
   let d := data p z B a M

@@ -18,7 +18,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentTaylorRows
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetLaplaceDomination (realDecay realNumerator realDenominator)
 open GaussianBinetLaplaceIntegrand (input)
 open GaussianBinetLaplaceMomentFloor (observation)
@@ -34,10 +34,6 @@ open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalReciprocal (bounded_product bound_congr qone)
 open GaussianRationalSyntheticDivision (qmul_congr qadd_congr)
 open GaussianReciprocalHorner (qmul_associative qmul_one_right)
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (LeanProofs.IPRA.Q.mk _ t)
@@ -55,26 +51,13 @@ def leadingNumerator (p j X D H A B : PTm n) : PTm n :=
 def leadingDenominator (p j X D Q A B : PTm n) : PTm n :=
   realDenominator (frozen p j X D A B)*((Q*B)*(Q*B))
 
-@[simp] theorem subst_linearObservation {m : ℕ} (σ : Fin n → PTm m) (p j X D R T H Q A B : PTm n) :
-    Syn.subst σ (linearObservation p j X D R T H Q A B) =
-      linearObservation (Syn.subst σ p) (Syn.subst σ j) (Syn.subst σ X) (Syn.subst σ D)
-        (Syn.subst σ R) (Syn.subst σ T) (Syn.subst σ H) (Syn.subst σ Q) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [linearObservation]
+ipra_subst linearObservation
 
-@[simp] theorem subst_allowance {m : ℕ} (σ : Fin n → PTm m) (j T : PTm n) :
-    Syn.subst σ (allowance j T) = allowance (Syn.subst σ j) (Syn.subst σ T) := by simp [allowance]
+ipra_subst allowance
 
-@[simp] theorem subst_leadingNumerator {m : ℕ} (σ : Fin n → PTm m) (p j X D H A B : PTm n) :
-    Syn.subst σ (leadingNumerator p j X D H A B) =
-      leadingNumerator (Syn.subst σ p) (Syn.subst σ j) (Syn.subst σ X) (Syn.subst σ D)
-        (Syn.subst σ H) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [leadingNumerator,realNumerator,GaussianPositiveRealArithmetic.numerator,RationalSupMetric.numeratorOf]
+ipra_subst leadingNumerator [realNumerator, GaussianPositiveRealArithmetic.numerator, RationalSupMetric.numeratorOf]
 
-@[simp] theorem subst_leadingDenominator {m : ℕ} (σ : Fin n → PTm m) (p j X D Q A B : PTm n) :
-    Syn.subst σ (leadingDenominator p j X D Q A B) =
-      leadingDenominator (Syn.subst σ p) (Syn.subst σ j) (Syn.subst σ X) (Syn.subst σ D)
-        (Syn.subst σ Q) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [leadingDenominator,realDenominator,RationalSupMetric.denominatorOf]
+ipra_subst leadingDenominator [realDenominator, RationalSupMetric.denominatorOf]
 
 private theorem frozen_linear (p j X D H Q A B : PTm n)
     (hQ : Γ ⊢[PRAAx] le one Q) (hB : Γ ⊢[PRAAx] le one B) :

@@ -1,6 +1,5 @@
 import IPRADerivations.Combinatorics.BellPeriodNp
 import IPRADerivations.Foundations.BoundedReflection
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The least period of the Bell numbers modulo a prime divides `N_p` (`bell_numbers_ipra`, `thm:prime-period`)
@@ -33,7 +32,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.BellLeastPeriod
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Bell (bell)
 open LeanProofs.IPRA.Combinatorics.BellPascalInversion (congrBell)
 open LeanProofs.IPRA.Combinatorics.BellTouchard (touchard)
@@ -47,10 +46,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.Fermat (prime_shift)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (eq_of_eqb_ne)
 open LeanProofs.IPRA.AnalyticNumberTheory.Euler (congrEqb)
 open LeanProofs.IPRA.Signum (sg sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

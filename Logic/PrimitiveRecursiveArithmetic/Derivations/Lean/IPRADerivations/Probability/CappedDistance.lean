@@ -22,13 +22,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.CappedDistance
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.EventAlgebraMetric (wsum wsum_le)
 open LeanProofs.IPRA.Foundations.FiniteObservations.MetricKernel (meet meet_left meet_right meet_le_left meet_le_right)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -57,14 +53,12 @@ theorem cap_upper {δ D z χ : PTm n} (h : Γ ⊢[PRAAx] exceptional δ z χ) :
     Γ ⊢[PRAAx] le (meet D z) (δ + D * χ) := by
   refine .orE h ?_ ?_
   · let Δ := ((χ ≐ one) ⋏ lt δ z) :: Γ
-    have e := natEq (Prf.andE₁ (Prf.hyp0 : Δ ⊢[PRAAx] (χ ≐ one) ⋏ lt δ z))
     have m := meet_le_left (Γ := Δ) D z
-    ipra_le sl m + 𝔟 δ with 𝔟 D * e
+    ipra_le sl m + 𝔟 δ with 𝔟 D * natEq (Prf.andE₁ (Prf.hyp0 : Δ ⊢[PRAAx] (χ ≐ one) ⋏ lt δ z))
   · let Δ := ((χ ≐ zero) ⋏ le z δ) :: Γ
-    have e := natEq (Prf.andE₁ (Prf.hyp0 : Δ ⊢[PRAAx] (χ ≐ zero) ⋏ le z δ))
     have m := meet_le_right (Γ := Δ) D z
     have hz : Δ ⊢[PRAAx] le z δ := Prf.andE₂ Prf.hyp0
-    ipra_le sl m + sl hz with 𝔟 D * e
+    ipra_le sl m + sl hz with 𝔟 D * natEq (Prf.andE₁ (Prf.hyp0 : Δ ⊢[PRAAx] (χ ≐ zero) ⋏ le z δ))
 
 variable {α : Type} (w z χ : α → PTm n) (L : List α) {δ D : PTm n}
 

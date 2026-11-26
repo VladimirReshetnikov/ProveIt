@@ -15,7 +15,7 @@ set_option maxHeartbeats 240000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetBoseIntegrandEndpoint
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianBinetArctangentLinearApproximation (linear cube)
 open GaussianBinetBoseLinearApproximation (coefficient coefficientClock query query_factor query_lower)
@@ -36,10 +36,6 @@ open GaussianRationalReciprocal (reciprocal reciprocal_identity reciprocal_canon
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianReciprocalHorner (qmul_associative)
 open GaussianRightHalfPlaneLogarithm (source)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -59,10 +55,7 @@ def inversePiData : PTm n := GaussianNameReciprocal.nameData one piData
 def endpointF : PR 2 := multiplyF constantF inversePiF
 def endpointData (X Y D sign : PTm n) : PTm n := multiplyData constantF inversePiF (factor X Y D sign) inversePiData
 
-@[simp] theorem subst_endpointData {m : ℕ} (σ : Fin n → PTm m) (X Y D sign : PTm n) :
-    Syn.subst σ (endpointData X Y D sign) =
-      endpointData (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign) :=
-  by simp [endpointData,factor,GaussianLogGammaEulerRepresentation.subst_argument,inversePiData,piData,one]
+ipra_subst endpointData [factor, GaussianLogGammaEulerRepresentation.subst_argument, inversePiData, piData, one]
 
 private theorem inversePi_regular : Γ ⊢[PRAAx] pointCN inversePiF (inversePiData : PTm n) := by
   let r := GaussianNameReciprocal.anchor (one : PTm n)

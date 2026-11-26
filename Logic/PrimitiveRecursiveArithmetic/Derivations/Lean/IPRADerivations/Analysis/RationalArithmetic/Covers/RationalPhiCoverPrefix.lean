@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalPhiCoverPrefix
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalPhiSectionNonzero (curveInput)
 open RationalPhiCoverAssignment (sourceCoverBit)
 open RationalCurvePointsGaussianEmbedding (distinct distinctFrom distinct_at)
@@ -25,9 +25,6 @@ open GaussianRationalFiberGrouping (abscissa ordinate)
 open LeanProofs.IPRA.Foundations.BoundedSyntax (BFm formula)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,8 +40,7 @@ def cutoffCover (A : BFm 2) (f s r m M x : PTm n) : Fm PTm n := .all
 
 @[simp] theorem subst_prefix {q : ℕ} (σ : Fin n → PTm q) (P K : PTm n) :
     Syn.subst σ (pointPrefix P K) = pointPrefix (Syn.subst σ P) (Syn.subst σ K) := by simp [pointPrefix]
-@[simp] theorem subst_cutoff {q : ℕ} (σ : Fin n → PTm q) (m M : PTm n) :
-    Syn.subst σ (cutoff m M) = cutoff (Syn.subst σ m) (Syn.subst σ M) := by simp [cutoff]
+ipra_subst cutoff
 @[simp] theorem subst_extra {q : ℕ} (σ : Fin n → PTm q) (A : BFm 2) (P x : PTm n) :
     (extra A P x).subst σ = extra A (Syn.subst σ P) (Syn.subst σ x) := by
   simp only [extra,Fm.subst_all,Fm.subst_imp,subst_lt,Foundations.SequenceComposition.subst_length,
@@ -53,9 +49,7 @@ def cutoffCover (A : BFm 2) (f s r m M x : PTm n) : Fm PTm n := .all
   congr 1
   funext i
   fin_cases i <;> simp [Syn.subst_shift]
-@[simp] theorem subst_cutoffCover {q : ℕ} (σ : Fin n → PTm q) (A : BFm 2) (f s r m M x : PTm n) :
-    (cutoffCover A f s r m M x).subst σ = cutoffCover A (Syn.subst σ f) (Syn.subst σ s) (Syn.subst σ r)
-      (Syn.subst σ m) (Syn.subst σ M) (Syn.subst σ x) := by simp [cutoffCover,Syn.subst_shift,Syn.shift_subst]
+ipra_subst cutoffCover [Syn.subst_shift, Syn.shift_subst]
 
 theorem entry_body_at (P i : PTm n) : inst2 entryBody i P = entry P i := by simp [entryBody,inst2]
 theorem prefix_length (P K : PTm n) : Γ ⊢[PRAAx] length (pointPrefix P K) ≐ K := sequence_length _ _ _
@@ -161,14 +155,8 @@ def prefixF : PR 2 := PTm.toPR (pointPrefix (var 0) (var 1))
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (P m M : PTm n) : PTm n := app outputF ![P,m,M]
 
-@[simp] theorem subst_output {q : ℕ} (σ : Fin n → PTm q) (P m M : PTm n) :
-    Syn.subst σ (output P m M) = output (Syn.subst σ P) (Syn.subst σ m) (Syn.subst σ M) := by simp [output]
-@[simp] theorem subst_run {q : ℕ} (σ : Fin n → PTm q) (P m M : PTm n) :
-    Syn.subst σ (run P m M) = run (Syn.subst σ P) (Syn.subst σ m) (Syn.subst σ M) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem prefix_program_at (P K : PTm n) : Γ ⊢[PRAAx] app prefixF ![P,K] ≐ pointPrefix P K := by
   simpa [prefixF] using toPR_eq (Γ := Γ) (pointPrefix (var 0) (var 1) : PTm 2) ![P,K]
@@ -176,11 +164,11 @@ theorem program_at (P m M : PTm n) : Γ ⊢[PRAAx] run P m M ≐ output P m M :=
   simpa [run,outputF,output,Matrix.cons_val_succ',Matrix.cons_val_zero'] using
     toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![P,m,M]
 theorem returned_prefix (P m M : PTm n) : Γ ⊢[PRAAx] fstT (run P m M) ≐ pointPrefix P (cutoff m M) :=
-  (congrFst (program_at P m M)).eqTrans (fst_pair _ _)
+  (program_at P m M).fstE
 theorem returned_cutoff (P m M : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run P m M)) ≐ cutoff m M :=
-  (congrFst ((congrSnd (program_at P m M)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at P m M).sndE.fstE
 theorem returned_original (P m M : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run P m M)) ≐ P :=
-  (congrSnd ((congrSnd (program_at P m M)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at P m M).sndE.sndE
 theorem returned_length (P m M : PTm n) : Γ ⊢[PRAAx] length (fstT (run P m M)) ≐ fstT (sndT (run P m M)) :=
   ((congrFst (returned_prefix P m M)).eqTrans (prefix_length _ _)).eqTrans
     (returned_cutoff P m M).eqSymm

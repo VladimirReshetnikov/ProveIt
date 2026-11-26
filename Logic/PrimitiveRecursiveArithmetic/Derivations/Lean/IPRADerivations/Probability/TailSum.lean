@@ -1,5 +1,4 @@
 import IPRADerivations.Probability.Independence
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Tail sums, inclusion–exclusion and total expectation
@@ -23,14 +22,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.TailSum
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Expectation (Ew Wt inst2_mul' inst2_add' geI geI_true geI_false exp_add)
 open LeanProofs.IPRA.Probability.Lotus (pvB pushforward_total)
 open LeanProofs.IPRA.Probability.Independence (shift_inst2 row_pt col_pt sum_scale dsum dsum_rows)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -82,14 +77,10 @@ private abbrev tlF : Fm PTm 2 :=
   (le (var 1) (var 0) ⟶ (tS (var 0) (var 1) ≐ var 1)) ⋏ (le (var 0) (var 1) ⟶ (tS (var 0) (var 1) ≐ var 0))
 
 private theorem tl₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] tlF := by
-  refine ind _ ⟨⟨le_QF _ _, trivial⟩, ⟨le_QF _ _, trivial⟩⟩ ?_ ?_
-  · simp only [Fm.subst_and, Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .andI (.impI ((sum_zero _ _).eqTrans ((monus_zero _).eqSymm.eqTrans Prf.hyp0).eqSymm))
+  ipra_ind (⟨⟨le_QF _ _, trivial⟩, ⟨le_QF _ _, trivial⟩⟩) [subst_le, subst_ap2]
+  · exact .andI (.impI ((sum_zero _ _).eqTrans ((monus_zero _).eqSymm.eqTrans Prf.hyp0).eqSymm))
       (.impI (sum_zero _ _))
-  · simp only [Fm.subst_and, Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, Syn.subst_var, Syn.repl_zero,
-      repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact tstep (Prf.andE₁ Prf.hyp0) (Prf.andE₂ Prf.hyp0)
+  · exact tstep (Prf.andE₁ Prf.hyp0) (Prf.andE₂ Prf.hyp0)
 
 /-- `∑_{k<B} [x > k] = x` for `x ≤ B`. -/
 theorem tail_pt {B x : PTm n} (h : Γ ⊢[PRAAx] le x B) : Γ ⊢[PRAAx] ap2 (sumF gtB) B x ≐ x := by

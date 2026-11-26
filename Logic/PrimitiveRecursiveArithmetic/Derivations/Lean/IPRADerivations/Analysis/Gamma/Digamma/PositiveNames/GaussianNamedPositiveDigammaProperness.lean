@@ -13,15 +13,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedPositiveDigammaProperness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaAdjacentCutoff (multiply_cross)
 open GaussianGammaNegativeIntervalNamedTerminalDerivative (original_euler_proper original_gamma_proper)
 open GaussianNameEquivalence (crossEquivalent cross_to_diagonal)
 open GaussianNamedGammaFirstCrossing (inverseClock)
 open GaussianNamedPositiveDigamma (source nameF data derivativeF derivativeData derivative_regular
   inverseF inverseData inverse_input inverse_regular)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -1,6 +1,5 @@
 import IPRADerivations.Geometry.Distinct.AnalyticConicAffine
 import IPRADerivations.Analysis.RationalArithmetic.RationalAlgebra
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Actual rational affine pullback and evaluation of conics
@@ -23,15 +22,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Geometry.Distinct.AnalyticConicRationalAffine
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open AnalyticConicAffine (read pack6 encode decode read_congr read_pack6_0 read_pack6_1 read_pack6_2 read_pack6_3 read_pack6_4 read_pack6_5)
 open LeanProofs.IPRA.Analysis.RationalIntegerNormalization (normalize normalize_preserves_value)
 open LeanProofs.IPRA.Analysis.RationalNormalForm (wellFormed normalize_well_formed)
 open LeanProofs.IPRA.Analysis.RationalArithmetic (represents multiply multiply_guard)
 open LeanProofs.IPRA.Analysis.RationalRepresentations (represents_multiply)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -64,22 +60,21 @@ def evaluate (c p : PTm n) : PTm n := normalize (evaluationNumerator c p) (evalu
 def discriminant (c : PTm n) : PTm n := normalize (AnalyticConicAffine.discriminant (numerators c)) (denominator c*denominator c)
 def determinant (m : PTm n) : PTm n := normalize (AnalyticConicAffine.determinant (numerators m)) (denominator m*denominator m)
 
-@[simp] theorem subst_numerators {j : ℕ} (σ : Fin n → PTm j) (r : PTm n) : Syn.subst σ (numerators r) = numerators (Syn.subst σ r) := by simp [numerators]
-@[simp] theorem subst_denominator {j : ℕ} (σ : Fin n → PTm j) (r : PTm n) : Syn.subst σ (denominator r) = denominator (Syn.subst σ r) := by simp [denominator]
-@[simp] theorem subst_valid {j : ℕ} (σ : Fin n → PTm j) (r : PTm n) : (valid r).subst σ = valid (Syn.subst σ r) := by simp [valid]
-@[simp] theorem subst_record {j : ℕ} (σ : Fin n → PTm j) (c D : PTm n) : Syn.subst σ (record c D) = record (Syn.subst σ c) (Syn.subst σ D) := by simp [record]
-@[simp] theorem subst_lift {j : ℕ} (σ : Fin n → PTm j) (c E : PTm n) : Syn.subst σ (lift c E) = lift (Syn.subst σ c) (Syn.subst σ E) := by simp [lift]
-@[simp] theorem subst_homogeneous {j : ℕ} (σ : Fin n → PTm j) (c : PTm n) (x y : ZT n) (F : PTm n) :
-    (homogeneous c x y F).subst σ = homogeneous (Syn.subst σ c) (x.subst σ) (y.subst σ) (Syn.subst σ F) := by simp [homogeneous]
-@[simp] theorem subst_pullback {j : ℕ} (σ : Fin n → PTm j) (c m : PTm n) : Syn.subst σ (pullback c m) = pullback (Syn.subst σ c) (Syn.subst σ m) := by simp [pullback]
-@[simp] theorem subst_imageX {j : ℕ} (σ : Fin n → PTm j) (m p : PTm n) : (imageX m p).subst σ = imageX (Syn.subst σ m) (Syn.subst σ p) := by simp [imageX]
-@[simp] theorem subst_imageY {j : ℕ} (σ : Fin n → PTm j) (m p : PTm n) : (imageY m p).subst σ = imageY (Syn.subst σ m) (Syn.subst σ p) := by simp [imageY]
-@[simp] theorem subst_image {j : ℕ} (σ : Fin n → PTm j) (m p : PTm n) : Syn.subst σ (image m p) = image (Syn.subst σ m) (Syn.subst σ p) := by simp [image]
-@[simp] theorem subst_evaluationNumerator {j : ℕ} (σ : Fin n → PTm j) (c p : PTm n) : (evaluationNumerator c p).subst σ = evaluationNumerator (Syn.subst σ c) (Syn.subst σ p) := by simp [evaluationNumerator]
-@[simp] theorem subst_evaluationDenominator {j : ℕ} (σ : Fin n → PTm j) (c p : PTm n) : Syn.subst σ (evaluationDenominator c p) = evaluationDenominator (Syn.subst σ c) (Syn.subst σ p) := by simp [evaluationDenominator]
-@[simp] theorem subst_evaluate {j : ℕ} (σ : Fin n → PTm j) (c p : PTm n) : Syn.subst σ (evaluate c p) = evaluate (Syn.subst σ c) (Syn.subst σ p) := by simp [evaluate]
-@[simp] theorem subst_discriminant {j : ℕ} (σ : Fin n → PTm j) (c : PTm n) : Syn.subst σ (discriminant c) = discriminant (Syn.subst σ c) := by simp [discriminant]
-@[simp] theorem subst_determinant {j : ℕ} (σ : Fin n → PTm j) (c : PTm n) : Syn.subst σ (determinant c) = determinant (Syn.subst σ c) := by simp [determinant]
+ipra_subst numerators
+ipra_subst denominator
+ipra_subst valid
+ipra_subst record
+ipra_subst lift
+ipra_subst homogeneous
+ipra_subst pullback
+ipra_subst imageX
+ipra_subst imageY
+ipra_subst image
+ipra_subst evaluationNumerator
+ipra_subst evaluationDenominator
+ipra_subst evaluate
+ipra_subst discriminant
+ipra_subst determinant
 
 theorem record_numerators (c D : PTm n) : Γ ⊢[PRAAx] numerators (record c D) ≐ c := fst_pair _ _
 theorem record_denominator (c D : PTm n) : Γ ⊢[PRAAx] denominator (record c D) ≐ D := snd_pair _ _
@@ -142,10 +137,8 @@ theorem rational_evaluation_covariance (c m p : PTm n) (hc : Γ ⊢[PRAAx] valid
     (evaluate_value _ _ ht hp) (evaluate_value _ _ hc hi)
     (evaluation_denominator_positive _ _ ht hp) (evaluation_denominator_positive _ _ hc hi)
   apply ZT.derive
-  have num := ZT.toZ_eq (numerator_covariance (Γ := Γ) c m p)
-  have den := natEq (denominator_covariance (Γ := Γ) c m p)
   simp only [ZT.toZ_mul,ZT.toZ_ofNat]
-  rw [num,den]
+  rw [ZT.toZ_eq (numerator_covariance (Γ := Γ) c m p),natEq (denominator_covariance (Γ := Γ) c m p)]
 
 theorem native_discriminant_covariance (c m : PTm n) : Γ ⊢[PRAAx]
     ZT.eq (AnalyticConicAffine.discriminant (numerators (pullback c m)))

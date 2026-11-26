@@ -14,7 +14,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalHigherDerivative
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalHigherRows (degree derivative factorial_binding)
 open GaussianBarnesCanonicalHigherCofinal (length sample)
 open GaussianBarnesCanonicalLogCofinal (source)
@@ -26,9 +26,6 @@ open GaussianRationalFiniteSum (sum termsEqual multiplyBody multiply_body_at sum
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open Products (fact)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

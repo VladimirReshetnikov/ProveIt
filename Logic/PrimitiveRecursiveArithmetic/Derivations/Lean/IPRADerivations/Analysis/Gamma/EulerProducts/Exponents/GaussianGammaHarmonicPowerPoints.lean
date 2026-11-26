@@ -17,21 +17,17 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaHarmonicPowerPoints
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero qadd qmul ofGaussian)
 open GaussianRationalSyntheticDivision (qone qmul_congr qadd_congr)
 open GaussianRationalReciprocal (power)
 open GaussianGammaHarmonicIncrement (reciprocalPoint)
 open RationalGaussianEmbedding (embed)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def point (m N : PTm n) : PTm n := embed (RationalReciprocalPowerName.harmonicPrefix m N)
-@[simp] theorem subst_point {l : ℕ} (σ : Fin n → PTm l) (m N : PTm n) :
-    Syn.subst σ (point m N) = point (Syn.subst σ m) (Syn.subst σ N) := by simp [point]
+ipra_subst point
 
 theorem point_canonical (m N : PTm n) : Γ ⊢[PRAAx] GaussianRationalHorner.canonical (point m N) :=
   RationalGaussianEmbedding.embed_canonical _
@@ -58,8 +54,7 @@ theorem point_step (m N : PTm n) : Γ ⊢[PRAAx]
         ((RationalGaussianEmbedding.embed_add _ _).eqTrans (qadd_congr (.eqRefl _) (reciprocal_power m N).eqSymm))
 
 def firstLaw (N : PTm n) : Fm PTm n := point one N ≐ GaussianGammaCanonicalExponent.harmonicPoint N
-@[simp] theorem subst_firstLaw {l : ℕ} (σ : Fin n → PTm l) (N : PTm n) :
-    (firstLaw N).subst σ = firstLaw (Syn.subst σ N) := by simp [firstLaw]
+ipra_subst firstLaw
 
 theorem first_zero : Γ ⊢[PRAAx] firstLaw (zero : PTm n) :=
   (point_zero one).eqTrans GaussianGammaEulerHeadQuadratic.harmonic_zero.eqSymm
@@ -71,11 +66,9 @@ theorem first_step (N : PTm n) (ih : Γ ⊢[PRAAx] firstLaw N) : Γ ⊢[PRAAx] f
 
 theorem first_is_original_harmonic (N : PTm n) : Γ ⊢[PRAAx] firstLaw N := by
   have all : Γ ⊢[PRAAx] .all (firstLaw (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_firstLaw,Syn.subst_var,Syn.inst_zero]
-      exact first_zero
-    · simp only [subst_firstLaw,Syn.subst_var,Syn.repl_zero]
-      exact first_step _ Prf.hyp0
+    ipra_qfind [subst_firstLaw]
+    · exact first_zero
+    · exact first_step _ Prf.hyp0
   simpa only [subst_firstLaw,Syn.subst_var,Syn.inst_zero] using all.allE N
 
 theorem original_harmonic_power_point_numerical_successor_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2

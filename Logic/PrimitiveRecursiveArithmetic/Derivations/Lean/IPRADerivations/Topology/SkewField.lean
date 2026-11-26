@@ -1,4 +1,3 @@
-import IPRADerivations.Core.LinearAlgebra
 import IPRADerivations.Core.IntCancel
 import IPRADerivations.Algebra.QuinticPrincipal
 

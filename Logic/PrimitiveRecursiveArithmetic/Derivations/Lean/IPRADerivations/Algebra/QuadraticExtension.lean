@@ -22,11 +22,7 @@ not formalized.
 
 namespace LeanProofs.IPRA.Algebra.QuadraticExtension
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 abbrev a : ZT 14 := .var2 0 1
 abbrev b : ZT 14 := .var2 2 3

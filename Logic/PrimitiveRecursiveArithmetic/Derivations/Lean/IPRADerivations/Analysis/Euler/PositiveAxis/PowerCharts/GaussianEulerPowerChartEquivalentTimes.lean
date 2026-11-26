@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPowerChartEquivalentTimes
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPositivePowerChart (nameF data)
 open GaussianEulerPowerChartRationalPowers (chart_proper)
 open GaussianEulerPowerChartCofinalEndpoints (source lowerDenominator upperNumerator width)
@@ -22,9 +22,6 @@ open GaussianGammaCanonicalExponent (constantF)
 open GaussianNameEquivalence (crossEquivalent cross_trans)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (positive_product)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

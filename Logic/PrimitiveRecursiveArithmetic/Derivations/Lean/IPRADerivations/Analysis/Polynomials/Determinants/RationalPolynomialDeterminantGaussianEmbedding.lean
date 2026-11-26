@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Determinants.RationalPolynomialDeterminantTermsGaussianEmbedding
 import IPRADerivations.Analysis.Polynomials.Determinants.GaussianPolynomialDeterminant
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual original rational polynomial determinant
@@ -15,16 +14,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalPolynomialDeterminantGaussianEmbedding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalGaussianEmbedding (embed scalarZero scalarOne)
 open RationalPolynomialGaussianEmbedding (coefficients embed_congr)
 open RationalPolynomialDeterminantTermsGaussianEmbedding (embeddedTable term)
 open GaussianPolynomialDeterminant (wordCode data width)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -36,12 +32,9 @@ def stepBody : PTm 3 := RationalPolynomialBuffersGaussianEmbedding.added (var 1)
 def prefixF : PR 2 := rec2 initial stepBody
 def partialDeterminant (M m L t : PTm n) : PTm n := ap2 prefixF t (data M m L)
 def determinant (M m L : PTm n) : PTm n := partialDeterminant M m L (Foundations.RuntimePermutationWords.count m)
-@[simp] theorem subst_summand {l : ℕ} (σ : Fin n → PTm l) (M m L t : PTm n) :
-    Syn.subst σ (summand M m L t) = summand (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ t) := by simp [summand]
-@[simp] theorem subst_partialDeterminant {l : ℕ} (σ : Fin n → PTm l) (M m L t : PTm n) :
-    Syn.subst σ (partialDeterminant M m L t) = partialDeterminant (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ t) := by simp [partialDeterminant]
-@[simp] theorem subst_determinant {l : ℕ} (σ : Fin n → PTm l) (M m L : PTm n) :
-    Syn.subst σ (determinant M m L) = determinant (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) := by simp [determinant]
+ipra_subst summand
+ipra_subst partialDeterminant
+ipra_subst determinant
 theorem summand_congr {M M' m m' L L' t t' : PTm n} (hM : Γ ⊢[PRAAx] M ≐ M') (hm : Γ ⊢[PRAAx] m ≐ m')
     (hL : Γ ⊢[PRAAx] L ≐ L') (ht : Γ ⊢[PRAAx] t ≐ t') : Γ ⊢[PRAAx] summand M m L t ≐ summand M' m' L' t' := by
   ipra_congr (summand (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hM, hm, hL, ht]
@@ -59,7 +52,7 @@ theorem prefix_zero (M m L : PTm n) : Γ ⊢[PRAAx] partialDeterminant M m L zer
   simp only [initial,RationalPolynomialBuffersGaussianEmbedding.subst_zeros,GaussianPolynomialDeterminant.subst_width,subst_fstT,subst_sndT,
     Syn.subst_var,Matrix.cons_val_zero] at e
   have tail := snd_pair (Γ := Γ) M (pairT m L)
-  have hWidth := congrSucc (congrMul ((congrFst tail).eqTrans (fst_pair _ _)) ((congrSnd tail).eqTrans (snd_pair _ _)))
+  have hWidth := congrSucc (congrMul tail.fstE tail.sndE)
   exact e.eqTrans ((RationalPolynomialBuffersGaussianEmbedding.zeros_at _).eqSymm.eqTrans
     ((congrAp1 RationalPolynomialBuffersGaussianEmbedding.zerosF hWidth).eqTrans (RationalPolynomialBuffersGaussianEmbedding.zeros_at _)))
 theorem prefix_succ (M m L t : PTm n) : Γ ⊢[PRAAx] partialDeterminant M m L (succ t) ≐
@@ -68,9 +61,9 @@ theorem prefix_succ (M m L t : PTm n) : Γ ⊢[PRAAx] partialDeterminant M m L (
   simp only [stepBody,RationalPolynomialBuffersGaussianEmbedding.subst_added,subst_summand,GaussianPolynomialDeterminant.subst_width,
     subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two] at e
   have tail := snd_pair (Γ := Γ) M (pairT m L)
-  exact e.eqTrans (added_congr (.eqRefl _) (summand_congr (fst_pair _ _) ((congrFst tail).eqTrans (fst_pair _ _))
-    ((congrSnd tail).eqTrans (snd_pair _ _)) (.eqRefl _))
-      (congrSucc (congrMul ((congrFst tail).eqTrans (fst_pair _ _)) ((congrSnd tail).eqTrans (snd_pair _ _)))))
+  exact e.eqTrans (added_congr (.eqRefl _) (summand_congr (fst_pair _ _) tail.fstE
+    tail.sndE (.eqRefl _))
+      (congrSucc (congrMul tail.fstE tail.sndE)))
 theorem prefix_length (M m L t : PTm n) : Γ ⊢[PRAAx] length (partialDeterminant M m L t) ≐ width m L := by
   refine .orE (zero_or_succ t) ?_ ?_
   · exact (congrFst ((partial_congr (.eqRefl _) (.eqRefl _) (.eqRefl _) Prf.hyp0).eqTrans (prefix_zero _ _ _))).eqTrans
@@ -80,9 +73,7 @@ theorem prefix_length (M m L t : PTm n) : Γ ⊢[PRAAx] length (partialDetermina
 
 def coefficientLaw (M m L s t : PTm n) : Fm PTm n := embed (entry (partialDeterminant M m L t) s) ≐
   entry (GaussianPolynomialDeterminant.partialDeterminant (embeddedTable M m L) m L t) s
-@[simp] theorem subst_coefficientLaw {l : ℕ} (σ : Fin n → PTm l) (M m L s t : PTm n) :
-    (coefficientLaw M m L s t).subst σ = coefficientLaw (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ s) (Syn.subst σ t) := by
-  simp [coefficientLaw]
+ipra_subst coefficientLaw
 theorem coefficient_base (M m L s : PTm n) (hs : Γ ⊢[PRAAx] le s (m*L)) : Γ ⊢[PRAAx] coefficientLaw M m L s zero :=
   (embed_congr (entry_congr (prefix_zero M m L) (.eqRefl s))).eqTrans
     ((RationalPolynomialBuffersGaussianEmbedding.zeros_embedding _ s ((succ_monus_succ _ _).eqTrans hs)).eqTrans
@@ -101,11 +92,9 @@ theorem prefix_coefficient_embedding (M m L s t : PTm n) (hs : Γ ⊢[PRAAx] le 
   have hss : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift s) (Syn.shift m*Syn.shift L) := by
     simpa only [Fm.shift,subst_le,PTm.subst_mul,Syn.shift] using hs.shift
   have all : Γ ⊢[PRAAx] .all (coefficientLaw (Syn.shift M) (Syn.shift m) (Syn.shift L) (Syn.shift s) (var 0)) := by
-    refine PRA.qfInd _ (by trivial) ?_ ?_
-    · simp only [subst_coefficientLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact coefficient_base M m L s hs
-    · simp only [subst_coefficientLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact coefficient_step _ _ _ _ _ hss.wk Prf.hyp0
+    ipra_qfind (by trivial) [subst_coefficientLaw]
+    · exact coefficient_base M m L s hs
+    · exact coefficient_step _ _ _ _ _ hss.wk Prf.hyp0
   simpa only [subst_coefficientLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE t
 
 theorem determinant_length (M m L : PTm n) : Γ ⊢[PRAAx] length (determinant M m L) ≐ width m L := prefix_length _ _ _ _
@@ -159,25 +148,19 @@ def determinantF : PR 3 := PTm.toPR (determinant (var 0) (var 1) (var 2))
 def output (M m L t : PTm n) : PTm n := pairT (partialDeterminant M m L t) (pairT (determinant M m L) (embeddedTable M m L))
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (M m L t : PTm n) : PTm n := PTm.app outputF ![M,m,L,t]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (M m L t : PTm n) :
-    Syn.subst σ (output M m L t) = output (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ t) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (M m L t : PTm n) :
-    Syn.subst σ (run M m L t) = run (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ t) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 theorem determinant_at (M m L : PTm n) : Γ ⊢[PRAAx] ap3 determinantF M m L ≐ determinant M m L := by
   simpa [determinantF,ap3] using toPR_eq (Γ := Γ) (determinant (var 0) (var 1) (var 2) : PTm 3) ![M,m,L]
 theorem program_at (M m L t : PTm n) : Γ ⊢[PRAAx] run M m L t ≐ output M m L t := by
   simpa only [run,outputF,subst_output,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,
     Matrix.head_cons,Matrix.tail_cons] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![M,m,L,t]
 theorem returned_prefix (M m L t : PTm n) : Γ ⊢[PRAAx] fstT (run M m L t) ≐ partialDeterminant M m L t :=
-  (congrFst (program_at _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _).fstE
 theorem returned_determinant (M m L t : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run M m L t)) ≐ determinant M m L :=
-  (congrFst ((congrSnd (program_at _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _).sndE.fstE
 theorem returned_table (M m L t : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run M m L t)) ≐ embeddedTable M m L :=
-  (congrSnd ((congrSnd (program_at _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _).sndE.sndE
 theorem returned_coefficient (M m L t s : PTm n) (hs : Γ ⊢[PRAAx] le s (m*L)) : Γ ⊢[PRAAx]
     embed (entry (fstT (sndT (run M m L t))) s) ≐ entry (GaussianPolynomialDeterminant.determinant (embeddedTable M m L) m L) s :=
   (embed_congr (entry_congr (returned_determinant M m L t) (.eqRefl s))).eqTrans (coefficient_embedding M m L s hs)

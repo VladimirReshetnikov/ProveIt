@@ -14,7 +14,7 @@ set_option maxHeartbeats 1100000
 
 namespace LeanProofs.IPRA.Analysis.GaussianDigammaFirstBernoulliEndpoints
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianDigammaFirstBernoulliPanelSum (squareCoeff cubeCoeff)
 open GaussianStirlingAllOrderPowerIntegralMeshCells (primitive)
 open GaussianStirlingAllOrderDiscreteParts (sub)
@@ -25,8 +25,6 @@ open RationalArithmetic (add add_guard multiply)
 open RationalNonnegativePowers (fraction_congr)
 open RationalNormalForm (normalize_well_formed)
 open RationalRepresentations (represents_add represents_multiply represents_negative)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -14,7 +14,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedGammaSecondCrossingWitness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedGoldenRatio (nameF nameData numerator denominator sample sample_at denominator_positive name_regular)
 open GaussianNamedGammaBackwardShift (minusOneF minusOneData negativeOne minus_one_at)
 open GaussianNamedRightHalfPlane (marginPoint certificate)
@@ -36,10 +36,6 @@ open GaussianGammaHalfSqrtBrackets (fraction_first_represents)
 open RationalGaussianEmbedding (axis scalarZero)
 open RationalValueBounds (upper)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

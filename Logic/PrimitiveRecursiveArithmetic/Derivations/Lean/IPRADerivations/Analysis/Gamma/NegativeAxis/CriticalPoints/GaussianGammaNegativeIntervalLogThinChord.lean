@@ -15,7 +15,7 @@ set_option maxHeartbeats 1600000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalLogThinChord
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianGammaCompactCutoffSplit (add_data_congr)
@@ -40,10 +40,6 @@ open GaussianRationalNaturalScale (naturalPoint)
 open GaussianStirlingMultiplicativeBoundsLog (constant_order fractions_order)
 open GaussianStirlingGammaFractionalIncrementConvexity (pred_positive)
 open RationalArgmin (rationalLE rationalLE_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus num pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "C" => constantF
@@ -61,20 +57,11 @@ def lowerData (a c b N W : PTm n) : PTm n :=
 def weightedData (a c b N W : PTm n) : PTm n :=
   addData (productData G (pred W) (nameData a b N)) (nameData c b N)
 
-@[simp] theorem subst_centerData {m : ℕ} (σ : Fin n → PTm m) (a c b N W : PTm n) :
-    Syn.subst σ (centerData a c b N W) =
-      centerData (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ b) (Syn.subst σ N) (Syn.subst σ W) := by
-  simp [centerData]
+ipra_subst centerData
 
-@[simp] theorem subst_lowerData {m : ℕ} (σ : Fin n → PTm m) (a c b N W : PTm n) :
-    Syn.subst σ (lowerData a c b N W) =
-      lowerData (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ b) (Syn.subst σ N) (Syn.subst σ W) := by
-  simp [lowerData,two]
+ipra_subst lowerData [two]
 
-@[simp] theorem subst_weightedData {m : ℕ} (σ : Fin n → PTm m) (a c b N W : PTm n) :
-    Syn.subst σ (weightedData a c b N W) =
-      weightedData (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ b) (Syn.subst σ N) (Syn.subst σ W) := by
-  simp [weightedData]
+ipra_subst weightedData
 
 theorem center_guard (a c b W : PTm n) (ha : Γ ⊢[PRAAx] guard a b) (hc : Γ ⊢[PRAAx] guard c b)
     (hW : Γ ⊢[PRAAx] le two W) : Γ ⊢[PRAAx] guard (centerNumerator a c W) (centerDenominator b W) := by

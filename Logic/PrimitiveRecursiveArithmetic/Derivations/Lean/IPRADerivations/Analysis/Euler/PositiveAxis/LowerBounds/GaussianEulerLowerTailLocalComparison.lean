@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLowerTailLocalComparison
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLowerTailPartition (rootStep offset panelWidth totalWidth
   offset_monotone absolute_offset uniform_panel_width)
 open GaussianEulerLowerTailRootGrid (rootDenominator timeNumerator timeDenominator)
@@ -27,10 +27,6 @@ open GaussianRationalHorner (ofGaussian positive_product ofGaussian_represents)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open ComplexLogarithmRemainder (scale oneCode normSq)
 open GaussianRootAlgebra (equal_of_values re_scale im_scale re_sub im_sub re_one im_one)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

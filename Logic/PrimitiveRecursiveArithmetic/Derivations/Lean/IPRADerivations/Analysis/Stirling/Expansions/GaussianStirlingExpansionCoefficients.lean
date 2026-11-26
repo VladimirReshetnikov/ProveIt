@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingExpansionCoefficients
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open BernoulliBounds (zint)
 open BernoulliCoefficients (bc)
 open GaussianPolynomialMonicCompanion (normalizedRow normalized_length normalized_canonical)
@@ -32,10 +32,6 @@ open RationalGaussianEmbedding (native)
 open RationalPhiSharpQuintic (buffer buffer_length buffer_lookup numeral_lt numeral_le)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -156,10 +152,8 @@ private theorem subst_buffer {k : ℕ} (σ : Fin n → PTm k) (xs : List (PTm n)
   funext j
   exact subst_quoted σ _
 
-@[simp] theorem subst_logTable {k : ℕ} (σ : Fin n → PTm k) (m : ℕ) :
-    Syn.subst σ (logTable m) = logTable m := by simp [logTable]
+ipra_subst logTable
 
-@[simp] theorem subst_expTable {k : ℕ} (σ : Fin n → PTm k) (m : ℕ) :
-    Syn.subst σ (expTable m) = expTable m := by simp [expTable]
+ipra_subst expTable
 
 end LeanProofs.IPRA.Analysis.GaussianStirlingExpansionCoefficients

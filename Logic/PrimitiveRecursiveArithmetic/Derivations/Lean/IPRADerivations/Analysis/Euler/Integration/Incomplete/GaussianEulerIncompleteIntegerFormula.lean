@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Euler.Integration.Incomplete.GaussianEulerIncompleteIntegerStep
 import IPRADerivations.Analysis.Euler.Integration.Incomplete.GaussianEulerIncompleteFactorialCombination
 import IPRADerivations.Analysis.Euler.Integration.Incomplete.GaussianEulerIncompleteUnitUpper
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The original upper incomplete Gamma factorial formula
@@ -17,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIncompleteIntegerFormula
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIncompleteIntegerDomain (source data data_zero original_regular_names)
 open GaussianEulerIncompleteIntegerStep (value decay stepCost original_upper_step)
 open GaussianEulerIncompleteName (upperF)
@@ -32,10 +31,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_symmetric)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -47,14 +42,10 @@ def errorF : PR 2 := rec2 (two : PTm 1) errorBody
 def error (i a b : PTm n) : PTm n := ap2 errorF i (pairT a b)
 def errorLaw (p i a b : PTm n) : Fm PTm n := distanceBounded (value p i a b) (rawFormula p i a b) (error i a b) (unit p)
 
-@[simp] theorem subst_formulaData {m : ℕ} (σ : Fin n → PTm m) (i a b : PTm n) :
-    Syn.subst σ (formulaData i a b) = formulaData (Syn.subst σ i) (Syn.subst σ a) (Syn.subst σ b) := by simp [formulaData]
-@[simp] theorem subst_rawFormula {m : ℕ} (σ : Fin n → PTm m) (p i a b : PTm n) :
-    Syn.subst σ (rawFormula p i a b) = rawFormula (Syn.subst σ p) (Syn.subst σ i) (Syn.subst σ a) (Syn.subst σ b) := by simp [rawFormula]
-@[simp] theorem subst_error {m : ℕ} (σ : Fin n → PTm m) (i a b : PTm n) :
-    Syn.subst σ (error i a b) = error (Syn.subst σ i) (Syn.subst σ a) (Syn.subst σ b) := by simp [error]
-@[simp] theorem subst_errorLaw {m : ℕ} (σ : Fin n → PTm m) (p i a b : PTm n) :
-    (errorLaw p i a b).subst σ = errorLaw (Syn.subst σ p) (Syn.subst σ i) (Syn.subst σ a) (Syn.subst σ b) := by simp [errorLaw]
+ipra_subst formulaData
+ipra_subst rawFormula
+ipra_subst error
+ipra_subst errorLaw
 
 theorem error_zero (a b : PTm n) : Γ ⊢[PRAAx] error zero a b ≐ two := by
   simpa only [error,errorF,two,PTm.subst_succ,PTm.subst_zero] using

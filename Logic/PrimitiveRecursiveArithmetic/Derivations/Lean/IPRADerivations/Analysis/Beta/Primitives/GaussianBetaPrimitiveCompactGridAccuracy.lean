@@ -14,17 +14,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaPrimitiveCompactGridAccuracy
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBetaPrimitiveCompactGrid (K Z)
 open GaussianBetaPrimitiveGridTelescope (gridEndpoint quadratureScaled cellNumerator globalDenominator)
 open GaussianRationalMetric (qsub distanceBounded)
 open GaussianRationalDistanceOrder (distance_radius_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (positive_product)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

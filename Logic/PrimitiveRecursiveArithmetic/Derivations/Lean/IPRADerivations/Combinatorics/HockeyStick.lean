@@ -22,13 +22,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.HockeyStick
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Vandermonde (gb congrGb gb_zero gb_pascal)
 open LeanProofs.IPRA.Combinatorics.CatalanNarayana (gb_symm)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -57,13 +53,9 @@ theorem hs_step {m d : PTm n} (ih : Γ ⊢[PRAAx] ap2 (sumF hB) (succ d) m ≐ g
 private abbrev hsF : Fm PTm 2 := ap2 (sumF hB) (succ (var 0)) (var 1) ≐ gb (var 1 + var 0 + one) (var 0)
 
 private theorem hs₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] hsF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, Syn.subst_var,
-      Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact hs_base _
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, Syn.subst_var,
-      Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact hs_step Prf.hyp0
+  ipra_ind [subst_ap2]
+  · exact hs_base _
+  · exact hs_step Prf.hyp0
 
 /-- The hockey-stick identity: `∑_{k ≤ d} C(m + k, k) = C(m + d + 1, d)`. -/
 theorem hockey_stick (m d : PTm n) : Γ ⊢[PRAAx] ap2 (sumF hB) (succ d) m ≐ gb (m + d + one) d := by

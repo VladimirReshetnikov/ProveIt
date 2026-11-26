@@ -1,8 +1,6 @@
 import IPRADerivations.Combinatorics.Vandermonde
 import IPRADerivations.Combinatorics.Catalan
 import IPRADerivations.Core.ProdLemmas
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Squares of binomial coefficients and the Narayana sum
@@ -25,7 +23,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.CatalanNarayana
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial (binom)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (binom_eq mul_cancel catalan_ratio_open)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrBinom)
@@ -35,10 +33,6 @@ open LeanProofs.IPRA.Combinatorics.Vandermonde (gb congrGb vsB vs_at shift_y van
 open LeanProofs.IPRA.Combinatorics.Catalan (cat cb cat_spec succ_pos)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (fact_pos)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

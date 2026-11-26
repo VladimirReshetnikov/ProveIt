@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Representation.RationalPolynomialBuffersGaussianEmbedding
 import IPRADerivations.Analysis.RationalArithmetic.RationalGaussianRealPart
 import IPRADerivations.Analysis.Polynomials.Products.GaussianRationalPolynomialProduct
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual original rational convolution and coefficient transport
@@ -17,17 +16,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalPolynomialProductGaussianEmbedding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalGaussianEmbedding (embed scalarZero)
 open RationalPolynomialGaussianEmbedding (coefficients coefficient_lookup coefficients_length embed_congr)
 open RationalPolynomialBuffersGaussianEmbedding (padded padded_embedding)
 open GaussianRationalPolynomialProduct (data stageData)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,16 +38,10 @@ def stageBody : PTm 2 := PTm.app coefficientF ![fstT (var 1),fstT (sndT (var 1))
 def stage (P Q M t : PTm n) : PTm n := sequence stageBody (M+t) (stageData P Q M t)
 def product (P Q N M : PTm n) : PTm n := stage P Q M (succ N)
 
-@[simp] theorem subst_contribution {l : ℕ} (σ : Fin n → PTm l) (P Q M k i : PTm n) :
-    Syn.subst σ (contribution P Q M k i) = contribution (Syn.subst σ P) (Syn.subst σ Q)
-      (Syn.subst σ M) (Syn.subst σ k) (Syn.subst σ i) := by simp [contribution,Signum.sg]
-@[simp] theorem subst_coefficient {l : ℕ} (σ : Fin n → PTm l) (P Q M t k : PTm n) :
-    Syn.subst σ (coefficient P Q M t k) = coefficient (Syn.subst σ P) (Syn.subst σ Q)
-      (Syn.subst σ M) (Syn.subst σ t) (Syn.subst σ k) := by simp [coefficient]
-@[simp] theorem subst_stage {l : ℕ} (σ : Fin n → PTm l) (P Q M t : PTm n) :
-    Syn.subst σ (stage P Q M t) = stage (Syn.subst σ P) (Syn.subst σ Q) (Syn.subst σ M) (Syn.subst σ t) := by simp [stage]
-@[simp] theorem subst_product {l : ℕ} (σ : Fin n → PTm l) (P Q N M : PTm n) :
-    Syn.subst σ (product P Q N M) = product (Syn.subst σ P) (Syn.subst σ Q) (Syn.subst σ N) (Syn.subst σ M) := by simp [product]
+ipra_subst contribution [Signum.sg]
+ipra_subst coefficient
+ipra_subst stage
+ipra_subst product
 
 theorem contribution_congr {P P' Q Q' M M' k k' i i' : PTm n}
     (hP : Γ ⊢[PRAAx] P ≐ P') (hQ : Γ ⊢[PRAAx] Q ≐ Q') (hM : Γ ⊢[PRAAx] M ≐ M')
@@ -65,8 +54,8 @@ theorem contribution_body_at (P Q M k i : PTm n) : Γ ⊢[PRAAx]
     Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
   have e := snd_pair (Γ := Γ) P (pairT Q (pairT M k))
   have f := (congrSnd e).eqTrans (snd_pair Q (pairT M k))
-  exact contribution_congr (fst_pair _ _) ((congrFst e).eqTrans (fst_pair _ _))
-    ((congrFst f).eqTrans (fst_pair _ _)) ((congrSnd f).eqTrans (snd_pair _ _)) (.eqRefl _)
+  exact contribution_congr (fst_pair _ _) e.fstE
+    f.fstE f.sndE (.eqRefl _)
 theorem contribution_inside (P Q M k i : PTm n) (hi : Γ ⊢[PRAAx] le i k) : Γ ⊢[PRAAx]
     contribution P Q M k i ≐ RationalArithmetic.multiply (entry P i) (padded Q (succ M) (monus k i)) :=
   RationalArithmetic.select_one _ _ _ (AnalyticNumberTheory.Totatives.sg_lt ((succ_monus_succ _ _).eqTrans hi))
@@ -104,9 +93,9 @@ theorem stage_body_at (P Q M t k : PTm n) : Γ ⊢[PRAAx]
     (fun i => by
       fin_cases i
       · exact fst_pair _ _
-      · exact (congrFst e).eqTrans (fst_pair _ _)
-      · exact (congrFst f).eqTrans (fst_pair _ _)
-      · exact (congrSnd f).eqTrans (snd_pair _ _)
+      · exact e.fstE
+      · exact f.fstE
+      · exact f.sndE
       · exact .eqRefl _)
   exact h.eqTrans (coefficient_program P Q M t k)
 theorem stage_length (P Q M t : PTm n) : Γ ⊢[PRAAx] length (stage P Q M t) ≐ M+t := sequence_length _ _ _
@@ -182,12 +171,7 @@ theorem product_coefficient_well_formed (P Q N M k : PTm n) (hk : Γ ⊢[PRAAx] 
 
 def productF : PR 4 := PTm.toPR (product (var 0) (var 1) (var 2) (var 3))
 def run (P Q N M : PTm n) : PTm n := PTm.app productF ![P,Q,N,M]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (P Q N M : PTm n) :
-    Syn.subst σ (run P Q N M) = run (Syn.subst σ P) (Syn.subst σ Q) (Syn.subst σ N) (Syn.subst σ M) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst run
 theorem program_at (P Q N M : PTm n) : Γ ⊢[PRAAx] run P Q N M ≐ product P Q N M := by
   simpa only [run,productF,subst_product,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,
     Matrix.head_cons,Matrix.tail_cons] using toPR_eq (Γ := Γ) (product (var 0) (var 1) (var 2) (var 3) : PTm 4) ![P,Q,N,M]

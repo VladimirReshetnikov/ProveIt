@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitSubstitutionLatticeRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUnitSubstitutionLatticeGeometry (source disk start count denominator_positive)
 open GaussianEulerUnitDecayInput (clock compactDenominator)
 open GaussianEulerUnitKernelCompactRate (lipschitz)
@@ -22,10 +22,6 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_radius_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -41,18 +37,11 @@ def numerator (k q N R C E T M : PTm n) : PTm n :=
     latticeCoefficient N R E T*(E*N)*unit k*unit q+(E*N)*unit k*M
 def denominator (k q N E M : PTm n) : PTm n := E*N*unit k*M*unit q
 
-@[simp] theorem subst_meshCoefficient {m : ℕ} (σ : Fin n → PTm m) (R C E T : PTm n) :
-    Syn.subst σ (meshCoefficient R C E T) = meshCoefficient (Syn.subst σ R) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by simp [meshCoefficient]
-@[simp] theorem subst_queryCoefficient {m : ℕ} (σ : Fin n → PTm m) (N R E T : PTm n) :
-    Syn.subst σ (queryCoefficient N R E T) = queryCoefficient (Syn.subst σ N) (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T) := by simp [queryCoefficient,queryMinor]
-@[simp] theorem subst_latticeCoefficient {m : ℕ} (σ : Fin n → PTm m) (N R E T : PTm n) :
-    Syn.subst σ (latticeCoefficient N R E T) = latticeCoefficient (Syn.subst σ N) (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T) := by simp [latticeCoefficient]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (k q N R C E T M : PTm n) :
-    Syn.subst σ (numerator k q N R C E T M) = numerator (Syn.subst σ k) (Syn.subst σ q) (Syn.subst σ N)
-      (Syn.subst σ R) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ M) := by simp [numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (k q N E M : PTm n) :
-    Syn.subst σ (denominator k q N E M) = denominator (Syn.subst σ k) (Syn.subst σ q) (Syn.subst σ N)
-      (Syn.subst σ E) (Syn.subst σ M) := by simp [denominator]
+ipra_subst meshCoefficient
+ipra_subst queryCoefficient [queryMinor]
+ipra_subst latticeCoefficient
+ipra_subst numerator
+ipra_subst denominator
 
 theorem numerical_coarsening (k q N R C E T M : PTm n) : Γ ⊢[PRAAx]
     le (GaussianEulerUnitSubstitutionLatticeComparison.numerator k q N R C E T M*denominator k q N E M)

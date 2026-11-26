@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerSharpDegreeSchedule
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (bounded qnegative)
@@ -25,10 +25,6 @@ open GaussianEulerIntegrandName (decayF decayData decayPoint)
 open GaussianGammaCanonicalExponent (constantF)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalDistanceOrder (distance_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -41,18 +37,11 @@ def degree (p R : PTm n) : PTm n := num 4*size p R*unit (p+num 4)
 def observationClock (p R : PTm n) : PTm n := GaussianFastValueCut.exponent (two*tailCoefficient R) (p+num 4)
 def weightedDecay (p R q : PTm n) : PTm n := qmul (radiusPoint (tailCoefficient R) one)
   (ap2 decayF q (decayData (degree p R) (num 4)))
-@[simp] theorem subst_coefficient {m : ℕ} (σ : Fin n → PTm m) (R : PTm n) :
-    Syn.subst σ (coefficient R) = coefficient (Syn.subst σ R) := by
-  simp [coefficient,GaussianMonomialDecayQuadrature.cap,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_tailCoefficient {m : ℕ} (σ : Fin n → PTm m) (R : PTm n) :
-    Syn.subst σ (tailCoefficient R) = tailCoefficient (Syn.subst σ R) := by
-  simp [tailCoefficient,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_size {m : ℕ} (σ : Fin n → PTm m) (p R : PTm n) :
-    Syn.subst σ (size p R) = size (Syn.subst σ p) (Syn.subst σ R) := by simp [size]
-@[simp] theorem subst_height {m : ℕ} (σ : Fin n → PTm m) (p R : PTm n) :
-    Syn.subst σ (height p R) = height (Syn.subst σ p) (Syn.subst σ R) := by simp [height]
-@[simp] theorem subst_degree {m : ℕ} (σ : Fin n → PTm m) (p R : PTm n) :
-    Syn.subst σ (degree p R) = degree (Syn.subst σ p) (Syn.subst σ R) := by simp [degree]
+ipra_subst coefficient [GaussianMonomialDecayQuadrature.cap, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst tailCoefficient [GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst size
+ipra_subst height
+ipra_subst degree
 
 theorem four_positive : Γ ⊢[PRAAx] le one (num 4 : PTm n) :=
   le_of_eq_add (d := num 3) (by ipra_ring)

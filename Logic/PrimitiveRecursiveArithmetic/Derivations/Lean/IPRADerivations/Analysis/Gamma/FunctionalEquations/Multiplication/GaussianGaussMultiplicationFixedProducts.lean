@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationFixedProducts
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaGaussShiftedProduct (source)
@@ -25,8 +25,6 @@ open GaussianRootApproximationWitness (pointBounds)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalHorner (positive_product)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -44,11 +42,8 @@ abbrev referenceF : PR 2 := GaussianNamedFiniteProductName.nameF RE
 def shiftedData (z R B m d N : PTm n) : PTm n := GaussianNamedFiniteProductName.data m (SRadius R m d) one (SData z R B m d N)
 def referenceData (m N : PTm n) : PTm n := GaussianNamedFiniteProductName.data m (RRadius m) one (RData m N)
 
-@[simp] theorem subst_shiftedData {l : ℕ} (σ : Fin n → PTm l) (z R B m d N : PTm n) :
-    Syn.subst σ (shiftedData z R B m d N) = shiftedData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ m) (Syn.subst σ d) (Syn.subst σ N) := by simp [shiftedData,one]
-@[simp] theorem subst_referenceData {l : ℕ} (σ : Fin n → PTm l) (m N : PTm n) :
-    Syn.subst σ (referenceData m N) = referenceData (Syn.subst σ m) (Syn.subst σ N) := by simp [referenceData,one]
+ipra_subst shiftedData [one]
+ipra_subst referenceData [one]
 
 private theorem shifted_row_bound_at (s p r z R B m a d N : PTm n) (h : Γ ⊢[PRAAx] source z R B m a d)
     (hr : Γ ⊢[PRAAx] lt r m) (hn : Γ ⊢[PRAAx] le (SGuard s R m a d) N) :

@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalNamedInverseDerivative
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianExponentialSmallPerturbation (smallSamples)
@@ -35,10 +35,6 @@ open GaussianNamedLipschitzRate (diagonalEnvelope diagonalNumerator diagonalDeno
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "IF" => GaussianGammaNegativeIntervalNamedInverseFactor.nameF
@@ -54,10 +50,7 @@ def input (f g K : PR 2) (p x y z E a : PTm n) : Fm PTm n :=
     (crossEquivalent (GaussianNamedDifference.nameF g f) K (GaussianNamedDifference.data y x) z ⋏
       smallSamples K z one (unit p))))
 
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (f g K : PR 2) (p x y z E a : PTm n) :
-    (input f g K p x y z E a).subst σ =
-      input f g K (Syn.subst σ p) (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ z) (Syn.subst σ E) (Syn.subst σ a) := by
-  simp [input]
+ipra_subst input
 
 def gain (E N : PTm n) : PTm n := two*inverseRateCost (succ N) (E*E)
 

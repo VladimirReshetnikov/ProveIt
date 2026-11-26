@@ -16,7 +16,7 @@ set_option maxHeartbeats 750000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinGeometric
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianApproximateInverseDistance (multiply_distance)
 open GaussianDominantPairAlgebra (radiusPoint radius_one)
 open GaussianEulerDecayFactorBounds (fraction_is_radius_point)
@@ -38,9 +38,6 @@ open GaussianRationalSyntheticDivision (qone qmul_congr qadd_congr qadd_sub_canc
 open GaussianReciprocalHorner (qmul_associative qmul_one_right)
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open RationalArgmin (rationalLE_congr)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -55,21 +52,13 @@ def weightedValue (p z D a b N : PTm n) : PTm n :=
   let k := factorClock p z D a b
   qmul (ap2 powerF k (powerData z D a b)) (prefixValue k a b N)
 
-@[simp] theorem subst_positiveSample {m : ℕ} (σ : Fin n → PTm m) (p a b : PTm n) :
-    Syn.subst σ (positiveSample p a b) = positiveSample (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [positiveSample,denominatorClock,reciprocalClock,two,one]
+ipra_subst positiveSample [denominatorClock, reciprocalClock, two, one]
 
-@[simp] theorem subst_ratio {m : ℕ} (σ : Fin n → PTm m) (p a b : PTm n) :
-    Syn.subst σ (ratio p a b) = ratio (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ b) := by simp [ratio]
+ipra_subst ratio
 
-@[simp] theorem subst_prefixValue {m : ℕ} (σ : Fin n → PTm m) (p a b N : PTm n) :
-    Syn.subst σ (prefixValue p a b N) =
-      prefixValue (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by simp [prefixValue]
+ipra_subst prefixValue
 
-@[simp] theorem subst_weightedValue {m : ℕ} (σ : Fin n → PTm m) (p z D a b N : PTm n) :
-    Syn.subst σ (weightedValue p z D a b N) =
-      weightedValue (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ D) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by
-  simp [weightedValue,factorClock]
+ipra_subst weightedValue [factorClock]
 
 private theorem affine_radius (a b : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
     Γ ⊢[PRAAx] qadd qone (radiusPoint a b) ≐ radiusPoint (b+a) b := by

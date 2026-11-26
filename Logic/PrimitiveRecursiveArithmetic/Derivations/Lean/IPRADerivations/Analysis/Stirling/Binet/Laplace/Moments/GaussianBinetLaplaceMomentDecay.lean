@@ -17,7 +17,7 @@ set_option maxHeartbeats 1100000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentDecay
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianApproximateInverseDistance (multiply_distance)
@@ -39,10 +39,6 @@ open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianReciprocalHorner (qmul_associative)
 open Products (fact)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -53,9 +49,7 @@ local notation "invF" => GaussianNameReciprocal.nameF expF
 
 def tailScale (j D : PTm n) : PTm n := fact (j+two)*pw D (j+two)
 
-@[simp] theorem subst_tailScale {m : ℕ} (σ : Fin n → PTm m) (j D : PTm n) :
-    Syn.subst σ (tailScale j D) = tailScale (Syn.subst σ j) (Syn.subst σ D) := by
-  simp [tailScale,fact,two,one]
+ipra_subst tailScale [fact, two, one]
 
 private theorem reciprocal_bound (p a b k : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hb : Γ ⊢[PRAAx] le one b) :
     Γ ⊢[PRAAx] bounded (ap2 invF p (inverseData a b k)) (fact k*pw b k) (pw a k) := by

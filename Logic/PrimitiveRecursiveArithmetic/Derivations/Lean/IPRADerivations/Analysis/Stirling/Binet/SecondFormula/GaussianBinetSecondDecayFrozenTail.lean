@@ -15,7 +15,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetSecondDecayFrozenTail
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetSecondDecayFinite (finite_bound)
 open GaussianBinetSecondDecayGrid (value rowBody)
 open GaussianBinetSecondDecayPointwise (frozenPiNumerator frozen_pi_rate)
@@ -30,10 +30,6 @@ open GaussianRationalMetric (bounded)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalRiemannRefinement (leftSum)
 open GaussianRightHalfPlaneLogarithm (source)
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -122,18 +118,11 @@ def data (p T k C r X Y D sign : PTm n) : PTm n :=
   sampleData (clock p T M k) (mesh T M k) T k C
     (pairT (D*D) (GaussianBinetArctangentQuadrature.fixedData X Y D sign))
 
-@[simp] theorem subst_mesh {m : ℕ} (σ : Fin n → PTm m) (T M k : PTm n) :
-    Syn.subst σ (mesh T M k) = mesh (Syn.subst σ T) (Syn.subst σ M) (Syn.subst σ k) := by
-  simp [mesh,frozenPiNumerator]
+ipra_subst mesh [frozenPiNumerator]
 
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (p T M k : PTm n) :
-    Syn.subst σ (clock p T M k) = clock (Syn.subst σ p) (Syn.subst σ T) (Syn.subst σ M) (Syn.subst σ k) := by
-  simp [clock,frozenPiNumerator,one,two]
+ipra_subst clock [frozenPiNumerator, one, two]
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (p T k C r X Y D sign : PTm n) :
-    Syn.subst σ (data p T k C r X Y D sign) = data (Syn.subst σ p) (Syn.subst σ T) (Syn.subst σ k)
-      (Syn.subst σ C) (Syn.subst σ r) (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign) := by
-  simp [data]
+ipra_subst data
 
 theorem row_at (i p T k C r X Y D sign : PTm n) :
     let M := succ (C+r)

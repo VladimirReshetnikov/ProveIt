@@ -18,7 +18,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderPanelPartsNames
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianStirlingAllOrderPanelPartsSolve (ratio)
 open GaussianStirlingAllOrderPanelDerivative (signedMean)
 open GaussianStirlingAllOrderPowerIntegralMeshCells (primitive)
@@ -35,9 +35,6 @@ open GaussianNameBounds (U sample_bound)
 open GaussianEuclideanDistanceName (pointCN fraction)
 open RationalArithmetic (multiply)
 open RationalGaussianEmbedding (embed)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "scaleF" => GaussianBoundedConstantProductName.nameF
@@ -67,11 +64,8 @@ def nameData : ℕ → PTm n → PTm n → PTm n → PTm n
     Syn.subst σ (derivativeRatio m : PTm n) = (derivativeRatio m : PTm l) := by
   simp [derivativeRatio,ratio,GaussianStirlingAllOrderPanelPartsSolve.inverseHigh,
     GaussianStirlingAllOrderPanelPartsDensities.lowScalar,GaussianStirlingAllOrderReciprocalWeightError.coefficient]
-@[simp] theorem subst_weightedPrimitive {l : ℕ} (σ : Fin n → PTm l) (m : ℕ) (A B : PTm n) :
-    Syn.subst σ (weightedPrimitive m A B) = weightedPrimitive m (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [weightedPrimitive,signedMean,GaussianStirlingAllOrderPanelDerivative.meanNumerator,BernoulliBounds.zint]
-@[simp] theorem subst_constantCap {l : ℕ} (σ : Fin n → PTm l) (q : PTm n) :
-    Syn.subst σ (constantCap q) = constantCap (Syn.subst σ q) := by simp [constantCap]
+ipra_subst weightedPrimitive [signedMean, GaussianStirlingAllOrderPanelDerivative.meanNumerator, BernoulliBounds.zint]
+ipra_subst constantCap
 @[simp] theorem subst_nameData {l : ℕ} (σ : Fin n → PTm l) (m : ℕ) (A B x : PTm n) :
     Syn.subst σ (nameData m A B x) = nameData m (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ x) := by
   induction m with

@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerReciprocalSlopeBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianLogGammaEulerHead (argument)
@@ -33,18 +33,13 @@ open GaussianRationalReciprocal
   (bound_congr bounded_negative bounded_sum inverse_bound reciprocal reciprocal_canonical)
 open GaussianRationalSyntheticDivision (qadd_congr qsub_congr qzero_add)
 open GaussianReconstructionRoots (norm_from_distance)
-open ConciseIPRA.PTm (succ zero)
-open LeanProofs.IPRA.PTm (monus num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
 
 def bound (R K : PTm n) : PTm n := R + K + num 4
 
-@[simp] theorem subst_bound {m : ℕ} (σ : Fin n → PTm m) (R K : PTm n) :
-    Syn.subst σ (bound R K) = bound (Syn.subst σ R) (Syn.subst σ K) := by simp [bound]
+ipra_subst bound
 
 private theorem argument_lower (A B D neg K : PTm n)
     (h : Γ ⊢[PRAAx] GaussianRightHalfPlaneLogarithm.source A D neg)

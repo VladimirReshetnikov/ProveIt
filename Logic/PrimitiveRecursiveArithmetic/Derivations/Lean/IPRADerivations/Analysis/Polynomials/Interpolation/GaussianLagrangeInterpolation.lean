@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.Fibers.GaussianRationalFiberRightInverse
 import IPRADerivations.Analysis.Polynomials.Interpolation.GaussianRationalGridCoefficientEquality
 import IPRADerivations.Analysis.Polynomials.Elimination.Bivariate.GaussianBivariatePowerExpansion
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual finite Lagrange recovery on the numerical natural grid
@@ -18,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianLagrangeInterpolation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (evaluate qmul canonical)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRationalReciprocal (power powerF)
@@ -27,10 +26,6 @@ open GaussianRationalFiniteGridIdentity (grid gridPoint grid_length grid_lookup 
 open GaussianRationalLagrangeCardinals (inverseCoefficient)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_decode sequence_length)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -45,19 +40,12 @@ def polynomial (C N : PTm n) : PTm n := sequence polynomialBody (succ N) (pairT 
 def matrixCell (C N z e s : PTm n) : PTm n := qmul (power z e) (cell C N e s)
 def matrixBody : PTm 3 := matrixCell (fstT (var 2)) (fstT (sndT (var 2))) (sndT (sndT (var 2))) (var 0) (var 1)
 
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (C N e : PTm n) :
-    Syn.subst σ (data C N e) = data (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ e) := by simp [data]
-@[simp] theorem subst_observation {l : ℕ} (σ : Fin n → PTm l) (C s : PTm n) :
-    Syn.subst σ (observation C s) = observation (Syn.subst σ C) (Syn.subst σ s) := by simp [observation]
-@[simp] theorem subst_cell {l : ℕ} (σ : Fin n → PTm l) (C N e s : PTm n) :
-    Syn.subst σ (cell C N e s) = cell (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ e) (Syn.subst σ s) := by simp [cell]
-@[simp] theorem subst_coefficient {l : ℕ} (σ : Fin n → PTm l) (C N e : PTm n) :
-    Syn.subst σ (coefficient C N e) = coefficient (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ e) := by simp [coefficient]
-@[simp] theorem subst_polynomial {l : ℕ} (σ : Fin n → PTm l) (C N : PTm n) :
-    Syn.subst σ (polynomial C N) = polynomial (Syn.subst σ C) (Syn.subst σ N) := by simp [polynomial]
-@[simp] theorem subst_matrixCell {l : ℕ} (σ : Fin n → PTm l) (C N z e s : PTm n) :
-    Syn.subst σ (matrixCell C N z e s) = matrixCell (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z)
-      (Syn.subst σ e) (Syn.subst σ s) := by simp [matrixCell]
+ipra_subst data
+ipra_subst observation
+ipra_subst cell
+ipra_subst coefficient
+ipra_subst polynomial
+ipra_subst matrixCell
 
 theorem cell_congr {C D N M e f s t : PTm n} (hC : Γ ⊢[PRAAx] C ≐ D)
     (hN : Γ ⊢[PRAAx] N ≐ M) (he : Γ ⊢[PRAAx] e ≐ f) (hs : Γ ⊢[PRAAx] s ≐ t) : Γ ⊢[PRAAx]
@@ -69,8 +57,8 @@ theorem coefficient_congr {C D N M e f : PTm n} (hC : Γ ⊢[PRAAx] C ≐ D)
   ipra_congr (coefficient (var 0) (var 1) (var 2) : PTm 3) with [hC, hN, he]
 theorem cell_body_at (C N e s : PTm n) : Γ ⊢[PRAAx] inst2 cellBody s (data C N e) ≐ cell C N e s := by
   simp only [cellBody,inst2,subst_cell,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
-  exact cell_congr (fst_pair _ _) ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
-    ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)) (.eqRefl _)
+  exact cell_congr (fst_pair _ _) (snd_pair _ _).fstE
+    (snd_pair _ _).sndE (.eqRefl _)
 theorem polynomial_body_at (C N i : PTm n) : Γ ⊢[PRAAx]
     inst2 polynomialBody i (pairT C N) ≐ coefficient C N (monus N i) := by
   simp only [polynomialBody,inst2,subst_coefficient,PTm.subst_monus,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
@@ -87,8 +75,8 @@ theorem polynomial_exponent (C N e : PTm n) (he : Γ ⊢[PRAAx] le e N) : Γ ⊢
 theorem matrix_body_at (C N z e s : PTm n) : Γ ⊢[PRAAx]
     inst3 matrixBody e s (data C N z) ≐ matrixCell C N z e s := by
   simp only [matrixBody,inst3,subst_matrixCell,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two]
-  exact qmul_congr (congrAp2 powerF (.eqRefl _) ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)))
-    (cell_congr (fst_pair _ _) ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)) (.eqRefl _) (.eqRefl _))
+  exact qmul_congr (congrAp2 powerF (.eqRefl _) (snd_pair _ _).sndE)
+    (cell_congr (fst_pair _ _) (snd_pair _ _).fstE (.eqRefl _) (.eqRefl _))
 
 theorem matrix_row (C N z e : PTm n) : Γ ⊢[PRAAx]
     GaussianRationalFubini.row matrixBody e (succ N) (data C N z) ≐ qmul (power z e) (coefficient C N e) := by

@@ -1,6 +1,5 @@
 import IPRADerivations.Probability.TailSum
 import IPRADerivations.Probability.Variance
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Signed observables, parts, and finite linear combinations
@@ -25,15 +24,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.SignedParts
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Expectation (Ew inst2_mul' inst2_add' geI geI_true geI_false exp_add exp_mono)
 open LeanProofs.IPRA.Probability.Independence (shift_inst2 row_pt col_pt sum_scale dsum dsum_rows)
 open LeanProofs.IPRA.Probability.TailSum (tlA tail_sum)
 open LeanProofs.IPRA.Probability.Variance (ad)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -92,19 +87,17 @@ theorem abs_expect_le (M x : PTm n) :
     Γ ⊢[PRAAx] le (ad (Ew w P M x) (Ew w N M x)) (Ew w (monus P N + monus N P) M x) := by
   refine .orE (le_total (Ew w P M x) (Ew w N M x)) ?_ ?_
   · let C := le (Ew w P M x) (Ew w N M x) :: Γ
-    have h1 := natEq (Prf.andE₁ (expect_parts (Γ := C) w P N M x))
     have h2 := natEq (Prf.andE₂ (expect_parts (Γ := C) w P N M x))
     have hz := natEq (show C ⊢[PRAAx] monus (Ew w P M x) (Ew w N M x) ≐ zero from Prf.hyp0)
     have e := natEq (eq_add_of_le (Prf.hyp0 : C ⊢[PRAAx] le (Ew w P M x) (Ew w N M x)))
     refine le_of_eq_add (d := Ew w (monus P N) M x + Ew w (monus P N) M x) ?_
-    ipra_lc h2 - h1 + e - hz
+    ipra_lc h2 - natEq (Prf.andE₁ (expect_parts (Γ := C) w P N M x)) + e - hz
   · let C := le (Ew w N M x) (Ew w P M x) :: Γ
-    have h1 := natEq (Prf.andE₁ (expect_parts (Γ := C) w P N M x))
     have h2 := natEq (Prf.andE₂ (expect_parts (Γ := C) w P N M x))
     have hz := natEq (show C ⊢[PRAAx] monus (Ew w N M x) (Ew w P M x) ≐ zero from Prf.hyp0)
     have e := natEq (eq_add_of_le (Prf.hyp0 : C ⊢[PRAAx] le (Ew w N M x) (Ew w P M x)))
     refine le_of_eq_add (d := Ew w (monus N P) M x + Ew w (monus N P) M x) ?_
-    ipra_lc h2 + h1 + e - hz
+    ipra_lc h2 + natEq (Prf.andE₁ (expect_parts (Γ := C) w P N M x)) + e - hz
 
 /-- `thm:nonneg`: `X = P − N ≥ 0` at every outcome gives `E X ≥ 0`, i.e. `Ew N ≤ Ew P`. -/
 theorem signed_nonneg {M x : PTm n}

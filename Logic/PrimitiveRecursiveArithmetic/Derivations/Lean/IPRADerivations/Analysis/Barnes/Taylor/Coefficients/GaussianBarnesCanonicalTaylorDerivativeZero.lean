@@ -17,7 +17,7 @@ set_option maxHeartbeats 500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalTaylorDerivativeZero
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add zeroCode)
 open GaussianBarnesCanonicalBaseProductShift (powerBody powerProduct)
 open GaussianBarnesCanonicalCenteredExponentialShift (baseData base_regular)
@@ -49,9 +49,6 @@ open GaussianTranslatedNonconstant (recode recode_canonical)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (entry_congr length)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

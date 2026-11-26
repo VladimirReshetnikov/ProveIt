@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedIncrementDifferenceQuotient
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameArithmetic (multiplyF multiplyData multiply_fast multiply_equivalent)
 open GaussianNameRingLaws (oneF one_fast multiply_associative multiply_commutative multiply_one_left)
@@ -22,8 +22,6 @@ open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans 
 open GaussianRationalHorner (ofGaussian)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalL1 (rawGaussian rawDen raw_den_positive)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,18 +36,12 @@ def rightData (F G K : PR 2) (x y z a : PTm n) : PTm n := multiplyData (nameF F 
 def nativeNumerator (K : PR 2) (a z t : PTm n) : PTm n := rawGaussian (GaussianNameReciprocal.tail K a z t)
 def nativeDenominator (K : PR 2) (a z t : PTm n) : PTm n := rawDen (GaussianNameReciprocal.tail K a z t)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (F G K : PR 2) (x y z a : PTm n) :
-    Syn.subst σ (data F G K x y z a) = data F G K (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ z) (Syn.subst σ a) := by simp [data]
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (F G K : PR 2) (x y z a : PTm n) :
-    (input F G K x y z a).subst σ = input F G K (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ z) (Syn.subst σ a) := by simp [input]
-@[simp] theorem subst_leftData {m : ℕ} (σ : Fin n → PTm m) (F G K : PR 2) (x y z a : PTm n) :
-    Syn.subst σ (leftData F G K x y z a) = leftData F G K (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ z) (Syn.subst σ a) := by simp [leftData]
-@[simp] theorem subst_rightData {m : ℕ} (σ : Fin n → PTm m) (F G K : PR 2) (x y z a : PTm n) :
-    Syn.subst σ (rightData F G K x y z a) = rightData F G K (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ z) (Syn.subst σ a) := by simp [rightData]
-@[simp] theorem subst_nativeNumerator {m : ℕ} (σ : Fin n → PTm m) (K : PR 2) (a z t : PTm n) :
-    Syn.subst σ (nativeNumerator K a z t) = nativeNumerator K (Syn.subst σ a) (Syn.subst σ z) (Syn.subst σ t) := by simp [nativeNumerator]
-@[simp] theorem subst_nativeDenominator {m : ℕ} (σ : Fin n → PTm m) (K : PR 2) (a z t : PTm n) :
-    Syn.subst σ (nativeDenominator K a z t) = nativeDenominator K (Syn.subst σ a) (Syn.subst σ z) (Syn.subst σ t) := by simp [nativeDenominator]
+ipra_subst data
+ipra_subst input
+ipra_subst leftData
+ipra_subst rightData
+ipra_subst nativeNumerator
+ipra_subst nativeDenominator
 
 theorem name_regular (F G K : PR 2) (x y z a : PTm n) (h : Γ ⊢[PRAAx] input F G K x y z a) : Γ ⊢[PRAAx]
     pointCN (nameF F G K) (data F G K x y z a) :=

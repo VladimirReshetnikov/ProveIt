@@ -17,7 +17,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineProductImaginaryHyperbolicDerivative
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianBoundedConstantProductName (constantF constant_regular)
 open GaussianEuclideanDistanceName (pointCN)
@@ -35,8 +35,6 @@ open GaussianRationalMetric (bounded)
 open GaussianSineProductImaginaryExponentialShift (source errorCoefficient)
 open GaussianSineProductImaginaryHyperbolic (expF expData sinhF sinhData)
 open GaussianSineProductImaginaryLogDerivative (rationalReal)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Diff" => GaussianNamedDifference.nameF

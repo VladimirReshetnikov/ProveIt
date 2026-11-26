@@ -2,7 +2,6 @@ import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalReciprocal
 import IPRADerivations.Analysis.Names.Rates.GaussianRadiusBudget
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalSyntheticBounds
 import IPRADerivations.Analysis.Polynomials.Horner.GaussianReciprocalHorner
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Radius of an actual monic polynomial with small residual
@@ -18,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianMonicResidualRadius
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalReciprocal
   (qone reciprocal power normLower bound_congr bounded_product bounded_sum bounded_difference)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qadd qmul qzero evaluate)
@@ -31,10 +30,6 @@ open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder (normSq)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -140,16 +135,11 @@ theorem tail_bound (C w N A k : PTm n)
       ConciseIPRA.PTm.subst_zero,ConciseIPRA.PTm.subst_succ,Syn.shift] using hw.shift
   have all : Γ ⊢[PRAAx] .all (bounded (tail (Syn.shift C) (Syn.shift w) (Syn.shift N) (var 0))
       (Syn.shift A*geometric (Syn.shift A) (var 0)) (pw (radius (Syn.shift A)) (var 0))) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [GaussianRationalMetric.subst_bounded,subst_tail,PTm.subst_mul,
-        GaussianRadiusBudget.subst_geometric,GaussianRadiusBudget.subst_radius,subst_ap2,
-        Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact bound_congr (tail_zero C w N).eqSymm (.eqRefl _) (.eqRefl _)
+    ipra_qfind (le_QF _ _) [GaussianRationalMetric.subst_bounded, subst_tail, GaussianRadiusBudget.subst_geometric,
+        GaussianRadiusBudget.subst_radius, subst_ap2]
+    · exact bound_congr (tail_zero C w N).eqSymm (.eqRefl _) (.eqRefl _)
         (zero_bounded _ _ (GaussianPolynomialPerturbation.power_positive _ _ (GaussianRadiusBudget.radius_positive A)))
-    · simp only [GaussianRationalMetric.subst_bounded,subst_tail,PTm.subst_mul,
-        GaussianRadiusBudget.subst_geometric,GaussianRadiusBudget.subst_radius,subst_ap2,
-        Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact tail_bound_step _ _ _ _ _ lenShift.wk cShift.wk wShift.wk Prf.hyp0
+    · exact tail_bound_step _ _ _ _ _ lenShift.wk cShift.wk wShift.wk Prf.hyp0
   simpa only [GaussianRationalMetric.subst_bounded,subst_tail,PTm.subst_mul,
     GaussianRadiusBudget.subst_geometric,GaussianRadiusBudget.subst_radius,subst_ap2,
     Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using Prf.allE k all

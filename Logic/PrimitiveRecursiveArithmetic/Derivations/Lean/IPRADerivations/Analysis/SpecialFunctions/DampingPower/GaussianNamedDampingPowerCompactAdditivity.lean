@@ -14,14 +14,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedDampingPowerCompactAdditivity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedDampingPowerCompact (source evaluatorF fixedData lipschitz nameF data compact_input sampled_modulus)
 open GaussianNameEquivalence (crossEquivalent cross_at)
 open GaussianNameArithmetic (addF addData)
 open GaussianRationalMetric (distanceBounded)
 open GaussianCoefficientNameBounds (unit)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalRowSpanGaussianEmbedding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalGaussianEmbedding (embed)
 open RationalPolynomialGaussianEmbedding (coefficients coefficient_lookup coefficients_length)
 open GaussianPolynomialDeterminantTerms (cell)
@@ -24,9 +24,6 @@ open GaussianRationalFiberVandermonde (table table_length table_lookup table_row
 open GaussianRationalRowSpan (columnData combinationData)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -45,20 +42,12 @@ def membership (A R N C v : PTm n) : Fm PTm n := .all (lt (var 0) (Syn.shift N) 
 def hasCoefficients (A R N v : PTm n) : Fm PTm n := .ex
   ((length (var 0) ≐ Syn.shift R) ⋏ membership (Syn.shift A) (Syn.shift R) (Syn.shift N) (var 0) (Syn.shift v))
 
-@[simp] theorem subst_matrix {l : ℕ} (σ : Fin n → PTm l) (A R N : PTm n) :
-    Syn.subst σ (matrix A R N) = matrix (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) := by simp [matrix]
-@[simp] theorem subst_realVector {l : ℕ} (σ : Fin n → PTm l) (C R : PTm n) :
-    Syn.subst σ (realVector C R) = realVector (Syn.subst σ C) (Syn.subst σ R) := by simp [realVector]
-@[simp] theorem subst_combinationAt {l : ℕ} (σ : Fin n → PTm l) (A R C j : PTm n) :
-    Syn.subst σ (combinationAt A R C j) = combinationAt (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ C) (Syn.subst σ j) := by simp [combinationAt]
-@[simp] theorem subst_rowCombination {l : ℕ} (σ : Fin n → PTm l) (A R N C : PTm n) :
-    Syn.subst σ (rowCombination A R N C) = rowCombination (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ C) := by simp [rowCombination]
-@[simp] theorem subst_membership {l : ℕ} (σ : Fin n → PTm l) (A R N C v : PTm n) :
-    (membership A R N C v).subst σ = membership (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ C) (Syn.subst σ v) := by
-  simp [membership,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_hasCoefficients {l : ℕ} (σ : Fin n → PTm l) (A R N v : PTm n) :
-    (hasCoefficients A R N v).subst σ = hasCoefficients (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ v) := by
-  simp [hasCoefficients,Syn.subst_shift,Syn.shift_subst]
+ipra_subst matrix
+ipra_subst realVector
+ipra_subst combinationAt
+ipra_subst rowCombination
+ipra_subst membership [Syn.subst_shift, Syn.shift_subst]
+ipra_subst hasCoefficients [Syn.subst_shift, Syn.shift_subst]
 
 theorem matrix_lookup (A R N i j : PTm n) (hi : Γ ⊢[PRAAx] lt i R) (hj : Γ ⊢[PRAAx] lt j N) :
     Γ ⊢[PRAAx] cell (matrix A R N) i j ≐ embed (cell A i j) := by
@@ -76,8 +65,8 @@ theorem column_body_at (A C j i : PTm n) : Γ ⊢[PRAAx]
     RationalFiniteSum.term columnBody i (columnData A C j) ≐ RationalArithmetic.multiply (entry C i) (cell A i j) := by
   simp only [RationalFiniteSum.term,columnBody,inst2,RationalArithmetic.subst_multiply,subst_entry,
     GaussianPolynomialDeterminantTerms.subst_cell,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
-  exact RationalAlgebra.multiply_congr (entry_congr ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)) (.eqRefl _))
-    (entry_congr (entry_congr (fst_pair _ _) (.eqRefl _)) ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)))
+  exact RationalAlgebra.multiply_congr (entry_congr (snd_pair _ _).fstE (.eqRefl _))
+    (entry_congr (entry_congr (fst_pair _ _) (.eqRefl _)) (snd_pair _ _).sndE)
 
 theorem sum_congr (t : PTm 2) {N M x y : PTm n} (hN : Γ ⊢[PRAAx] N ≐ M) (hx : Γ ⊢[PRAAx] x ≐ y) :
     Γ ⊢[PRAAx] RationalFiniteSum.sum t N x ≐ RationalFiniteSum.sum t M y :=
@@ -89,8 +78,8 @@ theorem combination_congr {A B R S C D j k : PTm n} (hA : Γ ⊢[PRAAx] A ≐ B)
 theorem combination_body_at (A R C j : PTm n) : Γ ⊢[PRAAx]
     inst2 combinationBody j (combinationData A R C) ≐ combinationAt A R C j := by
   simp only [combinationBody,inst2,subst_combinationAt,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
-  exact combination_congr (fst_pair _ _) ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
-    ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)) (.eqRefl _)
+  exact combination_congr (fst_pair _ _) (snd_pair _ _).fstE
+    (snd_pair _ _).sndE (.eqRefl _)
 theorem combination_length (A R N C : PTm n) : Γ ⊢[PRAAx] length (rowCombination A R N C) ≐ N := sequence_length _ _ _
 theorem combination_lookup (A R N C j : PTm n) (hj : Γ ⊢[PRAAx] lt j N) :
     Γ ⊢[PRAAx] entry (rowCombination A R N C) j ≐ combinationAt A R C j :=
@@ -175,7 +164,7 @@ theorem membership_real_part (A R N C v : PTm n)
   let Δ := lt (var 0) (Syn.shift N) :: Γ.map Fm.shift
   have val := RationalGaussianRealPart.real_values (Γ := Δ) _ _
     (GaussianRationalRowSpan.membership_at _ _ _ _ _ _ hs.wk Prf.hyp0)
-  have lo := (congrFst (coefficient_lookup (Γ := Δ) (Syn.shift v) (Syn.shift N) (var 0) Prf.hyp0)).eqTrans (fst_pair _ _)
+  have lo := (coefficient_lookup (Γ := Δ) (Syn.shift v) (Syn.shift N) (var 0) Prf.hyp0).fstE
   have hi := (congrFst (GaussianRationalRowSpan.combination_lookup (Γ := Δ)
     (matrix (Syn.shift A) (Syn.shift R) (Syn.shift N)) (Syn.shift R) (Syn.shift N) (Syn.shift C) (var 0) Prf.hyp0)).eqTrans
       (combination_real_part _ _ _ _ _ Prf.hyp0)

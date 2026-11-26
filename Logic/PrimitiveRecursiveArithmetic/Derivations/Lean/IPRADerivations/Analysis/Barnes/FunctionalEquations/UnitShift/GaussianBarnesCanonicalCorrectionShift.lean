@@ -2,7 +2,6 @@ import IPRADerivations.Analysis.Barnes.Deflation.GaussianBarnesCanonicalDeflated
 import IPRADerivations.Analysis.Gamma.EulerProducts.FiniteHeads.GaussianGammaEulerHeadQuadratic
 import IPRADerivations.Analysis.Integration.Quadrature.GaussianRationalQuadratureDifference
 import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianPositiveExponentialMajorant
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Exact finite shift of the original Barnes factor exponents
@@ -17,7 +16,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalCorrectionShift
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale oneCode zeroCode mul)
 open GaussianBarnesCanonicalFactor (correction)
 open GaussianGammaCanonicalExponent (harmonicPoint)
@@ -32,9 +31,6 @@ open GaussianRationalQuadratureDifference (differenceBody difference_body_at fin
 open GaussianRationalSyntheticDivision (qone qadd_congr qmul_congr qsub_congr qone_canonical)
 open GaussianRootAlgebra (sub equal_refl equal_of_values re_add im_add re_mul im_mul re_scale im_scale re_sub im_sub
   re_one im_one re_zero im_zero)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentExtensionAxis
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale eval_re_code)
 open GaussianArctangentCayleyValues (imaginaryCode)
 open GaussianArctangentExponentialPrefix (prefixValue total)
@@ -22,9 +22,6 @@ open GaussianRationalHorner (ofGaussian_canonical ofGaussian_represents scalar_c
 open GaussianRootAlgebra (re_scale)
 open RationalGaussianEmbedding (scalarZero scalar_zero_represents)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

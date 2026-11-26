@@ -18,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitSubstitutionEndpoints
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegrandName (decayF decayData decayPoint)
 open GaussianGammaIntegralCutoffs (height etaDen top)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -26,9 +26,6 @@ open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalSyntheticDivision (qone)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -38,18 +35,10 @@ def rightSample (p k A R : PTm n) : PTm n := ap2 decayF p (decayData one (etaDen
 def cutoff (s : PTm n) : PTm n := GaussianEulerUnitSubstitutionCompactName.stage s
 def source (p s k A : PTm n) : Fm PTm n := le one A ⋏ (le (cutoff s) k ⋏ le (cutoff s) p)
 
-@[simp] theorem subst_leftSample {m : ℕ} (σ : Fin n → PTm m) (p k A R : PTm n) :
-    Syn.subst σ (leftSample p k A R) = leftSample (Syn.subst σ p) (Syn.subst σ k) (Syn.subst σ A) (Syn.subst σ R) := by
-  simp [leftSample,decayData,GaussianGammaFiniteApproximantName.exponentialInputData,
-    top,height,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_rightSample {m : ℕ} (σ : Fin n → PTm m) (p k A R : PTm n) :
-    Syn.subst σ (rightSample p k A R) = rightSample (Syn.subst σ p) (Syn.subst σ k) (Syn.subst σ A) (Syn.subst σ R) := by
-  simp [rightSample,decayData,GaussianGammaFiniteApproximantName.exponentialInputData,
-    etaDen,height,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_cutoff {m : ℕ} (σ : Fin n → PTm m) (s : PTm n) :
-    Syn.subst σ (cutoff s) = cutoff (Syn.subst σ s) := by simp [cutoff]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (p s k A : PTm n) :
-    (source p s k A).subst σ = source (Syn.subst σ p) (Syn.subst σ s) (Syn.subst σ k) (Syn.subst σ A) := by simp [source]
+ipra_subst leftSample [decayData, GaussianGammaFiniteApproximantName.exponentialInputData, top, height, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst rightSample [decayData, GaussianGammaFiniteApproximantName.exponentialInputData, etaDen, height, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst cutoff
+ipra_subst source
 
 /-- This bound holds for every original finite cutoff and every actual
 query p. Only the literal input point's small disk is used. -/

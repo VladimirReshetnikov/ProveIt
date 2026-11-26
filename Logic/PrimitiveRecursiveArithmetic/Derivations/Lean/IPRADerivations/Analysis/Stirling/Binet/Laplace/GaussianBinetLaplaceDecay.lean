@@ -16,7 +16,7 @@ set_option maxHeartbeats 600000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceDecay
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale oneCode eval_re_code)
 open GaussianBinetLaplaceExponential (exponent exponent_bound)
 open GaussianCoefficientNameBounds (unit)
@@ -34,8 +34,6 @@ open GaussianRationalHorner
 open GaussianRationalMetric (qnegative_represents qnegative_canonical bounded)
 open GaussianRealExponentialPositiveRepresentative (originalData)
 open RationalNormalForm (well_formed_unique)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "F" => GaussianBinetLaplaceExponential.nameF

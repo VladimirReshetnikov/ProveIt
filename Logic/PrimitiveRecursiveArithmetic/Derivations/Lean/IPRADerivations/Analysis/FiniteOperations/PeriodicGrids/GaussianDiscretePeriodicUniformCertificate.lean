@@ -13,7 +13,7 @@ set_option maxHeartbeats 1250000
 
 namespace LeanProofs.IPRA.Analysis.GaussianDiscretePeriodicUniformCertificate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianDiscretePeriodicMetricCertificate (derivative wrapping row)
 open GaussianDiscretePeriodicDerivativeSchedule (clock denominator)
 open GaussianDiscretePeriodicGridReadback (sample)
@@ -22,9 +22,6 @@ open GaussianSignedObservationReadback (realProjection)
 open GaussianRationalMetric (distanceBounded)
 open GaussianCoefficientNameBounds (unit)
 open SignedDiscreteDerivativeOperators (width divisor)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

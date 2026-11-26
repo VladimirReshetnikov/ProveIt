@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalPrefactorShift
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalPrefactor (linearF linearData linear_regular correctionF correctionData correction_regular
   combinedF combinedData combined radius)
 open GaussianEuclideanDistanceName (pointCN)
@@ -26,8 +26,6 @@ open GaussianNameBounds (U)
 open GaussianNameEquivalence (crossEquivalent cross_trans cross_symm cross_refl)
 open GaussianNameRingLaws (add_associative add_commutative negativeF negativeData negative_fast)
 open GaussianNamedGammaHalfShift (add_cross)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

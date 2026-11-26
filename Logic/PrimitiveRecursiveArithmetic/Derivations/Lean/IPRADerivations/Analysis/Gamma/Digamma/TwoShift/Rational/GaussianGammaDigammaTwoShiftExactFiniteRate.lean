@@ -13,7 +13,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaTwoShiftExactFiniteRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianDominantPairAlgebra (radius_bounded)
 open GaussianGammaDigammaTwoShiftFiniteRate (raw)
@@ -28,25 +28,15 @@ open GaussianStirlingGammaLogarithm (source)
 open GaussianStirlingGammaFractionalIncrementObservations (scalar_upper)
 open GaussianStirlingTailComparison (point_add_upper_same)
 open RationalValueBounds (upper upper_congr upper_mono upper_triangle upper_of_order)
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def leftSlack (u b r : PTm n) : PTm n := b*leftCost u b r+num 5*r
 def rightSlack (u b r : PTm n) : PTm n := b*rightCost u b r+num 5*r
 
-@[simp] theorem subst_leftSlack {m : ℕ} (σ : Fin n → PTm m) (u b r : PTm n) :
-    Syn.subst σ (leftSlack u b r) = leftSlack (Syn.subst σ u) (Syn.subst σ b) (Syn.subst σ r) := by
-  simp [leftSlack,leftCost,GaussianStirlingGammaFractionalIncrementObservations.weightedCost,
-    GaussianStirlingGammaFractionalIncrementObservations.scaleCost,GaussianNameRingLaws.three]
+ipra_subst leftSlack [leftCost, GaussianStirlingGammaFractionalIncrementObservations.weightedCost, GaussianStirlingGammaFractionalIncrementObservations.scaleCost, GaussianNameRingLaws.three]
 
-@[simp] theorem subst_rightSlack {m : ℕ} (σ : Fin n → PTm m) (u b r : PTm n) :
-    Syn.subst σ (rightSlack u b r) = rightSlack (Syn.subst σ u) (Syn.subst σ b) (Syn.subst σ r) := by
-  simp [rightSlack,rightCost,GaussianStirlingGammaFractionalIncrementObservations.weightedCost,
-    GaussianStirlingGammaFractionalIncrementObservations.scaleCost,GaussianNameRingLaws.three]
+ipra_subst rightSlack [rightCost, GaussianStirlingGammaFractionalIncrementObservations.weightedCost, GaussianStirlingGammaFractionalIncrementObservations.scaleCost, GaussianNameRingLaws.three]
 
 theorem correction_distance (p a y b r k : PTm n) (ha : Γ ⊢[PRAAx] le one a)
     (hs : Γ ⊢[PRAAx] source y b)

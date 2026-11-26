@@ -1,7 +1,6 @@
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.Core.ProdLemmas
 import IPRADerivations.AnalyticNumberTheory.PhiLower
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Replacing the factors of a product one at a time
@@ -27,12 +26,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.ProductReplacement
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -106,13 +101,9 @@ private abbrev idF (a g : PTm 2) : Fm PTm 2 :=
   ap2 (prodF a) (var 0) (var 1) + Hm a g (var 0) (var 1) ≐ ap2 (prodF g) (var 0) (var 1) + Hp a g (var 0) (var 1)
 
 private theorem id₀ (a g : PTm 2) : ([] : List (Fm PTm 2)) ⊢[PRAAx] idF a g := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, PTm.subst_add, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact id_base a g _
-  · simp only [Fm.subst_eq, PTm.subst_add, subst_ap2, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact id_step a g Prf.hyp0
+  ipra_ind [subst_ap2]
+  · exact id_base a g _
+  · exact id_step a g Prf.hyp0
 
 /-- Identity (6.8): `∏_{k<N} a_k + Hm N = ∏_{k<N} g_k + Hp N`. -/
 theorem replacement_identity (a g : PTm 2) (N x : PTm n) :
@@ -147,18 +138,12 @@ theorem replacement_all (a g e : PTm 2) (R N x : PTm n)
     (h₂ : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶ le (inst2 a (var 0) (Syn.shift x)) (Syn.shift R)))
     (h₃ : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶ le (inst2 g (var 0) (Syn.shift x)) (Syn.shift R))) :
     Γ ⊢[PRAAx] Fm.all (replF a g e R N x) := by
-  refine PRA.qfInd _ ⟨le_QF _ _, ⟨le_QF _ _, le_QF _ _⟩⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_and, subst_le, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul,
-      Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    refine .impI (.andI ?_ ?_)
+  ipra_qfind (⟨le_QF _ _, ⟨le_QF _ _, le_QF _ _⟩⟩) [subst_le, subst_ap2]
+  · refine .impI (.andI ?_ ?_)
     · exact le_congr (prod_zero g x).eqSymm (pw_zero R).eqSymm (le_refl _)
     · exact le_trans (le_congr (congrMul (.eqRefl R) (prod_zero a x).eqSymm)
         (congrMul (.eqRefl R) (prod_zero g x).eqSymm) (le_refl _)) (le_add_right _ _)
-  · simp only [Fm.subst_imp, Fm.subst_and, subst_le, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul,
-      Syn.subst_var, Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    have f₁ := h₁.allOpen; have f₂ := h₂.allOpen; have f₃ := h₃.allOpen
+  · have f₁ := h₁.allOpen; have f₂ := h₂.allOpen; have f₃ := h₃.allOpen
     refine .impI ?_
     have hle : (le (succ (var 0)) (Syn.shift N) :: replF a g e R N x :: Γ.map Fm.shift) ⊢[PRAAx]
         le (var 0) (Syn.shift N) := le_trans (le_succ_self _) Prf.hyp0

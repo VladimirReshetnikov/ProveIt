@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalNamedDigammaInverseSlope
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaNegativeCriticalCorrection (guard)
 open GaussianGammaNegativeCriticalEndpoints (nameF nameData)
@@ -31,10 +31,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open RationalGaussianEmbedding (embed scalarZero scalar_zero_represents)
 open RationalHarmonicIntervalVariation (gap)
 open RationalValueBounds (upper upper_congr upper_mono upper_of_radius upper_triangle)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (monus num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

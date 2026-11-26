@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerDecayEndpointBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegrandName (decayF decayData)
 open GaussianEulerDecayMesh (observation)
 open GaussianEulerDecayQuadraturePrecision (endpointDifference)
@@ -30,10 +30,6 @@ open RationalGaussianEmbedding (scalarZero scalar_zero_represents canonical_axis
 open RationalValueBounds (upper upper_of_radius upper_order_right radius_of_upper upper_mono)
 open GaussianPositiveRealArithmetic (positive sign)
 open RationalSupMetric (denominatorOf)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

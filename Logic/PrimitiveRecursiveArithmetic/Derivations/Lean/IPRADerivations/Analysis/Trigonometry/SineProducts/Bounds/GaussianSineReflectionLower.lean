@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineReflectionLower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianSineProductReflectionLower (numerator denominator source named_product_lower numerator_positive denominator_positive)
 open GaussianGammaReflectionSineTransfer (productIdentification sineAtPiF sineAtPiData sine_as_product)
 open GaussianGammaReflectionProduct (productLinearF productLinearData)
@@ -33,10 +33,6 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianBalancedRadiusArithmetic (unit_monotone)
 open ComplexLogarithmRemainder (normSq scale oneCode normSq_scale normSq_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "P" => GaussianGammaHalfPiName.nameF

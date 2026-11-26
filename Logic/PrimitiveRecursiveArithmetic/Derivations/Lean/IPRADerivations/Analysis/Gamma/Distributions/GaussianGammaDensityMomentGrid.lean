@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDensityMomentGrid
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegralGammaIdentification (source)
 open GaussianGammaC9Bound (majorant)
 open GaussianGammaShiftTrajectory (point)
@@ -27,10 +27,6 @@ open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_radius_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -46,23 +42,12 @@ def observation (p z R B A N : PTm n) : PTm n := qmul
   (GaussianCompactRiemannName.quadrature GaussianEulerIntegerMomentGrid.evaluatorF (rowQuery p z R B A N)
     (count p z R B A N) one (width (cutoff p z R B A N) A (R+N)) (etaDen (cutoff p z R B A N) A (R+N))
     (GaussianEulerIntegerMomentGrid.fixedData z B N (top (cutoff p z R B A N) A (R+N))))
-@[simp] theorem subst_stage {m : ℕ} (σ : Fin n → PTm m) (p : PTm n) :
-    Syn.subst σ (stage p) = stage (Syn.subst σ p) := by simp [stage]
-@[simp] theorem subst_outer {m : ℕ} (σ : Fin n → PTm m) (p R : PTm n) :
-    Syn.subst σ (outer p R) = outer (Syn.subst σ p) (Syn.subst σ R) := by simp [outer]
-@[simp] theorem subst_cutoff {m : ℕ} (σ : Fin n → PTm m) (p z R B A N : PTm n) :
-    Syn.subst σ (cutoff p z R B A N) = cutoff (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ N) := by simp [cutoff]
-@[simp] theorem subst_rowQuery {m : ℕ} (σ : Fin n → PTm m) (p z R B A N : PTm n) :
-    Syn.subst σ (rowQuery p z R B A N) = rowQuery (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ N) := by simp [rowQuery]
-@[simp] theorem subst_count {m : ℕ} (σ : Fin n → PTm m) (p z R B A N : PTm n) :
-    Syn.subst σ (count p z R B A N) = count (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ N) := by simp [count]
-@[simp] theorem subst_observation {m : ℕ} (σ : Fin n → PTm m) (p z R B A N : PTm n) :
-    Syn.subst σ (observation p z R B A N) = observation (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ N) := by
-  simp [observation,top,etaDen,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst stage
+ipra_subst outer
+ipra_subst cutoff
+ipra_subst rowQuery
+ipra_subst count
+ipra_subst observation [top, etaDen, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient]
 
 theorem outer_late (p R : PTm n) : Γ ⊢[PRAAx] le (stage p) (outer p R) := le_add_right _ _
 theorem cutoff_late (p z R B A N : PTm n) : Γ ⊢[PRAAx] le (outer p R) (cutoff p z R B A N) := le_add_right _ _

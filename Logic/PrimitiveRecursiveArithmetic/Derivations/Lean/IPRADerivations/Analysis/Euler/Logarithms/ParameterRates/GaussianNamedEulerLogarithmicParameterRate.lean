@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicParameterRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedRightHalfPlane (threshold radius numerator denominator actual_late_source)
 open GaussianNamedEulerLogarithmicImproper (nameF data)
 open GaussianNamedEulerLogarithmicFrozenRate (frozenData frozen_rate)
@@ -25,10 +25,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianRationalSlackRemoval (slack precision slack_removal_at)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "I" => GaussianEulerLogarithmicImproperName.nameF
@@ -41,12 +37,8 @@ def source (f g : PR 2) (s j x y A B : PTm n) : Fm PTm n :=
 def freezeClock (f : PR 2) (t j x A m : PTm n) : PTm n :=
   threshold A+succ (modulus t j (radius f x) (two*A))+succ (succ m)
 
-@[simp] theorem subst_inputRadius {l : ℕ} (σ : Fin n → PTm l) (f : PR 2) (s j x A : PTm n) :
-    Syn.subst σ (inputRadius f s j x A) = inputRadius f (Syn.subst σ s) (Syn.subst σ j)
-      (Syn.subst σ x) (Syn.subst σ A) := by simp [inputRadius]
-@[simp] theorem subst_source {l : ℕ} (σ : Fin n → PTm l) (f g : PR 2) (s j x y A B : PTm n) :
-    (source f g s j x y A B).subst σ = source f g (Syn.subst σ s) (Syn.subst σ j)
-      (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ A) (Syn.subst σ B) := by simp [source]
+ipra_subst inputRadius
+ipra_subst source
 
 private theorem freeze_margin (f : PR 2) (t j x A m : PTm n) : Γ ⊢[PRAAx] le (threshold A) (freezeClock f t j x A m) :=
   le_trans (le_add_right _ _) (le_add_right _ _)

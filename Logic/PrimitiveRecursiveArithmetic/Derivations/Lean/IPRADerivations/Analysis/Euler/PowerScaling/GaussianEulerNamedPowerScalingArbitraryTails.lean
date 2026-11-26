@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerNamedPowerScalingArbitraryTails
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerNamedPowerScalingFormula (source)
 open GaussianEulerNamedPowerScalingImproper (scaleBound)
 open GaussianEulerNamedPowerScalingFormulaFrozen (original_frozen_source)
@@ -29,10 +29,6 @@ open GaussianNamedPositiveLogarithm (numerator denominator)
 open GaussianRationalMetric (bounded)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

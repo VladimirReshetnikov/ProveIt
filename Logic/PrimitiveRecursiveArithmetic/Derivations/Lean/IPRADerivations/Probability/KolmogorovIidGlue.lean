@@ -18,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.KolmogorovIidGlue
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Expectation (Ew Wt inst2_mul' inst2_add')
 open LeanProofs.IPRA.Probability.Variance (ad)
 open LeanProofs.IPRA.Probability.ProductPower (Pr Sr TB SB TB_at SB_at Tt dg wdB xdB low_congr)
@@ -32,10 +32,6 @@ open LeanProofs.IPRA.Probability.Independence (dsum inst3_mul' inst3_add' inst3_
 open LeanProofs.IPRA.Probability.ProductSplit (pr_split sr_split)
 open LeanProofs.IPRA.BlockSum (blk_at block_sum blkB)
 open LeanProofs.IPRA.Foundations.MixedRadix (shift_le')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -51,7 +47,7 @@ theorem Cv_at (g : PTm 2) (j r M x : PTm n) :
     simp only [inst2, Cv, Syn.subst_subst]
     congr 1; funext i; fin_cases i <;> simp
   rw [e]
-  exact congrInst2 g ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)) ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))
+  exact congrInst2 g (snd_pair _ _).fstE (snd_pair _ _).sndE
 
 section Low
 
@@ -199,8 +195,8 @@ theorem inner_L {M k m n' x : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (h
   refine (blk_at _ i (pw M k) _).eqTrans (sum_scale _ _ (pw M k) (Pr w m i M x) (Yp k m M x) _ (.allI (.impI ?_)))
   simp only [Yp, shift_pairT, shift_mulpw, shift_Pr, shift_pw]
   rw [inst2_offB, inst2_rowB]
-  refine (congrInst3 (A1 w X a) ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
-    (congrAdd (fst_pair _ _) (.eqRefl _)) ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))).eqTrans ?_
+  refine (congrInst3 (A1 w X a) (snd_pair _ _).fstE
+    (congrAdd (fst_pair _ _) (.eqRefl _)) (snd_pair _ _).sndE).eqTrans ?_
   exact A1_val w X a hM'.wk (shift_hn hn).wk Prf.hyp0
 
 /-- The left side of the step: `∑_{t<M^n} I_k P_n a² = T_m ∑_{j<M^k} P_k I_k a²`. -/
@@ -233,8 +229,8 @@ theorem inner_R {M k m n' x : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (h
   refine (blk_at _ i (pw M k) _).eqTrans (.eqTrans (sum_congr_bounded _ _ _ _ (pw M k) (.allI (.impI ?_))) pB_eq.eqSymm)
   simp only [Yp, shift_pairT, shift_mulpw, shift_pw]
   rw [inst2_offB, inst2_rowB, inst2_colB]
-  refine (congrInst3 (A2 w X a) ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
-    (congrAdd (fst_pair _ _) (.eqRefl _)) ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))).eqTrans
+  refine (congrInst3 (A2 w X a) (snd_pair _ _).fstE
+    (congrAdd (fst_pair _ _) (.eqRefl _)) (snd_pair _ _).sndE).eqTrans
     (.eqTrans ?_ (congrInst3 _ (.eqRefl _) (fst_pair _ _) (snd_pair _ _)).eqSymm)
   exact A2_val w X a hM'.wk (shift_hn hn).wk Prf.hyp0
 
@@ -295,7 +291,7 @@ theorem kolmogorov_iid {M : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (n' 
         (sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_)))
       simp only [shift_pairT]
       rw [inst2_colB, inst3_I3]
-      exact congrInst2 _ (.eqRefl _) (congrPairT (fst_pair _ _) ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)))
+      exact congrInst2 _ (.eqRefl _) (congrPairT (fst_pair _ _) (snd_pair _ _).sndE)
     exact le_congr e.eqSymm (.eqRefl _) (disjoint (Cv a * Cv a) (DB w X) _ _)
 
 end Step

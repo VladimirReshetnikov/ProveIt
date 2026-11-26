@@ -21,7 +21,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRootSupport
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRootRadius (roots product roots_length root_radius A_positive)
 open LeanProofs.IPRA.Analysis.GaussianCoefficientNameBounds (A R CN)
 open LeanProofs.IPRA.Analysis.GaussianRootSchedule (four toleranceDenominator tolerance_positive)
@@ -30,15 +30,11 @@ open LeanProofs.IPRA.Analysis.GaussianRationalStability (pointsBounded)
 open LeanProofs.IPRA.Analysis.GaussianRationalCover (close)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def coverDenominator (t : PTm n) : PTm n := pw two (t+two)
-@[simp] theorem subst_coverDenominator {m : ℕ} (σ : Fin n → PTm m) (t : PTm n) :
-    Syn.subst σ (coverDenominator t) = coverDenominator (Syn.subst σ t) := by simp [coverDenominator]
+ipra_subst coverDenominator
 
 theorem cover_denominator_positive (t : PTm n) : Γ ⊢[PRAAx] le one (coverDenominator t) :=
   GaussianFactorBudget.power_positive _ _ (le_succ_self one)

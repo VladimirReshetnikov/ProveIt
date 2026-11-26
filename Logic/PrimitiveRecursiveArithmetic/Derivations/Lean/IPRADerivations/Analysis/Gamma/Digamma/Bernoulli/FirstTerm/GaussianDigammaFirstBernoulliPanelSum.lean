@@ -13,8 +13,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianDigammaFirstBernoulliPanelSum
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero)
+open_ipra
 open GaussianDigammaFirstBernoulliPanel (reciprocalPart squarePart cubePart decomposed literal_row)
 open GaussianStirlingAllOrderFirstPanel (base)
 open GaussianStirlingAllOrderKernel (offset offset_positive)
@@ -32,8 +31,6 @@ open RationalFiniteSum (sum term termwiseEq sum_ext canonical_equal)
 open RationalNonnegativePowers (fraction_congr fraction_multiply)
 open RationalNormalForm (normalize_well_formed)
 open RationalSumLinearity (scaledBody scaled_term sum_homogeneous)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" x:max => Groth.ι (Q.mk Γ x)

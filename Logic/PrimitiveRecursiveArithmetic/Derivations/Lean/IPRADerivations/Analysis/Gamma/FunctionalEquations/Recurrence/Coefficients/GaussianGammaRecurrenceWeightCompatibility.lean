@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaRecurrenceWeightCompatibility
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRationalMetric (distanceBounded)
@@ -26,10 +26,6 @@ open GaussianGammaRecurrenceWeights (weight)
 open GaussianGammaRecurrenceWeightName (nameF data name_at)
 open GaussianCoefficientNameBounds (unit)
 open RationalValueBounds (radius)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

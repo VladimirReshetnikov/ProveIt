@@ -13,7 +13,7 @@ set_option maxHeartbeats 550000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalRelativeLogTaylor
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalLogSchedule (initial initial_positive)
 open GaussianBarnesCanonicalRelativeLogIncrement
   (nameF data prefactorF prefactorData headF headData prefixF prefixData correctionF correctionData tailF tailData)
@@ -26,10 +26,6 @@ open GaussianNameEquivalence (crossEquivalent cross_refl)
 open GaussianNamedDifferenceRate (self_rate rate_parameters_congr)
 open GaussianNamedInverseRate (independentRate)
 open GaussianRationalHorner (ofGaussian positive_product)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

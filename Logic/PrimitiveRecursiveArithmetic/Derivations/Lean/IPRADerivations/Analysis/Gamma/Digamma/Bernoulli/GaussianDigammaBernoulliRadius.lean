@@ -14,7 +14,7 @@ set_option maxHeartbeats 1050000
 
 namespace LeanProofs.IPRA.Analysis.GaussianDigammaBernoulliRadius
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open BernoulliBounds (bden bden_pos)
 open GaussianDigammaBernoulliCoefficients (coefficientNumerator)
 open GaussianDigammaBernoulliRecurrence (exponent weightedPrimitive)
@@ -36,10 +36,6 @@ open RationalGaussianEmbedding (embed embed_multiply)
 open RationalGaussianRealPart (embed_congr)
 open RationalNonnegativePowers (fraction_multiply fraction_congr)
 open RationalNormalForm (normalize_well_formed)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

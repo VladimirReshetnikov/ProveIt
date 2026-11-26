@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayIncrement
 import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactRiemannName
 import IPRADerivations.Analysis.Gamma.GaussianGammaEncodingRescaling
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Finite telescoping for the original Euler decay
@@ -16,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerDecayMesh
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegrandName (decayF decayData decayPoint)
 open GaussianEulerDecayIncrement (decay_linear_increment)
 open GaussianGammaCanonicalExponent (constantF)
@@ -31,10 +30,6 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameRingLaws (three)
 open GaussianRootAlgebra (equal equal_of_values re_scale im_scale re_one im_one)
 open ComplexLogarithmRemainder (oneCode scale)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -47,13 +42,9 @@ def stepError (b c p : PTm n) : PTm n := three*c*c*unit p+num 20*(b*b)
 def errorNum (b p : PTm n) : PTm n := three*unit p+num 20*(b*b)
 def errorDen (b p : PTm n) : PTm n := b*b*unit p
 
-@[simp] theorem subst_observation {m : ℕ} (σ : Fin n → PTm m) (a b p : PTm n) :
-    Syn.subst σ (observation a b p) = observation (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ p) := by
-  simp [observation,decayData,GaussianGammaFiniteApproximantName.exponentialInputData]
-@[simp] theorem subst_gridData {m : ℕ} (σ : Fin n → PTm m) (a b p : PTm n) :
-    Syn.subst σ (gridData a b p) = gridData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ p) := by simp [gridData]
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (i x : PTm n) :
-    Syn.subst σ (sample i x) = sample (Syn.subst σ i) (Syn.subst σ x) := by simp [sample]
+ipra_subst observation [decayData, GaussianGammaFiniteApproximantName.exponentialInputData]
+ipra_subst gridData
+ipra_subst sample
 
 theorem read_grid (a b p i : PTm n) : Γ ⊢[PRAAx]
     sample i (gridData a b p) ≐ observation (a+i) b p := by
@@ -131,7 +122,7 @@ theorem grid_step (a b p i : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hb : Γ ⊢[P
     distance_congr (.eqRefl _) (GaussianRationalSyntheticDivision.qsub_congr (.eqRefl X) y)
       (by dsimp only [stepError,errorNum]; ipra_ring) (.eqRefl _)
       (adjacent_step (a+i) b one p (le_trans ha (le_add_right a i)) hb (le_refl one) hb)
-  have den : Γ ⊢[PRAAx] fstT (sndT x) ≐ b := (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
+  have den : Γ ⊢[PRAAx] fstT (sndT x) ≐ b := (snd_pair _ _).fstE
   have w : Γ ⊢[PRAAx] inst2 weightedBody i x ≐ qmul X h := by
     simpa [weightedBody,inst2,fraction,x,X,h] using GaussianRationalSyntheticDivision.qmul_congr (read_grid a b p i)
       (GaussianCompactRiemannName.fraction_congr _ _ _ _ (.eqRefl one) den)
@@ -142,8 +133,7 @@ theorem grid_step (a b p i : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hb : Γ ⊢[P
 
 def telescopeLaw (x k : PTm n) : Fm PTm n :=
   sum differenceBody k x ≐ qsub (sample zero x) (sample k x)
-@[simp] theorem subst_telescopeLaw {m : ℕ} (σ : Fin n → PTm m) (x k : PTm n) :
-    (telescopeLaw x k).subst σ = telescopeLaw (Syn.subst σ x) (Syn.subst σ k) := by simp [telescopeLaw]
+ipra_subst telescopeLaw
 
 def consecutiveDifference (f : PTm 2) : PTm 2 :=
   qsub (inst2 f (var 0) (var 1)) (inst2 f (succ (var 0)) (var 1))
@@ -163,11 +153,9 @@ private def differenceSumLaw (f : PTm 2) (x k : PTm n) : Fm PTm n :=
 theorem consecutive_difference_sum (f : PTm 2) (x k : PTm n) :
     Γ ⊢[PRAAx] sum (consecutiveDifference f) k x ≐ qsub (inst2 f zero x) (inst2 f k x) := by
   have all : Γ ⊢[PRAAx] .all (differenceSumLaw f (Syn.shift x) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_differenceSumLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (GaussianRationalFiniteSum.sum_zero _ _).eqTrans (GaussianCoefficientNormOrder.qsub_self _).eqSymm
-    · simp only [subst_differenceSumLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine (GaussianRationalFiniteSum.sum_succ (consecutiveDifference f) _ _).eqTrans ?_
+    ipra_qfind [subst_differenceSumLaw]
+    · exact (GaussianRationalFiniteSum.sum_zero _ _).eqTrans (GaussianCoefficientNormOrder.qsub_self _).eqSymm
+    · refine (GaussianRationalFiniteSum.sum_succ (consecutiveDifference f) _ _).eqTrans ?_
       rw [consecutive_difference_at]
       exact (qadd_congr Prf.hyp0 (.eqRefl _)).eqTrans
         (GaussianReconstructionRoots.difference_chain (inst2 f zero (Syn.shift x))

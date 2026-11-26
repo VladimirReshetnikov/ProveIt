@@ -14,7 +14,7 @@ set_option maxHeartbeats 3700000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaTwoShiftWindow
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianGammaDigammaTwoShiftFiniteRate (raw raw_rate leftError rightError log_gap_at)
@@ -24,9 +24,6 @@ open GaussianRationalHorner (qzero positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianStirlingGammaLogarithm (source)
 open RationalValueBounds (upper upper_mono)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -41,13 +38,9 @@ def coefficient (b A : PTm n) : PTm n := num 4*A*(A+one)*b
 def cost (b c d A : PTm n) : PTm n :=
   leftError (low b d) b (width c d) (two*A)+rightError (low b d) b (width c d) (two*A)
 
-@[simp] theorem subst_window {m : ℕ} (σ : Fin n → PTm m) (a b A y : PTm n) :
-    (window a b A y).subst σ = window (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ A) (Syn.subst σ y) := by simp [window]
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (a b c d A : PTm n) :
-    (input a b c d A).subst σ = input (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d) (Syn.subst σ A) := by
-  simp [input,GaussianStirlingGammaLogarithm.source,two]
-@[simp] theorem subst_coefficient {m : ℕ} (σ : Fin n → PTm m) (b A : PTm n) :
-    Syn.subst σ (coefficient b A) = coefficient (Syn.subst σ b) (Syn.subst σ A) := by simp [coefficient]
+ipra_subst window
+ipra_subst input [GaussianStirlingGammaLogarithm.source, two]
+ipra_subst coefficient
 
 theorem positive_endpoint (a b A y : PTm n) (hb : Γ ⊢[PRAAx] le one b)
     (h : Γ ⊢[PRAAx] le ((two*A+one)*b) a) (hy : Γ ⊢[PRAAx] window a b A y) :

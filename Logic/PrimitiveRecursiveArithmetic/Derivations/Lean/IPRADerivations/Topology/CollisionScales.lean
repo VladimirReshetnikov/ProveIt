@@ -1,5 +1,3 @@
-import IPRADerivations.Core.Powers
-import IPRADerivations.Core.Order
 import IPRADerivations.Core.Parity
 import IPRADerivations.Core.LinearCombination
 
@@ -35,11 +33,7 @@ finite alternative `thm:alternative` for `d > 2` (the case `d = 2` of the finite
 
 namespace LeanProofs.IPRA.Topology.CollisionScales
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -1,9 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.Recurrences
-import IPRADerivations.Core.Parity
-import IPRADerivations.Core.SumLemmas
 import IPRADerivations.DiophantineNumberTheory.Coprime
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Fibonacci and Lucas numbers
@@ -28,13 +24,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.Fibonacci
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.Recurrences (fibStep)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -112,19 +104,15 @@ private abbrev addF : Fm PTm 2 :=
     (fibS (var 1 + succ (var 0)) ≐ fibS (var 1) * fibS (succ (var 0)) + fib (var 1) * fibS (var 0))
 
 private theorem add₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] addF := by
-  refine ind _ ⟨trivial, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_and, Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_fibS, subst_fib, Syn.subst_var,
-      Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have z₁ := natEq (fibS_zero (Γ := ([] : List (Fm PTm 1)))); have z₂ := natEq (fib_zero (Γ := ([] : List (Fm PTm 1))))
+  ipra_ind (⟨trivial, trivial⟩) [subst_fibS, subst_fib]
+  · have z₁ := natEq (fibS_zero (Γ := ([] : List (Fm PTm 1)))); have z₂ := natEq (fib_zero (Γ := ([] : List (Fm PTm 1))))
     refine .andI ((congrFibS (add_zero _)).eqTrans ?_) ?_
     · ipra_lc -Groth.ι (IPRA.Q.mk _ (fibS (var 0))) * z₁ - Groth.ι (IPRA.Q.mk _ (fib (var 0))) * z₂
     · refine (congrFibS ((add_succ _ _).eqTrans (congrSucc (add_zero _)))).eqTrans ((fibS_succ _).eqTrans ?_)
       ipra_lc -Groth.ι (IPRA.Q.mk _ (fibS (var 0))) * natEq (fibS_succ (Γ := ([] : List (Fm PTm 1))) zero) -
         Groth.ι (IPRA.Q.mk _ (fibS (var 0))) * z₁ - Groth.ι (IPRA.Q.mk _ (fibS (var 0))) * z₂ -
         Groth.ι (IPRA.Q.mk _ (fib (var 0))) * z₁
-  · simp only [Fm.subst_and, Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_fibS, subst_fib, Syn.subst_var,
-      Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .andI ((Prf.andE₂ Prf.hyp0).eqTrans (congrAdd (.eqRefl _) (congrMul (.eqRefl _) (fib_succ _).eqSymm)))
+  · exact .andI ((Prf.andE₂ Prf.hyp0).eqTrans (congrAdd (.eqRefl _) (congrMul (.eqRefl _) (fib_succ _).eqSymm)))
       (add_step (Prf.andE₁ Prf.hyp0) (Prf.andE₂ Prf.hyp0))
 
 /-- `F_{m+k+1} = F_{m+1}F_{k+1} + F_mF_k`. -/
@@ -260,10 +248,8 @@ private abbrev sumsF : Fm PTm 1 :=
         (ap2 (sumF feB) (succ (var 0)) zero + one ≐ fibS (two * var 0))))
 
 private theorem sums₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] sumsF := by
-  refine ind _ ⟨trivial, trivial, trivial, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_and, Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_ap2, subst_fibS, subst_fib,
-      Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have z₁ := natEq (fibS_zero (Γ := ([] : List (Fm PTm 0)))); have z₂ := natEq (fib_zero (Γ := ([] : List (Fm PTm 0))))
+  ipra_ind (⟨trivial, trivial, trivial, trivial⟩) [subst_ap2, subst_fibS, subst_fib]
+  · have z₁ := natEq (fibS_zero (Γ := ([] : List (Fm PTm 0)))); have z₂ := natEq (fib_zero (Γ := ([] : List (Fm PTm 0))))
     have t₀ : ([] : List (Fm PTm 0)) ⊢[PRAAx] (two * zero : PTm 0) ≐ zero := mul_zero _
     have w₁ := natEq ((congrFib t₀).eqTrans (fib_zero (Γ := ([] : List (Fm PTm 0)))))
     have w₂ := natEq ((congrFibS t₀).eqTrans (fibS_zero (Γ := ([] : List (Fm PTm 0)))))
@@ -284,9 +270,7 @@ private theorem sums₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] sumsF := by
       have a := natEq e; have s := natEq (sum_zero (Γ := ([] : List (Fm PTm 0))) feB zero)
       apply deriveNat; ipra_simps
       linear_combination a + s + w₁ - w₂
-  · simp only [Fm.subst_and, Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_ap2, subst_fibS, subst_fib,
-      Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .andI (sum_fib_step (Prf.andE₁ Prf.hyp0))
+  · exact .andI (sum_fib_step (Prf.andE₁ Prf.hyp0))
       (.andI (sum_sq_step (Prf.andE₁ (Prf.andE₂ Prf.hyp0)))
         (.andI (sum_odd_step (Prf.andE₁ (Prf.andE₂ (Prf.andE₂ Prf.hyp0))))
           (sum_even_step (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ Prf.hyp0))))))

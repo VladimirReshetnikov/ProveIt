@@ -23,11 +23,7 @@ data cleared of denominators), with the certificates of `Core/IntCertificates`:
 
 namespace LeanProofs.IPRA.Probability.DistributionCores
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

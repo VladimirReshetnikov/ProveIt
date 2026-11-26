@@ -18,7 +18,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalExponentTaylorMass
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalExponentTaylorBuffer
   (buffer buffer_length descending_at coefficient coefficient_zero coefficient_one coefficient_two coefficient_high
     prefactorLinear prefactorQuadratic linearCoefficient quadraticCoefficient highCoefficient)
@@ -38,10 +38,6 @@ open GaussianRationalMetric (bounded)
 open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianRationalSyntheticBounds (natCode)
 open RationalArgmin (rationalLE)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

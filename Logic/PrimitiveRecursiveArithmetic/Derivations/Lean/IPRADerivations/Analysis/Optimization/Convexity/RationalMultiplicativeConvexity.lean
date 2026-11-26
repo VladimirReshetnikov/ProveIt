@@ -16,9 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalMultiplicativeConvexity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open LeanProofs.IPRA.PTm (pred)
-open ConciseIPRA.PTm (succ)
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
 open RationalArgmin (rationalLE reflexive denominator_positive)
 open RationalArithmetic (represents add multiply)
@@ -27,8 +25,6 @@ open RationalConvexSecants (nonnegative naturalNumerator nonnegative_representat
   multiply_natural_representation add_natural_representation compare_same_to_natural compare_same_from_natural)
 open GaussianRationalHorner (scalar_congr)
 open GaussianRationalMetric (comparison_to_cleared)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

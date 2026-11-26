@@ -3,8 +3,6 @@ import IPRADerivations.Combinatorics.CatalanBallot
 import IPRADerivations.Combinatorics.StirlingBinomial
 import IPRADerivations.Combinatorics.BellStirling
 import IPRADerivations.AnalyticNumberTheory.Totient
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Inclusion–exclusion for the Stirling numbers
@@ -34,17 +32,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.StirlingInclusion
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial (binom)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Combinatorics.Stirling (gle gle_of_le stir)
 open LeanProofs.IPRA.Combinatorics.Vandermonde (gb congrGb gb_zero gb_self gb_above gb_pascal)
 open LeanProofs.IPRA.Combinatorics.CatalanBallot (binom_ratio)
 open LeanProofs.IPRA.Combinatorics.BellPascalInversion (ev od congrEv congrOd ev_succ od_succ ev_zero)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -70,11 +64,10 @@ theorem gb_ratio (k j : PTm n) : Γ ⊢[PRAAx] monus k j * gb k j ≐ succ j * g
 theorem absorb_succ (k j : PTm n) :
     Γ ⊢[PRAAx] succ j * gb (succ k) (succ j) + succ k * gb k (succ j) ≐ succ k * gb (succ k) (succ j) := by
   refine .orE (lt_or_le k j) ?_ ?_
-  · have p := natEq (gb_pascal (Γ := lt k j :: Γ) k j)
-    have z0 : (lt k j :: Γ) ⊢[PRAAx] gb k j ≐ zero := gb_above Prf.hyp0
+  · have z0 : (lt k j :: Γ) ⊢[PRAAx] gb k j ≐ zero := gb_above Prf.hyp0
     have z1 : (lt k j :: Γ) ⊢[PRAAx] gb k (succ j) ≐ zero :=
       gb_above (le_trans Prf.hyp0 (le_succ_self _))
-    ipra_lc (𝔞 j - 𝔞 k) * p + (𝔞 j - 𝔞 k) * natEq z0 + (𝔞 j + 1) * natEq z1
+    ipra_lc (𝔞 j - 𝔞 k) * natEq (gb_pascal (Γ := lt k j :: Γ) k j) + (𝔞 j - 𝔞 k) * natEq z0 + (𝔞 j + 1) * natEq z1
   · have p := natEq (gb_pascal (Γ := le j k :: Γ) k j)
     have r := natEq (gb_ratio (Γ := le j k :: Γ) k j)
     have e := natEq (eq_add_of_le (Prf.hyp0 : (le j k :: Γ) ⊢[PRAAx] le j k))
@@ -272,10 +265,7 @@ alias mul_one' := Common.mul_one_right
 theorem shift_pairT0 (k : PTm n) : Syn.shift (pairT zero k) = pairT zero (Syn.shift k) := by simp [Syn.shift]
 
 /-- `k ∸ i = (k ∸ (i + 1)) + 1` for `i < k`. -/
-theorem monus_lt {i k : PTm n} (h : Γ ⊢[PRAAx] lt i k) : Γ ⊢[PRAAx] monus k i ≐ succ (monus k (succ i)) := by
-  have e := natEq (eq_add_of_le h)
-  have e' : Γ ⊢[PRAAx] k ≐ succ (monus k (succ i)) + i := by apply deriveNat; ipra_simps; linear_combination e
-  exact (congrMonus e' (.eqRefl _)).eqTrans (add_monus _ _)
+alias monus_lt := Common.monus_succ_of_lt
 
 theorem head_e (K : PTm n) : Γ ⊢[PRAAx] inst2 eB zero (pairT zero K) ≐ ev K :=
   (eB_at _ _ _).eqTrans ((congrMul (congrEv (monus_zero K)) ((congrMul (gb_zero K) (pw_zero' _)).eqTrans (one_mul _))).eqTrans
@@ -417,12 +407,9 @@ theorem V_succ {B N : PTm n} (hV : Γ ⊢[PRAAx] ap2 (sumF vB) B N ≐ zero) : �
 `k! S(n, k) = ∑_{i≤k} (−1)^{k−i} C(k, i) iⁿ`, for all `n, k`. -/
 theorem stirling_ie (N K : PTm n) : Γ ⊢[PRAAx] P N K := by
   have hall : Γ ⊢[PRAAx] Fm.all (ap2 (sumF vB) (Syn.shift (succ K)) (var 0) ≐ zero) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
-      exact V_zero _
-    · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_succ,
-        ConciseIPRA.PTm.subst_zero]
-      exact V_succ Prf.hyp0
+    ipra_qfind [subst_ap2]
+    · exact V_zero _
+    · exact V_succ Prf.hyp0
   have h := Prf.allE N hall
   simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero] at h
   exact elim h (le_refl _)

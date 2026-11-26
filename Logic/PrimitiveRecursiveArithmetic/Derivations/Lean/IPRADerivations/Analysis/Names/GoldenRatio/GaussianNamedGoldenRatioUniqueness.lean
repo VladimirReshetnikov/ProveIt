@@ -15,7 +15,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatioUniqueness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedGoldenRatio (onePoint)
 open GaussianNamedPositiveLogarithm (source numerator denominator decoded_domain decoded_value)
 open GaussianNamedDiagonalRate (diagonalRate cross_of_diagonal_rate)
@@ -30,9 +30,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_t
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

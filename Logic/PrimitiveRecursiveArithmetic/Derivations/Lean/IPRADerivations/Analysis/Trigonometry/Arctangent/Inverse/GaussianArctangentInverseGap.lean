@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentInverseGap
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianArctangentNamedSlope (ordinate gapNumerator named_slope_at)
 open GaussianCoefficientNameBounds (unit)
 open GaussianRationalHorner (positive_product)
@@ -26,9 +26,6 @@ open RationalCubeMidpoint (fraction fraction_represents)
 open RationalSupMetric (numeratorOf denominatorOf)
 open RationalValueBounds (radius radius_congr radius_of_upper radius_symmetric upper upper_of_order
   upper_of_radius upper_triangle positive_cancel)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔟" t:max => Groth.ι (IPRA.Q.mk _ t)

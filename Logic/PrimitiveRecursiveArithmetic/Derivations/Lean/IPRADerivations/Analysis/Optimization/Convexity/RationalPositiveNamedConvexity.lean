@@ -15,9 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalPositiveNamedConvexity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (monus)
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiRationalScaling (rationalLT)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open RationalArgmin (rationalLE rationalLE_congr denominator_positive left transitive)
@@ -32,8 +30,6 @@ open RationalConvexScheduledModulus (positivePresentation presentation_at source
 open RationalNestedConvexModulus (upper_nonnegative lower_nonnegative witnessExponent)
 open RationalNestedIntervals (read nesting)
 open GaussianRationalSyntheticBounds (natCode natCode_congr natCode_nonnegative natCode_multiply add_monotone)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔟" t:max => Groth.ι (IPRA.Q.mk _ t)

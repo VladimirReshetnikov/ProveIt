@@ -13,7 +13,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCyclicAngleAxis
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCyclicExponentialRoots (coefficient angleF angleData angle_at)
 open GaussianArctangentQuarterExponential (quarterF radius)
 open GaussianArctangentExponentialPeriod (twiceF twiceData fullTurnF fullTurnData)
@@ -29,10 +29,6 @@ open GaussianRationalNaturalScale (natural_product_value)
 open GaussianRootAlgebra (equal equal_of_values re_add im_add re_scale im_scale)
 open ComplexLogarithmRemainder (scale oneCode add mul re eval_re_code)
 open RationalGaussianEmbedding (scalarZero scalar_zero_represents)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

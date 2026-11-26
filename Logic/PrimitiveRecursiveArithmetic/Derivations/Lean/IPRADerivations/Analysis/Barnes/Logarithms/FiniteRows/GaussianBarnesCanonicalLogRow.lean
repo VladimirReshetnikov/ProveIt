@@ -16,7 +16,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalLogRow
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (normSq scale series)
 open DyadicComplexLogarithm (observation observationError precision unit)
 open GaussianDominantPairAlgebra (radiusPoint radius_bounded)
@@ -25,10 +25,6 @@ open GaussianRationalMetric (bounded bounded_of_cleared distanceBounded qsub)
 open GaussianRationalReciprocal (bounded_product)
 open GaussianRationalSyntheticDivision (rescale_to)
 open LogarithmRemainder (denominator denominator_positive)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "nativeBound" => ComplexLogarithmRemainder.bounded
@@ -47,31 +43,19 @@ def finiteValue (z B k L : PTm n) : PTm n := qmul (radiusPoint k one) (cubic z (
 
 def roundedValue (p z R B k : PTm n) : PTm n := qmul (radiusPoint k one) (roundedCubic p z (R*B) (B*k))
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B k : PTm n) :
-    (source z R B k).subst σ =
-      source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ k) := by simp [source,two,one]
+ipra_subst source [two, one]
 
-@[simp] theorem subst_boundNumerator {m : ℕ} (σ : Fin n → PTm m) (R : PTm n) :
-    Syn.subst σ (boundNumerator R) = boundNumerator (Syn.subst σ R) := by simp [boundNumerator,two]
+ipra_subst boundNumerator [two]
 
-@[simp] theorem subst_boundDenominator {m : ℕ} (σ : Fin n → PTm m) (k : PTm n) :
-    Syn.subst σ (boundDenominator k) = boundDenominator (Syn.subst σ k) := by simp [boundDenominator]
+ipra_subst boundDenominator
 
-@[simp] theorem subst_cubic {m : ℕ} (σ : Fin n → PTm m) (z N L : PTm n) :
-    Syn.subst σ (cubic z N L) = cubic (Syn.subst σ z) (Syn.subst σ N) (Syn.subst σ L) := by simp [cubic]
+ipra_subst cubic
 
-@[simp] theorem subst_roundedCubic {m : ℕ} (σ : Fin n → PTm m) (p z R N : PTm n) :
-    Syn.subst σ (roundedCubic p z R N) = roundedCubic (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ N) := by
-  simp [roundedCubic]
+ipra_subst roundedCubic
 
-@[simp] theorem subst_finiteValue {m : ℕ} (σ : Fin n → PTm m) (z B k L : PTm n) :
-    Syn.subst σ (finiteValue z B k L) = finiteValue (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ k) (Syn.subst σ L) := by
-  simp [finiteValue,one]
+ipra_subst finiteValue [one]
 
-@[simp] theorem subst_roundedValue {m : ℕ} (σ : Fin n → PTm m) (p z R B k : PTm n) :
-    Syn.subst σ (roundedValue p z R B k) =
-      roundedValue (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ k) := by
-  simp [roundedValue,one]
+ipra_subst roundedValue [one]
 
 theorem bound_denominator_positive (k : PTm n) (hk : Γ ⊢[PRAAx] le one k) : Γ ⊢[PRAAx] le one (boundDenominator k) :=
   positive_product _ _ (positive_product _ _ (le_of_eq_add (d := two) (by ipra_ring)) hk) hk

@@ -15,7 +15,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetArctangentResolventRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (eval_re_code eval_im_code normSq normSq_neg normSq_scale normSq_one)
 open GaussianBinetArctangentResolvent (pole signedTimeNumerator value average pole_as_sum pole_lower reciprocal_average)
 open GaussianCoefficientNameBounds (bounded_radius_mono)
@@ -32,9 +32,6 @@ open GaussianRightHalfPlaneLogarithm (source)
 open GaussianRootAlgebra (equal_of_values re_mul im_mul re_neg im_neg re_scale im_scale re_one im_one)
 open GaussianSineProductImaginaryLogDerivative (axisNumerator)
 open GaussianSineProductImaginaryLogDerivativeTail (axis_norm)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -15,14 +15,10 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaEulerCompactQuadrature
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaIntegralCutoffs (etaDen top)
 open GaussianGammaCompactQuadratureBoundary (width exact_right_endpoint)
 open GaussianEulerIntegrandName (evaluatorF fixedData)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -32,17 +28,10 @@ def conservativeCells (q p A R : PTm n) : PTm n := GaussianCompactRiemannName.me
 def data (z R B p A : PTm n) : PTm n :=
   GaussianEulerCompactModulus.data z R B (etaDen p A R) (top p A R) (width p A R)
 def nameF : PR 2 := GaussianEulerCompactModulus.nameF
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B : PTm n) :
-    (source z R B).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) := by simp [source,ComplexLogarithmRemainder.bounded]
-@[simp] theorem subst_localFactor {m : ℕ} (σ : Fin n → PTm m) (p A R : PTm n) :
-    Syn.subst σ (localFactor p A R) = localFactor (Syn.subst σ p) (Syn.subst σ A) (Syn.subst σ R) := by
-  simp [localFactor,etaDen,top,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_conservativeCells {m : ℕ} (σ : Fin n → PTm m) (q p A R : PTm n) :
-    Syn.subst σ (conservativeCells q p A R) = conservativeCells (Syn.subst σ q) (Syn.subst σ p) (Syn.subst σ A) (Syn.subst σ R) := by
-  simp [conservativeCells,top,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (z R B p A : PTm n) :
-    Syn.subst σ (data z R B p A) = data (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ p) (Syn.subst σ A) := by
-  simp [data,etaDen,top,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst source [ComplexLogarithmRemainder.bounded]
+ipra_subst localFactor [etaDen, top, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst conservativeCells [top, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst data [etaDen, top, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient]
 
 theorem original_input (z R B p A : PTm n) (h : Γ ⊢[PRAAx] source z R B) : Γ ⊢[PRAAx]
     GaussianEulerCompactModulus.source z R B (etaDen p A R) (top p A R) (width p A R) :=
@@ -68,10 +57,7 @@ def output (q z R B p A : PTm n) : PTm n := pairT (ap2 nameF q (data z R B p A))
   (pairT (localFactor p A R) (pairT (conservativeCells q p A R) (pairT (etaDen p A R) (top p A R))))
 def outputF : PR 6 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5))
 def run (q z R B p A : PTm n) : PTm n := PTm.app outputF ![q,z,R,B,p,A]
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (q z R B p A : PTm n) :
-    Syn.subst σ (output q z R B p A) = output (Syn.subst σ q) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ p) (Syn.subst σ A) := by
-  simp [output,etaDen,top,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst output [etaDen, top, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient]
 theorem program_at (q z R B p A : PTm n) : Γ ⊢[PRAAx] run q z R B p A ≐ output q z R B p A := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) ![q,z,R,B,p,A]
 theorem returned_sample (q z R B p A : PTm n) : Γ ⊢[PRAAx]

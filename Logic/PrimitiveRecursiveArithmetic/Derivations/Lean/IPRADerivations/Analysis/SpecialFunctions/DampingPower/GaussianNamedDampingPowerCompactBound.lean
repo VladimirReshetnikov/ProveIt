@@ -14,16 +14,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedDampingPowerCompactBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedDampingPowerCompact (source nameF data)
 open GaussianNamedDampingPowerCompactPaid (parameterClock rationalNameData original_paid_observations)
 open GaussianRationalMetric (bounded)
 open GaussianRationalHorner (positive_product)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianReconstructionRoots (norm_from_distance)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

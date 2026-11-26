@@ -15,7 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLowerPowerRebasing
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLowerPowerCoefficients (lowerMultiplier)
 open GaussianRationalNaturalScale (naturalPoint natScale natural_point_represents)
 open GaussianRationalHorner (qmul qadd canonical_unique qmul_represents qadd_represents represents_congr)
@@ -26,15 +26,11 @@ open GaussianRationalReciprocal (conjugate re_conjugate im_conjugate)
 open GaussianRootAlgebra (equal equal_of_values re_mul im_mul re_add im_add re_sub im_sub re_neg im_neg re_scale im_scale re_one im_one)
 open RationalHarmonicInterval (common interval numerator horizon at_common common_value)
 open RationalGaussianEmbedding (embed native)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def exponent (A : PTm n) : PTm n := two*pred A
-@[simp] theorem subst_exponent {m : ℕ} (σ : Fin n → PTm m) (A : PTm n) : Syn.subst σ (exponent A) = exponent (Syn.subst σ A) := by simp [exponent]
+ipra_subst exponent
 
 theorem multiplier_times_A (A : PTm n) (hA : Γ ⊢[PRAAx] le one A) : Γ ⊢[PRAAx]
     qmul (lowerMultiplier A) (naturalPoint A) ≐ qnegative (naturalPoint (exponent A)) := by

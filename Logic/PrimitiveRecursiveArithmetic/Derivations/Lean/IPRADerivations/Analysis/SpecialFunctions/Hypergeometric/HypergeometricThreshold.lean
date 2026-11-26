@@ -1,8 +1,5 @@
 import IPRADerivations.Analysis.SpecialFunctions.Hypergeometric.HypergeometricRatio
 import IPRADerivations.AnalyticNumberTheory.PhiLower
-import IPRADerivations.Core.Gcd
-import IPRADerivations.Core.Parity
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # An explicit ratio threshold for hypergeometric terms
@@ -30,13 +27,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.HypergeometricThreshold
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.HypergeometricRatio (prodL pochL shiftL pochL_succ Num Den pfq_ratio)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

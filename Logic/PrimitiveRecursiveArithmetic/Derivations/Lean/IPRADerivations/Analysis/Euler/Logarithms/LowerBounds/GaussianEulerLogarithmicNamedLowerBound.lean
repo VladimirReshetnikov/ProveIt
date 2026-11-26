@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Euler.Logarithms.LowerBounds.GaussianEulerLogarithmicLowerFiniteBudget
 import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerNamedLowerTail
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The original named logarithmic lower compact tail
@@ -17,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicNamedLowerBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLogarithmicLowerRootRows (panelExponent panelDegree intervalDen lipschitz fixedData)
 open GaussianEulerLogarithmicCompactName (evaluatorF nameF)
 open GaussianEulerLowerCofinalQuadrature (rootMesh transformed)
@@ -31,9 +30,6 @@ open GaussianRationalHorner (positive_product qzero)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalDistanceOrder (distance_congr distance_symmetric)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -44,13 +40,9 @@ def leading (j A : PTm n) : PTm n := Products.fact j*pw (GaussianEulerLogarithmi
 def numerator (s j p A R : PTm n) : PTm n := leading j A*unit s+unit (height p (panelDegree A) R)
 def denominator (s p A R : PTm n) : PTm n := unit (height p (panelDegree A) R)*unit s
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (j z R B p q A : PTm n) :
-    Syn.subst σ (data j z R B p q A) = data (Syn.subst σ j) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ A) :=
-  by simp [data,lowerWidth]
-@[simp] theorem subst_point {m : ℕ} (σ : Fin n → PTm m) (s j z R B p q A : PTm n) :
-    Syn.subst σ (point s j z R B p q A) = point (Syn.subst σ s) (Syn.subst σ j) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ A) := by simp [point]
-@[simp] theorem subst_leading {m : ℕ} (σ : Fin n → PTm m) (j A : PTm n) :
-    Syn.subst σ (leading j A) = leading (Syn.subst σ j) (Syn.subst σ A) := by simp [leading,Products.fact]
+ipra_subst data [lowerWidth]
+ipra_subst point
+ipra_subst leading [Products.fact]
 
 private theorem quadrature_congr (F : PR 3) (s N a C E N' a' C' E' x : PTm n)
     (hN : Γ ⊢[PRAAx] N ≐ N') (ha : Γ ⊢[PRAAx] a ≐ a') (hC : Γ ⊢[PRAAx] C ≐ C') (hE : Γ ⊢[PRAAx] E ≐ E') : Γ ⊢[PRAAx]

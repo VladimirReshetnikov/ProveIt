@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGaussDuplication
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaAdjacentCutoff (multiply_cross)
 open GaussianGammaGaussShiftedProduct (source)
 open GaussianGammaReciprocalInverse (gammaF)
@@ -27,8 +27,6 @@ open GaussianGaussMultiplicationPowerPerturbation (limitData)
 open GaussianNameArithmetic (multiplyF multiplyData multiply_fast)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_trans cross_symm)
 open GaussianNameRingLaws (multiply_associative multiply_commutative)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "SqrtPi" => GaussianGammaHalfSqrtPi.nameF

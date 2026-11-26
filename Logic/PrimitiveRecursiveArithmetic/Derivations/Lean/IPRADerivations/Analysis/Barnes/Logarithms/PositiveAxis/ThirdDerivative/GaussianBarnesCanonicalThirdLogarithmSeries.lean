@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Logarithms.PositiveAxis.ThirdDerivative.GaussianBarnesCanonicalThirdLogarithmTail
 import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianPositiveExponentialProduct
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Positive-axis partial sums of the original Barnes cubic logarithmic rows
@@ -15,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalThirdLogarithmSeries
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalHigherDerivative (body body_at)
 open GaussianBarnesCanonicalThirdLogarithmRows (center derivative_at row shiftedNumerator square_bound positive_floor)
 open GaussianRationalFiniteSum (sum)
@@ -25,9 +24,6 @@ open GaussianRationalReciprocal (bound_congr bounded_sum)
 open GaussianRationalSyntheticDivision (qadd_congr)
 open GaussianPositiveRealArithmetic (positive positive_congr positiveTerms positive_sum)
 open RationalArgmin (rationalLE rationalLE_congr)
-open ConciseIPRA.PTm (succ zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

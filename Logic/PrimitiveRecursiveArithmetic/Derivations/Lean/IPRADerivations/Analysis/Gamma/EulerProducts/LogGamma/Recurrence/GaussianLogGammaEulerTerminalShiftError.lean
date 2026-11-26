@@ -17,7 +17,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerTerminalShiftError
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianLogGammaEulerHead (shifted_source)
@@ -33,10 +33,6 @@ open GaussianRationalHorner (qadd qzero positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianReconstructionRoots (distance_zero_iff)
 open GaussianRightHalfPlaneLogarithm (source subst_data)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "G" => GaussianRightHalfPlaneLogarithm.nameF

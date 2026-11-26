@@ -17,7 +17,7 @@ set_option maxHeartbeats 720000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinDampedPoint
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEulerIntegrandName (powerF powerData decayF decayData decayPoint power_regular)
 open GaussianEulerCompactPowerMajorant (majorant original_power_observation)
@@ -33,9 +33,6 @@ open GaussianRationalMetric (bounded distanceBounded qnegative_represents)
 open GaussianRationalSyntheticBounds (natCode natCode_represents)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open ComplexLogarithmRemainder (scale oneCode re)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "parameterSource" => GaussianEulerExponentCompactBounds.source
@@ -46,14 +43,9 @@ def observation (j p z D a b : PTm n) : PTm n :=
 
 def cost (R H T : PTm n) : PTm n := two*(majorant R H T+two)
 
-@[simp] theorem subst_observation {m : ℕ} (σ : Fin n → PTm m) (j p z D a b : PTm n) :
-    Syn.subst σ (observation j p z D a b) =
-      observation (Syn.subst σ j) (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ D) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [observation,factorClock]
+ipra_subst observation [factorClock]
 
-@[simp] theorem subst_cost {m : ℕ} (σ : Fin n → PTm m) (R H T : PTm n) :
-    Syn.subst σ (cost R H T) = cost (Syn.subst σ R) (Syn.subst σ H) (Syn.subst σ T) := by
-  simp [cost,majorant,GaussianEulerCompactPowerMajorant.exponentRadius,two,one]
+ipra_subst cost [majorant, GaussianEulerCompactPowerMajorant.exponentRadius, two, one]
 
 private theorem decay_nonpositive (a b : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
     Γ ⊢[PRAAx] RationalArgmin.rationalLE (fstT (decayPoint a b)) (natCode zero) := by

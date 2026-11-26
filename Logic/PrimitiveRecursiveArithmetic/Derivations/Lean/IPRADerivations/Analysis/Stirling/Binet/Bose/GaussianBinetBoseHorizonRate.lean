@@ -18,7 +18,7 @@ set_option maxHeartbeats 630000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetBoseHorizonRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetArctangentQuadrature (fixedData)
 open GaussianBinetBoseCompact (evaluatorF gain)
 open GaussianBinetBoseCompactAlignment (additivity data_congr)
@@ -33,11 +33,7 @@ open GaussianNamedSmallAddendRate (tailSamples)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus num pred)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)

@@ -14,7 +14,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesVignerasRefinementWrap
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesVignerasIntegerPeriod (advance data nameF period_at source)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameEquivalence (cross_to_diagonal diagonal_at)
@@ -22,9 +22,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRationalMetric (distanceBounded)
 open SignedDiscreteDerivativeOperators (width divisor subst_width subst_divisor)
 open GaussianDiscretePeriodicGridReadback (sample)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

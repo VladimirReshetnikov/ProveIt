@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductAppend
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaAdjacentCutoff (multiply_cross)
@@ -31,18 +31,13 @@ open GaussianRationalHorner (qmul)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalPowerDifference (distance_refl_zero)
 open GaussianRationalSyntheticDivision (qmul_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def lastRow (f : PR 3) (g : PR 2) (N x y : PTm n) : Fm PTm n :=
   .all (ap3 f (var 0) (Syn.shift N) (Syn.shift x) ≐ ap2 g (var 0) (Syn.shift y))
 
-@[simp] theorem subst_lastRow {l : ℕ} (σ : Fin n → PTm l) (f : PR 3) (g : PR 2) (N x y : PTm n) :
-    (lastRow f g N x y).subst σ = lastRow f g (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ y) := by
-  simp [lastRow,Syn.subst_shift,Syn.shift_subst]
+ipra_subst lastRow [Syn.subst_shift, Syn.shift_subst]
 
 theorem last_row_at (f : PR 3) (g : PR 2) (p N x y : PTm n) (h : Γ ⊢[PRAAx] lastRow f g N x y) :
     Γ ⊢[PRAAx] ap3 f p N x ≐ ap2 g p y := by

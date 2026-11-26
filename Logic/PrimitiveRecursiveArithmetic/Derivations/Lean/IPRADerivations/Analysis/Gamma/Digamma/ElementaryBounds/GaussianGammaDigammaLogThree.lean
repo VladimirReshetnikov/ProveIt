@@ -14,7 +14,7 @@ set_option maxHeartbeats 250000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaLogThree
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinGamma (Lv Pv L_zero L_succ P_zero P_succ)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogName (Nz Dz Un Ud Nz_zero Nz_succ)
 open GaussianCoefficientNameBounds (unit)
@@ -27,10 +27,6 @@ open GaussianStirlingOddGrid (parameter gap numerator denominator denominator_po
 open GaussianStirlingOddLogBrackets (logLower logUpper original_log_brackets upper_denominator_positive)
 open RationalArgmin (rationalLE)
 open RationalValueBounds (upper_congr upper_order_left upper_order_right)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,7 +37,6 @@ def upper : PTm n := fraction (num 4) (num 3)
 private theorem lower_cleared : Γ ⊢[PRAAx]
     numerator one (num 3) two*num 11 ≐ denominator one (num 3) two*num 12+num 13*num 32*num 32 := by
   let s : PTm n := parameter one two
-  have eN0 := natEq (Nz_zero (Γ := Γ) two s)
   have eN1 := natEq (Nz_succ (Γ := Γ) zero two s)
   have eN2 := natEq (Nz_succ (Γ := Γ) one two s)
   have eN3 := natEq (Nz_succ (Γ := Γ) two two s)
@@ -59,7 +54,7 @@ private theorem lower_cleared : Γ ⊢[PRAAx]
   change Γ ⊢[PRAAx] Nz (succ two) two s*num 11 ≐ (Lv (succ two) zero*Pv (succ two) s)*num 12+num 13*num 32*num 32
   apply deriveNat
   ipra_simps
-  rw [eN3, eN2, eN1, eN0, eL3, eL2, eL1, eL0, eP2, eP1, eP0, eQ3, eQ2, eQ1, eQ0]
+  rw [eN3, eN2, eN1, natEq (Nz_zero (Γ := Γ) two s), eL3, eL2, eL1, eL0, eP2, eP1, eP0, eQ3, eQ2, eQ1, eQ0]
   dsimp only [s, parameter]
   ipra_simps
   ring
@@ -69,15 +64,12 @@ private theorem upper_cleared : Γ ⊢[PRAAx]
       num 4*Ud zero two (parameter one two) (gap one two) := by
   let s : PTm n := parameter one two
   let w : PTm n := gap one two
-  have eN := natEq (Nz_zero (Γ := Γ) two s)
-  have eL := natEq (L_zero (Γ := Γ) zero)
-  have eP := natEq (P_zero (Γ := Γ) two)
   have eQ := natEq (P_zero (Γ := Γ) s)
   change Γ ⊢[PRAAx] num 3*(Nz zero two s*succ (two*zero)*w+two*Pv zero two*(s*s)*Lv zero zero) ≐
     num 4*(succ (two*zero)*w*(Lv zero zero*Pv zero s))
   apply deriveNat
   ipra_simps
-  rw [eN, eL, eP, eQ]
+  rw [natEq (Nz_zero (Γ := Γ) two s), natEq (L_zero (Γ := Γ) zero), natEq (P_zero (Γ := Γ) two), eQ]
   dsimp only [s, w, parameter, gap]
   ipra_simps
   ring

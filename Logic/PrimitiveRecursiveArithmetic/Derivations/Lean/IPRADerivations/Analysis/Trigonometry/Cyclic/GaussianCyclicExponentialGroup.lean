@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCyclicExponentialGroup
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCyclicExponentialRoots (source coefficient angleF angleData angle_at angle_input angle_regular
   coefficient_bound rootF rootData root_regular)
 open GaussianArctangentExponentialPeriod (fullTurnF fullTurnData fullTurnRadius original_full_turn_input)
@@ -36,9 +36,6 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianApproximateInverseDistance (multiply_distance)
 open ComplexLogarithmRemainder (scale oneCode)
 open GaussianRootAlgebra (equal_of_values re_add im_add re_scale im_scale)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -47,13 +44,8 @@ def sumData (r s m x : PTm n) : PTm n := addData (angleData r m x) (angleData s 
 def productF : PR 2 := multiplyF rootF rootF
 def productData (r s m x : PTm n) : PTm n := multiplyData rootF rootF (rootData r m x) (rootData s m x)
 
-@[simp] theorem subst_sumData {l : ℕ} (σ : Fin n → PTm l) (r s m x : PTm n) :
-    Syn.subst σ (sumData r s m x) = sumData (Syn.subst σ r) (Syn.subst σ s) (Syn.subst σ m) (Syn.subst σ x) := by
-  simp [sumData]
-@[simp] theorem subst_productData {l : ℕ} (σ : Fin n → PTm l) (r s m x : PTm n) :
-    Syn.subst σ (productData r s m x) =
-      productData (Syn.subst σ r) (Syn.subst σ s) (Syn.subst σ m) (Syn.subst σ x) := by
-  simp [productData]
+ipra_subst sumData
+ipra_subst productData
 
 theorem coefficient_add (r s m : PTm n) (hm : Γ ⊢[PRAAx] le one m) :
     Γ ⊢[PRAAx] qadd (coefficient r m) (coefficient s m) ≐ coefficient (r+s) m := by

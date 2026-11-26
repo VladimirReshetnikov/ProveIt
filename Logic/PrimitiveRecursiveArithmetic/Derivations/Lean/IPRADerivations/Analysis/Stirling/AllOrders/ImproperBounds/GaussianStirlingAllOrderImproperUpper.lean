@@ -16,8 +16,7 @@ set_option maxHeartbeats 1050000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderImproperUpper
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero)
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianGammaRationalWendelBoundary (fraction_zero zero_data_cross)
@@ -35,8 +34,6 @@ open GaussianStirlingMultiplicativeBoundsCaps (strict_fractions)
 open GaussianStirlingMultiplicativeBoundsLog (constant_order fractions_order)
 open GaussianStirlingMultiplicativeBoundsStrictOrder (strictOrder strict_transport)
 open GaussianStirlingNames (source)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "fraction" => GaussianPositiveRationalLogarithm.fraction

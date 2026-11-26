@@ -10,14 +10,11 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalNamedApartnessTransport
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaNegativeCriticalLocation (fractionLocationF fraction_location_regular)
 open GaussianGammaNegativeIntervalNamedApartness (apart)
 open GaussianNameEquivalence (crossEquivalent cross_refl)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

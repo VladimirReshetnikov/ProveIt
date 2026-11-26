@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPositiveExponentialOrder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianPositiveRealArithmetic (positive positive_power positive_inverse_factorial)
 open GaussianPositiveExponentialProduct (real_product)
 open GaussianRationalReciprocal (power power_zero power_succ)
@@ -25,15 +25,11 @@ open GaussianRationalExponentialTail (scalarPrefix prefix_succ)
 open GaussianScalarExponentialDiagonal (coefficient)
 open RationalArgmin (rationalLE rationalLE_congr)
 open GaussianDominantPairAlgebra (radiusPoint radius_represents radiusNumerator)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def powerOrder (u v k : PTm n) : Fm PTm n := rationalLE (fstT (power u k)) (fstT (power v k))
-@[simp] theorem subst_powerOrder {m : ℕ} (σ : Fin n → PTm m) (u v k : PTm n) :
-    (powerOrder u v k).subst σ = powerOrder (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ k) := by simp [powerOrder]
+ipra_subst powerOrder
 
 theorem power_order_zero (u v : PTm n) : Γ ⊢[PRAAx] powerOrder u v zero :=
   rationalLE_congr (congrFst (power_zero u)).eqSymm (congrFst (power_zero v)).eqSymm (RationalArgmin.reflexive _)
@@ -68,8 +64,7 @@ theorem coefficient_monotone (u v k : PTm n) (hu : Γ ⊢[PRAAx] positive u)
     (RationalArithmetic.multiply_monotone _ _ _ (positive_inverse_factorial k).andE₂ (power_monotone u v k hu hv huv))
 
 def prefixOrder (u v k : PTm n) : Fm PTm n := rationalLE (fstT (scalarPrefix u k)) (fstT (scalarPrefix v k))
-@[simp] theorem subst_prefixOrder {m : ℕ} (σ : Fin n → PTm m) (u v k : PTm n) :
-    (prefixOrder u v k).subst σ = prefixOrder (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ k) := by simp [prefixOrder,scalarPrefix]
+ipra_subst prefixOrder [scalarPrefix]
 
 theorem prefix_order_zero (u v : PTm n) : Γ ⊢[PRAAx] prefixOrder u v zero :=
   rationalLE_congr (congrFst (GaussianRationalFiniteSum.sum_zero scalarBody u)).eqSymm

@@ -1,6 +1,4 @@
 import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalLinearProduct
-import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Exact weighted backward budgets for rational approximate factorization
@@ -17,7 +15,7 @@ set_option maxRecDepth 8192
 
 namespace LeanProofs.IPRA.Analysis.GaussianWeightedErrorBudget
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianFactorBudget
   (prefixProduct factor L cost eta epsilon prefix_zero prefix_succ prefix_le_L)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticBounds (natCode natCode_represents natCode_multiply add_monotone)
@@ -26,9 +24,6 @@ open LeanProofs.IPRA.Analysis.RationalArithmetic (add multiply represents)
 open LeanProofs.IPRA.Analysis.RationalIntegerNormalization (normalize)
 open LeanProofs.IPRA.Analysis.RationalSupMetric (numeratorOf denominatorOf)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -37,15 +32,9 @@ def frac (a F : PTm n) : PTm n := normalize (ZT.ofNat a) F
 def weight (N A j u : PTm n) : PTm n := multiply (natCode (prefixProduct N A j)) u
 def cap (N A p F j : PTm n) : PTm n := frac (two*p*PTm.monus N j*L N A) F
 
-@[simp] theorem subst_frac {m : ℕ} (σ : Fin n → PTm m) (a F : PTm n) :
-    Syn.subst σ (frac a F) = frac (Syn.subst σ a) (Syn.subst σ F) := by
-  simp only [frac,RationalIntegerNormalization.subst_normalize,ZT.subst_ofNat]
-@[simp] theorem subst_weight {m : ℕ} (σ : Fin n → PTm m) (N A j u : PTm n) :
-    Syn.subst σ (weight N A j u) = weight (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ j) (Syn.subst σ u) := by
-  simp only [weight,RationalArithmetic.subst_multiply,GaussianRationalSyntheticBounds.subst_natCode,GaussianFactorBudget.subst_prefixProduct]
-@[simp] theorem subst_cap {m : ℕ} (σ : Fin n → PTm m) (N A p F j : PTm n) :
-    Syn.subst σ (cap N A p F j) = cap (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ p) (Syn.subst σ F) (Syn.subst σ j) := by
-  simp only [cap,subst_frac,PTm.subst_mul,PTm.subst_monus,GaussianFactorBudget.subst_L,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero]
+ipra_subst frac
+ipra_subst weight
+ipra_subst cap
 
 theorem frac_represents (a F : PTm n) (hF : Γ ⊢[PRAAx] le one F) : Γ ⊢[PRAAx]
     represents (frac a F) (ZT.ofNat a) F := RationalIntegerNormalization.normalize_preserves_value _ _ hF
@@ -145,10 +134,9 @@ theorem initial_cap (N A p q : PTm n) (hN : Γ ⊢[PRAAx] le one N) (hq : Γ ⊢
     (frac_represents _ _ hF) (GaussianFactorBudget.eta_represents p q hq) hF hq
   apply ZT.derive
   simp only [ZT.toZ_mul,ZT.toZ_ofNat]
-  have rem := natEq (monus_zero (Γ := Γ) N)
   unfold cost
   ipra_simps
-  linear_combination 2*𝔞(p)*𝔞(L N A)*𝔞(q)*rem
+  linear_combination 2*𝔞(p)*𝔞(L N A)*𝔞(q)*natEq (monus_zero (Γ := Γ) N)
 
 /-- Removing the initial unit weight recovers a canonical error code. -/
 theorem weight_zero (N A u : PTm n) (hu : Γ ⊢[PRAAx] RationalNormalForm.wellFormed u) : Γ ⊢[PRAAx]

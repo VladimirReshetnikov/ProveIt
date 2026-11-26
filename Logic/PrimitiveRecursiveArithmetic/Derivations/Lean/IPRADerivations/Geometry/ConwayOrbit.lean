@@ -1,5 +1,3 @@
-import IPRADerivations.Core.Tactic
-import IPRADerivations.Core.Integers
 import IPRADerivations.Core.LinearCombination
 
 /-!
@@ -36,9 +34,7 @@ statements about each of their points.
 
 namespace LeanProofs.IPRA.Geometry.ConwayOrbit
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

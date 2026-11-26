@@ -12,26 +12,22 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingOddGridTelescope
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogName (Nz Nz_zero Nz_succ)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinGamma (Pv)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (cancel_pos)
 open GaussianStirlingOddGrid (parameter numerator denominator denominator_positive grid_step)
 open GammaMeshRobinLogBridge (leftSum rightSum left_zero right_zero left_succ right_succ)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
 
 private theorem zero_power (k : PTm n) : Γ ⊢[PRAAx] Pv k zero ≐ zero := by
-  have h := natEq (pw_succ (Γ := Γ) zero (two*k))
   apply deriveNat
   change Groth.ι (Q.mk Γ (pw zero (succ (two*k)))) = _
   ipra_simps
-  simpa using h
+  simpa using natEq (pw_succ (Γ := Γ) zero (two*k))
 
 private theorem zero_argument (K s : PTm n) : Γ ⊢[PRAAx] Nz K zero s ≐ zero := by
   have all : Γ ⊢[PRAAx] .all (Nz (var 0) zero (Syn.shift s) ≐ zero) := by
@@ -56,10 +52,7 @@ def prefixBounds (X G K L i : PTm n) : Fm PTm n :=
     le (G*rightSum X i (fact L)*denominator X K i)
       (fact L*G*numerator X K i+leftSum X i (fact L)*denominator X K i)
 
-@[simp] theorem subst_prefixBounds {l : ℕ} (σ : Fin n → PTm l) (X G K L i : PTm n) :
-    (prefixBounds X G K L i).subst σ =
-      prefixBounds (Syn.subst σ X) (Syn.subst σ G) (Syn.subst σ K) (Syn.subst σ L) (Syn.subst σ i) := by
-  simp [prefixBounds]
+ipra_subst prefixBounds
 
 private theorem prefix_zero (X G K L : PTm n) : Γ ⊢[PRAAx] prefixBounds X G K L zero := by
   have a := natEq (zero_argument (Γ := Γ) K (parameter X zero))
@@ -98,11 +91,9 @@ theorem grid_telescope (X G K L T : PTm n) (hX : Γ ⊢[PRAAx] le one X)
   have g : Γ.map Fm.shift ⊢[PRAAx] le (sh G*sh T) (sh K) := by simpa [Fm.shift,Syn.shift,sh] using hG.shift
   have h : Γ.map Fm.shift ⊢[PRAAx] le (sh X+sh T) (sh L) := by simpa [Fm.shift,Syn.shift,sh] using hT.shift
   have all : Γ ⊢[PRAAx] .all (le (var 0) (sh T) ⟶ prefixBounds (sh X) (sh G) (sh K) (sh L) (var 0)) := by
-    refine PRA.qfInd _ (by unfold prefixBounds; exact ⟨le_QF _ _,⟨le_QF _ _,le_QF _ _⟩⟩) ?_ ?_
-    · simp only [Fm.subst_imp,subst_le,subst_prefixBounds,Syn.subst_var,sh,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (prefix_zero X G K L)
-    · simp only [Fm.subst_imp,subst_le,subst_prefixBounds,Syn.subst_var,sh,Syn.repl_zero,subst_repl_shift]
-      exact .impI (prefix_step _ _ _ _ _ _ x.wk.wk k.wk.wk g.wk.wk h.wk.wk Prf.hyp0
+    ipra_qfind (by unfold prefixBounds; exact ⟨le_QF _ _,⟨le_QF _ _,le_QF _ _⟩⟩) [subst_le, subst_prefixBounds, sh]
+    · exact .impI (prefix_zero X G K L)
+    · exact .impI (prefix_step _ _ _ _ _ _ x.wk.wk k.wk.wk g.wk.wk h.wk.wk Prf.hyp0
         (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)))
   have hFinal : Γ ⊢[PRAAx] le T T ⟶ prefixBounds X G K L T := by
     simpa only [Fm.subst_imp,subst_le,subst_prefixBounds,Syn.subst_var,sh,Syn.inst_zero,Syn.subst_inst_shift] using all.allE T

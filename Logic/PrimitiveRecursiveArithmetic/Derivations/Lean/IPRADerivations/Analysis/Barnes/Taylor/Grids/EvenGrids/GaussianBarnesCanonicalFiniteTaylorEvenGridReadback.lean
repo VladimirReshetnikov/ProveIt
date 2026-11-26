@@ -14,7 +14,7 @@ set_option maxHeartbeats 1100000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalFiniteTaylorEvenGridReadback
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (entry_congr length)
 open LeanProofs.IPRA.Analysis.Products (fact)
@@ -41,10 +41,6 @@ open GaussianRationalHorner (qmul)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalNaturalScale (natScale natScale_as_product natScale_congr natScale_product naturalPoint)
 open GaussianRationalSyntheticDivision (qmul_congr)
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

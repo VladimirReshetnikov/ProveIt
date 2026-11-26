@@ -21,17 +21,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.MedianMajority
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Algebra.CubeRootTwo (sg)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totatives (sg_lt sg_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Probability.MedianCounts
 open LeanProofs.IPRA.Probability.MedianSymmetry (shift_pairT')
 open LeanProofs.IPRA.Probability.Ninther (leb leb_one leb_zero)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -98,8 +94,8 @@ theorem in_pt (i a b p : PTm n) :
     Γ ⊢[PRAAx] inst2 (inB X) i (pairT a (pairT b p)) ≐ leb a (inst2 X i p) * leb (inst2 X i p) b := by
   rw [inst2_in]
   have hA : Γ ⊢[PRAAx] fstT (pairT a (pairT b p)) ≐ a := fst_pair _ _
-  have hB : Γ ⊢[PRAAx] fstT (sndT (pairT a (pairT b p))) ≐ b := (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-  have hx : Γ ⊢[PRAAx] sndT (sndT (pairT a (pairT b p))) ≐ p := (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
+  have hB : Γ ⊢[PRAAx] fstT (sndT (pairT a (pairT b p))) ≐ b := (snd_pair _ _).fstE
+  have hx : Γ ⊢[PRAAx] sndT (sndT (pairT a (pairT b p))) ≐ p := (snd_pair _ _).sndE
   have ht := congrInst2 X (.eqRefl i) hx
   exact congrMul (congrMonus (.eqRefl _) (congrSg (congrMonus hA ht)))
     (congrMonus (.eqRefl _) (congrSg (congrMonus ht hB)))

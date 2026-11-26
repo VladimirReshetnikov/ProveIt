@@ -1,6 +1,5 @@
 import IPRADerivations.Combinatorics.CatalanPrimes
 import IPRADerivations.Foundations.FiniteSetExponential
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The prime Catalan numbers: the small cases (`catalan_numbers_ipra_2026-11-16`, Section 5)
@@ -26,16 +25,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.CatalanSmallPrimes
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Catalan
 open LeanProofs.IPRA.Combinatorics.CatalanGrowth (cat_one)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.Foundations.FiniteSetExponential (pair_snd)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

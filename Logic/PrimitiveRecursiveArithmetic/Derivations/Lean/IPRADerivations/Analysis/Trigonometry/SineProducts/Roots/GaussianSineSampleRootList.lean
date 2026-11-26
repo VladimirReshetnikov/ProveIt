@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineSampleRootList
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianArctangentDivisionAngleResidual (rootSample sineSample positiveSample negativeSample mesh_positive
   sine_at_sample positiveBudget sampled_root_residual)
 open GaussianArctangentCayleyExponentialStep (conjugate_unit_bound)
@@ -35,10 +35,6 @@ open GaussianSineSquaredResidual (multiplier_bound)
 open GaussianSineSquaredTrace (sineValue fromSine)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -46,13 +42,9 @@ def data (p J z : PTm n) : PTm n := pairT p (pairT J z)
 def body : PTm 2 := rootSample (fstT (var 1)) (succ (var 0)) (fstT (sndT (var 1))) (sndT (sndT (var 1)))
 def roots (p J z : PTm n) : PTm n := sequence body J (data p J z)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (p J z : PTm n) :
-    Syn.subst σ (data p J z) = data (Syn.subst σ p) (Syn.subst σ J) (Syn.subst σ z) := by
-  simp [data]
+ipra_subst data
 
-@[simp] theorem subst_roots {m : ℕ} (σ : Fin n → PTm m) (p J z : PTm n) :
-    Syn.subst σ (roots p J z) = roots (Syn.subst σ p) (Syn.subst σ J) (Syn.subst σ z) := by
-  simp [roots]
+ipra_subst roots
 
 theorem roots_length (p J z : PTm n) : Γ ⊢[PRAAx] length (roots p J z) ≐ J :=
   sequence_length _ _ _
@@ -66,8 +58,8 @@ theorem body_at (p J z j : PTm n) :
       fin_cases k
       · exact fst_pair _ _
       · exact .eqRefl _
-      · exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-      · exact (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))
+      · exact (snd_pair _ _).fstE
+      · exact (snd_pair _ _).sndE)
 
 theorem roots_at (p J z j : PTm n) (hj : Γ ⊢[PRAAx] lt j J) :
     Γ ⊢[PRAAx] entry (roots p J z) j ≐ rootSample p (succ j) J z :=
@@ -76,9 +68,7 @@ theorem roots_at (p J z j : PTm n) (hj : Γ ⊢[PRAAx] lt j J) :
 def sineMargins (p J z D : PTm n) : Fm PTm n := .all
   (lt (var 0) (Syn.shift J) ⟶ lower (sineSample (Syn.shift p) (succ (var 0)) (Syn.shift J) (Syn.shift z)) (Syn.shift D))
 
-@[simp] theorem subst_sineMargins {m : ℕ} (σ : Fin n → PTm m) (p J z D : PTm n) :
-    (sineMargins p J z D).subst σ = sineMargins (Syn.subst σ p) (Syn.subst σ J) (Syn.subst σ z) (Syn.subst σ D) := by
-  simp [sineMargins, Syn.subst_shift, Syn.shift_subst]
+ipra_subst sineMargins [Syn.subst_shift, Syn.shift_subst]
 
 theorem sine_margin_at (p J z D j : PTm n) (hm : Γ ⊢[PRAAx] sineMargins p J z D) (hj : Γ ⊢[PRAAx] lt j J) :
     Γ ⊢[PRAAx] lower (sineSample p (succ j) J z) D := by

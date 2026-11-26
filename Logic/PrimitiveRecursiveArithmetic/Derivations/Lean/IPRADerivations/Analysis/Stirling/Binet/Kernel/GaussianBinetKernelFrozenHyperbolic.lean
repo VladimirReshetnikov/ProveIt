@@ -19,7 +19,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetKernelFrozenHyperbolic
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale oneCode eval_re_code eval_im_code)
 open GaussianBinetKernelImaginaryRatioCofinal (anchored_rate)
 open GaussianBinetKernelImaginaryRatioRows (ratioNumerator ratioDenominator ratioRadius ratio_source)
@@ -45,9 +45,6 @@ open GaussianSineProductImaginaryCoshIdentity (coshData coshF cosh_regular)
 open GaussianSineProductImaginaryHyperbolic (expF expData sinhF sinhData)
 open GaussianSineProductImaginaryLogDerivative (realNumerator)
 open GaussianStirlingConstant (piNumerator piDenominator)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Pi" => GaussianGammaHalfPiName.nameF
@@ -85,22 +82,14 @@ abbrev frozenSinhData (k A B : PTm n) : PTm n :=
 abbrev frozenCoshData (k A B : PTm n) : PTm n :=
   coshData (ratioNumerator k A) (ratioDenominator k B) (ratioRadius A) zero
 
-@[simp] theorem subst_halfTime {m : ℕ} (σ : Fin n → PTm m) (s : Bool) (A B : PTm n) :
-    Syn.subst σ (halfTime s A B) = halfTime s (Syn.subst σ A) (Syn.subst σ B) := by simp [halfTime,two,one]
-@[simp] theorem subst_scaleBudget {m : ℕ} (σ : Fin n → PTm m) (A : PTm n) :
-    Syn.subst σ (scaleBudget A) = scaleBudget (Syn.subst σ A) := by simp [scaleBudget,ratioRadius,two,one]
-@[simp] theorem subst_expRadius {m : ℕ} (σ : Fin n → PTm m) (A : PTm n) :
-    Syn.subst σ (expRadius A) = expRadius (Syn.subst σ A) := by simp [expRadius,ratioRadius,one]
-@[simp] theorem subst_expBudget {m : ℕ} (σ : Fin n → PTm m) (A : PTm n) :
-    Syn.subst σ (expBudget A) = expBudget (Syn.subst σ A) := by simp [expBudget]
-@[simp] theorem subst_hyperbolicBudget {m : ℕ} (σ : Fin n → PTm m) (A : PTm n) :
-    Syn.subst σ (hyperbolicBudget A) = hyperbolicBudget (Syn.subst σ A) := by simp [hyperbolicBudget]
-@[simp] theorem subst_fixedExpData {m : ℕ} (σ : Fin n → PTm m) (s : Bool) (A B : PTm n) :
-    Syn.subst σ (fixedExpData s A B) = fixedExpData s (Syn.subst σ A) (Syn.subst σ B) := by simp [fixedExpData]
-@[simp] theorem subst_fixedSinhData {m : ℕ} (σ : Fin n → PTm m) (A B : PTm n) :
-    Syn.subst σ (fixedSinhData A B) = fixedSinhData (Syn.subst σ A) (Syn.subst σ B) := by simp [fixedSinhData,two,one]
-@[simp] theorem subst_fixedCoshData {m : ℕ} (σ : Fin n → PTm m) (A B : PTm n) :
-    Syn.subst σ (fixedCoshData A B) = fixedCoshData (Syn.subst σ A) (Syn.subst σ B) := by simp [fixedCoshData,two,one]
+ipra_subst halfTime [two, one]
+ipra_subst scaleBudget [ratioRadius, two, one]
+ipra_subst expRadius [ratioRadius, one]
+ipra_subst expBudget
+ipra_subst hyperbolicBudget
+ipra_subst fixedExpData
+ipra_subst fixedSinhData [two, one]
+ipra_subst fixedCoshData [two, one]
 
 private theorem point_congr (s : Bool) {a b c d : PTm n}
     (ha : Γ ⊢[PRAAx] a ≐ c) (hb : Γ ⊢[PRAAx] b ≐ d) :

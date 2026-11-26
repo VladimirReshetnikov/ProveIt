@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingKernel
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPositivePowerChart (argument)
 open GaussianEulerPositivePowerChartLogarithm (logarithmF logarithmData)
 open GaussianEulerExponentialSubstitutionNamedKernel (linearF linearData)
@@ -29,8 +29,6 @@ open GaussianNameRingLaws (negativeF negativeData negative_fast zeroF)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans cross_to_diagonal)
 open GaussianRationalHorner (ofGaussian qmul)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

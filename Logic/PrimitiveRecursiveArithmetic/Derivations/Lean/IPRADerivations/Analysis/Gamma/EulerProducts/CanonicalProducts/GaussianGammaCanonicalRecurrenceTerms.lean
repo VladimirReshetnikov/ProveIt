@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.Coefficients.GaussianGammaRecurrenceSourceObservations
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.Coefficients.GaussianGammaRecurrenceCoefficientBounds
 import IPRADerivations.Analysis.Integration.GaussianRationalRiemannRefinement
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The original recurrence sum against canonical coefficient observations
@@ -19,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaCanonicalRecurrenceTerms
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr)
@@ -28,10 +27,6 @@ open GaussianGammaRecurrenceWeights (weight)
 open GaussianGammaRecurrenceSourceObservations (precision sourceRadius sourceCoefficient sourceSum cap denominator_positive)
 open GaussianGammaRecurrenceCoefficientBounds (uniformWeightBound)
 open GaussianCoefficientNameBounds (unit)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -44,22 +39,14 @@ def canonicalTerm (p e j : PTm n) : PTm n := qmul (weight p zero (monus e j)) (s
 def data (p e : PTm n) : PTm n := pairT p e
 def body : PTm 2 := canonicalTerm (fstT (var 1)) (sndT (var 1)) (var 0)
 def canonicalSum (p e : PTm n) : PTm n := GaussianRationalFiniteSum.sum body e (data p e)
-@[simp] theorem subst_coefficientBound {l : ℕ} (σ : Fin n → PTm l) (e : PTm n) :
-    Syn.subst σ (coefficientBound e) = coefficientBound (Syn.subst σ e) := by simp [coefficientBound]
-@[simp] theorem subst_queryFactor {l : ℕ} (σ : Fin n → PTm l) (e : PTm n) :
-    Syn.subst σ (queryFactor e) = queryFactor (Syn.subst σ e) := by simp [queryFactor]
-@[simp] theorem subst_sourceFactor {l : ℕ} (σ : Fin n → PTm l) (e : PTm n) :
-    Syn.subst σ (sourceFactor e) = sourceFactor (Syn.subst σ e) := by simp [sourceFactor]
-@[simp] theorem subst_termNumerator {l : ℕ} (σ : Fin n → PTm l) (t p e : PTm n) :
-    Syn.subst σ (termNumerator t p e) = termNumerator (Syn.subst σ t) (Syn.subst σ p) (Syn.subst σ e) := by simp [termNumerator]
-@[simp] theorem subst_sourceTerm {l : ℕ} (σ : Fin n → PTm l) (t e j : PTm n) :
-    Syn.subst σ (sourceTerm t e j) = sourceTerm (Syn.subst σ t) (Syn.subst σ e) (Syn.subst σ j) := by simp [sourceTerm]
-@[simp] theorem subst_canonicalTerm {l : ℕ} (σ : Fin n → PTm l) (p e j : PTm n) :
-    Syn.subst σ (canonicalTerm p e j) = canonicalTerm (Syn.subst σ p) (Syn.subst σ e) (Syn.subst σ j) := by simp [canonicalTerm]
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (p e : PTm n) :
-    Syn.subst σ (data p e) = data (Syn.subst σ p) (Syn.subst σ e) := by simp [data]
-@[simp] theorem subst_canonicalSum {l : ℕ} (σ : Fin n → PTm l) (p e : PTm n) :
-    Syn.subst σ (canonicalSum p e) = canonicalSum (Syn.subst σ p) (Syn.subst σ e) := by simp [canonicalSum]
+ipra_subst coefficientBound
+ipra_subst queryFactor
+ipra_subst sourceFactor
+ipra_subst termNumerator
+ipra_subst sourceTerm
+ipra_subst canonicalTerm
+ipra_subst data
+ipra_subst canonicalSum
 
 theorem source_radius_positive (e : PTm n) : Γ ⊢[PRAAx] le one (sourceRadius e) :=
   GaussianGammaExponentCoefficientPolynomial.original_cutoff_positive (succ e) (zero_lt_succ e)

@@ -21,7 +21,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianScalarDeterminantMultiplication
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qmul qzero)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qmul_congr qmul_zero_right)
 open LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantTerms (cell signPoint subst_signPoint)
@@ -39,8 +39,6 @@ open LeanProofs.IPRA.Analysis.GaussianReciprocalHorner (qmul_associative)
 open LeanProofs.IPRA.Analysis.GaussianRationalPowerAlgebra (qmul_commutative)
 open LeanProofs.IPRA.Analysis.GaussianRationalFiniteSum (termsEqual multiplyBody multiply_body_at sum_multiply)
 open LeanProofs.IPRA.Analysis.GaussianRationalFubini (column columnBody column_entry)
-open Syn
-open scoped Fm
 
 local notation "wordLimit" => Foundations.RuntimePermutationWords.horizon
 local notation "retainedCount" => Foundations.RuntimePermutationWords.count
@@ -126,7 +124,6 @@ theorem choice_column (A B m u : PTm n) : Γ ⊢[PRAAx]
   have third := qmul_congr (Prf.eqRefl (Γ := Γ) (rawProduct B m u)) (scalar_leibniz (columns A m u) m).eqSymm
   exact first.eqTrans (second.eqTrans third)
 
-open ConciseIPRA.PTm (zero)
 open GaussianRationalBlockSums (selectedBody filteredData maskBody mask_zero mask_kept filtered_sum selected_list_at)
 open GaussianRationalFubini (columnSumBody column_sum_at)
 

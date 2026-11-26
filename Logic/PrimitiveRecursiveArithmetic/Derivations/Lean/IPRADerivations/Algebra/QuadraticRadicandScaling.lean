@@ -1,6 +1,4 @@
 import IPRADerivations.Algebra.QuadraticRationalRadicand
-import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Square scaling of the actual positive quadratic sign
@@ -20,7 +18,7 @@ set_option linter.unnecessarySeqFocus false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticRadicandScaling
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open QuadraticSignCertificates (first second equal cone multiply negative sign multiplier zeroCode
   multiply_first multiply_second negative_first negative_second zero_first_value zero_second_value)
 open QuadraticConeOrder (equal_of_values equal_first equal_second equal_symm equal_trans
@@ -29,21 +27,14 @@ open QuadraticPositiveScaling (scale scale_first scale_second)
 open QuadraticRationalRadicand (stretch stretch_first stretch_second)
 open LeanProofs.IPRA.Analysis.RationalSupMetric (numeratorOf denominatorOf)
 open LeanProofs.IPRA.Analysis.RationalArgmin (rationalEq)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 
 def squareRadicand (D k : PTm n) : PTm n := D*k*k
 
-@[simp] theorem subst_squareRadicand {l : ℕ} (σ : Fin n → PTm l) (D k : PTm n) :
-    Syn.subst σ (squareRadicand D k) = squareRadicand (Syn.subst σ D) (Syn.subst σ k) := by
-  simp [squareRadicand]
-@[simp] theorem subst_stretch {l : ℕ} (σ : Fin n → PTm l) (k x : PTm n) :
-    Syn.subst σ (stretch k x) = stretch (Syn.subst σ k) (Syn.subst σ x) := by
-  simp [stretch]
+ipra_subst squareRadicand
+ipra_subst stretch
 
 theorem square_radicand_positive (D k : PTm n) (hD : Γ ⊢[PRAAx] le one D)
     (hk : Γ ⊢[PRAAx] le one k) : Γ ⊢[PRAAx] le one (squareRadicand D k) :=
@@ -244,33 +235,26 @@ def rationalOutput (d e x : PTm n) : PTm n :=
 def rationalOutputF : PR 3 := PTm.toPR (rationalOutput (var 0) (var 1) (var 2))
 def rationalRun (d e x : PTm n) : PTm n := ap3 rationalOutputF d e x
 
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (D k x : PTm n) :
-    Syn.subst σ (output D k x) = output (Syn.subst σ D) (Syn.subst σ k) (Syn.subst σ x) := by
-  simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (D k x : PTm n) :
-    Syn.subst σ (run D k x) = run (Syn.subst σ D) (Syn.subst σ k) (Syn.subst σ x) := by simp [run]
-@[simp] theorem subst_rationalOutput {l : ℕ} (σ : Fin n → PTm l) (d e x : PTm n) :
-    Syn.subst σ (rationalOutput d e x) = rationalOutput (Syn.subst σ d) (Syn.subst σ e) (Syn.subst σ x) := by
-  simp [rationalOutput,QuadraticRationalRadicand.sign,QuadraticRationalRadicand.changeBasis]
-@[simp] theorem subst_rationalRun {l : ℕ} (σ : Fin n → PTm l) (d e x : PTm n) :
-    Syn.subst σ (rationalRun d e x) = rationalRun (Syn.subst σ d) (Syn.subst σ e) (Syn.subst σ x) := by
-  simp [rationalRun]
+ipra_subst output
+ipra_subst run
+ipra_subst rationalOutput [QuadraticRationalRadicand.sign, QuadraticRationalRadicand.changeBasis]
+ipra_subst rationalRun
 
 theorem program_at (D k x : PTm n) : Γ ⊢[PRAAx] run D k x ≐ output D k x := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![D,k,x]
 theorem returned_radicand (D k x : PTm n) : Γ ⊢[PRAAx] fstT (run D k x) ≐ squareRadicand D k :=
-  (congrFst (program_at _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _).fstE
 theorem returned_stretch (D k x : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run D k x)) ≐ stretch k x :=
-  (congrFst ((congrSnd (program_at _ _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _).sndE.fstE
 theorem returned_signs (D k x : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (run D k x)) ≐ pairT (sign D x) (sign (squareRadicand D k) (stretch k x)) :=
-  (congrSnd ((congrSnd (program_at _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at _ _ _).sndE.sndE
 theorem returned_equal_signs (D k x : PTm n) (hD : Γ ⊢[PRAAx] le one D)
     (hk : Γ ⊢[PRAAx] le one k) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (run D k x))) ≐ sndT (sndT (sndT (run D k x))) :=
-  ((congrFst (returned_signs _ _ _)).eqTrans (fst_pair _ _)).eqTrans
+  (returned_signs _ _ _).fstE.eqTrans
     ((square_radicand_sign _ _ _ hD hk).eqSymm.eqTrans
-      ((congrSnd (returned_signs _ _ _)).eqTrans (snd_pair _ _)).eqSymm)
+      (returned_signs _ _ _).sndE.eqSymm)
 theorem rational_program_at (d e x : PTm n) : Γ ⊢[PRAAx] rationalRun d e x ≐ rationalOutput d e x := by
   simpa [rationalRun,rationalOutputF,ap3] using toPR_eq (Γ := Γ)
     (rationalOutput (var 0) (var 1) (var 2) : PTm 3) ![d,e,x]
@@ -278,9 +262,9 @@ theorem returned_rational_signs (d e x : PTm n)
     (hd : Γ ⊢[PRAAx] QuadraticRationalRadicand.isPositive d)
     (h : Γ ⊢[PRAAx] rationalEq d e) : Γ ⊢[PRAAx]
     fstT (rationalRun d e x) ≐ sndT (rationalRun d e x) :=
-  ((congrFst (rational_program_at _ _ _)).eqTrans (fst_pair _ _)).eqTrans
+  (rational_program_at _ _ _).fstE.eqTrans
     ((rational_radicand_sign_of_equal _ _ _ hd h).eqTrans
-      ((congrSnd (rational_program_at _ _ _)).eqTrans (snd_pair _ _)).eqSymm)
+      (rational_program_at _ _ _).sndE.eqSymm)
 
 theorem actual_square_radicand_sign_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3
     (le one (var 0) ⟶ le one (var 1) ⟶

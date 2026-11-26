@@ -1,5 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.PhiUpper
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Bell numbers by course-of-values recursion
@@ -21,14 +20,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.Bell
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrBinom)
 open LeanProofs.IPRA.Combinatorics.Binomial (binom)
 open LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct (eq_of_viol viol_of_eq)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -52,20 +47,16 @@ abbrev nth (L j : PTm n) : PTm n := fstT (ap2 iS j L)
 private abbrev iSPairF : Fm PTm 3 := ap2 iS (succ (var 0)) (pairT (var 1) (var 2)) ≐ ap2 iS (var 0) (var 2)
 
 private theorem iS_pair₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] iSPairF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two,
-      ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-    exact (iS_succ _ _).eqTrans ((congrSnd (iS_zero _)).eqTrans ((snd_pair _ _).eqTrans (iS_zero _).eqSymm))
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var, Syn.repl_zero, repl_one, repl_two,
-      ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-    exact (iS_succ _ _).eqTrans ((congrSnd Prf.hyp0).eqTrans (iS_succ _ _).eqSymm)
+  ipra_ind [subst_ap2, subst_pairT]
+  · exact (iS_succ _ _).eqTrans ((congrSnd (iS_zero _)).eqTrans ((snd_pair _ _).eqTrans (iS_zero _).eqSymm))
+  · exact (iS_succ _ _).eqTrans ((congrSnd Prf.hyp0).eqTrans (iS_succ _ _).eqSymm)
 
 theorem iS_pair (j a L : PTm n) : Γ ⊢[PRAAx] ap2 iS (succ j) (pairT a L) ≐ ap2 iS j L := by
   have h := inst (Γ := Γ) iS_pair₀ (![j, a, L] : Fin 3 → PTm n)
   simpa using h
 
 theorem nth_pair_zero (a L : PTm n) : Γ ⊢[PRAAx] nth (pairT a L) zero ≐ a :=
-  (congrFst (iS_zero _)).eqTrans (fst_pair _ _)
+  (iS_zero _).fstE
 
 theorem nth_pair_succ (a L j : PTm n) : Γ ⊢[PRAAx] nth (pairT a L) (succ j) ≐ nth L j :=
   congrFst (iS_pair _ _ _)
@@ -92,7 +83,7 @@ theorem BL_succ (N : PTm n) :
   have h := rec1_succ (Γ := Γ) (pairT one zero) stepB N
   simpa using h
 
-theorem bell_zero : Γ ⊢[PRAAx] bell (zero : PTm n) ≐ one := (congrFst BL_zero).eqTrans (fst_pair _ _)
+theorem bell_zero : Γ ⊢[PRAAx] bell (zero : PTm n) ≐ one := BL_zero.fstE
 
 /-! ## Reading the list: `nth(L_n, j) = B_{n−j}` -/
 
@@ -115,13 +106,9 @@ theorem viol_shift (j N : PTm n) : Γ ⊢[PRAAx] inst2 violB (succ j) (succ N) �
 private abbrev violF : Fm PTm 1 := ap2 (sumF violB) (succ (var 0)) (var 0) ≐ zero
 
 private theorem viol₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] violF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_succ,
-      ConciseIPRA.PTm.subst_zero]
-    exact (sum_succ' _ _ _).eqTrans ((congrAdd (sum_zero _ _) (viol_zero_term _)).eqTrans (add_zero _))
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_succ,
-      ConciseIPRA.PTm.subst_zero]
-    refine (sum_shift _ _ _).eqTrans ((congrAdd (viol_zero_term _) ?_).eqTrans (zero_add _))
+  ipra_ind [subst_ap2]
+  · exact (sum_succ' _ _ _).eqTrans ((congrAdd (sum_zero _ _) (viol_zero_term _)).eqTrans (add_zero _))
+  · refine (sum_shift _ _ _).eqTrans ((congrAdd (viol_zero_term _) ?_).eqTrans (zero_add _))
     refine (sum_congr_bounded (shiftBody violB) violB (succ (var 0)) (var 0) (succ (var 0)) (.allI (.impI ?_))).eqTrans
       Prf.hyp0
     rw [inst2_shiftBody]

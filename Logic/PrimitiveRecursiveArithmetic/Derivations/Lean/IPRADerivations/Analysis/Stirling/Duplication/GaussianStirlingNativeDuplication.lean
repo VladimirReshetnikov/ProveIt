@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingNativeDuplication
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale oneCode)
 open GaussianGammaAdjacentCutoff (multiply_cross)
 open GaussianGammaEulerDenominatorGrouping (shiftedNumerator)
@@ -30,9 +30,6 @@ open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_to_dia
 open GaussianRationalHorner (positive_product)
 open GaussianRootAlgebra (equal equal_of_values equal_symm re_add im_add re_scale im_scale re_one im_one)
 open GaussianStirlingGammaLogarithm (source arg gammaData gamma_source gamma_source_at_radius gamma_regular)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

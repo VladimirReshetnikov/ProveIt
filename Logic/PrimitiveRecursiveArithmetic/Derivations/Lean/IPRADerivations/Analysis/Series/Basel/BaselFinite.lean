@@ -1,8 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.Harmonic
 import IPRADerivations.AnalyticNumberTheory.PhiLower
 import IPRADerivations.Combinatorics.Fibonacci
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The elementary finite lemmas of the Basel packet
@@ -32,17 +30,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.BaselFinite
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber (div_eq)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (quo_eq)
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (quo_anti)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Combinatorics.Fibonacci (compl_compl)
 open LeanProofs.IPRA.DiophantineNumberTheory.Hurwitz (add_le_add)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -143,15 +137,9 @@ abbrev Inc (N x : PTm n) : Fm PTm n :=
 
 theorem dec_all {N x : PTm n} (h : Γ ⊢[PRAAx] Dec w N x) :
     Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶ DecInv w (var 0) (Syn.shift x)) := by
-  refine PRA.qfInd _ ⟨lt_QF _ _, le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_and, subst_le, subst_lt, PTm.subst_add, PTm.subst_mul, PTm.subst_monus,
-      subst_inst2, subst_ap1, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (dec_base w x)
-  · simp only [Fm.subst_imp, Fm.subst_and, subst_le, subst_lt, PTm.subst_add, PTm.subst_mul, PTm.subst_monus,
-      subst_inst2, subst_ap1, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine .impI ?_
+  ipra_qfind (⟨lt_QF _ _, le_QF _ _, le_QF _ _⟩) [subst_le, subst_lt, subst_inst2, subst_ap1, subst_ap2]
+  · exact .impI (dec_base w x)
+  · refine .impI ?_
     have hk : (lt (succ (var 0)) (Syn.shift N) :: (lt (var 0) (Syn.shift N) ⟶ DecInv w (var 0) (Syn.shift x)) ::
       Γ.map Fm.shift) ⊢[PRAAx] lt (succ (var 0)) (Syn.shift N) := Prf.hyp0
     have ih := Prf.impE Prf.hyp1 (le_of_lt hk)
@@ -208,15 +196,9 @@ theorem inc_step {k x : PTm n} (ih : Γ ⊢[PRAAx] IncInv w k x)
 
 theorem inc_all {N x : PTm n} (h : Γ ⊢[PRAAx] Inc w N x) :
     Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶ IncInv w (var 0) (Syn.shift x)) := by
-  refine PRA.qfInd _ ⟨lt_QF _ _, le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_and, subst_le, subst_lt, PTm.subst_add, PTm.subst_mul, PTm.subst_monus,
-      subst_inst2, subst_ap1, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (inc_base w x)
-  · simp only [Fm.subst_imp, Fm.subst_and, subst_le, subst_lt, PTm.subst_add, PTm.subst_mul, PTm.subst_monus,
-      subst_inst2, subst_ap1, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine .impI ?_
+  ipra_qfind (⟨lt_QF _ _, le_QF _ _, le_QF _ _⟩) [subst_le, subst_lt, subst_inst2, subst_ap1, subst_ap2]
+  · exact .impI (inc_base w x)
+  · refine .impI ?_
     have hk : (lt (succ (var 0)) (Syn.shift N) :: (lt (var 0) (Syn.shift N) ⟶ IncInv w (var 0) (Syn.shift x)) ::
       Γ.map Fm.shift) ⊢[PRAAx] lt (succ (var 0)) (Syn.shift N) := Prf.hyp0
     have ih := Prf.impE Prf.hyp1 (le_of_lt hk)
@@ -283,16 +265,10 @@ private abbrev blockF : Fm PTm 3 :=
   le (T (var 2 + var 0) (var 1)) (T (var 2) (var 1) + var 0 * quo (var 1) (succ (two * var 2)))
 
 private theorem block₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] blockF := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    refine le_congr (congrAp2 (sumF tB) (add_zero _) (.eqRefl _)).eqSymm ?_ (le_refl _)
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2]
+  · refine le_congr (congrAp2 (sumF tB) (add_zero _) (.eqRefl _)).eqSymm ?_ (le_refl _)
     ipra_ring
-  · simp only [subst_le, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul,
-      Syn.subst_var, Syn.repl_zero, repl_one, repl_two, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact block_step Prf.hyp0
+  · exact block_step Prf.hyp0
 
 /-- The block `P ≤ j < P + d` of `T` adds at most `d ⌊F/(2P+1)⌋`. -/
 theorem block_up (P d F : PTm n) :
@@ -323,14 +299,10 @@ theorem dyadic_step {j F : PTm n} (ih : Γ ⊢[PRAAx] le (two * T (pw two j) F) 
 private abbrev dyadicF : Fm PTm 2 := le (two * T (pw two (var 0)) (var 1)) ((two + var 0) * var 1)
 
 private theorem dyadic₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] dyadicF := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine le_congr (congrMul (.eqRefl _) (T_one _)).eqSymm ?_ (le_refl _)
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2]
+  · refine le_congr (congrMul (.eqRefl _) (T_one _)).eqSymm ?_ (le_refl _)
     ipra_ring
-  · simp only [subst_le, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul,
-      Syn.subst_var, Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact dyadic_step Prf.hyp0
+  · exact dyadic_step Prf.hyp0
 
 /-- `lem:harmonic` (`eq:harmonic`), cleared: `2 ∑_{j<2^r} ⌊F/(2j+1)⌋ ≤ (r + 2) F` for every `F`, so
 `2 H_{2^r} ≤ r + 2`, i.e. `H_{2^r} ≤ 1 + r/2`. -/
@@ -351,14 +323,10 @@ theorem harmonic_up_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2 harmonicFo
 private abbrev growthF : Fm PTm 1 := le (num 16 * var 0 + num 76) (num 128 * pw two (var 0))
 
 private theorem growth₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] growthF := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_num,
-      Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine le_of_eq_add (d := num 52) ?_
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2]
+  · refine le_of_eq_add (d := num 52) ?_
     ipra_lc 128 * natEq (pw_zero (Γ := []) (two : PTm 0))
-  · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_num,
-      Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine le_of_eq_add (d := num 16 * var 0 + num 60 + two * monus (num 128 * pw two (var 0))
+  · refine le_of_eq_add (d := num 16 * var 0 + num 60 + two * monus (num 128 * pw two (var 0))
       (num 16 * var 0 + num 76)) ?_
     ipra_lc 128 * natEq (pw_succ (Γ := [growthF]) (two : PTm 1) (var 0)) +
       2 * natEq (eq_add_of_le (Prf.hyp0 : [growthF] ⊢[PRAAx] growthF))

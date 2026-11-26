@@ -18,7 +18,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerExponentialLimit
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaFiniteApproximantName (qF qData exponential_input)
@@ -34,10 +34,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRationalHorner (qzero positive_product)
 open GaussianRationalMetric (qsub qnegative qnegative_canonical distanceBounded bounded)
 open GaussianRationalSyntheticDivision (qzero_add)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "F" => GaussianLogGammaEulerCofinal.nameF
@@ -56,13 +52,9 @@ def expData (A B D neg : PTm n) : PTm n := ed (disk A B D neg) (cd A B D neg)
 def reciprocalF : PR 2 := E (negativeF F)
 def reciprocalData (A B D neg : PTm n) : PTm n := ed (disk A B D neg) (negativeData (cd A B D neg))
 
-@[simp] theorem subst_disk {m : ℕ} (σ : Fin n → PTm m) (A B D neg : PTm n) :
-    Syn.subst σ (disk A B D neg) = disk (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ neg) := by
-  simp [disk,two,one]
+ipra_subst disk [two, one]
 
-@[simp] theorem subst_reciprocalData {m : ℕ} (σ : Fin n → PTm m) (A B D neg : PTm n) :
-    Syn.subst σ (reciprocalData A B D neg) =
-      reciprocalData (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ neg) := by simp [reciprocalData]
+ipra_subst reciprocalData
 
 private theorem original_source (A B D neg : PTm n) (h : Γ ⊢[PRAAx] GaussianRightHalfPlaneLogarithm.source A D neg) :
     Γ ⊢[PRAAx] GaussianGammaCanonicalExponent.source (native A B neg) (radius A B) D :=

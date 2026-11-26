@@ -16,7 +16,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRaabeLogGammaAlignedTime
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit)
 open GaussianCompactRiemannName (inside value)
 open GaussianCompactAlignedTime (alignedSamples)
@@ -27,9 +27,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianStirlingGammaFractionalIncrementConvexity (gamma_rescale_from)
 open GaussianStirlingGammaLogarithm (logGammaF logGammaData source)
 open RationalHarmonicIntervalVariation (gap)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

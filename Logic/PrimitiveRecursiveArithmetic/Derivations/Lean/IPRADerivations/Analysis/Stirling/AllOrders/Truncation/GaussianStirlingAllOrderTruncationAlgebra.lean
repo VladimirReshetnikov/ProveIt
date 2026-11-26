@@ -14,7 +14,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderTruncationAlgebra
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianStirlingAllOrderPanelPartsNames (initial derivativeRatio weightedPrimitive)
 open GaussianStirlingAllOrderTruncationCoefficients (scaleCode scale_ratio sign literalTerm scale_mean_primitive)
 open GaussianRationalHorner (qadd qmul qzero canonical represents_congr canonical_unique positive_product)
@@ -27,8 +27,6 @@ open GaussianEuclideanDistanceName (fraction fraction_represents)
 open RationalIntegerNormalization (normalize_preserves_value)
 open RationalGaussianEmbedding (embed embed_multiply embed_negative embed_one)
 open RationalGaussianRealPart (embed_congr)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,8 +38,7 @@ def truncation : ℕ → PTm n → PTm n → PTm n
 
 @[simp] theorem subst_signedScale {l : ℕ} (σ : Fin n → PTm l) (m : ℕ) :
     Syn.subst σ (signedScale m : PTm n) = (signedScale m : PTm l) := by simp [signedScale]
-@[simp] theorem subst_correction {l : ℕ} (σ : Fin n → PTm l) (m : ℕ) (A B : PTm n) :
-    Syn.subst σ (correction m A B) = correction m (Syn.subst σ A) (Syn.subst σ B) := by simp [correction]
+ipra_subst correction
 @[simp] theorem subst_truncation {l : ℕ} (σ : Fin n → PTm l) (m : ℕ) (A B : PTm n) :
     Syn.subst σ (truncation m A B) = truncation m (Syn.subst σ A) (Syn.subst σ B) := by
   induction m with

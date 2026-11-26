@@ -14,7 +14,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetFixedHorizonSine
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (eval_re_code eval_im_code scale oneCode)
 open GaussianArctangentCayleyValues (imaginaryPoint imaginaryCode)
 open GaussianBinetArctangentResolvent (pole polynomial)
@@ -36,9 +36,6 @@ open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianReciprocalHorner (qmul_associative qmul_one_right)
 open GaussianLogGammaEulerResidualDomain (source)
 open GaussianRootAlgebra (equal_of_values re_mul im_mul re_neg im_neg re_scale im_scale re_one im_one)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "LV" => GaussianBinetExponentialIntegralGrid.value
@@ -50,9 +47,7 @@ def value (p X Y D sign A B R U T N : PTm n) : PTm n :=
   qmul (multiplier A B) (qsub (LV (p+N) (qnegative (pole true X Y D sign A B)) ((R+U)*T) T N)
     (LV (p+N) (qnegative (pole false X Y D sign A B)) ((R+U)*T) T N))
 
-@[simp] theorem subst_error {m : ℕ} (σ : Fin n → PTm m) (p R U K T L : PTm n) :
-    Syn.subst σ (error p R U K T L) = error (Syn.subst σ p) (Syn.subst σ R) (Syn.subst σ U)
-      (Syn.subst σ K) (Syn.subst σ T) (Syn.subst σ L) := by simp [error,uniformCost,two]
+ipra_subst error [uniformCost, two]
 
 private theorem turn : Γ ⊢[PRAAx] qmul imaginaryPoint sineMultiplier ≐ (fraction one two : PTm n) := by
   let z := (imaginaryCode : PTm n)

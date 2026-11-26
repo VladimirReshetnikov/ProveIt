@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Inequalities.RationalNonnegativePowerOrder
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # A finite geometric-tail potential
@@ -17,12 +16,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGeometricProductTail
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (positive_product)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -32,15 +27,9 @@ def tailNumerator (C K j : PTm n) : PTm n := C*K*pw (pred K) j
 def gap (C K j : PTm n) : PTm n := monus (pw K j) (tailNumerator C K j)
 def small (C K j : PTm n) : Fm PTm n := le (two*tailNumerator C K j) (pw K j)
 
-@[simp] theorem subst_tailNumerator {m : ℕ} (σ : Fin n → PTm m) (C K j : PTm n) :
-    Syn.subst σ (tailNumerator C K j) = tailNumerator (Syn.subst σ C) (Syn.subst σ K) (Syn.subst σ j) := by
-  simp [tailNumerator]
-@[simp] theorem subst_gap {m : ℕ} (σ : Fin n → PTm m) (C K j : PTm n) :
-    Syn.subst σ (gap C K j) = gap (Syn.subst σ C) (Syn.subst σ K) (Syn.subst σ j) := by
-  simp [gap]
-@[simp] theorem subst_small {m : ℕ} (σ : Fin n → PTm m) (C K j : PTm n) :
-    (small C K j).subst σ = small (Syn.subst σ C) (Syn.subst σ K) (Syn.subst σ j) := by
-  simp [small]
+ipra_subst tailNumerator
+ipra_subst gap
+ipra_subst small
 
 theorem small_mono (C K T j : PTm n) (hK : Γ ⊢[PRAAx] le one K)
     (hT : Γ ⊢[PRAAx] small C K T) (hTj : Γ ⊢[PRAAx] le T j) : Γ ⊢[PRAAx] small C K j := by

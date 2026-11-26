@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Logarithm.DyadicComplexLogarithm
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # A canonical local power-series logarithm name
@@ -25,7 +24,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.ComplexLogarithmName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Analysis.LogarithmRemainder (denominator denominator_positive)
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder
@@ -35,10 +34,6 @@ open LeanProofs.IPRA.Analysis.ComplexLogarithmCauchy (eval_re_congr eval_im_cong
 open LeanProofs.IPRA.Analysis.DyadicComplexLogarithm
   (rounded roundingError rounding_bound roundedDifference cancel_bounded_scale
     precision unit unit_add congr_add congr_scale congr_neg congr_rounded)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -136,19 +131,10 @@ def observationF : PR 4 := PTm.toPR (observationTerm (var 0) (var 1) (var 2) (va
 def observation (p z R N : PTm n) : PTm n :=
   ComplexLogarithmCauchy.ap4 observationF p z R N
 
-@[simp] theorem subst_baseNumerator {m : ℕ} (σ : Fin n → PTm m) (z N : PTm n) :
-    Syn.subst σ (baseNumerator z N) = baseNumerator (Syn.subst σ z) (Syn.subst σ N) := by
-  simp [baseNumerator]
-@[simp] theorem subst_baseDenominator {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (baseDenominator N) = baseDenominator (Syn.subst σ N) := by simp [baseDenominator]
-@[simp] theorem subst_observationTerm {m : ℕ} (σ : Fin n → PTm m) (p z R N : PTm n) :
-    Syn.subst σ (observationTerm p z R N) =
-      observationTerm (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ N) := by
-  simp [observationTerm]
-@[simp] theorem subst_observation {m : ℕ} (σ : Fin n → PTm m) (p z R N : PTm n) :
-    Syn.subst σ (observation p z R N) =
-      observation (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ N) := by
-  simp [observation]
+ipra_subst baseNumerator
+ipra_subst baseDenominator
+ipra_subst observationTerm
+ipra_subst observation
 
 theorem observation_compute (p z R N : PTm n) :
     Γ ⊢[PRAAx] observation p z R N ≐ observationTerm p z R N := by

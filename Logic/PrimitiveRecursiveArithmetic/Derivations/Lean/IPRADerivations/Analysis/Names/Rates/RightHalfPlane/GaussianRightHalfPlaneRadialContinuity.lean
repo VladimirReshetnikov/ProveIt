@@ -19,7 +19,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRightHalfPlaneRadialContinuity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Foundations.GapDecision (zabs zabs_congr zabs_tri)
 open LeanProofs.IPRA.Probability.Variance (ad)
@@ -39,10 +39,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianRightHalfPlaneRadialLogarithm (normNum normDen)
 open GaussianRootAlgebra (equal equal_of_values normSq_equal sub re_sub im_sub)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (monus num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -61,19 +57,11 @@ def admission (A B neg a b sign D H M : PTm n) : Fm PTm n :=
 
 def shiftedLower (M H D i : PTm n) : PTm n := M+num 32*H*(i*D)
 
-@[simp] theorem subst_budget {m : ℕ} (σ : Fin n → PTm m) (A B a b H : PTm n) :
-    Syn.subst σ (budget A B a b H) = budget (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ H) := by
-  simp [budget]
+ipra_subst budget
 
-@[simp] theorem subst_admission {m : ℕ} (σ : Fin n → PTm m) (A B neg a b sign D H M : PTm n) :
-    (admission A B neg a b sign D H M).subst σ =
-      admission (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ neg) (Syn.subst σ a) (Syn.subst σ b)
-        (Syn.subst σ sign) (Syn.subst σ D) (Syn.subst σ H) (Syn.subst σ M) := by
-  simp [admission,GaussianRightHalfPlaneLogarithm.source,GaussianRightHalfPlaneArgument.source,normNum]
+ipra_subst admission [GaussianRightHalfPlaneLogarithm.source, GaussianRightHalfPlaneArgument.source, normNum]
 
-@[simp] theorem subst_shiftedLower {m : ℕ} (σ : Fin n → PTm m) (M H D i : PTm n) :
-    Syn.subst σ (shiftedLower M H D i) = shiftedLower (Syn.subst σ M) (Syn.subst σ H) (Syn.subst σ D) (Syn.subst σ i) :=
-  by simp [shiftedLower]
+ipra_subst shiftedLower
 
 /-- Adding the same row offset to the two real numerators leaves their
 native displacement exactly equal, including the original sign bits. -/

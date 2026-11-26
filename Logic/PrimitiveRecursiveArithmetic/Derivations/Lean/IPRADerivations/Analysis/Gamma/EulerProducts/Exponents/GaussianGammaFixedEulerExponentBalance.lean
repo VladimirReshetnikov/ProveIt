@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaFixedEulerExponentBalance
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNameArithmetic (addF addData multiplyF multiplyData multiplyModulus)
 open GaussianRationalHorner (qadd qmul ofGaussian represents represents_congr qadd_represents qmul_represents
   canonical_unique positive_product)
@@ -36,9 +36,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -72,10 +69,8 @@ def fixedBudget (z B K N : PTm n) : PTm n :=
   (multiplyModulus differenceF constantF (differenceData K N) (ofGaussian z B)+one)
     +three*ceilL1 (ofGaussian z B)
 def rawProductBudget (z B K N : PTm n) : PTm n := (pBudget z B K+correctionBudget z B N)+fixedBudget z B K N
-@[simp] theorem subst_fixedBudget {m : ℕ} (σ : Fin n → PTm m) (z B K N : PTm n) :
-    Syn.subst σ (fixedBudget z B K N) = fixedBudget (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ K) (Syn.subst σ N) := by simp [fixedBudget,three]
-@[simp] theorem subst_rawProductBudget {m : ℕ} (σ : Fin n → PTm m) (z B K N : PTm n) :
-    Syn.subst σ (rawProductBudget z B K N) = rawProductBudget (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ K) (Syn.subst σ N) := by simp [rawProductBudget]
+ipra_subst fixedBudget [three]
+ipra_subst rawProductBudget
 
 theorem fixed_error (p z B K N : PTm n) (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[PRAAx]
     distanceBounded (ap2 productF p (productData z B K N)) (fixedCore p z B K N) (fixedBudget z B K N) (unit p) := by
@@ -128,10 +123,8 @@ def sumF : PR 2 := addF GaussianGammaFoldedMajorantExponent.combinedF correction
 def sumData (z R B N : PTm n) : PTm n := addData (GaussianGammaFoldedMajorantExponent.combinedData z R B N) (correctionData z B N)
 def balanceBudget (z R B N : PTm n) : PTm n :=
   ((three+(three+three))+rawProductBudget z B (two*R) N)+(three+three)
-@[simp] theorem subst_sumData {m : ℕ} (σ : Fin n → PTm m) (z R B N : PTm n) :
-    Syn.subst σ (sumData z R B N) = sumData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [sumData]
-@[simp] theorem subst_balanceBudget {m : ℕ} (σ : Fin n → PTm m) (z R B N : PTm n) :
-    Syn.subst σ (balanceBudget z R B N) = balanceBudget (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [balanceBudget,three]
+ipra_subst sumData
+ipra_subst balanceBudget [three]
 
 theorem balance_at (p z R B N : PTm n) (h : Γ ⊢[PRAAx] input z R B N) : Γ ⊢[PRAAx]
     distanceBounded (ap2 sumF p (sumData z R B N))

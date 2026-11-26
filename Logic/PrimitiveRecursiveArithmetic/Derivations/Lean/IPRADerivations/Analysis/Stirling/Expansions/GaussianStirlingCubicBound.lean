@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingCubicBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianNameArithmetic (addF addData add_fast)
@@ -41,10 +41,6 @@ open GaussianStirlingTailComparison (point_add_upper_same point_add_order point_
 open GaussianStirlingTelescope (shifted shifted_source rawSum)
 open RationalArgmin (rationalLE rationalLE_congr)
 open RationalValueBounds (upper upper_congr upper_of_order upper_of_radius upper_order_right upper_mono)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

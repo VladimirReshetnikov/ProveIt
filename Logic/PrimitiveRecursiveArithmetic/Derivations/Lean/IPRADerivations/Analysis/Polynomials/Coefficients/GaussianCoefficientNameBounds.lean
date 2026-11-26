@@ -16,7 +16,7 @@ set_option maxRecDepth 8192
 
 namespace LeanProofs.IPRA.Analysis.GaussianCoefficientNameBounds
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalL1 (qL1)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticBounds (natCode natCode_represents)
 open LeanProofs.IPRA.Analysis.RationalArgmin (rationalLE left)
@@ -26,9 +26,6 @@ open LeanProofs.IPRA.Analysis.RationalSupMetric (numeratorOf denominatorOf)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (bounded distanceBounded)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Foundations.BoundedFormulas (subst_up_shift')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -42,19 +39,11 @@ def three : PTm n := succ two
 def A (a : PR 3) (N x : PTm n) : PTm n := three+ceilM a N x
 def R (a : PR 3) (N x : PTm n) : PTm n := A a N x+two
 
-@[simp] theorem subst_M {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N x : PTm n) :
-    Syn.subst σ (M a N x) = M a (Syn.subst σ N) (Syn.subst σ x) := by simp only [M,subst_ap2]
-@[simp] theorem subst_ceilM {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N x : PTm n) :
-    Syn.subst σ (ceilM a N x) = ceilM a (Syn.subst σ N) (Syn.subst σ x) := by
-  simp only [ceilM,GaussianDescentClockArithmetic.subst_ceiling,RationalIntegerNormalization.subst_positivePart,
-    RationalSupMetric.subst_numeratorOf,RationalSupMetric.subst_denominatorOf,subst_M]
-@[simp] theorem subst_three {m : ℕ} (σ : Fin n → PTm m) : Syn.subst σ (three : PTm n) = (three : PTm m) := by
-  simp only [three,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero]
-@[simp] theorem subst_A {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N x : PTm n) :
-    Syn.subst σ (A a N x) = A a (Syn.subst σ N) (Syn.subst σ x) := by simp only [A,PTm.subst_add,subst_three,subst_ceilM]
-@[simp] theorem subst_R {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N x : PTm n) :
-    Syn.subst σ (R a N x) = R a (Syn.subst σ N) (Syn.subst σ x) := by
-  simp only [R,PTm.subst_add,subst_A,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero]
+ipra_subst M
+ipra_subst ceilM
+ipra_subst three
+ipra_subst A
+ipra_subst R
 
 theorem max_zero (a : PR 3) (x : PTm n) : Γ ⊢[PRAAx] M a zero x ≐ natCode zero := by
   simpa only [M,maxF,GaussianRationalSyntheticBounds.subst_natCode,ConciseIPRA.PTm.subst_zero] using
@@ -74,21 +63,14 @@ theorem max_last_bound (a : PR 3) (N x : PTm n) : Γ ⊢[PRAAx] rationalLE (qL1 
 
 theorem max_nonnegative (a : PR 3) (N x : PTm n) : Γ ⊢[PRAAx] rationalLE (natCode zero) (M a N x) := by
   have all : Γ ⊢[PRAAx] .all (rationalLE (natCode zero) (M a (var 0) (Syn.shift x))) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [RationalArgmin.subst_rationalLE,GaussianRationalSyntheticBounds.subst_natCode,subst_M,
-        ConciseIPRA.PTm.subst_zero,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact RationalArgmin.rationalLE_congr (.eqRefl _) (max_zero a x).eqSymm (RationalArgmin.reflexive _)
-    · simp only [RationalArgmin.subst_rationalLE,GaussianRationalSyntheticBounds.subst_natCode,subst_M,
-        ConciseIPRA.PTm.subst_zero,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact RationalArgmin.transitive Prf.hyp0 (max_step_monotone a _ _)
+    ipra_qfind (le_QF _ _) [RationalArgmin.subst_rationalLE, GaussianRationalSyntheticBounds.subst_natCode, subst_M]
+    · exact RationalArgmin.rationalLE_congr (.eqRefl _) (max_zero a x).eqSymm (RationalArgmin.reflexive _)
+    · exact RationalArgmin.transitive Prf.hyp0 (max_step_monotone a _ _)
   simpa only [RationalArgmin.subst_rationalLE,GaussianRationalSyntheticBounds.subst_natCode,subst_M,
     ConciseIPRA.PTm.subst_zero,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
 
 def maxEntryLaw (a : PR 3) (i N x : PTm n) : Fm PTm n := lt i N ⟶ rationalLE (qL1 (ap3 a i zero x)) (M a N x)
-@[simp] theorem subst_maxEntryLaw {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (i N x : PTm n) :
-    (maxEntryLaw a i N x).subst σ = maxEntryLaw a (Syn.subst σ i) (Syn.subst σ N) (Syn.subst σ x) := by
-  simp only [maxEntryLaw,Fm.subst_imp,subst_lt,RationalArgmin.subst_rationalLE,GaussianRationalL1.subst_qL1,
-    subst_ap3,ConciseIPRA.PTm.subst_zero,subst_M]
+ipra_subst maxEntryLaw
 
 theorem max_entry_step (a : PR 3) (i N x : PTm n) (hi : Γ ⊢[PRAAx] lt i (succ N))
     (ih : Γ ⊢[PRAAx] maxEntryLaw a i N x) : Γ ⊢[PRAAx] rationalLE (qL1 (ap3 a i zero x)) (M a (succ N) x) := by
@@ -101,11 +83,9 @@ theorem max_entry_step (a : PR 3) (i N x : PTm n) (hi : Γ ⊢[PRAAx] lt i (succ
 theorem max_entry_bound (a : PR 3) (i N x : PTm n) (hi : Γ ⊢[PRAAx] lt i N) : Γ ⊢[PRAAx]
     rationalLE (qL1 (ap3 a i zero x)) (M a N x) := by
   have all : Γ ⊢[PRAAx] .all (maxEntryLaw a (Syn.shift i) (var 0) (Syn.shift x)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [subst_maxEntryLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (lt_irrefl zero _ (lt_of_le_of_lt (zero_le i) Prf.hyp0))
-    · simp only [subst_maxEntryLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact .impI (max_entry_step a _ _ _ Prf.hyp0 Prf.hyp1)
+    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_maxEntryLaw]
+    · exact .impI (lt_irrefl zero _ (lt_of_le_of_lt (zero_le i) Prf.hyp0))
+    · exact .impI (max_entry_step a _ _ _ Prf.hyp0 Prf.hyp1)
   have rule : Γ ⊢[PRAAx] maxEntryLaw a i N x := by
     simpa only [subst_maxEntryLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
   exact .impE rule hi
@@ -148,9 +128,7 @@ theorem bounded_radius_mono (z A B C D : PTm n) (hB : Γ ⊢[PRAAx] le one B) (h
   exact RationalArgmin.transitive hz tol
 
 def unit (s : PTm n) : PTm n := pw two s
-@[simp] theorem subst_unit {m : ℕ} (σ : Fin n → PTm m) (s : PTm n) :
-    Syn.subst σ (unit s) = unit (Syn.subst σ s) := by
-  simp only [unit,subst_ap2,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero]
+ipra_subst unit
 theorem unit_positive (s : PTm n) : Γ ⊢[PRAAx] le one (unit s) :=
   GaussianFactorBudget.power_positive two s (le_of_eq_add (d := one) (by ipra_ring))
 
@@ -160,12 +138,8 @@ def regularCoefficient (a : PR 3) (i x : PTm n) : Fm PTm n := .all (.all
     (unit (var 1)+unit (var 0)) (unit (var 1)*unit (var 0))))
 def CN (a : PR 3) (N x : PTm n) : Fm PTm n := .all (lt (var 0) (Syn.shift N) ⟶ regularCoefficient a (var 0) (Syn.shift x))
 
-@[simp] theorem subst_regularCoefficient {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (i x : PTm n) :
-    (regularCoefficient a i x).subst σ = regularCoefficient a (Syn.subst σ i) (Syn.subst σ x) := by
-  simp [regularCoefficient,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_CN {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N x : PTm n) :
-    (CN a N x).subst σ = CN a (Syn.subst σ N) (Syn.subst σ x) := by
-  simp [CN,Syn.subst_shift,Syn.shift_subst]
+ipra_subst regularCoefficient [Syn.subst_shift, Syn.shift_subst]
+ipra_subst CN [Syn.subst_shift, Syn.shift_subst]
 
 theorem regular_coefficient_at (a : PR 3) (i x s t : PTm n) (h : Γ ⊢[PRAAx] regularCoefficient a i x) : Γ ⊢[PRAAx]
     distanceBounded (ap3 a i s x) (ap3 a i t x) (unit s+unit t) (unit s*unit t) := by
@@ -218,9 +192,7 @@ theorem sample_l1_bound (a : PR 3) (N x i s : PTm n) (hCN : Γ ⊢[PRAAx] CN a N
 /-! Actual constant program and uniformly closed source statements. -/
 def output (a : PR 3) (N x : PTm n) : PTm n := pairT (M a N x) (pairT (ceilM a N x) (pairT (A a N x) (R a N x)))
 def outputF (a : PR 3) : PR 2 := PTm.toPR (output a (var 0) (var 1))
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N x : PTm n) :
-    Syn.subst σ (output a N x) = output a (Syn.subst σ N) (Syn.subst σ x) := by
-  simp only [output,subst_pairT,subst_M,subst_ceilM,subst_A,subst_R]
+ipra_subst output
 theorem output_at (a : PR 3) (N x : PTm n) : Γ ⊢[PRAAx] ap2 (outputF a) N x ≐ output a N x := by
   simpa only [outputF,ap2,subst_output,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.head_cons,Matrix.tail_cons] using
     toPR_eq (Γ := Γ) (output a (var 0) (var 1) : PTm 2) ![N,x]

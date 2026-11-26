@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalIntegerMinorDeterminants
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Foundations.GapDecision (zabs zabs_congr zabs_neg zabs_tri)
 open RationalSupMetric (numeratorOf denominatorOf)
@@ -23,9 +23,6 @@ open RationalIntegerNormalization (normalize integerCode)
 open RationalArithmetic (represents)
 open RationalGaussianEmbedding (scalarOne)
 open GaussianRationalHorner (scalar_congr)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -129,14 +126,11 @@ theorem product_content (t : PTm 2) (N x B : PTm n) (h : Γ ⊢[PRAAx] termBound
     Γ ⊢[PRAAx] content (product t N x) (pw B N) := by
   have all : Γ ⊢[PRAAx] .all (le (var 0) (Syn.shift N) ⟶
       content (product t (var 0) (Syn.shift x)) (pw (Syn.shift B) (var 0))) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,⟨trivial,le_QF _ _⟩⟩ ?_ ?_
-    · simp only [Fm.subst_imp,subst_le,subst_content,RationalScalarDeterminantGaussianEmbedding.subst_product,
-        subst_ap2,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (content_congr (RationalScalarDeterminantGaussianEmbedding.product_zero _ _).eqSymm
+    ipra_qfind (⟨le_QF _ _,⟨trivial,le_QF _ _⟩⟩) [subst_le, subst_content,
+        RationalScalarDeterminantGaussianEmbedding.subst_product, subst_ap2]
+    · exact .impI (content_congr (RationalScalarDeterminantGaussianEmbedding.product_zero _ _).eqSymm
         (pw_zero _).eqSymm one_content)
-    · simp only [Fm.subst_imp,subst_le,subst_content,RationalScalarDeterminantGaussianEmbedding.subst_product,
-        subst_ap2,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    · refine .impI ?_
       let i : PTm (n+1) := var 0
       let Δ := le (succ i) (Syn.shift N) ::
         (le i (Syn.shift N) ⟶ content (product t i (Syn.shift x)) (pw (Syn.shift B) i)) :: Γ.map Fm.shift
@@ -154,13 +148,9 @@ theorem sum_content (t : PTm 2) (N x B : PTm n) (h : Γ ⊢[PRAAx] termBounds t 
     Γ ⊢[PRAAx] content (sum t N x) (N*B) := by
   have all : Γ ⊢[PRAAx] .all (le (var 0) (Syn.shift N) ⟶
       content (sum t (var 0) (Syn.shift x)) (var 0*Syn.shift B)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,⟨trivial,le_QF _ _⟩⟩ ?_ ?_
-    · simp only [Fm.subst_imp,subst_le,subst_content,RationalFiniteSum.subst_sum,
-        PTm.subst_mul,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (content_congr (.eqRefl _) (zero_mul _).eqSymm (zero_sum_content _ _))
-    · simp only [Fm.subst_imp,subst_le,subst_content,RationalFiniteSum.subst_sum,
-        PTm.subst_mul,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,⟨trivial,le_QF _ _⟩⟩) [subst_le, subst_content, RationalFiniteSum.subst_sum]
+    · exact .impI (content_congr (.eqRefl _) (zero_mul _).eqSymm (zero_sum_content _ _))
+    · refine .impI ?_
       let i : PTm (n+1) := var 0
       let Δ := le (succ i) (Syn.shift N) ::
         (le i (Syn.shift N) ⟶ content (sum t i (Syn.shift x)) (i*Syn.shift B)) :: Γ.map Fm.shift
@@ -185,12 +175,8 @@ def rowBounds (A m B i : PTm n) : Fm PTm n :=
 def matrixBounds (A m B : PTm n) : Fm PTm n :=
   .all (lt (var 0) (Syn.shift m) ⟶ rowBounds (Syn.shift A) (Syn.shift m) (Syn.shift B) (var 0))
 
-@[simp] theorem subst_rowBounds {k : ℕ} (σ : Fin n → PTm k) (A m B i : PTm n) :
-    (rowBounds A m B i).subst σ = rowBounds (Syn.subst σ A) (Syn.subst σ m) (Syn.subst σ B) (Syn.subst σ i) := by
-  simp [rowBounds,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_matrixBounds {k : ℕ} (σ : Fin n → PTm k) (A m B : PTm n) :
-    (matrixBounds A m B).subst σ = matrixBounds (Syn.subst σ A) (Syn.subst σ m) (Syn.subst σ B) := by
-  simp [matrixBounds,Syn.subst_shift,Syn.shift_subst]
+ipra_subst rowBounds [Syn.subst_shift, Syn.shift_subst]
+ipra_subst matrixBounds [Syn.subst_shift, Syn.shift_subst]
 
 theorem matrix_bound_at (A m B i j : PTm n) (h : Γ ⊢[PRAAx] matrixBounds A m B)
     (hi : Γ ⊢[PRAAx] lt i m) (hj : Γ ⊢[PRAAx] lt j m) : Γ ⊢[PRAAx] content (cell A i j) B := by

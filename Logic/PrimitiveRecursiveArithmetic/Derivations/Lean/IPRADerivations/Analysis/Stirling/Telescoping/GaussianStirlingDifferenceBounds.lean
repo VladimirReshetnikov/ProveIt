@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingDifferenceBounds
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit)
 open GaussianRationalHorner (qadd qzero positive_product qadd_canonical)
 open GaussianStirlingDifferenceBrackets (observation_brackets)
@@ -30,10 +30,6 @@ open GaussianStirlingTailComparison (point_add_order point_order_refl tail_le_ge
 open GaussianStirlingTelescope (shifted shifted_source)
 open RationalArgmin (rationalLE rationalLE_congr transitive)
 open RationalValueBounds (upper upper_congr upper_order_left upper_order_right)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "D" => GaussianStirlingDifference.nameF

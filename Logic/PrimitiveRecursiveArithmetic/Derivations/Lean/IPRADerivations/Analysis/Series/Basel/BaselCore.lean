@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Series.Basel.BaselAverages
 import IPRADerivations.Analysis.RationalArithmetic.PowerSums
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The crucial finite comparison of the Basel packet
@@ -36,16 +35,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.BaselCore
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.BaselFinite (odd_pos tB inst2_t T Ev Od Ev_succ Od_succ Dec alt_decreasing
   par_sum par_prod compl_succ)
 open LeanProofs.IPRA.Analysis.BaselAverages (g H)
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (quo_anti)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -75,16 +70,12 @@ private abbrev paF : Fm PTm 2 :=
   par (var 1 + var 0) + two * (par (var 1) * par (var 0)) ≐ par (var 1) + par (var 0)
 
 private theorem pa₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] paF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_ap1, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have a := natEq (congrAp1 parF (add_zero (Γ := []) (var 0 : PTm 1)))
+  ipra_ind [subst_ap1]
+  · have a := natEq (congrAp1 parF (add_zero (Γ := []) (var 0 : PTm 1)))
     have z := natEq (par_zero (Γ := ([] : List (Fm PTm 1))))
     apply deriveNat; ipra_simps
     linear_combination a + (2 * 𝔞 (par (var 0 : PTm 1)) - 1) * z
-  · simp only [Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_ap1, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have ih := natEq (Prf.hyp0 : [paF] ⊢[PRAAx] paF)
+  · have ih := natEq (Prf.hyp0 : [paF] ⊢[PRAAx] paF)
     have a := natEq ((congrAp1 parF (add_succ (Γ := [paF]) (var 1 : PTm 2) (var 0))).eqTrans (par_succ _))
     have b := natEq (par_succ (Γ := [paF]) (var 0 : PTm 2))
     have s1 := natEq (par_sum (Γ := [paF]) ((var 1 : PTm 2) + var 0))
@@ -178,15 +169,9 @@ theorem rel_zero (K L : PTm n) :
       𝔞 (par K) * natEq (sum_zero (Γ := Γ) (LeanProofs.IPRA.Analysis.BaselFinite.eB wS) (pairT K L))
 
 private theorem rel₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] relF := by
-  refine ind _ ⟨trivial, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_and, Fm.subst_eq, subst_ap2, subst_ap1, subst_pairT, PTm.subst_add, PTm.subst_mul,
-      PTm.subst_monus, Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact rel_zero _ _
-  · simp only [Fm.subst_and, Fm.subst_eq, subst_ap2, subst_ap1, subst_pairT, PTm.subst_add, PTm.subst_mul,
-      PTm.subst_monus, Syn.subst_var, Syn.repl_zero, repl_one, repl_two, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact rel_step Prf.hyp0
+  ipra_ind (⟨trivial, trivial⟩) [subst_ap2, subst_ap1, subst_pairT]
+  · exact rel_zero _ _
+  · exact rel_step Prf.hyp0
 
 /-- `shift_rel`: `A^±(K + j) = A^±(K) + (1 ∸ par K) E'^±(j) + par K · E'^∓(j)`. -/
 theorem shift_rel (j K L : PTm n) :
@@ -216,7 +201,6 @@ theorem tail_bound (K m L : PTm n) :
     (congrAp2 quoF (.eqRefl _) (congrSucc (congrMul (.eqRefl two) (add_zero K))))
   refine .orE (par_cases K) ?_ ?_
   · have hp := natEq (Prf.hyp0 : ((par K ≐ zero) :: Γ) ⊢[PRAAx] _)
-    have w0 := natEq (w0P.wk (ψ := par K ≐ zero))
     have c := natEq ((congrMonus (.eqRefl one) (Prf.hyp0 : ((par K ≐ zero) :: Γ) ⊢[PRAAx] _)).eqTrans (monus_zero _))
     have r1 := natEq ((Prf.andE₁ r).wk (ψ := par K ≐ zero)); have r2 := natEq ((Prf.andE₂ r).wk (ψ := par K ≐ zero))
     have d1 := natEq ((eq_add_of_le (Prf.andE₁ ad)).wk (ψ := par K ≐ zero))
@@ -224,21 +208,19 @@ theorem tail_bound (K m L : PTm n) :
     refine .andI (le_of_eq_add (d := monus (Om (succ m) K L + inst2 wS zero (pairT K L)) (Ep (succ m) K L)) ?_)
       (le_of_eq_add (d := monus (Ep (succ m) K L) (Om (succ m) K L) + g K L) ?_)
     · ipra_lc r2 - r1 + (𝔞 (Om (succ m) K L) - 𝔞 (Ep (succ m) K L)) * c +
-        (𝔞 (Ep (succ m) K L) - 𝔞 (Om (succ m) K L)) * hp + d2 - w0
+        (𝔞 (Ep (succ m) K L) - 𝔞 (Om (succ m) K L)) * hp + d2 - natEq (w0P.wk (ψ := par K ≐ zero))
     · ipra_lc r1 - r2 + (𝔞 (Ep (succ m) K L) - 𝔞 (Om (succ m) K L)) * c +
         (𝔞 (Om (succ m) K L) - 𝔞 (Ep (succ m) K L)) * hp + d1
   · have hp := natEq (Prf.hyp0 : ((par K ≐ one) :: Γ) ⊢[PRAAx] _)
-    have w0 := natEq (w0P.wk (ψ := par K ≐ one))
     have c := natEq ((congrMonus (.eqRefl one) (Prf.hyp0 : ((par K ≐ one) :: Γ) ⊢[PRAAx] _)).eqTrans (monus_self _))
     have r1 := natEq ((Prf.andE₁ r).wk (ψ := par K ≐ one)); have r2 := natEq ((Prf.andE₂ r).wk (ψ := par K ≐ one))
-    have d1 := natEq ((eq_add_of_le (Prf.andE₁ ad)).wk (ψ := par K ≐ one))
     have d2 := natEq ((eq_add_of_le (Prf.andE₂ ad)).wk (ψ := par K ≐ one))
     refine .andI (le_of_eq_add (d := monus (Ep (succ m) K L) (Om (succ m) K L) + g K L) ?_)
       (le_of_eq_add (d := monus (Om (succ m) K L + inst2 wS zero (pairT K L)) (Ep (succ m) K L)) ?_)
     · ipra_lc r2 - r1 + (𝔞 (Ep (succ m) K L) - 𝔞 (Om (succ m) K L)) * hp +
-        (𝔞 (Om (succ m) K L) - 𝔞 (Ep (succ m) K L)) * c + d1
+        (𝔞 (Om (succ m) K L) - 𝔞 (Ep (succ m) K L)) * c + natEq ((eq_add_of_le (Prf.andE₁ ad)).wk (ψ := par K ≐ one))
     · ipra_lc r1 - r2 + (𝔞 (Om (succ m) K L) - 𝔞 (Ep (succ m) K L)) * hp +
-        (𝔞 (Ep (succ m) K L) - 𝔞 (Om (succ m) K L)) * c + d2 - w0
+        (𝔞 (Ep (succ m) K L) - 𝔞 (Om (succ m) K L)) * c + d2 - natEq (w0P.wk (ψ := par K ≐ one))
 
 /-! ## The diagonal identity for `F = L!` -/
 
@@ -336,15 +318,11 @@ theorem sum_lin (f h k : PTm 2) (K x y z c : PTm n)
   have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift K) ⟶
       (ap2 (sumF f) (var 0) (Syn.shift x) + Syn.shift c * ap2 (sumF h) (var 0) (Syn.shift y) ≐
         ap2 (sumF k) (var 0) (Syn.shift z))) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _, trivial⟩) [subst_le, subst_ap2]
+    · refine .impI ?_
       ipra_lc natEq (sum_zero (Γ := le zero K :: Γ) f x) + 𝔞 c * natEq (sum_zero (Γ := le zero K :: Γ) h y) -
         natEq (sum_zero (Γ := le zero K :: Γ) k z)
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero]
-      refine .impI ?_
+    · refine .impI ?_
       have hle : (le (succ (var 0)) (Syn.shift K) ::
           (le (var 0) (Syn.shift K) ⟶ (ap2 (sumF f) (var 0) (Syn.shift x) + Syn.shift c * ap2 (sumF h) (var 0) (Syn.shift y) ≐
             ap2 (sumF k) (var 0) (Syn.shift z))) :: Γ.map Fm.shift) ⊢[PRAAx] le (var 0) (Syn.shift K) :=
@@ -435,13 +413,9 @@ private abbrev reflF : Fm PTm 2 :=
     Ap (succ (var 0)) (var 1)
 
 private theorem refl₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] reflF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, subst_ap1, subst_pairT, PTm.subst_add, PTm.subst_mul, PTm.subst_monus,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact refl_zero _
-  · simp only [Fm.subst_eq, subst_ap2, subst_ap1, subst_pairT, PTm.subst_add, PTm.subst_mul, PTm.subst_monus,
-      Syn.subst_var, Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact refl_step Prf.hyp0
+  ipra_ind [subst_ap2, subst_ap1, subst_pairT]
+  · exact refl_zero _
+  · exact refl_step Prf.hyp0
 
 /-- The signed reflection: `(−1)^M R(M) = ∑_{j=1}^{M} (−1)^j g_j = A(M + 1) − g_0`, with `g_0 = F`. -/
 theorem refl (M L : PTm n) :
@@ -741,15 +715,9 @@ theorem phi_step {M L : PTm n} (ih : Γ ⊢[PRAAx] le (succ (two * succ M)) L �
 private abbrev phiF : Fm PTm 2 := le (succ (two * succ (var 0))) (var 1) ⟶ Phi (var 0) (var 1)
 
 private theorem phi₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] phiF := by
-  refine ind _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, subst_ap1, subst_pairT, PTm.subst_add,
-      PTm.subst_mul, PTm.subst_monus, Syn.subst_var, Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact .impI (phi_zero _)
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, subst_ap1, subst_pairT, PTm.subst_add,
-      PTm.subst_mul, PTm.subst_monus, Syn.subst_var, Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact .impI (phi_step Prf.hyp1 Prf.hyp0)
+  ipra_ind (⟨le_QF _ _, trivial⟩) [subst_le, subst_ap2, subst_ap1, subst_pairT]
+  · exact .impI (phi_zero _)
+  · exact .impI (phi_step Prf.hyp1 Prf.hyp0)
 
 /-- `eq:second`, cleared by `F = L!`: for `N = M + 1` and `2N + 1 ≤ L`, `A_N² + T_N = O_N + E_N`. -/
 theorem second {M L : PTm n} (h : Γ ⊢[PRAAx] le (succ (two * succ M)) L) : Γ ⊢[PRAAx] Phi M L := by

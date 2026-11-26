@@ -15,7 +15,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetBosePrefixTranspose
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetArctangentQuadrature (fixedData)
 open GaussianBinetBosePrefixQuadrature (evaluatorF evaluatorTerm subst_evaluatorTerm)
 open GaussianBinetLaplaceStrip (tagNumerator)
@@ -25,8 +25,6 @@ open GaussianRationalFubini (row rowBody row_entry row_sum_at rowFirst columnFir
 open GaussianRationalHorner (qmul)
 open GaussianRationalRiemannRefinement (weight)
 open GaussianRationalSyntheticDivision (qmul_congr)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Atan" => GaussianBinetArctangentQuadrature.nameF
@@ -51,22 +49,12 @@ def term (i j d : PTm n) : PTm n :=
 def matrix : PTm 3 := term (var 0) (var 1) (var 2)
 def data (p M N X Y D sign A C E : PTm n) : PTm n := sampleData p M (E+A) C E (pairT N (fixedData X Y D sign))
 
-@[simp] theorem subst_tag {m : ℕ} (σ : Fin n → PTm m) (i d : PTm n) :
-    Syn.subst σ (tag i d) = tag (Syn.subst σ i) (Syn.subst σ d) := by simp [tag]
-@[simp] theorem subst_prefixLength {m : ℕ} (σ : Fin n → PTm m) (d : PTm n) :
-    Syn.subst σ (prefixLength d) = prefixLength (Syn.subst σ d) := by simp [prefixLength]
-@[simp] theorem subst_decodedAngle {m : ℕ} (σ : Fin n → PTm m) (p x t : PTm n) :
-    Syn.subst σ (decodedAngle p x t) = decodedAngle (Syn.subst σ p) (Syn.subst σ x) (Syn.subst σ t) := by
-  simp [decodedAngle]
-@[simp] theorem subst_rowData {m : ℕ} (σ : Fin n → PTm m) (p N x t : PTm n) :
-    Syn.subst σ (rowData p N x t) = rowData (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ t) := by
-  simp [rowData,GaussianBinetBoseLiteralUniform.clock]
-@[simp] theorem subst_term {m : ℕ} (σ : Fin n → PTm m) (i j d : PTm n) :
-    Syn.subst σ (term i j d) = term (Syn.subst σ i) (Syn.subst σ j) (Syn.subst σ d) := by simp [term]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (p M N X Y D sign A C E : PTm n) :
-    Syn.subst σ (data p M N X Y D sign A C E) = data (Syn.subst σ p) (Syn.subst σ M) (Syn.subst σ N)
-      (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ A) (Syn.subst σ C) (Syn.subst σ E) :=
-  by simp [data]
+ipra_subst tag
+ipra_subst prefixLength
+ipra_subst decodedAngle
+ipra_subst rowData [GaussianBinetBoseLiteralUniform.clock]
+ipra_subst term
+ipra_subst data
 
 theorem matrix_at (i j d : PTm n) : inst3 matrix i j d = term i j d := by
   simp only [matrix,inst3,subst_term,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,

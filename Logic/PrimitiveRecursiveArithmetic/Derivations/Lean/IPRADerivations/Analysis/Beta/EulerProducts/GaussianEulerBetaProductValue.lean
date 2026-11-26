@@ -19,7 +19,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerBetaProductValue
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul ofGaussian represents canonical positive_product)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRationalNaturalScale (natScale naturalPoint natScale_congr natScale_as_product natScale_product natScale_multiply)
@@ -31,18 +31,13 @@ open GaussianGammaEulerHeadShift (linear shifted)
 open GaussianGammaRepeatedShift (risingProduct prefix_zero prefix_succ prefix_canonical)
 open GaussianEulerBetaPoleGuard (source)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def value (z B N : PTm n) : PTm n := reciprocal (head z B N)
 def factorialLaw (z B N : PTm n) : Fm PTm n := natScale (fact N) (head z B N) ≐ risingProduct z B (succ N)
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (z B N : PTm n) :
-    Syn.subst σ (value z B N) = value (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by simp [value]
-@[simp] theorem subst_factorialLaw {m : ℕ} (σ : Fin n → PTm m) (z B N : PTm n) :
-    (factorialLaw z B N).subst σ = factorialLaw (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by simp [factorialLaw,fact]
+ipra_subst value
+ipra_subst factorialLaw [fact]
 
 theorem scaled_left_product (t a b : PTm n) : Γ ⊢[PRAAx] natScale t (qmul a b) ≐ qmul (natScale t a) b :=
   (natScale_congr (.eqRefl _) (qmul_commutative a b)).eqTrans
@@ -83,11 +78,9 @@ theorem factorial_step (z B N : PTm n) (hB : Γ ⊢[PRAAx] le one B) (ih : Γ �
 theorem factorial_head (z B N : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx] factorialLaw z B N := by
   have hs : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift B) := by simpa [Fm.shift,Syn.shift] using hB.shift
   have all : Γ ⊢[PRAAx] .all (factorialLaw (Syn.shift z) (Syn.shift B) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_factorialLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact factorial_zero z B hB
-    · simp only [subst_factorialLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact factorial_step _ _ _ hs.wk Prf.hyp0
+    ipra_qfind [subst_factorialLaw]
+    · exact factorial_zero z B hB
+    · exact factorial_step _ _ _ hs.wk Prf.hyp0
   simpa only [subst_factorialLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
 
 theorem head_canonical (z B N : PTm n) : Γ ⊢[PRAAx] canonical (head z B N) := GaussianRationalHorner.qmul_canonical _ _
@@ -151,8 +144,7 @@ theorem product_value_IBP (z B A N : PTm n) (h : Γ ⊢[PRAAx] source z B A) : �
 
 /-- Concrete amplification radius for finite endpoint errors. -/
 def denominator (A N : PTm n) : PTm n := pw A (succ N)*fact N
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (A N : PTm n) :
-    Syn.subst σ (denominator A N) = denominator (Syn.subst σ A) (Syn.subst σ N) := by simp [denominator,fact]
+ipra_subst denominator [fact]
 theorem denominator_positive (A N : PTm n) (hA : Γ ⊢[PRAAx] le one A) : Γ ⊢[PRAAx] le one (denominator A N) :=
   GaussianGammaEulerHeadLower.prefix_denominator_positive A N hA
 

@@ -1,6 +1,5 @@
 import IPRADerivations.Probability.Independence
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Finite harmonic identities behind the rearranged alternating series
@@ -34,12 +33,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.HarmonicRearrangement
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -15,7 +15,7 @@ set_option maxHeartbeats 750000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesVignerasCertifiedMesh
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesVignerasBaseInterval (baseNumerator)
 open GaussianBarnesVignerasCyclicDerivative (LowerJet)
 open GaussianBarnesVignerasIntegerPeriod (advance chart_at)
@@ -23,9 +23,6 @@ open GaussianBarnesVignerasMeshConstancy (positive_chart subst_positive_chart sc
 open GaussianNameArithmetic (multiplyF multiplyData)
 open GaussianNameEquivalence (crossEquivalent cross_trans)
 open GaussianNameRingLaws (oneF)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

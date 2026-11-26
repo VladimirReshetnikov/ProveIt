@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaMinimumGlobalStrictComparison
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (fraction fraction_represents)
 open GaussianExponentialReference (unit_monotone)
@@ -29,10 +29,6 @@ open RationalArithmetic (add)
 open RationalRepresentedUpper (left right to_signed)
 open RationalSupMetric (numeratorOf denominatorOf)
 open RationalValueBounds (upper upper_of_order upper_of_radius radius_symmetric upper_triangle upper_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

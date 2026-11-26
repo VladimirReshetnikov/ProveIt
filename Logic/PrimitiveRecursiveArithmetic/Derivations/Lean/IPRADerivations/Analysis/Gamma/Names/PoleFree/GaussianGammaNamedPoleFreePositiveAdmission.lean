@@ -15,7 +15,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNamedPoleFreePositiveAdmission
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.GapDecision (zabs zabs_congr)
 open ComplexLogarithmRemainder (re im normSq oneCode)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -30,10 +30,6 @@ open GaussianRationalL1 (raw_den_positive raw_represents)
 open GaussianL1 (abs_ofNat)
 open GaussianSignedNameExponentialOrder (realSamples)
 open RationalValueBounds (upper upper_of_radius upper_mono upper_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

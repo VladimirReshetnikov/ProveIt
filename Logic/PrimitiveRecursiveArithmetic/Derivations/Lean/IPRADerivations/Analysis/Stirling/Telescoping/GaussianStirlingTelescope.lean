@@ -19,7 +19,7 @@ set_option maxHeartbeats 750000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingTelescope
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianStirlingNames (source nameData source_shift name_regular)
 open GaussianRationalMetric (qsub distanceBounded)
 open GaussianRationalFiniteSum (sum)
@@ -30,10 +30,6 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (positive_product)
 open GaussianNameEquivalence (crossEquivalent cross_at cross_symm cross_trans point_at)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -47,15 +43,10 @@ def stepLaw (a b : PTm n) : Fm PTm n := crossEquivalent G D (stepData a b) (Gaus
 def localRows (N a b : PTm n) : Fm PTm n := .all
   (lt (var 0) (Syn.shift N) ⟶ stepLaw (shifted (Syn.shift a) (Syn.shift b) (var 0)) (Syn.shift b))
 
-@[simp] theorem subst_shifted {l : ℕ} (σ : Fin n → PTm l) (a b i : PTm n) :
-    Syn.subst σ (shifted a b i) = shifted (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ i) := by simp [shifted]
-@[simp] theorem subst_stepData {l : ℕ} (σ : Fin n → PTm l) (a b : PTm n) :
-    Syn.subst σ (stepData a b) = stepData (Syn.subst σ a) (Syn.subst σ b) := by simp [stepData]
-@[simp] theorem subst_stepLaw {l : ℕ} (σ : Fin n → PTm l) (a b : PTm n) :
-    (stepLaw a b).subst σ = stepLaw (Syn.subst σ a) (Syn.subst σ b) := by simp [stepLaw]
-@[simp] theorem subst_localRows {l : ℕ} (σ : Fin n → PTm l) (N a b : PTm n) :
-    (localRows N a b).subst σ = localRows (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [localRows,Syn.subst_shift,Syn.shift_subst]
+ipra_subst shifted
+ipra_subst stepData
+ipra_subst stepLaw
+ipra_subst localRows [Syn.subst_shift, Syn.shift_subst]
 
 theorem shifted_source (a b i : PTm n) (h : Γ ⊢[PRAAx] source a b) : Γ ⊢[PRAAx] source (shifted a b i) b :=
   .andI (le_trans h.andE₁ (le_add_right a (b*i))) h.andE₂
@@ -82,11 +73,8 @@ def rowSample (f : PR 2) (t : PTm 2) (p a b i : PTm n) : PTm n :=
 def rowBody (f : PR 2) (t : PTm 2) : PTm 2 :=
   rowSample f t (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))) (var 0)
 
-@[simp] theorem subst_sampleData {l : ℕ} (σ : Fin n → PTm l) (p a b : PTm n) :
-    Syn.subst σ (sampleData p a b) = sampleData (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ b) := by simp [sampleData]
-@[simp] theorem subst_rowSample {l : ℕ} (σ : Fin n → PTm l) (f : PR 2) (t : PTm 2) (p a b i : PTm n) :
-    Syn.subst σ (rowSample f t p a b i) = rowSample f t (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ i) :=
-  by simp [rowSample]
+ipra_subst sampleData
+ipra_subst rowSample
 
 theorem row_at (f : PR 2) (t : PTm 2) (p a b i : PTm n) :
     Γ ⊢[PRAAx] inst2 (rowBody f t) i (sampleData p a b) ≐ rowSample f t p a b i := by
@@ -97,8 +85,8 @@ theorem row_at (f : PR 2) (t : PTm 2) (p a b i : PTm n) :
     (σ := ![fstT X,fstT (sndT X),sndT (sndT X),i]) (σ' := ![p,a,b,i]) (fun j => by
       fin_cases j
       · exact fst_pair _ _
-      · exact (congrFst outer).eqTrans (fst_pair _ _)
-      · exact (congrSnd outer).eqTrans (snd_pair _ _)
+      · exact outer.fstE
+      · exact outer.sndE
       · exact .eqRefl _)
 
 def aBody : PTm 2 := rowBody A (nameData (var 0) (var 1))
@@ -107,12 +95,8 @@ def rawSum (p N a b : PTm n) : PTm n := sum dBody N (sampleData p a b)
 def endpoint (p N a b : PTm n) : PTm n :=
   qsub (ap2 A p (nameData a b)) (ap2 A p (nameData (shifted a b N) b))
 
-@[simp] theorem subst_rawSum {l : ℕ} (σ : Fin n → PTm l) (p N a b : PTm n) :
-    Syn.subst σ (rawSum p N a b) = rawSum (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ b) :=
-  by simp [rawSum]
-@[simp] theorem subst_endpoint {l : ℕ} (σ : Fin n → PTm l) (p N a b : PTm n) :
-    Syn.subst σ (endpoint p N a b) = endpoint (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ b) :=
-  by simp [endpoint]
+ipra_subst rawSum
+ipra_subst endpoint
 
 theorem a_at (p a b i : PTm n) :
     Γ ⊢[PRAAx] inst2 aBody i (sampleData p a b) ≐ ap2 A p (nameData (shifted a b i) b) := by
@@ -137,11 +121,9 @@ private def backwardLaw (f : PTm 2) (x j : PTm n) : Fm PTm n :=
 theorem backward_sum (f : PTm 2) (N x : PTm n) :
     Γ ⊢[PRAAx] sum (backward f) N x ≐ qsub (inst2 f zero x) (inst2 f N x) := by
   have all : Γ ⊢[PRAAx] .all (backwardLaw f (Syn.shift x) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_backwardLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (GaussianRationalFiniteSum.sum_zero (backward f) x).eqTrans (GaussianCoefficientNormOrder.qsub_self _).eqSymm
-    · simp only [subst_backwardLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      let X := Syn.shift x
+    ipra_qfind [subst_backwardLaw]
+    · exact (GaussianRationalFiniteSum.sum_zero (backward f) x).eqTrans (GaussianCoefficientNormOrder.qsub_self _).eqSymm
+    · let X := Syn.shift x
       let i : PTm (n+1) := var 0
       let Δ := backwardLaw f X i :: Γ.map Fm.shift
       change Δ ⊢[PRAAx] sum (backward f) (succ i) X ≐ qsub (inst2 f zero X) (inst2 f (succ i) X)
@@ -165,10 +147,8 @@ theorem endpoint_sum (p N a b : PTm n) :
 def errorNumerator (p s : PTm n) : PTm n := unit s+num 7*unit p
 def errorDenominator (p s : PTm n) : PTm n := unit s*unit p
 
-@[simp] theorem subst_errorNumerator {l : ℕ} (σ : Fin n → PTm l) (p s : PTm n) :
-    Syn.subst σ (errorNumerator p s) = errorNumerator (Syn.subst σ p) (Syn.subst σ s) := by simp [errorNumerator]
-@[simp] theorem subst_errorDenominator {l : ℕ} (σ : Fin n → PTm l) (p s : PTm n) :
-    Syn.subst σ (errorDenominator p s) = errorDenominator (Syn.subst σ p) (Syn.subst σ s) := by simp [errorDenominator]
+ipra_subst errorNumerator
+ipra_subst errorDenominator
 
 theorem error_denominator_positive (p s : PTm n) : Γ ⊢[PRAAx] le one (errorDenominator p s) :=
   positive_product _ _ (unit_positive s) (unit_positive p)

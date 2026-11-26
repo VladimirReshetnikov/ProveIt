@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialExponentialLowJet
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianPolynomialLowJetProduct (jetEqual jet_at subst_jetEqual)
 open GaussianRationalHorner (qzero)
 open GaussianRationalLowCoefficientConvolution (exponentCoefficient)
@@ -22,9 +22,6 @@ open GaussianRationalPolynomialExponential (polynomial)
 open GaussianRationalPolynomialExponentialCoefficients (coefficientSum data term_at termBody subst_data)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

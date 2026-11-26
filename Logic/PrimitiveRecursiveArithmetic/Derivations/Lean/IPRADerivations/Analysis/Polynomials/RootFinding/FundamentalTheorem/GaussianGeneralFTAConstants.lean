@@ -21,7 +21,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGeneralFTAConstants
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalL1 (qL1)
 open LeanProofs.IPRA.Analysis.RationalSupMetric (numeratorOf denominatorOf)
 open LeanProofs.IPRA.Analysis.RationalIntegerNormalization (positivePart)
@@ -29,10 +29,6 @@ open LeanProofs.IPRA.Analysis.GaussianDescentClockArithmetic (positive_product)
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (fraction fraction_represents fraction_order)
 open LeanProofs.IPRA.Foundations.DemandClosure (maximum)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -61,48 +57,27 @@ def precisionCost (a : PR 3) (N h x : PTm n) : PTm n :=
 def L (a : PR 3) (N h x : PTm n) : PTm n := maximum (h+two) (bl (precisionCost a N h x))
 def H (a : PR 3) (N h x : PTm n) : PTm n := bl (R a N h x*C a N h x*K N)
 
-@[simp] theorem subst_initial {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (x : PTm n) :
-    Syn.subst σ (initial a x) = initial a (Syn.subst σ x) := by simp [initial]
-@[simp] theorem subst_ceilL1 {m : ℕ} (σ : Fin n → PTm m) (z : PTm n) :
-    Syn.subst σ (ceilL1 z) = ceilL1 (Syn.subst σ z) := by simp [ceilL1]
-@[simp] theorem subst_B {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (x : PTm n) :
-    Syn.subst σ (B a x) = B a (Syn.subst σ x) := by simp [B]
-@[simp] theorem subst_D {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (D N) = D (Syn.subst σ N) := by simp [D]
-@[simp] theorem subst_qDen {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (qDen N) = qDen (Syn.subst σ N) := by simp [qDen]
-@[simp] theorem subst_qNum {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (qNum N) = qNum (Syn.subst σ N) := by simp [qNum]
-@[simp] theorem subst_q {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (q N) = q (Syn.subst σ N) := by simp [q]
-@[simp] theorem subst_QDen {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (QDen N) = QDen (Syn.subst σ N) := by simp [QDen]
-@[simp] theorem subst_QNum {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (QNum N) = QNum (Syn.subst σ N) := by simp [QNum]
-@[simp] theorem subst_Q {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (Q N) = Q (Syn.subst σ N) := by simp [Q]
-@[simp] theorem subst_K {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (K N) = K (Syn.subst σ N) := by simp [K]
-@[simp] theorem subst_rhoNum {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (rhoNum N) = rhoNum (Syn.subst σ N) := by simp [rhoNum]
-@[simp] theorem subst_rho {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (rho N) = rho (Syn.subst σ N) := by simp [rho]
-@[simp] theorem subst_C {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x : PTm n) :
-    Syn.subst σ (C a N h x) = C a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) := by simp [C]
-@[simp] theorem subst_bl {m : ℕ} (σ : Fin n → PTm m) (z : PTm n) :
-    Syn.subst σ (bl z) = bl (Syn.subst σ z) := by simp [bl]
-@[simp] theorem subst_A0 {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x : PTm n) :
-    Syn.subst σ (A0 a N h x) = A0 a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) := by simp [A0]
-@[simp] theorem subst_T {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x : PTm n) :
-    Syn.subst σ (T a N h x) = T a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) := by simp [T]
-@[simp] theorem subst_R {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x : PTm n) :
-    Syn.subst σ (R a N h x) = R a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) := by simp [R]
-@[simp] theorem subst_precisionCost {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x : PTm n) :
-    Syn.subst σ (precisionCost a N h x) = precisionCost a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) := by simp [precisionCost]
-@[simp] theorem subst_L {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x : PTm n) :
-    Syn.subst σ (L a N h x) = L a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) := by simp [L]
-@[simp] theorem subst_H {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x : PTm n) :
-    Syn.subst σ (H a N h x) = H a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) := by simp [H]
+ipra_subst initial
+ipra_subst ceilL1
+ipra_subst B
+ipra_subst D
+ipra_subst qDen
+ipra_subst qNum
+ipra_subst q
+ipra_subst QDen
+ipra_subst QNum
+ipra_subst Q
+ipra_subst K
+ipra_subst rhoNum
+ipra_subst rho
+ipra_subst C
+ipra_subst bl
+ipra_subst A0
+ipra_subst T
+ipra_subst R
+ipra_subst precisionCost
+ipra_subst L
+ipra_subst H
 
 theorem l1_natural_representation (z : PTm n) : Γ ⊢[PRAAx]
     RationalArithmetic.represents (qL1 z) (ZT.ofNat (positivePart (numeratorOf (qL1 z)))) (denominatorOf (qL1 z)) := by
@@ -188,14 +163,12 @@ def output (a : PR 3) (N h x : PTm n) : PTm n :=
       (pairT (R a N h x) (pairT (L a N h x) (H a N h x)))))))))))
 def outputF (a : PR 3) : PR 3 := PTm.toPR (output a (var 0) (var 1) (var 2))
 def run (a : PR 3) (N h x : PTm n) : PTm n := ap3 (outputF a) N h x
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x : PTm n) :
-    Syn.subst σ (output a N h x) = output a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x : PTm n) :
-    Syn.subst σ (run a N h x) = run a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) := by simp [run]
+ipra_subst output
+ipra_subst run
 theorem program_at (a : PR 3) (N h x : PTm n) : Γ ⊢[PRAAx] run a N h x ≐ output a N h x := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output a (var 0) (var 1) (var 2) : PTm 3) ![N,h,x]
 theorem returned_B (a : PR 3) (N h x : PTm n) : Γ ⊢[PRAAx] fstT (run a N h x) ≐ B a x :=
-  (congrFst (program_at a N h x)).eqTrans (fst_pair _ _)
+  (program_at a N h x).fstE
 
 theorem initial_l1_ceiling_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 1
     (RationalArgmin.rationalLE (qL1 (var 0)) (fraction (ceilL1 (var 0)) one) ⋏

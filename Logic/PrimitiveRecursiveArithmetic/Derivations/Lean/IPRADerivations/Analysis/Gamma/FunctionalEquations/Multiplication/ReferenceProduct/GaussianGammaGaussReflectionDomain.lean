@@ -18,7 +18,7 @@ set_option maxHeartbeats 550000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaGaussReflectionDomain
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale normSq normSq_neg oneCode)
 open GaussianGammaGaussReference (scaled_one_norm reference_source reference_pole_at)
 open GaussianGammaEulerHeadLower (translated poleAt poleGuard)
@@ -33,10 +33,6 @@ open GaussianNameArithmetic (multiplyData multiply_fast)
 open GaussianNameEquivalence (crossEquivalent cross_trans cross_refl)
 open GaussianGammaAdjacentCutoff (multiply_cross)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "gneg" => ComplexLogarithmRemainder.neg
@@ -48,17 +44,11 @@ def referenceData (r m : PTm n) : PTm n := gammaData (argument r) one m m
 def pairData (r m : PTm n) : PTm n :=
   multiplyData gammaF gammaF (referenceData r m) (referenceData (complement r m) m)
 
-@[simp] theorem subst_source {l : ℕ} (σ : Fin n → PTm l) (r m : PTm n) :
-    (source r m).subst σ = source (Syn.subst σ r) (Syn.subst σ m) := by simp [source,one]
-@[simp] theorem subst_argument {l : ℕ} (σ : Fin n → PTm l) (r : PTm n) :
-    Syn.subst σ (argument r) = argument (Syn.subst σ r) := by simp [argument,oneCode]
-@[simp] theorem subst_complement {l : ℕ} (σ : Fin n → PTm l) (r m : PTm n) :
-    Syn.subst σ (complement r m) = complement (Syn.subst σ r) (Syn.subst σ m) := by simp [complement]
-@[simp] theorem subst_referenceData {l : ℕ} (σ : Fin n → PTm l) (r m : PTm n) :
-    Syn.subst σ (referenceData r m) = referenceData (Syn.subst σ r) (Syn.subst σ m) := by
-  simp [referenceData,gammaData,GaussianGammaReciprocalInverse.gammaHeight,one]
-@[simp] theorem subst_pairData {l : ℕ} (σ : Fin n → PTm l) (r m : PTm n) :
-    Syn.subst σ (pairData r m) = pairData (Syn.subst σ r) (Syn.subst σ m) := by simp [pairData]
+ipra_subst source [one]
+ipra_subst argument [oneCode]
+ipra_subst complement
+ipra_subst referenceData [gammaData, GaussianGammaReciprocalInverse.gammaHeight, one]
+ipra_subst pairData
 
 theorem modulus_positive (r m : PTm n) (h : Γ ⊢[PRAAx] source r m) : Γ ⊢[PRAAx] le one m :=
   le_trans h.andE₁ (le_of_lt h.andE₂)
@@ -108,10 +98,9 @@ theorem negative_pole_at (r m j : PTm n) (h : Γ ⊢[PRAAx] source r m) :
   · let Δ := le j zero :: Γ
     have hj : Δ ⊢[PRAAx] j ≐ zero := le_antisymm Prf.hyp0 (zero_le _)
     have e : Δ ⊢[PRAAx] equal (translated (gneg (argument r)) m j) (gneg (argument r)) := by
-      have u := natEq hj
       apply equal_of_values
       · simp only [translated,re_add,re_scale,GaussianRootAlgebra.re_one,IPRA.Q.mk_mul,map_mul]
-        rw [u]
+        rw [natEq hj]
         ipra_simps
         ring
       · simp [translated,im_add,im_scale,GaussianRootAlgebra.im_one]

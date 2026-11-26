@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalPowerMoments
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (fraction fraction_represents subst_fraction)
 open GaussianRationalHorner (positive_product)
 open RationalAlgebra (add_congr multiply_congr multiply_associative)
@@ -25,10 +25,6 @@ open RationalNonnegativePowers (fraction_congr fraction_multiply)
 open RationalRepresentedUpper (from_signed)
 open RationalSumConstants (count_add)
 open RationalValueBounds (upper upper_congr)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -40,8 +36,7 @@ def average (p M : PTm n) : PTm n := fraction (naturalSum p M) (pw M (succ p))
 def moment (p : PTm n) : PTm n := fraction one (succ p)
 def gridAverage (p M : PTm n) : PTm n := multiply (fraction one M) (sum rationalBody M (pairT p M))
 
-@[simp] theorem subst_naturalSum {l : ℕ} (σ : Fin n → PTm l) (p M : PTm n) :
-    Syn.subst σ (naturalSum p M) = naturalSum (Syn.subst σ p) (Syn.subst σ M) := by simp [naturalSum]
+ipra_subst naturalSum
 
 private theorem integer_at (i p : PTm n) : term integerBody i p = fraction (pw i p) one := by
   simp [term,integerBody,inst2,pw,one]

@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEuclideanPointDistance
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qsub qnormSq distanceBounded squaredTolerance)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (positive_product)
 open LeanProofs.IPRA.Analysis.GaussianRationalL1 (rawDen rawGaussian raw_den_positive raw_represents)
@@ -28,10 +28,6 @@ open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
 open LeanProofs.IPRA.Foundations.FiniteHausdorff (index_le_pred index_lt)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -49,28 +45,17 @@ def root (z T k : PTm n) : PTm n := isqrt (radicand z T k)
 def lower (z T k : PTm n) : PTm n := normalize (ZT.ofNat (root z T k)) (denominator z T*unit k)
 def upper (z T k : PTm n) : PTm n := normalize (ZT.ofNat (succ (root z T k))) (denominator z T*unit k)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (z T : PTm n) :
-    Syn.subst σ (data z T) = data (Syn.subst σ z) (Syn.subst σ T) := by simp [data]
-@[simp] theorem subst_selected {m : ℕ} (σ : Fin n → PTm m) (z T : PTm n) :
-    Syn.subst σ (selected z T) = selected (Syn.subst σ z) (Syn.subst σ T) := by simp [selected]
-@[simp] theorem subst_difference {m : ℕ} (σ : Fin n → PTm m) (z T : PTm n) :
-    Syn.subst σ (difference z T) = difference (Syn.subst σ z) (Syn.subst σ T) := by simp [difference]
-@[simp] theorem subst_squaredDistance {m : ℕ} (σ : Fin n → PTm m) (z T : PTm n) :
-    Syn.subst σ (squaredDistance z T) = squaredDistance (Syn.subst σ z) (Syn.subst σ T) := by simp [squaredDistance]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (z T : PTm n) :
-    Syn.subst σ (numerator z T) = numerator (Syn.subst σ z) (Syn.subst σ T) := by simp [numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (z T : PTm n) :
-    Syn.subst σ (denominator z T) = denominator (Syn.subst σ z) (Syn.subst σ T) := by simp [denominator]
-@[simp] theorem subst_unit {m : ℕ} (σ : Fin n → PTm m) (k : PTm n) :
-    Syn.subst σ (unit k) = unit (Syn.subst σ k) := by simp [unit]
-@[simp] theorem subst_radicand {m : ℕ} (σ : Fin n → PTm m) (z T k : PTm n) :
-    Syn.subst σ (radicand z T k) = radicand (Syn.subst σ z) (Syn.subst σ T) (Syn.subst σ k) := by simp [radicand]
-@[simp] theorem subst_root {m : ℕ} (σ : Fin n → PTm m) (z T k : PTm n) :
-    Syn.subst σ (root z T k) = root (Syn.subst σ z) (Syn.subst σ T) (Syn.subst σ k) := by simp [root]
-@[simp] theorem subst_lower {m : ℕ} (σ : Fin n → PTm m) (z T k : PTm n) :
-    Syn.subst σ (lower z T k) = lower (Syn.subst σ z) (Syn.subst σ T) (Syn.subst σ k) := by simp [lower]
-@[simp] theorem subst_upper {m : ℕ} (σ : Fin n → PTm m) (z T k : PTm n) :
-    Syn.subst σ (upper z T k) = upper (Syn.subst σ z) (Syn.subst σ T) (Syn.subst σ k) := by simp [upper]
+ipra_subst data
+ipra_subst selected
+ipra_subst difference
+ipra_subst squaredDistance
+ipra_subst numerator
+ipra_subst denominator
+ipra_subst unit
+ipra_subst radicand
+ipra_subst root
+ipra_subst lower
+ipra_subst upper
 
 theorem score_at (z T i : PTm n) : Γ ⊢[PRAAx]
     RationalArgmin.value scoreF i (data z T) ≐ qnormSq (qsub z (entry T i)) := by
@@ -217,18 +202,16 @@ def output (z T k : PTm n) : PTm n := pairT (selected z T)
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (z T k : PTm n) : PTm n := ap3 outputF z T k
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (z T k : PTm n) :
-    Syn.subst σ (output z T k) = output (Syn.subst σ z) (Syn.subst σ T) (Syn.subst σ k) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (z T k : PTm n) :
-    Syn.subst σ (run z T k) = run (Syn.subst σ z) (Syn.subst σ T) (Syn.subst σ k) := by simp [run]
+ipra_subst output
+ipra_subst run
 
 theorem program_at (z T k : PTm n) : Γ ⊢[PRAAx] run z T k ≐ output z T k := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![z,T,k]
 
 theorem returned_index (z T k : PTm n) : Γ ⊢[PRAAx] fstT (run z T k) ≐ selected z T :=
-  (congrFst (program_at z T k)).eqTrans (fst_pair _ _)
+  (program_at z T k).fstE
 theorem returned_point (z T k : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run z T k)) ≐ entry T (fstT (run z T k)) :=
-  ((congrFst ((congrSnd (program_at z T k)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)).eqTrans
+  (program_at z T k).sndE.fstE.eqTrans
     (entry_congr (.eqRefl _) (returned_index z T k).eqSymm)
 
 theorem euclidean_minimum_hit_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 4

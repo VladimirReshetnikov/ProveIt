@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.FiniteOperations.Products
 import IPRADerivations.Combinatorics.BinomialIdentities
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Rising factorials and the Gauss coefficients
@@ -27,15 +26,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.Pochhammer
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.Products (P fact)
 open LeanProofs.IPRA.Combinatorics.Binomial (binom)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (binom_eq mul_cancel)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (fact_pos)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -64,14 +59,10 @@ private abbrev splitF : Fm PTm 3 :=
   poch (var 2) (var 1 + var 0) ≐ poch (var 2) (var 1) * poch (var 2 + var 1) (var 0)
 
 private theorem split₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] splitF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_ap2, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact (congrAp2 (prodF (var 1 + var 0)) (add_zero _) (.eqRefl _)).eqTrans
+  ipra_ind [subst_ap2]
+  · exact (congrAp2 (prodF (var 1 + var 0)) (add_zero _) (.eqRefl _)).eqTrans
       (((mul_comm _ _).eqTrans (one_mul _)).eqSymm.eqTrans (congrMul (.eqRefl _) (poch_zero _).eqSymm))
-  · simp only [Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_ap2, Syn.subst_var, Syn.repl_zero,
-      repl_one, repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact split_step Prf.hyp0
+  · exact split_step Prf.hyp0
 
 /-- `(x)_{m+k} = (x)_m (x + m)_k`. -/
 theorem poch_split (x m k : PTm n) : Γ ⊢[PRAAx] poch x (m + k) ≐ poch x m * poch (x + m) k := by
@@ -93,13 +84,9 @@ private abbrev shiftF : Fm PTm 2 :=
   var 1 * poch (succ (var 1)) (var 0) ≐ (var 1 + var 0) * poch (var 1) (var 0)
 
 private theorem shift₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] shiftF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_ap2, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact shift_base _
-  · simp only [Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_ap2, Syn.subst_var, Syn.repl_zero,
-      repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact shift_step Prf.hyp0
+  ipra_ind [subst_ap2]
+  · exact shift_base _
+  · exact shift_step Prf.hyp0
 
 /-- `x (x + 1)_m = (x + m) (x)_m`. -/
 theorem poch_shift (x m : PTm n) : Γ ⊢[PRAAx] x * poch (succ x) m ≐ (x + m) * poch x m := by
@@ -126,13 +113,9 @@ theorem fact_step {x m : PTm n} (ih : Γ ⊢[PRAAx] poch (succ x) m * fact x ≐
 private abbrev factF' : Fm PTm 2 := poch (succ (var 1)) (var 0) * fact (var 1) ≐ fact (var 1 + var 0)
 
 private theorem fact₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] factF' := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_ap2, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact fact_base _
-  · simp only [Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_ap2, Syn.subst_var, Syn.repl_zero,
-      repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact fact_step Prf.hyp0
+  ipra_ind [subst_ap2]
+  · exact fact_base _
+  · exact fact_step Prf.hyp0
 
 /-- `(x + 1)_m x! = (x + m)!`. -/
 theorem poch_fact (x m : PTm n) : Γ ⊢[PRAAx] poch (succ x) m * fact x ≐ fact (x + m) := by

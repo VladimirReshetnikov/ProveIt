@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerVerticalNamedReference
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedRightHalfPlane (source radius numerator denominator threshold actual_late_source)
 open GaussianGammaReciprocalInverse (gammaF gammaData)
 open GaussianEulerVerticalNativeProjection (argument)
@@ -27,9 +27,6 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
 open GaussianNameEquivalence (crossEquivalent cross_refl)
 open GaussianRationalSlackRemoval (slack slack_removal_at)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -51,9 +48,7 @@ theorem equal_fraction_observations (p q z w R B D A : PTm n)
       (by unfold rateDenominator unit; ipra_ring) bound
   exact slack_removal_at _ _ _ one (positive_product _ _ (unit_positive p) (unit_positive q)) hs
 
-@[simp] theorem subst_gammaData {m : ℕ} (σ : Fin n → PTm m) (z R B A : PTm n) :
-    Syn.subst σ (gammaData z R B A) = gammaData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) := by
-  simp [gammaData,GaussianGammaReciprocalInverse.gammaHeight]
+ipra_subst gammaData [GaussianGammaReciprocalInverse.gammaHeight]
 
 theorem equal_fraction_cross (z w R B D A : PTm n)
     (hz : Γ ⊢[PRAAx] GaussianGammaHalfPlaneInputContinuity.source z R B A)
@@ -76,9 +71,7 @@ theorem equal_fraction_cross (z w R B D A : PTm n)
 def realEncodedData (f : PR 2) (r x A R : PTm n) : PTm n :=
   gammaData (argument (numerator f r x)) R (denominator f r x) (two*A)
 
-@[simp] theorem subst_realEncodedData {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (r x A R : PTm n) :
-    Syn.subst σ (realEncodedData f r x A R) = realEncodedData f (Syn.subst σ r) (Syn.subst σ x) (Syn.subst σ A) (Syn.subst σ R) := by
-  simp [realEncodedData]
+ipra_subst realEncodedData
 
 theorem projected_encoded_cross (f : PR 2) (r x A R : PTm n)
     (h : Γ ⊢[PRAAx] source f x A) (hm : Γ ⊢[PRAAx] le (threshold A) r)

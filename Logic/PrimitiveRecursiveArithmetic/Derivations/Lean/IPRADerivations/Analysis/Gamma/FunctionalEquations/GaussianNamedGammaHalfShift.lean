@@ -17,7 +17,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedGammaHalfShift
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianNameArithmetic (addF addData add_at add_fast add_equivalent)
 open GaussianNameRingLaws (add_associative add_zero additive_inverse_value)
@@ -36,10 +36,6 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open RationalValueBounds (upper upper_of_order upper_mono upper_congr)
 open RationalGaussianEmbedding (embed axis)
 open ComplexLogarithmRemainder (oneCode scale)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -56,12 +52,9 @@ def floorPoint (A : PTm n) : PTm n := qadd (marginPoint A) half
 def source (f : PR 2) (x A : PTm n) : Fm PTm n :=
   pointCN f x ⋏ (realSamples f x ⋏ (le one A ⋏ realOrder constantF f (floorPoint A) x))
 
-@[simp] theorem subst_minusData {m : ℕ} (σ : Fin n → PTm m) (x : PTm n) :
-    Syn.subst σ (minusData x) = minusData (Syn.subst σ x) := by simp [minusData,negativeHalf,half]
-@[simp] theorem subst_plusData {m : ℕ} (σ : Fin n → PTm m) (x : PTm n) :
-    Syn.subst σ (plusData x) = plusData (Syn.subst σ x) := by simp [plusData]
-@[simp] theorem subst_floorPoint {m : ℕ} (σ : Fin n → PTm m) (A : PTm n) :
-    Syn.subst σ (floorPoint A) = floorPoint (Syn.subst σ A) := by simp [floorPoint,half]
+ipra_subst minusData [negativeHalf, half]
+ipra_subst plusData
+ipra_subst floorPoint [half]
 
 theorem half_exact : Γ ⊢[PRAAx] (half : PTm n) ≐ ofGaussian oneCode two := by
   apply canonical_unique _ _ oneCode two (RationalGaussianEmbedding.embed_canonical _)

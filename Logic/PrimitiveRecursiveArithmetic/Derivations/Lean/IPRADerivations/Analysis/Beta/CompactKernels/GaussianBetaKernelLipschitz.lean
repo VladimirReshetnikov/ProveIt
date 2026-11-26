@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaKernelLipschitz
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBetaKernelRefinement (source base_fraction)
 open GaussianBetaKernelExponential (base kernel)
 open GaussianBetaKernelUnitBound (base_bound)
@@ -25,9 +25,6 @@ open GaussianRationalSyntheticDivision (rescale_to)
 open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_radius_mono)
 open ComplexLogarithmRemainder (scale oneCode)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

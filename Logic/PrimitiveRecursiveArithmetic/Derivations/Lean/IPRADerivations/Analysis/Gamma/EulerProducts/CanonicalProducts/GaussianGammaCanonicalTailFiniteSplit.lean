@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalTailName
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The original finite canonical Gamma tail and its first factor
@@ -17,15 +16,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailFiniteSplit
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (ofGaussian ofGaussian_represents ofGaussian_canonical represents represents_congr
   qzero qadd canonical_unique positive_product)
 open GaussianRationalSyntheticDivision (qadd_congr)
 open GammaCanonicalFactors (factorNumerator factorDenominator finiteSum finiteTail tailDenominator summand)
 open GaussianRationalFiniteSum (sum sum_canonical)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -35,14 +31,10 @@ def body : PTm 2 := term (fstT (var 1)) (fstT (sndT (var 1)))
   (succ (fstT (sndT (sndT (var 1)))+var 0)) (sndT (sndT (sndT (var 1))))
 def gaussianSum (z B N r L : PTm n) : PTm n := sum body r (data z B N L)
 def value (z B N r L : PTm n) : PTm n := ofGaussian (finiteTail z B N r L) (tailDenominator B N r L)
-@[simp] theorem subst_term {l : ℕ} (σ : Fin n → PTm l) (z B k L : PTm n) :
-    Syn.subst σ (term z B k L) = term (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ k) (Syn.subst σ L) := by simp [term]
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (z B N L : PTm n) :
-    Syn.subst σ (data z B N L) = data (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) (Syn.subst σ L) := by simp [data]
-@[simp] theorem subst_gaussianSum {l : ℕ} (σ : Fin n → PTm l) (z B N r L : PTm n) :
-    Syn.subst σ (gaussianSum z B N r L) = gaussianSum (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) (Syn.subst σ r) (Syn.subst σ L) := by simp [gaussianSum]
-@[simp] theorem subst_value {l : ℕ} (σ : Fin n → PTm l) (z B N r L : PTm n) :
-    Syn.subst σ (value z B N r L) = value (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) (Syn.subst σ r) (Syn.subst σ L) := by simp [value]
+ipra_subst term
+ipra_subst data
+ipra_subst gaussianSum
+ipra_subst value
 
 theorem term_index_congr (z B L : PTm n) {i j : PTm n} (h : Γ ⊢[PRAAx] i ≐ j) : Γ ⊢[PRAAx] term z B i L ≐ term z B j L := by
   ipra_congr (term (var 0) (var 1) (var 2) (var 3) : PTm 4) with [.eqRefl z, .eqRefl B, h, .eqRefl L]
@@ -56,9 +48,9 @@ theorem body_at (z B N L i : PTm n) : Γ ⊢[PRAAx] inst2 body i (data z B N L) 
       (σ' := ![z,B,succ (N+i),L]) (fun a => by
         fin_cases a
         · exact fst_pair _ _
-        · exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-        · exact congrSucc (congrAdd ((congrFst ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)) (.eqRefl _))
-        · exact (congrSnd ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))
+        · exact (snd_pair _ _).fstE
+        · exact congrSucc (congrAdd (snd_pair _ _).sndE.fstE (.eqRefl _))
+        · exact (snd_pair _ _).sndE.sndE)
 theorem gaussian_sum_zero (z B N L : PTm n) : Γ ⊢[PRAAx] gaussianSum z B N zero L ≐ qzero :=
   GaussianRationalFiniteSum.sum_zero _ _
 theorem gaussian_sum_succ (z B N r L : PTm n) : Γ ⊢[PRAAx] gaussianSum z B N (succ r) L ≐
@@ -75,9 +67,7 @@ theorem term_represents (z B N r L i : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hi 
 
 def prefixLaw (z B N r L j : PTm n) : Fm PTm n := le j r ⟶
   represents (gaussianSum z B N j L) (finiteSum z B N j L (tailDenominator B N r L)) (tailDenominator B N r L)
-@[simp] theorem subst_prefixLaw {l : ℕ} (σ : Fin n → PTm l) (z B N r L j : PTm n) :
-    (prefixLaw z B N r L j).subst σ = prefixLaw (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N)
-      (Syn.subst σ r) (Syn.subst σ L) (Syn.subst σ j) := by simp [prefixLaw]
+ipra_subst prefixLaw
 theorem prefix_zero (z B N r L : PTm n) : Γ ⊢[PRAAx] prefixLaw z B N r L zero :=
   .impI (represents_congr (gaussian_sum_zero _ _ _ _).wk.eqSymm
     (GaussianRootAlgebra.equal_of_code (GammaCanonicalFactors.sum_zero _ _ _ _ _).wk.eqSymm) (.eqRefl _)
@@ -149,26 +139,20 @@ def output (z B N r L : PTm n) : PTm n := pairT (value z B N (succ r) L)
   (pairT (term z B (succ N) L) (value z B (succ N) r L))
 def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (z B N r L : PTm n) : PTm n := PTm.app outputF ![z,B,N,r,L]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (z B N r L : PTm n) :
-    Syn.subst σ (output z B N r L) = output (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) (Syn.subst σ r) (Syn.subst σ L) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (z B N r L : PTm n) :
-    Syn.subst σ (run z B N r L) = run (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) (Syn.subst σ r) (Syn.subst σ L) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (z B N r L : PTm n) : Γ ⊢[PRAAx] run z B N r L ≐ output z B N r L := by
   simpa [run,outputF] using toPR_eq (Γ := Γ)
     (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![z,B,N,r,L]
 theorem returned_value (z B N r L : PTm n) : Γ ⊢[PRAAx] fstT (run z B N r L) ≐ value z B N (succ r) L :=
-  (congrFst (program_at _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _ _).fstE
 theorem returned_parts (z B N r L : PTm n) : Γ ⊢[PRAAx] sndT (run z B N r L) ≐ pairT (term z B (succ N) L) (value z B (succ N) r L) :=
-  (congrSnd (program_at _ _ _ _ _)).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _ _).sndE
 theorem returned_first (z B N r L : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run z B N r L)) ≐ term z B (succ N) L :=
-  (congrFst (returned_parts _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_parts _ _ _ _ _).fstE
 theorem returned_suffix (z B N r L : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run z B N r L)) ≐ value z B (succ N) r L :=
-  (congrSnd (returned_parts _ _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_parts _ _ _ _ _).sndE
 theorem returned_split (z B N r L : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx]
     fstT (run z B N r L) ≐ qadd (fstT (sndT (run z B N r L))) (sndT (sndT (run z B N r L))) :=
   (returned_value _ _ _ _ _).eqTrans ((finite_value_first z B N r L hB).eqTrans

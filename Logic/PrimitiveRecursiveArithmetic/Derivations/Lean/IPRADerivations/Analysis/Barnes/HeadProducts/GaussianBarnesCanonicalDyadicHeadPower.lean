@@ -17,7 +17,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalDyadicHeadPower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.RSA (pw_mul)
 open BarnesCutoff (maximum_of_right)
 open GaussianBarnesCanonicalBaseProductShift (powerBody powerProduct power_at subst_powerProduct)
@@ -31,10 +31,6 @@ open GaussianRationalMetric (bounded subst_bounded)
 open GaussianRationalPowerDifference (bounded_power_integer)
 open GaussianRationalReciprocal (bound_congr bounded_product qone_bounded)
 open GaussianRationalSyntheticDivision (qmul_congr)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

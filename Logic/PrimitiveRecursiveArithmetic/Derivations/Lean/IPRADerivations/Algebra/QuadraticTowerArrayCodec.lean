@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticTowerArrayCodec
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis
 open QuadraticTowerScalarBudget (height codeCap)
 open QuadraticTowerCoefficients (width)
@@ -25,10 +25,6 @@ open LeanProofs.IPRA.Foundations.MasterCertificate (sequence entry sequence_leng
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
 open LeanProofs.IPRA.Foundations
 open RationalArgmin (rationalEq rationalEq_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -49,28 +45,16 @@ def code (h A B : PTm n) : PTm n := packed (normalized h A) (width h) (codeCap B
 def horizon (h B : PTm n) : PTm n := pw (codeCap B) (width h)
 def restored (h A B : PTm n) : PTm n := decoded (width h) (codeCap B) (code h A B)
 
-@[simp] theorem subst_arrayHeight {k : ℕ} (σ : Fin n → PTm k) (h A B : PTm n) :
-    (arrayHeight h A B).subst σ = arrayHeight (Syn.subst σ h) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [arrayHeight,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_boundedEntries {k : ℕ} (σ : Fin n → PTm k) (A W S : PTm n) :
-    (boundedEntries A W S).subst σ = boundedEntries (Syn.subst σ A) (Syn.subst σ W) (Syn.subst σ S) := by
-  simp [boundedEntries,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_normalized {k : ℕ} (σ : Fin n → PTm k) (h A : PTm n) :
-    Syn.subst σ (normalized h A) = normalized (Syn.subst σ h) (Syn.subst σ A) := by simp [normalized]
-@[simp] theorem subst_data {k : ℕ} (σ : Fin n → PTm k) (S A : PTm n) :
-    Syn.subst σ (data S A) = data (Syn.subst σ S) (Syn.subst σ A) := by simp [data]
-@[simp] theorem subst_packed {k : ℕ} (σ : Fin n → PTm k) (A W S : PTm n) :
-    Syn.subst σ (packed A W S) = packed (Syn.subst σ A) (Syn.subst σ W) (Syn.subst σ S) := by simp [packed]
-@[simp] theorem subst_digit {k : ℕ} (σ : Fin n → PTm k) (S w i : PTm n) :
-    Syn.subst σ (digit S w i) = digit (Syn.subst σ S) (Syn.subst σ w) (Syn.subst σ i) := by simp [digit]
-@[simp] theorem subst_decoded {k : ℕ} (σ : Fin n → PTm k) (W S w : PTm n) :
-    Syn.subst σ (decoded W S w) = decoded (Syn.subst σ W) (Syn.subst σ S) (Syn.subst σ w) := by simp [decoded]
-@[simp] theorem subst_code {k : ℕ} (σ : Fin n → PTm k) (h A B : PTm n) :
-    Syn.subst σ (code h A B) = code (Syn.subst σ h) (Syn.subst σ A) (Syn.subst σ B) := by simp [code]
-@[simp] theorem subst_horizon {k : ℕ} (σ : Fin n → PTm k) (h B : PTm n) :
-    Syn.subst σ (horizon h B) = horizon (Syn.subst σ h) (Syn.subst σ B) := by simp [horizon]
-@[simp] theorem subst_restored {k : ℕ} (σ : Fin n → PTm k) (h A B : PTm n) :
-    Syn.subst σ (restored h A B) = restored (Syn.subst σ h) (Syn.subst σ A) (Syn.subst σ B) := by simp [restored]
+ipra_subst arrayHeight [Syn.subst_shift, Syn.shift_subst]
+ipra_subst boundedEntries [Syn.subst_shift, Syn.shift_subst]
+ipra_subst normalized
+ipra_subst data
+ipra_subst packed
+ipra_subst digit
+ipra_subst decoded
+ipra_subst code
+ipra_subst horizon
+ipra_subst restored
 
 theorem height_at (h A B i : PTm n) (ha : Γ ⊢[PRAAx] arrayHeight h A B)
     (hi : Γ ⊢[PRAAx] lt i (width h)) : Γ ⊢[PRAAx] height (entry A i) B := by
@@ -176,22 +160,20 @@ def output (h A B : PTm n) : PTm n := pairT (code h A B)
   (pairT (horizon h B) (pairT (normalized h A) (restored h A B)))
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (h A B : PTm n) : PTm n := ap3 outputF h A B
-@[simp] theorem subst_output {k : ℕ} (σ : Fin n → PTm k) (h A B : PTm n) :
-    Syn.subst σ (output h A B) = output (Syn.subst σ h) (Syn.subst σ A) (Syn.subst σ B) := by simp [output]
-@[simp] theorem subst_run {k : ℕ} (σ : Fin n → PTm k) (h A B : PTm n) :
-    Syn.subst σ (run h A B) = run (Syn.subst σ h) (Syn.subst σ A) (Syn.subst σ B) := by simp [run]
+ipra_subst output
+ipra_subst run
 theorem program_at (h A B : PTm n) : Γ ⊢[PRAAx] run h A B ≐ output h A B := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![h,A,B]
 theorem returned_code (h A B : PTm n) : Γ ⊢[PRAAx] fstT (run h A B) ≐ code h A B :=
-  (congrFst (program_at _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _).fstE
 theorem returned_horizon (h A B : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run h A B)) ≐ horizon h B :=
-  (congrFst ((congrSnd (program_at _ _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _).sndE.fstE
 theorem returned_tail (h A B : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run h A B)) ≐ pairT (normalized h A) (restored h A B) :=
-  (congrSnd ((congrSnd (program_at _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at _ _ _).sndE.sndE
 theorem returned_normalized (h A B : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run h A B))) ≐ normalized h A :=
-  (congrFst (returned_tail _ _ _)).eqTrans (fst_pair _ _)
+  (returned_tail _ _ _).fstE
 theorem returned_restored (h A B : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run h A B))) ≐ restored h A B :=
-  (congrSnd (returned_tail _ _ _)).eqTrans (snd_pair _ _)
+  (returned_tail _ _ _).sndE
 theorem returned_bound (h A B : PTm n) (ha : Γ ⊢[PRAAx] arrayHeight h A B) :
     Γ ⊢[PRAAx] lt (fstT (run h A B)) (fstT (sndT (run h A B))) :=
   lt_congr (returned_code h A B).eqSymm (returned_horizon h A B).eqSymm (code_bound h A B ha)

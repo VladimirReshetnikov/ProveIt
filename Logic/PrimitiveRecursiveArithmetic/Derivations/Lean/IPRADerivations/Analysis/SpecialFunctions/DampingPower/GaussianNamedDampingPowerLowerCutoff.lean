@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedDampingPowerLowerCutoff
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedDampingPowerLowerCutoffSource (source compact_source rescaled_modulus right_bound)
 open GaussianNamedDampingPowerCompact (evaluatorF fixedData nameF data lipschitz compact_input)
 open GaussianGammaIntegralCutoffs (height etaDen top)
@@ -32,9 +32,6 @@ open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalDistanceOrder (distance_congr distance_symmetric)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalSlackRemoval (slack slack_removal_at)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

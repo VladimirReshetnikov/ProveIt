@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.ReciprocalGamma.GaussianGammaAdjacentCutoff
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Independence of every valid numerical cutoff in the original C7 name
@@ -15,17 +14,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaCutoffIndependence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaCutoffName (nameF data sample)
 open GaussianGammaCanonicalTailName (source)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_triangle_same)
 open GaussianNameEquivalence (crossEquivalent cross_symm)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,9 +38,7 @@ theorem sample_cutoff_congr (p z R B : PTm n) {N M : PTm n} (h : Γ ⊢[PRAAx] N
 
 def prefixLaw (p z R B N j : PTm n) : Fm PTm n :=
   distanceBounded (sample p z R B N) (sample p z R B (N+j)) (two*j) (unit p)
-@[simp] theorem subst_prefixLaw {l : ℕ} (σ : Fin n → PTm l) (p z R B N j : PTm n) :
-    (prefixLaw p z R B N j).subst σ = prefixLaw (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ N) (Syn.subst σ j) := by simp [prefixLaw]
+ipra_subst prefixLaw
 
 theorem prefix_zero (p z R B N : PTm n) : Γ ⊢[PRAAx] prefixLaw p z R B N zero :=
   distance_congr (.eqRefl _) (sample_cutoff_congr p z R B (by ipra_ring)) (by ipra_ring) (.eqRefl _)
@@ -120,26 +113,18 @@ theorem original_C7_cutoff_equivalent (z R B N : PTm n)
 def output (z R B N D : PTm n) : PTm n := pairT (data z R B N) (pairT (data z R B (N+D)) (two*D))
 def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (z R B N D : PTm n) : PTm n := PTm.app outputF ![z,R,B,N,D]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (z R B N D : PTm n) :
-    Syn.subst σ (output z R B N D) = output (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ N) (Syn.subst σ D) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (z R B N D : PTm n) :
-    Syn.subst σ (run z R B N D) = run (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ N) (Syn.subst σ D) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 theorem program_at (z R B N D : PTm n) : Γ ⊢[PRAAx] run z R B N D ≐ output z R B N D := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![z,R,B,N,D]
 theorem returned_first (z R B N D : PTm n) : Γ ⊢[PRAAx] fstT (run z R B N D) ≐ data z R B N :=
-  (congrFst (program_at _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _ _).fstE
 theorem returned_tail (z R B N D : PTm n) : Γ ⊢[PRAAx] sndT (run z R B N D) ≐ pairT (data z R B (N+D)) (two*D) :=
-  (congrSnd (program_at _ _ _ _ _)).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _ _).sndE
 theorem returned_second (z R B N D : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run z R B N D)) ≐ data z R B (N+D) :=
-  (congrFst (returned_tail _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_tail _ _ _ _ _).fstE
 theorem returned_budget (z R B N D : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run z R B N D)) ≐ two*D :=
-  (congrSnd (returned_tail _ _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_tail _ _ _ _ _).sndE
 theorem returned_equivalence (z R B N D : PTm n) (h : Γ ⊢[PRAAx] source z R B N) : Γ ⊢[PRAAx]
     crossEquivalent nameF nameF (fstT (run z R B N D)) (fstT (sndT (run z R B N D))) := by
   refine .allI (.allI ?_)

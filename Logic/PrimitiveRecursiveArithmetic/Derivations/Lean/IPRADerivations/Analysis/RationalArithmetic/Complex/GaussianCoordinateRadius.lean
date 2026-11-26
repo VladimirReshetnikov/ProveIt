@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.Representations.GaussianRationalValueEquality
 import IPRADerivations.Analysis.RationalArithmetic.RationalValueBounds
 import IPRADerivations.Analysis.RationalArithmetic.Directions.GaussianRationalDirectionNormalizer
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Coordinate bounds from the original Gaussian distance
@@ -15,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCoordinateRadius
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.GapDecision (zabs zabs_congr zabs_sq)
 open GaussianL1 (abs_multiply abs_ofNat)
 open GaussianRationalHorner (represents)
@@ -26,8 +25,6 @@ open GaussianRootAlgebra (sub re_sub im_sub)
 open ComplexLogarithmRemainder (re im normSq normSq_eval)
 open RationalSupMetric (numeratorOf denominatorOf)
 open RationalValueBounds (cross radius positive_cancel)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

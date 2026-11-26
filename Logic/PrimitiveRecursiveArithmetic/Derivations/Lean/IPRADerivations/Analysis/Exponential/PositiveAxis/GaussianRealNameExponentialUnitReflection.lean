@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRealNameExponentialUnitReflection
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRadiusExponentialName (input nameF data)
 open GaussianSignedNameExponentialOrder (realSamples real_sample_at)
 open GaussianGammaCanonicalExponent (constantF constant_at)
@@ -31,17 +31,12 @@ open GaussianNameEquivalence (crossEquivalent)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 
 def cost (R : PTm n) : PTm n := GaussianRadiusExponentialLipschitzRate.factor R+num 4
-@[simp] theorem subst_cost {m : ℕ} (σ : Fin n → PTm m) (R : PTm n) :
-    Syn.subst σ (cost R) = cost (Syn.subst σ R) := by simp [cost]
+ipra_subst cost
 
 theorem negative_sample_at (f : PR 2) (p x : PTm n) : Γ ⊢[PRAAx]
     ap2 (negativeF f) p (negativeData x) ≐ qnegative (ap2 f (GaussianFastValueCut.exponent (one+one) p) x) :=

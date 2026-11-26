@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Euler.QuadraticSubstitution.GaussianEulerQuadraticKernelTimeRate
 import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactAdditivity
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The genuine unfactored quadratic Euler kernel on a compact interval
@@ -15,15 +14,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerQuadraticKernelCompactName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerSquareKernel (doubled kernelF kernelData)
 open GaussianEulerPositiveScalingIntegrand (fixedData)
 open GaussianCompactRiemannName (inside sampledModulus localBody)
 open GaussianRationalMetric (distanceBounded bounded)
 open GaussianNamedInverseRate (independentRate)
 open GaussianRationalDistanceOrder (distance_congr)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,21 +37,12 @@ def data (z R B c d a C E T : PTm n) : PTm n :=
   GaussianCompactRiemannName.data a C E (lipschitz R E T c d) T (fixedData z B c d)
 abbrev nameF : PR 2 := GaussianCompactRiemannName.nameF evaluatorF
 
-@[simp] theorem subst_doubled {m : ℕ} (σ : Fin n → PTm m) (z B : PTm n) :
-    Syn.subst σ (doubled z B) = doubled (Syn.subst σ z) (Syn.subst σ B) := by simp [doubled]
-@[simp] theorem subst_kernelData {m : ℕ} (σ : Fin n → PTm m) (z B a b c d : PTm n) :
-    Syn.subst σ (kernelData z B a b c d) = kernelData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a)
-      (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d) := by simp [kernelData]
-@[simp] theorem subst_lipschitz {m : ℕ} (σ : Fin n → PTm m) (R E T c d : PTm n) :
-    Syn.subst σ (lipschitz R E T c d) = lipschitz (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ c) (Syn.subst σ d) := by simp [lipschitz]
-@[simp] theorem subst_evaluatorTerm {m : ℕ} (σ : Fin n → PTm m) (p t x : PTm n) :
-    Syn.subst σ (evaluatorTerm p t x) = evaluatorTerm (Syn.subst σ p) (Syn.subst σ t) (Syn.subst σ x) := by simp [evaluatorTerm]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B c d a C E T : PTm n) :
-    (source z R B c d a C E T).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ c) (Syn.subst σ d) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by simp [source]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (z R B c d a C E T : PTm n) :
-    Syn.subst σ (data z R B c d a C E T) = data (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ c) (Syn.subst σ d) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by simp [data]
+ipra_subst doubled
+ipra_subst kernelData
+ipra_subst lipschitz
+ipra_subst evaluatorTerm
+ipra_subst source
+ipra_subst data
 
 theorem evaluator_at (p t z B c d : PTm n) : Γ ⊢[PRAAx]
     ap3 evaluatorF p t (fixedData z B c d) ≐ ap2 kernelF p (kernelData (doubled z B) B (fstT t) (sndT t) c d) := by

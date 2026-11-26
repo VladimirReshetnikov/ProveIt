@@ -18,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaDyadicLocation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaDigammaDyadicCrossing (sample leftIndex adjacent_samples)
@@ -35,10 +35,6 @@ open RationalGaussianEmbedding (scalarZero scalar_zero_represents)
 open RationalGaussianRealPart (real_add real_zero)
 open RationalArgmin (rationalLE rationalLE_congr)
 open RationalValueBounds (upper upper_order_left upper_order_right radius)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -51,12 +47,9 @@ def higher (p : PTm n) : PTm n := grid p+succ (index p)
 def location (p : PTm n) : PTm n := fraction (lower p) (grid p)
 def locationF : PR 2 := PTm.toPR (location (var 0))
 
-@[simp] theorem subst_index {k : ℕ} (σ : Fin n → PTm k) (p : PTm n) :
-    Syn.subst σ (index p) = index (Syn.subst σ p) := by simp [index]
-@[simp] theorem subst_lower {k : ℕ} (σ : Fin n → PTm k) (p : PTm n) :
-    Syn.subst σ (lower p) = lower (Syn.subst σ p) := by simp [lower]
-@[simp] theorem subst_location {k : ℕ} (σ : Fin n → PTm k) (p : PTm n) :
-    Syn.subst σ (location p) = location (Syn.subst σ p) := by simp [location]
+ipra_subst index
+ipra_subst lower
+ipra_subst location
 
 theorem location_at (p x : PTm n) : Γ ⊢[PRAAx] ap2 locationF p x ≐ location p := by
   simpa [locationF, ap2] using toPR_eq (Γ := Γ) (location (var 0) : PTm 2) ![p,x]

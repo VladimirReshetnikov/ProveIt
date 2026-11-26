@@ -3,7 +3,6 @@ import IPRADerivations.Analysis.RationalArithmetic.Spans.RationalMinorMaskDeleti
 import IPRADerivations.Analysis.LinearAlgebra.Cofactors.RationalIntegerMinorDeterminants
 import IPRADerivations.AnalyticNumberTheory.PowerCleared
 import IPRADerivations.DiophantineNumberTheory.IntegerRootBound
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The actual square minors for the cofactor vector
@@ -19,8 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalCofactorMinorBounds
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open LeanProofs.IPRA.PTm (monus pred)
+open_ipra
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (pw_le_exp)
@@ -37,9 +35,6 @@ open RationalIntegerMinorDeterminants (content cleared_minor_determinant_content
 open RationalMatrixClearingBounds (inputMatrix entryCap)
 open RationalGaussianEmbedding (embed scalarZero embed_zero)
 open RationalPolynomialGaussianEmbedding (embed_congr)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -50,9 +45,7 @@ def minorValue (P d j : PTm n) : PTm n := determinant (normalized P d (bestRow P
 
 def bound (P d H : PTm n) : PTm n := factorial d * pw (entryCap P d H) d
 
-@[simp] theorem subst_columnMask {k : ℕ} (σ : Fin n → PTm k) (P d j : PTm n) :
-    Syn.subst σ (columnMask P d j) = columnMask (Syn.subst σ P) (Syn.subst σ d) (Syn.subst σ j) := by
-  simp [columnMask]
+ipra_subst columnMask
 
 theorem free_mask (P d j : PTm n) (h : Γ ⊢[PRAAx] j ≐ free P d) : Γ ⊢[PRAAx] columnMask P d j ≐ bestColumn P d :=
   select_one _ _ _ (eqb_of_eq h)
@@ -87,11 +80,9 @@ theorem factorial_step_mono (i : PTm n) : Γ ⊢[PRAAx] le (factorial i) (factor
 
 theorem factorial_mono (a b : PTm n) (h : Γ ⊢[PRAAx] le a b) : Γ ⊢[PRAAx] le (factorial a) (factorial b) := by
   have powers : Γ ⊢[PRAAx] .all (le (factorial (Syn.shift a)) (factorial (Syn.shift a+var 0))) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le,subst_factorial,PTm.subst_add,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact le_congr (.eqRefl _) (congrAp2 factF (add_zero a).eqSymm (.eqRefl zero)) (le_refl _)
-    · simp only [subst_le,subst_factorial,PTm.subst_add,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      have e : Γ.map Fm.shift ⊢[PRAAx] succ (Syn.shift a+var 0) ≐ Syn.shift a+succ (var 0) := by ipra_ring
+    ipra_qfind (le_QF _ _) [subst_le, subst_factorial]
+    · exact le_congr (.eqRefl _) (congrAp2 factF (add_zero a).eqSymm (.eqRefl zero)) (le_refl _)
+    · have e : Γ.map Fm.shift ⊢[PRAAx] succ (Syn.shift a+var 0) ≐ Syn.shift a+succ (var 0) := by ipra_ring
       exact le_trans Prf.hyp0 (le_congr (.eqRefl _) (congrAp2 factF e.wk (.eqRefl zero)) (factorial_step_mono _))
   have shifted : Γ ⊢[PRAAx] le (factorial a) (factorial (a+monus b a)) := by
     simpa only [subst_le,subst_factorial,PTm.subst_add,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using powers.allE (monus b a)

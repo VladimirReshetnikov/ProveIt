@@ -13,7 +13,7 @@ set_option maxHeartbeats 550000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsFinite
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianNameEquivalence (cross_refl cross_symm)
@@ -32,10 +32,6 @@ open GaussianStirlingRationalTelescopers
 open GaussianStirlingTailComparison (point_add_upper_same sharpUpperValue)
 open GaussianStirlingTelescope (rawSum shifted shifted_source dBody d_at sampleData)
 open RationalValueBounds (upper upper_congr upper_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "D" => GaussianStirlingDifference.nameF
@@ -45,8 +41,7 @@ local notation "G" => GaussianNamedDifference.nameF A A
 
 def upperCap (N a b : PTm n) : PTm n := qsub (upperDifference a b (succ N)) (upperMargin a b)
 
-@[simp] theorem subst_upperCap {l : ℕ} (σ : Fin n → PTm l) (N a b : PTm n) :
-    Syn.subst σ (upperCap N a b) = upperCap (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ b) := by simp [upperCap]
+ipra_subst upperCap
 
 theorem swap_suffix (a b c : PTm n) :
     Γ ⊢[PRAAx] qadd (qadd a b) c ≐ qadd (qadd a c) b :=
@@ -86,9 +81,7 @@ def rawBounds (p N a b : PTm n) : Fm PTm n :=
   upper (fstT (firstTerm a b)) (fstT (rawSum p (succ N) a b)) (succ N) (unit p) ⋏
     upper (fstT (rawSum p (succ N) a b)) (fstT (upperCap N a b)) (succ N) (unit p)
 
-@[simp] theorem subst_rawBounds {l : ℕ} (σ : Fin n → PTm l) (p N a b : PTm n) :
-    (rawBounds p N a b).subst σ = rawBounds (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [rawBounds]
+ipra_subst rawBounds
 
 private theorem raw_zero (p a b : PTm n) (hs : Γ ⊢[PRAAx] source a b) : Γ ⊢[PRAAx] rawBounds p zero a b :=
   .andI (upper_congr (.eqRefl _) (congrFst (raw_first p a b).eqSymm) (.eqRefl _) (.eqRefl _) (first_sample_lower p a b hs))

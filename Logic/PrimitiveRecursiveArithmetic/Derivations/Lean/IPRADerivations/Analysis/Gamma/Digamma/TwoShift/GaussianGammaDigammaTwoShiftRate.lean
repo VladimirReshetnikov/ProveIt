@@ -16,7 +16,7 @@ set_option maxHeartbeats 4000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaTwoShiftRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaDigammaTwoShiftCofinalRate (rawSample finiteRate logRate cofinal_rate)
 open GaussianGammaDigammaTwoShiftFiniteRate (raw)
@@ -31,21 +31,13 @@ open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalSyntheticDivision (qadd_sub_cancel qmul_congr qsub_congr qmul_zero_left)
 open GaussianStirlingGammaLogarithm (source)
 open RationalValueBounds (upper upper_congr upper_of_order)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 open GaussianGammaDigammaTwoShiftCofinalRate (subst_rawSample)
 
 def budget (b c d A : PTm n) : PTm n := cost b c d A+cost b d c A
 
-@[simp] theorem subst_budget {m : ℕ} (σ : Fin n → PTm m) (b c d A : PTm n) :
-    Syn.subst σ (budget b c d A) = budget (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d) (Syn.subst σ A) := by
-  simp [budget,cost,low,width,GaussianGammaDigammaTwoShiftFiniteRate.leftError,GaussianGammaDigammaTwoShiftFiniteRate.rightError,
-    GaussianGammaDigammaTwoShiftSecants.leftCost,GaussianGammaDigammaTwoShiftSecants.rightCost,
-    GaussianStirlingGammaFractionalIncrementObservations.weightedCost,
-    GaussianStirlingGammaFractionalIncrementObservations.scaleCost,GaussianNameRingLaws.three,two]
+ipra_subst budget [cost, low, width, GaussianGammaDigammaTwoShiftFiniteRate.leftError, GaussianGammaDigammaTwoShiftFiniteRate.rightError, GaussianGammaDigammaTwoShiftSecants.leftCost, GaussianGammaDigammaTwoShiftSecants.rightCost, GaussianStirlingGammaFractionalIncrementObservations.weightedCost, GaussianStirlingGammaFractionalIncrementObservations.scaleCost, GaussianNameRingLaws.three, two]
 
 private theorem raw_data_congr (p a b c d c' d' : PTm n) (ec : Γ ⊢[PRAAx] c ≐ c') (ed : Γ ⊢[PRAAx] d ≐ d') :
     Γ ⊢[PRAAx] rawSample p a b c d ≐ rawSample p a b c' d' := by

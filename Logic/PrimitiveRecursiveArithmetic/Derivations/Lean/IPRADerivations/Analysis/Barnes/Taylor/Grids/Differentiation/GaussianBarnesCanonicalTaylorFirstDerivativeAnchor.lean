@@ -16,7 +16,7 @@ set_option maxHeartbeats 1800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalTaylorFirstDerivativeAnchor
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add bounded bounded_add bounded_mono bounded_neg bounded_scale normSq normSq_one oneCode scale)
 open GaussianBarnesCanonicalCofinalTaylorEvenGridLimit (observationClock observed uniformGain)
 open GaussianBarnesCanonicalHigherRows (previous)
@@ -36,10 +36,6 @@ open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalNaturalScale (natScale natScale_as_product natScale_congr naturalPoint)
 open GaussianRationalSlackRemoval (slack slack_removal_at)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qone qone_canonical)
-open ConciseIPRA.PTm (succ zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "V" => GaussianBarnesCanonicalValue.nameF

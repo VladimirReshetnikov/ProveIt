@@ -12,7 +12,7 @@ set_option maxHeartbeats 1500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianDigammaFirstBernoulliPrefix
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianDigammaFirstBernoulliLocal (finite_error coefficient)
 open GaussianDigammaFirstBernoulliTelescope (refBody ref_at exact_prefix meshTarget)
@@ -31,18 +31,13 @@ open RationalFiniteSum (sum_ext termwiseEq)
 open RationalGaussianEmbedding (embed subst_embed)
 open RationalGaussianRealPart (embedBody embed_sum embed_congr)
 open RationalNonnegativePowers (fraction_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 
 def budget (A B L : PTm n) : PTm n := L*coefficient (index A B L) B
 
-@[simp] theorem subst_budget {l : ℕ} (σ : Fin n → PTm l) (A B L : PTm n) :
-    Syn.subst σ (budget A B L) = budget (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ L) := by
-  simp [budget,coefficient,power,two]
+ipra_subst budget [coefficient, power, two]
 
 theorem panel_at_base (A B M k : PTm n) : Γ ⊢[PRAAx]
     panel 0 two A B M k ≐ panel 0 two (index A B k) B M zero := by

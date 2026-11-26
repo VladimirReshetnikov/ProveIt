@@ -15,7 +15,7 @@ set_option maxHeartbeats 1250000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedRealOrderLinear
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianGammaEulerRationalLogOrder (add_order order_refl)
@@ -30,8 +30,6 @@ open GaussianRationalHorner (qzero qmul)
 open GaussianRationalMetric (qsub qsub_canonical)
 open GaussianRationalNaturalScale (naturalPoint)
 open GaussianRationalSyntheticDivision (qsub_congr)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "C" => constantF

@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartRealLogarithm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPositivePowerChart (argument source)
 open GaussianEulerPositivePowerChartLogarithm (logarithmF logarithmData logarithm_regular)
 open GaussianEulerIntegrandName (powerExponentF powerExponentData power_exponent_at powerClock)
@@ -25,17 +25,13 @@ open RationalGaussianEmbedding (axis axis_congr axis_add axis_multiply)
 open GaussianRationalReciprocal (bound_congr bounded_sum bounded_product)
 open GaussianRadiusExponentialName (input boundedSamples)
 open GaussianRealNameExponentialInjectivity (axisSamples)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def disk (h Q S E T : PTm n) : PTm n :=
   GaussianCompactLogarithmBounds.radius h S+Q*GaussianCompactLogarithmBounds.radius E T
 
-@[simp] theorem subst_disk {m : ℕ} (σ : Fin n → PTm m) (h Q S E T : PTm n) :
-    Syn.subst σ (disk h Q S E T) = disk (Syn.subst σ h) (Syn.subst σ Q) (Syn.subst σ S)
-      (Syn.subst σ E) (Syn.subst σ T) := by simp [disk,GaussianCompactLogarithmBounds.radius]
+ipra_subst disk [GaussianCompactLogarithmBounds.radius]
 
 theorem sample_at (p e f d h a b : PTm n) : Γ ⊢[PRAAx] ap2 logarithmF p (logarithmData e f d h a b) ≐
     qadd (GaussianPositiveRationalLogarithm.sample (GaussianFastValueCut.exponent two p) d h)

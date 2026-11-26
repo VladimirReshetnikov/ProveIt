@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedPositiveLogarithmScale
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianNameArithmetic (addF addData add_fast multiplyF multiplyData)
@@ -22,8 +22,6 @@ open GaussianNameEquivalence (crossEquivalent cross_symm cross_trans)
 open GaussianNamedPositiveLogarithm (source)
 open GaussianPositiveRationalLogarithm (logF fraction)
 open GaussianRealNameExponentialInjectivity (axisSamples axis_sample_at independent_radii_injective)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "logData" => GaussianPositiveRationalLogarithm.data

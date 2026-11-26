@@ -14,7 +14,7 @@ set_option maxHeartbeats 500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetStirlingRescale
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetStirlingRemainder (offset weightedF weightedData coreF coreData nameF data weighted_regular core_regular)
 open GaussianGammaAdjacentCutoff (multiply_cross)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
@@ -28,8 +28,6 @@ open GaussianNamedGammaHalfShift (add_cross)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalSyntheticDivision (qsub_congr)
 open GaussianRightHalfPlaneLogarithm (source)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "LogF" => GaussianRightHalfPlaneLogarithm.nameF

@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUpperTailLeftNorm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUpperPowerCoefficients (source)
 open GaussianEulerWeightedHalfDecay (majorant)
 open GaussianEulerUpperTailScalar (budget)
@@ -27,9 +27,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,12 +39,9 @@ def numerator (p q M C E R A D : PTm n) : PTm n :=
 def denominator (p q M E D : PTm n) : PTm n :=
   D*(E*unit p*GaussianEulerHalfDecayLeftNorm.errorDenominator p q M E)
 
-@[simp] theorem subst_errorNumerator {m : ℕ} (σ : Fin n → PTm m) (p q M C E R : PTm n) :
-    Syn.subst σ (errorNumerator p q M C E R) = errorNumerator (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ M) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ R) := by simp [errorNumerator]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (p q M C E R A D : PTm n) :
-    Syn.subst σ (numerator p q M C E R A D) = numerator (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ M) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ R) (Syn.subst σ A) (Syn.subst σ D) := by simp [numerator,tailCoefficient]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (p q M E D : PTm n) :
-    Syn.subst σ (denominator p q M E D) = denominator (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ M) (Syn.subst σ E) (Syn.subst σ D) := by simp [denominator]
+ipra_subst errorNumerator
+ipra_subst numerator [tailCoefficient]
+ipra_subst denominator
 
 theorem original_coefficient (R : PTm n) : Γ ⊢[PRAAx] tailCoefficient R ≐ two*majorant R :=
   (congrMul (pw_succ two R) (.eqRefl (Products.fact R))).eqTrans (by unfold majorant unit; ipra_ring)

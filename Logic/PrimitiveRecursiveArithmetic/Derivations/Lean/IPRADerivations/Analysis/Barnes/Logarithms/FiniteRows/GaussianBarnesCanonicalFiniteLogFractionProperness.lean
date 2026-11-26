@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalFiniteLogFractionProperness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalFiniteLog (clock clock_budget data nameF regular rounding_gain sample_at)
 open GaussianBarnesCanonicalLogTail (body body_at source)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -23,9 +23,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRationalFiniteSum (termsEqual)
 open GaussianRationalHorner (ofGaussian)
 open GaussianRationalMetric (distanceBounded)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

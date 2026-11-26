@@ -38,12 +38,9 @@ the homology statements of the section are not derived here.
 
 namespace LeanProofs.IPRA.Topology.Carriers
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Topology.FinitePreorder (App shift_var)
 open LeanProofs.IPRA.Foundations.CoherentTower (ex_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
 
 variable {m : ℕ} {Γ : List (Fm PTm m)}
 

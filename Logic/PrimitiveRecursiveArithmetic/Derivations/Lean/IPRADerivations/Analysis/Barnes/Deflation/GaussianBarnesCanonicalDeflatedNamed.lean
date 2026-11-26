@@ -16,7 +16,7 @@ set_option maxHeartbeats 1250000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalDeflatedNamed
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.FiniteQueryDemand (finiteMaximum finiteMaximum_at)
 open GaussianBarnesCanonicalDeflatedValueContinuity (inputClock uniform_input)
 open GaussianBarnesCanonicalNamedDemand (native_source)
@@ -30,9 +30,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalL1 (rawGaussian rawDen)
 open GaussianRationalMetric (distanceBounded)
 open GaussianExponentialReference (unit_monotone)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

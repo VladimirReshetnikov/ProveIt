@@ -15,7 +15,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetBoseLateSchedule
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianBinetBoseImproperFrozen (baseMesh refinementCost freezingCost alignmentCost)
 open GaussianBinetBoseOriginExhaustion (cutoff width cutoff_positive width_positive)
@@ -29,10 +29,6 @@ open GaussianExponentialReference (unit_monotone)
 open GaussianFastValueCut (exponent query_budget)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -56,41 +52,23 @@ def meshRefinement (T L N k minimum : PTm n) : PTm n := width T L*meshMultiplier
 def frozenClock (h u T L N k M minimum : PTm n) : PTm n :=
   exponent (alignmentCost T L N) (u+(minimum+(clockFloor M T (succ N) k+h)))
 
-@[simp] theorem subst_originClock {m : ℕ} (σ : Fin n → PTm m) (h D K I : PTm n) :
-    Syn.subst σ (originClock h D K I) = originClock (Syn.subst σ h) (Syn.subst σ D) (Syn.subst σ K) (Syn.subst σ I) := by
-  simp [originClock,two]
+ipra_subst originClock [two]
 
-@[simp] theorem subst_compactClock {m : ℕ} (σ : Fin n → PTm m) (h D T L : PTm n) :
-    Syn.subst σ (compactClock h D T L) = compactClock (Syn.subst σ h) (Syn.subst σ D) (Syn.subst σ T) (Syn.subst σ L) := by
-  simp [compactClock,refinementCost]
+ipra_subst compactClock [refinementCost]
 
-@[simp] theorem subst_extraRows {m : ℕ} (σ : Fin n → PTm m) (s L : PTm n) :
-    Syn.subst σ (extraRows s L) = extraRows (Syn.subst σ s) (Syn.subst σ L) := by simp [extraRows]
+ipra_subst extraRows
 
-@[simp] theorem subst_literalClock {m : ℕ} (σ : Fin n → PTm m) (h s K T L N : PTm n) :
-    Syn.subst σ (literalClock h s K T L N) = literalClock (Syn.subst σ h) (Syn.subst σ s) (Syn.subst σ K)
-      (Syn.subst σ T) (Syn.subst σ L) (Syn.subst σ N) := by simp [literalClock,freezingCost]
+ipra_subst literalClock [freezingCost]
 
-@[simp] theorem subst_piClock {m : ℕ} (σ : Fin n → PTm m) (u N T minimum : PTm n) :
-    Syn.subst σ (piClock u N T minimum) = piClock (Syn.subst σ u) (Syn.subst σ N) (Syn.subst σ T) (Syn.subst σ minimum) := by
-  simp [piClock]
+ipra_subst piClock
 
-@[simp] theorem subst_meshMultiplier {m : ℕ} (σ : Fin n → PTm m) (T N k minimum : PTm n) :
-    Syn.subst σ (meshMultiplier T N k minimum) = meshMultiplier (Syn.subst σ T) (Syn.subst σ N)
-      (Syn.subst σ k) (Syn.subst σ minimum) := by simp [meshMultiplier]
+ipra_subst meshMultiplier
 
-@[simp] theorem subst_meshBase {m : ℕ} (σ : Fin n → PTm m) (s D T L N k minimum : PTm n) :
-    Syn.subst σ (meshBase s D T L N k minimum) = meshBase (Syn.subst σ s) (Syn.subst σ D) (Syn.subst σ T) (Syn.subst σ L)
-      (Syn.subst σ N) (Syn.subst σ k) (Syn.subst σ minimum) := by simp [meshBase,baseMesh]
+ipra_subst meshBase [baseMesh]
 
-@[simp] theorem subst_meshRefinement {m : ℕ} (σ : Fin n → PTm m) (T L N k minimum : PTm n) :
-    Syn.subst σ (meshRefinement T L N k minimum) = meshRefinement (Syn.subst σ T) (Syn.subst σ L)
-      (Syn.subst σ N) (Syn.subst σ k) (Syn.subst σ minimum) := by simp [meshRefinement]
+ipra_subst meshRefinement
 
-@[simp] theorem subst_frozenClock {m : ℕ} (σ : Fin n → PTm m) (h u T L N k M minimum : PTm n) :
-    Syn.subst σ (frozenClock h u T L N k M minimum) = frozenClock (Syn.subst σ h) (Syn.subst σ u) (Syn.subst σ T)
-      (Syn.subst σ L) (Syn.subst σ N) (Syn.subst σ k) (Syn.subst σ M) (Syn.subst σ minimum) := by
-  simp [frozenClock,alignmentCost]
+ipra_subst frozenClock [alignmentCost]
 
 /-- An available dyadic lower cutoff when no common lower cutoff has been fixed. -/
 theorem origin_bounds (h D K I X : PTm n) (hx : Γ ⊢[PRAAx] le one X) :

@@ -16,7 +16,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetSecondDecayPointwise
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetExponentialPanel (sample)
 open GaussianBinetSecondDecayEnvelope (envelope fraction_majorized)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
@@ -33,10 +33,6 @@ open GaussianRationalSumMajorant (majorized majorized_multiply majorized_add maj
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianReciprocalHorner (qmul_associative)
 open GaussianRightHalfPlaneLogarithm (source)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num pred)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -50,15 +46,9 @@ def rowEnvelope (p m K T a b H J : PTm n) : PTm n :=
   RationalArithmetic.add (RationalArithmetic.multiply (fraction (two*K) m) (envelope p (a*H) (b*J)))
     (fraction (num 10*K*T) (unit p))
 
-@[simp] theorem subst_row {k : ℕ} (σ : Fin n → PTm k) (p X Y D sign a b H J : PTm n) :
-    Syn.subst σ (row p X Y D sign a b H J) = row (Syn.subst σ p) (Syn.subst σ X) (Syn.subst σ Y)
-      (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ H) (Syn.subst σ J) := by
-  simp [row,angle,fullDecay,two]
+ipra_subst row [angle, fullDecay, two]
 
-@[simp] theorem subst_rowEnvelope {k : ℕ} (σ : Fin n → PTm k) (p m K T a b H J : PTm n) :
-    Syn.subst σ (rowEnvelope p m K T a b H J) = rowEnvelope (Syn.subst σ p) (Syn.subst σ m) (Syn.subst σ K)
-      (Syn.subst σ T) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ H) (Syn.subst σ J) := by
-  simp [rowEnvelope,two]
+ipra_subst rowEnvelope [two]
 
 def frozenPiNumerator (m k : PTm n) : PTm n := m*piNumerator k
 

@@ -16,7 +16,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderDiscreteParts
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (fraction fraction_represents)
 open GaussianRationalHorner (positive_product)
 open RationalArithmetic (add multiply negative)
@@ -26,9 +26,6 @@ open RationalReciprocalPowerTail (add_zero_right zero_fraction)
 open RationalHalfNinthProductLower (add_negative_cancel)
 open RationalNormalForm (wellFormed)
 open RationalFiniteSum (term)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "rsum" => RationalFiniteSum.sum
@@ -40,12 +37,9 @@ def adjacent (a b c d : PTm n) : PTm n := sub (multiply b c) (multiply a d)
 def defect (a₀ a₁ a₂ b₀ b₁ b₂ : PTm n) : PTm n :=
   sub (multiply (secondDifference a₀ a₁ a₂) b₁) (multiply a₁ (secondDifference b₀ b₁ b₂))
 
-@[simp] theorem subst_sub {l : ℕ} (σ : Fin n → PTm l) (a b : PTm n) :
-    Syn.subst σ (sub a b) = sub (Syn.subst σ a) (Syn.subst σ b) := by simp [sub]
+ipra_subst sub
 
-@[simp] theorem subst_adjacent {l : ℕ} (σ : Fin n → PTm l) (a b c d : PTm n) :
-    Syn.subst σ (adjacent a b c d) = adjacent (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d) := by
-  simp [adjacent]
+ipra_subst adjacent
 
 private theorem negative_add (a b : PTm n) : Γ ⊢[PRAAx] negative (add a b) ≐ add (negative a) (negative b) :=
   (negative_minus_multiply _).eqTrans ((multiply_add _ _ _).eqTrans
@@ -122,9 +116,7 @@ def crossBody (f g : PTm 2) : PTm 2 :=
 def body (f g : PTm 2) : PTm 2 :=
   sub (inst2 (crossBody f g) (succ (var 0)) (var 1)) (inst2 (crossBody f g) (var 0) (var 1))
 
-@[simp] theorem subst_crossValue {l : ℕ} (σ : Fin n → PTm l) (f g : PTm 2) (x y i : PTm n) :
-    Syn.subst σ (crossValue f g x y i) = crossValue f g (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ i) := by
-  simp [crossValue]
+ipra_subst crossValue
 
 theorem cross_at (f g : PTm 2) (x y i : PTm n) :
     Γ ⊢[PRAAx] inst2 (crossBody f g) i (pairT x y) ≐ crossValue f g x y i := by
@@ -160,9 +152,7 @@ theorem defect_at (f g : PTm 2) (x y i : PTm n) :
 def telescopeLaw (f g : PTm 2) (x y N : PTm n) : Fm PTm n :=
   add (rsum (body f g) N (pairT x y)) (crossValue f g x y zero) ≐ crossValue f g x y N
 
-@[simp] theorem subst_telescopeLaw {l : ℕ} (σ : Fin n → PTm l) (f g : PTm 2) (x y N : PTm n) :
-    (telescopeLaw f g x y N).subst σ = telescopeLaw f g (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ N) := by
-  simp [telescopeLaw]
+ipra_subst telescopeLaw
 
 private theorem sum_zero_step (f g : PTm 2) (x y : PTm n) : Γ ⊢[PRAAx] telescopeLaw f g x y zero :=
   (add_congr ((RationalFiniteSum.sum_zero _ _).eqTrans zero_fraction.eqSymm) (.eqRefl _)).eqTrans

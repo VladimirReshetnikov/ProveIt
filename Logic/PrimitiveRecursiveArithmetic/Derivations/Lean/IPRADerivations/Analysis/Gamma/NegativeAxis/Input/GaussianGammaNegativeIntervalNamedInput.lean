@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalNamedInput
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaNegativeCriticalCorrection (guard)
 open GaussianGammaNegativeCriticalEndpoints (mesh mesh_minimum rightNumerator)
 open GaussianGammaNegativeCriticalGrid (denominator)
@@ -30,10 +30,6 @@ open GaussianUnitIntervalInputDecoding (lowerPoint upperPoint decoded_source)
 open RationalArgmin (rationalLE_congr)
 open RationalGaussianEmbedding (axis axis_congr)
 open RationalValueBounds (upper_of_order)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -44,13 +40,9 @@ def sampleNumerator (f : PR 2) (p x : PTm n) : PTm n :=
 def sampleDenominator (f : PR 2) (p x : PTm n) : PTm n :=
   GaussianUnitIntervalInputDecoding.denominator (ap2 f p x)
 
-@[simp] theorem subst_sampleNumerator {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p x : PTm n) :
-    Syn.subst σ (sampleNumerator f p x) = sampleNumerator f (Syn.subst σ p) (Syn.subst σ x) := by
-  simp [sampleNumerator]
+ipra_subst sampleNumerator
 
-@[simp] theorem subst_sampleDenominator {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p x : PTm n) :
-    Syn.subst σ (sampleDenominator f p x) = sampleDenominator f (Syn.subst σ p) (Syn.subst σ x) := by
-  simp [sampleDenominator]
+ipra_subst sampleDenominator
 
 theorem frozen_guard (f : PR 2) (p x E : PTm n) (hs : Γ ⊢[PRAAx] source f x E) :
     Γ ⊢[PRAAx] guard (sampleNumerator f p x) (sampleDenominator f p x) :=

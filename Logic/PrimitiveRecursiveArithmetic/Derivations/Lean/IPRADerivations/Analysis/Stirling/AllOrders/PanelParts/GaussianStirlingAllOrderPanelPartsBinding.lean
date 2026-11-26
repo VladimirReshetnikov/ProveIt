@@ -15,7 +15,7 @@ set_option maxHeartbeats 1100000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderPanelPartsBinding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianStirlingNames (source)
 open GaussianStirlingGlobalBounds (steps remainderF remainderData remainder_regular)
@@ -40,10 +40,6 @@ open RationalAlgebra (multiply_congr multiply_associative multiply_commutative)
 open RationalGaussianEmbedding (embed embed_multiply)
 open RationalGaussianRealPart (embed_congr)
 open RationalSumConstants (multiply_one_right)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -68,9 +64,7 @@ def radius : ℕ → PTm n → PTm n
     let u := constantCap (meanPoint m)*(power (2*m+2) B+one)
     one+(c*(u+radius m B+num 6)+(c+one))
 
-@[simp] theorem subst_recurrenceCost {l : ℕ} (σ : Fin n → PTm l) (m : ℕ) (A B p : PTm n) :
-    Syn.subst σ (recurrenceCost m A B p) = recurrenceCost m (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ p) :=
-  by simp [recurrenceCost]
+ipra_subst recurrenceCost
 @[simp] theorem subst_requiredMesh {l : ℕ} (σ : Fin n → PTm l) (m : ℕ) (A B p : PTm n) :
     Syn.subst σ (requiredMesh m A B p) = requiredMesh m (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ p) := by
   induction m with

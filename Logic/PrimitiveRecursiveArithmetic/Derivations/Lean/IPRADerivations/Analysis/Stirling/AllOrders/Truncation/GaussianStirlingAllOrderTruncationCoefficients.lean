@@ -14,7 +14,7 @@ set_option maxHeartbeats 1050000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderTruncationCoefficients
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open BernoulliBounds (zint toZ_zint bint bden bden_pos bint_eq)
 open GaussianStirlingAllOrderPanelPartsSolve (ratio inverseHigh coefficient_positive)
 open GaussianStirlingAllOrderPanelPartsDensities (lowScalar)
@@ -30,9 +30,6 @@ open RationalRepresentations (represents_multiply represents_negative)
 open RationalIntegerNormalization (normalize normalize_preserves_value)
 open RationalNormalForm (normalize_well_formed)
 open RationalFiniteSum (canonical_equal)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -51,9 +48,7 @@ theorem coefficient_value (m : ℕ) :
 
 @[simp] theorem subst_scaleCode {l : ℕ} (σ : Fin n → PTm l) (m : ℕ) :
     Syn.subst σ (scaleCode m : PTm n) = (scaleCode m : PTm l) := by simp [scaleCode,zint]
-@[simp] theorem subst_literalTerm {l : ℕ} (σ : Fin n → PTm l) (m : ℕ) (A B : PTm n) :
-    Syn.subst σ (literalTerm m A B) = literalTerm m (Syn.subst σ A) (Syn.subst σ B) :=
-  by simp [literalTerm,literalCoefficient,literalPower,power,zint]
+ipra_subst literalTerm [literalCoefficient, literalPower, power, zint]
 
 private theorem scale_positive (m : ℕ) : Γ ⊢[PRAAx] le one (num (2*m+2) : PTm n) :=
   Foundations.NumeralPrimes.num_le (a := 1) (by omega)

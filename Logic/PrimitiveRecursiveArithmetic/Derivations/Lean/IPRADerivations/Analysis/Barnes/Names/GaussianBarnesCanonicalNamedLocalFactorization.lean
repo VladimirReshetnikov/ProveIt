@@ -15,7 +15,7 @@ set_option maxHeartbeats 1550000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalNamedLocalFactorization
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalDeflatedNamed (source neighborhood rational_source neighborhood_at)
 open GaussianBarnesCanonicalDeflatedValue (headCoefficientF headCoefficientData remainingLength)
 open GaussianBarnesCanonicalDeflatedValueContinuity (tailCap)
@@ -33,10 +33,6 @@ open GaussianRationalL1 (rawGaussian rawDen)
 open GaussianRationalMetric (distanceBounded)
 open GaussianExponentialReference (unit_monotone)
 open GaussianFastValueCut (exponent)
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

@@ -16,7 +16,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedSineFromExponential
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (code scale oneCode eval_re_code eval_im_code)
 open GaussianArctangentCayleyValues (imaginaryPoint imaginaryCode)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
@@ -37,10 +37,6 @@ open GaussianRadiusExponentialName (input nameF data name_regular)
 open GaussianRationalSyntheticDivision (qsub_congr)
 open GaussianRootAlgebra (equal equal_of_values re_sub im_sub re_mul im_mul re_neg im_neg
   re_scale im_scale re_one im_one)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -54,16 +50,11 @@ def sineF (f : PR 2) : PR 2 := multiplyF constantF (differenceF f)
 def sineData (f : PR 2) (R x : PTm n) : PTm n :=
   multiplyData constantF (differenceF f) multiplier (differenceData R x)
 
-@[simp] theorem subst_multiplier {m : ℕ} (σ : Fin n → PTm m) :
-    Syn.subst σ (multiplier : PTm n) = multiplier := by
-  simp [multiplier, ComplexLogarithmRemainder.neg, imaginaryCode]
+ipra_subst multiplier [ComplexLogarithmRemainder.neg, imaginaryCode]
 
-@[simp] theorem subst_differenceData {m : ℕ} (σ : Fin n → PTm m) (R x : PTm n) :
-    Syn.subst σ (differenceData R x) = differenceData (Syn.subst σ R) (Syn.subst σ x) := by
-  simp [differenceData]
+ipra_subst differenceData
 
-@[simp] theorem subst_sineData {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (R x : PTm n) :
-    Syn.subst σ (sineData f R x) = sineData f (Syn.subst σ R) (Syn.subst σ x) := by simp [sineData]
+ipra_subst sineData
 
 theorem sine_regular (f : PR 2) (R x : PTm n) (hf : Γ ⊢[PRAAx] input f R x) :
     Γ ⊢[PRAAx] pointCN (sineF f) (sineData f R x) :=

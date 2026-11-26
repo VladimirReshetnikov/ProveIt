@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingMultiplicativeBoundsStrictOrder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaFiniteApproximantName (exponential_input exponentialInputData)
@@ -26,8 +26,6 @@ open GaussianRealNameExponentialInjectivity (axisSamples independent_radii_injec
 open GaussianSignedNameExponentialOrder (realSamples real_sample_at)
 open GaussianStirlingMultiplicativeBoundsOrder (exponential_order)
 open RationalValueBounds (upper_congr radius_of_upper)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "E" => GaussianRadiusExponentialName.nameF

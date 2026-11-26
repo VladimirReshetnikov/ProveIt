@@ -16,7 +16,7 @@ set_option maxHeartbeats 1100000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalTaylorDerivativeChart
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale)
 open GaussianBarnesCanonicalHigherRows (previous)
 open GaussianBarnesCanonicalLogCofinal (source)
@@ -29,8 +29,6 @@ open GaussianNamedUniformRateClosure (equivalent family)
 open GaussianRationalHorner (ofGaussian)
 open GaussianRationalNaturalScale (naturalPoint)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

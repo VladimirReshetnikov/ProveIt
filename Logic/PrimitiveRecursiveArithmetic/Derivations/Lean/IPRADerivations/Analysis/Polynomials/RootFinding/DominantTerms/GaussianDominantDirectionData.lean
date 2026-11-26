@@ -17,17 +17,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianDominantDirectionData
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianBalancedRadiusSyntax (input coefficient unit unit_positive)
 open LeanProofs.IPRA.Analysis.GaussianDominantPlateau (winner)
 open LeanProofs.IPRA.Analysis.GaussianOffDominantTerms (radiusNumerator radiusDenominator)
 open LeanProofs.IPRA.Analysis.GaussianOffDominantSum (selectedScore)
 open LeanProofs.IPRA.Analysis.GaussianRationalDirectionNormalizer (norm)
 open LeanProofs.IPRA.Analysis.GaussianDescentClockArithmetic (descentD)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,22 +36,14 @@ def target (C N : PTm n) : PTm n := GaussianRationalDirectionNormalizer.target (
 def P (C N : PTm n) : PTm n := GaussianDominantAlpha.P (base C N) (chosen C N) (radiusNumerator C N) (winner C N) (precision C N)
 def Q (C N : PTm n) : PTm n := GaussianDominantAlpha.Q (base C N) (chosen C N) (radiusDenominator C N) (winner C N) (precision C N)
 
-@[simp] theorem subst_base {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (base C N) = base (Syn.subst σ C) (Syn.subst σ N) := by simp [base]
-@[simp] theorem subst_chosen {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (chosen C N) = chosen (Syn.subst σ C) (Syn.subst σ N) := by simp [chosen]
-@[simp] theorem subst_phase {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (phase C N) = phase (Syn.subst σ C) (Syn.subst σ N) := by simp [phase]
-@[simp] theorem subst_precision {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (precision C N) = precision (Syn.subst σ C) (Syn.subst σ N) := by simp [precision]
-@[simp] theorem subst_direction {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (direction C N) = direction (Syn.subst σ C) (Syn.subst σ N) := by simp [direction]
-@[simp] theorem subst_target {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (target C N) = target (Syn.subst σ C) (Syn.subst σ N) := by simp [target]
-@[simp] theorem subst_P {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (P C N) = P (Syn.subst σ C) (Syn.subst σ N) := by simp [P]
-@[simp] theorem subst_Q {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (Q C N) = Q (Syn.subst σ C) (Syn.subst σ N) := by simp [Q]
+ipra_subst base
+ipra_subst chosen
+ipra_subst phase
+ipra_subst precision
+ipra_subst direction
+ipra_subst target
+ipra_subst P
+ipra_subst Q
 
 theorem base_positive (C N : PTm n) (h : Γ ⊢[PRAAx] input C N) : Γ ⊢[PRAAx] le one (norm (base C N)) :=
   Prf.andE₁ (Prf.andE₂ (Prf.andE₂ h))
@@ -119,8 +107,7 @@ def alphaCertificate (C N : PTm n) : Fm PTm n := le one (Q C N) ⋏
   (le one (P C N) ⋏ (le (P C N) (Q C N) ⋏
     le (GaussianRationalDirectionNormalizer.sixtyFour*Q C N)
       (GaussianRationalDirectionNormalizer.sixtyFive*descentD N*P C N)))
-@[simp] theorem subst_alphaCertificate {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    (alphaCertificate C N).subst σ = alphaCertificate (Syn.subst σ C) (Syn.subst σ N) := by simp [alphaCertificate]
+ipra_subst alphaCertificate
 
 /-- The selected original polynomial data discharge all generic alpha
 assumptions, including both radial comparisons and phase nonzeroness. -/
@@ -158,39 +145,37 @@ def output (C N : PTm n) : PTm n := pairT (P C N) (pairT (Q C N) (pairT (directi
 def outputF : PR 2 := PTm.toPR (output (var 0) (var 1))
 def run (C N : PTm n) : PTm n := ap2 outputF C N
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (output C N) = output (Syn.subst σ C) (Syn.subst σ N) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (run C N) = run (Syn.subst σ C) (Syn.subst σ N) := by simp [run]
+ipra_subst output
+ipra_subst run
 theorem program_at (C N : PTm n) : Γ ⊢[PRAAx] run C N ≐ output C N := by
   simpa [run,outputF,ap2] using toPR_eq (Γ := Γ) (output (var 0) (var 1) : PTm 2) ![C,N]
 
 theorem returned_numerator (C N : PTm n) : Γ ⊢[PRAAx] fstT (run C N) ≐ P C N :=
-  (congrFst (program_at C N)).eqTrans (fst_pair _ _)
+  (program_at C N).fstE
 
 theorem returned_denominator (C N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run C N)) ≐ Q C N :=
-  (congrFst ((congrSnd (program_at C N)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at C N).sndE.fstE
 
 theorem returned_direction (C N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run C N))) ≐ direction C N :=
-  (congrFst ((congrSnd ((congrSnd (program_at C N)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at C N).sndE.sndE.fstE
 
 theorem returned_phase (C N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (run C N)))) ≐ phase C N :=
-  (congrFst ((congrSnd ((congrSnd ((congrSnd (program_at C N)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at C N).sndE.sndE.sndE.fstE
 
 theorem returned_target (C N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (sndT (run C N))))) ≐ target C N :=
-  (congrFst ((congrSnd ((congrSnd ((congrSnd ((congrSnd (program_at C N)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at C N).sndE.sndE.sndE.sndE.fstE
 
 theorem returned_coefficient (C N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (sndT (sndT (run C N)))))) ≐ chosen C N :=
-  (congrFst ((congrSnd ((congrSnd ((congrSnd ((congrSnd ((congrSnd (program_at C N)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at C N).sndE.sndE.sndE.sndE.sndE.fstE
 
 theorem returned_degree (C N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (sndT (sndT (sndT (run C N))))))) ≐ winner C N :=
-  (congrFst ((congrSnd ((congrSnd ((congrSnd ((congrSnd ((congrSnd ((congrSnd (program_at C N)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at C N).sndE.sndE.sndE.sndE.sndE.sndE.fstE
 
 theorem returned_radiusNumerator (C N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (sndT (sndT (sndT (sndT (run C N)))))))) ≐ radiusNumerator C N :=
-  (congrFst ((congrSnd ((congrSnd ((congrSnd ((congrSnd ((congrSnd ((congrSnd ((congrSnd (program_at C N)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at C N).sndE.sndE.sndE.sndE.sndE.sndE.sndE.fstE
 
 theorem returned_radiusDenominator (C N : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (sndT (sndT (sndT (sndT (run C N)))))))) ≐ radiusDenominator C N :=
-  (congrSnd ((congrSnd ((congrSnd ((congrSnd ((congrSnd ((congrSnd ((congrSnd ((congrSnd (program_at C N)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at C N).sndE.sndE.sndE.sndE.sndE.sndE.sndE.sndE
 
 theorem selected_direction_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2
     (input (var 0) (var 1) ⟶ GaussianRationalDirection.certificate

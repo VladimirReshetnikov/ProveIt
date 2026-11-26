@@ -4,7 +4,6 @@ import IPRADerivations.Analysis.RationalArithmetic.Powers.RationalScalarPowerGau
 import IPRADerivations.Analysis.Polynomials.Representation.RationalPolynomialLeadingGaussianEmbedding
 import IPRADerivations.Analysis.Polynomials.Elimination.Superelliptic.GaussianSuperellipticNormDegree
 import IPRADerivations.Foundations.PrimitiveScaling
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Exact degree and leading coefficient of the original rational norm
@@ -19,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalSuperellipticNormDegree
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalPolynomialGaussianEmbedding (coefficients coefficients_length)
 open RationalPolynomialLeadingGaussianEmbedding (leading coefficient_list_embedding leading_embedding)
 open RationalPolynomialNonvanishing (nonzeroCoefficients flag_of_nonzero)
@@ -34,9 +33,6 @@ open GaussianPolynomialMonicCompanion (rowShape)
 open GaussianPolynomialMultiplicationMatrix (slot slot_range)
 open GaussianRationalFiberGrouping (abscissa ordinate)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -56,9 +52,7 @@ def certificate (f G m a c : PTm n) : Fm PTm n :=
     (RationalPolynomialDegreeGaussianEmbedding.degree (norm f G m a c) (degreeBound m a c) ≐ weightedDegree G m a (d f c) ⋏
       leading (norm f G m a c) (degreeBound m a c) ≐ sourceLeading f G m a c)
 
-@[simp] theorem subst_norm {l : ℕ} (σ : Fin n → PTm l) (f G m a c : PTm n) :
-    Syn.subst σ (norm f G m a c) = norm (Syn.subst σ f) (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by
-  simp [norm]
+ipra_subst norm
 
 theorem f_degree_embedding (f c : PTm n) : Γ ⊢[PRAAx] d f c ≐ GaussianRationalPolynomialDegree.degree (coefficients f (succ c)) c :=
   RationalPolynomialDegreeGaussianEmbedding.degree_conjugacy _ _ _ (coefficient_list_embedding _ _)
@@ -227,9 +221,7 @@ def pointPowers (f m L : PTm n) : Fm PTm n := .all (lt (var 0) (length (Syn.shif
 def pointInput (f G m L : PTm n) : Fm PTm n := RationalCurvePointsGaussianEmbedding.distinct L ⋏
   (pointPowers f m L ⋏ RationalCurvePointsGaussianEmbedding.functionZeros G m L)
 
-@[simp] theorem subst_pointPowers {l : ℕ} (σ : Fin n → PTm l) (f m L : PTm n) :
-    (pointPowers f m L).subst σ = pointPowers (Syn.subst σ f) (Syn.subst σ m) (Syn.subst σ L) := by
-  simp [pointPowers,Syn.subst_shift,Syn.shift_subst]
+ipra_subst pointPowers [Syn.subst_shift, Syn.shift_subst]
 
 theorem point_power_at (f m L i : PTm n) (h : Γ ⊢[PRAAx] pointPowers f m L) (hi : Γ ⊢[PRAAx] lt i (length L)) :
     Γ ⊢[PRAAx] RationalArgmin.rationalEq (power (ordinate L i) m)

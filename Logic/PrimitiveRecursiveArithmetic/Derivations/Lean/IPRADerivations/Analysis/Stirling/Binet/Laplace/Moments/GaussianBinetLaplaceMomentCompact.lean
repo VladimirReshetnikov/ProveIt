@@ -14,7 +14,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentCompact
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetLaplaceIntegrand (cofinalF cofinalData meshGain)
 open GaussianBinetLaplaceMomentFloor
   (weight clock observation gain fixedData evaluatorF evaluator_at nameF unitPanelData)
@@ -30,9 +30,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalPowerDifference (budget bounded_power_integer power_distance_bound)
 open GaussianRationalReciprocal (power bound_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -116,11 +113,7 @@ theorem observation_rate (p q j X D R T A B a b M Q : PTm n)
 def data (j X D R T A C E : PTm n) : PTm n :=
   GaussianCompactRiemannName.data (E+A) C E (gain j R T) T (fixedData j X D R T)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (j X D R T A C E : PTm n) :
-    Syn.subst σ (data j X D R T A C E) =
-      data (Syn.subst σ j) (Syn.subst σ X) (Syn.subst σ D) (Syn.subst σ R)
-        (Syn.subst σ T) (Syn.subst σ A) (Syn.subst σ C) (Syn.subst σ E) := by
-  simp [data]
+ipra_subst data
 
 theorem wrapped_at (p t j X D R T : PTm n) :
     Γ ⊢[PRAAx] ap2 (evaluatorName evaluatorF) p (nameData t (fixedData j X D R T)) ≐

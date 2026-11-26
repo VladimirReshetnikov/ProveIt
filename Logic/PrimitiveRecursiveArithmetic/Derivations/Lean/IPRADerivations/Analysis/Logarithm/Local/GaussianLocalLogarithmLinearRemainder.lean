@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianLocalLogarithmLinearRemainder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianLocalLogarithmName (source pointF point)
 open GaussianRationalHorner (ofGaussian ofGaussian_represents ofGaussian_canonical positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
@@ -23,10 +23,6 @@ open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GammaCanonicalFactors (factorNumerator factorDenominator)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

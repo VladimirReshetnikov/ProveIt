@@ -13,7 +13,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedSincQuadraticBounds
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedSincSamples (argument argumentClock cutoff sampleSize value value_nonempty value_canonical sample_bound)
 open GaussianNamedSinc (nameF data modulus rawF raw_at sample_near)
 open GaussianNamedSineTaylor (rawData)
@@ -27,10 +27,6 @@ open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianNamedDiagonalRate (diagonalRate cross_of_diagonal_rate)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,10 +36,7 @@ def query (f : PR 2) (R x p : PTm n) : PTm n :=
 def observationBound (f : PR 2) (x A B : PTm n) : Fm PTm n :=
   .all (bounded (ap2 f (var 0) (Syn.shift x)) (Syn.shift A) (Syn.shift B))
 
-@[simp] theorem subst_observationBound {l : ℕ} (σ : Fin n → PTm l) (f : PR 2) (x A B : PTm n) :
-    (observationBound f x A B).subst σ =
-      observationBound f (Syn.subst σ x) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [observationBound, Syn.subst_shift, Syn.shift_subst]
+ipra_subst observationBound [Syn.subst_shift, Syn.shift_subst]
 
 theorem observation_bound_at (f : PR 2) (x A B p : PTm n)
     (h : Γ ⊢[PRAAx] observationBound f x A B) :

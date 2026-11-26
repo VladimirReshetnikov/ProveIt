@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Names.Aggregation.GaussianAggregateCoverTransport
 import IPRADerivations.Analysis.Polynomials.RootFinding.Characteristic.GaussianCharacteristicRootSupport
 import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.GaussianRootSynchronizedHit
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The original characteristic root lists as a rational aggregate
@@ -16,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCharacteristicAggregate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCharacteristicRootSupport (data roots roots_length root_support)
 open GaussianAggregateCoverTransport (vectorList vector_list_length vector_list_lookup)
 open GaussianModulusAggregateMap (vector)
@@ -27,9 +26,6 @@ open GaussianEuclideanDistanceName (pointCN point_cn_at)
 open RationalHausdorff (originalClose original_close_of_bound bound_of_original_close pointRadius)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,9 +34,7 @@ def stageBody (a : PR 4) : PTm 2 := stages a (fstT (var 1)) (var 0) (sndT (var 1
 def stageF (a : PR 4) : PR 2 := PTm.toPR (stageBody a)
 def pointF (point : PR 2) : PR 2 := PTm.toPR (vector (ap2 point (var 0) (var 1)))
 
-@[simp] theorem subst_stages {l : ℕ} (σ : Fin n → PTm l) (a : PR 4) (N t x : PTm n) :
-    Syn.subst σ (stages a N t x) = stages a (Syn.subst σ N) (Syn.subst σ t) (Syn.subst σ x) := by
-  simp [stages]
+ipra_subst stages
 
 theorem stages_congr (a : PR 4) {N N' t t' x x' : PTm n} (hn : Γ ⊢[PRAAx] N ≐ N')
     (ht : Γ ⊢[PRAAx] t ≐ t') (hx : Γ ⊢[PRAAx] x ≐ x') :

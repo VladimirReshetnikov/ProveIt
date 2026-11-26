@@ -15,7 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPeriod
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (code scale eval_re_code eval_im_code)
 open GaussianArctangentCayleyValues (imaginaryCode imaginaryPoint)
 open GaussianArctangentQuarterExponential (quarterF radius quarter_input quarter_cross boundedArguments finiteEstimate original_bounded_arguments)
@@ -36,9 +36,6 @@ open GaussianRationalHorner (canonical_unique ofGaussian ofGaussian_canonical of
 open GaussianRationalReciprocal (qone)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr)
 open GaussianRadiusExponentialName (input inputPrecision index nameF data name_regular sample boundedSamples bounded_samples_at)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

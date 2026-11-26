@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEvenMomentSymmetricGrid
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaHalfIntegerDomain (argument)
 open GaussianEvenMomentIntegrand (clock)
 open GaussianPositiveRationalLogarithm (fraction)
@@ -28,8 +28,6 @@ open GaussianCompactRiemannName (evaluatorName nameData inside grid sampleBody s
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianCoefficientNameBounds (unit)
 open GaussianEulerPositiveScalingIntegrand (fixedData)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -47,22 +45,14 @@ def symmetricGrid (p M a C E N c d : PTm n) : PTm n :=
   qadd (quadrature (evaluatorF false) p M a C E (momentData N c d))
     (quadrature (evaluatorF true) p M a C E (momentData N c d))
 
-@[simp] theorem subst_momentData {m : ℕ} (σ : Fin n → PTm m) (N c d : PTm n) :
-    Syn.subst σ (momentData N c d) = momentData (Syn.subst σ N) (Syn.subst σ c) (Syn.subst σ d) := by simp [momentData]
+ipra_subst momentData
 @[simp] theorem subst_literal {m : ℕ} (σ : Fin n → PTm m) (side : Bool) (p N a b c d : PTm n) :
     Syn.subst σ (literal side p N a b c d) =
       literal side (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d) := by
   cases side <;> simp [literal,signedTime]
-@[simp] theorem subst_evaluatorTerm {m : ℕ} (σ : Fin n → PTm m) (side : Bool) (p t x : PTm n) :
-    Syn.subst σ (evaluatorTerm side p t x) = evaluatorTerm side (Syn.subst σ p) (Syn.subst σ t) (Syn.subst σ x) := by
-  simp [evaluatorTerm]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (a C E T c d : PTm n) :
-    (source a C E T c d).subst σ = source (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E)
-      (Syn.subst σ T) (Syn.subst σ c) (Syn.subst σ d) := by simp [source]
-@[simp] theorem subst_symmetricGrid {m : ℕ} (σ : Fin n → PTm m) (p M a C E N c d : PTm n) :
-    Syn.subst σ (symmetricGrid p M a C E N c d) = symmetricGrid (Syn.subst σ p) (Syn.subst σ M)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ N) (Syn.subst σ c) (Syn.subst σ d) := by
-  simp [symmetricGrid]
+ipra_subst evaluatorTerm
+ipra_subst source
+ipra_subst symmetricGrid
 
 theorem evaluator_at (side : Bool) (p t N c d : PTm n) : Γ ⊢[PRAAx]
     ap3 (evaluatorF side) p t (momentData N c d) ≐ literal side p N (fstT t) (sndT t) c d := by

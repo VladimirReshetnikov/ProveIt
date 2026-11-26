@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.Intervals.RationalHausdorffConcat
 import IPRADerivations.Analysis.RationalArithmetic.Grids.RationalNearest
 import IPRADerivations.Foundations.FiniteHausdorffProduct
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual Cartesian products of original rational-vector lists
@@ -18,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.RationalHausdorffProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.RationalHausdorff
 open LeanProofs.IPRA.Analysis.RationalSupMetric (numeratorOf denominatorOf rationalNumerator rationalDenominator)
 open LeanProofs.IPRA.Analysis.RationalHausdorffConcat
@@ -28,20 +27,14 @@ open LeanProofs.IPRA.Foundations.SequenceComposition
   (length subst_length entry_congr append subst_append append_length append_left append_right_at)
 open LeanProofs.IPRA.Foundations.FiniteHausdorffConcat (suffix_range)
 open LeanProofs.IPRA.Foundations.FiniteHausdorffProduct (pairIndex pair_index_range pair_index_decode)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def shaped (S d : PTm n) : Fm PTm n :=
   .all (lt (var 0) (length (Syn.shift S)) ⟶ length (entry (Syn.shift S) (var 0)) ≐ Syn.shift d)
 
-@[simp] theorem subst_shaped {m : ℕ} (σ : Fin n → PTm m) (S d : PTm n) :
-    (shaped S d).subst σ = shaped (Syn.subst σ S) (Syn.subst σ d) := by
-  simp only [shaped,Fm.subst_all,Fm.subst_imp,Fm.subst_eq,subst_lt,subst_length,subst_entry,
-    Syn.subst_var,Syn.up_zero,Syn.up_succ,Syn.subst_shift,Syn.shift_subst]
+ipra_subst shaped [Fm.subst_all, Fm.subst_imp, Fm.subst_eq, subst_lt, subst_length, subst_entry, Syn.subst_var,
+    Syn.up_zero, Syn.up_succ, Syn.subst_shift, Syn.shift_subst]
 
 theorem shaped_at (S d i : PTm n) (h : Γ ⊢[PRAAx] shaped S d)
     (hi : Γ ⊢[PRAAx] lt i (length S)) : Γ ⊢[PRAAx] length (entry S i) ≐ d := by
@@ -56,12 +49,8 @@ def productBody : PTm 2 := productValue (fstT (var 1)) (sndT (var 1)) (var 0)
 def product (S S' : PTm n) : PTm n := sequence productBody (length S*length S') (pairT S S')
 def productF : PR 2 := PTm.toPR (product (var 0) (var 1))
 
-@[simp] theorem subst_productValue {m : ℕ} (σ : Fin n → PTm m) (S S' i : PTm n) :
-    Syn.subst σ (productValue S S' i) = productValue (Syn.subst σ S) (Syn.subst σ S') (Syn.subst σ i) := by
-  simp only [productValue,subst_append,subst_entry,subst_ap2,subst_length]
-@[simp] theorem subst_product {m : ℕ} (σ : Fin n → PTm m) (S S' : PTm n) :
-    Syn.subst σ (product S S') = product (Syn.subst σ S) (Syn.subst σ S') := by
-  simp only [product,subst_sequence,PTm.subst_mul,subst_length,subst_pairT]
+ipra_subst productValue
+ipra_subst product
 
 theorem product_length (S S' : PTm n) : Γ ⊢[PRAAx] length (product S S') ≐ length S*length S' := sequence_length _ _ _
 
@@ -162,10 +151,7 @@ theorem pointRadius_append (x x' y y' d d' A B : PTm n)
 def pairGuard (S S' d d' : PTm n) : Fm PTm n :=
   le one (length S) ⋏ (le one (length S') ⋏ (shaped S d ⋏ shaped S' d'))
 
-@[simp] theorem subst_pairGuard {m : ℕ} (σ : Fin n → PTm m) (S S' d d' : PTm n) :
-    (pairGuard S S' d d').subst σ = pairGuard (Syn.subst σ S) (Syn.subst σ S') (Syn.subst σ d) (Syn.subst σ d') := by
-  simp only [pairGuard,Fm.subst_and,subst_le,subst_length,subst_shaped,
-    ConciseIPRA.PTm.subst_zero,ConciseIPRA.PTm.subst_succ]
+ipra_subst pairGuard
 
 theorem product_nonempty (S S' d d' : PTm n) (h : Γ ⊢[PRAAx] pairGuard S S' d d') :
     Γ ⊢[PRAAx] le one (length (product S S')) :=
@@ -258,14 +244,8 @@ def radiusNumerator (S S' T T' d d' : PTm n) : PTm n :=
 def radiusDenominator (S S' T T' d d' : PTm n) : PTm n :=
   maximumDenominator (numerator S T d) (denominator S T d) (numerator S' T' d') (denominator S' T' d')
 
-@[simp] theorem subst_radiusNumerator {m : ℕ} (σ : Fin n → PTm m) (S S' T T' d d' : PTm n) :
-    Syn.subst σ (radiusNumerator S S' T T' d d') = radiusNumerator (Syn.subst σ S) (Syn.subst σ S')
-      (Syn.subst σ T) (Syn.subst σ T') (Syn.subst σ d) (Syn.subst σ d') := by
-  simp only [radiusNumerator,RationalHausdorffConcat.subst_maximumNumerator,subst_numerator,subst_denominator]
-@[simp] theorem subst_radiusDenominator {m : ℕ} (σ : Fin n → PTm m) (S S' T T' d d' : PTm n) :
-    Syn.subst σ (radiusDenominator S S' T T' d d') = radiusDenominator (Syn.subst σ S) (Syn.subst σ S')
-      (Syn.subst σ T) (Syn.subst σ T') (Syn.subst σ d) (Syn.subst σ d') := by
-  simp only [radiusDenominator,RationalHausdorffConcat.subst_maximumDenominator,subst_numerator,subst_denominator]
+ipra_subst radiusNumerator
+ipra_subst radiusDenominator
 
 /-- The two independently normalized factor distances bound their original
 coordinate covers at the exact common rational maximum. -/

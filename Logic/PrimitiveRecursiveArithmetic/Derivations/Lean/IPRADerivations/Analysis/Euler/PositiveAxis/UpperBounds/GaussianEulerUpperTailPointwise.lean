@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUpperTailPointwise
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUpperPowerOrder (source)
 open GaussianEulerUpperPowerCompatibility (old_source)
 open GaussianEulerIntegrandName (decayF decayData nameF data sample sample_at)
@@ -33,9 +33,6 @@ open GaussianReconstructionRoots (norm_from_distance)
 open GaussianNamedSmallPerturbationTransport (productClock product_at)
 open GaussianRationalSlackRemoval (slack precision slack_removal_at)
 open RationalGaussianEmbedding (embed)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -45,20 +42,10 @@ def majorantTop (p q R a b : PTm n) : PTm n :=
   majorant R*referenceTop q a b*unit p+referenceBottom q a b
 def majorantBottom (p q a b : PTm n) : PTm n := referenceBottom q a b*unit p
 
-@[simp] theorem subst_referenceTop {m : ℕ} (σ : Fin n → PTm m) (q a b : PTm n) :
-    Syn.subst σ (referenceTop q a b) = referenceTop (Syn.subst σ q) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [referenceTop]
-@[simp] theorem subst_referenceBottom {m : ℕ} (σ : Fin n → PTm m) (q a b : PTm n) :
-    Syn.subst σ (referenceBottom q a b) = referenceBottom (Syn.subst σ q) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [referenceBottom]
-@[simp] theorem subst_majorantTop {m : ℕ} (σ : Fin n → PTm m) (p q R a b : PTm n) :
-    Syn.subst σ (majorantTop p q R a b) =
-      majorantTop (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ R) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [majorantTop]
-@[simp] theorem subst_majorantBottom {m : ℕ} (σ : Fin n → PTm m) (p q a b : PTm n) :
-    Syn.subst σ (majorantBottom p q a b) =
-      majorantBottom (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [majorantBottom]
+ipra_subst referenceTop
+ipra_subst referenceBottom
+ipra_subst majorantTop
+ipra_subst majorantBottom
 
 theorem reference_bottom_positive (q a b : PTm n) : Γ ⊢[PRAAx] le one (referenceBottom q a b) :=
   positive_product _ _ (denominator_positive q a b) (unit_positive q)

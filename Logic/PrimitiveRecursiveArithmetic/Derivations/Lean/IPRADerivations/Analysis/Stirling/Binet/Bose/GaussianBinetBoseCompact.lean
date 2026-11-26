@@ -16,7 +16,7 @@ set_option maxHeartbeats 640000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetBoseCompact
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetArctangentQuadrature (fixedData subst_fixedData)
 open GaussianBinetLaplaceStrip (tagNumerator)
 open GaussianCompactRiemannName (evaluatorName nameData sampledModulus inside localBody)
@@ -25,9 +25,6 @@ open GaussianNamedInverseRate (independentRate)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -52,18 +49,10 @@ abbrev nameF : PR 2 := GaussianCompactRiemannName.nameF evaluatorF
 def data (X Y D sign T A C E : PTm n) : PTm n :=
   GaussianCompactRiemannName.data (E+A) C E (gain D E T) T (fixedData X Y D sign)
 
-@[simp] theorem subst_gain {m : ℕ} (σ : Fin n → PTm m) (D E T : PTm n) :
-    Syn.subst σ (gain D E T) = gain (Syn.subst σ D) (Syn.subst σ E) (Syn.subst σ T) := by simp [gain]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (X D sign T A C E : PTm n) :
-    (source X D sign T A C E).subst σ = source (Syn.subst σ X) (Syn.subst σ D) (Syn.subst σ sign)
-      (Syn.subst σ T) (Syn.subst σ A) (Syn.subst σ C) (Syn.subst σ E) := by
-  simp [source,GaussianRightHalfPlaneLogarithm.source,GaussianRightHalfPlaneArgument.source]
-@[simp] theorem subst_evaluatorTerm {m : ℕ} (σ : Fin n → PTm m) (p t x : PTm n) :
-    Syn.subst σ (evaluatorTerm p t x) = evaluatorTerm (Syn.subst σ p) (Syn.subst σ t) (Syn.subst σ x) := by simp [evaluatorTerm]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (X Y D sign T A C E : PTm n) :
-    Syn.subst σ (data X Y D sign T A C E) =
-      data (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign)
-        (Syn.subst σ T) (Syn.subst σ A) (Syn.subst σ C) (Syn.subst σ E) := by simp [data]
+ipra_subst gain
+ipra_subst source [GaussianRightHalfPlaneLogarithm.source, GaussianRightHalfPlaneArgument.source]
+ipra_subst evaluatorTerm
+ipra_subst data
 
 theorem evaluator_at (p t X Y D sign : PTm n) :
     Γ ⊢[PRAAx] ap3 evaluatorF p t (fixedData X Y D sign) ≐ ap2 F p (fd X Y D sign (tagNumerator t) (sndT t)) := by

@@ -31,9 +31,7 @@ statements also give the cyclic companions by instantiation.
 
 namespace LeanProofs.IPRA.Geometry.SphericalCore
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
+open_ipra
 
 /-! ## The ring-level certificates -/
 

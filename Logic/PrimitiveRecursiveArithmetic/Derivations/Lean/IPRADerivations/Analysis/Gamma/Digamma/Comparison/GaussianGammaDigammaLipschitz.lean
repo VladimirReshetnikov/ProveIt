@@ -16,7 +16,7 @@ set_option maxHeartbeats 1700000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaLipschitz
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianStirlingGammaLogarithm (source)
 open GaussianGammaDigammaSeriesLipschitz (numerator denominator finite_name_upper)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -26,10 +26,6 @@ open GaussianStirlingGammaFractionalIncrementObservations (scalar_upper)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalDistanceOrder (distance_symmetric)
 open RationalValueBounds (upper upper_mono upper_triangle)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (monus num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

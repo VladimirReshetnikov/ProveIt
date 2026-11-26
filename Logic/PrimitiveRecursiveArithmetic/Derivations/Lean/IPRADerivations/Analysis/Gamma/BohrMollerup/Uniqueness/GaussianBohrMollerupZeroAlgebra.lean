@@ -10,7 +10,7 @@ set_option maxHeartbeats 1300000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBohrMollerupZeroAlgebra
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaEulerRationalLogOrder (add_order order_refl)
 open GaussianGammaRationalWendelBoundary (zero_product_at)
@@ -25,9 +25,6 @@ open GaussianNaturalScaleProductName (productF productData)
 open GaussianRationalHorner (qzero)
 open GaussianRationalMetric (qsub)
 open GaussianRationalSyntheticDivision (qsub_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -14,7 +14,7 @@ set_option maxHeartbeats 1100000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderImproperName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianStirlingNames (source)
 open GaussianStirlingAllOrderPanelPartsBinding (requiredMesh prefixAt radius actual_prefix_distance)
@@ -25,8 +25,6 @@ open GaussianFastValueCut (regular)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent point_at)
 open GaussianValueNormalizerExtensionality (rawDiagonal normalized_names_equivalent)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "T" => GaussianStirlingAllOrderPanelPartsNames.nameF
@@ -39,14 +37,10 @@ def rate (m : ℕ) (B : PTm n) : PTm n := radius m B+one
 def nameF (m : ℕ) : PR 2 := GaussianFastValueCut.nameF (rawF m)
 def data (m : ℕ) (A B : PTm n) : PTm n := GaussianFastValueCut.nameData (rate m B) (rawData A B)
 
-@[simp] theorem subst_raw {l : ℕ} (σ : Fin n → PTm l) (m : ℕ) (p A B : PTm n) :
-    Syn.subst σ (raw m p A B) = raw m (Syn.subst σ p) (Syn.subst σ A) (Syn.subst σ B) := by simp [raw]
-@[simp] theorem subst_rawData {l : ℕ} (σ : Fin n → PTm l) (A B : PTm n) :
-    Syn.subst σ (rawData A B) = rawData (Syn.subst σ A) (Syn.subst σ B) := by simp [rawData]
-@[simp] theorem subst_rate {l : ℕ} (σ : Fin n → PTm l) (m : ℕ) (B : PTm n) :
-    Syn.subst σ (rate m B) = rate m (Syn.subst σ B) := by simp [rate]
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (m : ℕ) (A B : PTm n) :
-    Syn.subst σ (data m A B) = data m (Syn.subst σ A) (Syn.subst σ B) := by simp [data]
+ipra_subst raw
+ipra_subst rawData
+ipra_subst rate
+ipra_subst data
 
 theorem raw_at (m : ℕ) (p A B : PTm n) : Γ ⊢[PRAAx] ap2 (rawF m) p (rawData A B) ≐ raw m p A B := by
   let x := rawData A B

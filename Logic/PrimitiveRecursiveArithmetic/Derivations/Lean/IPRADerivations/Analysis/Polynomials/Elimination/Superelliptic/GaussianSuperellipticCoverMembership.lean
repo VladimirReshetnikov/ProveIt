@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Spans.GaussianRationalOriginalSpanMembership
 import IPRADerivations.Foundations.FiniteCoverAssignment
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual membership assignment for a finite family of proper row spans
@@ -18,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSuperellipticCoverMembership
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianSuperellipticSubspaceWitness (basisCount)
 open GaussianSuperellipticSubspaceFromSpan (hasCoefficients pointMembership)
 open GaussianRationalOriginalSpanRank (properSpan)
@@ -27,9 +26,6 @@ open GaussianRationalPolynomialDegree (degree)
 open GaussianWeightedMonomialBasis (evaluationVector)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -60,31 +56,17 @@ def covered (f m c L P D : PTm n) : Fm PTm n := .all
 def group (f m c L P D g : PTm n) : PTm n :=
   Foundations.FiniteCoverAssignment.group testBody P (length D) (data f m c L D) g
 
-@[simp] theorem subst_matrix {k : ℕ} (σ : Fin n → PTm k) (D g : PTm n) :
-    Syn.subst σ (matrix D g) = matrix (Syn.subst σ D) (Syn.subst σ g) := by simp [matrix]
-@[simp] theorem subst_rows {k : ℕ} (σ : Fin n → PTm k) (D g : PTm n) :
-    Syn.subst σ (rows D g) = rows (Syn.subst σ D) (Syn.subst σ g) := by simp [rows]
-@[simp] theorem subst_point {k : ℕ} (σ : Fin n → PTm k) (f m c L v : PTm n) :
-    Syn.subst σ (point f m c L v) = point (Syn.subst σ f) (Syn.subst σ m) (Syn.subst σ c) (Syn.subst σ L) (Syn.subst σ v) := by simp [point]
-@[simp] theorem subst_candidate {k : ℕ} (σ : Fin n → PTm k) (f m c L D g v : PTm n) :
-    Syn.subst σ (candidate f m c L D g v) = candidate (Syn.subst σ f) (Syn.subst σ m) (Syn.subst σ c)
-      (Syn.subst σ L) (Syn.subst σ D) (Syn.subst σ g) (Syn.subst σ v) := by simp [candidate]
-@[simp] theorem subst_data {k : ℕ} (σ : Fin n → PTm k) (f m c L D : PTm n) :
-    Syn.subst σ (data f m c L D) = data (Syn.subst σ f) (Syn.subst σ m) (Syn.subst σ c) (Syn.subst σ L) (Syn.subst σ D) := by simp [data]
+ipra_subst matrix
+ipra_subst rows
+ipra_subst point
+ipra_subst candidate
+ipra_subst data
 @[simp] theorem subst_fields {k : ℕ} (σ : Fin n → PTm k) (q : PTm n) (i : Fin 5) :
     Syn.subst σ (fields q i) = fields (Syn.subst σ q) i := by fin_cases i <;> simp [fields]
-@[simp] theorem subst_family {k : ℕ} (σ : Fin n → PTm k) (f m c L D : PTm n) :
-    (family f m c L D).subst σ = family (Syn.subst σ f) (Syn.subst σ m) (Syn.subst σ c) (Syn.subst σ L) (Syn.subst σ D) := by
-  simp [family,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_coveredAt {k : ℕ} (σ : Fin n → PTm k) (f m c L D v : PTm n) :
-    (coveredAt f m c L D v).subst σ = coveredAt (Syn.subst σ f) (Syn.subst σ m) (Syn.subst σ c)
-      (Syn.subst σ L) (Syn.subst σ D) (Syn.subst σ v) := by simp [coveredAt,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_covered {k : ℕ} (σ : Fin n → PTm k) (f m c L P D : PTm n) :
-    (covered f m c L P D).subst σ = covered (Syn.subst σ f) (Syn.subst σ m) (Syn.subst σ c)
-      (Syn.subst σ L) (Syn.subst σ P) (Syn.subst σ D) := by simp [covered,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_group {k : ℕ} (σ : Fin n → PTm k) (f m c L P D g : PTm n) :
-    Syn.subst σ (group f m c L P D g) = group (Syn.subst σ f) (Syn.subst σ m) (Syn.subst σ c)
-      (Syn.subst σ L) (Syn.subst σ P) (Syn.subst σ D) (Syn.subst σ g) := by simp [group]
+ipra_subst family [Syn.subst_shift, Syn.shift_subst]
+ipra_subst coveredAt [Syn.subst_shift, Syn.shift_subst]
+ipra_subst covered [Syn.subst_shift, Syn.shift_subst]
+ipra_subst group
 
 theorem fields_at (f m c L D : PTm n) (j : Fin 5) : Γ ⊢[PRAAx] fields (data f m c L D) j ≐ ![f,m,c,L,D] j := by
   have a := snd_pair (Γ := Γ) f (pairT m (pairT c (pairT L D)))
@@ -92,10 +74,10 @@ theorem fields_at (f m c L D : PTm n) (j : Fin 5) : Γ ⊢[PRAAx] fields (data f
   have cc := (congrSnd b).eqTrans (snd_pair c (pairT L D))
   fin_cases j
   · exact fst_pair _ _
-  · exact (congrFst a).eqTrans (fst_pair _ _)
-  · exact (congrFst b).eqTrans (fst_pair _ _)
-  · exact (congrFst cc).eqTrans (fst_pair _ _)
-  · exact (congrSnd cc).eqTrans (snd_pair _ _)
+  · exact a.fstE
+  · exact b.fstE
+  · exact cc.fstE
+  · exact cc.sndE
 
 theorem point_congr {f f' m m' c c' L L' v v' : PTm n} (hf : Γ ⊢[PRAAx] f ≐ f')
     (hm : Γ ⊢[PRAAx] m ≐ m') (hc : Γ ⊢[PRAAx] c ≐ c') (hL : Γ ⊢[PRAAx] L ≐ L')
@@ -211,15 +193,8 @@ def testF : PR 3 := PTm.toPR testBody
 def testRun (g v p : PTm n) : PTm n := ap3 testF g v p
 def groupF : PR 7 := PTm.toPR (group (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6))
 def groupRun (f m c L P D g : PTm n) : PTm n := app groupF ![f,m,c,L,P,D,g]
-@[simp] theorem subst_testRun {k : ℕ} (σ : Fin n → PTm k) (g v p : PTm n) :
-    Syn.subst σ (testRun g v p) = testRun (Syn.subst σ g) (Syn.subst σ v) (Syn.subst σ p) := by simp [testRun]
-@[simp] theorem subst_groupRun {k : ℕ} (σ : Fin n → PTm k) (f m c L P D g : PTm n) :
-    Syn.subst σ (groupRun f m c L P D g) = groupRun (Syn.subst σ f) (Syn.subst σ m) (Syn.subst σ c)
-      (Syn.subst σ L) (Syn.subst σ P) (Syn.subst σ D) (Syn.subst σ g) := by
-  simp only [groupRun,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext j
-  fin_cases j <;> rfl
+ipra_subst testRun
+ipra_subst groupRun
 theorem test_program_at (g v p : PTm n) : Γ ⊢[PRAAx] testRun g v p ≐ inst3 testBody g v p := by
   simpa [testRun,testF,inst3,ap3] using toPR_eq (Γ := Γ) testBody ![g,v,p]
 theorem group_program_at (f m c L P D g : PTm n) : Γ ⊢[PRAAx] groupRun f m c L P D g ≐ group f m c L P D g := by

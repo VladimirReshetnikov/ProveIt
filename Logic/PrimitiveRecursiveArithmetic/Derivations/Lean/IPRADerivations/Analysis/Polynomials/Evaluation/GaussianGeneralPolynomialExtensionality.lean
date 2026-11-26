@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGeneralPolynomialExtensionality
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianCoefficientNameBounds (unit unit_positive subst_unit)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (bounded distanceBounded)
 open LeanProofs.IPRA.Analysis.GaussianRationalDistanceOrder (distance_congr distance_triangle_same)
@@ -25,9 +25,6 @@ open LeanProofs.IPRA.Analysis.GaussianGeneralCoefficientNames (generalCN)
 open LeanProofs.IPRA.Analysis.GaussianGeneralPolynomialEvaluation (observation observationF observationData T)
 open LeanProofs.IPRA.Analysis.GaussianNameEquivalence (diagonalEquivalent crossEquivalent)
 open LeanProofs.IPRA.Analysis.GaussianRootApproximationWitness (pointBounds)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -46,23 +43,11 @@ def input (a b : PR 3) (f g : PR 2) (N U V x w y z : PTm n) : Fm PTm n :=
   (GaussianGeneralPolynomialEvaluation.input b g N V w z ⋏
     (coefficientEquivalent a b N x w ⋏ diagonalEquivalent f g y z))
 
-@[simp] theorem subst_coefficientDiagonal {m : ℕ} (σ : Fin n → PTm m) (a b : PR 3) (i x w : PTm n) :
-    (coefficientDiagonal a b i x w).subst σ =
-      coefficientDiagonal a b (Syn.subst σ i) (Syn.subst σ x) (Syn.subst σ w) := by
-  simp [coefficientDiagonal,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_coefficientEquivalent {m : ℕ} (σ : Fin n → PTm m) (a b : PR 3) (N x w : PTm n) :
-    (coefficientEquivalent a b N x w).subst σ =
-      coefficientEquivalent a b (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ w) := by
-  simp [coefficientEquivalent,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_disk {m : ℕ} (σ : Fin n → PTm m) (U V : PTm n) :
-    Syn.subst σ (disk U V) = disk (Syn.subst σ U) (Syn.subst σ V) := by simp [disk]
-@[simp] theorem subst_envelope {m : ℕ} (σ : Fin n → PTm m) (b : PR 3) (N U V w : PTm n) :
-    Syn.subst σ (envelope b N U V w) =
-      envelope b (Syn.subst σ N) (Syn.subst σ U) (Syn.subst σ V) (Syn.subst σ w) := by simp [envelope]
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (a b : PR 3) (f g : PR 2)
-    (N U V x w y z : PTm n) : (input a b f g N U V x w y z).subst σ =
-      input a b f g (Syn.subst σ N) (Syn.subst σ U) (Syn.subst σ V)
-        (Syn.subst σ x) (Syn.subst σ w) (Syn.subst σ y) (Syn.subst σ z) := by simp [input]
+ipra_subst coefficientDiagonal [Syn.subst_shift, Syn.shift_subst]
+ipra_subst coefficientEquivalent [Syn.subst_shift, Syn.shift_subst]
+ipra_subst disk
+ipra_subst envelope
+ipra_subst input
 
 theorem coefficient_at (a b : PR 3) (N x w i m : PTm n)
     (h : Γ ⊢[PRAAx] coefficientEquivalent a b N x w) (hi : Γ ⊢[PRAAx] le i N) : Γ ⊢[PRAAx]

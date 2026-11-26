@@ -17,7 +17,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinReciprocalRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCompactLogarithmBounds (domain)
 open GaussianDominantPairAlgebra (radiusPoint radius_bounded)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
@@ -32,16 +32,12 @@ open GaussianCoefficientNameBounds (bounded_radius_mono)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianNameEquivalence (cross_refl)
 open GaussianNameRingLaws (oneF one_fast)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def lipschitz (H T : PTm n) : PTm n := H*H*GaussianRadiusExponentialLipschitzRate.factor T
 
-@[simp] theorem subst_lipschitz {m : ℕ} (σ : Fin n → PTm m) (H T : PTm n) :
-    Syn.subst σ (lipschitz H T) = lipschitz (Syn.subst σ H) (Syn.subst σ T) := by simp [lipschitz]
+ipra_subst lipschitz
 
 private theorem common_exponential_input (a b T : PTm n) (hb : Γ ⊢[PRAAx] le one b)
     (ht : Γ ⊢[PRAAx] le a (T*b)) :

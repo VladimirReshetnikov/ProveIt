@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerSquareCompactComparison
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalQuadratureSquarePartition (lowerNumerator widthNumerator intervalDenominator fineCount cellCap)
 open GaussianEulerSquareTimeGeometry (upperEndpoint majorant)
 open GaussianCompactRiemannName (mesh precision quadrature grid quadrature_index_congr)
@@ -27,9 +27,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_symmetric)
 open GaussianNameEquivalence (crossEquivalent)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,15 +38,9 @@ def envelope (R a C E T c d : PTm n) : PTm n :=
   num 3+cellCap c a C*(GaussianEulerCompactModulus.lipschitz R (intervalDenominator d E) (upperEndpoint c T)*cellCap c a C+two)+
     (c*C*C*majorant R E T c d)+num 3
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B a C E T c d : PTm n) :
-    (source z R B a C E T c d).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ c) (Syn.subst σ d) := by simp [source]
-@[simp] theorem subst_imageData {m : ℕ} (σ : Fin n → PTm m) (z R B a C E T c d : PTm n) :
-    Syn.subst σ (imageData z R B a C E T c d) = imageData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ c) (Syn.subst σ d) := by simp [imageData]
-@[simp] theorem subst_envelope {m : ℕ} (σ : Fin n → PTm m) (R a C E T c d : PTm n) :
-    Syn.subst σ (envelope R a C E T c d) = envelope (Syn.subst σ R) (Syn.subst σ a) (Syn.subst σ C)
-      (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ c) (Syn.subst σ d) := by simp [envelope]
+ipra_subst source
+ipra_subst imageData
+ipra_subst envelope
 
 private theorem row_bounds (p N z R B a C E T c d : PTm n)
     (hs : Γ ⊢[PRAAx] GaussianEulerSquareMappedInterval.source z R B a C E T c d) (hN : Γ ⊢[PRAAx] le one N) :

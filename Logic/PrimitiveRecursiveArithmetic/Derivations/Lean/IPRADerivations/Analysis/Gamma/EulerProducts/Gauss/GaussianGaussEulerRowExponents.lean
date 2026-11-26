@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGaussEulerRowExponents
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale oneCode)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianGammaEulerDenominatorGrouping (shiftedNumerator)
@@ -27,9 +27,6 @@ open GaussianNameArithmetic (addF addData add_fast multiplyF multiplyData multip
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_trans cross_symm)
 open GaussianRationalHorner (ofGaussian qadd)
 open GaussianRationalMetric (qnegative)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

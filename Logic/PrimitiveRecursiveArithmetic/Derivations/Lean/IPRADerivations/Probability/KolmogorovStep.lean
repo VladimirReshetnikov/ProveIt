@@ -1,6 +1,5 @@
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The first-crossing step of Kolmogorov's maximal inequality
@@ -35,16 +34,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.KolmogorovStep
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Expectation (Ew Wt inst2_mul' inst2_add' exp_add)
 open LeanProofs.IPRA.Probability.Independence (dsum dsum_congr dsum_add pmB inst3_pmB spB inst3_spB
   inst3_mul' inst3_add' ind_sum_second)
 open LeanProofs.IPRA.Probability.Variance (ad ad_sq)
 open LeanProofs.IPRA.Analysis.PowerSums (sum_le)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -134,12 +129,11 @@ theorem crossing_step (M K x : PTm n)
   have sA := natEq (ind_sum_second (Γ := Γ) (w := w) (X := P + N) (v := v) (Y := P' + N') M K x)
   have eA := natEq (exp_add (Γ := Γ) w P N M x)
   have eA' := natEq (exp_add (Γ := Γ) v P' N' K x)
-  have em := natEq hm
   have hp := past_bound w P N a M x hc
   have hf := future_bound v P' N' K x (Γ := Γ)
   ipra_le 𝔟 (Wt v K x) * sl hp + 𝔟 (Wt w M x) * sl hf using
     linear_combination -d₁ + C + d₂ + d₃ + d₄ + 2 * sP + 2 * sN - sA
       - 2 * 𝔟 (Ew v (P' + N') K x) * eA - 2 * (𝔟 (Ew w P M x) + 𝔟 (Ew w N M x)) * eA'
-      + 2 * (𝔟 (Ew w P M x) - 𝔟 (Ew w N M x)) * em
+      + 2 * (𝔟 (Ew w P M x) - 𝔟 (Ew w N M x)) * natEq hm
 
 end LeanProofs.IPRA.Probability.KolmogorovStep

@@ -14,31 +14,24 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCompactAlignedTime
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCompactRiemannName (inside value)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def body (F : PR 3) (a C E x p q t u : PTm n) : Fm PTm n :=
   inside a C E t ⟶ inside a C E u ⟶ distanceBounded (value t) (value u) zero one ⟶
     distanceBounded (ap3 F p t x) (ap3 F q u x) (unit p+unit q) (unit p*unit q)
-@[simp] theorem subst_body {m : ℕ} (σ : Fin n → PTm m) (F : PR 3) (a C E x p q t u : PTm n) :
-    (body F a C E x p q t u).subst σ = body F (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ x)
-      (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ t) (Syn.subst σ u) := by simp [body]
+ipra_subst body
 
 def alignedSamples (F : PR 3) (a C E x : PTm n) : Fm PTm n := .all (.all (.all (.all
   (body F (Syn.shift (Syn.shift (Syn.shift (Syn.shift a)))) (Syn.shift (Syn.shift (Syn.shift (Syn.shift C))))
     (Syn.shift (Syn.shift (Syn.shift (Syn.shift E)))) (Syn.shift (Syn.shift (Syn.shift (Syn.shift x))))
     (var 3) (var 2) (var 1) (var 0)))))
-@[simp] theorem subst_alignedSamples {m : ℕ} (σ : Fin n → PTm m) (F : PR 3) (a C E x : PTm n) :
-    (alignedSamples F a C E x).subst σ = alignedSamples F (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ x) := by
-  simp [alignedSamples,Syn.subst_shift,Syn.shift_subst,Syn.up]
+ipra_subst alignedSamples [Syn.subst_shift, Syn.shift_subst, Syn.up]
 
 theorem aligned_at (F : PR 3) (p q a C E x t u : PTm n)
     (h : Γ ⊢[PRAAx] alignedSamples F a C E x) (ht : Γ ⊢[PRAAx] inside a C E t) (hu : Γ ⊢[PRAAx] inside a C E u)

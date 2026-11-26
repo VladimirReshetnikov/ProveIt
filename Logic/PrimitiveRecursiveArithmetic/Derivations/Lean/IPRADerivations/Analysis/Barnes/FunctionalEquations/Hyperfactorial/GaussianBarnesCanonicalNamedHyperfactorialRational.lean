@@ -19,7 +19,7 @@ set_option maxHeartbeats 1500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalNamedHyperfactorialRational
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (normSq_neg normSq_one oneCode scale)
 open GaussianBarnesCanonicalOrdinaryUpperGrowth (minusOne valueData)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -37,9 +37,6 @@ open GaussianRationalHorner
     qadd_represents represents_congr represents_rescale)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRootAlgebra (equal equal_of_values re_neg im_neg re_scale im_scale)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

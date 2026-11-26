@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Integration.Quadrature.BaselQuadrature
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The independent Riemann-sum code of the Basel constant
@@ -26,7 +25,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.BaselRiemann
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.BaselQuadrature (Qb U U_zero U_bound quadrature)
 open LeanProofs.IPRA.Analysis.BaselUniform (Yp Ym dyadic cut cut_eq)
 open LeanProofs.IPRA.Analysis.BaselCore (Ap Am)
@@ -36,10 +35,6 @@ open LeanProofs.IPRA.Analysis.BaselFinite (tB inst2_t odd_pos Dec alt_decreasing
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (quo_anti pw2_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (eq_succ_pred)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -174,14 +169,10 @@ theorem riemann_dyadic {r M₀ m L : PTm n} (hm : Γ ⊢[PRAAx] le (pw two r) m)
 private abbrev growthF : Fm PTm 1 := le (num 16 * var 0 + num 124) (num 128 * pw two (var 0))
 
 private theorem growth₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] growthF := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_num,
-      Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine le_of_eq_add (d := num 4) ?_
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2]
+  · refine le_of_eq_add (d := num 4) ?_
     ipra_lc 128 * natEq (pw_zero (Γ := []) (two : PTm 0))
-  · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_num,
-      Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine le_of_eq_add (d := num 16 * var 0 + num 108 + two * monus (num 128 * pw two (var 0))
+  · refine le_of_eq_add (d := num 16 * var 0 + num 108 + two * monus (num 128 * pw two (var 0))
       (num 16 * var 0 + num 124)) ?_
     ipra_lc 128 * natEq (pw_succ (Γ := [growthF]) (two : PTm 1) (var 0)) +
       2 * natEq (eq_add_of_le (Prf.hyp0 : [growthF] ⊢[PRAAx] growthF))
@@ -211,9 +202,8 @@ theorem riemann {k m L : PTm n} (hm : Γ ⊢[PRAAx] le (cut k) m) (hL : Γ ⊢[P
         (pw two k * (num 6 * S m L) + fact L * fact L) := by
   have hp := pw2_pos (Γ := Γ) (two * k + num 7)
   have eM : Γ ⊢[PRAAx] cut k * cut k ≐ succ (pred (cut k * cut k)) := by
-    have hp' := natEq hp
     refine eq_succ_pred (y := pred (cut k) * pred (cut k) + two * pred (cut k)) ?_
-    ipra_lc (𝔞 (cut k) + 𝔞 (pred (cut k)) + 1) * hp'
+    ipra_lc (𝔞 (cut k) + 𝔞 (pred (cut k)) + 1) * natEq hp
   have hQ' : Γ ⊢[PRAAx] le (two * (succ (pred (cut k * cut k)) * succ (pred (cut k * cut k)))) L :=
     le_congr (congrMul (.eqRefl two) (congrMul eM eM)) (.eqRefl _) hQ
   have rd := riemann_dyadic (r := two * k + num 7) hm hL hmL eM.eqSymm hQ'

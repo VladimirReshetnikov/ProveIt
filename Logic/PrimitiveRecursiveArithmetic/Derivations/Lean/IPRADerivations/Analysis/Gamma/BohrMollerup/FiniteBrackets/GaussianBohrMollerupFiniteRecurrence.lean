@@ -16,7 +16,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBohrMollerupFiniteRecurrence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBohrMollerupBracketEndpoints (rowBody row_at sumData sum_regular)
 open GaussianBohrMollerupChords (argument_congr)
 open GaussianBohrMollerupPresentation (Presentation argument laws values recurrence observe_value observe_recurrence)
@@ -31,10 +31,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRationalHorner (qadd qzero positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianStirlingGammaLogarithm (source)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "H" => GaussianHarmonicLogarithmName.nameF
@@ -44,9 +40,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 
 def logSum (p a b N : PTm n) : PTm n := finite H rowBody p N (pairT a b)
 
-@[simp] theorem subst_logSum {m : ℕ} (σ : Fin n → PTm m) (p a b N : PTm n) :
-    Syn.subst σ (logSum p a b N) = logSum (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by
-  simp [logSum,finite]
+ipra_subst logSum [finite]
 
 theorem shifted_source (a b N : PTm n) (h : Γ ⊢[PRAAx] source a b) :
     Γ ⊢[PRAAx] source (a+b*N) b :=
@@ -75,9 +69,7 @@ def finiteBound (P : Presentation) (p a b N : PTm n) : Fm PTm n :=
   distanceBounded (ap2 P.nameF p (argument P (a+b*N) b))
     (qadd (ap2 P.nameF p (argument P a b)) (logSum p a b N)) (num 5*N) (unit p)
 
-@[simp] theorem subst_finiteBound {m : ℕ} (σ : Fin n → PTm m) (P : Presentation) (p a b N : PTm n) :
-    (finiteBound P p a b N).subst σ =
-      finiteBound P (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by simp [finiteBound]
+ipra_subst finiteBound
 
 private theorem finite_zero (P : Presentation) (p a b : PTm n)
     (hv : Γ ⊢[PRAAx] values P) (hs : Γ ⊢[PRAAx] source a b) :

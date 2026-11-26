@@ -16,7 +16,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaDirichletSquareFinite
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetBaselBinding (literalSum)
 open GaussianEulerPositiveScalingConstant (inverseF)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
@@ -32,9 +32,6 @@ open GaussianRationalHorner (qadd)
 open GaussianRationalSyntheticDivision (qadd_congr)
 open RationalGaussianEmbedding (embed embed_add embed_at embedF)
 open RationalReciprocalPowerTail (reciprocalPower reciprocal_congr tail tail_zero tail_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

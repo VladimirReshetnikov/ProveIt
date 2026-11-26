@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalEliminationUnmarkedRows
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero)
 open GaussianPolynomialDeterminantTerms (cell)
 open GaussianRationalRowElimination (pivot shape)
@@ -24,9 +24,6 @@ open GaussianTranslatedNonconstant (recode_congr recode_eq)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (entry_congr)
 open LeanProofs.IPRA.Foundations.BoundedSyntax (BFm formula)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -45,9 +42,7 @@ def zeroRowsSyntax (E H R c : PTm n) : BFm n := .all R
 
 theorem zero_rows_formula (E H R c : PTm n) : formula (zeroRowsSyntax E H R c) = zeroRows E H R c := rfl
 
-@[simp] theorem subst_zeroRows {k : ℕ} (σ : Fin n → PTm k) (E H R c : PTm n) :
-    (zeroRows E H R c).subst σ = zeroRows (Syn.subst σ E) (Syn.subst σ H) (Syn.subst σ R) (Syn.subst σ c) := by
-  simp [zeroRows,Syn.subst_shift,Syn.shift_subst]
+ipra_subst zeroRows [Syn.subst_shift, Syn.shift_subst]
 
 theorem row_zero_at (E H R c r j : PTm n) (h : Γ ⊢[PRAAx] zeroRows E H R c) (hr : Γ ⊢[PRAAx] lt r R)
     (hu : Γ ⊢[PRAAx] unmarked H c r) (hj : Γ ⊢[PRAAx] lt j c) : Γ ⊢[PRAAx] pivot E r j ≐ qzero := by
@@ -152,9 +147,7 @@ theorem advanced_rows (A R N c : PTm n) (hA : Γ ⊢[PRAAx] shape A R N) (hc : �
 def prefixLaw (A R N c : PTm n) : Fm PTm n := le c N ⟶ zeroRows (matrix A R N c) (history A R N c) R c
 def prefixSyntax (A R N c : PTm n) : BFm n := .imp (.le c N) (zeroRowsSyntax (matrix A R N c) (history A R N c) R c)
 theorem prefix_formula (A R N c : PTm n) : formula (prefixSyntax A R N c) = prefixLaw A R N c := rfl
-@[simp] theorem subst_prefixLaw {k : ℕ} (σ : Fin n → PTm k) (A R N c : PTm n) :
-    (prefixLaw A R N c).subst σ = prefixLaw (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ c) := by
-  simp [prefixLaw]
+ipra_subst prefixLaw
 
 theorem prefix_zero_rows (A R N c : PTm n) (hA : Γ ⊢[PRAAx] shape A R N) (hc : Γ ⊢[PRAAx] le c N) :
     Γ ⊢[PRAAx] zeroRows (matrix A R N c) (history A R N c) R c := by

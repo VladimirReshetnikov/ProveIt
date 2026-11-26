@@ -16,11 +16,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRootCompletedAdequacy
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRootAdequacy (inputContract)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -46,10 +43,7 @@ def distanceNonnegative (step a : PR 3) (point : PR 2) (N x : PTm n) : Fm PTm n 
     (ap2 (GaussianRootDistanceCompletion.nameF step a point) (var 0)
       (GaussianRootDistanceCompletion.nameData (Syn.shift N) (Syn.shift x))))
 
-@[simp] theorem subst_distanceNonnegative {m : ℕ} (σ : Fin n → PTm m) (step a : PR 3) (point : PR 2)
-    (N x : PTm n) : (distanceNonnegative step a point N x).subst σ =
-    distanceNonnegative step a point (Syn.subst σ N) (Syn.subst σ x) := by
-  simp [distanceNonnegative,Syn.subst_shift,Syn.shift_subst]
+ipra_subst distanceNonnegative [Syn.subst_shift, Syn.shift_subst]
 
 theorem completed_distance_nonnegative (step a : PR 3) (point : PR 2) (N x : PTm n) :
     Γ ⊢[PRAAx] distanceNonnegative step a point N x :=
@@ -62,18 +56,12 @@ def completionConclusion (step a : PR 3) (point : PR 2) (N Z x : PTm n) : Fm PTm
     Fm.iff (GaussianRootDistanceZero.completedZero step a point N x)
       (GaussianPolynomialValueName.nameZero a point N (Z+one) x))
 
-@[simp] theorem subst_completionConclusion {m : ℕ} (σ : Fin n → PTm m) (step a : PR 3) (point : PR 2)
-    (N Z x : PTm n) : (completionConclusion step a point N Z x).subst σ =
-    completionConclusion step a point (Syn.subst σ N) (Syn.subst σ Z) (Syn.subst σ x) := by
-  simp [completionConclusion,Fm.iff]
+ipra_subst completionConclusion [Fm.iff]
 
 def conclusion (step a : PR 3) (point : PR 2) (N Z x : PTm n) : Fm PTm n :=
   GaussianRootAdequacyTheorem.conclusion step a point N Z x ⋏ completionConclusion step a point N Z x
 
-@[simp] theorem subst_conclusion {m : ℕ} (σ : Fin n → PTm m) (step a : PR 3) (point : PR 2)
-    (N Z x : PTm n) : (conclusion step a point N Z x).subst σ =
-    conclusion step a point (Syn.subst σ N) (Syn.subst σ Z) (Syn.subst σ x) := by
-  simp [conclusion]
+ipra_subst conclusion
 
 theorem completed_root_adequacy (step a : PR 3) (point : PR 2) (N Z x : PTm n)
     (h : Γ ⊢[PRAAx] inputContract step a point N Z x) : Γ ⊢[PRAAx] conclusion step a point N Z x :=

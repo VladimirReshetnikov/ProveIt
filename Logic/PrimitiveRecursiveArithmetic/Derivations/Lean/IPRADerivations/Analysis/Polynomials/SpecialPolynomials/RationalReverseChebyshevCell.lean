@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalReverseChebyshevCell
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianPositiveRealArithmetic (sign)
 open GaussianRationalL1 (nonnegative_of_lower)
 open GaussianRationalSyntheticBounds (add_monotone)
@@ -22,8 +22,6 @@ open RationalArgmin (rationalLE rationalLE_congr reflexive transitive)
 open RationalArithmetic (add multiply negative add_guard multiply_monotone)
 open RationalHalfNinthProductLower (add_negative_cancel)
 open RationalNormalForm (wellFormed)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

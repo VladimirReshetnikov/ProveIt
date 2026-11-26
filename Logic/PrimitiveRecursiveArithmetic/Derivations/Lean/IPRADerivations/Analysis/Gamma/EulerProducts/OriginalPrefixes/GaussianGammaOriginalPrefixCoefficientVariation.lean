@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaOriginalPrefixCoefficientVariation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaOriginalC19Prefix (stage buffer totalDegree)
 open GaussianGammaFixedCoefficientVariation (modulus)
 open GaussianGammaInputPrecisionNorm (radiusNumerator radiusDenominator denominator_positive)
@@ -22,21 +22,14 @@ open GaussianGammaFiniteCoefficientStability (fixedCoefficient)
 open GaussianRationalLowCoefficientConvolution (exponentCoefficient)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def modulusBody : PTm 2 := modulus (two*var 1) (var 0)
 def cap (R d : PTm n) : PTm n := one+LeanProofs.IPRA.Foundations.FiniteQueryDemand.finiteMaximum modulusBody (succ d) R
 def precision (q R d : PTm n) : PTm n := GaussianGammaCofinalCoefficientName.coefficientPrecision (stage q d) (two*R)
-@[simp] theorem subst_cap {l : ℕ} (σ : Fin n → PTm l) (R d : PTm n) :
-    Syn.subst σ (cap R d) = cap (Syn.subst σ R) (Syn.subst σ d) := by simp [cap]
-@[simp] theorem subst_precision {l : ℕ} (σ : Fin n → PTm l) (q R d : PTm n) :
-    Syn.subst σ (precision q R d) = precision (Syn.subst σ q) (Syn.subst σ R) (Syn.subst σ d) := by
-  simp [precision,stage,GaussianGammaCofinalCoefficientName.coefficientPrecision,GaussianGammaCofinalCoefficientName.exponentClock,
-    GaussianGammaCofinalCoefficientName.inputClock,GaussianGammaCofinalCoefficientName.outerClock]
+ipra_subst cap
+ipra_subst precision [stage, GaussianGammaCofinalCoefficientName.coefficientPrecision, GaussianGammaCofinalCoefficientName.exponentClock, GaussianGammaCofinalCoefficientName.inputClock, GaussianGammaCofinalCoefficientName.outerClock]
 
 theorem modulus_body_at (R e : PTm n) : Γ ⊢[PRAAx] inst2 modulusBody e R ≐ modulus (two*R) e := by
   simp only [modulusBody,inst2,GaussianGammaFixedCoefficientVariation.subst_modulus,PTm.subst_mul,

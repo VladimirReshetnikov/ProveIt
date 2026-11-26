@@ -13,14 +13,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartImageCompactModulus
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCompactLogarithmBounds (domain)
 open GaussianCompactRiemannName (inside localBody sampledModulus)
 open GaussianEulerCompactModulus (lipschitz)
 open GaussianEulerIntegrandName (evaluatorF fixedData)
 open GaussianRationalMetric (distanceBounded)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -35,17 +33,11 @@ def data (z R B a C E G T : PTm n) : PTm n :=
 
 abbrev nameF : PR 2 := GaussianEulerCompactModulus.nameF
 
-@[simp] theorem subst_geometry {m : ℕ} (σ : Fin n → PTm m) (a C E G T : PTm n) :
-    (geometry a C E G T).subst σ = geometry (Syn.subst σ a) (Syn.subst σ C)
-      (Syn.subst σ E) (Syn.subst σ G) (Syn.subst σ T) := by simp [geometry]
+ipra_subst geometry
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B a C E G T : PTm n) :
-    (source z R B a C E G T).subst σ = source (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ G) (Syn.subst σ T) := by simp [source]
+ipra_subst source
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (z R B a C E G T : PTm n) :
-    Syn.subst σ (data z R B a C E G T) = data (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ G) (Syn.subst σ T) := by simp [data]
+ipra_subst data
 
 theorem domain_of_inside (t a C E G T : PTm n) (hg : Γ ⊢[PRAAx] geometry a C E G T)
     (ht : Γ ⊢[PRAAx] inside a C E t) : Γ ⊢[PRAAx] domain (fstT t) (sndT t) G T := by

@@ -2,7 +2,6 @@ import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactLowe
 import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.GaussianEulerLowerTailFiniteBudget
 import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.GaussianEulerLowerCofinalQuadrature
 import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCutoffCauchyComparison
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The actual lower-cutoff Euler name and its sharp tail bound
@@ -17,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerNamedLowerTail
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaIntegralCutoffs (height etaDen top)
 open GaussianGammaCompactCutoffGeometry (lowerWidth)
 open GaussianGammaCompactCutoffSplit (lowerData)
@@ -35,10 +34,6 @@ open GaussianRationalHorner (qzero positive_product)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianRationalDistanceOrder (distance_congr distance_symmetric)
 open GaussianRationalSlackRemoval (slack slack_removal_at)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -48,17 +43,9 @@ def point (s z R B p q A : PTm n) : PTm n := ap2 nameF s (lowerData z R B p q A)
 def result (s z R B p q A : PTm n) : Fm PTm n :=
   bounded (point s z R B p q A) (A*unit s+unit (height p A R)) (unit (height p A R)*unit s)
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B A : PTm n) :
-    (source z R B A).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) :=
-  by simp [source]
-@[simp] theorem subst_point {m : ℕ} (σ : Fin n → PTm m) (s z R B p q A : PTm n) :
-    Syn.subst σ (point s z R B p q A) =
-      point (Syn.subst σ s) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ A) :=
-  by simp [point]
-@[simp] theorem subst_result {m : ℕ} (σ : Fin n → PTm m) (s z R B p q A : PTm n) :
-    (result s z R B p q A).subst σ = result (Syn.subst σ s) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ A) :=
-  by simp [result,height,GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst source
+ipra_subst point
+ipra_subst result [height, GaussianGammaIntegralCutoffs.tailCoefficient]
 
 theorem split_source (z R B p q A : PTm n) (h : Γ ⊢[PRAAx] source z R B A) (hpq : Γ ⊢[PRAAx] le p q) :
     Γ ⊢[PRAAx] GaussianGammaCompactCutoffSplit.source z R B p q A :=

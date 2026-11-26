@@ -13,15 +13,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerNamedPowerScalingArbitraryLimit
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerNamedPowerScalingArbitraryPanel (panelSource contains)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator rate_at)
 open GaussianNamedDampingPowerCompact (nameF data name_regular)
 open GaussianNameEquivalence (cross_refl)
 open GaussianRationalMetric (distanceBounded)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -33,11 +31,7 @@ private theorem subst_contains {m : ℕ} (σ : Fin n → PTm m) (F G : PR 2) (s 
     GaussianEulerPowerChartCofinalEndpoints.upperNumerator, GaussianGammaIntegralCutoffs.etaDen, GaussianGammaIntegralCutoffs.top,
     GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient]
 
-@[simp] theorem subst_panelSource {m : ℕ} (σ : Fin n → PTm m) (F G : PR 2) (s z R B A x E T y H J a W D U : PTm n) :
-    (panelSource F G s z R B A x E T y H J a W D U).subst σ =
-      panelSource F G (Syn.subst σ s) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ x)
-        (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ y) (Syn.subst σ H) (Syn.subst σ J) (Syn.subst σ a) (Syn.subst σ W)
-        (Syn.subst σ D) (Syn.subst σ U) := by simp [panelSource,subst_contains]
+ipra_subst panelSource [subst_contains]
 
 private theorem subst_formulaData {m : ℕ} (σ : Fin n → PTm m) (F G : PR 2) (z R B A x E y H J : PTm n) :
     Syn.subst σ (GaussianEulerNamedPowerScalingFormula.data F G z R B A x E y H J) =

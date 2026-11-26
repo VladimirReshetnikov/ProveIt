@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCyclicHalfSineMargin
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianArctangentDivisionAngles (coefficient source)
 open GaussianArctangentDivisionSinePositive (sine_lower exactSineData)
 open GaussianNamedSineFromExponential (sineF)
@@ -30,10 +30,6 @@ open ComplexLogarithmRemainder (re normSq)
 open GaussianRelativeNormTriangle (signed_le_absolute)
 open LeanProofs.IPRA.Foundations.GapDecision (zabs)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -41,9 +37,7 @@ local notation "D" => GaussianArctangentDivisionAngles.nameF
 
 def sineSample (p d m x : PTm n) : PTm n := ap2 (sineF D) p (exactSineData d m x)
 
-@[simp] theorem subst_sineSample {l : ℕ} (σ : Fin n → PTm l) (p d m x : PTm n) :
-    Syn.subst σ (sineSample p d m x) = sineSample (Syn.subst σ p) (Syn.subst σ d) (Syn.subst σ m) (Syn.subst σ x) := by
-  simp [sineSample,exactSineData,two,one]
+ipra_subst sineSample [exactSineData, two, one]
 
 private theorem chord_at (p d m x : PTm n) (h : Γ ⊢[PRAAx] source d m) :
     Γ ⊢[PRAAx] upper (fstT (coefficient d m)) (fstT (sineSample p d m x)) two (unit p) := by

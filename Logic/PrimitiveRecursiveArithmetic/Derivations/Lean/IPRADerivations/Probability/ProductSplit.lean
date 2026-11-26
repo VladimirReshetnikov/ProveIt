@@ -1,6 +1,5 @@
 import IPRADerivations.Probability.ProductPower
 import IPRADerivations.Foundations.MixedRadix
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Splitting the iterated product law into a past and a future block
@@ -24,15 +23,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.ProductSplit
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.BlockSum (qr_block)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
 open LeanProofs.IPRA.Probability.ProductPower (dg div_eq' rem_lt'' dB_at low_congr Pr Sr wdB xdB)
 open LeanProofs.IPRA.Foundations.MixedRadix (prod_split)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

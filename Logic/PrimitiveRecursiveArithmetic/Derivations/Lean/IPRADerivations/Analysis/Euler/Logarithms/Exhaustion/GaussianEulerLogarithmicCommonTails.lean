@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Euler.Logarithms.LowerBounds.GaussianEulerLogarithmicLowerGuardBound
 import IPRADerivations.Analysis.Euler.Logarithms.UpperBounds.GaussianEulerLogarithmicUpperCutoffBudget
 import IPRADerivations.Analysis.Euler.Logarithms.Exhaustion.GaussianEulerLogarithmicCommonCutoff
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Both actual logarithmic tails at the common expanded cutoffs
@@ -17,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicCommonTails
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLogarithmicIntervalName (nameF data)
 open GaussianEulerLogarithmicCompactName (evaluatorF fixedData)
 open GaussianEulerLogarithmicMultiplier (lipschitz)
@@ -29,10 +28,6 @@ open GaussianRationalMetric (bounded)
 open GaussianRationalHorner (positive_product qzero)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

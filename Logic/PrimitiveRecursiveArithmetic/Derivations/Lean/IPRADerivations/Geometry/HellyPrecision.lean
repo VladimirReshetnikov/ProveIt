@@ -17,10 +17,8 @@ of denominators, interval endpoints as natural terms):
 
 namespace LeanProofs.IPRA.Geometry.HellyPrecision
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Topology.MetricNets (join le_join_left le_join_right join_le)
-open Syn
-open scoped Fm
 
 variable {n t : ℕ} {Γ : List (Fm PTm n)}
 

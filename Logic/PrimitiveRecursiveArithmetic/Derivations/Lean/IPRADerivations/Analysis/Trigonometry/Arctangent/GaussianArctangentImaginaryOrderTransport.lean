@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentImaginaryOrderTransport
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianArctangentInverseForward (imaginaryOrder subst_imaginaryOrder imaginary_order_at)
 open GaussianArctangentInverseSampler (ordinate)
 open GaussianArctangentNamedChord (imaginary_coordinate_radius)
@@ -22,10 +22,6 @@ open GaussianNameEquivalence (crossEquivalent cross_at)
 open GaussianNamedRealOrderTransport (upperSlack precision remove_upper_slack)
 open GaussianRationalHorner (positive_product)
 open RationalValueBounds (upper upper_of_radius upper_triangle upper_mono)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

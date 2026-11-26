@@ -25,13 +25,11 @@ walks:
 
 namespace LeanProofs.IPRA.Topology.FiniteConnected
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Topology.FiniteInteriorClosure
 open LeanProofs.IPRA.Topology.FiniteClosureMaps (comp clopen_walk)
 open LeanProofs.IPRA.Foundations.RichardsonLogic (iffF)
 open LeanProofs.IPRA.Foundations.ObservationCut.Finality (Walk pathDerivation)
-open Syn
-open scoped Fm
 
 variable {n k l m : ℕ} {Γ : List (Fm PTm n)}
 variable {relX : Fin k → Fin k → Prop} {relY : Fin l → Fin l → Prop} {relZ : Fin m → Fin m → Prop}

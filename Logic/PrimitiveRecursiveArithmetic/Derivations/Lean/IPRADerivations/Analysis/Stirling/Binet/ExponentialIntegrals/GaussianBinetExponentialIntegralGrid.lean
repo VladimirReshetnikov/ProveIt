@@ -18,7 +18,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetExponentialIntegralGrid
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetExponentialPanel (sample nonpositive)
 open GaussianBinetLaplaceStrip (tagNumerator)
 open GaussianCompactRiemannName (sampleBody sampleData quadrature grid sample_body_at)
@@ -29,9 +29,6 @@ open GaussianRationalHorner (qmul qmul_canonical qzero positive_product)
 open GaussianRationalMetric (bounded qnegative)
 open GaussianRationalReciprocal (bounded_product bound_congr)
 open GaussianRationalSyntheticDivision (qmul_congr qone qmul_zero_right)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,19 +38,13 @@ def evaluatorTerm (p t x : PTm n) : PTm n := row p (fstT x) (sndT x) (tagNumerat
 def evaluatorF : PR 3 := PTm.toPR (evaluatorTerm (var 0) (var 1) (var 2))
 def value (p q S T N : PTm n) : PTm n := quadrature evaluatorF p N one T one (pairT q S)
 
-@[simp] theorem subst_exponent {m : ℕ} (σ : Fin n → PTm m) (q A B : PTm n) :
-    Syn.subst σ (exponent q A B) = exponent (Syn.subst σ q) (Syn.subst σ A) (Syn.subst σ B) := by simp [exponent]
+ipra_subst exponent
 
-@[simp] theorem subst_row {m : ℕ} (σ : Fin n → PTm m) (p q S A B : PTm n) :
-    Syn.subst σ (row p q S A B) = row (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ S) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [row]
+ipra_subst row
 
-@[simp] theorem subst_evaluatorTerm {m : ℕ} (σ : Fin n → PTm m) (p t x : PTm n) :
-    Syn.subst σ (evaluatorTerm p t x) = evaluatorTerm (Syn.subst σ p) (Syn.subst σ t) (Syn.subst σ x) := by simp [evaluatorTerm]
+ipra_subst evaluatorTerm
 
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (p q S T N : PTm n) :
-    Syn.subst σ (value p q S T N) = value (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ N) := by
-  simp [value,one]
+ipra_subst value [one]
 
 private theorem row_congr (p q S A A' B B' : PTm n)
     (ha : Γ ⊢[PRAAx] A ≐ A') (hb : Γ ⊢[PRAAx] B ≐ B') :

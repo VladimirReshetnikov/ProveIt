@@ -16,15 +16,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalCofinalPowerOrder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero)
+open_ipra
 open RationalNestedIntervals (regular positiveWitness)
 open RationalIntervalPowerComparison (stage powerEndpoint productEndpoint powerCenter productCenter
   centerOrder multiplicative_of_center_order)
 open RationalCubeGrid (scale)
 open RationalValueBounds (upper)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔟" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -36,16 +33,8 @@ def widthsAt (L U : PR 3) (X Y Z a b o k x : PTm n) : Fm PTm n :=
 def widths (L U : PR 3) (X Y Z a b o x : PTm n) : Fm PTm n := .all
   (widthsAt L U (Syn.shift X) (Syn.shift Y) (Syn.shift Z) (Syn.shift a) (Syn.shift b) (Syn.shift o) (var 0) (Syn.shift x))
 
-@[simp] theorem subst_widthsAt {m : ℕ} (σ : Fin n → PTm m) (L U : PR 3) (X Y Z a b o k x : PTm n) :
-    (widthsAt L U X Y Z a b o k x).subst σ =
-      widthsAt L U (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ Z) (Syn.subst σ a) (Syn.subst σ b)
-        (Syn.subst σ o) (Syn.subst σ k) (Syn.subst σ x) := by
-  simp [widthsAt,scale]
-@[simp] theorem subst_widths {m : ℕ} (σ : Fin n → PTm m) (L U : PR 3) (X Y Z a b o x : PTm n) :
-    (widths L U X Y Z a b o x).subst σ =
-      widths L U (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ Z) (Syn.subst σ a) (Syn.subst σ b)
-        (Syn.subst σ o) (Syn.subst σ x) := by
-  simp [widths,Syn.subst_shift,Syn.shift_subst]
+ipra_subst widthsAt [scale]
+ipra_subst widths [Syn.subst_shift, Syn.shift_subst]
 
 theorem widths_at (L U : PR 3) (X Y Z a b o k x : PTm n) (h : Γ ⊢[PRAAx] widths L U X Y Z a b o x) :
     Γ ⊢[PRAAx] widthsAt L U X Y Z a b o k x := by
@@ -81,11 +70,7 @@ def witnessInput (L U : PR 3) (X Y Z o sx sy sz x : PTm n) : Fm PTm n :=
   regular L U X x ⋏ (regular L U Y x ⋏ (regular L U Z x ⋏
     (positiveWitness L X o sx x ⋏ (positiveWitness L Y o sy x ⋏ positiveWitness L Z o sz x))))
 
-@[simp] theorem subst_witnessInput {m : ℕ} (σ : Fin n → PTm m) (L U : PR 3) (X Y Z o sx sy sz x : PTm n) :
-    (witnessInput L U X Y Z o sx sy sz x).subst σ =
-      witnessInput L U (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ Z) (Syn.subst σ o)
-        (Syn.subst σ sx) (Syn.subst σ sy) (Syn.subst σ sz) (Syn.subst σ x) := by
-  simp [witnessInput,RationalNestedIntervals.positiveWitness,RationalConvexFiniteModulus.eps]
+ipra_subst witnessInput [RationalNestedIntervals.positiveWitness, RationalConvexFiniteModulus.eps]
 
 theorem transport (L U : PR 3) (X Y Z a b o f sx sy sz x : PTm n)
     (hi : Γ ⊢[PRAAx] witnessInput L U X Y Z o sx sy sz x)

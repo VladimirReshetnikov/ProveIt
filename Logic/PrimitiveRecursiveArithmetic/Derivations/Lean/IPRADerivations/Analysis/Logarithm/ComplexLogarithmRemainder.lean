@@ -22,16 +22,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Variance (ad)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Analysis.LogarithmRemainder
   (numerator denominator three numerator_zero numerator_succ denominator_positive finite_taylor_bound)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -54,29 +50,17 @@ def normSq (c : PTm n) : PTm n :=
 
 def bounded (c R : PTm n) : Fm PTm n := le (normSq c) (R * R)
 
-@[simp] theorem subst_re {m : ℕ} (σ : Fin n → PTm m) (c : PTm n) :
-    (re c).subst σ = re (Syn.subst σ c) := by simp [re, ZT.subst]
-@[simp] theorem subst_im {m : ℕ} (σ : Fin n → PTm m) (c : PTm n) :
-    (im c).subst σ = im (Syn.subst σ c) := by simp [im, ZT.subst]
-@[simp] theorem subst_code {m : ℕ} (σ : Fin n → PTm m) (x y : ZT n) :
-    Syn.subst σ (code x y) = code (x.subst σ) (y.subst σ) := by simp [code, ZT.subst]
-@[simp] theorem subst_add {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (add a b) = add (Syn.subst σ a) (Syn.subst σ b) := by simp [add]
-@[simp] theorem subst_mul {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (mul a b) = mul (Syn.subst σ a) (Syn.subst σ b) := by simp [mul]
-@[simp] theorem subst_neg {m : ℕ} (σ : Fin n → PTm m) (a : PTm n) :
-    Syn.subst σ (neg a) = neg (Syn.subst σ a) := by simp [neg]
-@[simp] theorem subst_scale {m : ℕ} (σ : Fin n → PTm m) (C a : PTm n) :
-    Syn.subst σ (scale C a) = scale (Syn.subst σ C) (Syn.subst σ a) := by simp [scale]
-@[simp] theorem subst_zeroCode {m : ℕ} (σ : Fin n → PTm m) :
-    Syn.subst σ (zeroCode : PTm n) = (zeroCode : PTm m) := by simp [zeroCode]
-@[simp] theorem subst_oneCode {m : ℕ} (σ : Fin n → PTm m) :
-    Syn.subst σ (oneCode : PTm n) = (oneCode : PTm m) := by simp [oneCode]
-@[simp] theorem subst_normSq {m : ℕ} (σ : Fin n → PTm m) (c : PTm n) :
-    Syn.subst σ (normSq c) = normSq (Syn.subst σ c) := by
-  simp [normSq, ad, re, im]
-@[simp] theorem subst_bounded {m : ℕ} (σ : Fin n → PTm m) (c R : PTm n) :
-    (bounded c R).subst σ = bounded (Syn.subst σ c) (Syn.subst σ R) := by simp [bounded]
+ipra_subst re [ZT.subst]
+ipra_subst im [ZT.subst]
+ipra_subst code [ZT.subst]
+ipra_subst add
+ipra_subst mul
+ipra_subst neg
+ipra_subst scale
+ipra_subst zeroCode
+ipra_subst oneCode
+ipra_subst normSq [ad, re, im]
+ipra_subst bounded
 
 theorem eval_re_code (x y : ZT n) : ZT.toZ Γ (re (code x y)) = ZT.toZ Γ x := by
   have a := natEq ((congrFst (fst_pair (pairT x.pos x.neg) (pairT y.pos y.neg))).eqTrans
@@ -184,8 +168,7 @@ def powerStep : PTm 3 := mul (var 1) (var 2)
 def powerF : PR 2 := rec2 oneCode powerStep
 def power (z k : PTm n) : PTm n := ap2 powerF k z
 
-@[simp] theorem subst_power {m : ℕ} (σ : Fin n → PTm m) (z k : PTm n) :
-    Syn.subst σ (power z k) = power (Syn.subst σ z) (Syn.subst σ k) := by simp [power]
+ipra_subst power
 
 theorem power_zero (z : PTm n) : Γ ⊢[PRAAx] power z zero ≐ oneCode := by
   simpa [power, powerF] using rec2_zero (Γ := Γ) oneCode powerStep z
@@ -198,15 +181,11 @@ theorem power_succ (z k : PTm n) :
 theorem bounded_power (z R k : PTm n) (h : Γ ⊢[PRAAx] bounded z R) :
     Γ ⊢[PRAAx] bounded (power z k) (pw R k) := by
   have all : Γ ⊢[PRAAx] .all (bounded (power (Syn.shift z) (var 0)) (pw (Syn.shift R) (var 0))) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_bounded, subst_power, subst_ap2, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift]
-      have l := (congr_normSq (power_zero (Γ := Γ) z)).eqTrans normSq_one
+    ipra_qfind (le_QF _ _) [subst_bounded, subst_power, subst_ap2]
+    · have l := (congr_normSq (power_zero (Γ := Γ) z)).eqTrans normSq_one
       have r := (congrMul (pw_zero (Γ := Γ) R) (pw_zero R)).eqTrans (one_mul one)
       exact le_congr l.eqSymm r.eqSymm (le_refl one)
-    · simp only [subst_bounded, subst_power, subst_ap2, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift]
-      have shifted : Γ.map Fm.shift ⊢[PRAAx] bounded (Syn.shift z) (Syn.shift R) := by
+    · have shifted : Γ.map Fm.shift ⊢[PRAAx] bounded (Syn.shift z) (Syn.shift R) := by
         simpa [Fm.shift, Syn.shift] using h.shift
       have p : (bounded (power (Syn.shift z) (var 0)) (pw (Syn.shift R) (var 0))) ::
           Γ.map Fm.shift ⊢[PRAAx]
@@ -229,9 +208,7 @@ def seriesStep : PTm 4 :=
 def seriesF : PR 3 := recDef zeroCode seriesStep
 def series (z N L : PTm n) : PTm n := ap3 seriesF L z N
 
-@[simp] theorem subst_series {m : ℕ} (σ : Fin n → PTm m) (z N L : PTm n) :
-    Syn.subst σ (series z N L) = series (Syn.subst σ z) (Syn.subst σ N) (Syn.subst σ L) := by
-  simp [series]
+ipra_subst series
 
 theorem series_zero (z N : PTm n) : Γ ⊢[PRAAx] series z N zero ≐ zeroCode := by
   have h := rec_zero (Γ := Γ) (zeroCode : PTm 2) seriesStep ![z, N]
@@ -261,15 +238,11 @@ theorem bounded_series (z N R L : PTm n) (hz : Γ ⊢[PRAAx] bounded z R) :
   have all : Γ ⊢[PRAAx] .all
       (bounded (series (Syn.shift z) (Syn.shift N) (var 0))
         (numerator (Syn.shift R) (Syn.shift N) (var 0))) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_bounded, subst_series, LogarithmRemainder.subst_numerator,
-        Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      have l := (congr_normSq (series_zero (Γ := Γ) z N)).eqTrans normSq_zero
+    ipra_qfind (le_QF _ _) [subst_bounded, subst_series, LogarithmRemainder.subst_numerator]
+    · have l := (congr_normSq (series_zero (Γ := Γ) z N)).eqTrans normSq_zero
       have r := (congrMul (numerator_zero (Γ := Γ) R N) (numerator_zero R N)).eqTrans (mul_zero zero)
       exact le_congr l.eqSymm r.eqSymm (le_refl zero)
-    · simp only [subst_bounded, subst_series, LogarithmRemainder.subst_numerator,
-        Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      have shifted : Γ.map Fm.shift ⊢[PRAAx] bounded (Syn.shift z) (Syn.shift R) := by
+    · have shifted : Γ.map Fm.shift ⊢[PRAAx] bounded (Syn.shift z) (Syn.shift R) := by
         simpa [Fm.shift, Syn.shift] using hz.shift
       have ih : (bounded (series (Syn.shift z) (Syn.shift N) (var 0))
           (numerator (Syn.shift R) (Syn.shift N) (var 0))) :: Γ.map Fm.shift ⊢[PRAAx]

@@ -2,7 +2,6 @@ import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarDetermi
 import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarDeterminantLastRowProduct
 import IPRADerivations.Analysis.RationalArithmetic.GaussianScalarColumnSelection
 import IPRADerivations.Foundations.RuntimePermutationInsertionParity
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The last-row cofactor factors of the actual determinant
@@ -16,9 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianScalarDeterminantLaplace
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open LeanProofs.IPRA.PTm (monus)
-open ConciseIPRA.PTm (zero succ)
+open_ipra
 open LeanProofs.IPRA.Foundations.GuardedTotalization (sel sel_zero sel_one)
 open LeanProofs.IPRA.Foundations.RuntimePermutationWords (inversions count words parity)
 open LeanProofs.IPRA.Foundations.RuntimePermutationInsertion (insertedWord)
@@ -34,8 +31,6 @@ open GaussianScalarDeterminantLastRowGrouping (reorderedBody grouped signed_grou
 open GaussianScalarDeterminantLastRowProduct (minorTable last_row_product)
 open GaussianRationalFiniteSum (sum termsEqual multiplyBody multiply_body_at sum_multiply)
 open GaussianRationalBlockSums (blockBody block_body_at)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -53,15 +48,10 @@ def signTerms (m p : PTm n) : Fm PTm n := .all
     parity (succ a) (insertedWord a b d) ≐ par (inversions a d+(a+b)))
 def allSigns (m : PTm n) : Fm PTm n := .all (lt (var 0) (succ (Syn.shift m)) ⟶ signTerms (Syn.shift m) (var 0))
 
-@[simp] theorem subst_unitSign {k : ℕ} (σ : Fin n → PTm k) (i : PTm n) :
-    Syn.subst σ (unitSign i) = unitSign (Syn.subst σ i) := by simp [unitSign,signBit,sel,par,one]
-@[simp] theorem subst_summand {k : ℕ} (σ : Fin n → PTm k) (A m p : PTm n) :
-    Syn.subst σ (summand A m p) = summand (Syn.subst σ A) (Syn.subst σ m) (Syn.subst σ p) := by simp [summand,rowWeight]
-@[simp] theorem subst_signTerms {k : ℕ} (σ : Fin n → PTm k) (m p : PTm n) :
-    (signTerms m p).subst σ = signTerms (Syn.subst σ m) (Syn.subst σ p) := by
-  simp [signTerms,Syn.subst_shift,Syn.shift_subst,par]
-@[simp] theorem subst_allSigns {k : ℕ} (σ : Fin n → PTm k) (m : PTm n) :
-    (allSigns m).subst σ = allSigns (Syn.subst σ m) := by simp [allSigns,Syn.subst_shift,Syn.shift_subst]
+ipra_subst unitSign [signBit, sel, par, one]
+ipra_subst summand [rowWeight]
+ipra_subst signTerms [Syn.subst_shift, Syn.shift_subst, par]
+ipra_subst allSigns [Syn.subst_shift, Syn.shift_subst]
 
 theorem sign_bit_congr {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) : Γ ⊢[PRAAx] signBit a ≐ signBit b := by
   ipra_congr (signBit (var 0) : PTm 1) with [h] using [signBit, sel, one]
@@ -193,8 +183,7 @@ theorem last_row_expansion (A m : PTm n) : Γ ⊢[PRAAx] scalarDet A (succ m) �
 def expansionF : PR 2 := PTm.toPR (expansion (var 0) (var 1))
 def run (A m : PTm n) : PTm n := ap2 expansionF A m
 
-@[simp] theorem subst_expansion {k : ℕ} (σ : Fin n → PTm k) (A m : PTm n) :
-    Syn.subst σ (expansion A m) = expansion (Syn.subst σ A) (Syn.subst σ m) := by simp [expansion]
+ipra_subst expansion
 
 theorem program_at (A m : PTm n) : Γ ⊢[PRAAx] run A m ≐ expansion A m := by
   simpa [expansionF,run,ap2] using toPR_eq (Γ := Γ) (expansion (var 0) (var 1) : PTm 2) ![A,m]

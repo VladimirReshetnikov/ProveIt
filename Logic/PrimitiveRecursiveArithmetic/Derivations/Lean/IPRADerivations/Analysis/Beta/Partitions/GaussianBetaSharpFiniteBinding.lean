@@ -19,7 +19,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaSharpFiniteBinding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBetaFiniteEulerComparison (supportWidth support_width_endpoint)
 open GaussianBetaSharpPartition (exteriorWidth)
 open GaussianBetaKernelGridComparison (sampleDataBeta)
@@ -34,10 +34,6 @@ open GaussianRationalSyntheticDivision (qadd_congr)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianGammaEulerReciprocalInverse (eulerF eulerData)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

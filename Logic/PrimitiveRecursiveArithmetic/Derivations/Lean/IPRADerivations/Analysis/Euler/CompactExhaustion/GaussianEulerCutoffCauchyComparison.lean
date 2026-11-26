@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerCutoffCauchyComparison
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerCompactAdditivity (nameF)
 open GaussianGammaCompactCutoffSplit (lowerData upperData rawSum)
 open GaussianGammaIntegralCutoffs (height tailCoefficient)
@@ -23,10 +23,6 @@ open GaussianRationalHorner (qzero qadd positive_product)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameEquivalence (point_at)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -44,20 +40,12 @@ def pairNumerator (s t k A R : PTm n) : PTm n := combined A R*unit s*unit t+unit
 def pairDenominator (s t k A R : PTm n) : PTm n := unit (height k A R)*unit s*unit t
 def clock (p : PTm n) : PTm n := p+num 4
 
-@[simp] theorem subst_oldData {m : ℕ} (σ : Fin n → PTm m) (z R B k A : PTm n) :
-    Syn.subst σ (oldData z R B k A) = oldData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ k) (Syn.subst σ A) := by simp [oldData]
-@[simp] theorem subst_observation {m : ℕ} (σ : Fin n → PTm m) (p z R B k A : PTm n) :
-    Syn.subst σ (observation p z R B k A) = observation (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ k) (Syn.subst σ A) := by simp [observation]
-@[simp] theorem subst_lowerBody {m : ℕ} (σ : Fin n → PTm m) (z R B A p k j : PTm n) :
-    (lowerBody z R B A p k j).subst σ = lowerBody (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A)
-      (Syn.subst σ p) (Syn.subst σ k) (Syn.subst σ j) := by
-  simp [lowerBody,height,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_lowerTailBound {m : ℕ} (σ : Fin n → PTm m) (z R B A : PTm n) :
-    (lowerTailBound z R B A).subst σ = lowerTailBound (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) := by
-  simp [lowerTailBound,Syn.subst_shift,Syn.shift_subst,Syn.up]
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (z R B A : PTm n) :
-    (input z R B A).subst σ = input (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) := by simp [input]
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (p : PTm n) : Syn.subst σ (clock p) = clock (Syn.subst σ p) := by simp [clock]
+ipra_subst oldData
+ipra_subst observation
+ipra_subst lowerBody [height, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst lowerTailBound [Syn.subst_shift, Syn.shift_subst, Syn.up]
+ipra_subst input
+ipra_subst clock
 
 theorem lower_bound_at (z R B A p k j : PTm n) (h : Γ ⊢[PRAAx] lowerTailBound z R B A) (hkj : Γ ⊢[PRAAx] le k j) : Γ ⊢[PRAAx]
     bounded (ap2 nameF p (lowerData z R B k j A)) (A*unit p+unit (height k A R)) (unit (height k A R)*unit p) := by

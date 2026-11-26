@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaPrimitiveCompactStep
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBetaPrimitiveLinearStep (argument step sample linearSum)
 open GaussianBetaKernelGridComparison (row)
 open GaussianEulerCompactProductComparison (clock clock_later)
@@ -31,10 +31,6 @@ open GaussianRationalPowerDifference (bounded_sum_same)
 open GaussianRationalSyntheticDivision (qmul_congr qsub_congr)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

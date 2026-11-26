@@ -3,7 +3,6 @@ import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGa
 import IPRADerivations.Analysis.FiniteOperations.GaussianProductStability
 import IPRADerivations.Analysis.Names.GaussianNameArithmetic
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianCoefficientNormOrder
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Exact degree tails of the original finite canonical Gamma program
@@ -19,15 +18,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDegreeTail
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded qsub bounded)
 open GaussianRationalDistanceOrder (distance_radius_mono distance_congr)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GammaCanonicalFactors (factorNumerator factorDenominator factorDifference)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -114,12 +110,8 @@ def difference (z B N r L J : PTm n) : PTm n := qsub
   (GaussianGammaCanonicalTailFiniteSplit.gaussianSum z B N r L)
 def prefixBound (z R B N L J r : PTm n) : Fm PTm n :=
   bounded (difference z B N r L J) (R*R*r) (N*(N+r)*unit (succ L))
-@[simp] theorem subst_difference {m : ℕ} (σ : Fin n → PTm m) (z B N r L J : PTm n) :
-    Syn.subst σ (difference z B N r L J) = difference (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N)
-      (Syn.subst σ r) (Syn.subst σ L) (Syn.subst σ J) := by simp [difference]
-@[simp] theorem subst_prefixBound {m : ℕ} (σ : Fin n → PTm m) (z R B N L J r : PTm n) :
-    (prefixBound z R B N L J r).subst σ = prefixBound (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ N) (Syn.subst σ L) (Syn.subst σ J) (Syn.subst σ r) := by simp [prefixBound]
+ipra_subst difference
+ipra_subst prefixBound
 
 theorem difference_zero (z B N L J : PTm n) : Γ ⊢[PRAAx] difference z B N zero L J ≐ GaussianRationalHorner.qzero :=
   (GaussianRationalSyntheticDivision.qsub_congr (GaussianGammaCanonicalTailFiniteSplit.gaussian_sum_zero _ _ _ _)

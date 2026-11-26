@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRightHalfPlaneArgumentLocalBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open BaselQuadrature (Qb)
 open ComplexLogarithmRemainder (oneCode scale mul normSq normSq_eval eval_re_code eval_im_code)
 open GaussianArctangentCayleyValues (imaginaryCode)
@@ -26,10 +26,6 @@ open GaussianRationalReciprocal (bound_congr)
 open GaussianRightHalfPlaneArgument (smallF smallData unsignedF unsignedData wide wide_zero largeF largeData)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -3,8 +3,6 @@ import IPRADerivations.Combinatorics.BinomialTransform
 import IPRADerivations.Probability.Lotus
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.AnalyticNumberTheory.Valuation
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The generalized Touchard congruence (`bell_numbers_ipra`, `thm:touchard-power`)
@@ -33,7 +31,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.BellTouchardPower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (binom_zero' binom_self' pascal_at)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrBinom congrPw)
@@ -44,10 +42,6 @@ open LeanProofs.IPRA.Combinatorics.BellTouchard (touchard divmod_p)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.Fermat (prime_dvd_binom dvd_sum prime_shift fermat_at)
 open LeanProofs.IPRA.Probability.Lotus (cmB inst2_cmB sum_const_mul)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -112,8 +106,8 @@ theorem w_at (i J ρ c : PTm n) :
       (monus (fstT (fstT (par J ρ c))) i) * bell (sndT (par J ρ c) + i) := by simp [inst2]
   rw [h]
   exact congrMul
-    (congrPw ((congrSnd (fst_pair _ _)).eqTrans (snd_pair _ _))
-      (congrMonus ((congrFst (fst_pair _ _)).eqTrans (fst_pair _ _)) (.eqRefl _)))
+    (congrPw (fst_pair _ _).sndE
+      (congrMonus (fst_pair _ _).fstE (.eqRefl _)))
     (congrBell (congrAdd (snd_pair _ _) (.eqRefl _)))
 
 /-- `C(j, i) · ρ^{J ∸ i} · B_{c+i}`. -/
@@ -373,8 +367,8 @@ theorem lv_at (m r T p : PTm n) :
     simp [inst2]
   rw [h]
   have hr : Γ ⊢[PRAAx] fstT (lvP r T p) ≐ r := fst_pair _ _
-  have hT : Γ ⊢[PRAAx] fstT (sndT (lvP r T p)) ≐ T := (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-  have hp : Γ ⊢[PRAAx] sndT (sndT (lvP r T p)) ≐ p := (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
+  have hT : Γ ⊢[PRAAx] fstT (sndT (lvP r T p)) ≐ T := (snd_pair _ _).fstE
+  have hp : Γ ⊢[PRAAx] sndT (sndT (lvP r T p)) ≐ p := (snd_pair _ _).sndE
   exact congrAdd (congrMonus (congrAdd (.eqRefl m) (congrPw hp hr)) hT)
     (congrEqb (congrAp2 remF (congrBell (congrAdd (.eqRefl m) (congrPw hp hr))) hp)
       (congrAp2 remF (congrAdd (.eqRefl _) (congrMul hr (.eqRefl _))) hp))

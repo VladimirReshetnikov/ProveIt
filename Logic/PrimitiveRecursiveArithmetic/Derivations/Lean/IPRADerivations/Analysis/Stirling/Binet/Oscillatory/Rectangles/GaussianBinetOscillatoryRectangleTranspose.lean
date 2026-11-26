@@ -16,7 +16,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetOscillatoryRectangleTranspose
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetArctangentCosineRectangle (body fixedData rowTerm rectangle)
 open GaussianBinetArctangentResolvent (pole)
 open GaussianBinetArctangentCosineLaplace (mean)
@@ -29,9 +29,6 @@ open GaussianRationalMetric (qnegative)
 open GaussianRationalRiemannRefinement (leftSum weight)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianReciprocalHorner (qmul_associative)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "F" => GaussianBinetExponentialIntegralGrid.evaluatorF
@@ -54,14 +51,10 @@ def matrix : PTm 3 := matrixTerm (var 0) (var 1) (var 2)
 def data (p M X Y D sign A B R U L N : PTm n) : PTm n :=
   sampleData p M (B+zero) A B (fixedData X Y D sign R U L N)
 
-@[simp] theorem subst_outerTag {m : ℕ} (σ : Fin n → PTm m) (i d : PTm n) :
-    Syn.subst σ (outerTag i d) = outerTag (Syn.subst σ i) (Syn.subst σ d) := by simp [outerTag]
-@[simp] theorem subst_panels {m : ℕ} (σ : Fin n → PTm m) (d : PTm n) :
-    Syn.subst σ (panels d) = panels (Syn.subst σ d) := by simp [panels]
-@[simp] theorem subst_horizon {m : ℕ} (σ : Fin n → PTm m) (d : PTm n) :
-    Syn.subst σ (horizon d) = horizon (Syn.subst σ d) := by simp [horizon]
-@[simp] theorem subst_panelData {m : ℕ} (σ : Fin n → PTm m) (s : Bool) (i d : PTm n) :
-    Syn.subst σ (panelData s i d) = panelData s (Syn.subst σ i) (Syn.subst σ d) := by simp [panelData,one]
+ipra_subst outerTag
+ipra_subst panels
+ipra_subst horizon
+ipra_subst panelData [one]
 @[simp] theorem subst_matrixTerm {m : ℕ} (σ : Fin n → PTm m) (i j d : PTm n) :
     Syn.subst σ (matrixTerm i j d) = matrixTerm (Syn.subst σ i) (Syn.subst σ j) (Syn.subst σ d) := by
   simp only [matrixTerm,subst_inst2,subst_panelData,GaussianRationalQuadratureMean.subst_data]

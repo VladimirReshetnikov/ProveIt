@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelObservedTail
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUnitKernelCompactName (nameF data)
 open GaussianEulerUnitKernelNestedPanels (source leftData rightData commonDen rightStart tail_sources)
 open RationalNestedPanelGeometry (leftWidth rightWidth)
@@ -29,9 +29,6 @@ open GaussianRationalDistanceOrder (distance_radius_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (positive_product)
 open RationalValueBounds (upper)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

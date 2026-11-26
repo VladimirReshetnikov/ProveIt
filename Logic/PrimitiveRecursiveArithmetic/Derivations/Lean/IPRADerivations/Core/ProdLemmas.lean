@@ -1,5 +1,4 @@
 import IPRADerivations.Core.SumLemmas
-import IPRADerivations.Core.Powers
 
 /-!
 # Bounded products
@@ -69,13 +68,9 @@ theorem prod_congr_bounded (f g : PTm 2) (x y N : PTm n)
 private abbrev prodOneF : Fm PTm 2 := ap2 (prodF (one : PTm 2)) (var 0) (var 1) ≐ one
 
 private theorem prod_one₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] prodOneF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact prod_zero _ _
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    refine (prod_succ _ _ _).eqTrans ?_
+  ipra_ind [subst_ap2]
+  · exact prod_zero _ _
+  · refine (prod_succ _ _ _).eqTrans ?_
     have e : Syn.subst (![var 0, var 1] : Fin 2 → PTm 2) (one : PTm 2) = one := by simp
     rw [e]
     exact (congrMul Prf.hyp0 (.eqRefl _)).eqTrans (one_mul _)
@@ -139,13 +134,9 @@ private abbrev prodZeroF (f : PTm 2) : Fm PTm 3 :=
   lt (var 1) (var 0) ⟶ ((inst2 f (var 1) (var 2) ≐ zero) ⟶ (ap2 (prodF f) (var 0) (var 2) ≐ zero))
 
 private theorem prod_zero_of₀ (f : PTm 2) : ([] : List (Fm PTm 3)) ⊢[PRAAx] prodZeroF f := by
-  refine ind _ ⟨lt_QF _ _, ⟨trivial, trivial⟩⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_lt, subst_ap2, subst_inst2, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (lt_zero_absurd _ Prf.hyp0)
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_lt, subst_ap2, subst_inst2, Syn.subst_var, Syn.repl_zero,
-      repl_one, repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact zero_step f Prf.hyp0
+  ipra_ind (⟨lt_QF _ _, ⟨trivial, trivial⟩⟩) [subst_lt, subst_ap2, subst_inst2]
+  · exact .impI (lt_zero_absurd _ Prf.hyp0)
+  · exact zero_step f Prf.hyp0
 
 /-- A zero factor below the bound makes the product zero. -/
 theorem prod_zero_of (f : PTm 2) {N i x : PTm n} (hi : Γ ⊢[PRAAx] lt i N)

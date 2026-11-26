@@ -18,15 +18,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRootDistanceZero
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianCoefficientNameBounds (CN unit unit_positive subst_unit)
 open LeanProofs.IPRA.Analysis.GaussianFactorParameters (monicRD)
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (pointCN distanceLE fraction)
 open LeanProofs.IPRA.Analysis.RationalArgmin (rationalLE)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (positive_product)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -34,10 +31,8 @@ def three : PTm n := succ two
 def inputContract (step a : PR 3) (point : PR 2) (N x : PTm n) : Fm PTm n :=
   monicRD step ⋏ (CN a N x ⋏ (le one N ⋏ pointCN point x))
 
-@[simp] theorem subst_three {m : ℕ} (σ : Fin n → PTm m) : Syn.subst σ (three : PTm n) = (three : PTm m) := by simp [three]
-@[simp] theorem subst_inputContract {m : ℕ} (σ : Fin n → PTm m) (step a : PR 3) (point : PR 2) (N x : PTm n) :
-    (inputContract step a point N x).subst σ = inputContract step a point (Syn.subst σ N) (Syn.subst σ x) := by
-  simp [inputContract]
+ipra_subst three
+ipra_subst inputContract
 
 /-- A later membership precision and a stage comparison yield two units
 of fixed-query error plus three vanishing precision units. -/
@@ -70,11 +65,8 @@ def completedZero (step a : PR 3) (point : PR 2) (N x : PTm n) : Fm PTm n := .al
     (GaussianRootDistanceCompletion.nameData (Syn.shift N) (Syn.shift x))) (fraction one (unit (var 0))))
 def zeroStage (k : PTm n) : PTm n := (k+one)+two
 
-@[simp] theorem subst_completedZero {m : ℕ} (σ : Fin n → PTm m) (step a : PR 3) (point : PR 2) (N x : PTm n) :
-    (completedZero step a point N x).subst σ = completedZero step a point (Syn.subst σ N) (Syn.subst σ x) := by
-  simp [completedZero,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_zeroStage {m : ℕ} (σ : Fin n → PTm m) (k : PTm n) :
-    Syn.subst σ (zeroStage k) = zeroStage (Syn.subst σ k) := by simp [zeroStage]
+ipra_subst completedZero [Syn.subst_shift, Syn.shift_subst]
+ipra_subst zeroStage
 
 theorem zero_at (step a : PR 3) (point : PR 2) (N x k : PTm n)
     (h : Γ ⊢[PRAAx] completedZero step a point N x) : Γ ⊢[PRAAx]

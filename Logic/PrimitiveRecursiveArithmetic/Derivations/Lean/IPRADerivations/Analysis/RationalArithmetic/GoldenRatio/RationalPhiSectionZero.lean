@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalPhiSectionZero
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalPhiFeatures (dimension polynomial polynomial_length equation features)
 open RationalGaussianEmbedding (embed scalarZero)
 open RationalPolynomialGaussianEmbedding (coefficients coefficient_lookup embed_congr)
@@ -25,10 +25,6 @@ open GaussianRationalFiberGrouping (abscissa ordinate groupCount representative 
 open GaussianRationalCurveFibers (pointDistinct curveZeros)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open LeanProofs.IPRA.PTm (monus)
-open ConciseIPRA.PTm (zero succ app)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -37,12 +33,9 @@ def nonzero (a s : PTm n) : Fm PTm n := .ex (lt (var 0) (dimension (Syn.shift s)
 def equations (a s P : PTm n) : Fm PTm n := .all (lt (var 0) (length (Syn.shift P)) ⟶
   equation (Syn.shift a) (Syn.shift s) (abscissa (Syn.shift P) (var 0)) (ordinate (Syn.shift P) (var 0)) ≐ scalarZero)
 def embeddedPolynomial (a s : PTm n) : PTm n := coefficients (polynomial a s) (succ s)
-@[simp] theorem subst_nonzero {q : ℕ} (σ : Fin n → PTm q) (a s : PTm n) :
-    (nonzero a s).subst σ = nonzero (Syn.subst σ a) (Syn.subst σ s) := by simp [nonzero,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_equations {q : ℕ} (σ : Fin n → PTm q) (a s P : PTm n) :
-    (equations a s P).subst σ = equations (Syn.subst σ a) (Syn.subst σ s) (Syn.subst σ P) := by simp [equations,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_embeddedPolynomial {q : ℕ} (σ : Fin n → PTm q) (a s : PTm n) :
-    Syn.subst σ (embeddedPolynomial a s) = embeddedPolynomial (Syn.subst σ a) (Syn.subst σ s) := by simp [embeddedPolynomial]
+ipra_subst nonzero [Syn.subst_shift, Syn.shift_subst]
+ipra_subst equations [Syn.subst_shift, Syn.shift_subst]
+ipra_subst embeddedPolynomial
 
 theorem equation_at (a s P i : PTm n) (h : Γ ⊢[PRAAx] equations a s P) (hi : Γ ⊢[PRAAx] lt i (length P)) : Γ ⊢[PRAAx]
     equation a s (abscissa P i) (ordinate P i) ≐ scalarZero := by
@@ -95,10 +88,8 @@ def xBody : PTm 2 := abscissa (var 1) (representative (var 1) zero (var 0))
 def xList (L : PTm n) : PTm n := sequence xBody (groupCount L zero) L
 def xRoots (C L : PTm n) : Fm PTm n := .all (lt (var 0) (length (Syn.shift L)) ⟶
   GaussianRationalHorner.evaluate (Syn.shift C) (abscissa (Syn.shift L) (var 0)) ≐ qzero)
-@[simp] theorem subst_xList {q : ℕ} (σ : Fin n → PTm q) (L : PTm n) :
-    Syn.subst σ (xList L) = xList (Syn.subst σ L) := by simp [xList]
-@[simp] theorem subst_xRoots {q : ℕ} (σ : Fin n → PTm q) (C L : PTm n) :
-    (xRoots C L).subst σ = xRoots (Syn.subst σ C) (Syn.subst σ L) := by simp [xRoots,Syn.subst_shift,Syn.shift_subst]
+ipra_subst xList
+ipra_subst xRoots [Syn.subst_shift, Syn.shift_subst]
 theorem x_body_at (L g : PTm n) : inst2 xBody g L = abscissa L (representative L zero g) := by simp [xBody,inst2]
 theorem x_list_length (L : PTm n) : Γ ⊢[PRAAx] length (xList L) ≐ groupCount L zero := sequence_length _ _ _
 theorem x_list_lookup (L g : PTm n) (hg : Γ ⊢[PRAAx] lt g (groupCount L zero)) : Γ ⊢[PRAAx]
@@ -171,8 +162,7 @@ theorem vertical_count (F r C s L : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ succ
   exact le_trans total (le_congr (.eqRefl _) (mul_comm s r) (mul_le_mul_right r (group_root_bound C s L hC hNZ hx)))
 
 def sourceCurve (f r c : PTm n) : PTm n := GaussianSuperellipticTail.tailRows (coefficients f (succ c)) r c
-@[simp] theorem subst_sourceCurve {q : ℕ} (σ : Fin n → PTm q) (f r c : PTm n) :
-    Syn.subst σ (sourceCurve f r c) = sourceCurve (Syn.subst σ f) (Syn.subst σ r) (Syn.subst σ c) := by simp [sourceCurve]
+ipra_subst sourceCurve
 
 theorem mapped_x_roots (a s P : PTm n) (ha : Γ ⊢[PRAAx] RationalArgmin.rationalEq (entry a (succ s)) scalarZero)
     (he : Γ ⊢[PRAAx] equations a s P) : Γ ⊢[PRAAx]
@@ -208,8 +198,7 @@ theorem zero_section_bound (f a r c s P : PTm n) (hr : Γ ⊢[PRAAx] le one r)
 def input (f a r c s P : PTm n) : Fm PTm n := le one r ⋏ (length f ≐ succ c ⋏ (nonzero a s ⋏
   (RationalArgmin.rationalEq (entry a (succ s)) scalarZero ⋏ (RationalCurvePointsGaussianEmbedding.distinct P ⋏
     (RationalSuperellipticNormDegree.pointPowers f r P ⋏ equations a s P)))))
-@[simp] theorem subst_input {q : ℕ} (σ : Fin n → PTm q) (f a r c s P : PTm n) :
-    (input f a r c s P).subst σ = input (Syn.subst σ f) (Syn.subst σ a) (Syn.subst σ r) (Syn.subst σ c) (Syn.subst σ s) (Syn.subst σ P) := by simp [input]
+ipra_subst input
 theorem source_bound (f a r c s P : PTm n) (h : Γ ⊢[PRAAx] input f a r c s P) : Γ ⊢[PRAAx] le (length P) (r*s) := by
   have tail := Prf.andE₂ (Prf.andE₂ (Prf.andE₂ h))
   exact zero_section_bound f a r c s P (.andE₁ h) (.andE₁ (.andE₂ h)) (.andE₁ (.andE₂ (.andE₂ h)))
@@ -232,39 +221,33 @@ def output (f a r c s P : PTm n) : PTm n := pairT (embeddedPolynomial a s) (pair
       (pairT (partitionTotal (RationalCurvePointsGaussianEmbedding.points P) zero) (r*s)))))
 def outputF : PR 6 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5))
 def run (f a r c s P : PTm n) : PTm n := app outputF ![f,a,r,c,s,P]
-@[simp] theorem subst_output {q : ℕ} (σ : Fin n → PTm q) (f a r c s P : PTm n) :
-    Syn.subst σ (output f a r c s P) = output (Syn.subst σ f) (Syn.subst σ a) (Syn.subst σ r) (Syn.subst σ c) (Syn.subst σ s) (Syn.subst σ P) := by simp [output]
-@[simp] theorem subst_run {q : ℕ} (σ : Fin n → PTm q) (f a r c s P : PTm n) :
-    Syn.subst σ (run f a r c s P) = run (Syn.subst σ f) (Syn.subst σ a) (Syn.subst σ r) (Syn.subst σ c) (Syn.subst σ s) (Syn.subst σ P) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (f a r c s P : PTm n) : Γ ⊢[PRAAx] run f a r c s P ≐ output f a r c s P := by
   simpa [run,outputF,output,Matrix.cons_val_succ',Matrix.cons_val_zero'] using
     toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) ![f,a,r,c,s,P]
 theorem returned_polynomial (f a r c s P : PTm n) : Γ ⊢[PRAAx] fstT (run f a r c s P) ≐ embeddedPolynomial a s :=
-  (congrFst (program_at f a r c s P)).eqTrans (fst_pair _ _)
+  (program_at f a r c s P).fstE
 theorem returned_curve (f a r c s P : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run f a r c s P)) ≐ sourceCurve f r c :=
-  (congrFst ((congrSnd (program_at f a r c s P)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at f a r c s P).sndE.fstE
 theorem returned_xlist (f a r c s P : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run f a r c s P))) ≐ xList (RationalCurvePointsGaussianEmbedding.points P) :=
-  (congrFst ((congrSnd ((congrSnd (program_at f a r c s P)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at f a r c s P).sndE.sndE.fstE
 
 private theorem returned_tail (f a r c s P : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run f a r c s P))) ≐
     pairT (groupCount (RationalCurvePointsGaussianEmbedding.points P) zero)
       (pairT (partitionTotal (RationalCurvePointsGaussianEmbedding.points P) zero) (r*s)) := by
-  have e := (congrSnd (program_at (Γ := Γ) f a r c s P)).eqTrans (snd_pair _ _)
-  have e' := (congrSnd e).eqTrans (snd_pair _ _)
-  exact (congrSnd e').eqTrans (snd_pair _ _)
+  have e := (program_at (Γ := Γ) f a r c s P).sndE
+  have e' := e.sndE
+  exact e'.sndE
 theorem returned_group_count (f a r c s P : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (sndT (run f a r c s P)))) ≐ groupCount (RationalCurvePointsGaussianEmbedding.points P) zero :=
-  (congrFst (returned_tail f a r c s P)).eqTrans (fst_pair _ _)
+  (returned_tail f a r c s P).fstE
 theorem returned_total (f a r c s P : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (sndT (sndT (run f a r c s P))))) ≐ partitionTotal (RationalCurvePointsGaussianEmbedding.points P) zero :=
-  (congrFst ((congrSnd (returned_tail f a r c s P)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (returned_tail f a r c s P).sndE.fstE
 theorem returned_bound (f a r c s P : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (sndT (run f a r c s P))))) ≐ r*s :=
-  (congrSnd ((congrSnd (returned_tail f a r c s P)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (returned_tail f a r c s P).sndE.sndE
 theorem returned_partition (f a r c s P : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (sndT (sndT (run f a r c s P))))) ≐ length P :=
   (returned_total f a r c s P).eqTrans ((GaussianRationalFiberGrouping.cardinal_partition _ zero).eqTrans

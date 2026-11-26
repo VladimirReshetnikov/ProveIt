@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Series.Harmonic.RationalHarmonicIntervalProduct
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalNaturalScale
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual finite harmonic logarithms of numerical rational powers
@@ -16,16 +15,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianHarmonicIntervalPower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalHarmonicInterval (interval numerator horizon common_value common_canonical)
 open GaussianRationalHorner (qzero qadd)
 open GaussianRationalNaturalScale (natScale)
 open RationalGaussianEmbedding (embed native)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_triangle_same)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -33,14 +29,10 @@ def value (a b Q j : PTm n) : PTm n := embed (interval (pw a j) (pw b j) Q)
 def base (a b Q : PTm n) : PTm n := embed (interval a b Q)
 def scaled (a b Q j : PTm n) : PTm n := natScale j (base a b Q)
 def law (a b Q j : PTm n) : Fm PTm n := distanceBounded (value a b Q j) (scaled a b Q j) (two*j) Q
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (a b Q j : PTm n) :
-    Syn.subst σ (value a b Q j) = value (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ Q) (Syn.subst σ j) := by simp [value]
-@[simp] theorem subst_base {m : ℕ} (σ : Fin n → PTm m) (a b Q : PTm n) :
-    Syn.subst σ (base a b Q) = base (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ Q) := by simp [base]
-@[simp] theorem subst_scaled {m : ℕ} (σ : Fin n → PTm m) (a b Q j : PTm n) :
-    Syn.subst σ (scaled a b Q j) = scaled (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ Q) (Syn.subst σ j) := by simp [scaled]
-@[simp] theorem subst_law {m : ℕ} (σ : Fin n → PTm m) (a b Q j : PTm n) :
-    (law a b Q j).subst σ = law (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ Q) (Syn.subst σ j) := by simp [law]
+ipra_subst value
+ipra_subst base
+ipra_subst scaled
+ipra_subst law
 
 theorem interval_index_congr {a b Q c d : PTm n} (ha : Γ ⊢[PRAAx] a ≐ c) (hb : Γ ⊢[PRAAx] b ≐ d) : Γ ⊢[PRAAx]
     embed (interval a b Q) ≐ embed (interval c d Q) := by
@@ -84,12 +76,11 @@ theorem step (a b Q j : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hb : Γ ⊢[PRAAx]
 theorem finite_power (a b Q j : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hb : Γ ⊢[PRAAx] le one b)
     (hQ : Γ ⊢[PRAAx] le one Q) : Γ ⊢[PRAAx] law a b Q j := by
   have all : Γ ⊢[PRAAx] .all (law (Syn.shift a) (Syn.shift b) (Syn.shift Q) (var 0)) := by
-    refine PRA.qfInd _ (by simp [law,distanceBounded,GaussianRationalMetric.bounded,RationalArgmin.rationalLE,Fm.QF,le_QF]) ?_ ?_
-    · simp only [subst_law,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact distance_congr (value_zero a b Q).eqSymm (GaussianRationalNaturalScale.natScale_zero (base a b Q)).eqSymm
+    ipra_qfind (by simp [law,distanceBounded,GaussianRationalMetric.bounded,RationalArgmin.rationalLE,Fm.QF,le_QF]) [
+        subst_law]
+    · exact distance_congr (value_zero a b Q).eqSymm (GaussianRationalNaturalScale.natScale_zero (base a b Q)).eqSymm
         (by ipra_ring) (.eqRefl _) (GaussianRationalPowerDifference.distance_refl_zero (qzero : PTm n) Q hQ)
-    · simp only [subst_law,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      have as : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift a) := by simpa [Fm.shift,Syn.shift] using ha.shift
+    · have as : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift a) := by simpa [Fm.shift,Syn.shift] using ha.shift
       have bs : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift b) := by simpa [Fm.shift,Syn.shift] using hb.shift
       have qs : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift Q) := by simpa [Fm.shift,Syn.shift] using hQ.shift
       exact step _ _ _ (var 0) as.wk bs.wk qs.wk Prf.hyp0

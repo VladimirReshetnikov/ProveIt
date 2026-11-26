@@ -21,8 +21,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSuperellipticMatrixEntries
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open LeanProofs.IPRA.PTm (monus pred)
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero qmul qadd canonical evaluate)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qsub qnegative)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision
@@ -36,9 +35,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalMonicReduction (evaluate_congr)
 open LeanProofs.IPRA.Foundations.RuntimeCyclicPermutation (rotation wrap inverseIndex)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -46,14 +42,9 @@ def A (G m i x : PTm n) : PTm n := evaluate (entry G (slot m i)) x
 def storedValue (f G m a c j h x : PTm n) : PTm n := evaluate (entry (stage (tailRows f m c) G m a c j) h) x
 def stage_value (f G m a c i j x : PTm n) : PTm n := storedValue f G m a c j (slot m (rotation m i j)) x
 
-@[simp] theorem subst_A {l : ℕ} (σ : Fin n → PTm l) (G m i x : PTm n) :
-    Syn.subst σ (A G m i x) = A (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ i) (Syn.subst σ x) := by simp [A]
-@[simp] theorem subst_storedValue {l : ℕ} (σ : Fin n → PTm l) (f G m a c j h x : PTm n) :
-    Syn.subst σ (storedValue f G m a c j h x) = storedValue (Syn.subst σ f) (Syn.subst σ G)
-      (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ j) (Syn.subst σ h) (Syn.subst σ x) := by simp [storedValue]
-@[simp] theorem subst_stage_value {l : ℕ} (σ : Fin n → PTm l) (f G m a c i j x : PTm n) :
-    Syn.subst σ (stage_value f G m a c i j x) = stage_value (Syn.subst σ f) (Syn.subst σ G)
-      (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ i) (Syn.subst σ j) (Syn.subst σ x) := by simp [stage_value]
+ipra_subst A
+ipra_subst storedValue
+ipra_subst stage_value
 
 theorem stored_index_congr (f G m a c j x : PTm n) {h k : PTm n} (he : Γ ⊢[PRAAx] h ≐ k) : Γ ⊢[PRAAx]
     storedValue f G m a c j h x ≐ storedValue f G m a c j k x :=
@@ -207,15 +198,10 @@ theorem stage_specialization (f G m a c i j x : PTm n)
       (stage_value (Syn.shift f) (Syn.shift G) (Syn.shift m) (Syn.shift a) (Syn.shift c) (Syn.shift i) (var 0) (Syn.shift x) ≐
         qmul (A (Syn.shift G) (Syn.shift m) (Syn.shift i) (Syn.shift x))
           (power (evaluate (Syn.shift f) (Syn.shift x)) (wrap (Syn.shift m) (Syn.shift i) (var 0)))) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,subst_stage_value,subst_A,GaussianRationalHorner.subst_qmul,
-        GaussianRationalHorner.subst_evaluate,GaussianRationalReciprocal.subst_power,
-        Foundations.RuntimeCyclicPermutation.subst_wrap,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact stage_base _ _ _ _ _ _ _ hm hi
-    · simp only [Fm.subst_eq,subst_stage_value,subst_A,GaussianRationalHorner.subst_qmul,
-        GaussianRationalHorner.subst_evaluate,GaussianRationalReciprocal.subst_power,
-        Foundations.RuntimeCyclicPermutation.subst_wrap,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      have ms : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift m) := by
+    ipra_qfind [subst_stage_value, subst_A, GaussianRationalHorner.subst_qmul, GaussianRationalHorner.subst_evaluate,
+        GaussianRationalReciprocal.subst_power, Foundations.RuntimeCyclicPermutation.subst_wrap]
+    · exact stage_base _ _ _ _ _ _ _ hm hi
+    · have ms : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift m) := by
         simpa only [Fm.shift,subst_le,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero,Syn.shift] using hm.shift
       have fs : Γ.map Fm.shift ⊢[PRAAx] length (Syn.shift f) ≐ succ (Syn.shift c) := by
         simpa only [Fm.shift,Fm.subst_eq,subst_length,ConciseIPRA.PTm.subst_succ,Syn.shift] using hf.shift
@@ -305,27 +291,13 @@ def certificate (f G m a c r j x : PTm n) : Fm PTm n :=
     (((wrap m (inverseIndex m j r) j ≐ zero) ⋎ (wrap m (inverseIndex m j r) j ≐ one)) ⋏
       (value f G m a c r j x ≐ expected f G m a c r j x)))
 
-@[simp] theorem subst_rowsInput {l : ℕ} (σ : Fin n → PTm l) (f G m a c : PTm n) :
-    (rowsInput f G m a c).subst σ = rowsInput (Syn.subst σ f) (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) := by simp [rowsInput]
-@[simp] theorem subst_input {l : ℕ} (σ : Fin n → PTm l) (f G m a c r j : PTm n) :
-    (input f G m a c r j).subst σ = input (Syn.subst σ f) (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ r) (Syn.subst σ j) := by simp [input]
-@[simp] theorem subst_matrix {l : ℕ} (σ : Fin n → PTm l) (f G m a c : PTm n) :
-    Syn.subst σ (matrix f G m a c) = matrix (Syn.subst σ f) (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) := by simp [matrix]
-@[simp] theorem subst_entryPolynomial {l : ℕ} (σ : Fin n → PTm l) (f G m a c r j : PTm n) :
-    Syn.subst σ (entryPolynomial f G m a c r j) = entryPolynomial (Syn.subst σ f) (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ r) (Syn.subst σ j) := by simp [entryPolynomial]
-@[simp] theorem subst_value {l : ℕ} (σ : Fin n → PTm l) (f G m a c r j x : PTm n) :
-    Syn.subst σ (value f G m a c r j x) = value (Syn.subst σ f) (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ r) (Syn.subst σ j) (Syn.subst σ x) := by simp [value]
-@[simp] theorem subst_expected {l : ℕ} (σ : Fin n → PTm l) (f G m a c r j x : PTm n) :
-    Syn.subst σ (expected f G m a c r j x) = expected (Syn.subst σ f) (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ r) (Syn.subst σ j) (Syn.subst σ x) := by simp [expected]
-@[simp] theorem subst_certificate {l : ℕ} (σ : Fin n → PTm l) (f G m a c r j x : PTm n) :
-    (certificate f G m a c r j x).subst σ = certificate (Syn.subst σ f) (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ r) (Syn.subst σ j) (Syn.subst σ x) := by simp [certificate]
+ipra_subst rowsInput
+ipra_subst input
+ipra_subst matrix
+ipra_subst entryPolynomial
+ipra_subst value
+ipra_subst expected
+ipra_subst certificate
 
 theorem matrix_entry_correct (f G m a c r j x : PTm n) (h : Γ ⊢[PRAAx] input f G m a c r j) : Γ ⊢[PRAAx]
     certificate f G m a c r j x := by
@@ -346,16 +318,8 @@ def run (f G m a c r j x : PTm n) : PTm n := app outputF ![f,G,m,a,c,r,j,x]
 def fields (c : PTm n) (i : Fin 6) : PTm n :=
   ![fstT c,fstT (sndT c),fstT (sndT (sndT c)),fstT (sndT (sndT (sndT c))),
     fstT (sndT (sndT (sndT (sndT c)))),sndT (sndT (sndT (sndT (sndT c))))] i
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (f G m a c r j x : PTm n) :
-    Syn.subst σ (output f G m a c r j x) = output (Syn.subst σ f) (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ r) (Syn.subst σ j) (Syn.subst σ x) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (f G m a c r j x : PTm n) :
-    Syn.subst σ (run f G m a c r j x) = run (Syn.subst σ f) (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ r) (Syn.subst σ j) (Syn.subst σ x) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 @[simp] theorem subst_fields {l : ℕ} (σ : Fin n → PTm l) (c : PTm n) (i : Fin 6) :
     Syn.subst σ (fields c i) = fields (Syn.subst σ c) i := by fin_cases i <;> simp [fields]
 theorem program_at (f G m a c r j x : PTm n) : Γ ⊢[PRAAx] run f G m a c r j x ≐ output f G m a c r j x := by
@@ -366,17 +330,17 @@ theorem returned_fields (f G m a c r j x : PTm n) (i : Fin 6) : Γ ⊢[PRAAx]
       ![matrix f G m a c,inverseIndex m j r,wrap m (inverseIndex m j r) j,
         entryPolynomial f G m a c r j,value f G m a c r j x,expected f G m a c r j x] i := by
   have e0 := program_at (Γ := Γ) f G m a c r j x
-  have e1 := (congrSnd e0).eqTrans (snd_pair _ _)
-  have e2 := (congrSnd e1).eqTrans (snd_pair _ _)
-  have e3 := (congrSnd e2).eqTrans (snd_pair _ _)
-  have e4 := (congrSnd e3).eqTrans (snd_pair _ _)
-  have e5 := (congrSnd e4).eqTrans (snd_pair _ _)
+  have e1 := e0.sndE
+  have e2 := e1.sndE
+  have e3 := e2.sndE
+  have e4 := e3.sndE
+  have e5 := e4.sndE
   fin_cases i
-  · exact (congrFst e0).eqTrans (fst_pair _ _)
-  · exact (congrFst e1).eqTrans (fst_pair _ _)
-  · exact (congrFst e2).eqTrans (fst_pair _ _)
-  · exact (congrFst e3).eqTrans (fst_pair _ _)
-  · exact (congrFst e4).eqTrans (fst_pair _ _)
+  · exact e0.fstE
+  · exact e1.fstE
+  · exact e2.fstE
+  · exact e3.fstE
+  · exact e4.fstE
   · exact e5
 
 theorem returned_equality (f G m a c r j x : PTm n) (h : Γ ⊢[PRAAx] input f G m a c r j) : Γ ⊢[PRAAx]

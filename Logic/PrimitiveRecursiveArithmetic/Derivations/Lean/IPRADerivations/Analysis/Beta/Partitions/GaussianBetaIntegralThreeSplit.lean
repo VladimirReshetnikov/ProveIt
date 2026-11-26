@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaIntegralThreeSplit
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qadd positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
@@ -29,10 +29,6 @@ open GaussianGammaIntegralCutoffs (etaDen top cells)
 open GaussianGammaCompactQuadratureBoundary (width)
 open GaussianGammaCompactCutoffGeometry (ratio lowerWidth middleWidth)
 open GaussianBetaIntegralCutoffPartition (denominator upperWidth totalWidth lowerCells middleCells upperCells totalCells)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

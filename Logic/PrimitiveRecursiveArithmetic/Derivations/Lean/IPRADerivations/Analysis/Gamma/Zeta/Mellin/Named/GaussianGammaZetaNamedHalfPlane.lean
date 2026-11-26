@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaNamedHalfPlane
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit)
 open GaussianGammaZetaNamedChart (numerator denominator radius degree native_source demand
   productMap product_data_at demand_lower variation_congr)
@@ -26,8 +26,6 @@ open GaussianNamedRightHalfPlaneSigned (certificate point)
 open GaussianNameEquivalence (crossEquivalent subst_crossEquivalent)
 open GaussianNamedInverseRate (independentRate)
 open GaussianRationalMetric (distanceBounded)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "I" => GaussianGammaZetaMellinImproper.nameF
@@ -36,9 +34,7 @@ local notation "P" => GaussianGammaZetaDirichletProduct.nameF
 def mellinData (q R K : PTm n) : PTm n :=
   GaussianGammaZetaMellinImproper.data (numerator q) (radius R) (denominator q) K
 
-@[simp] theorem subst_mellinData {m : ℕ} (σ : Fin n → PTm m) (q R K : PTm n) :
-    Syn.subst σ (mellinData q R K) = mellinData (Syn.subst σ q) (Syn.subst σ R) (Syn.subst σ K) := by
-  simp [mellinData,radius]
+ipra_subst mellinData [radius]
 
 def mellinDataF : PR 3 := PTm.toPR (mellinData (var 0) (var 1) (var 2) : PTm 3)
 

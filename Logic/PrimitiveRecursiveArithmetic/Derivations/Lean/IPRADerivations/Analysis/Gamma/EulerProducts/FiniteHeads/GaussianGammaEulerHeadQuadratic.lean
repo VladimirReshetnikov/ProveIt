@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Products.GaussianPolynomialLinearFactorCoefficients
 import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaPolynomialConstantLinear
 import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianRationalFiniteRoots
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The actual original Euler head quadratic coefficient
@@ -17,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaEulerHeadQuadratic
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero qadd qmul canonical)
 open GaussianRationalSyntheticDivision (qone qone_canonical qadd_congr qmul_congr)
 open GaussianGammaEulerHeadPolynomial (polynomial)
@@ -25,9 +24,6 @@ open GaussianGammaCanonicalExponent (harmonicPoint)
 open GaussianGammaHarmonicIncrement (reciprocalPoint harmonic_point_increment)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -66,8 +62,7 @@ theorem head_quadratic_zero : Γ ⊢[PRAAx]
 
 def quadraticLaw (r : PTm n) : Fm PTm n :=
   entry (polynomial (succ r)) r ≐ harmonicPoint (succ r)
-@[simp] theorem subst_quadraticLaw {m : ℕ} (σ : Fin n → PTm m) (r : PTm n) :
-    (quadraticLaw r).subst σ = quadraticLaw (Syn.subst σ r) := by simp [quadraticLaw]
+ipra_subst quadraticLaw
 
 theorem head_quadratic_step (r : PTm n) (ih : Γ ⊢[PRAAx] quadraticLaw r) : Γ ⊢[PRAAx]
     quadraticLaw (succ r) := by
@@ -85,11 +80,9 @@ theorem head_quadratic_step (r : PTm n) (ih : Γ ⊢[PRAAx] quadraticLaw r) : Γ
 
 theorem head_quadratic_positive (r : PTm n) : Γ ⊢[PRAAx] quadraticLaw r := by
   have all : Γ ⊢[PRAAx] .all (quadraticLaw (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_quadraticLaw,Syn.subst_var,Syn.inst_zero]
-      exact head_quadratic_zero
-    · simp only [subst_quadraticLaw,Syn.subst_var,Syn.repl_zero]
-      exact head_quadratic_step _ Prf.hyp0
+    ipra_qfind [subst_quadraticLaw]
+    · exact head_quadratic_zero
+    · exact head_quadratic_step _ Prf.hyp0
   simpa only [subst_quadraticLaw,Syn.subst_var,Syn.inst_zero] using all.allE r
 
 theorem head_quadratic (N : PTm n) (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[PRAAx]

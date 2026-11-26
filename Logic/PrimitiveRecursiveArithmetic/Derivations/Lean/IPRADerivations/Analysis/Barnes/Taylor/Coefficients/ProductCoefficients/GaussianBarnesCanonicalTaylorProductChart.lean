@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalTaylorProductChart
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale)
 open GaussianBarnesCanonicalCenteredHeadChart (head_proper)
 open GaussianBarnesCanonicalExponentTaylorBuffer (buffer)
@@ -25,8 +25,6 @@ open GaussianBarnesCanonicalTaylorProductCoefficientCauchy (productCoefficient)
 open GaussianGammaEncodingRescaling (fraction_rescale)
 open GaussianRationalHorner (ofGaussian positive_product)
 open LeanProofs.IPRA.Foundations.SequenceComposition (entry_congr)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

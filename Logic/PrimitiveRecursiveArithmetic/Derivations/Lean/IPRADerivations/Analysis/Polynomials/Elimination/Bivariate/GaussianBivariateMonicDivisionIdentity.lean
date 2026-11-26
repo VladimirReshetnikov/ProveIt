@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBivariateMonicDivisionIdentity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBivariateMonicFactor (table table_shape table_evaluation)
 open GaussianBivariatePolynomialBuffers (pad pad_stored pad_evaluation add_stored add_evaluation)
 open GaussianBivariatePolynomialProduct (product product_stored product_evaluation)
@@ -33,9 +33,6 @@ open GaussianRationalSyntheticDivision
   (canonicalCoefficients subst_canonicalCoefficients canonical_coefficient_at qadd_congr qmul_congr)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -55,25 +52,12 @@ def reconstructed (F H m a c : PTm n) : PTm n :=
   GaussianBivariatePolynomialBuffers.add (factorProduct F H m a c) (remainder F H m a c)
     (succ (yBound H m)) (xBound H a c)
 
-@[simp] theorem subst_xBound {k : ℕ} (σ : Fin n → PTm k) (H a c : PTm n) :
-    Syn.subst σ (xBound H a c) = xBound (Syn.subst σ H) (Syn.subst σ a) (Syn.subst σ c) := by simp [xBound]
-@[simp] theorem subst_yBound {k : ℕ} (σ : Fin n → PTm k) (H m : PTm n) :
-    Syn.subst σ (yBound H m) = yBound (Syn.subst σ H) (Syn.subst σ m) := by simp [yBound]
-@[simp] theorem subst_original {k : ℕ} (σ : Fin n → PTm k) (H m a c : PTm n) :
-    Syn.subst σ (original H m a c) = original (Syn.subst σ H) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by
-  simp [original]
-@[simp] theorem subst_factorProduct {k : ℕ} (σ : Fin n → PTm k) (F H m a c : PTm n) :
-    Syn.subst σ (factorProduct F H m a c) =
-      factorProduct (Syn.subst σ F) (Syn.subst σ H) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by
-  simp [factorProduct]
-@[simp] theorem subst_remainder {k : ℕ} (σ : Fin n → PTm k) (F H m a c : PTm n) :
-    Syn.subst σ (remainder F H m a c) =
-      remainder (Syn.subst σ F) (Syn.subst σ H) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by
-  simp [remainder]
-@[simp] theorem subst_reconstructed {k : ℕ} (σ : Fin n → PTm k) (F H m a c : PTm n) :
-    Syn.subst σ (reconstructed F H m a c) =
-      reconstructed (Syn.subst σ F) (Syn.subst σ H) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by
-  simp [reconstructed]
+ipra_subst xBound
+ipra_subst yBound
+ipra_subst original
+ipra_subst factorProduct
+ipra_subst remainder
+ipra_subst reconstructed
 
 theorem original_stored (H m a c : PTm n) (hH : Γ ⊢[PRAAx] rowShape H (length H) a) :
     Γ ⊢[PRAAx] stored (original H m a c) (succ (yBound H m)) (xBound H a c) :=

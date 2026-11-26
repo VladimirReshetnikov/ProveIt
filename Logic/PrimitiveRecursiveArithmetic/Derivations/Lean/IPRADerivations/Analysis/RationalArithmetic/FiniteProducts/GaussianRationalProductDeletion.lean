@@ -13,24 +13,19 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalProductDeletion
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (succ)
+open_ipra
 open LeanProofs.IPRA.Foundations.RuntimePermutationDeletion (slot slot_before slot_after subst_slot)
 open LeanProofs.IPRA.Foundations.SequenceComposition (add_lt_left)
 open GaussianRationalFiniteProduct (qprod product_split product_succ product_index_congr product_congr_bounded offset_at)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRationalHorner (qmul)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def retainedValues (t u : PTm 2) (N p x y : PTm n) : Fm PTm n := .all
   (lt (var 0) (Syn.shift N) ⟶ inst2 u (var 0) (Syn.shift y) ≐ inst2 t (slot (Syn.shift p) (var 0)) (Syn.shift x))
 
-@[simp] theorem subst_retainedValues {k : ℕ} (σ : Fin n → PTm k) (t u : PTm 2) (N p x y : PTm n) :
-    (retainedValues t u N p x y).subst σ = retainedValues t u (Syn.subst σ N) (Syn.subst σ p) (Syn.subst σ x) (Syn.subst σ y) := by
-  simp [retainedValues,Syn.subst_shift,Syn.shift_subst]
+ipra_subst retainedValues [Syn.subst_shift, Syn.shift_subst]
 
 theorem retained_at (t u : PTm 2) (N p x y i : PTm n)
     (h : Γ ⊢[PRAAx] retainedValues t u N p x y) (hi : Γ ⊢[PRAAx] lt i N) :

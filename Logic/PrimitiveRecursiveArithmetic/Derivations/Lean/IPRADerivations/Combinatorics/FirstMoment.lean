@@ -1,5 +1,4 @@
 import IPRADerivations.Combinatorics.CodingBounds
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The first-moment bound and the Schröder–Hipparchus recurrence
@@ -29,10 +28,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.FirstMoment
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.CodingBounds (sphere_covering)
-open Syn
-open scoped Fm
 
 variable {n M N : ℕ} {Γ : List (Fm PTm n)}
 

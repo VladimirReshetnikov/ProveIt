@@ -17,7 +17,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedExponentialLocalUniqueness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianExponentialReference (unit_monotone)
@@ -31,10 +31,6 @@ open GaussianRationalHorner (canonical positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianRationalSyntheticDivision (qone)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -45,9 +41,7 @@ def lateSmall (f : PR 2) (x C : PTm n) : Fm PTm n := .all
   (le (Syn.shift C) (var 0) ⟶
     (canonical (ap2 f (var 0) (Syn.shift x)) ⋏ bounded (ap2 f (var 0) (Syn.shift x)) (num 3) (num 4)))
 
-@[simp] theorem subst_lateSmall {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x C : PTm n) :
-    (lateSmall f x C).subst σ = lateSmall f (Syn.subst σ x) (Syn.subst σ C) := by
-  simp [lateSmall,Syn.subst_shift,Syn.shift_subst]
+ipra_subst lateSmall [Syn.subst_shift, Syn.shift_subst]
 
 theorem late_at (f : PR 2) (x C t : PTm n) (h : Γ ⊢[PRAAx] lateSmall f x C)
     (ht : Γ ⊢[PRAAx] le C t) :

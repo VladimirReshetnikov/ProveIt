@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactModulus
 import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianPositiveExponentialMajorant
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual logarithmic factors in compact Euler integrands
@@ -17,16 +16,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicMultiplier
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (power bound_congr)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianCompactLogarithmBounds (domain)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -44,30 +40,18 @@ def lipschitz (j R E T : PTm n) : PTm n := GaussianEulerCompactModulus.lipschitz
 def numerator (p q j R E T A D : PTm n) : PTm n := lipschitz j R E T*A*unit p*unit q+observationCost j R E T*D*(unit p+unit q)
 def source (z R B E T a b : PTm n) : Fm PTm n := GaussianEulerExponentCompactBounds.source z R B E ⋏ domain a b E T
 
-@[simp] theorem subst_logarithmicPower {m : ℕ} (σ : Fin n → PTm m) (p j a b : PTm n) :
-    Syn.subst σ (logarithmicPower p j a b) = logarithmicPower (Syn.subst σ p) (Syn.subst σ j) (Syn.subst σ a) (Syn.subst σ b) := by simp [logarithmicPower]
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (p j z B a b : PTm n) :
-    Syn.subst σ (sample p j z B a b) = sample (Syn.subst σ p) (Syn.subst σ j) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by simp [sample]
-@[simp] theorem subst_fixedData {m : ℕ} (σ : Fin n → PTm m) (j z B : PTm n) :
-    Syn.subst σ (fixedData j z B) = fixedData (Syn.subst σ j) (Syn.subst σ z) (Syn.subst σ B) := by simp [fixedData]
-@[simp] theorem subst_evaluatorTerm {m : ℕ} (σ : Fin n → PTm m) (p t x : PTm n) :
-    Syn.subst σ (evaluatorTerm p t x) = evaluatorTerm (Syn.subst σ p) (Syn.subst σ t) (Syn.subst σ x) := by simp [evaluatorTerm]
-@[simp] theorem subst_logRadius {m : ℕ} (σ : Fin n → PTm m) (E T : PTm n) :
-    Syn.subst σ (logRadius E T) = logRadius (Syn.subst σ E) (Syn.subst σ T) := by simp [logRadius]
-@[simp] theorem subst_eulerMajorant {m : ℕ} (σ : Fin n → PTm m) (R E T : PTm n) :
-    Syn.subst σ (eulerMajorant R E T) = eulerMajorant (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T) := by simp [eulerMajorant]
-@[simp] theorem subst_logGain {m : ℕ} (σ : Fin n → PTm m) (j E T : PTm n) :
-    Syn.subst σ (logGain j E T) = logGain (Syn.subst σ j) (Syn.subst σ E) (Syn.subst σ T) := by simp [logGain]
-@[simp] theorem subst_majorant {m : ℕ} (σ : Fin n → PTm m) (j R E T : PTm n) :
-    Syn.subst σ (majorant j R E T) = majorant (Syn.subst σ j) (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T) := by simp [majorant]
-@[simp] theorem subst_observationCost {m : ℕ} (σ : Fin n → PTm m) (j R E T : PTm n) :
-    Syn.subst σ (observationCost j R E T) = observationCost (Syn.subst σ j) (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T) := by simp [observationCost]
-@[simp] theorem subst_lipschitz {m : ℕ} (σ : Fin n → PTm m) (j R E T : PTm n) :
-    Syn.subst σ (lipschitz j R E T) = lipschitz (Syn.subst σ j) (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T) := by simp [lipschitz]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (p q j R E T A D : PTm n) :
-    Syn.subst σ (numerator p q j R E T A D) = numerator (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ j) (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ A) (Syn.subst σ D) := by simp [numerator]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B E T a b : PTm n) :
-    (source z R B E T a b).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ a) (Syn.subst σ b) := by simp [source]
+ipra_subst logarithmicPower
+ipra_subst sample
+ipra_subst fixedData
+ipra_subst evaluatorTerm
+ipra_subst logRadius
+ipra_subst eulerMajorant
+ipra_subst logGain
+ipra_subst majorant
+ipra_subst observationCost
+ipra_subst lipschitz
+ipra_subst numerator
+ipra_subst source
 
 theorem evaluator_at (p t x : PTm n) : Γ ⊢[PRAAx] ap3 evaluatorF p t x ≐ evaluatorTerm p t x := by
   simpa [evaluatorF,ap3] using toPR_eq (Γ := Γ) (evaluatorTerm (var 0) (var 1) (var 2) : PTm 3) ![p,t,x]
@@ -77,8 +61,8 @@ theorem original_sample_at (p j z B a b : PTm n) : Γ ⊢[PRAAx]
   refine (evaluator_at p (pairT a b) (fixedData j z B)).eqTrans ?_
   ipra_congr (sample (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) with
     [.eqRefl p, (show _ ⊢[PRAAx] fstT (fixedData j z B) ≐ j from fst_pair _ _),
-      (show _ ⊢[PRAAx] fstT (sndT (fixedData j z B)) ≐ z from (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)),
-      (show _ ⊢[PRAAx] sndT (sndT (fixedData j z B)) ≐ B from (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)),
+      (show _ ⊢[PRAAx] fstT (sndT (fixedData j z B)) ≐ z from (snd_pair _ _).fstE),
+      (show _ ⊢[PRAAx] sndT (sndT (fixedData j z B)) ≐ B from (snd_pair _ _).sndE),
       (show _ ⊢[PRAAx] fstT (pairT a b) ≐ a from fst_pair _ _),
       (show _ ⊢[PRAAx] sndT (pairT a b) ≐ b from snd_pair _ _)] using [evaluatorTerm]
 

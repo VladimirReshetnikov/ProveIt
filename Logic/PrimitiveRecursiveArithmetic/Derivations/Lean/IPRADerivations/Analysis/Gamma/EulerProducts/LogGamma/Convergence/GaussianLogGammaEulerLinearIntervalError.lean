@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerLinearIntervalError
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GammaEulerConstantName (mesh mesh_positive common_quotient_upper)
@@ -32,9 +32,6 @@ open Products (fact)
 open RationalGaussianEmbedding (embed)
 open RationalHarmonicInterval (at_common common common_value horizon interval left_horizon numerator)
 open RationalValueBounds (radius radius_congr radius_of_upper)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (monus num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)

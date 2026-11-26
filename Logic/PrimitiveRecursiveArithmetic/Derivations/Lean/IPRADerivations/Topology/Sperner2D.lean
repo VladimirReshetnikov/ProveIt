@@ -1,6 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.SumPhi
 import IPRADerivations.Topology.CrossingParity
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The two-dimensional cubical Sperner parity lemma (`dimension_invariance_ipra`, `thm:sperner`)
@@ -42,13 +41,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Topology.Sperner2D
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Fermat (subst_up_shift')
 open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (sum2_zero_of_bounded)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -84,16 +79,12 @@ private abbrev addF (f g : PTm 3) : Fm PTm 3 :=
     ap3 (sum2F f) (var 0) (var 1) (var 2) + ap3 (sum2F g) (var 0) (var 1) (var 2)
 
 private theorem sum2_add₀ (f g : PTm 3) : ([] : List (Fm PTm 3)) ⊢[PRAAx] addF f g := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, PTm.subst_add, subst_ap3, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      inst_two, ConciseIPRA.PTm.subst_zero]
-    refine withEq (sum2_zero (Γ := []) (f + g) (var 0 : PTm 2) (var 1)) fun e₀ =>
+  ipra_ind [subst_ap3]
+  · refine withEq (sum2_zero (Γ := []) (f + g) (var 0 : PTm 2) (var 1)) fun e₀ =>
       withEq (sum2_zero (Γ := []) f (var 0 : PTm 2) (var 1)) fun e₁ =>
       withEq (sum2_zero (Γ := []) g (var 0 : PTm 2) (var 1)) fun e₂ => ?_
     ipra_lc e₀ - e₁ - e₂
-  · simp only [Fm.subst_eq, PTm.subst_add, subst_ap3, Syn.subst_var, Syn.repl_zero, repl_one,
-      repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have s₀ := sum2_succ (Γ := [addF f g]) (f + g) (var 0) (var 1) (var 2)
+  · have s₀ := sum2_succ (Γ := [addF f g]) (f + g) (var 0) (var 1) (var 2)
     rw [inst3_add] at s₀
     refine withEq Prf.hyp0 fun e₁ => withEq s₀ fun e₀ =>
       withEq (sum2_succ f (var 0) (var 1) (var 2)) fun e₂ =>
@@ -112,13 +103,9 @@ private abbrev evenF (t : PTm 3) : Fm PTm 3 := par (ap3 (sum2F t) (var 0) (var 1
 private theorem sum2_even₀ (t : PTm 3)
     (h : ∀ {m : ℕ} {Δ : List (Fm PTm m)} (i p q : PTm m), Δ ⊢[PRAAx] par (inst3 t i p q) ≐ zero) :
     ([] : List (Fm PTm 3)) ⊢[PRAAx] evenF t := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap1, subst_ap3, Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two,
-      ConciseIPRA.PTm.subst_zero]
-    exact (congrAp1 parF (sum2_zero _ _ _)).eqTrans par_zero
-  · simp only [Fm.subst_eq, subst_ap1, subst_ap3, Syn.subst_var, Syn.repl_zero, repl_one, repl_two,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact (congrAp1 parF (sum2_succ t (var 0) (var 1) (var 2))).eqTrans
+  ipra_ind [subst_ap1, subst_ap3]
+  · exact (congrAp1 parF (sum2_zero _ _ _)).eqTrans par_zero
+  · exact (congrAp1 parF (sum2_succ t (var 0) (var 1) (var 2))).eqTrans
       ((par_add_even _ (h _ _ _)).eqTrans Prf.hyp0)
 
 /-- A sum of terms that are even at all arguments is even. -/
@@ -134,18 +121,14 @@ private abbrev teleF (h : PTm 3) : Fm PTm 3 :=
     (inst3 h zero (var 1) (var 2) + inst3 h (var 0) (var 1) (var 2))) ≐ zero
 
 private theorem tele₀ (h : PTm 3) : ([] : List (Fm PTm 3)) ⊢[PRAAx] teleF h := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap1, subst_ap3, PTm.subst_add, subst_inst3, Syn.subst_var,
-      Syn.inst_zero, Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have e : ([] : List (Fm PTm 2)) ⊢[PRAAx]
+  ipra_ind [subst_ap1, subst_ap3, subst_inst3]
+  · have e : ([] : List (Fm PTm 2)) ⊢[PRAAx]
         ap3 (sum2F (h + sh0 h)) zero (var 0) (var 1) +
           (inst3 h zero (var 0) (var 1) + inst3 h zero (var 0) (var 1)) ≐
         two * inst3 h zero (var 0) (var 1) := by
       ipra_lc natEq (sum2_zero (Γ := ([] : List (Fm PTm 2))) (h + sh0 h) (var 0) (var 1))
     exact (congrAp1 parF e).eqTrans (par_double _)
-  · simp only [Fm.subst_eq, subst_ap1, subst_ap3, PTm.subst_add, subst_inst3, Syn.subst_var,
-      Syn.repl_zero, repl_one, repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have s := sum2_succ (Γ := [teleF h]) (h + sh0 h) (var 0) (var 1) (var 2)
+  · have s := sum2_succ (Γ := [teleF h]) (h + sh0 h) (var 0) (var 1) (var 2)
     rw [inst3_add, inst3_sh0] at s
     have e : [teleF h] ⊢[PRAAx]
         ap3 (sum2F (h + sh0 h)) (succ (var 0)) (var 1) (var 2) +
@@ -167,13 +150,9 @@ private abbrev sh1F (g : PTm 3) : Fm PTm 3 :=
   ap3 (sum2F (sh1 g)) (var 0) (var 1) (var 2) ≐ ap3 (sum2F g) (var 0) (succ (var 1)) (var 2)
 
 private theorem sum2_sh1₀ (g : PTm 3) : ([] : List (Fm PTm 3)) ⊢[PRAAx] sh1F g := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap3, Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact (sum2_zero _ _ _).eqTrans (sum2_zero _ _ _).eqSymm
-  · simp only [Fm.subst_eq, subst_ap3, Syn.subst_var, Syn.repl_zero, repl_one, repl_two,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine (sum2_succ _ _ _ _).eqTrans (.eqTrans ?_ (sum2_succ _ _ _ _).eqSymm)
+  ipra_ind [subst_ap3]
+  · exact (sum2_zero _ _ _).eqTrans (sum2_zero _ _ _).eqSymm
+  · refine (sum2_succ _ _ _ _).eqTrans (.eqTrans ?_ (sum2_succ _ _ _ _).eqSymm)
     rw [inst3_sh1]
     exact congrAdd Prf.hyp0 (.eqRefl _)
 
@@ -477,9 +456,7 @@ theorem boundary_doors (N p : PTm n) :
 def ballZ (g : PTm 3) (N p q : PTm n) : Fm PTm n :=
   Fm.all (le (var 0) (Syn.shift N) ⟶ (inst3 g (var 0) (Syn.shift p) (Syn.shift q) ≐ zero))
 
-@[simp] theorem subst_ballZ {m : ℕ} (σ : Fin n → PTm m) (g : PTm 3) (N p q : PTm n) :
-    (ballZ g N p q).subst σ = ballZ g (Syn.subst σ N) (Syn.subst σ p) (Syn.subst σ q) := by
-  simp [ballZ, subst_up_shift', Syn.up]
+ipra_subst ballZ [subst_up_shift', Syn.up]
 
 theorem ballZ_shift {g : PTm 3} {N p q : PTm n} (h : Γ ⊢[PRAAx] ballZ g N p q) :
     Γ.map Fm.shift ⊢[PRAAx] ballZ g (Syn.shift N) (Syn.shift p) (Syn.shift q) := by

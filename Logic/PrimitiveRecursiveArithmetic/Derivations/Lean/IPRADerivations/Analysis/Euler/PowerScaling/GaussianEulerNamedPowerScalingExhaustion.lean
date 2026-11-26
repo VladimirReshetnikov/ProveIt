@@ -12,15 +12,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerNamedPowerScalingExhaustion
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerNamedPowerScalingFormula (source)
 open GaussianEulerNamedPowerScalingImproper (nameF data scaleBound)
 open GaussianEulerNamedPowerScalingCutoff (outputPrecision panelSize)
 open GaussianEulerPowerChartCofinalEndpoints (lowerDenominator upperNumerator width)
 open GaussianNamedPositiveLogarithm (denominator decoded_domain)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

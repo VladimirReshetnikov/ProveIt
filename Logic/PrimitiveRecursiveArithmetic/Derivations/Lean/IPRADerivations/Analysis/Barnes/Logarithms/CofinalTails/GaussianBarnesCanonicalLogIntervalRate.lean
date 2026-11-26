@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalLogIntervalRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianBarnesCanonicalFiniteLog (gain)
 open GaussianBarnesCanonicalLogRow (boundNumerator)
@@ -23,9 +23,6 @@ open GaussianRationalMetric (distanceBounded bounded)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalSyntheticDivision (qadd_congr qsub_congr qadd_sub_cancel)
 open GaussianReconstructionRoots (norm_from_distance)
-open LeanProofs.IPRA.PTm (num monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "value" => GaussianBarnesCanonicalLogRoundedTail.value

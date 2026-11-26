@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantStageNorm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianPolynomialDeterminantTerms
   (tableShape factor factor_length stage stage_zero stage_succ stage_length signPoint sign_even sign_odd term)
 open GaussianCoefficientL1 (coefficientNorm prefixNorm prefix_succ)
@@ -26,9 +26,6 @@ open GaussianRationalSyntheticBounds (natCode natCode_nonnegative natCode_multip
 open GaussianRationalLinearProduct (norm_length scalar_zero_code scalar_zero_add scalar_multiply_one)
 open RationalArgmin (rationalLE rationalLE_congr reflexive transitive)
 open RationalArithmetic (multiply multiply_monotone)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -36,10 +33,7 @@ def factorBounds (M m w R : PTm n) : Fm PTm n :=
   .all (lt (var 0) (Syn.shift m) ⟶
     rationalLE (coefficientNorm (factor (Syn.shift M) (Syn.shift m) (Syn.shift w) (var 0))) (natCode (Syn.shift R)))
 
-@[simp] theorem subst_factorBounds {k : ℕ} (σ : Fin n → PTm k) (M m w R : PTm n) :
-    (factorBounds M m w R).subst σ =
-      factorBounds (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ w) (Syn.subst σ R) := by
-  simp [factorBounds, Syn.subst_shift, Syn.shift_subst]
+ipra_subst factorBounds [Syn.subst_shift, Syn.shift_subst]
 
 theorem factor_at (M m w R j : PTm n) (h : Γ ⊢[PRAAx] factorBounds M m w R)
     (hj : Γ ⊢[PRAAx] lt j m) :
@@ -65,11 +59,7 @@ theorem sign_norm (m w : PTm n) : Γ ⊢[PRAAx] qL1 (signPoint m w) ≐ natCode 
 def normLaw (M m L w R j : PTm n) : Fm PTm n :=
   le j m ⟶ rationalLE (coefficientNorm (stage M m L w j)) (natCode (pw R j))
 
-@[simp] theorem subst_normLaw {k : ℕ} (σ : Fin n → PTm k) (M m L w R j : PTm n) :
-    (normLaw M m L w R j).subst σ =
-      normLaw (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ w) (Syn.subst σ R)
-        (Syn.subst σ j) := by
-  simp [normLaw, subst_ap2]
+ipra_subst normLaw [subst_ap2]
 
 theorem norm_zero (M m L w R : PTm n) : Γ ⊢[PRAAx] normLaw M m L w R zero := by
   exact .impI (rationalLE_congr
@@ -99,11 +89,9 @@ theorem stage_norm (M m L w R j : PTm n) (h : Γ ⊢[PRAAx] tableShape M m L)
     (hf : Γ ⊢[PRAAx] factorBounds M m w R) (hj : Γ ⊢[PRAAx] le j m) :
     Γ ⊢[PRAAx] rationalLE (coefficientNorm (stage M m L w j)) (natCode (pw R j)) := by
   have all : Γ ⊢[PRAAx] .all (normLaw (Syn.shift M) (Syn.shift m) (Syn.shift L) (Syn.shift w) (Syn.shift R) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [subst_normLaw, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      exact norm_zero _ _ _ _ _
-    · simp only [subst_normLaw, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      have hs : Γ.map Fm.shift ⊢[PRAAx] tableShape (Syn.shift M) (Syn.shift m) (Syn.shift L) := by
+    ipra_qfind (⟨le_QF _ _, le_QF _ _⟩) [subst_normLaw]
+    · exact norm_zero _ _ _ _ _
+    · have hs : Γ.map Fm.shift ⊢[PRAAx] tableShape (Syn.shift M) (Syn.shift m) (Syn.shift L) := by
         simpa only [Fm.shift, Syn.shift, GaussianPolynomialDeterminantTerms.subst_tableShape] using h.shift
       have hfs : Γ.map Fm.shift ⊢[PRAAx] factorBounds (Syn.shift M) (Syn.shift m) (Syn.shift w) (Syn.shift R) := by
         simpa only [Fm.shift, Syn.shift, subst_factorBounds] using hf.shift

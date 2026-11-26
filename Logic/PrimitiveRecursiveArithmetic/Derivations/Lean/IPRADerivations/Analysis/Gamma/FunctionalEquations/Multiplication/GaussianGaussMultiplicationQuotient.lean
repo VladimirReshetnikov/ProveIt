@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationQuotient
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale)
 open GaussianBoundedInverseApartness (bounded_inverse_correct height ones_equivalent)
 open GaussianEuclideanDistanceName (pointCN subst_pointCN)
@@ -35,10 +35,6 @@ open GaussianNameArithmetic (multiplyF multiplyData multiply_fast)
 open GaussianNameBounds (U U_positive sample_bound)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_trans)
 open GaussianNameRingLaws (oneF one_fast multiply_associative multiply_commutative multiply_one)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (pred)
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "reciprocalGammaF" => GaussianGammaC7Name.nameF

@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderKernel
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianStirlingAllOrderCenteredBernoulli (sample reflected_sample)
 open GaussianStirlingAllOrderBernoulliEnvelope (cap sample_envelope subst_sample)
 open GaussianStirlingAllOrderPairedWeight (weight pairWeight)
@@ -31,10 +31,6 @@ open RationalSupMetric (numeratorOf)
 open RationalNonnegativePowerOrder (power_order_preserve)
 open RationalNonnegativePowers (fraction_congr fraction_multiply)
 open RationalReciprocalPowerTail (reciprocalPower)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,17 +39,9 @@ def rowWeight (q A B M k r : PTm n) : PTm n := weight q (B*M) (offset A B M k+B*
 def row (m : ℕ) (q A B M k r : PTm n) : PTm n :=
   multiply (sample (m+1) r M) (rowWeight q A B M k r)
 
-@[simp] theorem subst_offset {l : ℕ} (σ : Fin n → PTm l) (A B M k : PTm n) :
-    Syn.subst σ (offset A B M k) = offset (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ M) (Syn.subst σ k) := by
-  simp [offset]
-@[simp] theorem subst_rowWeight {l : ℕ} (σ : Fin n → PTm l) (q A B M k r : PTm n) :
-    Syn.subst σ (rowWeight q A B M k r) =
-      rowWeight (Syn.subst σ q) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ M) (Syn.subst σ k) (Syn.subst σ r) := by
-  simp [rowWeight,GaussianStirlingAllOrderPairedWeight.subst_weight]
-@[simp] theorem subst_row {l : ℕ} (σ : Fin n → PTm l) (m : ℕ) (q A B M k r : PTm n) :
-    Syn.subst σ (row m q A B M k r) =
-      row m (Syn.subst σ q) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ M) (Syn.subst σ k) (Syn.subst σ r) := by
-  simp [row]
+ipra_subst offset
+ipra_subst rowWeight [GaussianStirlingAllOrderPairedWeight.subst_weight]
+ipra_subst row
 
 theorem offset_positive (A B M k : PTm n) (hA : Γ ⊢[PRAAx] le one A) (hM : Γ ⊢[PRAAx] le one M) :
     Γ ⊢[PRAAx] le one (offset A B M k) :=

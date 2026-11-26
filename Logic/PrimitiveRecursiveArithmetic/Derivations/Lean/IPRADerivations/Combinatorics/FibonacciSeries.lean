@@ -1,5 +1,4 @@
 import IPRADerivations.Combinatorics.LucasIdentities
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The generating functions of the Fibonacci and Lucas numbers
@@ -20,13 +19,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.FibonacciSeries
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Fibonacci
 open LeanProofs.IPRA.Combinatorics.LucasIdentities (luc_zero luc_one)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -86,22 +81,14 @@ private abbrev fibSF : Fm PTm 2 := fibF (var 0) (var 1)
 private abbrev lucSF : Fm PTm 2 := lucF (var 0) (var 1)
 
 private theorem fib₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] fibSF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, subst_fib, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact fib_base _
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, subst_fib, Syn.subst_var, Syn.repl_zero,
-      repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact fib_step Prf.hyp0
+  ipra_ind [subst_ap2, subst_fib]
+  · exact fib_base _
+  · exact fib_step Prf.hyp0
 
 private theorem luc₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] lucSF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, subst_fib, subst_fibS,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact luc_base _
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, subst_fib, subst_fibS,
-      Syn.subst_var, Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact luc_step Prf.hyp0
+  ipra_ind [subst_ap2, subst_fib, subst_fibS]
+  · exact luc_base _
+  · exact luc_step Prf.hyp0
 
 /-- (16) for `F`: `(1 − x − x²) ∑_{n ≤ N} F_n xⁿ + F_{N+1} x^{N+1} + F_N x^{N+2} = x`. -/
 theorem fib_series (N x : PTm n) : Γ ⊢[PRAAx] fibF N x := by

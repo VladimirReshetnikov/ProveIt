@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingMultiplicativeBoundsCaps
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaCanonicalExponent (constantF constant_at)
 open GaussianEulerPowerChartTimeOrder (order_trans)
@@ -30,10 +30,6 @@ open GaussianStirlingNames (source)
 open GaussianStirlingRationalTelescopers (denominatorSquare square_positive lower_den_positive small_numeral_positive)
 open RationalArgmin (rationalLE rationalLE_congr)
 open RationalValueBounds (upper upper_mono upper_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

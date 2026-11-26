@@ -19,7 +19,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianMonicDescentBranch
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (evaluate qadd qzero canonical)
 open LeanProofs.IPRA.Analysis.GaussianDescentClock
   (advance residualNumerator contractionSquare rdAt localRD)
@@ -27,9 +27,6 @@ open LeanProofs.IPRA.Algebra.CubeRootTwo (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Probability.MedianCounts (congrSg)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -39,10 +36,8 @@ def branchDelta (descent : PR 3) (N C z : PTm n) : PTm n :=
 def branchDeltaF (descent : PR 3) : PR 3 := PTm.toPR (branchDelta descent (var 0) (var 1) (var 2))
 def step (descent : PR 3) : PR 3 := GaussianDescentClock.incrementStep (branchDeltaF descent)
 
-@[simp] theorem subst_flag {m : ℕ} (σ : Fin n → PTm m) (C z : PTm n) :
-    Syn.subst σ (flag C z) = flag (Syn.subst σ C) (Syn.subst σ z) := by simp [flag]
-@[simp] theorem subst_branchDelta {m : ℕ} (σ : Fin n → PTm m) (descent : PR 3) (N C z : PTm n) :
-    Syn.subst σ (branchDelta descent N C z) = branchDelta descent (Syn.subst σ N) (Syn.subst σ C) (Syn.subst σ z) := by simp [branchDelta]
+ipra_subst flag
+ipra_subst branchDelta
 
 theorem flag_boolean (C z : PTm n) : Γ ⊢[PRAAx] (flag C z ≐ zero) ⋎ (flag C z ≐ one) :=
   Combinatorics.FiniteBijection.sg_bit _
@@ -86,11 +81,8 @@ def positiveMonic (descent : PR 3) : Fm PTm n := .all (.all
   (le one (var 1) ⟶ length (var 0) ≐ succ (var 1) ⟶ entry (var 0) zero ≐ GaussianRationalSyntheticDivision.qone ⟶
     positiveLocal descent (var 1) (var 0)))
 
-@[simp] theorem subst_positiveAt {m : ℕ} (σ : Fin n → PTm m) (descent : PR 3) (N C z : PTm n) :
-    (positiveAt descent N C z).subst σ = positiveAt descent (Syn.subst σ N) (Syn.subst σ C) (Syn.subst σ z) := by simp [positiveAt]
-@[simp] theorem subst_positiveLocal {m : ℕ} (σ : Fin n → PTm m) (descent : PR 3) (N C : PTm n) :
-    (positiveLocal descent N C).subst σ = positiveLocal descent (Syn.subst σ N) (Syn.subst σ C) := by
-  simp [positiveLocal,Syn.subst_shift,Syn.shift_subst]
+ipra_subst positiveAt
+ipra_subst positiveLocal [Syn.subst_shift, Syn.shift_subst]
 @[simp] theorem subst_positiveMonic {m : ℕ} (σ : Fin n → PTm m) (descent : PR 3) :
     (positiveMonic descent : Fm PTm n).subst σ = (positiveMonic descent : Fm PTm m) := by simp [positiveMonic]
 

@@ -18,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedPositiveExponentialOrder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianPositiveRealArithmetic (positive positive_congr)
 open GaussianRationalPolynomialExponential (scalarSum)
 open GaussianRadiusExponentialName (input inputPrecision index nameF data sample)
@@ -27,9 +27,6 @@ open GaussianRationalMetric (distanceBounded)
 open RationalArgmin (rationalLE)
 open RationalValueBounds (upper radius upper_of_radius upper_order_right upper_triangle)
 open GaussianGammaCanonicalExponent (constantF constant_at)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,12 +39,9 @@ def realOrder (f g : PR 2) (x y : PTm n) : Fm PTm n := .all (.all
     (fstT (ap2 g (var 0) (Syn.shift (Syn.shift y))))
     (unit (var 1)+unit (var 0)) (unit (var 1)*unit (var 0))))
 
-@[simp] theorem subst_positiveSamples {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x : PTm n) :
-    (positiveSamples f x).subst σ = positiveSamples f (Syn.subst σ x) := by simp [positiveSamples,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_sampleOrder {m : ℕ} (σ : Fin n → PTm m) (f g : PR 2) (x y : PTm n) :
-    (sampleOrder f g x y).subst σ = sampleOrder f g (Syn.subst σ x) (Syn.subst σ y) := by simp [sampleOrder,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_realOrder {m : ℕ} (σ : Fin n → PTm m) (f g : PR 2) (x y : PTm n) :
-    (realOrder f g x y).subst σ = realOrder f g (Syn.subst σ x) (Syn.subst σ y) := by simp [realOrder,Syn.subst_shift,Syn.shift_subst]
+ipra_subst positiveSamples [Syn.subst_shift, Syn.shift_subst]
+ipra_subst sampleOrder [Syn.subst_shift, Syn.shift_subst]
+ipra_subst realOrder [Syn.subst_shift, Syn.shift_subst]
 
 theorem positive_at (f : PR 2) (x p : PTm n) (h : Γ ⊢[PRAAx] positiveSamples f x) :
     Γ ⊢[PRAAx] positive (ap2 f p x) := by simpa [positiveSamples] using h.allE p

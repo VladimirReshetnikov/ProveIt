@@ -14,7 +14,7 @@ set_option maxHeartbeats 1250000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBohrMollerupPositivePresentation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBohrMollerupPresentation (Presentation argument laws native)
 open GaussianExponentialRadiusIndependence (independent_radii_proper)
 open GaussianGammaFiniteApproximantName (exponential_input)
@@ -22,8 +22,6 @@ open GaussianGammaReciprocalInverse (gammaF)
 open GaussianNameBounds (U)
 open GaussianNameEquivalence (crossEquivalent cross_symm cross_trans)
 open GaussianStirlingGammaLogarithm (source logGammaF logGammaData log_gamma_regular gammaData)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -18,17 +18,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGeneralFTARadiusStep
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianGeneralFTAConstants (B C K R rhoNum QNum QDen)
 open LeanProofs.IPRA.Analysis.GaussianGeneralProductBound (numerator denominator)
 open LeanProofs.IPRA.Analysis.GaussianGeneralFTATrajectory (trajectory polynomial precision delta)
 open LeanProofs.IPRA.Analysis.GaussianGeneralPolynomialSamples (sourceInput)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (evaluate positive_product)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (bounded)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -37,12 +33,9 @@ def position (a : PR 3) (N h x j : PTm n) : Fm PTm n := bounded (trajectory a N 
 def residual (a : PR 3) (N h x j : PTm n) : Fm PTm n :=
   bounded (evaluate (polynomial a N h x j) (trajectory a N h x j)) (B a x*pw (QNum N) j) (pw (QDen N) j)
 
-@[simp] theorem subst_margin {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x j : PTm n) :
-    Syn.subst σ (margin a N h x j) = margin a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) (Syn.subst σ j) := by simp [margin]
-@[simp] theorem subst_position {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x j : PTm n) :
-    (position a N h x j).subst σ = position a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) (Syn.subst σ j) := by simp [position]
-@[simp] theorem subst_residual {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x j : PTm n) :
-    (residual a N h x j).subst σ = residual a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) (Syn.subst σ j) := by simp [residual]
+ipra_subst margin
+ipra_subst position
+ipra_subst residual
 
 theorem source_degree (a : PR 3) (N k h x : PTm n) (hSource : Γ ⊢[PRAAx] sourceInput a N k h x) : Γ ⊢[PRAAx]
     le one N := le_trans (Prf.andE₁ (Prf.andE₂ hSource)) (Prf.andE₁ (Prf.andE₂ (Prf.andE₂ hSource)))

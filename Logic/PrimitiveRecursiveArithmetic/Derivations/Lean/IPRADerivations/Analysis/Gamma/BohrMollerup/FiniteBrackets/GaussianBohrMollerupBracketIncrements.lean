@@ -17,7 +17,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBohrMollerupBracketIncrements
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open GaussianBohrMollerupBlockChord (source top complement)
 open GaussianBohrMollerupChords (base translated argument_congr base_source translated_source scaled_regular scale_cross)
@@ -40,10 +40,6 @@ open GaussianNaturalScaleProductName (productF productData)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalNaturalScale (naturalPoint)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "H" => GaussianHarmonicLogarithmName.nameF
@@ -60,15 +56,9 @@ def averageData (a b B j : PTm n) : PTm n :=
   fractionData Sum a (B*b) (sumData (base b j) b B)
 def boundData (a b j : PTm n) : PTm n := fractionData H a b (logData j one)
 
-@[simp] theorem subst_incrementData {m : ℕ} (σ : Fin n → PTm m) (P : Presentation) (a b j : PTm n) :
-    Syn.subst σ (incrementData P a b j) = incrementData P (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ j) := by
-  simp [incrementData,translated,base]
-@[simp] theorem subst_averageData {m : ℕ} (σ : Fin n → PTm m) (a b B j : PTm n) :
-    Syn.subst σ (averageData a b B j) = averageData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ B) (Syn.subst σ j) := by
-  simp [averageData,fractionData,base]
-@[simp] theorem subst_boundData {m : ℕ} (σ : Fin n → PTm m) (a b j : PTm n) :
-    Syn.subst σ (boundData a b j) = boundData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ j) := by
-  simp [boundData,fractionData,one]
+ipra_subst incrementData [translated, base]
+ipra_subst averageData [fractionData, base]
+ipra_subst boundData [fractionData, one]
 
 theorem integer_log_rescale (b j : PTm n) (hb : Γ ⊢[PRAAx] le one b) (hj : Γ ⊢[PRAAx] le one j) :
     Γ ⊢[PRAAx] crossEquivalent H H (logData (b*j) b) (logData j one) :=

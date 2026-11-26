@@ -27,14 +27,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.KolmogorovAssembly
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Expectation (Ew Wt inst2_mul' inst2_add')
 open LeanProofs.IPRA.Probability.Independence (dsum inst3_mul' shift_inst2 sum_scale)
 open LeanProofs.IPRA.Analysis.PowerSums (sum_le)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -69,9 +65,8 @@ theorem col_scale (I : PTm 3) (g : PTm 2) (t M x : PTm n) :
   have e₂ := (snd_pair (Γ := lt (var 0) (Syn.shift (fstT (pairT M x))) :: Γ.map Fm.shift)
     (Syn.shift t) (sndT (pairT (Syn.shift M) (Syn.shift x)))).eqTrans (snd_pair (Syn.shift M) (Syn.shift x))
   have c := congrInst2 g e₁ e₂
-  have c' := natEq c
   apply deriveNat; ipra_simps
-  rw [c']; ring
+  rw [natEq c]; ring
 
 /-- "Sum over the disjoint first-crossing events": `∑_{k<n} ∑_t p c I(k, ·) ≤ ∑_t p Z`. -/
 theorem assembly (I : PTm 3) (p c Z : PTm 2) (nK T x : PTm n)

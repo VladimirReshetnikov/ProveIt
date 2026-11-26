@@ -2,7 +2,6 @@ import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianNormFiniteZeroB
 import IPRADerivations.Analysis.Polynomials.Determinants.GaussianPolynomialDeterminantDegreeDominance
 import IPRADerivations.Analysis.Polynomials.Elimination.Superelliptic.GaussianSuperellipticCyclicLeading
 import IPRADerivations.Analysis.Polynomials.Elimination.Superelliptic.GaussianSuperellipticWordTerms
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Exact degree of the original superelliptic norm
@@ -18,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSuperellipticNormDegree
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminant (wordCode)
 open LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantTerms (stage stage_congr signPoint)
 open LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantTermDegree (degree_congr flag_congr leading_congr)
@@ -38,9 +37,6 @@ open LeanProofs.IPRA.Analysis.GaussianSuperellipticTail (tailRows)
 open LeanProofs.IPRA.Foundations.RuntimeCyclicPermutation (rotationTable)
 open LeanProofs.IPRA.Foundations.RuntimePermutationWords (count position)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -151,9 +147,7 @@ theorem original_norm_degree (f G m a c : PTm n) (h : Γ ⊢[PRAAx] input f G m 
 def pointPowers (f m L : PTm n) : Fm PTm n := .all (lt (var 0) (length (Syn.shift L)) ⟶
   power (ordinate (Syn.shift L) (var 0)) (Syn.shift m) ≐ evaluate (Syn.shift f) (abscissa (Syn.shift L) (var 0)))
 
-@[simp] theorem subst_pointPowers {l : ℕ} (σ : Fin n → PTm l) (f m L : PTm n) :
-    (pointPowers f m L).subst σ = pointPowers (Syn.subst σ f) (Syn.subst σ m) (Syn.subst σ L) := by
-  simp [pointPowers,Syn.subst_shift,Syn.shift_subst]
+ipra_subst pointPowers [Syn.subst_shift, Syn.shift_subst]
 
 theorem point_power_at (f m L i : PTm n) (h : Γ ⊢[PRAAx] pointPowers f m L) (hi : Γ ⊢[PRAAx] lt i (length L)) :
     Γ ⊢[PRAAx] power (ordinate L i) m ≐ evaluate f (abscissa L i) := by

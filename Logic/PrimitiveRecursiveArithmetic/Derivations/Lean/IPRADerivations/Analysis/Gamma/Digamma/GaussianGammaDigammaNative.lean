@@ -18,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaNative
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
@@ -31,10 +31,6 @@ open GaussianNameRingLaws (multiply_associative multiply_commutative multiply_on
 open GaussianNamedInverseRate (independentRate)
 open GaussianRationalSyntheticDivision (qone)
 open GaussianStirlingGammaLogarithm (source arg gammaData gamma_source gamma_regular euler_real_source)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "IF" => GaussianEulerLogarithmicImproperName.nameF
@@ -50,24 +46,15 @@ def minimumDenominator (p a b : PTm n) : PTm n := modulus p a b+unit p
 def quotientData (a b D : PTm n) : PTm n :=
   GaussianGammaEulerFirstDerivative.quotientData (arg a) a b b oneCode D
 
-@[simp] theorem subst_derivativeData {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (derivativeData a b) = derivativeData (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [derivativeData,one]
+ipra_subst derivativeData [one]
 
-@[simp] theorem subst_reciprocalData {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (reciprocalData a b) = reciprocalData (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [reciprocalData]
+ipra_subst reciprocalData
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (data a b) = data (Syn.subst σ a) (Syn.subst σ b) := by simp [data]
+ipra_subst data
 
-@[simp] theorem subst_modulus {m : ℕ} (σ : Fin n → PTm m) (p a b : PTm n) :
-    Syn.subst σ (modulus p a b) = modulus (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [modulus,one]
+ipra_subst modulus [one]
 
-@[simp] theorem subst_minimumDenominator {m : ℕ} (σ : Fin n → PTm m) (p a b : PTm n) :
-    Syn.subst σ (minimumDenominator p a b) = minimumDenominator (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [minimumDenominator]
+ipra_subst minimumDenominator
 
 theorem derivative_regular (a b : PTm n) (hs : Γ ⊢[PRAAx] source a b) :
     Γ ⊢[PRAAx] pointCN IF (derivativeData a b) :=

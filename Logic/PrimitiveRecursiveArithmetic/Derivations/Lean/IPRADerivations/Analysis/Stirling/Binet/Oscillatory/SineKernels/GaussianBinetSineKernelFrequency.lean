@@ -14,7 +14,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetSineKernelFrequency
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetOscillatoryColumns (damping)
 open GaussianBinetSineKernelCommonClock (value cost)
 open GaussianBinetSineStripCut (cutoff remaining_margin)
@@ -23,9 +23,6 @@ open GaussianLogGammaEulerResidualDomain (source)
 open GaussianRationalDistanceOrder (distance_radius_mono)
 open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -70,10 +67,7 @@ local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
 def angularCost (I E S T : PTm n) : PTm n :=
   num 176*T+num 16*E*GaussianBinetExponentialIntegral.uniformCost (num 10*I+S) T
 
-@[simp] theorem subst_angularCost {m : ℕ} (σ : Fin n → PTm m) (I E S T : PTm n) :
-    Syn.subst σ (angularCost I E S T) =
-      angularCost (Syn.subst σ I) (Syn.subst σ E) (Syn.subst σ S) (Syn.subst σ T) := by
-  simp [angularCost,GaussianBinetExponentialIntegral.uniformCost,two]
+ipra_subst angularCost [GaussianBinetExponentialIntegral.uniformCost, two]
 
 theorem scheduled_frequency_error (j s k i I X Y D sign R S N T M E : PTm n)
     (hz : Γ ⊢[PRAAx] source X Y D sign R)

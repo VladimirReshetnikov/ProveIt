@@ -13,7 +13,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedFiniteSumFamilyMultiply
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianFastValueCut (exponent exponent_unit query_budget)
@@ -30,8 +30,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalRiemannRefinement (termsDistance sum_distance)
 open GaussianRationalSyntheticDivision (qmul_congr)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

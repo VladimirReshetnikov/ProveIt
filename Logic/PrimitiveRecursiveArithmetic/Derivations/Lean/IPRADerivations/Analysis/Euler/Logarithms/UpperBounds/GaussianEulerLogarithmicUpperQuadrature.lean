@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicUpperQuadrature
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLogarithmicCompactName (evaluatorF fixedData)
 open GaussianEulerCompactUpperTail (scalarBody reference_row scaledF scaled_quadrature halfEvaluator)
 open GaussianEulerWeightedHalfDecay (majorant)
@@ -31,9 +31,6 @@ open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianDominantPairAlgebra (radius_bounded)
 open GaussianEulerUpperTailLeftNorm (numerator denominator errorNumerator original_coefficient)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,9 +40,7 @@ def leftObservation (q a E : PTm n) : PTm n := GaussianEulerWeightedHalfDecay.ha
 def leftNumerator (q a E : PTm n) : PTm n := GaussianL1.norm1 (GaussianRationalL1.rawGaussian (leftObservation q a E))
 def leftDenominator (q a E : PTm n) : PTm n := GaussianRationalL1.rawDen (leftObservation q a E)
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B a C E T : PTm n) :
-    (source z R B a C E T).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by simp [source]
+ipra_subst source
 
 theorem grid_source (i N z R B a C E T : PTm n) (h : Γ ⊢[PRAAx] source z R B a C E T)
     (hN : Γ ⊢[PRAAx] le one N) (hi : Γ ⊢[PRAAx] lt i N) : Γ ⊢[PRAAx]

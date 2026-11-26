@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineRawRootBinding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianArctangentDivisionAngleResidual (inverseF inverseData sineSample mesh mesh_positive index)
 open GaussianArctangentDivisionAngles (modulus odd_source)
 open GaussianArctangentDivisionSinePositive (exactSineData)
@@ -31,9 +31,6 @@ open GaussianExponentialReference (dyadic_weaken)
 open GaussianNamedSincSamples (common_late_distance)
 open GaussianArctangentNamedChord (imaginary_coordinate_radius)
 open RationalGaussianNameEmbedding (distance_from_radius)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

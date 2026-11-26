@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalThirdDerivativeInterval
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Common (mul_le_mul)
 open GaussianBarnesCanonicalThirdDerivativePositiveMargin (source step)
 open GaussianBarnesCanonicalThirdDerivativeStep (errorNumerator)
@@ -28,9 +28,6 @@ open GaussianRationalQuadratureDifference (differenceBody difference_body_at fin
 open GaussianRationalReciprocal (bound_congr bounded_sum)
 open GaussianRationalSyntheticDivision (qsub_congr qmul_congr)
 open GaussianCoefficientNameBounds (bounded_radius_mono)
-open ConciseIPRA.PTm (succ zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

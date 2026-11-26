@@ -19,7 +19,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaEulerConvergence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNameArithmetic (multiplyF multiplyData multiply_fast multiply_equivalent)
 open GaussianNameEquivalence (crossEquivalent cross_to_diagonal cross_trans cross_symm diagonal_refl)
 open GaussianEuclideanDistanceName (pointCN)
@@ -30,8 +30,6 @@ open GaussianGammaFiniteApproximantName (pF pData p_regular qF qData exponential
 open GaussianGammaPerturbationExponent (deltaF deltaData delta_regular delta_envelope numerator slack tail_plus_delta)
 open GaussianNamedSmallPerturbationTransport (prefactorSamples correctionSamples budgetNumerator budgetDenominator)
 open GaussianRationalMetric (distanceBounded)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -75,9 +73,7 @@ theorem euler_product_at_cutoff (z R B N : PTm n)
 def source (z R B N : PTm n) : Fm PTm n :=
   GaussianGammaCanonicalExponent.source z R B ⋏ (le (two*R) N ⋏ le (numerator R) N)
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B N : PTm n) :
-    (source z R B N).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by
-  simp [source]
+ipra_subst source
 
 theorem local_source (z R B N : PTm n) (h : Γ ⊢[PRAAx] source z R B N) :
     Γ ⊢[PRAAx] GaussianGammaCanonicalTailName.source z R B N :=

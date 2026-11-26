@@ -4,7 +4,6 @@ import IPRADerivations.Analysis.Inequalities.GapRemoval
 import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalRepresentations
 import IPRADerivations.AnalyticNumberTheory.RobinLipSum
 import IPRADerivations.AnalyticNumberTheory.LogElementary
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The actual harmonic mesh and Robin logarithm at the same rational argument
@@ -31,9 +30,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB quo_anti)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogInterval (loN loD loD_pos c3)
@@ -42,8 +39,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le cancel_pos
 open Products (fact)
 open GammaEulerMesh (factorial_quotient factorial_positive)
 open GammaEulerConstantName (unit mesh unit_positive mesh_positive)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -54,18 +49,11 @@ def gain (k : PTm n) : PTm n := Rv k c3
 def leftSum (Q i F : PTm n) : PTm n := ap2 (sumF (offB hB)) i (pairT (pred Q) F)
 def rightSum (Q i F : PTm n) : PTm n := ap2 (sumF (offB hB)) i (pairT Q F)
 
-@[simp] theorem subst_gridNumerator {m : ℕ} (σ : Fin n → PTm m) (Q k i : PTm n) :
-    Syn.subst σ (gridNumerator Q k i) = gridNumerator (Syn.subst σ Q) (Syn.subst σ k) (Syn.subst σ i) := by
-  simp [gridNumerator,loN]
-@[simp] theorem subst_gridDenominator {m : ℕ} (σ : Fin n → PTm m) (Q k i : PTm n) :
-    Syn.subst σ (gridDenominator Q k i) = gridDenominator (Syn.subst σ Q) (Syn.subst σ k) (Syn.subst σ i) := by
-  simp [gridDenominator,loD]
-@[simp] theorem subst_gain {m : ℕ} (σ : Fin n → PTm m) (k : PTm n) :
-    Syn.subst σ (gain k) = gain (Syn.subst σ k) := by simp [gain,Rv,c3]
-@[simp] theorem subst_leftSum {m : ℕ} (σ : Fin n → PTm m) (Q i F : PTm n) :
-    Syn.subst σ (leftSum Q i F) = leftSum (Syn.subst σ Q) (Syn.subst σ i) (Syn.subst σ F) := by simp [leftSum]
-@[simp] theorem subst_rightSum {m : ℕ} (σ : Fin n → PTm m) (Q i F : PTm n) :
-    Syn.subst σ (rightSum Q i F) = rightSum (Syn.subst σ Q) (Syn.subst σ i) (Syn.subst σ F) := by simp [rightSum]
+ipra_subst gridNumerator [loN]
+ipra_subst gridDenominator [loD]
+ipra_subst gain [Rv, c3]
+ipra_subst leftSum
+ipra_subst rightSum
 
 theorem grid_denominator_positive (Q k i : PTm n) (hQ : Γ ⊢[PRAAx] le one Q) :
     Γ ⊢[PRAAx] le one (gridDenominator Q k i) :=
@@ -133,9 +121,7 @@ def prefixBounds (Q k L i : PTm n) : Fm PTm n :=
     le (gain k*rightSum Q i (fact L)*gridDenominator Q k i)
       (fact L*gain k*gridNumerator Q k i+leftSum Q i (fact L)*gridDenominator Q k i)
 
-@[simp] theorem subst_prefixBounds {m : ℕ} (σ : Fin n → PTm m) (Q k L i : PTm n) :
-    (prefixBounds Q k L i).subst σ = prefixBounds (Syn.subst σ Q) (Syn.subst σ k) (Syn.subst σ L) (Syn.subst σ i) := by
-  simp [prefixBounds]
+ipra_subst prefixBounds
 
 theorem prefix_zero (Q k L : PTm n) (hQ : Γ ⊢[PRAAx] le one Q) : Γ ⊢[PRAAx] prefixBounds Q k L zero := by
   have z : Γ ⊢[PRAAx] gridNumerator Q k zero ≐ zero :=
@@ -167,11 +153,9 @@ theorem grid_telescope (Q k L T : PTm n) (hQ : Γ ⊢[PRAAx] le one Q)
     simpa [Fm.shift,Syn.shift] using hT.shift
   have all : Γ ⊢[PRAAx] .all (le (var 0) (Syn.shift T) ⟶
       prefixBounds (Syn.shift Q) (Syn.shift k) (Syn.shift L) (var 0)) := by
-    refine PRA.qfInd _ (by unfold prefixBounds; exact ⟨le_QF _ _,⟨le_QF _ _,le_QF _ _⟩⟩) ?_ ?_
-    · simp only [Fm.subst_imp,subst_le,subst_prefixBounds,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (prefix_zero Q k L hQ.wk)
-    · simp only [Fm.subst_imp,subst_le,subst_prefixBounds,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact .impI (prefix_step _ _ _ _ _ q.wk.wk t.wk.wk Prf.hyp0
+    ipra_qfind (by unfold prefixBounds; exact ⟨le_QF _ _,⟨le_QF _ _,le_QF _ _⟩⟩) [subst_le, subst_prefixBounds]
+    · exact .impI (prefix_zero Q k L hQ.wk)
+    · exact .impI (prefix_step _ _ _ _ _ q.wk.wk t.wk.wk Prf.hyp0
         (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)))
   have h : Γ ⊢[PRAAx] le T T ⟶ prefixBounds Q k L T := by
     simpa only [Fm.subst_imp,subst_le,subst_prefixBounds,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE T
@@ -180,23 +164,17 @@ theorem grid_telescope (Q k L T : PTm n) (hQ : Γ ⊢[PRAAx] le one Q)
 def rectangleBalance (Q i F : PTm n) : Fm PTm n :=
   rightSum Q i F+quo F Q ≐ leftSum Q i F+quo F (Q+i)
 
-@[simp] theorem subst_rectangleBalance {m : ℕ} (σ : Fin n → PTm m) (Q i F : PTm n) :
-    (rectangleBalance Q i F).subst σ = rectangleBalance (Syn.subst σ Q) (Syn.subst σ i) (Syn.subst σ F) := by
-  simp [rectangleBalance]
+ipra_subst rectangleBalance
 
 theorem rectangle_balance (Q i F : PTm n) (hQ : Γ ⊢[PRAAx] le one Q) :
     Γ ⊢[PRAAx] rectangleBalance Q i F := by
   have q : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift Q) := by simpa [Fm.shift,Syn.shift] using hQ.shift
   have all : Γ ⊢[PRAAx] .all (rectangleBalance (Syn.shift Q) (var 0) (Syn.shift F)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_rectangleBalance,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      have a := natEq (right_zero (Γ := Γ) Q F)
-      have b := natEq (left_zero (Γ := Γ) Q F)
-      have c := natEq (congrAp2 quoF (.eqRefl F) (add_zero (Γ := Γ) Q))
+    ipra_qfind [subst_rectangleBalance]
+    · have c := natEq (congrAp2 quoF (.eqRefl F) (add_zero (Γ := Γ) Q))
       apply deriveNat; ipra_simps
-      linear_combination a-b-c
-    · simp only [subst_rectangleBalance,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      have a := natEq (left_succ (Γ := rectangleBalance (Syn.shift Q) (var 0) (Syn.shift F) :: Γ.map Fm.shift)
+      linear_combination natEq (right_zero (Γ := Γ) Q F)-natEq (left_zero (Γ := Γ) Q F)-c
+    · have a := natEq (left_succ (Γ := rectangleBalance (Syn.shift Q) (var 0) (Syn.shift F) :: Γ.map Fm.shift)
         (Syn.shift Q) (var 0) (Syn.shift F) q.wk)
       have b := natEq (right_succ (Γ := rectangleBalance (Syn.shift Q) (var 0) (Syn.shift F) :: Γ.map Fm.shift)
         (Syn.shift Q) (var 0) (Syn.shift F))
@@ -314,15 +292,10 @@ theorem finite_bridge (N Q k : PTm n) (hN : Γ ⊢[PRAAx] le one N)
 
 def robinClock (N p : PTm n) : PTm n := p+N+LeanProofs.IPRA.PTm.num 4
 
-@[simp] theorem subst_harmonicNumerator {m : ℕ} (σ : Fin n → PTm m) (N Q : PTm n) :
-    (harmonicNumerator N Q).subst σ = harmonicNumerator (Syn.subst σ N) (Syn.subst σ Q) := by
-  simp [harmonicNumerator,ZT.subst,S]
-@[simp] theorem subst_harmonicLog {m : ℕ} (σ : Fin n → PTm m) (N Q : PTm n) :
-    Syn.subst σ (harmonicLog N Q) = harmonicLog (Syn.subst σ N) (Syn.subst σ Q) := by simp [harmonicLog]
-@[simp] theorem subst_robinValue {m : ℕ} (σ : Fin n → PTm m) (N k : PTm n) :
-    Syn.subst σ (robinValue N k) = robinValue (Syn.subst σ N) (Syn.subst σ k) := by simp [robinValue,loN,loD]
-@[simp] theorem subst_robinClock {m : ℕ} (σ : Fin n → PTm m) (N p : PTm n) :
-    Syn.subst σ (robinClock N p) = robinClock (Syn.subst σ N) (Syn.subst σ p) := by simp [robinClock]
+ipra_subst harmonicNumerator [ZT.subst, S]
+ipra_subst harmonicLog
+ipra_subst robinValue [loN, loD]
+ipra_subst robinClock
 
 theorem binary_gain (k : PTm n) : Γ ⊢[PRAAx] le (unit k) (gain k) := by
   have h := le_trans (Γ := Γ)
@@ -362,10 +335,8 @@ def robinLogF : PR 2 := PTm.toPR (robinValue (var 1) (robinClock (var 1) (var 0)
 def meshLogSample (p N : PTm n) : PTm n := ap2 meshLogF p N
 def robinLogSample (p N : PTm n) : PTm n := ap2 robinLogF p N
 
-@[simp] theorem subst_meshLogSample {m : ℕ} (σ : Fin n → PTm m) (p N : PTm n) :
-    Syn.subst σ (meshLogSample p N) = meshLogSample (Syn.subst σ p) (Syn.subst σ N) := by simp [meshLogSample]
-@[simp] theorem subst_robinLogSample {m : ℕ} (σ : Fin n → PTm m) (p N : PTm n) :
-    Syn.subst σ (robinLogSample p N) = robinLogSample (Syn.subst σ p) (Syn.subst σ N) := by simp [robinLogSample]
+ipra_subst meshLogSample
+ipra_subst robinLogSample
 
 theorem mesh_log_at (p N : PTm n) : Γ ⊢[PRAAx] meshLogSample p N ≐ harmonicLog N (mesh p) := by
   simpa [meshLogSample,meshLogF,ap2] using toPR_eq (Γ := Γ) (harmonicLog (var 1) (mesh (var 0)) : PTm 2) ![p,N]
@@ -445,8 +416,7 @@ theorem robin_sample_canonical (p N : PTm n) (hN : Γ ⊢[PRAAx] le one N) :
     (RationalNormalForm.normalize_well_formed _ _ (robin_denominator_positive N _ hN))
 
 def harmonicValue (N : PTm n) : PTm n := RationalCubeMidpoint.fraction (S N (fact N)) (fact N)
-@[simp] theorem subst_harmonicValue {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (harmonicValue N) = harmonicValue (Syn.subst σ N) := by simp [harmonicValue,S]
+ipra_subst harmonicValue [S]
 
 /-- Exact finite identity: the pre-existing gamma mesh and this logarithm sum to H_N. -/
 theorem fixed_mesh_sum (N Q : PTm n) (_hN : Γ ⊢[PRAAx] le one N)

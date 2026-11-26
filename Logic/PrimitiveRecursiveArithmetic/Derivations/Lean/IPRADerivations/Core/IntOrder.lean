@@ -1,8 +1,5 @@
-import IPRADerivations.Core.Integers
 import IPRADerivations.Probability.Variance
 import IPRADerivations.AnalyticNumberTheory.PhiLower
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Order on integer terms, and the triangle inequality without square roots

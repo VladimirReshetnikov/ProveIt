@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerExponentialLogCell
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerExponentialSubstitutionIntegrand (exponentialF data)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianPositiveRationalLogarithmIncrement (increment)
@@ -26,9 +26,6 @@ open GaussianRationalMetric (qsub bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianRationalSyntheticDivision (qmul_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,13 +37,8 @@ def errorNumerator (p a c T M : PTm n) : PTm n :=
   M*(c*c*unit p+two*(a*a))+c*(one+T)*a
 def errorDenominator (p a : PTm n) : PTm n := (a*a)*unit p
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z B a b T : PTm n) :
-    (source z B a b T).subst σ = source (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ T) := by
-  simp [source]
-@[simp] theorem subst_imageCell {m : ℕ} (σ : Fin n → PTm m) (p z B a b c : PTm n) :
-    Syn.subst σ (imageCell p z B a b c) = imageCell (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) := by
-  simp [imageCell,increment]
+ipra_subst source
+ipra_subst imageCell [increment]
 
 theorem linear_cell (a b c w : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hb : Γ ⊢[PRAAx] le one b) : Γ ⊢[PRAAx]
     qmul (fraction c a) (qmul (fraction a b) w) ≐ qmul (fraction c b) w := by

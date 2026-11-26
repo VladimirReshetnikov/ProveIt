@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianL1
 import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalMetric
 import IPRADerivations.Analysis.RationalArithmetic.RationalAlgebra
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Actual rational coefficient L1 norm and initial residual bound
@@ -18,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalL1
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder (code re im normSq eval_re_code eval_im_code)
 open LeanProofs.IPRA.Analysis.GaussianL1
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner
@@ -27,10 +26,6 @@ open LeanProofs.IPRA.Analysis.RationalSupMetric (numeratorOf denominatorOf)
 open LeanProofs.IPRA.Analysis.RationalIntegerNormalization (normalize normalize_preserves_value positivePart)
 open LeanProofs.IPRA.Analysis.RationalArgmin (rationalLE left denominator_positive)
 open LeanProofs.IPRA.Foundations.GapDecision (zabs zabs_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -44,19 +39,12 @@ def rawGaussian (q : PTm n) : PTm n := code
   (numeratorOf (fstT q)*ZT.ofNat (denominatorOf (sndT q)))
   (numeratorOf (sndT q)*ZT.ofNat (denominatorOf (fstT q)))
 
-@[simp] theorem subst_scalarAbs {m : ℕ} (σ : Fin n → PTm m) (c : PTm n) :
-    Syn.subst σ (scalarAbs c) = scalarAbs (Syn.subst σ c) := by
-  simp [scalarAbs,zabs,Probability.Variance.ad,ZT.subst,numeratorOf,ZT.ofNat]
-@[simp] theorem subst_qL1 {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    Syn.subst σ (qL1 q) = qL1 (Syn.subst σ q) := by simp [qL1]
-@[simp] theorem subst_oneCode {m : ℕ} (σ : Fin n → PTm m) :
-    Syn.subst σ (oneCode : PTm n) = (oneCode : PTm m) := by simp [oneCode]
-@[simp] theorem subst_baseBound {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    Syn.subst σ (baseBound q) = baseBound (Syn.subst σ q) := by simp [baseBound]
-@[simp] theorem subst_rawDen {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    Syn.subst σ (rawDen q) = rawDen (Syn.subst σ q) := by simp [rawDen]
-@[simp] theorem subst_rawGaussian {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    Syn.subst σ (rawGaussian q) = rawGaussian (Syn.subst σ q) := by simp [rawGaussian]
+ipra_subst scalarAbs [zabs, Probability.Variance.ad, ZT.subst, numeratorOf, ZT.ofNat]
+ipra_subst qL1
+ipra_subst oneCode
+ipra_subst baseBound
+ipra_subst rawDen
+ipra_subst rawGaussian
 
 theorem raw_den_positive (q : PTm n) : Γ ⊢[PRAAx] le one (rawDen q) :=
   positive_product _ _ (denominator_positive _) (denominator_positive _)
@@ -185,8 +173,7 @@ theorem initial_bounded (q : PTm n) : Γ ⊢[PRAAx] GaussianRationalMetric.bound
 
 def output (q : PTm n) : PTm n := pairT (qL1 q) (baseBound q)
 def outputF : PR 1 := PTm.toPR (output (var 0))
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    Syn.subst σ (output q) = output (Syn.subst σ q) := by simp [output]
+ipra_subst output
 theorem output_program (q : PTm n) : Γ ⊢[PRAAx] ap1 outputF q ≐ output q := by
   simpa [outputF,ap1] using toPR_eq (Γ := Γ) (output (var 0) : PTm 1) ![q]
 

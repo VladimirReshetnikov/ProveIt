@@ -24,16 +24,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.ClipLaws
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Variance (ad)
 open LeanProofs.IPRA.Probability.MedianWeighted (ad_le_of le_add_ad ad_add_le)
 open LeanProofs.IPRA.Probability.EventAlgebraMetric (wsum wsum_le inter_pt)
 open LeanProofs.IPRA.Probability.Minkowski (monus_le_of_le_add)
 open LeanProofs.IPRA.Foundations.FiniteObservations.MetricKernel (meet meet_left meet_right meet_le_left meet_le_right)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -46,14 +42,12 @@ theorem clip_le_self (K x : PTm n) : Γ ⊢[PRAAx] le (meet K x) x := meet_le_ri
 /-- `T_K(x) + R_K(x) = x`. -/
 theorem clip_split (K x : PTm n) : Γ ⊢[PRAAx] meet K x + monus x K ≐ x := by
   refine .orE (le_total K x) ?_ ?_
-  · have e1 := natEq (meet_left (Γ := le K x :: Γ) (Prf.hyp0 : (le K x :: Γ) ⊢[PRAAx] le K x))
-    have e2 := natEq (eq_add_of_le (Prf.hyp0 : (le K x :: Γ) ⊢[PRAAx] le K x))
+  · have e2 := natEq (eq_add_of_le (Prf.hyp0 : (le K x :: Γ) ⊢[PRAAx] le K x))
     apply deriveNat; ipra_simps
-    linear_combination e1 - e2
-  · have e1 := natEq (meet_right (Γ := le x K :: Γ) (Prf.hyp0 : (le x K :: Γ) ⊢[PRAAx] le x K))
-    have e2 := natEq (Prf.hyp0 : (le x K :: Γ) ⊢[PRAAx] monus x K ≐ zero)
+    linear_combination natEq (meet_left (Γ := le K x :: Γ) (Prf.hyp0 : (le K x :: Γ) ⊢[PRAAx] le K x)) - e2
+  · have e2 := natEq (Prf.hyp0 : (le x K :: Γ) ⊢[PRAAx] monus x K ≐ zero)
     apply deriveNat; ipra_simps
-    linear_combination e1 + e2
+    linear_combination natEq (meet_right (Γ := le x K :: Γ) (Prf.hyp0 : (le x K :: Γ) ⊢[PRAAx] le x K)) + e2
 
 /-- `|T_K x − T_K y| ≤ |x − y|`. -/
 theorem clip_lipschitz (K x y : PTm n) : Γ ⊢[PRAAx] le (ad (meet K x) (meet K y)) (ad x y) := by
@@ -65,15 +59,13 @@ theorem clip_lipschitz (K x y : PTm n) : Γ ⊢[PRAAx] le (ad (meet K x) (meet K
 theorem excess_lipschitz (K x y : PTm n) : Γ ⊢[PRAAx] le (ad (monus x K) (monus y K)) (ad x y) := by
   refine ad_le_of ?_ ?_
   · refine monus_le_of_le_add ?_
-    have s := natEq (clip_split (Γ := Γ) K y)
     have c := clip_le (Γ := Γ) K y
     have p := le_add_ad (Γ := Γ) x y
-    ipra_le sl p + sl c with s
+    ipra_le sl p + sl c with natEq (clip_split (Γ := Γ) K y)
   · refine monus_le_of_le_add ?_
-    have s := natEq (clip_split (Γ := Γ) K x)
     have c := clip_le (Γ := Γ) K x
     have p := le_add_ad (Γ := Γ) y x
-    ipra_le sl p + sl c with s
+    ipra_le sl p + sl c with natEq (clip_split (Γ := Γ) K x)
 
 /-- `|x − z| ≤ |x − y| + |y − z|`. -/
 theorem ad_triangle (x y z : PTm n) : Γ ⊢[PRAAx] le (ad x z) (ad x y + ad y z) := by
@@ -94,18 +86,15 @@ theorem rho_triangle (D x y z : PTm n) :
     Γ ⊢[PRAAx] le (meet D (ad x z)) (meet D (ad x y) + meet D (ad y z)) := by
   refine .orE (le_total D (ad x y)) ?_ ?_
   · have m := meet_le_left (Γ := le D (ad x y) :: Γ) D (ad x z)
-    have e := natEq (meet_left (Γ := le D (ad x y) :: Γ) Prf.hyp0)
-    ipra_le sl m + 𝔟 (meet D (ad y z)) with e
+    ipra_le sl m + 𝔟 (meet D (ad y z)) with natEq (meet_left (Γ := le D (ad x y) :: Γ) Prf.hyp0)
   · refine .orE (le_total D (ad y z)) ?_ ?_
     · have m := meet_le_left (Γ := le D (ad y z) :: le (ad x y) D :: Γ) D (ad x z)
-      have e := natEq (meet_left (Γ := le D (ad y z) :: le (ad x y) D :: Γ) Prf.hyp0)
-      ipra_le sl m + 𝔟 (meet D (ad x y)) with e
+      ipra_le sl m + 𝔟 (meet D (ad x y)) with natEq (meet_left (Γ := le D (ad y z) :: le (ad x y) D :: Γ) Prf.hyp0)
     · let Δ := le (ad y z) D :: le (ad x y) D :: Γ
-      have e1 := natEq (meet_right (Γ := Δ) (Prf.hyp1 : Δ ⊢[PRAAx] le (ad x y) D))
       have e2 := natEq (meet_right (Γ := Δ) (Prf.hyp0 : Δ ⊢[PRAAx] le (ad y z) D))
       have m := meet_le_right (Γ := Δ) D (ad x z)
       have t := ad_triangle (Γ := Δ) x y z
-      ipra_le sl m + sl t with e1 + e2
+      ipra_le sl m + sl t with natEq (meet_right (Γ := Δ) (Prf.hyp1 : Δ ⊢[PRAAx] le (ad x y) D)) + e2
 
 /-- `|x − y| ≤ |T_K x − T_K y| + R_K x + R_K y`. -/
 theorem truncation_pt (K x y : PTm n) :
@@ -127,13 +116,11 @@ theorem clip_rho {D K : PTm n} (x y : PTm n) (hDK : Γ ⊢[PRAAx] le D K) :
     have cy := clip_le (Γ := Γ) K y
     exact ad_le_of (by ipra_le sl cx + 𝔟 (meet K y)) (by ipra_le sl cy + 𝔟 (meet K x))
   refine .orE (le_total D (ad x y)) ?_ ?_
-  · have e := natEq (meet_left (Γ := le D (ad x y) :: Γ) Prf.hyp0)
-    have ck' : (le D (ad x y) :: Γ) ⊢[PRAAx] le (ad (meet K x) (meet K y)) K := ck.wk
-    ipra_le 𝔟 D * sl ck' with 𝔟 K * e
-  · have e := natEq (meet_right (Γ := le (ad x y) D :: Γ) Prf.hyp0)
-    have hl' : (le (ad x y) D :: Γ) ⊢[PRAAx] le (ad (meet K x) (meet K y)) (ad x y) := hl.wk
+  · have ck' : (le D (ad x y) :: Γ) ⊢[PRAAx] le (ad (meet K x) (meet K y)) K := ck.wk
+    ipra_le 𝔟 D * sl ck' with 𝔟 K * natEq (meet_left (Γ := le D (ad x y) :: Γ) Prf.hyp0)
+  · have hl' : (le (ad x y) D :: Γ) ⊢[PRAAx] le (ad (meet K x) (meet K y)) (ad x y) := hl.wk
     have hDK' : (le (ad x y) D :: Γ) ⊢[PRAAx] le D K := hDK.wk
-    ipra_le 𝔟 D * sl hl' + 𝔟 (ad x y) * sl hDK' with 𝔟 K * e
+    ipra_le 𝔟 D * sl hl' + 𝔟 (ad x y) * sl hDK' with 𝔟 K * natEq (meet_right (Γ := le (ad x y) D :: Γ) Prf.hyp0)
 
 /-- `lem:prob-clipping` for nonnegative tables: `D d₁ ≤ K d₀ + D (I(R_K f) + I(R_K g))`. -/
 theorem clipping {α : Type} (w f g : α → PTm n) (L : List α) {D K : PTm n} (hDK : Γ ⊢[PRAAx] le D K) :

@@ -18,7 +18,7 @@ set_option maxHeartbeats 750000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBounds
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
@@ -35,10 +35,6 @@ open GaussianStirlingTelescope (shifted shifted_source)
 open GaussianStirlingTailComparison (point_add_order point_order_refl)
 open RationalArgmin (rationalLE rationalLE_congr)
 open RationalValueBounds (upper upper_congr upper_mono upper_triangle upper_of_radius radius_symmetric upper_order_right)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -59,22 +55,12 @@ def translatedRate (a b x K : PTm n) : Fm PTm n :=
   .all (distanceBounded (translatedPoint (Syn.shift a) (Syn.shift b) (var 0))
     (ap2 I (var 0) (Syn.shift x)) (Syn.shift K) (unit (var 0)))
 
-@[simp] theorem subst_limitRemainderData {l : ℕ} (σ : Fin n → PTm l) (a b x : PTm n) :
-    Syn.subst σ (limitRemainderData a b x) = limitRemainderData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ x) := by
-  simp [limitRemainderData]
-@[simp] theorem subst_remainderData {l : ℕ} (σ : Fin n → PTm l) (a b x : PTm n) :
-    Syn.subst σ (remainderData a b x) = remainderData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ x) := by
-  simp [remainderData]
-@[simp] theorem subst_finalUpper {l : ℕ} (σ : Fin n → PTm l) (a b : PTm n) :
-    Syn.subst σ (finalUpper a b) = finalUpper (Syn.subst σ a) (Syn.subst σ b) := by simp [finalUpper]
-@[simp] theorem subst_steps {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) :
-    Syn.subst σ (steps p) = steps (Syn.subst σ p) := by simp [steps]
-@[simp] theorem subst_translatedPoint {l : ℕ} (σ : Fin n → PTm l) (a b p : PTm n) :
-    Syn.subst σ (translatedPoint a b p) = translatedPoint (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ p) := by
-  simp [translatedPoint]
-@[simp] theorem subst_translatedRate {l : ℕ} (σ : Fin n → PTm l) (a b x K : PTm n) :
-    (translatedRate a b x K).subst σ = translatedRate (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ x) (Syn.subst σ K) := by
-  simp [translatedRate,Syn.subst_shift,Syn.shift_subst]
+ipra_subst limitRemainderData
+ipra_subst remainderData
+ipra_subst finalUpper
+ipra_subst steps
+ipra_subst translatedPoint
+ipra_subst translatedRate [Syn.subst_shift, Syn.shift_subst]
 
 theorem rate_at (a b x K p : PTm n) (h : Γ ⊢[PRAAx] translatedRate a b x K) :
     Γ ⊢[PRAAx] distanceBounded (translatedPoint a b p) (ap2 I p x) K (unit p) := by

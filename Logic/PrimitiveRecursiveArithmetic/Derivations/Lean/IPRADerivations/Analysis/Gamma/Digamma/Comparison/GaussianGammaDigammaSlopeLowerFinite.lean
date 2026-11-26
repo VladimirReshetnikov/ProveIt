@@ -17,7 +17,7 @@ set_option maxHeartbeats 2000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaSlopeLowerFinite
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCompactRiemannName (fraction_congr)
 open GaussianGammaDigammaReciprocalPair (fraction_gap)
 open GaussianGammaDigammaFiniteSum (index reciprocalBody reciprocalSum reciprocal_entry)
@@ -32,25 +32,17 @@ open GaussianReciprocalHorner (qadd_commutative)
 open GaussianStirlingMultiplicativeBoundsLog (fractions_order)
 open GaussianStirlingTailComparison (point_add_order point_order_refl)
 open RationalArgmin (rationalLE rationalLE_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 
 def margin (a c b : PTm n) : PTm n := fraction (monus c a) (num 4*b)
 
-@[simp] theorem subst_margin {m : ℕ} (σ : Fin n → PTm m) (a c b : PTm n) :
-    Syn.subst σ (margin a c b) = margin (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ b) := by
-  simp [margin]
+ipra_subst margin
 
 def domain (a c b : PTm n) : Fm PTm n := le one b ⋏ (le b a ⋏ (le a c ⋏ le c (two*b)))
 
-@[simp] theorem subst_domain {m : ℕ} (σ : Fin n → PTm m) (a c b : PTm n) :
-    (domain a c b).subst σ = domain (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ b) := by
-  simp [domain,two]
+ipra_subst domain [two]
 
 theorem sources (a c b : PTm n) (h : Γ ⊢[PRAAx] domain a c b) :
     Γ ⊢[PRAAx] GaussianStirlingGammaLogarithm.source a b ⋏ GaussianStirlingGammaLogarithm.source c b :=
@@ -111,10 +103,7 @@ private theorem sum_first (a b : PTm n) (ha : Γ ⊢[PRAAx] le one a) :
 def prefixLaw (a c b N : PTm n) : Fm PTm n :=
   rationalLE (fstT (qadd (margin a c b) (reciprocalSum c b (succ N)))) (fstT (reciprocalSum a b (succ N)))
 
-@[simp] theorem subst_prefixLaw {m : ℕ} (σ : Fin n → PTm m) (a c b N : PTm n) :
-    (prefixLaw a c b N).subst σ =
-      prefixLaw (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ b) (Syn.subst σ N) := by
-  simp [prefixLaw]
+ipra_subst prefixLaw
 
 private theorem prefix_zero (a c b : PTm n) (h : Γ ⊢[PRAAx] domain a c b) :
     Γ ⊢[PRAAx] prefixLaw a c b zero := by

@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalSumAlgebra
 import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalProductWitness
 import IPRADerivations.Analysis.Inequalities.RationalNonnegativePowers
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Actual rational Gaussian power algebra at internal exponents
@@ -18,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalPowerAlgebra
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner
   (qmul canonical represents positive_product qmul_represents represents_congr canonical_unique)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qone qmul_congr)
@@ -26,9 +25,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalReciprocal (power powerF power_zer
 open LeanProofs.IPRA.Analysis.GaussianRationalL1 (rawGaussian rawDen raw_represents raw_den_positive)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qnormSq)
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (fraction fraction_represents)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -60,8 +56,7 @@ theorem power_two (q : PTm n) (hq : Γ ⊢[PRAAx] canonical q) : Γ ⊢[PRAAx] p
   (power_succ q one).eqTrans (qmul_congr (power_one q hq) (.eqRefl _))
 
 def addLaw (q j k : PTm n) : Fm PTm n := power q (j+k) ≐ qmul (power q j) (power q k)
-@[simp] theorem subst_addLaw {m : ℕ} (σ : Fin n → PTm m) (q j k : PTm n) :
-    (addLaw q j k).subst σ = addLaw (Syn.subst σ q) (Syn.subst σ j) (Syn.subst σ k) := by simp [addLaw]
+ipra_subst addLaw
 
 theorem add_zero_case (q j : PTm n) : Γ ⊢[PRAAx] addLaw q j zero :=
   (congrAp2 powerF (add_zero j) (.eqRefl _)).eqTrans
@@ -76,17 +71,14 @@ theorem add_step (q j k : PTm n) (h : Γ ⊢[PRAAx] addLaw q j k) : Γ ⊢[PRAAx
 
 theorem power_add (q j k : PTm n) : Γ ⊢[PRAAx] power q (j+k) ≐ qmul (power q j) (power q k) := by
   have all : Γ ⊢[PRAAx] .all (addLaw (Syn.shift q) (Syn.shift j) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_addLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact add_zero_case q j
-    · simp only [subst_addLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact add_step _ _ _ Prf.hyp0
+    ipra_qfind [subst_addLaw]
+    · exact add_zero_case q j
+    · exact add_step _ _ _ Prf.hyp0
   change Γ ⊢[PRAAx] addLaw q j k
   simpa only [subst_addLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
 
 def compositionLaw (q j k : PTm n) : Fm PTm n := power (power q j) k ≐ power q (j*k)
-@[simp] theorem subst_compositionLaw {m : ℕ} (σ : Fin n → PTm m) (q j k : PTm n) :
-    (compositionLaw q j k).subst σ = compositionLaw (Syn.subst σ q) (Syn.subst σ j) (Syn.subst σ k) := by simp [compositionLaw]
+ipra_subst compositionLaw
 
 theorem composition_zero (q j : PTm n) : Γ ⊢[PRAAx] compositionLaw q j zero :=
   (power_zero (power q j)).eqTrans ((congrAp2 powerF (mul_zero j) (.eqRefl q)).eqTrans (power_zero q)).eqSymm
@@ -97,17 +89,14 @@ theorem composition_step (q j k : PTm n) (h : Γ ⊢[PRAAx] compositionLaw q j k
 
 theorem power_composition (q j k : PTm n) : Γ ⊢[PRAAx] power (power q j) k ≐ power q (j*k) := by
   have all : Γ ⊢[PRAAx] .all (compositionLaw (Syn.shift q) (Syn.shift j) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_compositionLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact composition_zero q j
-    · simp only [subst_compositionLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact composition_step _ _ _ Prf.hyp0
+    ipra_qfind [subst_compositionLaw]
+    · exact composition_zero q j
+    · exact composition_step _ _ _ Prf.hyp0
   change Γ ⊢[PRAAx] compositionLaw q j k
   simpa only [subst_compositionLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
 
 def productLaw (u v j : PTm n) : Fm PTm n := power (qmul u v) j ≐ qmul (power u j) (power v j)
-@[simp] theorem subst_productLaw {m : ℕ} (σ : Fin n → PTm m) (u v j : PTm n) :
-    (productLaw u v j).subst σ = productLaw (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ j) := by simp [productLaw]
+ipra_subst productLaw
 
 theorem product_zero (u v : PTm n) : Γ ⊢[PRAAx] productLaw u v zero :=
   (power_zero (qmul u v)).eqTrans ((qmul_congr (power_zero u) (power_zero v)).eqTrans
@@ -120,11 +109,9 @@ theorem product_step (u v j : PTm n) (h : Γ ⊢[PRAAx] productLaw u v j) : Γ �
 
 theorem power_product (u v j : PTm n) : Γ ⊢[PRAAx] power (qmul u v) j ≐ qmul (power u j) (power v j) := by
   have all : Γ ⊢[PRAAx] .all (productLaw (Syn.shift u) (Syn.shift v) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_productLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact product_zero u v
-    · simp only [subst_productLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact product_step _ _ _ Prf.hyp0
+    ipra_qfind [subst_productLaw]
+    · exact product_zero u v
+    · exact product_step _ _ _ Prf.hyp0
   change Γ ⊢[PRAAx] productLaw u v j
   simpa only [subst_productLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
 
@@ -137,8 +124,7 @@ theorem norm_one : Γ ⊢[PRAAx] qnormSq (qone : PTm n) ≐ fraction one one := 
   ipra_lc natEq (ComplexLogarithmRemainder.normSq_one (Γ := Γ))
 
 def unitLaw (q j : PTm n) : Fm PTm n := qnormSq (power q j) ≐ fraction one one
-@[simp] theorem subst_unitLaw {m : ℕ} (σ : Fin n → PTm m) (q j : PTm n) :
-    (unitLaw q j).subst σ = unitLaw (Syn.subst σ q) (Syn.subst σ j) := by simp [unitLaw]
+ipra_subst unitLaw
 
 theorem unit_zero (q : PTm n) : Γ ⊢[PRAAx] unitLaw q zero :=
   (GaussianRationalProductWitness.qnormSq_congr (power_zero q)).eqTrans norm_one
@@ -157,11 +143,9 @@ theorem unit_power (q j : PTm n) (hq : Γ ⊢[PRAAx] qnormSq q ≐ fraction one 
     simpa only [Fm.shift,Fm.subst_eq,GaussianRationalMetric.subst_qnormSq,GaussianEuclideanDistanceName.subst_fraction,
       ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero,Syn.shift] using hq.shift
   have all : Γ ⊢[PRAAx] .all (unitLaw (Syn.shift q) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_unitLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact unit_zero q
-    · simp only [subst_unitLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact unit_step _ _ shifted.wk Prf.hyp0
+    ipra_qfind [subst_unitLaw]
+    · exact unit_zero q
+    · exact unit_step _ _ shifted.wk Prf.hyp0
   change Γ ⊢[PRAAx] unitLaw q j
   simpa only [subst_unitLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
 
@@ -176,21 +160,19 @@ def output (q j k : PTm n) : PTm n :=
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (q j k : PTm n) : PTm n := ap3 outputF q j k
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (q j k : PTm n) :
-    Syn.subst σ (output q j k) = output (Syn.subst σ q) (Syn.subst σ j) (Syn.subst σ k) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (q j k : PTm n) :
-    Syn.subst σ (run q j k) = run (Syn.subst σ q) (Syn.subst σ j) (Syn.subst σ k) := by simp [run]
+ipra_subst output
+ipra_subst run
 
 theorem program_at (q j k : PTm n) : Γ ⊢[PRAAx] run q j k ≐ output q j k := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![q,j,k]
 theorem returned_sum_power (q j k : PTm n) : Γ ⊢[PRAAx] fstT (run q j k) ≐ power q (j+k) :=
-  (congrFst (program_at q j k)).eqTrans (fst_pair _ _)
+  (program_at q j k).fstE
 theorem returned_composed_power (q j k : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run q j k)) ≐ power (power q j) k :=
-  (congrFst ((congrSnd (program_at q j k)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at q j k).sndE.fstE
 theorem returned_left_power (q j k : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run q j k))) ≐ power q j :=
-  (congrFst ((congrSnd ((congrSnd (program_at q j k)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at q j k).sndE.sndE.fstE
 theorem returned_right_power (q j k : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run q j k))) ≐ power q k :=
-  (congrSnd ((congrSnd ((congrSnd (program_at q j k)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at q j k).sndE.sndE.sndE
 
 theorem rational_power_add_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3
     (power (var 0) (var 1+var 2) ≐ qmul (power (var 0) (var 1)) (power (var 0) (var 2))) :=

@@ -14,7 +14,7 @@ set_option maxHeartbeats 1050000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedNaturalScaleOrder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
@@ -33,9 +33,6 @@ open GaussianStirlingGammaFractionalIncrementObservations (scalar_upper)
 open GaussianStirlingGlobalBounds (small_join)
 open GaussianStirlingMultiplicativeBoundsStrictOrder (strictOrder)
 open RationalValueBounds (upper upper_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "C" => constantF
@@ -43,8 +40,7 @@ local notation "C" => constantF
 def cost (f : PR 2) (t x : PTm n) : PTm n :=
   multiplyModulus C f (naturalPoint t) x+one
 
-@[simp] theorem subst_cost {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (t x : PTm n) :
-    Syn.subst σ (cost f t x) = cost f (Syn.subst σ t) (Syn.subst σ x) := by simp [cost]
+ipra_subst cost
 
 theorem regular (f : PR 2) (t x : PTm n) (h : Γ ⊢[PRAAx] pointCN f x) :
     Γ ⊢[PRAAx] pointCN (productF f) (productData f t x) :=

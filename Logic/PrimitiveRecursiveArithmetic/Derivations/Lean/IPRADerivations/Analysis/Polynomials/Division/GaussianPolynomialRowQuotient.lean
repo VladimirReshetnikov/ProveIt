@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Elimination.Vandermonde.GaussianRationalFiberVandermonde
 import IPRADerivations.Analysis.RationalArithmetic.Representations.GaussianRationalReconstruction
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerAlgebra
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual uniform row quotients and repeated-root polynomials
@@ -22,7 +21,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialRowQuotient
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero qadd qmul canonical evaluate)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision
   (qone qmul_congr qadd_congr qsub_congr quotient quotient_length canonicalCoefficients)
@@ -36,10 +35,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalReciprocal (power power_zero power
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence subst_entry sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
 open LeanProofs.IPRA.Foundations.GuardedTotalization (sel sel_one sel_zero)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -54,21 +49,13 @@ def Qhat (A m B t x : PTm n) : PTm n := table quotientBody m m (data A B t x)
 def repeated (x t : PTm n) : PTm n := sequence (var 1 : PTm 2) t x
 def H (x t : PTm n) : PTm n := reconstruct (repeated x t) t t
 
-@[simp] theorem subst_quotientCell {l : ℕ} (σ : Fin n → PTm l) (A B t x r j : PTm n) :
-    Syn.subst σ (quotientCell A B t x r j) = quotientCell
-      (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ t) (Syn.subst σ x) (Syn.subst σ r) (Syn.subst σ j) := by
-  simp [quotientCell,sel]
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (A B t x : PTm n) :
-    Syn.subst σ (data A B t x) = data (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ t) (Syn.subst σ x) := by simp [data]
+ipra_subst quotientCell [sel]
+ipra_subst data
 @[simp] theorem subst_fields {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) (i : Fin 4) :
     Syn.subst σ (fields p i) = fields (Syn.subst σ p) i := by fin_cases i <;> simp [fields]
-@[simp] theorem subst_Qhat {l : ℕ} (σ : Fin n → PTm l) (A m B t x : PTm n) :
-    Syn.subst σ (Qhat A m B t x) = Qhat (Syn.subst σ A) (Syn.subst σ m)
-      (Syn.subst σ B) (Syn.subst σ t) (Syn.subst σ x) := by simp [Qhat]
-@[simp] theorem subst_repeated {l : ℕ} (σ : Fin n → PTm l) (x t : PTm n) :
-    Syn.subst σ (repeated x t) = repeated (Syn.subst σ x) (Syn.subst σ t) := by simp [repeated]
-@[simp] theorem subst_H {l : ℕ} (σ : Fin n → PTm l) (x t : PTm n) :
-    Syn.subst σ (H x t) = H (Syn.subst σ x) (Syn.subst σ t) := by simp [H]
+ipra_subst Qhat
+ipra_subst repeated
+ipra_subst H
 
 theorem quotient_cell_congr {A A' B B' t t' x x' r r' j j' : PTm n}
     (hA : Γ ⊢[PRAAx] A ≐ A') (hB : Γ ⊢[PRAAx] B ≐ B') (ht : Γ ⊢[PRAAx] t ≐ t')
@@ -78,9 +65,9 @@ theorem quotient_cell_congr {A A' B B' t t' x x' r r' j j' : PTm n}
 theorem fields_at (A B t x : PTm n) (i : Fin 4) : Γ ⊢[PRAAx] fields (data A B t x) i ≐ ![A,B,t,x] i := by
   fin_cases i
   · exact fst_pair _ _
-  · exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-  · exact (congrFst ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
-  · exact (congrSnd ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  · exact (snd_pair _ _).fstE
+  · exact (snd_pair _ _).sndE.fstE
+  · exact (snd_pair _ _).sndE.sndE
 theorem quotient_lookup (A m B t x r j : PTm n) (hr : Γ ⊢[PRAAx] lt r m) (hj : Γ ⊢[PRAAx] lt j m) : Γ ⊢[PRAAx]
     cell (Qhat A m B t x) r j ≐ quotientCell A B t x r j := by
   have e : Γ ⊢[PRAAx] cell (Qhat A m B t x) r j ≐ quotientCell
@@ -146,23 +133,17 @@ theorem repeated_lookup (x t i : PTm n) (hi : Γ ⊢[PRAAx] lt i t) : Γ ⊢[PRA
 theorem H_length (x t : PTm n) : Γ ⊢[PRAAx] length (H x t) ≐ succ t := GaussianRationalReconstruction.reconstruct_length _ _ _
 theorem H_canonical (x t : PTm n) : Γ ⊢[PRAAx] canonicalCoefficients (H x t) := GaussianRationalReconstruction.reconstruct_canonical _ _ _
 theorem H_monic (x t : PTm n) : Γ ⊢[PRAAx] entry (H x t) zero ≐ qone := GaussianRationalReconstruction.reconstruct_monic _ _ _
-theorem reverse_bound (t k : PTm n) (hk : Γ ⊢[PRAAx] lt k t) : Γ ⊢[PRAAx]
-    lt (monus t (succ k)) t := le_of_eq_add (d := k) (AnalyticNumberTheory.Totatives.split_lt hk)
+alias reverse_bound := Common.monus_succ_lt
 
 theorem repeated_factors (x t z k : PTm n) (hk : Γ ⊢[PRAAx] le k t) : Γ ⊢[PRAAx]
     factors (repeated x t) t z k ≐ power (qsub z x) k := by
   have all : Γ ⊢[PRAAx] .all (le (var 0) (Syn.shift t) ⟶
       factors (repeated (Syn.shift x) (Syn.shift t)) (Syn.shift t) (Syn.shift z) (var 0) ≐
         power (qsub (Syn.shift z) (Syn.shift x)) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [Fm.subst_imp,Fm.subst_eq,subst_le,GaussianRationalReconstruction.subst_factors,
-        subst_repeated,GaussianRationalReciprocal.subst_power,GaussianRationalMetric.subst_qsub,
-        Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI ((GaussianRationalReconstruction.factors_zero _ _ _).eqTrans (power_zero _).eqSymm)
-    · simp only [Fm.subst_imp,Fm.subst_eq,subst_le,GaussianRationalReconstruction.subst_factors,
-        subst_repeated,GaussianRationalReciprocal.subst_power,GaussianRationalMetric.subst_qsub,
-        Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_le, GaussianRationalReconstruction.subst_factors, subst_repeated,
+        GaussianRationalReciprocal.subst_power, GaussianRationalMetric.subst_qsub]
+    · exact .impI ((GaussianRationalReconstruction.factors_zero _ _ _).eqTrans (power_zero _).eqSymm)
+    · refine .impI ?_
       exact (GaussianRationalReconstruction.factors_succ _ _ _ _).eqTrans
         ((qmul_congr (qsub_congr (.eqRefl _) (repeated_lookup _ _ _ (reverse_bound _ _ Prf.hyp0)))
           (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))).eqTrans
@@ -180,25 +161,17 @@ same repeated-root polynomial/list used by the proofs. -/
 def output (A m B t x : PTm n) : PTm n := pairT (Qhat A m B t x) (pairT (H x t) (repeated x t))
 def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (A m B t x : PTm n) : PTm n := app outputF ![A,m,B,t,x]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (A m B t x : PTm n) :
-    Syn.subst σ (output A m B t x) = output (Syn.subst σ A) (Syn.subst σ m)
-      (Syn.subst σ B) (Syn.subst σ t) (Syn.subst σ x) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (A m B t x : PTm n) :
-    Syn.subst σ (run A m B t x) = run (Syn.subst σ A) (Syn.subst σ m)
-      (Syn.subst σ B) (Syn.subst σ t) (Syn.subst σ x) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 theorem program_at (A m B t x : PTm n) : Γ ⊢[PRAAx] run A m B t x ≐ output A m B t x := by
   simpa [run,outputF] using toPR_eq (Γ := Γ)
     (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![A,m,B,t,x]
 theorem returned_Qhat (A m B t x : PTm n) : Γ ⊢[PRAAx] fstT (run A m B t x) ≐ Qhat A m B t x :=
-  (congrFst (program_at _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _ _).fstE
 theorem returned_H (A m B t x : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run A m B t x)) ≐ H x t :=
-  (congrFst ((congrSnd (program_at _ _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _ _).sndE.fstE
 theorem returned_repeated (A m B t x : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run A m B t x)) ≐ repeated x t :=
-  (congrSnd ((congrSnd (program_at _ _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _ _).sndE.sndE
 theorem returned_H_evaluation (A m B t x z : PTm n) : Γ ⊢[PRAAx]
     evaluate (fstT (sndT (run A m B t x))) z ≐ power (qsub z x) t :=
   (evaluate_congr (returned_H _ _ _ _ _) (.eqRefl _)).eqTrans (H_evaluation _ _ _)

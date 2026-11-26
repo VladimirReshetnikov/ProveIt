@@ -15,7 +15,7 @@ set_option linter.unnecessarySeqFocus false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticIntegerOrder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open QuadraticSignCertificates (first second equal cone add negative multiply zeroCode oneCode
   product multiplier sign certificate actual_certificate)
 open QuadraticSignCertificates (multiply_first multiply_second negative_first negative_second
@@ -24,9 +24,6 @@ open QuadraticConeOrder (equal_of_values equal_refl equal_symm equal_trans equal
   multiply_congr add_congr negative_congr cone_congr cone_add cone_multiply add_first add_second
   multiply_zero_right nested_commute negative_product_right add_negative_self negative_zero negative_negative
   sign_unique_positive sign_unique_negative sign_unique_zero sign_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -35,16 +32,11 @@ def isZero (d x : PTm n) : Fm PTm n := sign d x ≐ zero
 def isNegative (d x : PTm n) : Fm PTm n := sign d x ≐ two
 def difference (x y : PTm n) : PTm n := add x (negative y)
 def equivalent (d x y : PTm n) : Fm PTm n := isZero d (difference x y)
-@[simp] theorem subst_positive {l : ℕ} (σ : Fin n → PTm l) (d x : PTm n) :
-    (positive d x).subst σ = positive (Syn.subst σ d) (Syn.subst σ x) := by simp [positive]
-@[simp] theorem subst_isZero {l : ℕ} (σ : Fin n → PTm l) (d x : PTm n) :
-    (isZero d x).subst σ = isZero (Syn.subst σ d) (Syn.subst σ x) := by simp [isZero]
-@[simp] theorem subst_isNegative {l : ℕ} (σ : Fin n → PTm l) (d x : PTm n) :
-    (isNegative d x).subst σ = isNegative (Syn.subst σ d) (Syn.subst σ x) := by simp [isNegative]
-@[simp] theorem subst_difference {l : ℕ} (σ : Fin n → PTm l) (x y : PTm n) :
-    Syn.subst σ (difference x y) = difference (Syn.subst σ x) (Syn.subst σ y) := by simp [difference]
-@[simp] theorem subst_equivalent {l : ℕ} (σ : Fin n → PTm l) (d x y : PTm n) :
-    (equivalent d x y).subst σ = equivalent (Syn.subst σ d) (Syn.subst σ x) (Syn.subst σ y) := by simp [equivalent]
+ipra_subst positive
+ipra_subst isZero
+ipra_subst isNegative
+ipra_subst difference
+ipra_subst equivalent
 
 theorem one_zero_absurd (φ : Fm PTm n) (h : Γ ⊢[PRAAx] (one : PTm n) ≐ zero) : Γ ⊢[PRAAx] φ := succ_ne_zero' φ h
 theorem two_zero_absurd (φ : Fm PTm n) (h : Γ ⊢[PRAAx] (two : PTm n) ≐ zero) : Γ ⊢[PRAAx] φ := succ_ne_zero' φ h
@@ -213,8 +205,7 @@ theorem positive_negative (d x : PTm n) (hd : Γ ⊢[PRAAx] le one d)
       (negative_negative (multiply d (multiplier x) x)))) (positive_certificate d x h))
 
 def less (d x y : PTm n) : Fm PTm n := positive d (difference y x)
-@[simp] theorem subst_less {l : ℕ} (σ : Fin n → PTm l) (d x y : PTm n) :
-    (less d x y).subst σ = less (Syn.subst σ d) (Syn.subst σ x) (Syn.subst σ y) := by simp [less]
+ipra_subst less
 
 theorem less_irrefl (d x : PTm n) (hd : Γ ⊢[PRAAx] le one d) : Γ ⊢[PRAAx] neg (less d x x) := by
   refine .impI ?_
@@ -275,8 +266,8 @@ theorem coefficient_equal_equivalent (d x y : PTm n) (hd : Γ ⊢[PRAAx] le one 
 
 def root : PTm n := QuadraticSignCertificates.naturalPair zero one
 def natural (a : PTm n) : PTm n := QuadraticSignCertificates.naturalPair a zero
-@[simp] theorem subst_root {l : ℕ} (σ : Fin n → PTm l) : Syn.subst σ (root : PTm n) = (root : PTm l) := by simp [root,one]
-@[simp] theorem subst_natural {l : ℕ} (σ : Fin n → PTm l) (a : PTm n) : Syn.subst σ (natural a) = natural (Syn.subst σ a) := by simp [natural]
+ipra_subst root [one]
+ipra_subst natural
 theorem root_cone : Γ ⊢[PRAAx] cone (root : PTm n) :=
   QuadraticSignCertificates.cone_natural zero one (le_congr (.eqRefl _) (LeanProofs.IPRA.zero_add _).eqSymm (le_refl _))
 theorem root_positive (d : PTm n) (hd : Γ ⊢[PRAAx] le one d) : Γ ⊢[PRAAx] positive d root := cone_positive d root hd root_cone

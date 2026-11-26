@@ -15,7 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalNonnegativeProducts
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (re im oneCode)
 open GaussianRationalHorner (canonical qadd qadd_represents qadd_canonical qmul qmul_represents qmul_canonical
   ofGaussian_represents scalar_congr positive_product)
@@ -29,18 +29,13 @@ open RationalSupMetric (denominatorOf)
 open RationalValueBounds (upper upper_of_order)
 open RationalArgmin (rationalLE)
 open GaussianNamedFiniteProduct (sample sample_zero sample_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 
 def nonnegative (q : PTm n) : Fm PTm n := rationalLE scalarZero (fstT q) ⋏ sndT q ≐ scalarZero
 
-@[simp] theorem subst_nonnegative {L : ℕ} (σ : Fin n → PTm L) (q : PTm n) :
-    (nonnegative q).subst σ = nonnegative (Syn.subst σ q) := by simp [nonnegative]
+ipra_subst nonnegative
 
 theorem congr {q r : PTm n} (h : Γ ⊢[PRAAx] q ≐ r) (hq : Γ ⊢[PRAAx] nonnegative q) :
     Γ ⊢[PRAAx] nonnegative r :=
@@ -152,7 +147,6 @@ theorem nonnegative_double (q : PTm n) (hq : Γ ⊢[PRAAx] nonnegative q) :
   have hE := raw_den_positive (Γ := Γ) q
   have qa := raw_represents (Γ := Γ) q
   have aRe : ZT.toZ Γ (ZT.ofNat zero)+𝔞 T = ZT.toZ Γ (re a) := zle_toZ (signed_real q a E qa hq.andE₁)
-  have aIm := ZT.toZ_eq (signed_imaginary q a E qa hq.andE₂)
   apply from_representation _ _ E hE (qadd_canonical _ _) (qadd_represents _ _ _ _ _ hE qa qa)
   · apply zle_of_toZ (T+T)
     rw [re_add,← aRe]
@@ -160,16 +154,13 @@ theorem nonnegative_double (q : PTm n) (hq : Γ ⊢[PRAAx] nonnegative q) :
     ipra_simps
     ring
   · apply ZT.derive
-    rw [im_add,aIm]
+    rw [im_add,ZT.toZ_eq (signed_imaginary q a E qa hq.andE₂)]
     simp [ZT.toZ_ofNat,IPRA.Q.mk_zero,map_zero]
 
 def nonnegativeRows (f : PR 3) (p N x : PTm n) : Fm PTm n := .all
   (lt (var 0) (Syn.shift N) ⟶ nonnegative (ap3 f (Syn.shift p) (var 0) (Syn.shift x)))
 
-@[simp] theorem subst_nonnegativeRows {L : ℕ} (σ : Fin n → PTm L) (f : PR 3) (p N x : PTm n) :
-    (nonnegativeRows f p N x).subst σ =
-      nonnegativeRows f (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ x) := by
-  simp [nonnegativeRows,Syn.subst_shift,Syn.shift_subst]
+ipra_subst nonnegativeRows [Syn.subst_shift, Syn.shift_subst]
 
 theorem row_at (f : PR 3) (p N x i : PTm n)
     (h : Γ ⊢[PRAAx] nonnegativeRows f p N x) (hi : Γ ⊢[PRAAx] lt i N) :
@@ -190,11 +181,9 @@ theorem sample_nonnegative (f : PR 3) (p N x : PTm n) (h : Γ ⊢[PRAAx] nonnega
   have h' : Γ.map Fm.shift ⊢[PRAAx] nonnegativeRows f (Syn.shift p) (Syn.shift N) (Syn.shift x) := by
     simpa [Fm.shift,Syn.shift] using h.shift
   have all : Γ ⊢[PRAAx] .all (prefixLaw f (Syn.shift p) (Syn.shift N) (Syn.shift x) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,⟨le_QF _ _,trivial⟩⟩ ?_ ?_
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (congr (sample_zero f p x).eqSymm nonnegative_one).wk
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,⟨le_QF _ _,trivial⟩⟩) [subst_prefixLaw]
+    · exact .impI (congr (sample_zero f p x).eqSymm nonnegative_one).wk
+    · refine .impI ?_
       let I : PTm (n+1) := var 0
       let P := Syn.shift p
       let M := Syn.shift N

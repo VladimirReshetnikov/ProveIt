@@ -15,7 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent)
@@ -27,8 +27,6 @@ open GaussianRationalL1 (raw_den_positive raw_represents)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr)
 open LeanProofs.IPRA.Foundations.BoundedFormulas (subst_up_shift')
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -49,29 +47,19 @@ def nameF (f : PR 3) : PR 2 := GaussianFastValueCut.nameF (rawF f)
 def data (N R L x : PTm n) : PTm n := GaussianFastValueCut.nameData (modulus N R L) (rawData N x)
 def clock (N R L p : PTm n) : PTm n := GaussianFastValueCut.exponent (modulus N R L) p
 
-@[simp] theorem subst_rowBounds {l : ℕ} (σ : Fin n → PTm l) (f : PR 3) (N R x : PTm n) :
-    (rowBounds f N R x).subst σ = rowBounds f (Syn.subst σ N) (Syn.subst σ R) (Syn.subst σ x) := by
-  simp [rowBounds,Syn.subst_shift,Syn.shift_subst]
+ipra_subst rowBounds [Syn.subst_shift, Syn.shift_subst]
 
-@[simp] theorem subst_rowRegular {l : ℕ} (σ : Fin n → PTm l) (f : PR 3) (N L x : PTm n) :
-    (rowRegular f N L x).subst σ = rowRegular f (Syn.subst σ N) (Syn.subst σ L) (Syn.subst σ x) := by
-  simp [rowRegular,Syn.subst_shift,Syn.shift_subst]
+ipra_subst rowRegular [Syn.subst_shift, Syn.shift_subst]
 
-@[simp] theorem subst_cofinalRows {l : ℕ} (σ : Fin n → PTm l) (f g : PR 3) (N C x y : PTm n) :
-    (cofinalRows f g N C x y).subst σ = cofinalRows f g (Syn.subst σ N) (Syn.subst σ C) (Syn.subst σ x) (Syn.subst σ y) := by
-  simp [cofinalRows,Syn.subst_shift,Syn.shift_subst]
+ipra_subst cofinalRows [Syn.subst_shift, Syn.shift_subst]
 
-@[simp] theorem subst_modulus {l : ℕ} (σ : Fin n → PTm l) (N R L : PTm n) :
-    Syn.subst σ (modulus N R L) = modulus (Syn.subst σ N) (Syn.subst σ R) (Syn.subst σ L) := by simp [modulus]
+ipra_subst modulus
 
-@[simp] theorem subst_rawData {l : ℕ} (σ : Fin n → PTm l) (N x : PTm n) :
-    Syn.subst σ (rawData N x) = rawData (Syn.subst σ N) (Syn.subst σ x) := by simp [rawData]
+ipra_subst rawData
 
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (N R L x : PTm n) :
-    Syn.subst σ (data N R L x) = data (Syn.subst σ N) (Syn.subst σ R) (Syn.subst σ L) (Syn.subst σ x) := by simp [data]
+ipra_subst data
 
-@[simp] theorem subst_clock {l : ℕ} (σ : Fin n → PTm l) (N R L p : PTm n) :
-    Syn.subst σ (clock N R L p) = clock (Syn.subst σ N) (Syn.subst σ R) (Syn.subst σ L) (Syn.subst σ p) := by simp [clock]
+ipra_subst clock
 
 theorem bounds_at (f : PR 3) (p N R x : PTm n) (h : Γ ⊢[PRAAx] rowBounds f N R x) : Γ ⊢[PRAAx] rowBoundsAt f p N R x :=
   by simpa [rowBounds] using h.allE p

@@ -19,7 +19,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGeneralFTAInvariant
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianGeneralFTARadiusStep (margin position residual)
 open LeanProofs.IPRA.Analysis.GaussianGeneralProductBound (numerator denominator)
 open LeanProofs.IPRA.Analysis.GaussianGeneralFTATrajectory (trajectory polynomial delta)
@@ -27,16 +27,11 @@ open LeanProofs.IPRA.Analysis.GaussianGeneralPolynomialSamples (sourceInput)
 open LeanProofs.IPRA.Analysis.GaussianGeneralFTAConstants (B C K R QNum QDen rhoNum)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (evaluate positive_product)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (bounded)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def joint (a : PR 3) (N h x j : PTm n) : Fm PTm n := position a N h x j ⋏ residual a N h x j
-@[simp] theorem subst_joint {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x j : PTm n) :
-    (joint a N h x j).subst σ = joint a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) (Syn.subst σ j) := by
-  simp [joint]
+ipra_subst joint
 
 theorem position_zero (a : PR 3) (N h x : PTm n) : Γ ⊢[PRAAx] position a N h x zero :=
   GaussianRationalReciprocal.bound_congr (GaussianGeneralFTATrajectory.trajectory_zero a N h x).eqSymm
@@ -72,11 +67,9 @@ theorem invariant (a : PR 3) (N k h x j : PTm n) (hSource : Γ ⊢[PRAAx] source
   have sourceShift : Γ.map Fm.shift ⊢[PRAAx] sourceInput a (Syn.shift N) (Syn.shift k) (Syn.shift h) (Syn.shift x) := by
     simpa only [Fm.shift,GaussianGeneralPolynomialSamples.subst_sourceInput,Syn.shift] using hSource.shift
   have all : Γ ⊢[PRAAx] .all (joint a (Syn.shift N) (Syn.shift h) (Syn.shift x) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [subst_joint,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact invariant_zero a N k h x hSource
-    · simp only [subst_joint,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact invariant_step a (Syn.shift N) (Syn.shift k) (Syn.shift h) (Syn.shift x) (var 0) sourceShift.wk Prf.hyp0
+    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_joint]
+    · exact invariant_zero a N k h x hSource
+    · exact invariant_step a (Syn.shift N) (Syn.shift k) (Syn.shift h) (Syn.shift x) (var 0) sourceShift.wk Prf.hyp0
   simpa only [subst_joint,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
 
 theorem position_bound (a : PR 3) (N k h x j : PTm n) (hSource : Γ ⊢[PRAAx] sourceInput a N k h x) : Γ ⊢[PRAAx]

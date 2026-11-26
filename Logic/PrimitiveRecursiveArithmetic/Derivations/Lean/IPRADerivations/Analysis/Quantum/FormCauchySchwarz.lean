@@ -23,11 +23,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.Quantum.FormCauchySchwarz
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,23 +39,20 @@ theorem form_cauchy_schwarz {a s N : PTm n} (h1 : Γ ⊢[PRAAx] le (s * N) (s * 
     have es := natEq (Prf.hyp0 : Δ ⊢[PRAAx] s ≐ zero)
     have h2' : Δ ⊢[PRAAx] le (num 2 * succ a * N) (a + succ a * succ a * N * s) := h2.wk
     refine .orE (zero_or_succ N) ?_ ?_
-    · have eN := natEq (Prf.hyp0 : ((N ≐ zero) :: Δ) ⊢[PRAAx] N ≐ zero)
-      ipra_le 𝔟 a * 𝔟 s with eN
+    · ipra_le 𝔟 a * 𝔟 s with natEq (Prf.hyp0 : ((N ≐ zero) :: Δ) ⊢[PRAAx] N ≐ zero)
     · let Δ' := (N ≐ succ (pred N)) :: Δ
-      have eN := natEq (Prf.hyp0 : Δ' ⊢[PRAAx] N ≐ succ (pred N))
       have es' := natEq (Prf.hyp1 : Δ' ⊢[PRAAx] s ≐ zero)
       have h2'' : Δ' ⊢[PRAAx] le (num 2 * succ a * N) (a + succ a * succ a * N * s) := h2'.wk
       have hlt : Δ' ⊢[PRAAx] lt (a + succ a * succ a * N * s) (num 2 * succ a * N) := by
         show Δ' ⊢[PRAAx] le (succ (a + succ a * succ a * N * s)) (num 2 * succ a * N)
         ipra_le 𝔟 a + 1 + 2 * (𝔟 a + 1) * 𝔟 (pred N) with
-          (2 * 𝔟 a + 2) * eN - (𝔟 a + 1) ^ 2 * 𝔟 N * es'
+          (2 * 𝔟 a + 2) * natEq (Prf.hyp0 : Δ' ⊢[PRAAx] N ≐ succ (pred N)) - (𝔟 a + 1) ^ 2 * 𝔟 N * es'
       exact le_lt_absurd _ h2'' hlt
   · -- `s ≥ 1`: cancel `s` in `s N ≤ s (s a)`.
     let Δ := (s ≐ succ (pred s)) :: Γ
-    have e := natEq (Prf.hyp0 : Δ ⊢[PRAAx] s ≐ succ (pred s))
     have h1w : Δ ⊢[PRAAx] le (s * N) (s * s * a) := h1.wk
     have h1' : Δ ⊢[PRAAx] le (succ (pred s) * N) (succ (pred s) * (a * s)) := by
-      ipra_le sl h1w with (𝔟 N - 𝔟 a * 𝔟 s) * e
+      ipra_le sl h1w with (𝔟 N - 𝔟 a * 𝔟 s) * natEq (Prf.hyp0 : Δ ⊢[PRAAx] s ≐ succ (pred s))
     exact mul_le_cancel h1'
 
 end LeanProofs.IPRA.Analysis.Quantum.FormCauchySchwarz

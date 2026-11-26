@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitSubstitutionFloorCuts
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUnitSubstitutionTiltedNodes (correctedNode reverseNode)
 open RationalNonnegativeFloor (index)
 open RationalConvexSecants (naturalNumerator nonnegative)
@@ -25,10 +25,6 @@ open RationalSupMetric (numeratorOf denominatorOf)
 open GaussianRationalHorner (positive_product scalar_congr)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEulerUnitDecayInput (compactDenominator clock)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -42,20 +38,11 @@ def source (k N a C E T M : PTm n) : Fm PTm n :=
     (le one N ⋏ (le ((two*two)*compactDenominator E T*N) (unit (clock k E T)) ⋏
       le (two*(two*compactDenominator E T)) M))
 
-@[simp] theorem subst_capped {m : ℕ} (σ : Fin n → PTm m) (i N : PTm n) :
-    Syn.subst σ (capped i N) = capped (Syn.subst σ i) (Syn.subst σ N) := by simp [capped]
-@[simp] theorem subst_node {m : ℕ} (σ : Fin n → PTm m) (i k N a C E T : PTm n) :
-    Syn.subst σ (node i k N a C E T) = node (Syn.subst σ i) (Syn.subst σ k) (Syn.subst σ N)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by simp [node]
-@[simp] theorem subst_cut {m : ℕ} (σ : Fin n → PTm m) (i k N a C E T M : PTm n) :
-    Syn.subst σ (cut i k N a C E T M) = cut (Syn.subst σ i) (Syn.subst σ k) (Syn.subst σ N)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ M) := by simp [cut]
-@[simp] theorem subst_relativeCut {m : ℕ} (σ : Fin n → PTm m) (i k N a C E T M : PTm n) :
-    Syn.subst σ (relativeCut i k N a C E T M) = relativeCut (Syn.subst σ i) (Syn.subst σ k) (Syn.subst σ N)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ M) := by simp [relativeCut]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (k N a C E T M : PTm n) :
-    (source k N a C E T M).subst σ = source (Syn.subst σ k) (Syn.subst σ N) (Syn.subst σ a)
-      (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ M) := by simp [source]
+ipra_subst capped
+ipra_subst node
+ipra_subst cut
+ipra_subst relativeCut
+ipra_subst source
 
 theorem capped_below (i N : PTm n) (h : Γ ⊢[PRAAx] le i N) : Γ ⊢[PRAAx] capped i N ≐ i := by
   have e := eq_add_of_le h
@@ -215,9 +202,7 @@ private def absoluteReader (i x : PTm n) : PTm n :=
 def absoluteF : PR 2 := PTm.toPR (absoluteReader (var 0) (var 1))
 def cutF : PR 2 := PTm.toPR (monus (ap2 absoluteF (var 0) (var 1)) (ap2 absoluteF zero (var 1)))
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (k N a C E T M : PTm n) :
-    Syn.subst σ (data k N a C E T M) = data (Syn.subst σ k) (Syn.subst σ N) (Syn.subst σ a)
-      (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ M) := by simp [data]
+ipra_subst data
 
 private theorem fields_at (k N a C E T M : PTm n) (j : Fin 7) : Γ ⊢[PRAAx]
     fields (data k N a C E T M) j ≐ (![k,N,a,C,E,T,M] : Fin 7 → PTm n) j := by

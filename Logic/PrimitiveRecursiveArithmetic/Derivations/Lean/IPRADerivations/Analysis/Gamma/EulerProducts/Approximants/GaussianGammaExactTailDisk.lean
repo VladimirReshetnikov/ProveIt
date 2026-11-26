@@ -21,7 +21,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaExactTailDisk
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaCanonicalTailName (source pointF point)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalHorner (positive_product)
@@ -31,10 +31,6 @@ open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianFastValueCut (rawEnvelope)
 open GaussianRationalDistanceOrder (distance_congr distance_symmetric)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -73,18 +69,12 @@ def originalExponentialData (z R B N : PTm n) : PTm n := GaussianRadiusExponenti
   (originalRadius z R B N) (GaussianGammaCanonicalTailName.data z R B N)
 def originalExponentialPoint (p z R B N : PTm n) : PTm n := ap2 originalExponentialF p (originalExponentialData z R B N)
 
-@[simp] theorem subst_exactData {m : ℕ} (σ : Fin n → PTm m) (z R B N : PTm n) :
-    Syn.subst σ (exactData z R B N) = exactData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [exactData]
-@[simp] theorem subst_exactPoint {m : ℕ} (σ : Fin n → PTm m) (p z R B N : PTm n) :
-    Syn.subst σ (exactPoint p z R B N) = exactPoint (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [exactPoint]
-@[simp] theorem subst_exponentialPoint {m : ℕ} (σ : Fin n → PTm m) (p z R B N : PTm n) :
-    Syn.subst σ (exponentialPoint p z R B N) = exponentialPoint (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [exponentialPoint]
-@[simp] theorem subst_originalRadius {m : ℕ} (σ : Fin n → PTm m) (z R B N : PTm n) :
-    Syn.subst σ (originalRadius z R B N) = originalRadius (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [originalRadius]
-@[simp] theorem subst_originalExponentialData {m : ℕ} (σ : Fin n → PTm m) (z R B N : PTm n) :
-    Syn.subst σ (originalExponentialData z R B N) = originalExponentialData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [originalExponentialData]
-@[simp] theorem subst_originalExponentialPoint {m : ℕ} (σ : Fin n → PTm m) (p z R B N : PTm n) :
-    Syn.subst σ (originalExponentialPoint p z R B N) = originalExponentialPoint (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [originalExponentialPoint]
+ipra_subst exactData
+ipra_subst exactPoint
+ipra_subst exponentialPoint
+ipra_subst originalRadius
+ipra_subst originalExponentialData
+ipra_subst originalExponentialPoint
 
 theorem exact_point_at (p z R B N : PTm n) : Γ ⊢[PRAAx] exactPoint p z R B N ≐
     GaussianExactDiskShrinking.value pointF p (GaussianGammaCanonicalTailName.data z R B N) (R*R) N one :=

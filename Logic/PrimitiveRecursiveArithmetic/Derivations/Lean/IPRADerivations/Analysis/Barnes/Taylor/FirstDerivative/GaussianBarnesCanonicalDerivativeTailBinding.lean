@@ -19,7 +19,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalDerivativeTailBinding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open ComplexLogarithmRemainder (add normSq)
 open GaussianBarnesCanonicalDerivativeInterval (errorNumerator errorDenominator scaledValue)
@@ -37,10 +37,6 @@ open GaussianRationalDistanceOrder (distance_radius_mono)
 open GaussianRationalHorner (ofGaussian ofGaussian_represents positive_product qmul)
 open GaussianRationalMetric (bounded bounded_of_cleared distanceBounded)
 open GaussianRationalSyntheticDivision (qmul_congr)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "L" => GaussianBarnesCanonicalLogCofinal.nameF

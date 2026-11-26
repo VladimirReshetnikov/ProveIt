@@ -16,7 +16,7 @@ set_option maxHeartbeats 2000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaTwoShiftSecants
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaEulerRationalHeadConvexity (weight barycenter)
@@ -36,10 +36,6 @@ open GaussianStirlingGammaFractionalIncrementObservations (weighted_at weightedC
 open GaussianStirlingGammaLogarithm (source logGammaF logGammaData log_gamma_regular)
 open RationalRepresentedUpper (left right to_signed from_signed)
 open RationalValueBounds (upper upper_congr upper_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

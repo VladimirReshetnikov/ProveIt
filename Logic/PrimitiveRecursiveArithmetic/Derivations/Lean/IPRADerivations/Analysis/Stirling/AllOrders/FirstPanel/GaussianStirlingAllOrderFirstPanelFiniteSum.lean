@@ -14,7 +14,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelFiniteSum
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
@@ -26,8 +26,6 @@ open GaussianNameEquivalence (crossEquivalent cross_trans)
 open GaussianStirlingNames (source)
 open GaussianStirlingTelescope (dBody rawSum sampleData d_at)
 open GaussianStirlingTelescopeName (rawData)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "panelF" => GaussianStirlingAllOrderFirstPanelName.nameF
@@ -40,8 +38,7 @@ def rowBody : PTm 2 :=
   let d := var 1
   row (fstT d) (fstT (sndT d)) (sndT (sndT d)) (var 0)
 
-@[simp] theorem subst_row {l : ℕ} (σ : Fin n → PTm l) (p A B k : PTm n) :
-    Syn.subst σ (row p A B k) = row (Syn.subst σ p) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ k) := by simp [row]
+ipra_subst row
 
 theorem row_at (p A B k : PTm n) :
     Γ ⊢[PRAAx] inst2 rowBody k (sampleData p A B) ≐ row p A B k := by
@@ -62,10 +59,8 @@ def rawF : PR 2 := PTm.toPR (raw (var 0) (fstT (var 1)) (fstT (sndT (var 1))) (s
 def nameF : PR 2 := GaussianFastValueCut.nameF rawF
 def data (N A B : PTm n) : PTm n := GaussianFastValueCut.nameData N (rawData N A B)
 
-@[simp] theorem subst_raw {l : ℕ} (σ : Fin n → PTm l) (p N A B : PTm n) :
-    Syn.subst σ (raw p N A B) = raw (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ B) := by simp [raw]
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (N A B : PTm n) :
-    Syn.subst σ (data N A B) = data (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ B) := by simp [data]
+ipra_subst raw
+ipra_subst data
 
 theorem raw_at (p N A B : PTm n) : Γ ⊢[PRAAx] ap2 rawF p (rawData N A B) ≐ raw p N A B := by
   let x := rawData N A B

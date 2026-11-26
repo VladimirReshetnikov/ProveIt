@@ -13,16 +13,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalPolynomialDegreeGaussianEmbedding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalGaussianEmbedding (embed scalarZero embed_canonical scalar_recode_zero)
 open RationalPolynomialBuffersGaussianEmbedding (embeddedEntries)
 open GaussianRationalHorner (qzero)
 open GaussianTranslatedNonconstant (recode recode_congr recode_eq)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
-open LeanProofs.IPRA.PTm (monus)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -31,12 +27,9 @@ def first (C N : PTm n) : PTm n := Search.mu zeroBit (succ N) C
 def flag (C N : PTm n) : PTm n := Signum.sg (monus (succ N) (first C N))
 def degree (C N : PTm n) : PTm n := monus N (first C N)
 
-@[simp] theorem subst_first {l : ℕ} (σ : Fin n → PTm l) (C N : PTm n) :
-    Syn.subst σ (first C N) = first (Syn.subst σ C) (Syn.subst σ N) := by simp [first,Search.mu]
-@[simp] theorem subst_flag {l : ℕ} (σ : Fin n → PTm l) (C N : PTm n) :
-    Syn.subst σ (flag C N) = flag (Syn.subst σ C) (Syn.subst σ N) := by simp [flag,Signum.sg]
-@[simp] theorem subst_degree {l : ℕ} (σ : Fin n → PTm l) (C N : PTm n) :
-    Syn.subst σ (degree C N) = degree (Syn.subst σ C) (Syn.subst σ N) := by simp [degree]
+ipra_subst first [Search.mu]
+ipra_subst flag [Signum.sg]
+ipra_subst degree
 
 theorem zero_bit_at (C i : PTm n) :
     inst2 zeroBit i C = eqb (RationalArithmetic.recode (entry C i)) scalarZero := by simp [zeroBit,inst2]
@@ -105,8 +98,7 @@ theorem degree_conjugacy (C D N : PTm n) (h : Γ ⊢[PRAAx] embeddedEntries C D 
 def result (C N : PTm n) : PTm n := pairT (flag C N) (degree C N)
 def resultF : PR 2 := PTm.toPR (result (var 0) (var 1))
 
-@[simp] theorem subst_result {l : ℕ} (σ : Fin n → PTm l) (C N : PTm n) :
-    Syn.subst σ (result C N) = result (Syn.subst σ C) (Syn.subst σ N) := by simp [result]
+ipra_subst result
 
 theorem result_at (C N : PTm n) : Γ ⊢[PRAAx] ap2 resultF C N ≐ result C N := by
   simpa [resultF,ap2] using toPR_eq (Γ := Γ) (result (var 0) (var 1) : PTm 2) ![C,N]

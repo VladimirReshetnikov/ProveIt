@@ -37,7 +37,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.SampleMedian
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial (binom)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (binom_zero' binom_self' pascal_at)
 open LeanProofs.IPRA.Probability.ProductPower (TB SB Pr Sr TB_at SB_at pr_peel sr_peel peel_sum lin3 shift_mul'' shift_zero'
@@ -46,10 +46,6 @@ open LeanProofs.IPRA.Probability.Lotus (vB inst2_vB)
 open LeanProofs.IPRA.Probability.Expectation (inst2_mul')
 open LeanProofs.IPRA.AnalyticNumberTheory.Euler (congrEqb)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt (eqb_succ_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -306,11 +302,11 @@ theorem vB2_at (k a c r M x : PTm n) :
   rw [e]
   have s : Γ ⊢[PRAAx] sndT (pairT (pairT a c) (pairT r (pairT M x))) ≐ pairT r (pairT M x) := snd_pair _ _
   have f : Γ ⊢[PRAAx] fstT (pairT (pairT a c) (pairT r (pairT M x))) ≐ pairT a c := fst_pair _ _
-  have hr : Γ ⊢[PRAAx] fstT (sndT (pairT (pairT a c) (pairT r (pairT M x)))) ≐ r := (congrFst s).eqTrans (fst_pair _ _)
+  have hr : Γ ⊢[PRAAx] fstT (sndT (pairT (pairT a c) (pairT r (pairT M x)))) ≐ r := s.fstE
   have hM : Γ ⊢[PRAAx] fstT (sndT (sndT (pairT (pairT a c) (pairT r (pairT M x))))) ≐ M :=
-    (congrFst ((congrSnd s).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+    s.sndE.fstE
   refine congrMonus (.eqRefl _) (congrEqb (congrAp2 _ (congrAp2 powF hr hM) (congrPairT (.eqRefl _) s)) ?_)
-  exact G_congr ((congrFst f).eqTrans (fst_pair _ _)) ((congrSnd f).eqTrans (snd_pair _ _)) hr (.eqRefl _)
+  exact G_congr f.fstE f.sndE hr (.eqRefl _)
 
 /-- The violation count `V_B(r) = ∑_{k<B} [F_r(k) ≠ G(r, k)]`. -/
 abbrev Vc (B a c r M x : PTm n) : PTm n := ap2 (sumF (vB2 w X)) B (pairT (pairT a c) (pairT r (pairT M x)))
@@ -405,13 +401,9 @@ theorem count_law {k r M x : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
     simpa [Fm.shift, Syn.shift, Syn.subst_subst] using hX.shift
   have hall : Γ ⊢[PRAAx] Fm.all (Vc w X (Syn.shift (succ k)) (ap2 (sumF (w * X)) (Syn.shift M) (Syn.shift x))
       (ap2 (sumF (w * monus one X)) (Syn.shift M) (Syn.shift x)) (var 0) (Syn.shift M) (Syn.shift x) ≐ zero) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Vc, Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      exact V_zero w X _ _ _ _ _
-    · simp only [Vc, Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      exact V_succ w X hM'.wk hX'.wk Prf.hyp0
+    ipra_qfind [Vc, subst_ap2, subst_pairT]
+    · exact V_zero w X _ _ _ _ _
+    · exact V_succ w X hM'.wk hX'.wk Prf.hyp0
   have h := Prf.allE r hall
   simp only [Vc, Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
     ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at h
@@ -493,7 +485,7 @@ theorem sample_cdf {N M x : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
         (ap2 (sumF (w * monus one X)) (Syn.shift M) (Syn.shift x))) (Syn.shift N))) (var 0) := by simp [inst2]
   rw [gL, hR]
   have nN : Δ ⊢[PRAAx] fstT (sndT (pairT (pw (Syn.shift M) (Syn.shift N)) (pairT (Syn.shift N) (pairT (Syn.shift M) (Syn.shift x))))) ≐
-      Syn.shift N := (congrFst sy).eqTrans (fst_pair _ _)
+      Syn.shift N := sy.fstE
   have pf : Δ ⊢[PRAAx] pairT (pairT (ap2 (sumF (w * X)) (Syn.shift M) (Syn.shift x))
       (ap2 (sumF (w * monus one X)) (Syn.shift M) (Syn.shift x))) (Syn.shift N) ≐
       pairT (pairT (ap2 (sumF (w * X)) (Syn.shift M) (Syn.shift x))
@@ -509,7 +501,7 @@ theorem sample_cdf {N M x : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
     fun h => congrMonus (.eqRefl _) (congrMonus (congrSucc (congrAp1 _ h)) (.eqRefl _))
   refine congrMul ((geC nN).eqTrans (geC s2).eqSymm) ?_
   refine (congrAp2 _ fy (congrPairT (.eqRefl _) sy)).eqTrans (cl.eqTrans ?_)
-  exact G_congr ((congrFst f2).eqTrans (fst_pair _ _)).eqSymm ((congrSnd f2).eqTrans (snd_pair _ _)).eqSymm s2.eqSymm (.eqRefl _)
+  exact G_congr f2.fstE.eqSymm f2.sndE.eqSymm s2.eqSymm (.eqRefl _)
 
 end Count
 

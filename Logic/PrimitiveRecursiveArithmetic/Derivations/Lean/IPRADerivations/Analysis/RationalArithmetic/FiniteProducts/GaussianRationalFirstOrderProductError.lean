@@ -15,15 +15,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalFirstOrderProductError
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qadd qmul represents canonical positive_product qmul_represents qadd_represents represents_congr canonical_unique)
 open GaussianRationalMetric (qsub qsub_represents bounded)
 open GaussianRationalSyntheticDivision (rescale_to)
 open GaussianRationalL1 (rawGaussian rawDen raw_represents raw_den_positive)
 open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianRationalPowerDifference (bounded_sum_same)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -35,14 +33,10 @@ def decomposedError (x1 x0 y1 y0 a b : PTm n) : PTm n :=
   qadd (qadd (qmul (error x1 x0 a) y1) (qmul x0 (error y1 y0 b))) (qmul a (qsub y1 y0))
 def commonDenominator (x1 x0 y1 y0 a b : PTm n) : PTm n := rawDen x1*rawDen x0*rawDen y1*rawDen y0*rawDen a*rawDen b
 
-@[simp] theorem subst_error {m : ℕ} (σ : Fin n → PTm m) (x1 x0 a : PTm n) :
-    Syn.subst σ (error x1 x0 a) = error (Syn.subst σ x1) (Syn.subst σ x0) (Syn.subst σ a) := by simp [error]
-@[simp] theorem subst_linearPart {m : ℕ} (σ : Fin n → PTm m) (x0 y0 a b : PTm n) :
-    Syn.subst σ (linearPart x0 y0 a b) = linearPart (Syn.subst σ x0) (Syn.subst σ y0) (Syn.subst σ a) (Syn.subst σ b) := by simp [linearPart]
-@[simp] theorem subst_productError {m : ℕ} (σ : Fin n → PTm m) (x1 x0 y1 y0 a b : PTm n) :
-    Syn.subst σ (productError x1 x0 y1 y0 a b) = productError (Syn.subst σ x1) (Syn.subst σ x0) (Syn.subst σ y1) (Syn.subst σ y0) (Syn.subst σ a) (Syn.subst σ b) := by simp [productError]
-@[simp] theorem subst_decomposedError {m : ℕ} (σ : Fin n → PTm m) (x1 x0 y1 y0 a b : PTm n) :
-    Syn.subst σ (decomposedError x1 x0 y1 y0 a b) = decomposedError (Syn.subst σ x1) (Syn.subst σ x0) (Syn.subst σ y1) (Syn.subst σ y0) (Syn.subst σ a) (Syn.subst σ b) := by simp [decomposedError]
+ipra_subst error
+ipra_subst linearPart
+ipra_subst productError
+ipra_subst decomposedError
 
 theorem common_denominator_positive (x1 x0 y1 y0 a b : PTm n) : Γ ⊢[PRAAx] le one (commonDenominator x1 x0 y1 y0 a b) :=
   positive_product _ _

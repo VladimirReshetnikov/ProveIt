@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialConvolutionDifference
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalPolynomialProduct (product product_length product_evaluation)
 open GaussianRationalPolynomialBuffers (added added_length added_lookup added_evaluation)
 open GaussianCoefficientL1 (coefficientNorm subCoefficients sub_lookup)
@@ -33,9 +33,6 @@ open RationalArithmetic (add multiply)
 open RationalArgmin (rationalLE rationalLE_congr)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -51,18 +48,9 @@ def rightTerm (Q A B d e : PTm n) : PTm n := product A (subCoefficients Q B (suc
 def expansion (P Q A B d e : PTm n) : PTm n :=
   added (leftTerm P Q A d e) (rightTerm Q A B d e) (succ (d + e))
 
-@[simp] theorem subst_input {k : ℕ} (σ : Fin n → PTm k) (P Q A B d e : PTm n) :
-    (input P Q A B d e).subst σ =
-      input (Syn.subst σ P) (Syn.subst σ Q) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ d) (Syn.subst σ e) := by
-  simp [input]
-@[simp] theorem subst_difference {k : ℕ} (σ : Fin n → PTm k) (P Q A B d e : PTm n) :
-    Syn.subst σ (difference P Q A B d e) =
-      difference (Syn.subst σ P) (Syn.subst σ Q) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ d) (Syn.subst σ e) := by
-  simp [difference]
-@[simp] theorem subst_expansion {k : ℕ} (σ : Fin n → PTm k) (P Q A B d e : PTm n) :
-    Syn.subst σ (expansion P Q A B d e) =
-      expansion (Syn.subst σ P) (Syn.subst σ Q) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ d) (Syn.subst σ e) := by
-  simp [expansion, leftTerm, rightTerm]
+ipra_subst input
+ipra_subst difference
+ipra_subst expansion [leftTerm, rightTerm]
 
 theorem evaluation_identity (P Q A B d e z : PTm n) (h : Γ ⊢[PRAAx] input P Q A B d e) :
     Γ ⊢[PRAAx] evaluate (difference P Q A B d e) z ≐ evaluate (expansion P Q A B d e) z := by

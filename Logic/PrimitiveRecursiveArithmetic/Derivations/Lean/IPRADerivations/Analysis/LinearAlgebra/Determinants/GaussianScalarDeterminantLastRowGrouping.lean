@@ -2,7 +2,6 @@ import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarDetermi
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalPermutationSum
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalBlockSums
 import IPRADerivations.Foundations.RuntimePermutationPacking
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Grouping the actual determinant terms by the last row
@@ -17,8 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianScalarDeterminantLastRowGrouping
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (succ)
+open_ipra
 open LeanProofs.IPRA.Foundations.RuntimePermutationWords (count words)
 open LeanProofs.IPRA.Foundations.RuntimePermutationPacking (grid unpackRank unpack_spec pack_unpack unpack_pack successor_count column minorRank minorWord)
 open LeanProofs.IPRA.Foundations.RuntimePermutationFactorialBound (packingF packing_bound)
@@ -30,8 +28,6 @@ open GaussianRationalPermutationSum (boundedRange inverseLaw mappedBody)
 open GaussianScalarDeterminant (scalarDet signedBody signedTerm rawProduct)
 open GaussianPolynomialDeterminantTerms (signPoint)
 open GaussianRationalHorner (qmul)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

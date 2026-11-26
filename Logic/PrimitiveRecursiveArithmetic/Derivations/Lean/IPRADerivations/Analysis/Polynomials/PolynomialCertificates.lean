@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.DifferentialEquations.FeedbackInexact
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Monomial difference bounds, the a posteriori estimate and parameter stability
@@ -26,16 +25,12 @@ for constant defects (`budget_const`).
 
 namespace LeanProofs.IPRA.Analysis.PolynomialCertificates
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.WeightedFeedback (Cert contract_scaled orbit orbit_dom)
 open LeanProofs.IPRA.Analysis.FeedbackInexact (budget inexact_budget)
 open LeanProofs.IPRA.Probability.Variance (ad)
 open LeanProofs.IPRA.Probability.ClipLaws (ad_triangle)
 open LeanProofs.IPRA.Probability.MedianWeighted (ad_mul ad_le_of)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n m : ℕ} {Γ : List (Fm PTm n)}
 
@@ -65,9 +60,8 @@ theorem mpow_le {s R : PTm n} (h : Γ ⊢[PRAAx] le s R) : ∀ k, Γ ⊢[PRAAx] 
 /-- Replacing one factor: `|s P − t Q| ≤ s |P − Q| + Q |s − t|`. -/
 theorem ad_mul_step (s t P Q : PTm n) : Γ ⊢[PRAAx] le (ad (s * P) (t * Q)) (s * ad P Q + Q * ad s t) := by
   have tri := ad_triangle (Γ := Γ) (s * P) (s * Q) (t * Q)
-  have n1 := natEq (ad_mul (Γ := Γ) s P Q)
   have n2 := natEq ((ad_congr (Γ := Γ) (mul_comm s Q) (mul_comm t Q)).eqTrans (ad_mul Q s t))
-  ipra_le sl tri with (-1) * n1 + (-1) * n2
+  ipra_le sl tri with (-1) * natEq (ad_mul (Γ := Γ) s P Q) + (-1) * n2
 
 /-- `lem:monomial`, one variable: `|s^{k+1} − t^{k+1}| ≤ (k+1) R^k |s − t|` for `s, t ≤ R`. -/
 theorem pow_ad {s t R : PTm n} (hs : Γ ⊢[PRAAx] le s R) (ht : Γ ⊢[PRAAx] le t R) :
@@ -189,8 +183,7 @@ theorem apost_closed (C : Cert Γ a w T D) {c z : Fin m → PTm n} (hc : D c) (h
     (hη : ∀ i, Γ ⊢[PRAAx] le (ad (z i) (T z i)) (η * w i)) (k : ℕ) (i : Fin m) :
     Γ ⊢[PRAAx] le (num (2 ^ k) * ad (z i) (orbit T c k i) + num 2 * (η * w i)) ((r + num (2 ^ (k + 1)) * η) * w i) := by
   have h := apost C hc hz hz0 hη k i
-  have e := natEq (budget_const (Γ := Γ) r η zero k)
-  ipra_le sl h with (-𝔟 (w i)) * e
+  ipra_le sl h with (-𝔟 (w i)) * natEq (budget_const (Γ := Γ) r η zero k)
 
 /-- `eq:paramstability`: `2ⁿ |h_n(a) − h_n(b)|_i + 2 Lδ w_i ≤ 2^{n+1} Lδ w_i`. -/
 theorem param_stability (C : Cert Γ a w T D) {Tb : (Fin m → PTm n) → Fin m → PTm n}
@@ -213,7 +206,6 @@ theorem param_stability (C : Cert Γ a w T D) {Tb : (Fin m → PTm n) → Fin m 
       show Γ ⊢[PRAAx] le (ad (T (orbit T c j) i) (T (orbit T c j) i)) (zero * w i)
       ipra_le sl h)
     (fun j i => hab _ (hvb j) i) k i
-  have e := natEq (budget_const (Γ := Γ) zero zero Ld k)
-  ipra_le sl h with (-𝔟 (w i)) * e
+  ipra_le sl h with (-𝔟 (w i)) * natEq (budget_const (Γ := Γ) zero zero Ld k)
 
 end LeanProofs.IPRA.Analysis.PolynomialCertificates

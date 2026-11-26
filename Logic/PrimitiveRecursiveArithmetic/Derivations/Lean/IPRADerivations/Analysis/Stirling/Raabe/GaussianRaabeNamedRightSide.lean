@@ -17,7 +17,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRaabeNamedRightSide
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
@@ -29,9 +29,6 @@ open GaussianNamedPositiveLateLogSource (retimedF retimedData)
 open GaussianNamedRightHalfPlane (threshold)
 open GaussianPositiveRationalLogarithm (logF fraction)
 open GaussianRationalHorner (positive_product)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "C" => GaussianStirlingConstant.nameF
@@ -69,21 +66,13 @@ def denominator (f : PR 2) (k x M : PTm n) : PTm n :=
 def cost (f : PR 2) (x M : PTm n) : PTm n :=
   U (logarithmF f) (logarithmData x M)+U f x*(two*M)+one
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x M w : PTm n) :
-    Syn.subst σ (data f x M w) = data f (Syn.subst σ x) (Syn.subst σ M) (Syn.subst σ w) := by
-  simp [data,primitiveData,productData,logarithmData,two]
+ipra_subst data [primitiveData, productData, logarithmData, two]
 
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (k x M : PTm n) :
-    Syn.subst σ (numerator f k x M) = numerator f (Syn.subst σ k) (Syn.subst σ x) (Syn.subst σ M) := by
-  simp [numerator,GaussianNamedPositiveLogarithm.numerator]
+ipra_subst numerator [GaussianNamedPositiveLogarithm.numerator]
 
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (k x M : PTm n) :
-    Syn.subst σ (denominator f k x M) = denominator f (Syn.subst σ k) (Syn.subst σ x) (Syn.subst σ M) := by
-  simp [denominator,GaussianNamedPositiveLogarithm.denominator]
+ipra_subst denominator [GaussianNamedPositiveLogarithm.denominator]
 
-@[simp] theorem subst_cost {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x M : PTm n) :
-    Syn.subst σ (cost f x M) = cost f (Syn.subst σ x) (Syn.subst σ M) := by
-  simp [cost,logarithmData,one,two]
+ipra_subst cost [logarithmData, one, two]
 
 private theorem positive_log_source (f : PR 2) (x M : PTm n) (h : Γ ⊢[PRAAx] source f x M) :
     Γ ⊢[PRAAx] GaussianNamedPositiveLogarithm.source (retimedF f) (retimedData x M) (two*M) (U f x) :=

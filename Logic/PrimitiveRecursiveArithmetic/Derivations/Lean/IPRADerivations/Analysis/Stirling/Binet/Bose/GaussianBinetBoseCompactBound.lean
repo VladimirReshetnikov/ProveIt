@@ -13,7 +13,7 @@ set_option maxHeartbeats 390000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetBoseCompactBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetArctangentQuadrature (fixedData subst_fixedData)
 open GaussianBinetBoseCompact (nameF data evaluatorF evaluator_at gain source tag_lower)
 open GaussianBinetLaplaceStrip (tagNumerator)
@@ -23,9 +23,6 @@ open GaussianRationalHorner (positive_product qzero)
 open GaussianRationalMetric (bounded)
 open GaussianRationalRiemannRefinement (leftSum termsDistance constantBody constant_entry)
 open GaussianRationalSyntheticDivision (qmul_congr qmul_zero_right)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

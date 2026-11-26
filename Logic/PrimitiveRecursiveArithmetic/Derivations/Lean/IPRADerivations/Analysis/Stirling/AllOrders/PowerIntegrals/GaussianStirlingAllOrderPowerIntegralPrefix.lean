@@ -14,9 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderPowerIntegralPrefix
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
+open_ipra
 open GaussianEuclideanDistanceName (fraction fraction_order fraction_represents)
 open GaussianFactorBudget (power_positive)
 open GaussianRationalMetric (distanceBounded)
@@ -34,8 +32,6 @@ open RationalGaussianNameEmbedding (distance_from_radius)
 open RationalNonnegativePowers (fraction_multiply fraction_congr)
 open RationalReciprocalPowerTail (add_zero_right zero_fraction)
 open RationalValueBounds (radius_of_upper upper_of_order)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -44,10 +40,7 @@ def prefixLaw (e : ℕ) (A B M L : PTm n) : Fm PTm n :=
   brackets (primitive e A B) (primitive e (A+B*L) B)
     (upperPrimitive e A B M) (upperPrimitive e (A+B*L) B M) (massPrefix e A B M L)
 
-@[simp] theorem subst_prefixLaw {l : ℕ} (σ : Fin n → PTm l) (e : ℕ) (A B M L : PTm n) :
-    (prefixLaw e A B M L).subst σ =
-      prefixLaw e (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ M) (Syn.subst σ L) :=
-  by simp [prefixLaw]
+ipra_subst prefixLaw
 
 private theorem input_readback (e : ℕ) (U V B M : PTm n) (h : Γ ⊢[PRAAx] U ≐ V) :
     (Γ ⊢[PRAAx] primitive e U B ≐ primitive e V B) ∧

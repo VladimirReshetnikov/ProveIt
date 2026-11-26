@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSignedRealExponentialOrder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRealExponentialPositiveRepresentative (positiveF positiveData originalData positive_regular sample_nonnegative sample_canonical)
 open GaussianNamedPositiveExponentialOrder (realOrder scalar_coordinate_distance)
 open GaussianRationalHorner (qadd qmul represents represents_congr canonical_unique positive_product)
@@ -31,10 +31,6 @@ open GaussianNameEquivalence (crossEquivalent)
 open GaussianNameArithmetic (multiplyF multiplyData multiplyModulus)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open RationalArgmin (rationalLE)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -46,14 +42,10 @@ def deltaData (c d : PTm n) : PTm n := exponentialInputData constantF (delta c d
 def productF : PR 2 := multiplyF positiveF expF
 def productData (c d : PTm n) : PTm n := multiplyData positiveF expF (positiveData c) (deltaData c d)
 
-@[simp] theorem subst_gap {m : ℕ} (σ : Fin n → PTm m) (c d : PTm n) :
-    Syn.subst σ (gap c d) = gap (Syn.subst σ c) (Syn.subst σ d) := by simp [gap]
-@[simp] theorem subst_delta {m : ℕ} (σ : Fin n → PTm m) (c d : PTm n) :
-    Syn.subst σ (delta c d) = delta (Syn.subst σ c) (Syn.subst σ d) := by simp [delta]
-@[simp] theorem subst_deltaData {m : ℕ} (σ : Fin n → PTm m) (c d : PTm n) :
-    Syn.subst σ (deltaData c d) = deltaData (Syn.subst σ c) (Syn.subst σ d) := by simp [deltaData,exponentialInputData]
-@[simp] theorem subst_productData {m : ℕ} (σ : Fin n → PTm m) (c d : PTm n) :
-    Syn.subst σ (productData c d) = productData (Syn.subst σ c) (Syn.subst σ d) := by simp [productData]
+ipra_subst gap
+ipra_subst delta
+ipra_subst deltaData [exponentialInputData]
+ipra_subst productData
 
 theorem delta_denominator_positive (c d : PTm n) : Γ ⊢[PRAAx] le one (denominatorOf c*denominatorOf d) :=
   positive_product _ _ (RationalArgmin.denominator_positive c) (RationalArgmin.denominator_positive d)

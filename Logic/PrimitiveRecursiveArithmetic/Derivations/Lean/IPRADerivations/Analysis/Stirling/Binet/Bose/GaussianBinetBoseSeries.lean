@@ -15,7 +15,7 @@ set_option maxHeartbeats 550000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetBoseSeries
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetBoseDenominator (reciprocalF reciprocalData sampleClock observation_lower)
 open GaussianBinetBoseExponential (expF expData)
 open GaussianBinetBoseGeometricRatio (inverse_pair inverse_bound)
@@ -27,9 +27,6 @@ open GaussianRationalReciprocal (power reciprocal reciprocal_canonical bounded_n
 open GaussianRationalSyntheticDivision (qone qmul_congr qadd_sub_cancel)
 open GaussianReciprocalHorner (qmul_associative qmul_one_right)
 open GaussianRationalPowerAlgebra (qmul_commutative)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Den" => GaussianBinetBoseDenominator.nameF

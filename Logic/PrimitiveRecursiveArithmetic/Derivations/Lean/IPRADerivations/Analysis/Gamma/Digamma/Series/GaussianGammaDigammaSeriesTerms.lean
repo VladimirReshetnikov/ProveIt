@@ -11,7 +11,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaSeriesTerms
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaCanonicalExponent (harmonicPoint)
 open GaussianGammaDigammaFiniteSum (index reciprocalBody reciprocalSum reciprocal_entry)
 open GaussianGammaDigammaSeries (partialValue)
@@ -21,18 +21,13 @@ open GaussianRationalHorner (qadd qadd_represents canonical_unique represents_co
 open GaussianRationalL1 (rawGaussian rawDen raw_represents)
 open GaussianRationalMetric (qsub qsub_represents qsub_canonical)
 open GaussianRationalSyntheticDivision (qadd_congr qsub_congr rescale_to remainingDen remaining_den_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def termBody : PTm 2 := qsub (fraction one (succ (var 0))) reciprocalBody
 def partialSum (a b N : PTm n) : PTm n := GaussianRationalFiniteSum.sum termBody N (pairT a b)
 
-@[simp] theorem subst_partialSum {m : ℕ} (σ : Fin n → PTm m) (a b N : PTm n) :
-    Syn.subst σ (partialSum a b N) = partialSum (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by
-  simp [partialSum]
+ipra_subst partialSum
 
 theorem term_at (a b j : PTm n) : Γ ⊢[PRAAx] inst2 termBody j (pairT a b) ≐
     qsub (reciprocalPoint j) (fraction b (index a b j)) := by
@@ -61,8 +56,7 @@ theorem subtract_add_exchange (x y u v : PTm n) : Γ ⊢[PRAAx]
     simp only [GaussianRootAlgebra.re_sub,GaussianRootAlgebra.im_sub,GaussianRootAlgebra.re_add,GaussianRootAlgebra.im_add] <;> ring
 
 def equality (a b N : PTm n) : Fm PTm n := partialSum a b N ≐ partialValue a b N
-@[simp] theorem subst_equality {m : ℕ} (σ : Fin n → PTm m) (a b N : PTm n) :
-    (equality a b N).subst σ = equality (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by simp [equality]
+ipra_subst equality
 
 private theorem partial_zero (a b : PTm n) : Γ ⊢[PRAAx] equality a b zero :=
   (GaussianRationalFiniteSum.sum_zero termBody (pairT a b)).eqTrans
@@ -88,9 +82,7 @@ theorem literal_partial_sum (a b N : PTm n) : Γ ⊢[PRAAx] partialSum a b N ≐
 def literalData (a b N : PTm n) : PTm n :=
   GaussianNameArithmetic.addData GaussianGammaDerivativeAtOne.negativeGammaData (partialSum a b N)
 
-@[simp] theorem subst_literalData {m : ℕ} (σ : Fin n → PTm m) (a b N : PTm n) :
-    Syn.subst σ (literalData a b N) = literalData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by
-  simp [literalData]
+ipra_subst literalData
 
 theorem literal_rate (a b N : PTm n) (hs : Γ ⊢[PRAAx] GaussianStirlingGammaLogarithm.source a b)
     (hn : Γ ⊢[PRAAx] le one N) : Γ ⊢[PRAAx]

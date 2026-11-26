@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.DominantTerms.GaussianDominantScoreWeights
 import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalProductWitness
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalReciprocal
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Actual off-dominant Gaussian terms at every point in the selected disk
@@ -20,7 +19,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianOffDominantTerms
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianBalancedRadiusSyntax
   (coefficient subst_coefficient unit unit_positive input)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qmul ofGaussian positive_product)
@@ -30,10 +29,6 @@ open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (fraction fraction_r
 open LeanProofs.IPRA.Analysis.GaussianDominantPlateau (center winner)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -52,21 +47,13 @@ def selectedReference (C N : PTm n) : PTm n :=
 def weightedNorm (q d : PTm n) : PTm n :=
   RationalArithmetic.multiply (fraction (GaussianDominantScoreWeights.weight d) one) (qnormSq q)
 
-@[simp] theorem subst_term {m : ℕ} (σ : Fin n → PTm m) (C N delta i : PTm n) :
-    Syn.subst σ (term C N delta i) = term (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ delta) (Syn.subst σ i) := by simp [term]
-@[simp] theorem subst_reference {m : ℕ} (σ : Fin n → PTm m) (C N A B k : PTm n) :
-    Syn.subst σ (reference C N A B k) = reference (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ k) := by simp [reference]
-@[simp] theorem subst_radiusNumerator {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (radiusNumerator C N) = radiusNumerator (Syn.subst σ C) (Syn.subst σ N) := by simp [radiusNumerator]
-@[simp] theorem subst_radiusDenominator {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (radiusDenominator C N) = radiusDenominator (Syn.subst σ C) (Syn.subst σ N) := by simp [radiusDenominator]
-@[simp] theorem subst_withinRadius {m : ℕ} (σ : Fin n → PTm m) (C N delta : PTm n) :
-    (withinRadius C N delta).subst σ = withinRadius (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ delta) := by simp [withinRadius]
-@[simp] theorem subst_selectedReference {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (selectedReference C N) = selectedReference (Syn.subst σ C) (Syn.subst σ N) := by simp [selectedReference]
-@[simp] theorem subst_weightedNorm {m : ℕ} (σ : Fin n → PTm m) (q d : PTm n) :
-    Syn.subst σ (weightedNorm q d) = weightedNorm (Syn.subst σ q) (Syn.subst σ d) := by simp [weightedNorm]
+ipra_subst term
+ipra_subst reference
+ipra_subst radiusNumerator
+ipra_subst radiusDenominator
+ipra_subst withinRadius
+ipra_subst selectedReference
+ipra_subst weightedNorm
 
 alias power_double := Common.pw_double
 
@@ -192,12 +179,9 @@ def upperBody : PTm 2 := term (fstT (var 1)) (fstT (sndT (var 1)))
 def lowerList (C N delta k : PTm n) : PTm n := sequence lowerBody (pred k) (data C N delta k)
 def upperList (C N delta k : PTm n) : PTm n := sequence upperBody (monus N k) (data C N delta k)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (C N delta k : PTm n) :
-    Syn.subst σ (data C N delta k) = data (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ delta) (Syn.subst σ k) := by simp [data]
-@[simp] theorem subst_lowerList {m : ℕ} (σ : Fin n → PTm m) (C N delta k : PTm n) :
-    Syn.subst σ (lowerList C N delta k) = lowerList (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ delta) (Syn.subst σ k) := by simp [lowerList]
-@[simp] theorem subst_upperList {m : ℕ} (σ : Fin n → PTm m) (C N delta k : PTm n) :
-    Syn.subst σ (upperList C N delta k) = upperList (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ delta) (Syn.subst σ k) := by simp [upperList]
+ipra_subst data
+ipra_subst lowerList
+ipra_subst upperList
 
 theorem lower_body_at (C N delta k s : PTm n) : Γ ⊢[PRAAx]
     inst2 lowerBody s (data C N delta k) ≐ term C N delta (succ s) := by
@@ -205,8 +189,8 @@ theorem lower_body_at (C N delta k s : PTm n) : Γ ⊢[PRAAx]
     Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
   have t := snd_pair (Γ := Γ) C (pairT N (pairT delta k))
   have u := (congrSnd t).eqTrans (snd_pair N (pairT delta k))
-  exact term_congr (fst_pair _ _) ((congrFst t).eqTrans (fst_pair _ _))
-    ((congrFst u).eqTrans (fst_pair _ _)) (.eqRefl _)
+  exact term_congr (fst_pair _ _) t.fstE
+    u.fstE (.eqRefl _)
 
 theorem upper_body_at (C N delta k s : PTm n) : Γ ⊢[PRAAx]
     inst2 upperBody s (data C N delta k) ≐ term C N delta (k+succ s) := by
@@ -214,8 +198,8 @@ theorem upper_body_at (C N delta k s : PTm n) : Γ ⊢[PRAAx]
     Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
   have t := snd_pair (Γ := Γ) C (pairT N (pairT delta k))
   have u := (congrSnd t).eqTrans (snd_pair N (pairT delta k))
-  exact term_congr (fst_pair _ _) ((congrFst t).eqTrans (fst_pair _ _))
-    ((congrFst u).eqTrans (fst_pair _ _)) (congrAdd ((congrSnd u).eqTrans (snd_pair _ _)) (.eqRefl _))
+  exact term_congr (fst_pair _ _) t.fstE
+    u.fstE (congrAdd u.sndE (.eqRefl _))
 
 theorem lower_length (C N delta k : PTm n) : Γ ⊢[PRAAx] length (lowerList C N delta k) ≐ pred k := sequence_length _ _ _
 theorem upper_length (C N delta k : PTm n) : Γ ⊢[PRAAx] length (upperList C N delta k) ≐ monus N k := sequence_length _ _ _
@@ -267,23 +251,21 @@ def output (C N delta : PTm n) : PTm n := pairT (lowerList C N delta (winner C N
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (C N delta : PTm n) : PTm n := ap3 outputF C N delta
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (C N delta : PTm n) :
-    Syn.subst σ (output C N delta) = output (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ delta) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (C N delta : PTm n) :
-    Syn.subst σ (run C N delta) = run (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ delta) := by simp [run]
+ipra_subst output
+ipra_subst run
 
 theorem program_at (C N delta : PTm n) : Γ ⊢[PRAAx] run C N delta ≐ output C N delta := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![C,N,delta]
 
 theorem returned_lower (C N delta : PTm n) : Γ ⊢[PRAAx]
     fstT (run C N delta) ≐ lowerList C N delta (winner C N) :=
-  (congrFst (program_at C N delta)).eqTrans (fst_pair _ _)
+  (program_at C N delta).fstE
 theorem returned_upper (C N delta : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run C N delta)) ≐ upperList C N delta (winner C N) :=
-  (congrFst ((congrSnd (program_at C N delta)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at C N delta).sndE.fstE
 theorem returned_reference (C N delta : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (run C N delta)) ≐ selectedReference C N :=
-  (congrSnd ((congrSnd (program_at C N delta)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at C N delta).sndE.sndE
 
 theorem actual_power_norm_bound_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 4
     (le one (var 2) ⟶ bounded (var 0) (var 1) (var 2) ⟶

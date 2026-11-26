@@ -13,25 +13,19 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianUniformFiniteSumBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalFiniteSum (sum)
 open GaussianRationalHorner (qzero)
 open GaussianRationalMetric (bounded)
 open GaussianRationalRiemannRefinement (termsDistance sum_distance)
 open GaussianReconstructionRoots (distance_zero_iff)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def summandsBounded (f : PTm 2) (N x A B : PTm n) : Fm PTm n :=
   .all (lt (var 0) (Syn.shift N) ⟶ bounded (inst2 f (var 0) (Syn.shift x)) (Syn.shift A) (Syn.shift B))
 
-@[simp] theorem subst_summandsBounded {m : ℕ} (σ : Fin n → PTm m) (f : PTm 2) (N x A B : PTm n) :
-    (summandsBounded f N x A B).subst σ =
-      summandsBounded f (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ A) (Syn.subst σ B) :=
-  by simp [summandsBounded,Syn.subst_shift,Syn.shift_subst]
+ipra_subst summandsBounded [Syn.subst_shift, Syn.shift_subst]
 
 theorem summand_bound_at (f : PTm 2) (N x A B i : PTm n)
     (h : Γ ⊢[PRAAx] summandsBounded f N x A B) (hi : Γ ⊢[PRAAx] lt i N) :

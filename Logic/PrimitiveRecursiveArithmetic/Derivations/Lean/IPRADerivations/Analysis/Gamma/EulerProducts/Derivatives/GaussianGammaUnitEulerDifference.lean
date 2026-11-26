@@ -15,17 +15,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaUnitEulerDifference
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode normSq normSq_one)
 open GaussianRationalHorner (ofGaussian ofGaussian_represents)
 open GaussianRationalMetric (bounded bounded_iff distanceBounded)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaReciprocalInverse (gammaF)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -37,14 +33,10 @@ def quotientData (D : PTm n) : PTm n :=
 def modulus (p : PTm n) : PTm n := GaussianEulerLogarithmicContinuity.modulus (p+num 6) one one one
 def minimumDenominator (p : PTm n) : PTm n := modulus p+unit p
 
-@[simp] theorem subst_integralData {m : ℕ} (σ : Fin n → PTm m) :
-    Syn.subst σ (integralData : PTm n) = (integralData : PTm m) := by simp [integralData]
-@[simp] theorem subst_quotientData {m : ℕ} (σ : Fin n → PTm m) (D : PTm n) :
-    Syn.subst σ (quotientData D) = quotientData (Syn.subst σ D) := by simp [quotientData]
-@[simp] theorem subst_modulus {m : ℕ} (σ : Fin n → PTm m) (p : PTm n) :
-    Syn.subst σ (modulus p) = modulus (Syn.subst σ p) := by simp [modulus]
-@[simp] theorem subst_minimumDenominator {m : ℕ} (σ : Fin n → PTm m) (p : PTm n) :
-    Syn.subst σ (minimumDenominator p) = minimumDenominator (Syn.subst σ p) := by simp [minimumDenominator]
+ipra_subst integralData
+ipra_subst quotientData
+ipra_subst modulus
+ipra_subst minimumDenominator
 
 theorem denominator_positive (p D : PTm n) (h : Γ ⊢[PRAAx] le (minimumDenominator p) D) : Γ ⊢[PRAAx] le one D :=
   le_trans (unit_positive p) (le_trans (le_add_left _ _) h)

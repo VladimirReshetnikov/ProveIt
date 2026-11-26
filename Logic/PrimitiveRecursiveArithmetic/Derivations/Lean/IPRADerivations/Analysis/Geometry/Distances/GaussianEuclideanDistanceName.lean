@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Geometry.Distances.GaussianEuclideanPointDistance
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Actual Euclidean distance names and their finite cuts
@@ -16,7 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianEuclideanPointDistance (unit unit_positive subst_unit)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (distanceBounded)
 open LeanProofs.IPRA.Analysis.GaussianRationalCover (hit hit_intro)
@@ -28,9 +27,6 @@ open LeanProofs.IPRA.Analysis.RationalSupMetric (numeratorOf denominatorOf)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -51,28 +47,16 @@ def fastScalar (point : PR 2) (T x : PTm n) : Fm PTm n := .all (.all
     (distanceSample point (Syn.shift (Syn.shift T)) (Syn.shift (Syn.shift x)) (var 0))
     (unit (var 1)+unit (var 0)) (unit (var 1)*unit (var 0))))
 
-@[simp] theorem subst_fraction {l : ℕ} (σ : Fin n → PTm l) (A B : PTm n) :
-    Syn.subst σ (fraction A B) = fraction (Syn.subst σ A) (Syn.subst σ B) := by simp [fraction]
-@[simp] theorem subst_shifted {l : ℕ} (σ : Fin n → PTm l) (m : PTm n) :
-    Syn.subst σ (shifted m) = shifted (Syn.subst σ m) := by simp [shifted]
-@[simp] theorem subst_pointCN {l : ℕ} (σ : Fin n → PTm l) (point : PR 2) (x : PTm n) :
-    (pointCN point x).subst σ = pointCN point (Syn.subst σ x) := by simp [pointCN,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_distanceSample {l : ℕ} (σ : Fin n → PTm l) (point : PR 2) (T x m : PTm n) :
-    Syn.subst σ (distanceSample point T x m) = distanceSample point (Syn.subst σ T) (Syn.subst σ x) (Syn.subst σ m) := by simp [distanceSample]
-@[simp] theorem subst_cutRadius {l : ℕ} (σ : Fin n → PTm l) (A B m : PTm n) :
-    Syn.subst σ (cutRadius A B m) = cutRadius (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ m) := by simp [cutRadius]
-@[simp] theorem subst_distanceLE {l : ℕ} (σ : Fin n → PTm l) (point : PR 2) (T x A B : PTm n) :
-    (distanceLE point T x A B).subst σ = distanceLE point (Syn.subst σ T) (Syn.subst σ x) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [distanceLE,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_fastScalar {l : ℕ} (σ : Fin n → PTm l) (point : PR 2) (T x : PTm n) :
-    (fastScalar point T x).subst σ = fastScalar point (Syn.subst σ T) (Syn.subst σ x) := by
-  simp [fastScalar,Syn.subst_shift,Syn.shift_subst]
+ipra_subst fraction
+ipra_subst shifted
+ipra_subst pointCN [Syn.subst_shift, Syn.shift_subst]
+ipra_subst distanceSample
+ipra_subst cutRadius
+ipra_subst distanceLE [Syn.subst_shift, Syn.shift_subst]
+ipra_subst fastScalar [Syn.subst_shift, Syn.shift_subst]
 
-@[simp] theorem subst_hit {l : ℕ} (σ : Fin n → PTm l) (z T A B : PTm n) :
-    (hit z T A B).subst σ = hit (Syn.subst σ z) (Syn.subst σ T) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp only [hit,Fm.subst_ex,Fm.subst_and,subst_lt,subst_length,
-    GaussianRationalMetric.subst_distanceBounded,subst_entry,Syn.subst_var,Syn.up_zero,Syn.up_succ,
-    Syn.subst_shift,Syn.shift_subst]
+ipra_subst hit [Fm.subst_ex, Fm.subst_and, subst_lt, subst_length, GaussianRationalMetric.subst_distanceBounded,
+    subst_entry, Syn.subst_var, Syn.up_zero, Syn.up_succ, Syn.subst_shift, Syn.shift_subst]
 
 theorem fraction_represents (A B : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx]
     RationalArithmetic.represents (fraction A B) (ZT.ofNat A) B := normalize_preserves_value _ _ hB

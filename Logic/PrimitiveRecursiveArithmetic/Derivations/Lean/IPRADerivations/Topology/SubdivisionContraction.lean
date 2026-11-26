@@ -1,7 +1,6 @@
 import IPRADerivations.Probability.GeometricTail
 import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.Probability.MedianWeighted
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The contraction count of barycentric subdivision
@@ -25,16 +24,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Topology.SubdivisionContraction
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.GeometricTail (bern_hom)
 open LeanProofs.IPRA.DiophantineNumberTheory.AperyMultibound (mul_pw)
 open LeanProofs.IPRA.AnalyticNumberTheory.RSA (pw_mul)
 open LeanProofs.IPRA.Probability.Variance (ad)
 open LeanProofs.IPRA.Probability.MedianWeighted (ad_add_le)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

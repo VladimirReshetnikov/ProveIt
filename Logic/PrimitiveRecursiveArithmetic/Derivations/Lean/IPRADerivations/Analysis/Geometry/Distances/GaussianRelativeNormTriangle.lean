@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianRootAlgebra
 import IPRADerivations.Foundations.GapDecision
-import IPRADerivations.Core.BoundedSums
 
 /-!
 # Relative squared-norm triangle for actual coded Gaussian integers
@@ -17,15 +16,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRelativeNormTriangle
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder
   (re im add scale zeroCode normSq normSq_eval normSq_code normSq_scale normSq_zero)
 open LeanProofs.IPRA.Foundations.GapDecision (zabs zabs_sq subst_zabs)
 open LeanProofs.IPRA.Probability.MedianWeighted (le_add_ad)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -35,10 +31,8 @@ def determinant (u v : PTm n) : ZT n := re u*im v-im u*re v
 def absDot (u v : PTm n) : PTm n := zabs (dot u v)
 def absDeterminant (u v : PTm n) : PTm n := zabs (determinant u v)
 
-@[simp] theorem subst_dot {m : ℕ} (σ : Fin n → PTm m) (u v : PTm n) :
-    (dot u v).subst σ = dot (Syn.subst σ u) (Syn.subst σ v) := by simp [dot]
-@[simp] theorem subst_determinant {m : ℕ} (σ : Fin n → PTm m) (u v : PTm n) :
-    (determinant u v).subst σ = determinant (Syn.subst σ u) (Syn.subst σ v) := by simp [determinant]
+ipra_subst dot
+ipra_subst determinant
 @[simp] theorem subst_absDot {m : ℕ} (σ : Fin n → PTm m) (u v : PTm n) :
     Syn.subst σ (absDot u v) = absDot (Syn.subst σ u) (Syn.subst σ v) := by simp only [absDot,subst_zabs,subst_dot]
 @[simp] theorem subst_absDeterminant {m : ℕ} (σ : Fin n → PTm m) (u v : PTm n) :
@@ -124,10 +118,8 @@ def gaussianSum (f : PR 2) (k x : PTm n) : PTm n := ap2 (gaussianSumF f) k x
 def weightBody (g : PR 2) : PTm 2 := ap2 g (var 0) (var 1)
 def weightSum (g : PR 2) (k x : PTm n) : PTm n := ap2 (sumF (weightBody g)) k x
 
-@[simp] theorem subst_gaussianSum {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (k x : PTm n) :
-    Syn.subst σ (gaussianSum f k x) = gaussianSum f (Syn.subst σ k) (Syn.subst σ x) := by simp [gaussianSum]
-@[simp] theorem subst_weightSum {m : ℕ} (σ : Fin n → PTm m) (g : PR 2) (k x : PTm n) :
-    Syn.subst σ (weightSum g k x) = weightSum g (Syn.subst σ k) (Syn.subst σ x) := by simp [weightSum]
+ipra_subst gaussianSum
+ipra_subst weightSum
 
 theorem gaussian_sum_zero (f : PR 2) (x : PTm n) : Γ ⊢[PRAAx] gaussianSum f zero x ≐ zeroCode := by
   simpa only [gaussianSum,gaussianSumF,ComplexLogarithmRemainder.subst_zeroCode] using
@@ -151,12 +143,8 @@ def termBounds (f g : PR 2) (N R x : PTm n) : Fm PTm n := .all
 def prefixLaw (f g : PR 2) (N R x k : PTm n) : Fm PTm n := le k N ⟶
   le (normSq (gaussianSum f k x)) (weightSum g k x*weightSum g k x*R)
 
-@[simp] theorem subst_termBounds {m : ℕ} (σ : Fin n → PTm m) (f g : PR 2) (N R x : PTm n) :
-    (termBounds f g N R x).subst σ = termBounds f g (Syn.subst σ N) (Syn.subst σ R) (Syn.subst σ x) := by
-  simp [termBounds,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_prefixLaw {m : ℕ} (σ : Fin n → PTm m) (f g : PR 2) (N R x k : PTm n) :
-    (prefixLaw f g N R x k).subst σ = prefixLaw f g (Syn.subst σ N) (Syn.subst σ R) (Syn.subst σ x) (Syn.subst σ k) := by
-  simp [prefixLaw]
+ipra_subst termBounds [Syn.subst_shift, Syn.shift_subst]
+ipra_subst prefixLaw
 
 theorem term_bound_at (f g : PR 2) (N R x k : PTm n)
     (h : Γ ⊢[PRAAx] termBounds f g N R x) (hk : Γ ⊢[PRAAx] lt k N) : Γ ⊢[PRAAx]
@@ -187,11 +175,9 @@ theorem sum_prefix (f g : PR 2) (N R x k : PTm n)
   have hs : Γ.map Fm.shift ⊢[PRAAx] termBounds f g (Syn.shift N) (Syn.shift R) (Syn.shift x) := by
     simpa only [Fm.shift,subst_termBounds,Syn.shift] using h.shift
   have all : Γ ⊢[PRAAx] .all (prefixLaw f g (Syn.shift N) (Syn.shift R) (Syn.shift x) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (sum_prefix_zero f g R x).wk
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_prefixLaw]
+    · exact .impI (sum_prefix_zero f g R x).wk
+    · refine .impI ?_
       exact sum_prefix_step f g _ _ _ _ hs.wk.wk Prf.hyp0
         (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
   have rule : Γ ⊢[PRAAx] prefixLaw f g N R x k := by
@@ -218,21 +204,19 @@ def output (f g : PR 2) (N R x : PTm n) : PTm n := pairT (gaussianSum f N x)
 def outputF (f g : PR 2) : PR 3 := PTm.toPR (output f g (var 0) (var 1) (var 2))
 def run (f g : PR 2) (N R x : PTm n) : PTm n := ap3 (outputF f g) N R x
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (f g : PR 2) (N R x : PTm n) :
-    Syn.subst σ (output f g N R x) = output f g (Syn.subst σ N) (Syn.subst σ R) (Syn.subst σ x) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (f g : PR 2) (N R x : PTm n) :
-    Syn.subst σ (run f g N R x) = run f g (Syn.subst σ N) (Syn.subst σ R) (Syn.subst σ x) := by simp [run]
+ipra_subst output
+ipra_subst run
 
 theorem program_at (f g : PR 2) (N R x : PTm n) : Γ ⊢[PRAAx] run f g N R x ≐ output f g N R x := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output f g (var 0) (var 1) (var 2) : PTm 3) ![N,R,x]
 theorem output_value (f g : PR 2) (N R x : PTm n) : Γ ⊢[PRAAx]
-    fstT (run f g N R x) ≐ gaussianSum f N x := (congrFst (program_at f g N R x)).eqTrans (fst_pair _ _)
+    fstT (run f g N R x) ≐ gaussianSum f N x := (program_at f g N R x).fstE
 theorem output_weight (f g : PR 2) (N R x : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run f g N R x)) ≐ weightSum g N x :=
-  (congrFst ((congrSnd (program_at f g N R x)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at f g N R x).sndE.fstE
 theorem output_budget (f g : PR 2) (N R x : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (run f g N R x)) ≐ weightSum g N x*weightSum g N x*R :=
-  (congrSnd ((congrSnd (program_at f g N R x)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at f g N R x).sndE.sndE
 
 theorem program_certificate (f g : PR 2) (N R x : PTm n)
     (h : Γ ⊢[PRAAx] termBounds f g N R x) : Γ ⊢[PRAAx]

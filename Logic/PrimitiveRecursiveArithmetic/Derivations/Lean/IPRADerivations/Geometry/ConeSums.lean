@@ -1,4 +1,3 @@
-import IPRADerivations.Core.Sums
 import IPRADerivations.Core.Order
 import IPRADerivations.Core.LinearCombination
 
@@ -22,10 +21,7 @@ Not derived: the products with the polygon areas `p_k`, `q_k` and the resulting 
 
 namespace LeanProofs.IPRA.Geometry.ConeSums
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
+open_ipra
 
 local notation "𝟚" => succ (succ zero)
 local notation "𝟛" => succ (succ (succ zero))

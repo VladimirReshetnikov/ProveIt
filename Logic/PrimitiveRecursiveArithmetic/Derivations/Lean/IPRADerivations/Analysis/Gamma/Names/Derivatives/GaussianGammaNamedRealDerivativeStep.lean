@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNamedRealDerivativeStep
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode normSq normSq_one scale)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianExponentialSmallPerturbation (smallSamples)
@@ -27,8 +27,6 @@ open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalSyntheticDivision (qone qmul_congr qmul_zero_right)
 open GaussianRealNameExponentialInjectivity (axisSamples)
 open RationalGaussianEmbedding (axis axis_congr)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -39,17 +37,11 @@ def stepDenominator (f : PR 2) (p x E : PTm n) : PTm n := unit (stepAnchor f p x
 
 def stepData (f : PR 2) (p x E : PTm n) : PTm n := ofGaussian oneCode (stepDenominator f p x E)
 
-@[simp] theorem subst_stepAnchor {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p x E : PTm n) :
-    Syn.subst σ (stepAnchor f p x E) = stepAnchor f (Syn.subst σ p) (Syn.subst σ x) (Syn.subst σ E) := by
-  simp [stepAnchor]
+ipra_subst stepAnchor
 
-@[simp] theorem subst_stepDenominator {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p x E : PTm n) :
-    Syn.subst σ (stepDenominator f p x E) = stepDenominator f (Syn.subst σ p) (Syn.subst σ x) (Syn.subst σ E) := by
-  simp [stepDenominator]
+ipra_subst stepDenominator
 
-@[simp] theorem subst_stepData {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p x E : PTm n) :
-    Syn.subst σ (stepData f p x E) = stepData f (Syn.subst σ p) (Syn.subst σ x) (Syn.subst σ E) := by
-  simp [stepData]
+ipra_subst stepData
 
 theorem denominator_positive (f : PR 2) (p x E : PTm n) :
     Γ ⊢[PRAAx] le one (stepDenominator f p x E) :=

@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalReciprocal
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder (re im code scale normSq normSq_eval oneCode)
 open LeanProofs.IPRA.Analysis.GaussianRootAlgebra
   (equal equal_of_values equal_re equal_im re_mul im_mul re_scale im_scale re_one im_one)
@@ -25,10 +25,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalHorner
     positive_product represents_congr represents_rescale)
 open LeanProofs.IPRA.Analysis.GaussianRationalL1 (rawDen rawGaussian raw_den_positive raw_represents)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -41,17 +37,12 @@ def inverseDenominator (q : PTm n) : PTm n := succ (pred (normNumerator q))
 def reciprocal (q : PTm n) : PTm n := ofGaussian (inverseNumerator q) (inverseDenominator q)
 def qone : PTm n := ofGaussian oneCode one
 
-@[simp] theorem subst_conjugate {m : ℕ} (σ : Fin n → PTm m) (a : PTm n) :
-    Syn.subst σ (conjugate a) = conjugate (Syn.subst σ a) := by simp [conjugate]
-@[simp] theorem subst_normNumerator {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    Syn.subst σ (normNumerator q) = normNumerator (Syn.subst σ q) := by simp [normNumerator]
-@[simp] theorem subst_inverseNumerator {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    Syn.subst σ (inverseNumerator q) = inverseNumerator (Syn.subst σ q) := by simp [inverseNumerator]
-@[simp] theorem subst_inverseDenominator {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    Syn.subst σ (inverseDenominator q) = inverseDenominator (Syn.subst σ q) := by simp [inverseDenominator]
-@[simp] theorem subst_reciprocal {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    Syn.subst σ (reciprocal q) = reciprocal (Syn.subst σ q) := by simp [reciprocal]
-@[simp] theorem subst_qone {m : ℕ} (σ : Fin n → PTm m) : Syn.subst σ (qone : PTm n) = (qone : PTm m) := by simp [qone]
+ipra_subst conjugate
+ipra_subst normNumerator
+ipra_subst inverseNumerator
+ipra_subst inverseDenominator
+ipra_subst reciprocal
+ipra_subst qone
 
 @[simp] theorem re_conjugate (a : PTm n) : ZT.toZ Γ (re (conjugate a)) = ZT.toZ Γ (re a) := by
   rw [conjugate,ComplexLogarithmRemainder.eval_re_code]
@@ -96,8 +87,7 @@ theorem reciprocal_identity (q : PTm n) (hN : Γ ⊢[PRAAx] le one (normNumerato
 def normLower (q R : PTm n) : Fm PTm n := RationalArgmin.rationalLE
   (GaussianRationalMetric.squaredTolerance R one) (GaussianRationalMetric.qnormSq q)
 
-@[simp] theorem subst_normLower {m : ℕ} (σ : Fin n → PTm m) (q R : PTm n) :
-    (normLower q R).subst σ = normLower (Syn.subst σ q) (Syn.subst σ R) := by simp [normLower]
+ipra_subst normLower
 
 theorem lower_to_cleared (q R : PTm n) (h : Γ ⊢[PRAAx] normLower q R) : Γ ⊢[PRAAx]
     le ((R*R)*(rawDen q*rawDen q)) (normNumerator q) := by
@@ -213,8 +203,7 @@ def powerStep : PTm 3 := qmul (var 1) (var 2)
 def powerF : PR 2 := rec2 qone powerStep
 def power (q k : PTm n) : PTm n := ap2 powerF k q
 
-@[simp] theorem subst_power {m : ℕ} (σ : Fin n → PTm m) (q k : PTm n) :
-    Syn.subst σ (power q k) = power (Syn.subst σ q) (Syn.subst σ k) := by simp [power]
+ipra_subst power
 
 theorem power_zero (q : PTm n) : Γ ⊢[PRAAx] power q zero ≐ qone := by
   simpa [power,powerF] using rec2_zero (Γ := Γ) qone powerStep q
@@ -240,13 +229,9 @@ theorem bounded_power (q A B k : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     simpa only [Fm.shift,GaussianRationalMetric.subst_bounded,Syn.shift] using hq.shift
   have all : Γ ⊢[PRAAx] .all (GaussianRationalMetric.bounded (power (Syn.shift q) (var 0))
       (pw (Syn.shift A) (var 0)) (pw (Syn.shift B) (var 0))) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [GaussianRationalMetric.subst_bounded,subst_power,subst_ap2,
-        Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact bound_congr (power_zero q).eqSymm (pw_zero A).eqSymm (pw_zero B).eqSymm qone_bounded
-    · simp only [GaussianRationalMetric.subst_bounded,subst_power,subst_ap2,
-        Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      let I := GaussianRationalMetric.bounded (power (Syn.shift q) (var 0))
+    ipra_qfind (le_QF _ _) [GaussianRationalMetric.subst_bounded, subst_power, subst_ap2]
+    · exact bound_congr (power_zero q).eqSymm (pw_zero A).eqSymm (pw_zero B).eqSymm qone_bounded
+    · let I := GaussianRationalMetric.bounded (power (Syn.shift q) (var 0))
         (pw (Syn.shift A) (var 0)) (pw (Syn.shift B) (var 0))
       let Δ := I :: Γ.map Fm.shift
       have positive : Δ ⊢[PRAAx] le one (pw (Syn.shift B) (var 0)) :=

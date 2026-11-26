@@ -16,7 +16,7 @@ set_option maxHeartbeats 1500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFullGridCovariance
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianEuclideanDistanceName (fraction fraction_order fraction_represents)
 open GaussianRationalHorner (positive_product)
@@ -40,10 +40,6 @@ open RationalNormalForm (normalize_well_formed wellFormed)
 open RationalReciprocalPowerTail (add_zero_right)
 open RationalSumConstants (constantBody term_constant sum_constant)
 open GaussianRationalSyntheticBounds (add_monotone)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "z" => fraction zero one

@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarDeterminant
 import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalProductDeletion
 import IPRADerivations.Foundations.RuntimePermutationInsertion
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The actual Leibniz product on either side of a deleted column
@@ -15,9 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianScalarDeterminantLastRowProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (monus)
+open_ipra
 open LeanProofs.IPRA.Foundations.RuntimePermutationWords (digit digit_bound)
 open LeanProofs.IPRA.Foundations.RuntimePermutationDeletion (slot slot_bound subst_slot)
 open LeanProofs.IPRA.Foundations.RuntimePermutationInsertion (insertedWord inserted_digit recovered_at recovered_skip)
@@ -28,17 +25,13 @@ open GaussianRationalFiniteProduct (product_index_congr qprod)
 open GaussianRationalProductDeletion (retainedValues product_remove)
 open GaussianRationalHorner (qmul)
 open GaussianRationalSyntheticDivision (qmul_congr)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def minorBody : PTm 3 := cell (fstT (var 2)) (var 0) (slot (sndT (var 2)) (var 1))
 def minorTable (A m p : PTm n) : PTm n := table minorBody m m (pairT A p)
 
-@[simp] theorem subst_minorTable {k : ℕ} (σ : Fin n → PTm k) (A m p : PTm n) :
-    Syn.subst σ (minorTable A m p) = minorTable (Syn.subst σ A) (Syn.subst σ m) (Syn.subst σ p) := by
-  simp [minorTable]
+ipra_subst minorTable
 
 theorem cell_congr {A B i j k l : PTm n} (hA : Γ ⊢[PRAAx] A ≐ B)
     (hi : Γ ⊢[PRAAx] i ≐ j) (hk : Γ ⊢[PRAAx] k ≐ l) : Γ ⊢[PRAAx] cell A i k ≐ cell B j l := by

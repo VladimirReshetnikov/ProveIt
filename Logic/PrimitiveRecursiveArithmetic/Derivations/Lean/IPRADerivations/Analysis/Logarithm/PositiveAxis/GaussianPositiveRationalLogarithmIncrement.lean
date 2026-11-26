@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPositiveRationalLogarithmIncrement
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianPositiveRationalLogarithm (sample source fraction logF data name_regular)
 open GaussianPositiveRationalLogarithmProperness (original_finite_difference sample_interval_error)
 open RationalGaussianEmbedding (embed)
@@ -26,10 +26,6 @@ open GaussianRationalMetric (qsub qnegative distanceBounded)
 open GaussianRationalSyntheticDivision (qsub_congr qadd_sub_cancel)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

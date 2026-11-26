@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCyclicHalfAngleAgreement
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCyclicExponentialRoots (coefficient angleF angleData angle_at angle_input rootF rootData)
 open GaussianCyclicFullHalfAngle (half_source sineData)
 open GaussianArctangentExponentialPeriod (fullTurnRadius full_turn_at twiceF twiceData twiceRadius twice_at twiceImaginary minusOne)
@@ -41,8 +41,6 @@ open GaussianNameEquivalence (crossEquivalent cross_trans)
 open GaussianNamedDiagonalRate (diagonalRate cross_of_diagonal_rate)
 open GaussianGammaCanonicalExponent (constantF)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "P" => GaussianGammaHalfPiName.nameF

@@ -15,7 +15,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalNamedInverseFactorIncrement
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianExponentialSmallPerturbation (smallSamples)
 open GaussianGammaCanonicalExponent (constantF constant_at)
@@ -32,10 +32,6 @@ open GaussianNamedMultiplyRate (sampleBound)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
-open ConciseIPRA.PTm (succ zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,9 +39,7 @@ def gain (E N : PTm n) : PTm n := two*inverseGapCost (succ N) (E*E)
 
 def freezeClock (p q E N : PTm n) : PTm n := (p+num 3)+clock q E N
 
-@[simp] theorem subst_gain {m : ℕ} (σ : Fin n → PTm m) (E N : PTm n) :
-    Syn.subst σ (gain E N) = gain (Syn.subst σ E) (Syn.subst σ N) := by
-  simp [gain,two]
+ipra_subst gain [two]
 
 theorem sample_at (f : PR 2) (q x E N : PTm n) : Γ ⊢[PRAAx]
     ap2 (nameF f) q (data x E N) ≐

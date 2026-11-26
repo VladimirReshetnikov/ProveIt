@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianExponentialAddition
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qadd qmul canonical)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalPolynomialExponential (scalarSum)
@@ -27,9 +27,6 @@ open GaussianScalarExponentialProductTail (rectangleCutoff actual_scalar_product
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (diagonalEquivalent crossEquivalent)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔟" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -42,13 +39,9 @@ def sumF (f g : PR 2) : PR 2 := nameF (GaussianNameArithmetic.addF f g)
 def sumData (R x y : PTm n) : PTm n :=
   GaussianRadiusExponentialName.data (R+R) (GaussianNameArithmetic.addData x y)
 
-@[simp] theorem subst_productData {m : ℕ} (σ : Fin n → PTm m) (f g : PR 2) (R x y : PTm n) :
-    Syn.subst σ (productData f g R x y) = productData f g (Syn.subst σ R) (Syn.subst σ x) (Syn.subst σ y) := by
-  simp [productData]
+ipra_subst productData
 
-@[simp] theorem subst_sumData {m : ℕ} (σ : Fin n → PTm m) (R x y : PTm n) :
-    Syn.subst σ (sumData R x y) = sumData (Syn.subst σ R) (Syn.subst σ x) (Syn.subst σ y) := by
-  simp [sumData]
+ipra_subst sumData
 
 /-- Use the full factor four in the existing multiplication normalization. -/
 theorem product_precision_budget (L p : PTm n) (hL : Γ ⊢[PRAAx] le one L) :

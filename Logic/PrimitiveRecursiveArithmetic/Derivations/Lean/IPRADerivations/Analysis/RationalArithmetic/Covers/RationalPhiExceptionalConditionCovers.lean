@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalPhiExceptionalConditionCovers
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalPhiAssignedCovers (allPoints conditionCovers)
 open RationalPhiExceptionalCover (outside pointEqual remainder)
 open RationalPhiSectionNonzero (curveInput)
@@ -25,8 +25,6 @@ open LeanProofs.IPRA.Foundations.FiniteCoverAssignment (cover)
 open LeanProofs.IPRA.Foundations.FiniteCoverGroupBudgets (budgetSum)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,11 +39,7 @@ theorem all_points_outside (X Q : PTm n) : allPoints outsidePoint Q X = outside 
 def outsideConditionCovers (t : PTm 3) (f s r p B X : PTm n) : Fm PTm n :=
   conditionCovers outsidePoint t f s r (length B) p B X
 
-@[simp] theorem subst_outsideConditionCovers {k : ℕ} (σ : Fin n → PTm k) (t : PTm 3) (f s r p B X : PTm n) :
-    (outsideConditionCovers t f s r p B X).subst σ =
-      outsideConditionCovers t (Syn.subst σ f) (Syn.subst σ s) (Syn.subst σ r)
-        (Syn.subst σ p) (Syn.subst σ B) (Syn.subst σ X) := by
-  simp [outsideConditionCovers]
+ipra_subst outsideConditionCovers
 
 theorem exceptional_condition_bound (t : PTm 3) (f s r m X P E p B : PTm n)
     (hf : Γ ⊢[PRAAx] curveInput f s r m) (hd : Γ ⊢[PRAAx] distinct P) (hp : Γ ⊢[PRAAx] pointPowers f r P)

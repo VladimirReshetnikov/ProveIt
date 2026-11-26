@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIncompleteCofinalRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIncompleteCutoff (clock)
 open GaussianEulerIncompleteCutoffParts (lowerData upperData)
 open GaussianEulerCompactAdditivity (nameF)
@@ -24,10 +24,6 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,27 +36,11 @@ def source (z R B A a b : PTm n) : Fm PTm n :=
 
 @[simp] theorem subst_cutoffClock {m : ℕ} (σ : Fin n → PTm m) (p a b : PTm n) :
     Syn.subst σ (clock p a b) = clock (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ b) := by simp [clock]
-@[simp] theorem subst_lowerData {m : ℕ} (σ : Fin n → PTm m) (z R B k A a b : PTm n) :
-    Syn.subst σ (lowerData z R B k A a b) = lowerData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ k)
-      (Syn.subst σ A) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [lowerData,GaussianEulerIncompleteCutoff.lowerWidth,GaussianEulerIncompleteCutoff.splitPoint,
-    GaussianEulerIncompleteCutoff.denominator,GaussianGammaIntegralCutoffs.etaDen,
-    GaussianGammaIntegralCutoffs.top,height,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_upperData {m : ℕ} (σ : Fin n → PTm m) (z R B k A a b : PTm n) :
-    Syn.subst σ (upperData z R B k A a b) = upperData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ k)
-      (Syn.subst σ A) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [upperData,GaussianEulerIncompleteCutoff.upperWidth,GaussianEulerIncompleteCutoff.splitPoint,
-    GaussianEulerIncompleteCutoff.denominator,GaussianGammaIntegralCutoffs.etaDen,
-    GaussianGammaIntegralCutoffs.top,height,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_lowerSample {m : ℕ} (σ : Fin n → PTm m) (p z R B A a b : PTm n) :
-    Syn.subst σ (lowerSample p z R B A a b) = lowerSample (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ a) (Syn.subst σ b) := by simp [lowerSample]
-@[simp] theorem subst_upperSample {m : ℕ} (σ : Fin n → PTm m) (p z R B A a b : PTm n) :
-    Syn.subst σ (upperSample p z R B A a b) = upperSample (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ a) (Syn.subst σ b) := by simp [upperSample]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B A a b : PTm n) :
-    (source z R B A a b).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ A) (Syn.subst σ a) (Syn.subst σ b) := by simp [source]
+ipra_subst lowerData [GaussianEulerIncompleteCutoff.lowerWidth, GaussianEulerIncompleteCutoff.splitPoint, GaussianEulerIncompleteCutoff.denominator, GaussianGammaIntegralCutoffs.etaDen, GaussianGammaIntegralCutoffs.top, height, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst upperData [GaussianEulerIncompleteCutoff.upperWidth, GaussianEulerIncompleteCutoff.splitPoint, GaussianEulerIncompleteCutoff.denominator, GaussianGammaIntegralCutoffs.etaDen, GaussianGammaIntegralCutoffs.top, height, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst lowerSample
+ipra_subst upperSample
+ipra_subst source
 
 theorem cutoff_strict (p q a b : PTm n) (h : Γ ⊢[PRAAx] lt p q) : Γ ⊢[PRAAx] lt (clock p a b) (clock q a b) :=
   le_congr (by unfold clock GaussianFastValueCut.exponent; ipra_ring)

@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPositiveExponentialProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianPositiveRealArithmetic
 open GaussianRationalHorner (qzero qadd qmul)
 open GaussianRationalPolynomialExponential (scalarSum scalarBody)
@@ -22,10 +22,6 @@ open GaussianScalarExponentialProductLowDegrees (buffer product highPart evaluat
 open GaussianRationalLowCoefficientConvolution (exponentCoefficient)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open RationalArgmin (rationalLE)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

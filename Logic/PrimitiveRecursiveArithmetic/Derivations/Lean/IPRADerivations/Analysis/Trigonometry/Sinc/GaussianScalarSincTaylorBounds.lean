@@ -2,7 +2,6 @@ import IPRADerivations.Analysis.Trigonometry.Sinc.GaussianScalarSincTaylor
 import IPRADerivations.Analysis.Exponential.Polynomials.GaussianFiniteExponentialWeightedNorm
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.Coefficients.GaussianGammaRecurrenceWeightName
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerDifference
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Finite sinc bounds on the unit disk
@@ -18,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianScalarSincTaylorBounds
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianScalarSincTaylor (sincTerm sincTaylor sincTail sinc_tail_zero sinc_tail_succ
   sinc_head_tail sinc_difference_tail)
 open GaussianRationalPolynomialExponential (inverseFactorial factorial_positive)
@@ -30,10 +29,6 @@ open GaussianRationalPowerDifference (bounded_sum_same)
 open GaussianPolynomialPerturbation (one_power power_positive)
 open Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -152,16 +147,14 @@ private theorem tail_budget (z A B K : PTm n)
   have hu : Γ.map Fm.shift ⊢[PRAAx] bounded (Syn.shift z) (Syn.shift A) (Syn.shift B) := by
     simpa [Fm.shift,Syn.shift] using hz.shift
   have all : Γ ⊢[PRAAx] .all (tailBudget (Syn.shift z) (Syn.shift A) (Syn.shift B) (var 0)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_tailBudget,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      have hD : Γ ⊢[PRAAx] le one (two*(B*B)*weight zero) :=
+    ipra_qfind (le_QF _ _) [subst_tailBudget]
+    · have hD : Γ ⊢[PRAAx] le one (two*(B*B)*weight zero) :=
         positive_product _ _ (positive_product _ _ (le_succ_self one) (positive_product _ _ hB hB)) (weight_positive zero)
       have e : Γ ⊢[PRAAx] (A*A)*monus (weight zero) one ≐ zero :=
         (congrMul (.eqRefl _) ((congrMonus weight_zero (.eqRefl one)).eqTrans (monus_self one))).eqTrans (mul_zero _)
       exact bound_congr (sinc_tail_zero z).eqSymm e.eqSymm (.eqRefl _)
         (GaussianMonicResidualRadius.zero_bounded _ _ hD)
-    · simp only [subst_tailBudget,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact tail_budget_step _ _ _ _ hs.wk ht.wk hu.wk Prf.hyp0
+    · exact tail_budget_step _ _ _ _ hs.wk ht.wk hu.wk Prf.hyp0
   simpa only [subst_tailBudget,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE K
 
 theorem sinc_tail_bound (z A B K : PTm n)

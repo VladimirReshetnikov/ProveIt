@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianFiniteSumL1Variation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalFiniteSum (sum)
 open GaussianRationalMetric (qsub)
 open GaussianRationalL1 (qL1)
@@ -22,18 +22,13 @@ open GaussianRationalSyntheticDivision (qsub_congr)
 open GaussianRationalSyntheticBounds (natCode add_monotone)
 open RationalArithmetic (multiply)
 open RationalArgmin (rationalLE)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def termsError (f g : PTm 2) (N x y E : PTm n) : Fm PTm n := .all
   (lt (var 0) (Syn.shift N) ⟶ rationalLE
     (qL1 (qsub (inst2 f (var 0) (Syn.shift x)) (inst2 g (var 0) (Syn.shift y)))) (Syn.shift E))
-@[simp] theorem subst_termsError {m : ℕ} (σ : Fin n → PTm m) (f g : PTm 2) (N x y E : PTm n) :
-    (termsError f g N x y E).subst σ = termsError f g (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ E) := by
-  simp [termsError,Syn.subst_shift,Syn.shift_subst]
+ipra_subst termsError [Syn.subst_shift, Syn.shift_subst]
 theorem term_at (f g : PTm 2) (N x y E i : PTm n) (h : Γ ⊢[PRAAx] termsError f g N x y E)
     (hi : Γ ⊢[PRAAx] lt i N) : Γ ⊢[PRAAx] rationalLE (qL1 (qsub (inst2 f i x) (inst2 g i y))) E := by
   have gate : Γ ⊢[PRAAx] lt i N ⟶ rationalLE (qL1 (qsub (inst2 f i x) (inst2 g i y))) E := by
@@ -42,9 +37,7 @@ theorem term_at (f g : PTm 2) (N x y E i : PTm n) (h : Γ ⊢[PRAAx] termsError 
 
 def prefixLaw (f g : PTm 2) (N x y E k : PTm n) : Fm PTm n := le k N ⟶
   rationalLE (qL1 (qsub (sum f k x) (sum g k y))) (multiply (natCode k) E)
-@[simp] theorem subst_prefixLaw {m : ℕ} (σ : Fin n → PTm m) (f g : PTm 2) (N x y E k : PTm n) :
-    (prefixLaw f g N x y E k).subst σ = prefixLaw f g (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ E) (Syn.subst σ k) := by
-  simp [prefixLaw]
+ipra_subst prefixLaw
 
 theorem prefix_zero (f g : PTm 2) (N x y E : PTm n) : Γ ⊢[PRAAx] prefixLaw f g N x y E zero := by
   refine .impI ?_
@@ -69,11 +62,9 @@ theorem sum_error (f g : PTm 2) (N x y E : PTm n) (h : Γ ⊢[PRAAx] termsError 
   have hs : Γ.map Fm.shift ⊢[PRAAx] termsError f g (Syn.shift N) (Syn.shift x) (Syn.shift y) (Syn.shift E) := by
     simpa [Fm.shift,Syn.shift] using h.shift
   have all : Γ ⊢[PRAAx] .all (prefixLaw f g (Syn.shift N) (Syn.shift x) (Syn.shift y) (Syn.shift E) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact prefix_zero _ _ _ _ _ _
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact prefix_step _ _ _ _ _ _ _ hs.wk Prf.hyp0
+    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_prefixLaw]
+    · exact prefix_zero _ _ _ _ _ _
+    · exact prefix_step _ _ _ _ _ _ _ hs.wk Prf.hyp0
   have gate : Γ ⊢[PRAAx] prefixLaw f g N x y E N := by
     simpa only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
   exact Prf.impE gate (le_refl N)

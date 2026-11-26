@@ -12,7 +12,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedDiskDemandReadback
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedDiskDemandLift (RationalMap nameF clock sample_at frozenData clock_demand late_rate)
 open GaussianBarnesCanonicalNamedDemand (source data)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -20,9 +20,6 @@ open GaussianNameEquivalence (cross_refl)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator rate_at denominator_positive)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalMetric (distanceBounded)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

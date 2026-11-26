@@ -16,7 +16,7 @@ set_option maxHeartbeats 1050000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderLogRateTransport
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianStirlingAllOrderTruncationHorner (hornerErrorData truncation_even_horner truncation_odd_horner)
 open GaussianStirlingAllOrderTruncationAlgebra (truncation correction)
 open GaussianStirlingAllOrderLogTruncation (errorF)
@@ -37,10 +37,6 @@ open GaussianReconstructionRoots (distance_zero_iff)
 open RationalGaussianEmbedding (embed embed_axis axis axis_add axis_zero canonical_axis_roundtrip)
 open RationalValueBounds (upper upper_congr upper_mono upper_triangle upper_of_radius
   radius_of_upper radius_symmetric)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -51,13 +47,9 @@ def errorOrders (d : ℕ) (A B x R D : PTm n) : Fm PTm n :=
   realOrder constantF errorF (lowerPoint R D) (hornerErrorData d A B x) ⋏
     realOrder errorF constantF (hornerErrorData d A B x) (upperPoint R D)
 
-@[simp] theorem subst_upperPoint {l : ℕ} (σ : Fin n → PTm l) (R D : PTm n) :
-    Syn.subst σ (upperPoint R D) = upperPoint (Syn.subst σ R) (Syn.subst σ D) := by simp [upperPoint]
-@[simp] theorem subst_lowerPoint {l : ℕ} (σ : Fin n → PTm l) (R D : PTm n) :
-    Syn.subst σ (lowerPoint R D) = lowerPoint (Syn.subst σ R) (Syn.subst σ D) := by simp [lowerPoint]
-@[simp] theorem subst_hornerErrorData {l : ℕ} (σ : Fin n → PTm l) (d : ℕ) (A B x : PTm n) :
-    Syn.subst σ (hornerErrorData d A B x) = hornerErrorData d (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ x) := by
-  simp [hornerErrorData,logPolynomial,GaussianStirlingExpansionFiniteError.query]
+ipra_subst upperPoint
+ipra_subst lowerPoint
+ipra_subst hornerErrorData [logPolynomial, GaussianStirlingExpansionFiniteError.query]
 
 private theorem truncation_axis (m : ℕ) (A B : PTm n) : Γ ⊢[PRAAx] axis (truncation m A B) := by
   induction m with

@@ -30,14 +30,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.BohrMollerupUniqueness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.PowerGap (power_gap shift_le' shift_eq')
 open LeanProofs.IPRA.Probability.Variance (ad)
 open LeanProofs.IPRA.Foundations.MixedRadix (prod_succ')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -68,13 +64,9 @@ theorem bern_step {e : PTm n}
 theorem bern_all (u d : PTm n) :
     Γ ⊢[PRAAx] Fm.all (le (pw (Syn.shift u) (succ (var 0)) + succ (var 0) * Syn.shift d * pw (Syn.shift u) (var 0))
       (pw (Syn.shift u + Syn.shift d) (succ (var 0)))) := by
-  refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-      Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact bern_base
-  · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
-      subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact bern_step Prf.hyp0
+  ipra_qfind (le_QF _ _) [subst_le, subst_ap2]
+  · exact bern_base
+  · exact bern_step Prf.hyp0
 
 /-- Bernoulli's inequality `u^{e+1} + (e + 1) d u^e ≤ (u + d)^{e+1}`. -/
 theorem bernoulli (u d e : PTm n) :
@@ -164,7 +156,7 @@ theorem rB_at (j a b x : PTm n) : Γ ⊢[PRAAx] inst2 rB j (pairT a (pairT b x))
   have e : inst2 rB j (pairT a (pairT b x)) =
       fstT (pairT a (pairT b x)) + fstT (sndT (pairT a (pairT b x))) * j := by simp [inst2]
   rw [e]
-  exact congrAdd (fst_pair _ _) (congrMul ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)) (.eqRefl _))
+  exact congrAdd (fst_pair _ _) (congrMul (snd_pair _ _).fstE (.eqRefl _))
 
 section Recurrence
 
@@ -196,17 +188,11 @@ theorem iterated_recurrence (a b x M : PTm n)
   have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift M) ⟶
       (pw (Syn.shift b) (var 0) * inst2 F (var 0) (Syn.shift x) ≐
         Pq (var 0) (Syn.shift a) (Syn.shift b) (Syn.shift x) * inst2 F zero (Syn.shift x))) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, subst_pairT, PTm.subst_mul, subst_inst2,
-        Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
-      refine .impI ?_
-      have p := natEq (pw_zero (Γ := le zero M :: Γ) b)
-      have q := natEq (prod_zero (Γ := le zero M :: Γ) rB (pairT a (pairT b x)))
+    ipra_qfind (⟨le_QF _ _, trivial⟩) [subst_le, subst_ap2, subst_pairT, subst_inst2]
+    · refine .impI ?_
       apply deriveNat; ipra_simps
-      rw [p, q]
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, subst_pairT, PTm.subst_mul, subst_inst2,
-        Syn.subst_var, Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      refine .impI ?_
+      rw [natEq (pw_zero (Γ := le zero M :: Γ) b), natEq (prod_zero (Γ := le zero M :: Γ) rB (pairT a (pairT b x)))]
+    · refine .impI ?_
       have hk : (le (succ (var 0)) (Syn.shift M) ::
           (le (var 0) (Syn.shift M) ⟶
             (pw (Syn.shift b) (var 0) * inst2 F (var 0) (Syn.shift x) ≐

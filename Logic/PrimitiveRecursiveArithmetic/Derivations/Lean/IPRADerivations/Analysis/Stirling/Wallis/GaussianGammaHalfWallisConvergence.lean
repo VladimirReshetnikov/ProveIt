@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaHalfWallisConvergence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaHalfWallisRate (evenSquare pairOdd piGrid gridSource odd df_positive)
 open GaussianGammaHalfSqrtBrackets (fraction_first_represents)
 open GaussianGammaHalfPiName (nameF unit_mono orderAt meshAt meshIndex clearing Dm_mono)
@@ -30,10 +30,6 @@ open RationalValueBounds (upper upper_mono upper_congr upper_of_radius upper_tri
 open WallisFinite (Dm finite_wallis J_zero_eq wallis_le_two)
 open WallisRecurrence (J)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)

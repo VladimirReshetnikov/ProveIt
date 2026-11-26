@@ -1,6 +1,5 @@
 import IPRADerivations.Foundations.SequenceComposition
 import IPRADerivations.Foundations.BoundedSyntaxInduction
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Actual coefficient arrays at numerical quadratic-tower depth
@@ -19,14 +18,10 @@ set_option linter.unnecessarySeqFocus false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticTowerCoefficients
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.MasterCertificate (sequence entry sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length append append_length entry_congr)
 open LeanProofs.IPRA.Foundations.BoundedSyntax (BFm formula)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,17 +36,11 @@ def table (h K : PTm n) : PTm n := ap2 tableF h K
 def coefficients (h K x : PTm n) : PTm n := entry (table h K) x
 def flatten (h x : PTm n) : PTm n := coefficients h (succ x) x
 
-@[simp] theorem subst_singleton {k : ℕ} (σ : Fin n → PTm k) (x : PTm n) :
-    Syn.subst σ (singleton x) = singleton (Syn.subst σ x) := by simp [singleton,one]
-@[simp] theorem subst_width {k : ℕ} (σ : Fin n → PTm k) (h : PTm n) :
-    Syn.subst σ (width h) = width (Syn.subst σ h) := by simp [width,two,one]
-@[simp] theorem subst_table {k : ℕ} (σ : Fin n → PTm k) (h K : PTm n) :
-    Syn.subst σ (table h K) = table (Syn.subst σ h) (Syn.subst σ K) := by simp [table]
-@[simp] theorem subst_coefficients {k : ℕ} (σ : Fin n → PTm k) (h K x : PTm n) :
-    Syn.subst σ (coefficients h K x) = coefficients (Syn.subst σ h) (Syn.subst σ K) (Syn.subst σ x) := by
-  simp [coefficients]
-@[simp] theorem subst_flatten {k : ℕ} (σ : Fin n → PTm k) (h x : PTm n) :
-    Syn.subst σ (flatten h x) = flatten (Syn.subst σ h) (Syn.subst σ x) := by simp [flatten]
+ipra_subst singleton [one]
+ipra_subst width [two, one]
+ipra_subst table
+ipra_subst coefficients
+ipra_subst flatten
 
 theorem singleton_length (x : PTm n) : Γ ⊢[PRAAx] length (singleton x) ≐ one := sequence_length _ _ _
 theorem singleton_entry (x : PTm n) : Γ ⊢[PRAAx] entry (singleton x) zero ≐ x :=
@@ -101,9 +90,7 @@ def sizeLaw (h K : PTm n) : Fm PTm n := .all (lt (var 0) (Syn.shift K) ⟶
   length (coefficients (Syn.shift h) (Syn.shift K) (var 0)) ≐ width (Syn.shift h))
 def sizeSyntax (h K : PTm n) : BFm n := .all K
   (.eq (length (coefficients (Syn.shift h) (Syn.shift K) (var 0))) (width (Syn.shift h)))
-@[simp] theorem subst_sizeLaw {k : ℕ} (σ : Fin n → PTm k) (h K : PTm n) :
-    (sizeLaw h K).subst σ = sizeLaw (Syn.subst σ h) (Syn.subst σ K) := by
-  simp [sizeLaw,Syn.subst_shift,Syn.shift_subst]
+ipra_subst sizeLaw [Syn.subst_shift, Syn.shift_subst]
 theorem size_formula (h K : PTm n) : formula (sizeSyntax h K) = sizeLaw h K := by
   simp [sizeSyntax,sizeLaw,formula]
 theorem size_at (h K x : PTm n) (hs : Γ ⊢[PRAAx] sizeLaw h K) (hx : Γ ⊢[PRAAx] lt x K) : Γ ⊢[PRAAx]
@@ -143,9 +130,7 @@ def coherent (h K L : PTm n) : Fm PTm n := .all (lt (var 0) (Syn.shift K) ⟶
     coefficients (Syn.shift h) (Syn.shift L) (var 0))
 def coherentSyntax (h K L : PTm n) : BFm n := .all K (.imp (.lt (var 0) (Syn.shift L))
   (.eq (coefficients (Syn.shift h) (Syn.shift K) (var 0)) (coefficients (Syn.shift h) (Syn.shift L) (var 0))))
-@[simp] theorem subst_coherent {k : ℕ} (σ : Fin n → PTm k) (h K L : PTm n) :
-    (coherent h K L).subst σ = coherent (Syn.subst σ h) (Syn.subst σ K) (Syn.subst σ L) := by
-  simp [coherent,Syn.subst_shift,Syn.shift_subst]
+ipra_subst coherent [Syn.subst_shift, Syn.shift_subst]
 theorem coherent_formula (h K L : PTm n) : formula (coherentSyntax h K L) = coherent h K L := by
   simp [coherentSyntax,coherent,formula,BFm.lt,BFm.le,lt,le]
 theorem coherent_at (h K L x : PTm n) (ih : Γ ⊢[PRAAx] coherent h K L)
@@ -218,12 +203,9 @@ def run (h x : PTm n) : PTm n := ap2 flattenF h x
 def output (h K x : PTm n) : PTm n := pairT (table h K) (pairT (coefficients h K x) (flatten h x))
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def tableRun (h K x : PTm n) : PTm n := ap3 outputF h K x
-@[simp] theorem subst_run {k : ℕ} (σ : Fin n → PTm k) (h x : PTm n) :
-    Syn.subst σ (run h x) = run (Syn.subst σ h) (Syn.subst σ x) := by simp [run]
-@[simp] theorem subst_output {k : ℕ} (σ : Fin n → PTm k) (h K x : PTm n) :
-    Syn.subst σ (output h K x) = output (Syn.subst σ h) (Syn.subst σ K) (Syn.subst σ x) := by simp [output]
-@[simp] theorem subst_tableRun {k : ℕ} (σ : Fin n → PTm k) (h K x : PTm n) :
-    Syn.subst σ (tableRun h K x) = tableRun (Syn.subst σ h) (Syn.subst σ K) (Syn.subst σ x) := by simp [tableRun]
+ipra_subst run
+ipra_subst output
+ipra_subst tableRun
 theorem program_at (h x : PTm n) : Γ ⊢[PRAAx] run h x ≐ flatten h x := by
   simpa [run,flattenF,ap2] using toPR_eq (Γ := Γ) (flatten (var 0) (var 1) : PTm 2) ![h,x]
 theorem returned_length (h x : PTm n) : Γ ⊢[PRAAx] length (run h x) ≐ width h :=
@@ -231,11 +213,11 @@ theorem returned_length (h x : PTm n) : Γ ⊢[PRAAx] length (run h x) ≐ width
 theorem table_program_at (h K x : PTm n) : Γ ⊢[PRAAx] tableRun h K x ≐ output h K x := by
   simpa [tableRun,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![h,K,x]
 theorem returned_table (h K x : PTm n) : Γ ⊢[PRAAx] fstT (tableRun h K x) ≐ table h K :=
-  (congrFst (table_program_at _ _ _)).eqTrans (fst_pair _ _)
+  (table_program_at _ _ _).fstE
 theorem returned_cell (h K x : PTm n) : Γ ⊢[PRAAx] fstT (sndT (tableRun h K x)) ≐ coefficients h K x :=
-  (congrFst ((congrSnd (table_program_at _ _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (table_program_at _ _ _).sndE.fstE
 theorem returned_flatten (h K x : PTm n) : Γ ⊢[PRAAx] sndT (sndT (tableRun h K x)) ≐ flatten h x :=
-  (congrSnd ((congrSnd (table_program_at _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (table_program_at _ _ _).sndE.sndE
 theorem returned_table_length (h K x : PTm n) : Γ ⊢[PRAAx] length (fstT (tableRun h K x)) ≐ K :=
   (congrFst (returned_table _ _ _)).eqTrans (table_length _ _)
 theorem returned_agreement (h K x : PTm n) (hx : Γ ⊢[PRAAx] lt x K) : Γ ⊢[PRAAx]

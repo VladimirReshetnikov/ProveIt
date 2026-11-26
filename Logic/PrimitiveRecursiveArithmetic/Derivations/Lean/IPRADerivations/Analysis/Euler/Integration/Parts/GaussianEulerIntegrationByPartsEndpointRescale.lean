@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Euler.Integration.Parts.GaussianEulerIntegrationByPartsEndpoints
 import IPRADerivations.Analysis.Euler.Integration.Parameters.GaussianEulerPowerInputProperness
 import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaCompactQuadratureBoundary
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The literal affine-grid endpoint observations
@@ -17,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsEndpointRescale
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegrationByPartsLinear (primitive decay originalProduct subst_primitive)
 open GaussianEulerIntegrandName (decayF decayData decayPoint powerF powerData)
 open GaussianGammaFiniteApproximantName (exponentialInputData)
@@ -33,9 +32,6 @@ open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameEquivalence (cross_to_diagonal diagonal_at)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

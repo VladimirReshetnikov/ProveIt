@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderSignedBounds
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaCanonicalExponent (constantF)
 open GaussianNamedStrictOrderDifference (trans_weak)
 open GaussianStirlingNames (source)
@@ -21,8 +21,6 @@ open GaussianStirlingAllOrderImproperUpper (original_improper_upper)
 open GaussianStirlingAllOrderSignedBoundsTransport (orientedCap oriented_bracket_of_improper_upper)
 open GaussianStirlingAllOrderSignedLower (orientedF orientedData zeroPoint)
 open GaussianStirlingMultiplicativeBoundsStrictOrder (strictOrder)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

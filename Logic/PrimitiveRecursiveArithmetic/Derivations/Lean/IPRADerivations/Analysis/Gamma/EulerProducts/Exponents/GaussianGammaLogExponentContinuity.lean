@@ -14,7 +14,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaLogExponentContinuity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaFiniteApproximantName (logF logExponentF logExponentData log_regular log_exponent_regular)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianRationalHorner (ofGaussian qmul positive_product)
@@ -22,9 +22,6 @@ open GaussianRationalMetric (bounded distanceBounded qnegative)
 open GaussianRationalReciprocal (bound_congr bounded_negative)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -32,12 +29,9 @@ def logRadius (N : PTm n) : PTm n := GaussianNameBounds.U logF N
 def exponentRadius (R N : PTm n) : PTm n := logRadius N*R
 def query (p z B N : PTm n) : PTm n := GaussianFastValueCut.exponent
   (GaussianNameArithmetic.multiplyModulus logF constantF N (qnegative (ofGaussian z B))) p
-@[simp] theorem subst_logRadius {l : ℕ} (σ : Fin n → PTm l) (N : PTm n) :
-    Syn.subst σ (logRadius N) = logRadius (Syn.subst σ N) := by simp [logRadius]
-@[simp] theorem subst_exponentRadius {l : ℕ} (σ : Fin n → PTm l) (R N : PTm n) :
-    Syn.subst σ (exponentRadius R N) = exponentRadius (Syn.subst σ R) (Syn.subst σ N) := by simp [exponentRadius]
-@[simp] theorem subst_query {l : ℕ} (σ : Fin n → PTm l) (p z B N : PTm n) :
-    Syn.subst σ (query p z B N) = query (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by simp [query]
+ipra_subst logRadius
+ipra_subst exponentRadius
+ipra_subst query
 
 theorem query_later (p z B N : PTm n) : Γ ⊢[PRAAx] le p (query p z B N) :=
   le_add_right _ _
@@ -106,9 +100,7 @@ theorem negative_fraction_distance (z w B A D : PTm n) (hB : Γ ⊢[PRAAx] le on
   exact le_congr (congrMul (.eqRefl _) eq).eqSymm (.eqRefl _) old
 
 def distanceBudget (p R A D N : PTm n) : PTm n := two*D*R+logRadius N*A*unit p
-@[simp] theorem subst_distanceBudget {l : ℕ} (σ : Fin n → PTm l) (p R A D N : PTm n) :
-    Syn.subst σ (distanceBudget p R A D N) = distanceBudget (Syn.subst σ p) (Syn.subst σ R)
-      (Syn.subst σ A) (Syn.subst σ D) (Syn.subst σ N) := by simp [distanceBudget]
+ipra_subst distanceBudget
 
 theorem exponent_distance (p z w R B A D N : PTm n) (hN : Γ ⊢[PRAAx] le one N)
     (hB : Γ ⊢[PRAAx] le one B) (hD : Γ ⊢[PRAAx] le one D)
@@ -131,23 +123,15 @@ def output (p z w R B A D N : PTm n) : PTm n := pairT (ap2 logExponentF p (logEx
   (pairT (ap2 logExponentF p (logExponentData w B N)) (pairT (distanceBudget p R A D N) (D*unit p)))
 def outputF : PR 8 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) (var 7))
 def run (p z w R B A D N : PTm n) : PTm n := PTm.app outputF ![p,z,w,R,B,A,D,N]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (p z w R B A D N : PTm n) :
-    Syn.subst σ (output p z w R B A D N) = output (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ w)
-      (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ D) (Syn.subst σ N) := by simp [output,logExponentData]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (p z w R B A D N : PTm n) :
-    Syn.subst σ (run p z w R B A D N) = run (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ w)
-      (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ D) (Syn.subst σ N) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext k
-  fin_cases k <;> rfl
+ipra_subst output [logExponentData]
+ipra_subst run
 
 theorem program_at (p z w R B A D N : PTm n) : Γ ⊢[PRAAx] run p z w R B A D N ≐ output p z w R B A D N := by
   simpa [run,outputF] using toPR_eq (Γ := Γ)
     (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) (var 7) : PTm 8) ![p,z,w,R,B,A,D,N]
 theorem returned_left (p z w R B A D N : PTm n) : Γ ⊢[PRAAx]
     fstT (run p z w R B A D N) ≐ ap2 logExponentF p (logExponentData z B N) :=
-  (congrFst (program_at p z w R B A D N)).eqTrans (fst_pair _ _)
+  (program_at p z w R B A D N).fstE
 theorem returned_right (p z w R B A D N : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run p z w R B A D N)) ≐ ap2 logExponentF p (logExponentData w B N) :=
   ((congrFst (congrSnd (program_at p z w R B A D N))).eqTrans (congrFst (snd_pair _ _))).eqTrans (fst_pair _ _)

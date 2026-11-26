@@ -13,7 +13,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliMeshMargin
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianStirlingAllOrderBernoulliMeshRefinement (sample_refinement)
 open GaussianStirlingAllOrderBernoulliShape (centeredShape centered_shape_has_positive)
 open GaussianStirlingAllOrderBernoulliShapeClearing
@@ -28,9 +28,6 @@ open BernoulliBounds (bden bden_pos zint toZ_zint)
 open RationalIntegerNormalization (normalize normalize_preserves_value)
 open RationalNormalForm (normalize_well_formed)
 open RationalArgmin (rationalLE rationalLE_congr transitive)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

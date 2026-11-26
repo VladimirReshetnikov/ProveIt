@@ -21,7 +21,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentDivisionAngleResidual
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (normSq normSq_eval eval_re_code eval_im_code)
 open GaussianArctangentCayleyExponentialStep (conjugate_unit_bound)
 open GaussianArctangentCayleyStep (conjugateValue)
@@ -46,9 +46,6 @@ open GaussianReciprocalHorner (qmul_associative qmul_one_right)
 open GaussianSineSquaredPolynomial (coefficients)
 open GaussianSineSquaredResidual (residual_bound_sharp)
 open GaussianSineSquaredTrace (sineValue fromSine)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -65,25 +62,15 @@ def sineSample (p k J z : PTm n) : PTm n := sinePoint (mesh p k J z) (index p k 
 def rootSample (p k J z : PTm n) : PTm n := fromSine (sineSample p k J z)
 def positiveBudget (J : PTm n) : PTm n := two+sampleBudget (modulus J) (modulus J) two one (num 5)
 
-@[simp] theorem subst_inverseData {l : ℕ} (σ : Fin n → PTm l) (k J z : PTm n) :
-    Syn.subst σ (inverseData k J z) = inverseData (Syn.subst σ k) (Syn.subst σ J) (Syn.subst σ z) := by
-  simp [inverseData]
+ipra_subst inverseData
 
-@[simp] theorem subst_mesh {l : ℕ} (σ : Fin n → PTm l) (p k J z : PTm n) :
-    Syn.subst σ (mesh p k J z) = mesh (Syn.subst σ p) (Syn.subst σ k) (Syn.subst σ J) (Syn.subst σ z) := by
-  simp [mesh]
+ipra_subst mesh
 
-@[simp] theorem subst_index {l : ℕ} (σ : Fin n → PTm l) (p k J z : PTm n) :
-    Syn.subst σ (index p k J z) = index (Syn.subst σ p) (Syn.subst σ k) (Syn.subst σ J) (Syn.subst σ z) := by
-  simp [index]
+ipra_subst index
 
-@[simp] theorem subst_sineSample {l : ℕ} (σ : Fin n → PTm l) (p k J z : PTm n) :
-    Syn.subst σ (sineSample p k J z) = sineSample (Syn.subst σ p) (Syn.subst σ k) (Syn.subst σ J) (Syn.subst σ z) := by
-  simp [sineSample]
+ipra_subst sineSample
 
-@[simp] theorem subst_rootSample {l : ℕ} (σ : Fin n → PTm l) (p k J z : PTm n) :
-    Syn.subst σ (rootSample p k J z) = rootSample (Syn.subst σ p) (Syn.subst σ k) (Syn.subst σ J) (Syn.subst σ z) := by
-  simp [rootSample,fromSine]
+ipra_subst rootSample [fromSine]
 
 theorem mesh_positive (p k J z : PTm n) : Γ ⊢[PRAAx] le one (mesh p k J z) :=
   GaussianArctangentNamedExtension.denominator_positive _ _ _

@@ -1,6 +1,4 @@
 import IPRADerivations.Analysis.Series.Harmonic.RationalHarmonicIntervalVariation
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.InductionTactic
 
 /-!
 # A dyadic upper bound for the finite harmonic numerator
@@ -14,15 +12,11 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalHarmonicDyadicUpper
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB S_one pw2_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (S_mono)
 open LeanProofs.IPRA.Common (mul_cancel_le)
 open RationalHarmonicIntervalVariation (harmonic_increment)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -18,7 +18,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGaussEulerFiniteIdentity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode scale)
 open GaussianGammaAdjacentCutoff (multiply_cross)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
@@ -39,8 +39,6 @@ open GaussianGaussMultiplicationPowerPerturbation (rowData)
 open GaussianNameArithmetic (multiplyF multiplyData multiply_fast)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
 open GaussianNamedFiniteProductFamily (family_product_regular)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "L" => GaussianGammaGaussEulerHeads.cutoff
@@ -57,11 +55,7 @@ def finiteCutoffs (s R m a d N : PTm n) : Fm PTm n :=
     (le (GaussianGammaGaussReferenceEulerProduct.threshold s m) N ⋏
       (le (needed s one one one) (L m N) ⋏ le (needed s (scaledRadius R m) a d) (L m N))))
 
-@[simp] theorem subst_finiteCutoffs {l : ℕ} (σ : Fin n → PTm l) (s R m a d N : PTm n) :
-    (finiteCutoffs s R m a d N).subst σ =
-      finiteCutoffs (Syn.subst σ s) (Syn.subst σ R) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ d)
-        (Syn.subst σ N) := by
-  simp [finiteCutoffs,one]
+ipra_subst finiteCutoffs [one]
 
 theorem finite_identity (s z R B m a d N : PTm n)
     (hs : Γ ⊢[PRAAx] source z R B m a d) (hn : Γ ⊢[PRAAx] finiteCutoffs s R m a d N) :

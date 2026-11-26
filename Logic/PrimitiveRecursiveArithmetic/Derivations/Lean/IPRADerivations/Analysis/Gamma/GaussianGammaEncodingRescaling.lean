@@ -3,7 +3,6 @@ import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerApproximat
 import IPRADerivations.Analysis.Exponential.IntegerPowers.GaussianRobinMeshExponential
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianGammaRepeatedShift
 import IPRADerivations.Analysis.Gamma.GaussianGammaRadiusOverlap
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Positive encoding rescaling of the original Gamma reciprocal
@@ -20,7 +19,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaEncodingRescaling
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (ofGaussian positive_product)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr)
 open GaussianGammaCanonicalExponent (source constantF)
@@ -28,9 +27,6 @@ open GaussianGammaFiniteApproximantName (qF qData logF logExponentF exponentialI
 open GaussianGammaEulerHead (factor head head_zero head_succ)
 open GaussianNameEquivalence (crossEquivalent cross_trans cross_symm)
 open ComplexLogarithmRemainder (scale oneCode)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -55,19 +51,16 @@ theorem factor_rescale (z B E i : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hE : Γ 
     (fraction_rescale z (B*succ i) E (positive_product _ _ hB (zero_lt_succ i)) hE))
 
 def headLaw (z B E N : PTm n) : Fm PTm n := head (scale E z) (E*B) N ≐ head z B N
-@[simp] theorem subst_headLaw {l : ℕ} (σ : Fin n → PTm l) (z B E N : PTm n) :
-    (headLaw z B E N).subst σ = headLaw (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ E) (Syn.subst σ N) := by simp [headLaw]
+ipra_subst headLaw
 
 theorem head_rescale (z B E N : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hE : Γ ⊢[PRAAx] le one E) : Γ ⊢[PRAAx] headLaw z B E N := by
   have bs : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift B) := by simpa [Fm.shift,Syn.shift] using hB.shift
   have es : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift E) := by simpa [Fm.shift,Syn.shift] using hE.shift
   have hall : Γ ⊢[PRAAx] .all (headLaw (Syn.shift z) (Syn.shift B) (Syn.shift E) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_headLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (head_zero _ _ (positive_product _ _ hE hB)).eqTrans
+    ipra_qfind [subst_headLaw]
+    · exact (head_zero _ _ (positive_product _ _ hE hB)).eqTrans
         ((fraction_rescale z B E hB hE).eqTrans (head_zero z B hB).eqSymm)
-    · simp only [subst_headLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact (head_succ _ _ _).eqTrans ((qmul_congr Prf.hyp0 (factor_rescale _ _ _ _ bs.wk es.wk)).eqTrans (head_succ _ _ _).eqSymm)
+    · exact (head_succ _ _ _).eqTrans ((qmul_congr Prf.hyp0 (factor_rescale _ _ _ _ bs.wk es.wk)).eqTrans (head_succ _ _ _).eqSymm)
   simpa only [subst_headLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using hall.allE N
 
 theorem returned_head_rescale (z B E N : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hE : Γ ⊢[PRAAx] le one E) : Γ ⊢[PRAAx]
@@ -79,9 +72,7 @@ input fraction exposed as two scalar parameters. -/
 def qParameters (H q N : PTm n) : PTm n := GaussianNameArithmetic.multiplyData constantF
   (GaussianRadiusExponentialName.nameF logExponentF) H
   (exponentialInputData logExponentF (GaussianNameArithmetic.multiplyData logF constantF N (GaussianRationalMetric.qnegative q)))
-@[simp] theorem subst_qParameters {l : ℕ} (σ : Fin n → PTm l) (H q N : PTm n) :
-    Syn.subst σ (qParameters H q N) = qParameters (Syn.subst σ H) (Syn.subst σ q) (Syn.subst σ N) := by
-  simp [qParameters,exponentialInputData]
+ipra_subst qParameters [exponentialInputData]
 
 theorem q_parameters_at (z B N : PTm n) : Γ ⊢[PRAAx]
     qData z B N ≐ qParameters (GaussianGammaEulerHead.run z B N) (ofGaussian z B) N := .eqRefl _
@@ -184,28 +175,20 @@ def output (p q z R B E : PTm n) : PTm n := pairT (GaussianGammaC7Name.sample p 
   (pairT (GaussianGammaC7Name.sample q z R B) (ofGaussian z B))
 def outputF : PR 6 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5))
 def run (p q z R B E : PTm n) : PTm n := PTm.app outputF ![p,q,z,R,B,E]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (p q z R B E : PTm n) :
-    Syn.subst σ (output p q z R B E) = output (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ z)
-      (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ E) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (p q z R B E : PTm n) :
-    Syn.subst σ (run p q z R B E) = run (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ z)
-      (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ E) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext k
-  fin_cases k <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (p q z R B E : PTm n) : Γ ⊢[PRAAx] run p q z R B E ≐ output p q z R B E := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) ![p,q,z,R,B,E]
 theorem returned_rescaled (p q z R B E : PTm n) : Γ ⊢[PRAAx]
     fstT (run p q z R B E) ≐ GaussianGammaC7Name.sample p (scale E z) R (E*B) :=
-  (congrFst (program_at p q z R B E)).eqTrans (fst_pair _ _)
+  (program_at p q z R B E).fstE
 theorem returned_original (p q z R B E : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run p q z R B E)) ≐ GaussianGammaC7Name.sample q z R B :=
-  (congrFst ((congrSnd (program_at p q z R B E)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at p q z R B E).sndE.fstE
 theorem returned_fraction (p q z R B E : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (run p q z R B E)) ≐ ofGaussian z B :=
-  (congrSnd ((congrSnd (program_at p q z R B E)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at p q z R B E).sndE.sndE
 theorem returned_distance (p q z R B E : PTm n) (h : Γ ⊢[PRAAx] source z R B) (hE : Γ ⊢[PRAAx] le one E) : Γ ⊢[PRAAx]
     GaussianRationalMetric.distanceBounded (fstT (run p q z R B E)) (fstT (sndT (run p q z R B E)))
       (GaussianCoefficientNameBounds.unit p+GaussianCoefficientNameBounds.unit q)

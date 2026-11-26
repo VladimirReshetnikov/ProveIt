@@ -14,14 +14,12 @@ set_option maxHeartbeats 600000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetFirstFormula
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetFirstFormulaDecay (laplaceData laplace_regular)
 open GaussianBinetFirstFormulaPinning (laplaceStepData stepLaw first_formula_of_unit_difference)
 open GaussianBinetLaplaceRectangleJoin (comparisonCost original_observation)
 open GaussianNameEquivalence (crossEquivalent cross_symm cross_trans)
 open GaussianRightHalfPlaneLogarithm (source)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "J" => GaussianBinetLaplaceImproperName.nameF

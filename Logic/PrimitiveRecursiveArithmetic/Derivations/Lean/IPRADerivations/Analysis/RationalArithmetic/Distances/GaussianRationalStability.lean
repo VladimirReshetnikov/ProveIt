@@ -24,15 +24,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalStability
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalRadius
   (radiusQuery scaleDenominator rawRadius scale_positive radius_ge_scale sourceBudget budget_transport)
 open LeanProofs.IPRA.Analysis.GaussianRationalNormalization (sourceNumerators targetNumerators)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,9 +37,7 @@ def pointsBounded (S u v : PTm n) : Fm PTm n :=
   .all (lt (var 0) (length (Syn.shift S)) ⟶
     GaussianRationalMetric.bounded (entry (Syn.shift S) (var 0)) (Syn.shift u) (Syn.shift v))
 
-@[simp] theorem subst_pointsBounded {m : ℕ} (σ : Fin n → PTm m) (S u v : PTm n) :
-    (pointsBounded S u v).subst σ = pointsBounded (Syn.subst σ S) (Syn.subst σ u) (Syn.subst σ v) := by
-  simp [pointsBounded,Syn.subst_shift,Syn.shift_subst]
+ipra_subst pointsBounded [Syn.subst_shift, Syn.shift_subst]
 
 theorem point_bound_at (S u v i : PTm n) (h : Γ ⊢[PRAAx] pointsBounded S u v)
     (hi : Γ ⊢[PRAAx] lt i (length S)) :
@@ -63,15 +58,9 @@ def basicInput (S T N u v A B P Q : PTm n) : Fm PTm n :=
 def stabilityInput (S T N u v A B P Q : PTm n) : Fm PTm n := basicInput S T N u v A B P Q ⋏
   (pointsBounded S u v ⋏ (pointsBounded T u v ⋏ coefficientBounds S T N u v A B))
 
-@[simp] theorem subst_coefficientBounds {m : ℕ} (σ : Fin n → PTm m) (S T N u v A B : PTm n) :
-    (coefficientBounds S T N u v A B).subst σ = coefficientBounds (Syn.subst σ S) (Syn.subst σ T)
-      (Syn.subst σ N) (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ A) (Syn.subst σ B) := by simp [coefficientBounds]
-@[simp] theorem subst_basicInput {m : ℕ} (σ : Fin n → PTm m) (S T N u v A B P Q : PTm n) :
-    (basicInput S T N u v A B P Q).subst σ = basicInput (Syn.subst σ S) (Syn.subst σ T)
-      (Syn.subst σ N) (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ P) (Syn.subst σ Q) := by simp [basicInput]
-@[simp] theorem subst_stabilityInput {m : ℕ} (σ : Fin n → PTm m) (S T N u v A B P Q : PTm n) :
-    (stabilityInput S T N u v A B P Q).subst σ = stabilityInput (Syn.subst σ S) (Syn.subst σ T)
-      (Syn.subst σ N) (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ P) (Syn.subst σ Q) := by simp [stabilityInput]
+ipra_subst coefficientBounds
+ipra_subst basicInput
+ipra_subst stabilityInput
 
 /-- Original rational point bounds give the actual integer radius bound.
 The clearing equations and the commensurate radius are both derived. -/
@@ -162,9 +151,7 @@ def witnessTerm (S T u v i Q : PTm n) : PTm n :=
 def witnessF : PR 6 := PTm.toPR (witnessTerm (var 0) (var 1) (var 2) (var 3) (var 4) (var 5))
 def witness (S T u v i Q : PTm n) : PTm n := PTm.app witnessF ![S,T,u,v,i,Q]
 
-@[simp] theorem subst_witnessTerm {m : ℕ} (σ : Fin n → PTm m) (S T u v i Q : PTm n) :
-    Syn.subst σ (witnessTerm S T u v i Q) = witnessTerm (Syn.subst σ S) (Syn.subst σ T)
-      (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ i) (Syn.subst σ Q) := by simp [witnessTerm]
+ipra_subst witnessTerm
 
 theorem witness_program_at (S T u v i Q : PTm n) : Γ ⊢[PRAAx]
     witness S T u v i Q ≐ witnessTerm S T u v i Q := by

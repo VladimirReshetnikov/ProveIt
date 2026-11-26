@@ -14,7 +14,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesGlaisherFinite
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale oneCode)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
@@ -25,10 +25,6 @@ open GaussianBarnesGlaisherQuartic (negativeWeight weightNumerator correction)
 open GaussianRationalNaturalScale (naturalPoint natural_point_represents)
 open GaussianRationalHorner (ofGaussian ofGaussian_represents ofGaussian_canonical represents
   represents_congr represents_rescale positive_product qadd qadd_represents qadd_canonical canonical_unique)
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "neg" => ComplexLogarithmRemainder.neg

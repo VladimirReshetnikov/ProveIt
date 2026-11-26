@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.GaussianEulerUnitSubstitutionLatticeGeometry
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.GaussianEulerUnitSubstitutionEndpoints
 import IPRADerivations.Analysis.RationalArithmetic.Representations.GaussianRationalReconstruction
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Exhaustion by the actual rounded rational unit panels
@@ -16,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitSubstitutionRoundedEndpoints
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUnitSubstitutionLatticeGeometry (start count)
 open GaussianEulerUnitSubstitutionFloorCuts (cut)
 open GaussianEulerUnitSubstitutionTiltedNodes (reverseNode)
@@ -30,9 +29,6 @@ open GaussianRationalSyntheticDivision (qone)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open RationalValueBounds (radius radius_congr radius_triangle radius_mono)
 open GaussianEuclideanDistanceName (fraction)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -45,22 +41,11 @@ def denominator (s k E T M : PTm n) : PTm n := M*unit (clock k E T)*unit s
 def source (k N t A R M : PTm n) : Fm PTm n :=
   GaussianEulerUnitSubstitutionFloorCuts.source k N one (width t A R) (etaDen t A R) (top t A R) M
 
-@[simp] theorem subst_left {m : ℕ} (σ : Fin n → PTm m) (k N a C E T M : PTm n) :
-    Syn.subst σ (left k N a C E T M) = left (Syn.subst σ k) (Syn.subst σ N) (Syn.subst σ a)
-      (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ M) := by simp [left]
-@[simp] theorem subst_right {m : ℕ} (σ : Fin n → PTm m) (k N a C E T M : PTm n) :
-    Syn.subst σ (right k N a C E T M) = right (Syn.subst σ k) (Syn.subst σ N) (Syn.subst σ a)
-      (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ M) := by simp [right]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (k N t A R M : PTm n) :
-    (source k N t A R M).subst σ = source (Syn.subst σ k) (Syn.subst σ N) (Syn.subst σ t)
-      (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ M) := by
-  simp [source,etaDen,top,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (s k N E T M : PTm n) :
-    Syn.subst σ (numerator s k N E T M) = numerator (Syn.subst σ s) (Syn.subst σ k) (Syn.subst σ N)
-      (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ M) := by simp [numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (s k E T M : PTm n) :
-    Syn.subst σ (denominator s k E T M) = denominator (Syn.subst σ s) (Syn.subst σ k)
-      (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ M) := by simp [denominator]
+ipra_subst left
+ipra_subst right
+ipra_subst source [etaDen, top, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst numerator
+ipra_subst denominator
 
 /-- Both actual endpoint numerators are positive and below M, even if
 both absolute cuts coincide. -/
@@ -155,10 +140,7 @@ def dyadicSource (s k N t A R M : PTm n) : Fm PTm n :=
         (le (unit (cutoff s)) M ⋏
           le (two*N*unit (cutoff s)) (unit (clock k (etaDen t A R) (top t A R)))))))
 
-@[simp] theorem subst_dyadicSource {m : ℕ} (σ : Fin n → PTm m) (s k N t A R M : PTm n) :
-    (dyadicSource s k N t A R M).subst σ = dyadicSource (Syn.subst σ s) (Syn.subst σ k) (Syn.subst σ N)
-      (Syn.subst σ t) (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ M) := by
-  simp [dyadicSource,etaDen,top,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst dyadicSource [etaDen, top, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient]
 
 theorem endpoint_budget (s k N E T M : PTm n)
     (hM : Γ ⊢[PRAAx] le (unit (cutoff s)) M)

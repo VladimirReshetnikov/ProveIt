@@ -1,5 +1,4 @@
 import IPRADerivations.Algebra.QuadraticTowerMultiplicationTable
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Exact scalar growth calculus for the actual changed-budget table
@@ -16,14 +15,10 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticTowerGrowth
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open QuadraticTowerScalarBudget (amp growth growthF growth_zero growth_succ majorant)
 open QuadraticTowerMultiplicationTable (sourceCost budget budget_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -45,29 +40,22 @@ theorem growth_congr {t u B C : PTm n} (ht : Γ ⊢[PRAAx] t ≐ u) (hB : Γ ⊢
 def monotoneLaw (t B C : PTm n) : Fm PTm n := le (growth t B) (growth t C)
 def inflationLaw (t B : PTm n) : Fm PTm n := le B (growth t B)
 def compositionLaw (t u B : PTm n) : Fm PTm n := growth t (growth u B) ≐ growth (t+u) B
-@[simp] theorem subst_monotoneLaw {k : ℕ} (σ : Fin n → PTm k) (t B C : PTm n) :
-    (monotoneLaw t B C).subst σ = monotoneLaw (Syn.subst σ t) (Syn.subst σ B) (Syn.subst σ C) := by simp [monotoneLaw]
-@[simp] theorem subst_inflationLaw {k : ℕ} (σ : Fin n → PTm k) (t B : PTm n) :
-    (inflationLaw t B).subst σ = inflationLaw (Syn.subst σ t) (Syn.subst σ B) := by simp [inflationLaw]
-@[simp] theorem subst_compositionLaw {k : ℕ} (σ : Fin n → PTm k) (t u B : PTm n) :
-    (compositionLaw t u B).subst σ = compositionLaw (Syn.subst σ t) (Syn.subst σ u) (Syn.subst σ B) := by simp [compositionLaw]
+ipra_subst monotoneLaw
+ipra_subst inflationLaw
+ipra_subst compositionLaw
 
 theorem growth_mono (t B C : PTm n) (hBC : Γ ⊢[PRAAx] le B C) : Γ ⊢[PRAAx] le (growth t B) (growth t C) := by
   have all : Γ ⊢[PRAAx] .all (monotoneLaw (var 0) (Syn.shift B) (Syn.shift C)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_monotoneLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact le_congr (growth_zero B).eqSymm (growth_zero C).eqSymm hBC
-    · simp only [subst_monotoneLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact le_congr (growth_succ _ _).eqSymm (growth_succ _ _).eqSymm (amp_mono Prf.hyp0)
+    ipra_qfind (le_QF _ _) [subst_monotoneLaw]
+    · exact le_congr (growth_zero B).eqSymm (growth_zero C).eqSymm hBC
+    · exact le_congr (growth_succ _ _).eqSymm (growth_succ _ _).eqSymm (amp_mono Prf.hyp0)
   change Γ ⊢[PRAAx] monotoneLaw t B C
   simpa only [subst_monotoneLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE t
 theorem growth_inflation (t B : PTm n) : Γ ⊢[PRAAx] le B (growth t B) := by
   have all : Γ ⊢[PRAAx] .all (inflationLaw (var 0) (Syn.shift B)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_inflationLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact le_congr (.eqRefl _) (growth_zero B).eqSymm (le_refl B)
-    · simp only [subst_inflationLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact le_trans Prf.hyp0 (le_congr (.eqRefl _) (growth_succ _ _).eqSymm (amp_inflation _))
+    ipra_qfind (le_QF _ _) [subst_inflationLaw]
+    · exact le_congr (.eqRefl _) (growth_zero B).eqSymm (le_refl B)
+    · exact le_trans Prf.hyp0 (le_congr (.eqRefl _) (growth_succ _ _).eqSymm (amp_inflation _))
   change Γ ⊢[PRAAx] inflationLaw t B
   simpa only [subst_inflationLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE t
 
@@ -79,11 +67,9 @@ theorem composition_step (t u B : PTm n) (ih : Γ ⊢[PRAAx] compositionLaw t u 
     ((growth_succ _ _).eqSymm.eqTrans (growth_congr (succ_add t u).eqSymm (.eqRefl _))))
 theorem growth_composition (t u B : PTm n) : Γ ⊢[PRAAx] growth t (growth u B) ≐ growth (t+u) B := by
   have all : Γ ⊢[PRAAx] .all (compositionLaw (var 0) (Syn.shift u) (Syn.shift B)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_compositionLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact composition_zero _ _
-    · simp only [subst_compositionLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact composition_step _ _ _ Prf.hyp0
+    ipra_qfind [subst_compositionLaw]
+    · exact composition_zero _ _
+    · exact composition_step _ _ _ Prf.hyp0
   change Γ ⊢[PRAAx] compositionLaw t u B
   simpa only [subst_compositionLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE t
 theorem growth_counter_mono (t u B : PTm n) (h : Γ ⊢[PRAAx] le t u) :
@@ -93,8 +79,7 @@ theorem growth_counter_mono (t u B : PTm n) (h : Γ ⊢[PRAAx] le t u) :
     (growth_congr e (.eqRefl _))) (growth_inflation (monus u t) (growth t B))
 
 def path (h : PTm n) : PTm n := pred (pw two (succ h))
-@[simp] theorem subst_path {k : ℕ} (σ : Fin n → PTm k) (h : PTm n) :
-    Syn.subst σ (path h) = path (Syn.subst σ h) := by simp [path,two,one]
+ipra_subst path [two, one]
 theorem path_power (h : PTm n) : Γ ⊢[PRAAx] pw two (succ h) ≐ succ (path h) :=
   Foundations.RuntimeWordAppend.positive_form _
     (Foundations.RuntimeWordAppend.power_positive two (succ h) (le_succ_self one))

@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Geometry.Distances.GaussianRelativeNormTriangle
 import IPRADerivations.Analysis.Polynomials.Horner.GaussianReciprocalHorner
 import IPRADerivations.Analysis.RationalArithmetic.Representations.GaussianRationalNormalization
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual Horner-at-one sums at one computed common denominator
@@ -21,7 +20,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianHornerCommonDenominator
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner
   (qzero qadd horner evaluate represents subst_represents hornerF canonical ofGaussian)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qone qadd_congr)
@@ -34,9 +33,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalNormalization
   (commonD sourceNumerators targetNumerators commonD_positive source_clearing target_clearing)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -44,10 +40,8 @@ def entryF : PR 2 := PTm.toPR (entry (var 1) (var 0))
 def integerSum (G m : PTm n) : PTm n := gaussianSum entryF m G
 def rationalSum (Q : PTm n) : PTm n := evaluate Q qone
 
-@[simp] theorem subst_integerSum {l : ℕ} (σ : Fin n → PTm l) (G m : PTm n) :
-    Syn.subst σ (integerSum G m) = integerSum (Syn.subst σ G) (Syn.subst σ m) := by simp [integerSum]
-@[simp] theorem subst_rationalSum {l : ℕ} (σ : Fin n → PTm l) (Q : PTm n) :
-    Syn.subst σ (rationalSum Q) = rationalSum (Syn.subst σ Q) := by simp [rationalSum]
+ipra_subst integerSum
+ipra_subst rationalSum
 
 theorem entry_program (G i : PTm n) : Γ ⊢[PRAAx] ap2 entryF i G ≐ entry G i := by
   simpa [entryF,ap2] using toPR_eq (Γ := Γ) (entry (var 1) (var 0) : PTm 2) ![i,G]
@@ -114,11 +108,9 @@ theorem prefix_represents (f : PR 2) (Q D m x k : PTm n)
       entryRepresentations f (Syn.shift Q) (Syn.shift D) (Syn.shift m) (Syn.shift x) := by
     simpa only [Fm.shift,subst_entryRepresentations,Syn.shift] using hEntries.shift
   have all : Γ ⊢[PRAAx] .all (prefixLaw f (Syn.shift Q) (Syn.shift D) (Syn.shift m) (Syn.shift x) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,⟨trivial,trivial⟩⟩ ?_ ?_
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (prefix_zero f Q D x)
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,⟨trivial,trivial⟩⟩) [subst_prefixLaw]
+    · exact .impI (prefix_zero f Q D x)
+    · refine .impI ?_
       exact prefix_step _ _ _ _ _ _ dShift.wk.wk eShift.wk.wk Prf.hyp0
         (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
   have rule : Γ ⊢[PRAAx] prefixLaw f Q D m x k := by
@@ -181,10 +173,8 @@ def addedEntryBody : PTm 2 := add (entry (fstT (var 1)) (var 0)) (entry (sndT (v
 def addedEntryF : PR 2 := PTm.toPR addedEntryBody
 def addedSum (G H m : PTm n) : PTm n := gaussianSum addedEntryF m (pairT G H)
 
-@[simp] theorem subst_scaledSum {l : ℕ} (σ : Fin n → PTm l) (B G m : PTm n) :
-    Syn.subst σ (scaledSum B G m) = scaledSum (Syn.subst σ B) (Syn.subst σ G) (Syn.subst σ m) := by simp [scaledSum]
-@[simp] theorem subst_addedSum {l : ℕ} (σ : Fin n → PTm l) (G H m : PTm n) :
-    Syn.subst σ (addedSum G H m) = addedSum (Syn.subst σ G) (Syn.subst σ H) (Syn.subst σ m) := by simp [addedSum]
+ipra_subst scaledSum
+ipra_subst addedSum
 
 theorem scale_code_congr {B B' a a' : PTm n} (hB : Γ ⊢[PRAAx] B ≐ B') (ha : Γ ⊢[PRAAx] a ≐ a') :
     Γ ⊢[PRAAx] scale B a ≐ scale B' a' := by
@@ -234,13 +224,10 @@ theorem integer_sum_scale (B G m : PTm n) : Γ ⊢[PRAAx]
     equal (scaledSum B G m) (scale B (integerSum G m)) := by
   have all : Γ ⊢[PRAAx] .all (equal (scaledSum (Syn.shift B) (Syn.shift G) (var 0))
       (scale (Syn.shift B) (integerSum (Syn.shift G) (var 0)))) := by
-    refine PRA.qfInd _ ⟨trivial,trivial⟩ ?_ ?_
-    · simp only [GaussianRootAlgebra.subst_equal,subst_scaledSum,ComplexLogarithmRemainder.subst_scale,
-        subst_integerSum,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact sum_scale_zero B G
-    · simp only [GaussianRootAlgebra.subst_equal,subst_scaledSum,ComplexLogarithmRemainder.subst_scale,
-        subst_integerSum,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact sum_scale_step _ _ _ Prf.hyp0
+    ipra_qfind (⟨trivial,trivial⟩) [GaussianRootAlgebra.subst_equal, subst_scaledSum,
+        ComplexLogarithmRemainder.subst_scale, subst_integerSum]
+    · exact sum_scale_zero B G
+    · exact sum_scale_step _ _ _ Prf.hyp0
   simpa only [GaussianRootAlgebra.subst_equal,subst_scaledSum,ComplexLogarithmRemainder.subst_scale,
     subst_integerSum,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE m
 
@@ -267,13 +254,10 @@ theorem integer_sum_add (G H m : PTm n) : Γ ⊢[PRAAx]
     equal (addedSum G H m) (add (integerSum G m) (integerSum H m)) := by
   have all : Γ ⊢[PRAAx] .all (equal (addedSum (Syn.shift G) (Syn.shift H) (var 0))
       (add (integerSum (Syn.shift G) (var 0)) (integerSum (Syn.shift H) (var 0)))) := by
-    refine PRA.qfInd _ ⟨trivial,trivial⟩ ?_ ?_
-    · simp only [GaussianRootAlgebra.subst_equal,subst_addedSum,ComplexLogarithmRemainder.subst_add,
-        subst_integerSum,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact sum_add_zero G H
-    · simp only [GaussianRootAlgebra.subst_equal,subst_addedSum,ComplexLogarithmRemainder.subst_add,
-        subst_integerSum,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact sum_add_step _ _ _ Prf.hyp0
+    ipra_qfind (⟨trivial,trivial⟩) [GaussianRootAlgebra.subst_equal, subst_addedSum,
+        ComplexLogarithmRemainder.subst_add, subst_integerSum]
+    · exact sum_add_zero G H
+    · exact sum_add_step _ _ _ Prf.hyp0
   simpa only [GaussianRootAlgebra.subst_equal,subst_addedSum,ComplexLogarithmRemainder.subst_add,
     subst_integerSum,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE m
 
@@ -311,10 +295,8 @@ def output (S T ref : PTm n) : PTm n := pairT (commonD S T ref)
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (S T ref : PTm n) : PTm n := ap3 outputF S T ref
 
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (S T ref : PTm n) :
-    Syn.subst σ (output S T ref) = output (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ ref) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (S T ref : PTm n) :
-    Syn.subst σ (run S T ref) = run (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ ref) := by simp [run]
+ipra_subst output
+ipra_subst run
 
 theorem integer_sum_program (G m : PTm n) : Γ ⊢[PRAAx] ap2 integerSumF m G ≐ integerSum G m := .eqRefl _
 theorem rational_sum_program (Q : PTm n) : Γ ⊢[PRAAx] ap1 rationalSumF Q ≐ rationalSum Q := by
@@ -323,17 +305,17 @@ theorem program_at (S T ref : PTm n) : Γ ⊢[PRAAx] run S T ref ≐ output S T 
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![S,T,ref]
 
 theorem returned_denominator (S T ref : PTm n) : Γ ⊢[PRAAx] fstT (run S T ref) ≐ commonD S T ref :=
-  (congrFst (program_at S T ref)).eqTrans (fst_pair _ _)
+  (program_at S T ref).fstE
 theorem returned_source (S T ref : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run S T ref)) ≐ rationalSum S :=
-  (congrFst ((congrSnd (program_at S T ref)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at S T ref).sndE.fstE
 theorem returned_target (S T ref : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run S T ref))) ≐ rationalSum T :=
-  (congrFst ((congrSnd ((congrSnd (program_at S T ref)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at S T ref).sndE.sndE.fstE
 theorem returned_source_integer (S T ref : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (sndT (run S T ref)))) ≐ integerSum (sourceNumerators S T ref) (length S) :=
-  (congrFst ((congrSnd ((congrSnd ((congrSnd (program_at S T ref)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at S T ref).sndE.sndE.sndE.fstE
 theorem returned_target_integer (S T ref : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (sndT (sndT (run S T ref)))) ≐ integerSum (targetNumerators S T ref) (length T) :=
-  (congrSnd ((congrSnd ((congrSnd ((congrSnd (program_at S T ref)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at S T ref).sndE.sndE.sndE.sndE
 
 theorem returned_source_represents (S T ref : PTm n) : Γ ⊢[PRAAx]
     represents (fstT (sndT (run S T ref))) (fstT (sndT (sndT (sndT (run S T ref))))) (fstT (run S T ref)) :=

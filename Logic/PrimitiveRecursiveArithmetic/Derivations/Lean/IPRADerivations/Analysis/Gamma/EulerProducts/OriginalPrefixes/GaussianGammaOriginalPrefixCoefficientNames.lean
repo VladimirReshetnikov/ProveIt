@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaOriginalPrefixCoefficientNames
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaOriginalC19Prefix (buffer totalDegree)
 open GaussianGammaOriginalPrefixCoefficientVariation (cap precision)
 open GaussianGammaFixedCoefficientVariation (modulus)
@@ -24,21 +24,13 @@ open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def reader (p R d e : PTm n) : PTm n := exponentCoefficient (buffer p R d) (totalDegree p R d) e
 def radiusPrecision (t R e : PTm n) : PTm n := precision (GaussianGammaRadiusCoefficientName.clock t (two*R) e) R e
-@[simp] theorem subst_reader {l : ℕ} (σ : Fin n → PTm l) (p R d e : PTm n) :
-    Syn.subst σ (reader p R d e) = reader (Syn.subst σ p) (Syn.subst σ R) (Syn.subst σ d) (Syn.subst σ e) := by
-  simp [reader,buffer,totalDegree,GaussianGammaOriginalC19Prefix.stage,GaussianGammaCofinalCoefficientName.coefficientPrecision,
-    GaussianGammaCofinalCoefficientName.degreeCutoff,GaussianGammaCofinalCoefficientName.exponentialCutoff,
-    GaussianGammaCofinalCoefficientName.exponentClock,GaussianGammaCofinalCoefficientName.inputClock,GaussianGammaCofinalCoefficientName.outerClock]
-@[simp] theorem subst_radiusPrecision {l : ℕ} (σ : Fin n → PTm l) (t R e : PTm n) :
-    Syn.subst σ (radiusPrecision t R e) = radiusPrecision (Syn.subst σ t) (Syn.subst σ R) (Syn.subst σ e) := by simp [radiusPrecision]
+ipra_subst reader [buffer, totalDegree, GaussianGammaOriginalC19Prefix.stage, GaussianGammaCofinalCoefficientName.coefficientPrecision, GaussianGammaCofinalCoefficientName.degreeCutoff, GaussianGammaCofinalCoefficientName.exponentialCutoff, GaussianGammaCofinalCoefficientName.exponentClock, GaussianGammaCofinalCoefficientName.inputClock, GaussianGammaCofinalCoefficientName.outerClock]
+ipra_subst radiusPrecision
 
 theorem reader_fixed (p R d e : PTm n) (he : Γ ⊢[PRAAx] le e d) : Γ ⊢[PRAAx]
     reader p R d e ≐ fixedCoefficient (precision p R d) (two*R) e :=

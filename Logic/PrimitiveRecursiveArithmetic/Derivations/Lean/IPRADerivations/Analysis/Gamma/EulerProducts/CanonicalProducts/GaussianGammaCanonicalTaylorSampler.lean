@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTaylorSampler
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaCanonicalPrefixTaylor (taylor)
 open GaussianGammaOriginalPrefixCoefficientVariation (cap)
 open GaussianGammaUnitCoefficientMass (budget)
@@ -21,9 +21,6 @@ open GaussianRationalHorner (ofGaussian positive_product evaluate)
 open GaussianRationalMetric (bounded distanceBounded qsub)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -34,15 +31,10 @@ def numerator (p r R d a b : PTm n) : PTm n :=
 def denominator (p r d b : PTm n) : PTm n := pw b (succ d)*unit p*unit r
 def auxiliaryCost (R d : PTm n) : PTm n := one+succ d*cap R d
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B a b : PTm n) :
-    (source z R B a b).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by simp [source]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (p r R d a b : PTm n) :
-    Syn.subst σ (numerator p r R d a b) = numerator (Syn.subst σ p) (Syn.subst σ r) (Syn.subst σ R)
-      (Syn.subst σ d) (Syn.subst σ a) (Syn.subst σ b) := by simp [numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (p r d b : PTm n) :
-    Syn.subst σ (denominator p r d b) = denominator (Syn.subst σ p) (Syn.subst σ r) (Syn.subst σ d) (Syn.subst σ b) := by simp [denominator]
-@[simp] theorem subst_auxiliaryCost {m : ℕ} (σ : Fin n → PTm m) (R d : PTm n) :
-    Syn.subst σ (auxiliaryCost R d) = auxiliaryCost (Syn.subst σ R) (Syn.subst σ d) := by simp [auxiliaryCost]
+ipra_subst source
+ipra_subst numerator
+ipra_subst denominator
+ipra_subst auxiliaryCost
 
 theorem denominator_positive (p r d b : PTm n) (hb : Γ ⊢[PRAAx] le one b) : Γ ⊢[PRAAx]
     le one (denominator p r d b) :=

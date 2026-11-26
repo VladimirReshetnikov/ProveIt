@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Optimization.Convexity.RationalNestedConvexModulus
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Exact named distance from the original convex sampling bound
@@ -15,8 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalNestedConvexDistance
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero)
+open_ipra
 open RationalArgmin (rationalLE rationalLE_congr denominator_positive)
 open RationalSupMetric (denominatorOf numeratorOf)
 open RationalArithmetic (add represents)
@@ -26,8 +24,6 @@ open RationalNestedIntervals (read center center_at centerF center_in_interval)
 open RationalNestedConvexModulus (pointInputs geometry afterWitnesses endpointSecants actual_named_samples
   witnessIndex witnessFloor witness_floor_bound interior)
 open RationalConvexSecantWeights (displacement)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔟" t:max => Groth.ι (IPRA.Q.mk _ t)

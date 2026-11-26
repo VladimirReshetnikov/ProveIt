@@ -1,5 +1,4 @@
 import IPRADerivations.Core.SumLemmas
-import IPRADerivations.Core.Powers
 
 /-!
 # Power-sum quadrature (`docs/proofs/analysis/basel_ipra`, Lemma `lem:moment`)
@@ -23,11 +22,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.PowerSums
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -81,13 +76,9 @@ private abbrev mulParamF (c : PTm 1) (g : PTm 2) : Fm PTm 2 :=
   ap2 (sumF (mulParam c g)) (var 0) (var 1) ≐ Syn.subst ![var 1] c * ap2 (sumF g) (var 0) (var 1)
 
 private theorem sum_mul_param₀ (c : PTm 1) (g : PTm 2) : ([] : List (Fm PTm 2)) ⊢[PRAAx] mulParamF c g := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, PTm.subst_mul, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_zero, Syn.subst_subst]
-    exact (sum_zero _ _).eqTrans ((mul_zero _).eqSymm.eqTrans (congrMul (.eqRefl _) (sum_zero _ _).eqSymm))
-  · simp only [Fm.subst_eq, PTm.subst_mul, subst_ap2, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ, Syn.subst_subst]
-    refine (sum_succ' _ (var 0) (var 1)).eqTrans ?_
+  ipra_ind [subst_ap2, Syn.subst_subst]
+  · exact (sum_zero _ _).eqTrans ((mul_zero _).eqSymm.eqTrans (congrMul (.eqRefl _) (sum_zero _ _).eqSymm))
+  · refine (sum_succ' _ (var 0) (var 1)).eqTrans ?_
     rw [inst2_mulParam]
     have e : (fun i => Syn.subst (Syn.repl (succ (var 0))) (![var 1] i) : Fin 1 → PTm 2) = ![var 1] := by
       funext i; fin_cases i; rfl
@@ -117,18 +108,14 @@ private abbrev lowerF : Fm PTm 2 :=
   le (pw (var 1) (succ (var 0)) + succ (var 0) * pw (var 1) (var 0)) (pw (succ (var 1)) (succ (var 0)))
 
 private theorem lower₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] lowerF := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, PTm.subst_add, PTm.subst_mul, subst_ap2, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine le_of_eq_add (d := zero) ?_
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2]
+  · refine le_of_eq_add (d := zero) ?_
     refine withEq (pw_succ (Γ := []) (succ (var 0) : PTm 1) zero) fun e₁ =>
       withEq (pw_succ (Γ := []) (var 0 : PTm 1) zero) fun e₂ =>
       withEq (pw_zero (Γ := []) (succ (var 0) : PTm 1)) fun e₃ =>
       withEq (pw_zero (Γ := []) (var 0 : PTm 1)) fun e₄ => ?_
     apply deriveNat; ipra_simps; rw [e₁, e₂, e₃, e₄]; ring
-  · simp only [subst_le, PTm.subst_add, PTm.subst_mul, subst_ap2, Syn.subst_var, Syn.repl_zero,
-      repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have w := eq_add_of_le (Prf.hyp0 : [lowerF] ⊢[PRAAx] lowerF)
+  · have w := eq_add_of_le (Prf.hyp0 : [lowerF] ⊢[PRAAx] lowerF)
     refine le_of_eq_add (d := succ (var 1) * monus (pw (succ (var 1)) (succ (var 0)))
       (pw (var 1) (succ (var 0)) + succ (var 0) * pw (var 1) (var 0)) + succ (var 0) * pw (var 1) (var 0)) ?_
     refine withEq w fun e₀ => withEq (pw_succ (Γ := [lowerF]) (succ (var 1) : PTm 2) (succ (var 0))) fun e₁ =>
@@ -141,18 +128,14 @@ private abbrev upperF : Fm PTm 2 :=
   le (pw (succ (var 1)) (succ (var 0))) (pw (var 1) (succ (var 0)) + succ (var 0) * pw (succ (var 1)) (var 0))
 
 private theorem upper₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] upperF := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, PTm.subst_add, PTm.subst_mul, subst_ap2, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine le_of_eq_add (d := zero) ?_
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2]
+  · refine le_of_eq_add (d := zero) ?_
     refine withEq (pw_succ (Γ := []) (succ (var 0) : PTm 1) zero) fun e₁ =>
       withEq (pw_succ (Γ := []) (var 0 : PTm 1) zero) fun e₂ =>
       withEq (pw_zero (Γ := []) (succ (var 0) : PTm 1)) fun e₃ =>
       withEq (pw_zero (Γ := []) (var 0 : PTm 1)) fun e₄ => ?_
     apply deriveNat; ipra_simps; rw [e₁, e₂, e₃, e₄]; ring
-  · simp only [subst_le, PTm.subst_add, PTm.subst_mul, subst_ap2, Syn.subst_var, Syn.repl_zero,
-      repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have w := eq_add_of_le (Prf.hyp0 : [upperF] ⊢[PRAAx] upperF)
+  · have w := eq_add_of_le (Prf.hyp0 : [upperF] ⊢[PRAAx] upperF)
     have m := eq_add_of_le (pw_le_pw (Γ := [upperF]) (succ (var 0)) (le_succ_self (var 1 : PTm 2)))
     refine le_of_eq_add (d := succ (var 1) * monus (pw (var 1) (succ (var 0)) + succ (var 0) *
       pw (succ (var 1)) (var 0)) (pw (succ (var 1)) (succ (var 0))) +

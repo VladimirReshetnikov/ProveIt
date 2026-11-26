@@ -15,7 +15,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedIncrementProductRule
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN subst_pointCN)
 open GaussianNameArithmetic (addF addData add_fast add_equivalent multiplyF
@@ -28,9 +28,6 @@ open GaussianRationalHorner (qadd qmul)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalSyntheticDivision (qadd_congr qsub_congr)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -53,19 +50,9 @@ def rhsData (I1 I0 G1 G0 K : PR 2) (i1 i0 g1 g0 z a : PTm n) : PTm n :=
   addData (multiplyData I1 (QF G1 G0 K) i1 (qd G1 G0 K g1 g0 z a))
     (multiplyData G0 (QF I1 I0 K) g0 (qd I1 I0 K i1 i0 z a))
 
-@[simp] theorem subst_lhsData {m : ℕ} (σ : Fin n → PTm m) (I1 I0 G1 G0 K : PR 2)
-    (i1 i0 g1 g0 z a : PTm n) :
-    Syn.subst σ (lhsData I1 I0 G1 G0 K i1 i0 g1 g0 z a) =
-      lhsData I1 I0 G1 G0 K (Syn.subst σ i1) (Syn.subst σ i0)
-        (Syn.subst σ g1) (Syn.subst σ g0) (Syn.subst σ z) (Syn.subst σ a) := by
-  simp [lhsData]
+ipra_subst lhsData
 
-@[simp] theorem subst_rhsData {m : ℕ} (σ : Fin n → PTm m) (I1 I0 G1 G0 K : PR 2)
-    (i1 i0 g1 g0 z a : PTm n) :
-    Syn.subst σ (rhsData I1 I0 G1 G0 K i1 i0 g1 g0 z a) =
-      rhsData I1 I0 G1 G0 K (Syn.subst σ i1) (Syn.subst σ i0)
-        (Syn.subst σ g1) (Syn.subst σ g0) (Syn.subst σ z) (Syn.subst σ a) := by
-  simp [rhsData]
+ipra_subst rhsData
 
 theorem lhs_regular (I1 I0 G1 G0 K : PR 2) (i1 i0 g1 g0 z a : PTm n)
     (hi1 : Γ ⊢[PRAAx] pointCN I1 i1) (hi0 : Γ ⊢[PRAAx] pointCN I0 i0)

@@ -1,5 +1,4 @@
 import IPRADerivations.Combinatorics.Bell
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Stirling numbers of the second kind
@@ -26,13 +25,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.Stirling
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Bell (iS nth iS_zero nth_pair_zero nth_pair_succ monus_monus monus_le')
 open LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct (eq_of_viol viol_of_eq)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -121,13 +116,9 @@ theorem viol_step {M x : PTm n} (ih : Γ ⊢[PRAAx] ap2 (sumF (violB e)) (succ M
 private abbrev violF : Fm PTm 2 := ap2 (sumF (violB e)) (succ (var 0)) (pairT (var 0) (var 1)) ≐ zero
 
 private theorem viol₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] violF e := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-    exact viol_base e _
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-    exact viol_step e Prf.hyp0
+  ipra_ind [subst_ap2, subst_pairT]
+  · exact viol_base e _
+  · exact viol_step e Prf.hyp0
 
 /-- `nth(build e (M + 1) x, j) = e(M − j, x)` for `j ≤ M`. -/
 theorem nth_build {j M : PTm n} (x : PTm n) (h : Γ ⊢[PRAAx] le j M) :

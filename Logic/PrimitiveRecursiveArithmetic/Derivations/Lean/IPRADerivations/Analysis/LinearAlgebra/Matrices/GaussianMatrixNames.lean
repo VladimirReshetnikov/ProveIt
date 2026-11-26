@@ -16,16 +16,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianMatrixNames
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalFiberVandermonde (table table_length table_lookup table_row_length)
 open GaussianPolynomialDeterminantTerms (cell)
 open GaussianRationalRowElimination (shape)
 open GaussianCharacteristicFactorBounds (entryBounds entryDistances rowBounds rowDistances)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -44,23 +41,14 @@ def boundData (N x : PTm n) : PTm n := pairT N x
 def boundBody (a : PR 4) : PTm 2 := rowBound a (fstT (var 1)) (var 0) (sndT (var 1))
 def B (a : PR 4) (N x : PTm n) : PTm n := one+ap2 (sumF (boundBody a)) N (boundData N x)
 
-@[simp] theorem subst_entry {l : ℕ} (σ : Fin n → PTm l) (a : PR 4) (r j s x : PTm n) :
-    Syn.subst σ (entry a r j s x) = entry a (Syn.subst σ r) (Syn.subst σ j) (Syn.subst σ s) (Syn.subst σ x) := by
-  simp only [entry,PTm.subst_app]; congr 1; funext i; fin_cases i <;> rfl
-@[simp] theorem subst_rowData {l : ℕ} (σ : Fin n → PTm l) (r x : PTm n) :
-    Syn.subst σ (rowData r x) = rowData (Syn.subst σ r) (Syn.subst σ x) := by simp [rowData]
-@[simp] theorem subst_rowCN {l : ℕ} (σ : Fin n → PTm l) (a : PR 4) (N r x : PTm n) :
-    (rowCN a N r x).subst σ = rowCN a (Syn.subst σ N) (Syn.subst σ r) (Syn.subst σ x) := by simp [rowCN]
-@[simp] theorem subst_CN {l : ℕ} (σ : Fin n → PTm l) (a : PR 4) (N x : PTm n) :
-    (CN a N x).subst σ = CN a (Syn.subst σ N) (Syn.subst σ x) := by simp [CN,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_sample {l : ℕ} (σ : Fin n → PTm l) (a : PR 4) (N s x : PTm n) :
-    Syn.subst σ (sample a N s x) = sample a (Syn.subst σ N) (Syn.subst σ s) (Syn.subst σ x) := by simp [sample]
-@[simp] theorem subst_rowBound {l : ℕ} (σ : Fin n → PTm l) (a : PR 4) (N r x : PTm n) :
-    Syn.subst σ (rowBound a N r x) = rowBound a (Syn.subst σ N) (Syn.subst σ r) (Syn.subst σ x) := by simp [rowBound]
-@[simp] theorem subst_boundData {l : ℕ} (σ : Fin n → PTm l) (N x : PTm n) :
-    Syn.subst σ (boundData N x) = boundData (Syn.subst σ N) (Syn.subst σ x) := by simp [boundData]
-@[simp] theorem subst_B {l : ℕ} (σ : Fin n → PTm l) (a : PR 4) (N x : PTm n) :
-    Syn.subst σ (B a N x) = B a (Syn.subst σ N) (Syn.subst σ x) := by simp [B]
+ipra_subst entry
+ipra_subst rowData
+ipra_subst rowCN
+ipra_subst CN [Syn.subst_shift, Syn.shift_subst]
+ipra_subst sample
+ipra_subst rowBound
+ipra_subst boundData
+ipra_subst B
 
 theorem entry_congr (a : PR 4) {r r' j j' s s' x x' : PTm n}
     (hr : Γ ⊢[PRAAx] r ≐ r') (hj : Γ ⊢[PRAAx] j ≐ j') (hs : Γ ⊢[PRAAx] s ≐ s') (hx : Γ ⊢[PRAAx] x ≐ x') :
@@ -176,10 +164,8 @@ def boundF (a : PR 4) : PR 2 := PTm.toPR (B a (var 0) (var 1))
 def output (a : PR 4) (N s x : PTm n) : PTm n := pairT (sample a N s x) (B a N x)
 def outputF (a : PR 4) : PR 3 := PTm.toPR (output a (var 0) (var 1) (var 2))
 def run (a : PR 4) (N s x : PTm n) : PTm n := ap3 (outputF a) N s x
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (a : PR 4) (N s x : PTm n) :
-    Syn.subst σ (output a N s x) = output a (Syn.subst σ N) (Syn.subst σ s) (Syn.subst σ x) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (a : PR 4) (N s x : PTm n) :
-    Syn.subst σ (run a N s x) = run a (Syn.subst σ N) (Syn.subst σ s) (Syn.subst σ x) := by simp [run]
+ipra_subst output
+ipra_subst run
 theorem sample_at (a : PR 4) (N s x : PTm n) : Γ ⊢[PRAAx] ap3 (sampleF a) N s x ≐ sample a N s x := by
   simpa [sampleF,ap3] using toPR_eq (Γ := Γ) (sample a (var 0) (var 1) (var 2) : PTm 3) ![N,s,x]
 theorem bound_at (a : PR 4) (N x : PTm n) : Γ ⊢[PRAAx] ap2 (boundF a) N x ≐ B a N x := by
@@ -187,9 +173,9 @@ theorem bound_at (a : PR 4) (N x : PTm n) : Γ ⊢[PRAAx] ap2 (boundF a) N x ≐
 theorem program_at (a : PR 4) (N s x : PTm n) : Γ ⊢[PRAAx] run a N s x ≐ output a N s x := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output a (var 0) (var 1) (var 2) : PTm 3) ![N,s,x]
 theorem returned_sample (a : PR 4) (N s x : PTm n) : Γ ⊢[PRAAx] fstT (run a N s x) ≐ sample a N s x :=
-  (congrFst (program_at a N s x)).eqTrans (fst_pair _ _)
+  (program_at a N s x).fstE
 theorem returned_bound (a : PR 4) (N s x : PTm n) : Γ ⊢[PRAAx] sndT (run a N s x) ≐ B a N x :=
-  (congrSnd (program_at a N s x)).eqTrans (snd_pair _ _)
+  (program_at a N s x).sndE
 theorem returned_entry_bound (a : PR 4) (N s x r j : PTm n) (h : Γ ⊢[PRAAx] CN a N x)
     (hr : Γ ⊢[PRAAx] lt r N) (hj : Γ ⊢[PRAAx] lt j N) : Γ ⊢[PRAAx]
     bounded (cell (fstT (run a N s x)) r j) (sndT (run a N s x)) one :=

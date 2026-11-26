@@ -1,4 +1,3 @@
-import IPRADerivations.Core.Tactic
 import IPRADerivations.Core.LinearCombination
 
 /-!
@@ -27,11 +26,7 @@ The curvature computations of the packet are in `Geometry/KerrNewmanConnection` 
 
 namespace LeanProofs.IPRA.Geometry.KerrNewmanAlgebra
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 section Radial
 

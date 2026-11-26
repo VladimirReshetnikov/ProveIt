@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineProductReflectionLower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaEulerReflectionHead (sineProduct body)
 open GaussianGammaEulerHeadLower (poleAt poleGuard pole_at translated)
 open GaussianSineProductHeadLower (head_lower argument_lower denominator_positive)
@@ -32,10 +32,6 @@ open GaussianCoordinateRadius (native_coordinates native_squared)
 open ComplexLogarithmRemainder (normSq re)
 open LeanProofs.IPRA.Foundations.GapDecision (zabs zabs_tri zabs_neg)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "gneg" => ComplexLogarithmRemainder.neg

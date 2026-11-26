@@ -15,7 +15,7 @@ set_option maxHeartbeats 780000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetSineKernelGrid
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetSineKernelFrequency (angularCost scheduled_frequency_error subst_angularCost)
 open GaussianBinetSineStripCut (cutoff prefix_admission)
 open GaussianBinetBoseFrozenMatrix (subst_frozenPiNumerator subst_piDenominator)
@@ -33,10 +33,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalReciprocal (bounded_product bound_congr)
 open GaussianRationalRiemannRefinement (termsDistance sum_distance weight weight_bound)
 open GaussianStirlingConstant (piDenominator)
-open LeanProofs.IPRA.PTm (num monus)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -45,19 +41,12 @@ local notation "kernelData" => GaussianBinetFrozenKernelRectangle.data
 def errorNumerator (s I E S T : PTm n) : PTm n :=
   angularCost I E S T*unit T+num 160*E*unit s
 
-@[simp] theorem subst_errorNumerator {m : ℕ} (σ : Fin n → PTm m) (s I E S T : PTm n) :
-    Syn.subst σ (errorNumerator s I E S T) =
-      errorNumerator (Syn.subst σ s) (Syn.subst σ I) (Syn.subst σ E) (Syn.subst σ S) (Syn.subst σ T) := by
-  simp [errorNumerator]
+ipra_subst errorNumerator
 
 def kernelRow (i s k N S cut X Y D sign R : PTm n) : PTm n :=
   qmul (weight S one N) (row matrix i (monus N cut) (kernelData s k N S cut X Y D sign R))
 
-@[simp] theorem subst_kernelRow {m : ℕ} (σ : Fin n → PTm m) (i s k N S cut X Y D sign R : PTm n) :
-    Syn.subst σ (kernelRow i s k N S cut X Y D sign R) =
-      kernelRow (Syn.subst σ i) (Syn.subst σ s) (Syn.subst σ k) (Syn.subst σ N) (Syn.subst σ S)
-        (Syn.subst σ cut) (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign)
-        (Syn.subst σ R) := by simp [kernelRow,one]
+ipra_subst kernelRow [one]
 
 private theorem step_error (j i s k I N E L M T X Y D sign R : PTm n)
     (hz : Γ ⊢[PRAAx] source X Y D sign R)

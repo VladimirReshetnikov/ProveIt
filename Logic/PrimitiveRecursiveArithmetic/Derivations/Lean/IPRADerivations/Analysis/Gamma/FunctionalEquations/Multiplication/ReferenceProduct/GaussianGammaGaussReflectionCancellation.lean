@@ -14,7 +14,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaGaussReflectionCancellation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale oneCode mul)
 open GaussianCyclicSineProductRatio (ratio)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -32,17 +32,12 @@ open GaussianRationalReciprocal (qone qone_represents_scaled)
 open GaussianRationalSyntheticDivision (qone_canonical)
 open GaussianRationalNaturalScale (natural_product_value)
 open GaussianRootAlgebra (equal equal_of_values equal_trans re_scale im_scale)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def inverseRatio (N : PTm n) : PTm n := ofGaussian (scale (unit N) oneCode) (succ N)
 
-@[simp] theorem subst_inverseRatio {l : ℕ} (σ : Fin n → PTm l) (N : PTm n) :
-    Syn.subst σ (inverseRatio N) = inverseRatio (Syn.subst σ N) := by
-  simp [inverseRatio,oneCode]
+ipra_subst inverseRatio [oneCode]
 
 theorem ratio_product (N : PTm n) : Γ ⊢[PRAAx] qmul (ratio N) (inverseRatio N) ≐ qone := by
   let m := succ N

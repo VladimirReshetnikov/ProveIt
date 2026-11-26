@@ -19,7 +19,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmCompositionTail
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qadd qmul qzero horner hornerF evaluate)
 open GaussianRationalSyntheticDivision (qone qadd_congr qmul_congr)
 open GaussianRationalMetric (bounded distanceBounded qsub)
@@ -28,17 +28,12 @@ open GaussianRationalPowerExpansion (partialSum conservationLeft remaining)
 open GaussianFiniteLogarithmPolynomial (composition)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
-open LeanProofs.IPRA.PTm (monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def coefficientF : PR 3 := PTm.toPR (entry (var 2) (var 0))
 def budget (C : PTm n) : PTm n := GaussianCoefficientNameBounds.ceilM coefficientF (length C) C
-@[simp] theorem subst_budget {l : ℕ} (σ : Fin n → PTm l) (C : PTm n) :
-    Syn.subst σ (budget C) = budget (Syn.subst σ C) := by simp [budget]
+ipra_subst budget
 
 theorem coefficient_at (C i : PTm n) : Γ ⊢[PRAAx] ap3 coefficientF i zero C ≐ entry C i := by
   simpa [coefficientF,ap3] using toPR_eq (Γ := Γ) (entry (var 2) (var 0) : PTm 3) ![i,zero,C]
@@ -50,9 +45,7 @@ theorem coefficient_bound (C i : PTm n) (hi : Γ ⊢[PRAAx] lt i (length C)) :
 
 def prefixBound (C w k : PTm n) : Fm PTm n :=
   le k (length C) ⟶ bounded (horner C w k) (two*budget C) one
-@[simp] theorem subst_prefixBound {l : ℕ} (σ : Fin n → PTm l) (C w k : PTm n) :
-    (prefixBound C w k).subst σ = prefixBound (Syn.subst σ C) (Syn.subst σ w) (Syn.subst σ k) := by
-  simp [prefixBound]
+ipra_subst prefixBound
 
 theorem prefix_step (C w k : PTm n) (hw : Γ ⊢[PRAAx] bounded w one two)
     (hk : Γ ⊢[PRAAx] le (succ k) (length C))
@@ -74,12 +67,10 @@ theorem prefix_bound (C w k : PTm n) (hw : Γ ⊢[PRAAx] bounded w one two)
     simpa only [Fm.shift,GaussianRationalMetric.subst_bounded,ConciseIPRA.PTm.subst_succ,
       ConciseIPRA.PTm.subst_zero,Syn.shift] using hw.shift
   have all : Γ ⊢[PRAAx] .all (prefixBound (Syn.shift C) (Syn.shift w) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [subst_prefixBound,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (bound_congr (GaussianRationalHorner.horner_zero C w).eqSymm (.eqRefl _) (.eqRefl _)
+    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_prefixBound]
+    · exact .impI (bound_congr (GaussianRationalHorner.horner_zero C w).eqSymm (.eqRefl _) (.eqRefl _)
         (GaussianMonicResidualRadius.zero_bounded _ one (le_refl _))).wk
-    · simp only [subst_prefixBound,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    · refine .impI ?_
       exact prefix_step _ _ _ shifted.wk.wk Prf.hyp0
         (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
   have rule : Γ ⊢[PRAAx] prefixBound C w k := by
@@ -88,9 +79,7 @@ theorem prefix_bound (C w k : PTm n) (hw : Γ ⊢[PRAAx] bounded w one two)
 
 def highPart (C N h w : PTm n) : PTm n :=
   qmul (horner C w (monus N h)) (power w (succ h))
-@[simp] theorem subst_highPart {l : ℕ} (σ : Fin n → PTm l) (C N h w : PTm n) :
-    Syn.subst σ (highPart C N h w) = highPart (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ w) := by
-  simp [highPart]
+ipra_subst highPart
 
 theorem high_part_bound (C N h w : PTm n) (hLen : Γ ⊢[PRAAx] length C ≐ succ N)
     (hw : Γ ⊢[PRAAx] bounded w one two) :
@@ -155,8 +144,7 @@ theorem composition_term_high (d K h w e : PTm n) (h1 : Γ ⊢[PRAAx] le one h)
     (.eqRefl _)).eqTrans (GaussianRationalSyntheticDivision.qmul_zero_left _)
 
 def linearValue (w : PTm n) : PTm n := qadd qone w
-@[simp] theorem subst_linearValue {l : ℕ} (σ : Fin n → PTm l) (w : PTm n) :
-    Syn.subst σ (linearValue w) = linearValue (Syn.subst σ w) := by simp [linearValue]
+ipra_subst linearValue
 
 theorem first_two (d K w : PTm n) (hd : Γ ⊢[PRAAx] le one d) (hK : Γ ⊢[PRAAx] le one K) : Γ ⊢[PRAAx]
     partialSum (composition d K) (K*d) w two ≐ linearValue w := by
@@ -181,9 +169,7 @@ theorem first_two (d K w : PTm n) (hd : Γ ⊢[PRAAx] le one d) (hK : Γ ⊢[PRA
 
 def lowSumLaw (d K h w m : PTm n) : Fm PTm n := le one m ⟶ le m h ⟶
   partialSum (composition d K) (K*d) w (succ m) ≐ linearValue w
-@[simp] theorem subst_lowSumLaw {l : ℕ} (σ : Fin n → PTm l) (d K h w m : PTm n) :
-    (lowSumLaw d K h w m).subst σ = lowSumLaw (Syn.subst σ d) (Syn.subst σ K)
-      (Syn.subst σ h) (Syn.subst σ w) (Syn.subst σ m) := by simp [lowSumLaw]
+ipra_subst lowSumLaw
 
 theorem low_sum_step (d K h w m : PTm n) (h1 : Γ ⊢[PRAAx] le one h)
     (hd : Γ ⊢[PRAAx] le h d) (hK : Γ ⊢[PRAAx] le h K)
@@ -213,12 +199,10 @@ theorem low_sum (d K h w : PTm n) (h1 : Γ ⊢[PRAAx] le one h)
   have hds : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift h) (Syn.shift d) := by simpa [Fm.shift,Syn.shift] using hd.shift
   have hKs : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift h) (Syn.shift K) := by simpa [Fm.shift,Syn.shift] using hK.shift
   have all : Γ ⊢[PRAAx] .all (lowSumLaw (Syn.shift d) (Syn.shift K) (Syn.shift h) (Syn.shift w) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_lowSumLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      refine .impI (.impI ?_)
+    ipra_qfind (⟨le_QF _ _,le_QF _ _,trivial⟩) [subst_lowSumLaw]
+    · refine .impI (.impI ?_)
       exact .botE _ (lt_irrefl zero .bot Prf.hyp1)
-    · simp only [subst_lowSumLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact .impI (.impI (low_sum_step _ _ _ _ _ h1s.wk.wk.wk hds.wk.wk.wk hKs.wk.wk.wk Prf.hyp0 Prf.hyp0.wk.wk))
+    · exact .impI (.impI (low_sum_step _ _ _ _ _ h1s.wk.wk.wk hds.wk.wk.wk hKs.wk.wk.wk Prf.hyp0 Prf.hyp0.wk.wk))
   have rule : Γ ⊢[PRAAx] lowSumLaw d K h w h := by
     simpa only [subst_lowSumLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE h
   exact .impE (.impE rule h1) (le_refl _)
@@ -251,46 +235,40 @@ def output (d K h w : PTm n) : PTm n := pairT (composition d K)
       (qsub (evaluate (composition d K) w) (linearValue w)))))
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (d K h w : PTm n) : PTm n := app outputF ![d,K,h,w]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (d K h w : PTm n) :
-    Syn.subst σ (output d K h w) = output (Syn.subst σ d) (Syn.subst σ K) (Syn.subst σ h) (Syn.subst σ w) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (d K h w : PTm n) :
-    Syn.subst σ (run d K h w) = run (Syn.subst σ d) (Syn.subst σ K) (Syn.subst σ h) (Syn.subst σ w) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (d K h w : PTm n) : Γ ⊢[PRAAx] run d K h w ≐ output d K h w := by
   simpa [run,outputF] using
     toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![d,K,h,w]
 theorem returned_composition (d K h w : PTm n) : Γ ⊢[PRAAx]
     fstT (run d K h w) ≐ composition d K :=
-  (congrFst (program_at d K h w)).eqTrans (fst_pair _ _)
+  (program_at d K h w).fstE
 theorem returned_tail (d K h w : PTm n) : Γ ⊢[PRAAx] sndT (run d K h w) ≐
     pairT (budget (composition d K)) (pairT (pw two h)
       (pairT (highPart (composition d K) (K*d) h w)
         (qsub (evaluate (composition d K) w) (linearValue w)))) :=
-  (congrSnd (program_at d K h w)).eqTrans (snd_pair _ _)
+  (program_at d K h w).sndE
 theorem returned_budget (d K h w : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run d K h w)) ≐ budget (composition d K) :=
-  (congrFst (returned_tail d K h w)).eqTrans (fst_pair _ _)
+  (returned_tail d K h w).fstE
 theorem returned_rest (d K h w : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run d K h w)) ≐
     pairT (pw two h) (pairT (highPart (composition d K) (K*d) h w)
       (qsub (evaluate (composition d K) w) (linearValue w))) :=
-  (congrSnd (returned_tail d K h w)).eqTrans (snd_pair _ _)
+  (returned_tail d K h w).sndE
 theorem returned_denominator (d K h w : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (run d K h w))) ≐ pw two h :=
-  (congrFst (returned_rest d K h w)).eqTrans (fst_pair _ _)
+  (returned_rest d K h w).fstE
 theorem returned_pair (d K h w : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run d K h w))) ≐
     pairT (highPart (composition d K) (K*d) h w)
       (qsub (evaluate (composition d K) w) (linearValue w)) :=
-  (congrSnd (returned_rest d K h w)).eqTrans (snd_pair _ _)
+  (returned_rest d K h w).sndE
 theorem returned_high (d K h w : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (sndT (run d K h w)))) ≐ highPart (composition d K) (K*d) h w :=
-  (congrFst (returned_pair d K h w)).eqTrans (fst_pair _ _)
+  (returned_pair d K h w).fstE
 theorem returned_residual (d K h w : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (sndT (sndT (run d K h w)))) ≐ qsub (evaluate (composition d K) w) (linearValue w) :=
-  (congrSnd (returned_pair d K h w)).eqTrans (snd_pair _ _)
+  (returned_pair d K h w).sndE
 theorem returned_error (d K h w : PTm n) (h1 : Γ ⊢[PRAAx] le one h)
     (hd : Γ ⊢[PRAAx] le h d) (hK : Γ ⊢[PRAAx] le h K)
     (hw : Γ ⊢[PRAAx] bounded w one two) : Γ ⊢[PRAAx]

@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalWeightedTaylorBallCoefficient
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (bounded_mono)
 open GaussianBarnesCanonicalCenteredExponentialShift (baseData)
 open GaussianBarnesCanonicalCentralUniformBound (centralUGain central_U_le)
@@ -37,10 +37,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalNaturalScale (natScale)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

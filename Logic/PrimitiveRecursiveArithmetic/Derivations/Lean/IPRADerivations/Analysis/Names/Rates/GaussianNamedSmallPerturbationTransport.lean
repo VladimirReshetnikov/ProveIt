@@ -21,7 +21,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedSmallPerturbationTransport
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul canonical positive_product)
 open GaussianRationalMetric (bounded distanceBounded qsub)
 open GaussianRationalSyntheticDivision (qone)
@@ -29,10 +29,6 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -48,18 +44,12 @@ def productSample (H E : PR 2) (x y t : PTm n) : PTm n :=
 def budgetNumerator (p q A B M : PTm n) : PTm n := num 3*M*A*unit p*unit q+B*(unit p+unit q)
 def budgetDenominator (p q B : PTm n) : PTm n := B*unit p*unit q
 
-@[simp] theorem subst_prefactorSamples {m : ℕ} (σ : Fin n → PTm m) (H : PR 2) (x M : PTm n) :
-    (prefactorSamples H x M).subst σ = prefactorSamples H (Syn.subst σ x) (Syn.subst σ M) := by simp [prefactorSamples,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_correctionSamples {m : ℕ} (σ : Fin n → PTm m) (E : PR 2) (y A B : PTm n) :
-    (correctionSamples E y A B).subst σ = correctionSamples E (Syn.subst σ y) (Syn.subst σ A) (Syn.subst σ B) := by simp [correctionSamples,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_productClock {m : ℕ} (σ : Fin n → PTm m) (H E : PR 2) (x y t : PTm n) :
-    Syn.subst σ (productClock H E x y t) = productClock H E (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ t) := by simp [productClock]
-@[simp] theorem subst_productSample {m : ℕ} (σ : Fin n → PTm m) (H E : PR 2) (x y t : PTm n) :
-    Syn.subst σ (productSample H E x y t) = productSample H E (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ t) := by simp [productSample]
-@[simp] theorem subst_budgetNumerator {m : ℕ} (σ : Fin n → PTm m) (p q A B M : PTm n) :
-    Syn.subst σ (budgetNumerator p q A B M) = budgetNumerator (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ M) := by simp [budgetNumerator]
-@[simp] theorem subst_budgetDenominator {m : ℕ} (σ : Fin n → PTm m) (p q B : PTm n) :
-    Syn.subst σ (budgetDenominator p q B) = budgetDenominator (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ B) := by simp [budgetDenominator]
+ipra_subst prefactorSamples [Syn.subst_shift, Syn.shift_subst]
+ipra_subst correctionSamples [Syn.subst_shift, Syn.shift_subst]
+ipra_subst productClock
+ipra_subst productSample
+ipra_subst budgetNumerator
+ipra_subst budgetDenominator
 
 theorem prefactor_at (H : PR 2) (x M s : PTm n) (h : Γ ⊢[PRAAx] prefactorSamples H x M) : Γ ⊢[PRAAx]
     canonical (ap2 H s x) ⋏ bounded (ap2 H s x) M one := by simpa [prefactorSamples] using h.allE s

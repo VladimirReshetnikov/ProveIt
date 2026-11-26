@@ -19,7 +19,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedGammaSineModulation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianEulerNamedShiftInput (shiftF shiftData)
 open GaussianExponentialRadiusIndependence (independent_radii_proper)
@@ -31,8 +31,6 @@ open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
 open GaussianNameRingLaws (oneF zeroF one_fast zero_fast zero_at multiply_one multiply_one_left multiply_associative multiply_commutative)
 open GaussianRationalHorner (qzero qmul)
 open GaussianRationalReciprocal (qone)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

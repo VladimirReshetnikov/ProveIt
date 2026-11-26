@@ -19,7 +19,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineProductSynchronizedRow
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianSineProductScaledArguments (nameF data observation_bound unit_disk_input natural_code_bound)
 open GaussianSineProductScaledArgumentIdentity (realRootData root_sine_cross)
 open GaussianSineProductRelativeArgument (relative relative_bound relative_sample_error)
@@ -49,10 +49,6 @@ open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianRationalDistanceOrder (distance_congr distance_triangle_same distance_symmetric)
 open GaussianApproximateInverseDistance (multiply_distance)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -85,27 +81,11 @@ def budget (z R B K i x : PTm n) : PTm n :=
     GaussianSineSampleRootGuards.sineDenominator (halfIndex R K))*num 4)*
     (two*productRadius z R B K x*crossCost z R B K i x)
 
-@[simp] theorem subst_angleData {l : ℕ} (σ : Fin n → PTm l) (z R B K x : PTm n) :
-    Syn.subst σ (angleData z R B K x) =
-      angleData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ K) (Syn.subst σ x) := by
-  simp [angleData]
-@[simp] theorem subst_angleSineData {l : ℕ} (σ : Fin n → PTm l) (z R B K x : PTm n) :
-    Syn.subst σ (angleSineData z R B K x) =
-      angleSineData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ K) (Syn.subst σ x) := by
-  simp [angleSineData]
-@[simp] theorem subst_sampledRoot {l : ℕ} (σ : Fin n → PTm l) (R K i x p : PTm n) :
-    Syn.subst σ (sampledRoot R K i x p) =
-      sampledRoot (Syn.subst σ R) (Syn.subst σ K) (Syn.subst σ i) (Syn.subst σ x) (Syn.subst σ p) := by
-  simp [sampledRoot]
-@[simp] theorem subst_actualFactor {l : ℕ} (σ : Fin n → PTm l) (z R B K i x p : PTm n) :
-    Syn.subst σ (actualFactor z R B K i x p) =
-      actualFactor (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ K)
-        (Syn.subst σ i) (Syn.subst σ x) (Syn.subst σ p) := by
-  simp [actualFactor]
-@[simp] theorem subst_budget {l : ℕ} (σ : Fin n → PTm l) (z R B K i x : PTm n) :
-    Syn.subst σ (budget z R B K i x) =
-      budget (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ K) (Syn.subst σ i) (Syn.subst σ x) := by
-  simp [budget,productRadius,crossCost,FactorBudget,rootData]
+ipra_subst angleData
+ipra_subst angleSineData
+ipra_subst sampledRoot
+ipra_subst actualFactor
+ipra_subst budget [productRadius, crossCost, FactorBudget, rootData]
 
 theorem modulus_eq (R K : PTm n) : Γ ⊢[PRAAx] modulus (halfIndex R K) ≐ multiple R K :=
   (succ_eq_add_one _).eqTrans (GaussianSineProductT4Budget.odd_multiple R K).eqSymm

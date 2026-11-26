@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaRightHalfPlane
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Variance (ad)
 open GaussianGammaEulerHeadLower (translated poleAt poleGuard)
 open GaussianGammaReciprocalInverse (gammaF gammaData gamma_regular)
@@ -21,10 +21,6 @@ open GaussianGammaEulerInverseConvergence (actual_rate coefficientNumerator coef
 open GaussianNamedInverseRate (independentRate)
 open GaussianEuclideanDistanceName (pointCN)
 open ComplexLogarithmRemainder (re im scale normSq normSq_eval normSq_scale)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

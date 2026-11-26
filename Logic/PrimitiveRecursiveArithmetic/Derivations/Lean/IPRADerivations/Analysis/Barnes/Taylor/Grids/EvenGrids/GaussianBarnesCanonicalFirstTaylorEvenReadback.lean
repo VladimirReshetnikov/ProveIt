@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalFirstTaylorEvenReadback
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add code im re scale zeroCode)
 open GaussianBarnesCanonicalCofinalTaylorEvenGridLimit (observed)
 open GaussianBarnesCanonicalCofinalTaylorGridObservations (cofinal_at cofinalData cofinalGrid)
@@ -33,9 +33,6 @@ open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalTranslationStages (remaining)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (entry_congr)
-open ConciseIPRA.PTm (succ zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "V" => GaussianBarnesCanonicalValue.nameF

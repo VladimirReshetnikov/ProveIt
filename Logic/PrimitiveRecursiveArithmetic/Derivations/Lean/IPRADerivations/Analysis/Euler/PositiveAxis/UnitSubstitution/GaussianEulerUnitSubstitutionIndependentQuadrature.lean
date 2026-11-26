@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitSubstitutionIndependentQuadrature
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUnitSubstitutionLatticeGeometry (source start count disk)
 open GaussianEulerUnitKernelCompactName (evaluatorF fixedData)
 open GaussianCompactRiemannName (quadrature)
@@ -26,9 +26,6 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_symmetric)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -46,15 +43,9 @@ def numerator (k q r N H R a C E T M : PTm n) : PTm n :=
 def denominator (k q r N H a C E T M : PTm n) : PTm n :=
   gridDenominator q r (count k N a C E T M) H M*GaussianEulerUnitSubstitutionLatticeComparison.denominator k q N E T M
 
-@[simp] theorem subst_ordinary {m : ℕ} (σ : Fin n → PTm m) (r H k N z B a C E T M : PTm n) :
-    Syn.subst σ (ordinary r H k N z B a C E T M) = ordinary (Syn.subst σ r) (Syn.subst σ H) (Syn.subst σ k)
-      (Syn.subst σ N) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ M) := by simp [ordinary]
-@[simp] theorem subst_gridNumerator {m : ℕ} (σ : Fin n → PTm m) (q r K H M L : PTm n) :
-    Syn.subst σ (gridNumerator q r K H M L) = gridNumerator (Syn.subst σ q) (Syn.subst σ r) (Syn.subst σ K)
-      (Syn.subst σ H) (Syn.subst σ M) (Syn.subst σ L) := by simp [gridNumerator]
-@[simp] theorem subst_gridDenominator {m : ℕ} (σ : Fin n → PTm m) (q r K H M : PTm n) :
-    Syn.subst σ (gridDenominator q r K H M) = gridDenominator (Syn.subst σ q) (Syn.subst σ r) (Syn.subst σ K)
-      (Syn.subst σ H) (Syn.subst σ M) := by simp [gridDenominator]
+ipra_subst ordinary
+ipra_subst gridNumerator
+ipra_subst gridDenominator
 
 /-- The lattice query q and the ordinary quadrature query r are unrelated.
 The actual lattice count K may be zero. -/

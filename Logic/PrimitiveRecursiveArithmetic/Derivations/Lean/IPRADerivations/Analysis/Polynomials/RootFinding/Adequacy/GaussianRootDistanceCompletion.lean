@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Geometry.Distances.GaussianEuclideanDistanceVariation
 import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianRootSupport
 import IPRADerivations.Analysis.Names.GaussianLinearDistanceName
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual Euclidean distance to the collision-tolerant root-support name
@@ -19,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRootDistanceCompletion
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianEuclideanPointDistance (unit unit_positive subst_unit)
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (distanceSample pointCN)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (positive_product)
@@ -28,9 +27,6 @@ open LeanProofs.IPRA.Analysis.GaussianFactorParameters (monicRD)
 open LeanProofs.IPRA.Analysis.GaussianRootRadius (roots roots_length)
 open LeanProofs.IPRA.Analysis.GaussianRootSupport (coverDenominator cover_denominator_positive)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -45,13 +41,9 @@ def normalizeData (h x : PTm n) : PTm n := pairT h x
 def normalizeBody (f : PR 2) : PTm 2 := normalized f (fstT (var 1)) (sndT (var 1)) (var 0)
 def normalizeF (f : PR 2) : PR 2 := PTm.toPR (normalizeBody f)
 
-@[simp] theorem subst_regular {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (M x : PTm n) :
-    (regular f M x).subst σ = regular f (Syn.subst σ M) (Syn.subst σ x) := by
-  simp [regular,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_normalized {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (h x k : PTm n) :
-    Syn.subst σ (normalized f h x k) = normalized f (Syn.subst σ h) (Syn.subst σ x) (Syn.subst σ k) := by simp [normalized]
-@[simp] theorem subst_normalizeData {m : ℕ} (σ : Fin n → PTm m) (h x : PTm n) :
-    Syn.subst σ (normalizeData h x) = normalizeData (Syn.subst σ h) (Syn.subst σ x) := by simp [normalizeData]
+ipra_subst regular [Syn.subst_shift, Syn.shift_subst]
+ipra_subst normalized
+ipra_subst normalizeData
 
 theorem regular_at (f : PR 2) (M x s t : PTm n) (h : Γ ⊢[PRAAx] regular f M x) : Γ ⊢[PRAAx]
     RationalValueBounds.radius (ap2 f s x) (ap2 f t x) (M*(unit s+unit t)) (unit s*unit t) := by
@@ -123,16 +115,11 @@ def sample (step a : PR 3) (point : PR 2) (N x k : PTm n) : PTm n := raw step a 
 def nameF (step a : PR 3) (point : PR 2) : PR 2 := normalizeF (rawF step a point)
 def nameData (N x : PTm n) : PTm n := normalizeData two (data N x)
 
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (step a : PR 3) (point : PR 2) (N x : PTm n) :
-    (input step a point N x).subst σ = input step a point (Syn.subst σ N) (Syn.subst σ x) := by simp [input]
-@[simp] theorem subst_raw {m : ℕ} (σ : Fin n → PTm m) (step a : PR 3) (point : PR 2) (N x t : PTm n) :
-    Syn.subst σ (raw step a point N x t) = raw step a point (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ t) := by simp [raw]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (N x : PTm n) :
-    Syn.subst σ (data N x) = data (Syn.subst σ N) (Syn.subst σ x) := by simp [data]
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (step a : PR 3) (point : PR 2) (N x k : PTm n) :
-    Syn.subst σ (sample step a point N x k) = sample step a point (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ k) := by simp [sample]
-@[simp] theorem subst_nameData {m : ℕ} (σ : Fin n → PTm m) (N x : PTm n) :
-    Syn.subst σ (nameData N x) = nameData (Syn.subst σ N) (Syn.subst σ x) := by simp [nameData]
+ipra_subst input
+ipra_subst raw
+ipra_subst data
+ipra_subst sample
+ipra_subst nameData
 
 theorem raw_congr (step a : PR 3) (point : PR 2) {N N' x x' t t' : PTm n}
     (hN : Γ ⊢[PRAAx] N ≐ N') (hx : Γ ⊢[PRAAx] x ≐ x') (ht : Γ ⊢[PRAAx] t ≐ t') : Γ ⊢[PRAAx]

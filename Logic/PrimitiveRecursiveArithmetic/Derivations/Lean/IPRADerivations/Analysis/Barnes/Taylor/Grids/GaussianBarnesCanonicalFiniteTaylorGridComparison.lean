@@ -16,7 +16,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalFiniteTaylorGridComparison
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (bounded bounded_mono)
 open GaussianBarnesCanonicalFiniteCentralExponential (finiteNameF finiteData)
 open GaussianBarnesCanonicalFiniteTaylorGridLeading (observationNumerator prefactorClock rational_readback scaled_leading)
@@ -31,9 +31,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRationalHorner (ofGaussian positive_product qzero)
 open GaussianRationalLowerBounds (lower)
 open GaussianRationalMetric (distanceBounded)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalIntegerValues
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalValue (nameF)
 open GaussianBarnesCanonicalIntegerRecurrence
   (center data value modulus center_norm center_native integer_source value_regular successor_error)
@@ -31,9 +31,6 @@ open GaussianNameEquivalence (crossEquivalent cross_trans)
 open ComplexLogarithmRemainder (oneCode scale)
 open BarnesInteger (barnes)
 open Products (fact)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

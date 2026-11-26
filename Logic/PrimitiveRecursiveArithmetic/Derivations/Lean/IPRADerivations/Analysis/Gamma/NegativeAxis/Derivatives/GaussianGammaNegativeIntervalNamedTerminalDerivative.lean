@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalNamedTerminalDerivative
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianExponentialSmallPerturbation (smallSamples small_samples_at)
@@ -30,9 +30,6 @@ open GaussianNamedInverseRate (independentRate)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalSyntheticDivision (qone)
 open GaussianRealNameExponentialInjectivity (axisSamples)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "offsetSource" => GaussianNamedEulerUnitTime.source
@@ -60,19 +57,11 @@ def quotientData (f K : PR 2) (x y a : PTm n) : PTm n :=
 abbrev derivativeF (f : PR 2) : PR 2 := I (terminalF f)
 def derivativeData (x : PTm n) : PTm n := id one (terminalData x) one
 
-@[simp] theorem subst_derivativeModulus {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p x : PTm n) :
-    Syn.subst σ (derivativeModulus f p x) = derivativeModulus f (Syn.subst σ p) (Syn.subst σ x) := by
-  simp [derivativeModulus]
-@[simp] theorem subst_modulus {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p x E : PTm n) :
-    Syn.subst σ (modulus f p x E) = modulus f (Syn.subst σ p) (Syn.subst σ x) (Syn.subst σ E) := by simp [modulus]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (f K : PR 2) (p x y E a : PTm n) :
-    (source f K p x y E a).subst σ = source f K (Syn.subst σ p) (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ E) (Syn.subst σ a) :=
-  by simp [source]
-@[simp] theorem subst_quotientData {m : ℕ} (σ : Fin n → PTm m) (f K : PR 2) (x y a : PTm n) :
-    Syn.subst σ (quotientData f K x y a) = quotientData f K (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ a) :=
-  by simp [quotientData]
-@[simp] theorem subst_derivativeData {m : ℕ} (σ : Fin n → PTm m) (x : PTm n) :
-    Syn.subst σ (derivativeData x) = derivativeData (Syn.subst σ x) := by simp [derivativeData]
+ipra_subst derivativeModulus
+ipra_subst modulus
+ipra_subst source
+ipra_subst quotientData
+ipra_subst derivativeData
 
 private theorem small_weaken (K : PR 2) (y D M : PTm n)
     (hD : Γ ⊢[PRAAx] le one D) (hDM : Γ ⊢[PRAAx] le D M) (h : Γ ⊢[PRAAx] smallSamples K y one M) :

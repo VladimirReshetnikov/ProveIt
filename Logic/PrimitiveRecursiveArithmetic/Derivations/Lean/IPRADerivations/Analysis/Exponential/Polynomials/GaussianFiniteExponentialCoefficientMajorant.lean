@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianFiniteExponentialCoefficientMajorant
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalPolynomialDilation (weightedNorm)
 open GaussianRationalPolynomialPowers (powerPrefix prefix_length)
 open GaussianRationalPolynomialExponential (stage inverseFactorial factorial_positive polynomial)
@@ -32,19 +32,13 @@ open GaussianRationalL1 (qL1)
 open RationalArgmin (rationalLE)
 open RationalArithmetic (multiply add)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def powerBudget (A j : PTm n) : PTm n := natCode (pw A j)
 def termBudget (A j : PTm n) : PTm n := fraction (pw A j) (Products.fact j)
-@[simp] theorem subst_powerBudget {m : ℕ} (σ : Fin n → PTm m) (A j : PTm n) :
-    Syn.subst σ (powerBudget A j) = powerBudget (Syn.subst σ A) (Syn.subst σ j) := by simp [powerBudget]
-@[simp] theorem subst_termBudget {m : ℕ} (σ : Fin n → PTm m) (A j : PTm n) :
-    Syn.subst σ (termBudget A j) = termBudget (Syn.subst σ A) (Syn.subst σ j) := by simp [termBudget,Products.fact]
+ipra_subst powerBudget
+ipra_subst termBudget [Products.fact]
 
 theorem power_budget_zero (A : PTm n) : Γ ⊢[PRAAx] powerBudget A zero ≐ natCode one :=
   natCode_congr (pw_zero A)
@@ -54,9 +48,7 @@ theorem power_budget_succ (A j : PTm n) : Γ ⊢[PRAAx]
 
 def powerLaw (C N K t A j : PTm n) : Fm PTm n := le j K ⟶
   rationalLE (weightedNorm (powerPrefix C N K j) (j*N) t) (powerBudget A j)
-@[simp] theorem subst_powerLaw {m : ℕ} (σ : Fin n → PTm m) (C N K t A j : PTm n) :
-    (powerLaw C N K t A j).subst σ = powerLaw (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ K) (Syn.subst σ t) (Syn.subst σ A) (Syn.subst σ j) := by simp [powerLaw]
+ipra_subst powerLaw
 
 theorem power_zero (C N K t A : PTm n) : Γ ⊢[PRAAx] powerLaw C N K t A zero := by
   refine .impI ?_
@@ -85,11 +77,9 @@ theorem power_bound (C N K t A j : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ succ 
     simpa only [Fm.shift,RationalArgmin.subst_rationalLE,GaussianRationalPolynomialDilation.subst_weightedNorm,
       GaussianRationalSyntheticBounds.subst_natCode,Syn.shift] using hNorm.shift
   have all : Γ ⊢[PRAAx] .all (powerLaw (Syn.shift C) (Syn.shift N) (Syn.shift K) (Syn.shift t) (Syn.shift A) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [subst_powerLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact power_zero _ _ _ _ _
-    · simp only [subst_powerLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact .impI (power_step _ _ _ _ _ _ cs.wk.wk ns.wk.wk Prf.hyp0
+    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_powerLaw]
+    · exact power_zero _ _ _ _ _
+    · exact .impI (power_step _ _ _ _ _ _ cs.wk.wk ns.wk.wk Prf.hyp0
         (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)))
   have rule : Γ ⊢[PRAAx] powerLaw C N K t A j := by
     simpa only [subst_powerLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
@@ -147,9 +137,7 @@ theorem scalar_succ (A j : PTm n) : Γ ⊢[PRAAx]
 
 def exponentialLaw (C N K t A j : PTm n) : Fm PTm n := le j K ⟶
   rationalLE (weightedNorm (stage C N K j) (j*N) t) (value A j)
-@[simp] theorem subst_exponentialLaw {m : ℕ} (σ : Fin n → PTm m) (C N K t A j : PTm n) :
-    (exponentialLaw C N K t A j).subst σ = exponentialLaw (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ K) (Syn.subst σ t) (Syn.subst σ A) (Syn.subst σ j) := by simp [exponentialLaw]
+ipra_subst exponentialLaw
 
 theorem exponential_zero (C N K t A : PTm n) : Γ ⊢[PRAAx] exponentialLaw C N K t A zero := by
   refine .impI ?_
@@ -184,11 +172,9 @@ theorem exponential_bound (C N K t A j : PTm n) (hC : Γ ⊢[PRAAx] length C ≐
     simpa only [Fm.shift,RationalArgmin.subst_rationalLE,GaussianRationalPolynomialDilation.subst_weightedNorm,
       GaussianRationalSyntheticBounds.subst_natCode,Syn.shift] using hNorm.shift
   have all : Γ ⊢[PRAAx] .all (exponentialLaw (Syn.shift C) (Syn.shift N) (Syn.shift K) (Syn.shift t) (Syn.shift A) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [subst_exponentialLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact exponential_zero _ _ _ _ _
-    · simp only [subst_exponentialLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact .impI (exponential_step _ _ _ _ _ _ cs.wk.wk ns.wk.wk Prf.hyp0
+    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_exponentialLaw]
+    · exact exponential_zero _ _ _ _ _
+    · exact .impI (exponential_step _ _ _ _ _ _ cs.wk.wk ns.wk.wk Prf.hyp0
         (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)))
   have rule : Γ ⊢[PRAAx] exponentialLaw C N K t A j := by
     simpa only [subst_exponentialLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j

@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.FiniteDifferences.GaussianPolynomialForwardDifferenceIteration
 import IPRADerivations.Foundations.SequenceEquality
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual equally spaced Gaussian forward differences at encoded order
@@ -16,7 +15,7 @@ set_option maxHeartbeats 1100000
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialForwardDifferenceGrid
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
 open LeanProofs.IPRA.Foundations.SequenceEquality (agree sequence_equal)
@@ -29,9 +28,6 @@ open GaussianRationalReciprocal (power)
 open GaussianRationalSyntheticDivision (qadd_congr qsub_congr)
 open GaussianRationalTranslation (evaluate_congr)
 open GaussianRationalTranslationStages (remaining remaining_step)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaHalfRisingFactorial
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaRepeatedShift (risingProduct prefix_zero prefix_succ)
 open GaussianGammaEulerHeadShift (linear)
 open GaussianPositiveRationalLogarithm (fraction)
@@ -24,21 +24,15 @@ open GaussianRationalSyntheticDivision (qmul_congr qone)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open LeanProofs.IPRA.Probability.NormalMoments (df df_zero df_succ df_fact)
 open ComplexLogarithmRemainder (oneCode scale)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def value (N : PTm n) : PTm n := fraction (df N) (unit N)
 def factorialValue (N : PTm n) : PTm n := fraction (Products.fact (two*N)) (unit N*unit N*Products.fact N)
 def law (N : PTm n) : Fm PTm n := risingProduct oneCode two N ≐ value N
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (value N) = value (Syn.subst σ N) := by simp [value,df]
-@[simp] theorem subst_factorialValue {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (factorialValue N) = factorialValue (Syn.subst σ N) := by simp [factorialValue,Products.fact]
-@[simp] theorem subst_law {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    (law N).subst σ = law (Syn.subst σ N) := by simp [law]
+ipra_subst value [df]
+ipra_subst factorialValue [Products.fact]
+ipra_subst law
 
 theorem linear_value (N : PTm n) : Γ ⊢[PRAAx] linear (oneCode : PTm n) two N ≐ fraction (succ (two*N)) two := by
   apply GaussianGammaFiniteValueProperness.fraction_equal _ _ two (zero_lt_succ one)
@@ -59,11 +53,9 @@ theorem step (N : PTm n) (ih : Γ ⊢[PRAAx] law N) : Γ ⊢[PRAAx] law (succ N)
 
 theorem original_half_rising (N : PTm n) : Γ ⊢[PRAAx] law N := by
   have all : Γ ⊢[PRAAx] .all (law (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_law,Syn.subst_var,Syn.inst_zero]
-      exact base
-    · simp only [subst_law,Syn.subst_var,Syn.repl_zero]
-      exact step _ Prf.hyp0
+    ipra_qfind [subst_law]
+    · exact base
+    · exact step _ Prf.hyp0
   simpa only [subst_law,Syn.subst_var,Syn.inst_zero] using all.allE N
 
 theorem factorial_positive (N : PTm n) : Γ ⊢[PRAAx] le one (Products.fact N) :=

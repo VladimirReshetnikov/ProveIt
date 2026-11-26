@@ -15,14 +15,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIncompleteDyadicEndpointAlignment
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaIntegralCutoffs (etaDen top)
 open GaussianGammaCompactCutoffGeometry (ratio)
 open GaussianEulerCompactAdditivity (nameF data)
 open GaussianNameEquivalence (crossEquivalent cross_symm)
 open GaussianRationalHorner (positive_product)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -32,16 +30,9 @@ def incompleteData (z R B A k j : PTm n) : PTm n :=
   GaussianEulerIncompleteCutoffParts.lowerData z R B j A one (etaDen k A R)
 def tailData (z R B A k j : PTm n) : PTm n := GaussianGammaCompactCutoffSplit.lowerData z R B k j A
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B A k j : PTm n) :
-    (source z R B A k j).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ A) (Syn.subst σ k) (Syn.subst σ j) := by simp [source]
-@[simp] theorem subst_incompleteData {m : ℕ} (σ : Fin n → PTm m) (z R B A k j : PTm n) :
-    Syn.subst σ (incompleteData z R B A k j) = incompleteData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ A) (Syn.subst σ k) (Syn.subst σ j) := by
-  simp [incompleteData,etaDen,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_tailData {m : ℕ} (σ : Fin n → PTm m) (z R B A k j : PTm n) :
-    Syn.subst σ (tailData z R B A k j) = tailData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ A) (Syn.subst σ k) (Syn.subst σ j) := by simp [tailData]
+ipra_subst source
+ipra_subst incompleteData [etaDen, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst tailData
 
 theorem exact_lower_width (k j A R : PTm n) (h : Γ ⊢[PRAAx] le k j) : Γ ⊢[PRAAx]
     GaussianEulerIncompleteCutoff.lowerWidth j A R one (etaDen k A R) ≐

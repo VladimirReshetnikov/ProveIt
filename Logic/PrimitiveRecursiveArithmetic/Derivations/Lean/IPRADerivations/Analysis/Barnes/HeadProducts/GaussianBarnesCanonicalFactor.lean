@@ -16,7 +16,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalFactor
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianNameArithmetic (multiplyF multiplyData multiplyModulus multiply_at multiply_fast)
@@ -24,10 +24,6 @@ open GaussianRationalHorner (ofGaussian ofGaussian_represents qadd qmul qzero qm
 open GaussianRationalMetric (bounded bounded_of_cleared qsub)
 open GaussianRationalReciprocal (bound_congr bounded_sum bounded_product bounded_difference power powerF power_succ qone_bounded)
 open GaussianRationalSyntheticDivision (qone qmul_congr qmul_zero_left qmul_zero_right)
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (pred)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

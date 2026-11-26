@@ -14,7 +14,7 @@ set_option maxHeartbeats 220000
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineMultipleAngleContinuity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianSineMultipleAngleRecurrence (previous value previous_zero value_zero previous_succ value_succ)
 open GaussianRationalHorner (qzero qmul)
 open GaussianRationalMetric (bounded distanceBounded qsub)
@@ -25,9 +25,6 @@ open GaussianRationalPowerDifference (distance_refl_zero)
 open GaussianNameArithmetic (product_distance)
 open GaussianNamedDifference (difference_distance)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -39,11 +36,8 @@ def invariant (S T M A B k : PTm n) : Fm PTm n :=
   (distanceBounded (previous S k) (previous T k) (A*growth M k) B ⋏
     distanceBounded (value S k) (value T k) (A*growth M k) B)
 
-@[simp] theorem subst_growth {l : ℕ} (σ : Fin n → PTm l) (M k : PTm n) :
-    Syn.subst σ (growth M k) = growth (Syn.subst σ M) (Syn.subst σ k) := by simp [growth,two,one]
-@[simp] theorem subst_invariant {l : ℕ} (σ : Fin n → PTm l) (S T M A B k : PTm n) :
-    (invariant S T M A B k).subst σ = invariant (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ M)
-      (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ k) := by simp [invariant,one]
+ipra_subst growth [two, one]
+ipra_subst invariant [one]
 
 private theorem base (S T M A B : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
     Γ ⊢[PRAAx] invariant S T M A B zero := by
@@ -112,11 +106,9 @@ theorem invariant_all (S T M A B k : PTm n) (hB : Γ ⊢[PRAAx] le one B)
   have hst : C ⊢[PRAAx] distanceBounded (sh S) (sh T) (sh A) (sh B) :=
     by simpa [Fm.shift,Syn.shift,C,sh] using hST.shift
   have all : Γ ⊢[PRAAx] .all (invariant (sh S) (sh T) (sh M) (sh A) (sh B) (var 0)) := by
-    refine PRA.qfInd _ ⟨⟨⟨trivial,trivial⟩,⟨trivial,trivial⟩⟩,⟨trivial,trivial⟩⟩ ?_ ?_
-    · simp only [sh,subst_invariant,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact base S T M A B hB
-    · simp only [sh,subst_invariant,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact step _ _ _ _ _ _ hb.wk hs.wk ht.wk hst.wk Prf.hyp0
+    ipra_qfind (⟨⟨⟨trivial,trivial⟩,⟨trivial,trivial⟩⟩,⟨trivial,trivial⟩⟩) [sh, subst_invariant]
+    · exact base S T M A B hB
+    · exact step _ _ _ _ _ _ hb.wk hs.wk ht.wk hst.wk Prf.hyp0
   simpa only [sh,subst_invariant,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
 
 theorem value_distance (S T M A B k : PTm n) (hB : Γ ⊢[PRAAx] le one B)

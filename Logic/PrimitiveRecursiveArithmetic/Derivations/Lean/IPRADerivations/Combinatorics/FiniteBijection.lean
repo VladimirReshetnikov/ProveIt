@@ -1,8 +1,6 @@
-import IPRADerivations.Core.Fubini
 import IPRADerivations.Probability.Lotus
 import IPRADerivations.AnalyticNumberTheory.Fermat
 import IPRADerivations.Probability.MedianCounts
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The finite bijection principle
@@ -26,15 +24,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.FiniteBijection
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Algebra.CubeRootTwo (sg sg_zero sg_succ)
 open LeanProofs.IPRA.AnalyticNumberTheory.Fermat (subst_up_shift')
 open LeanProofs.IPRA.Probability.Lotus (cmB inst2_cmB sum_const_mul)
 open LeanProofs.IPRA.Probability.MedianCounts (congrSg)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -146,7 +140,7 @@ theorem row_factor (D i x : PTm n) :
   exact congrMul ((congrSg (congrInst2 P (fst_pair _ _) (snd_pair _ _))).eqTrans (fst_pair _ _).eqSymm)
     (LeanProofs.IPRA.AnalyticNumberTheory.Euler.congrEqb
       ((congrInst2 F (fst_pair _ _) (snd_pair _ _)).eqTrans
-        (congrInst2 F ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)) ((congrSnd (snd_pair _ _)).eqTrans
+        (congrInst2 F (snd_pair _ _).fstE ((congrSnd (snd_pair _ _)).eqTrans
           (snd_pair _ _))).eqSymm) (.eqRefl _))
 
 /-- `∑_{j<D} [c = j] = 1` for `c < D`, with `c = F i`. -/

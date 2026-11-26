@@ -14,15 +14,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalPowerProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalFiniteProduct (qprod)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qmul)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qone qone_canonical qmul_congr)
 open LeanProofs.IPRA.Analysis.GaussianRationalReciprocal (power powerF power_zero power_succ)
 open LeanProofs.IPRA.Analysis.GaussianRationalPowerAlgebra (power_add qmul_shuffle)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -49,9 +46,7 @@ theorem factor_at (f : PTm 2) (a b x i : PTm n) :
 def productLaw (f : PTm 2) (a b x j : PTm n) : Fm PTm n :=
   qprod (factorBody f) j (data a b x) ≐ qmul (power a j) (power b (ap2 (sumF f) j x))
 
-@[simp] theorem subst_productLaw {l : ℕ} (σ : Fin n → PTm l) (f : PTm 2) (a b x j : PTm n) :
-    (productLaw f a b x j).subst σ = productLaw f (Syn.subst σ a) (Syn.subst σ b)
-      (Syn.subst σ x) (Syn.subst σ j) := by simp [productLaw,data]
+ipra_subst productLaw [data]
 
 theorem law_zero (f : PTm 2) (a b x : PTm n) : Γ ⊢[PRAAx] productLaw f a b x zero := by
   have exponentZero := (congrAp2 powerF (sum_zero (Γ := Γ) f x) (.eqRefl b)).eqTrans (power_zero b)
@@ -71,11 +66,9 @@ theorem law_succ (f : PTm 2) (a b x j : PTm n) (h : Γ ⊢[PRAAx] productLaw f a
 
 theorem actual_power_product (f : PTm 2) (a b x j : PTm n) : Γ ⊢[PRAAx] productLaw f a b x j := by
   have all : Γ ⊢[PRAAx] .all (productLaw f (Syn.shift a) (Syn.shift b) (Syn.shift x) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_productLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact law_zero f a b x
-    · simp only [subst_productLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact law_succ f _ _ _ _ Prf.hyp0
+    ipra_qfind [subst_productLaw]
+    · exact law_zero f a b x
+    · exact law_succ f _ _ _ _ Prf.hyp0
   simpa only [subst_productLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
 
 theorem actual_power_product_closed (f : PTm 2) : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 4

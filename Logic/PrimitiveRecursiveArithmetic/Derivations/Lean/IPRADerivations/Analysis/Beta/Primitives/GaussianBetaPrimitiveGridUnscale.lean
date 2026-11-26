@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaPrimitiveGridUnscale
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul qmul_canonical)
 open GaussianRationalSyntheticDivision (qone qmul_congr)
 open GaussianRationalNaturalScale (naturalPoint)
@@ -30,9 +30,6 @@ open GaussianBetaKernelGridComparison (evaluatorF sampleDataBeta)
 open GaussianBetaPrimitiveCompactGridAccuracy (source cells precisionAt original_grid_dyadic_accuracy_at)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianGammaEulerShiftLimit (reciprocalPoint)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

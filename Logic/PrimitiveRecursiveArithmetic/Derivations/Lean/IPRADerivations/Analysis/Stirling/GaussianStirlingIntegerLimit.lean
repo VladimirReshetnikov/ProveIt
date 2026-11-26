@@ -17,7 +17,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingIntegerLimit
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianStirlingIntegerTail (point integerTailContract tailDen den_positive after_congr point_congr integer_source
   mixedNumerator mixedDenominator mixed_den_positive anchored_left anchored_right)
 open GaussianRationalMetric (distanceBounded)
@@ -25,9 +25,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_r
 open GaussianRationalHorner (positive_product)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -37,12 +34,9 @@ def index (p : PTm n) : PTm n := unit (clock p)
 def sample (p : PTm n) : PTm n := point (clock p) (index p)
 def nameF : PR 2 := PTm.toPR (sample (var 0) : PTm 2)
 
-@[simp] theorem subst_clock {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) :
-    Syn.subst σ (clock p) = clock (Syn.subst σ p) := by simp [clock]
-@[simp] theorem subst_index {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) :
-    Syn.subst σ (index p) = index (Syn.subst σ p) := by simp [index]
-@[simp] theorem subst_sample {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) :
-    Syn.subst σ (sample p) = sample (Syn.subst σ p) := by simp [sample]
+ipra_subst clock
+ipra_subst index
+ipra_subst sample
 
 theorem name_at (p x : PTm n) : Γ ⊢[PRAAx] ap2 nameF p x ≐ sample p := by
   simpa [nameF,ap2] using toPR_eq (Γ := Γ) (sample (var 0) : PTm 2) ![p,x]
@@ -124,12 +118,8 @@ theorem name_regular (x : PTm n) (h : Γ ⊢[PRAAx] integerTailContract) : Γ �
 def tailNumerator (p q i : PTm n) : PTm n := unit p*unit q+tailDen i*(unit p+unit q)
 def tailDenominator (p q i : PTm n) : PTm n := tailDen i*(unit p*unit q)
 
-@[simp] theorem subst_tailNumerator {l : ℕ} (σ : Fin n → PTm l) (p q i : PTm n) :
-    Syn.subst σ (tailNumerator p q i) = tailNumerator (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ i) :=
-  by simp [tailNumerator]
-@[simp] theorem subst_tailDenominator {l : ℕ} (σ : Fin n → PTm l) (p q i : PTm n) :
-    Syn.subst σ (tailDenominator p q i) = tailDenominator (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ i) :=
-  by simp [tailDenominator]
+ipra_subst tailNumerator
+ipra_subst tailDenominator
 
 theorem tail_den_positive (p q i : PTm n) (hi : Γ ⊢[PRAAx] le one i) :
     Γ ⊢[PRAAx] le one (tailDenominator p q i) :=

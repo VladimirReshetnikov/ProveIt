@@ -14,7 +14,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedSincCongruence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianArctangentCayleyValues (imaginaryPoint right_endpoint unit_bound)
 open GaussianNamedSincSamples (argument argumentClock clock clock_unit next_unit_lower argument_clock_later
   value value_canonical sineValue sineBudget sampleSize sine_sample_error product_at sample_bound norm_cases cancel_factor)
@@ -35,10 +35,6 @@ open GaussianNamedDiagonalRate (diagonalRate cross_of_diagonal_rate)
 open GaussianNameRingLaws (normalized_to_sample)
 open GaussianRadiusExponentialName (input)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -169,9 +165,7 @@ theorem raw_error (f g : PR 2) (R S x y p : PTm n)
 def budget (f g : PR 2) (R S x y : PTm n) : PTm n :=
   (modulus f R x+one)+rawCost f g R S x y+(modulus g S y+one)
 
-@[simp] theorem subst_budget {l : ℕ} (σ : Fin n → PTm l) (f g : PR 2) (R S x y : PTm n) :
-    Syn.subst σ (budget f g R S x y) = budget f g (Syn.subst σ R) (Syn.subst σ S) (Syn.subst σ x) (Syn.subst σ y) := by
-  simp [budget,rawCost,sineCost]
+ipra_subst budget [rawCost, sineCost]
 
 theorem diagonal_error (f g : PR 2) (R S x y p : PTm n)
     (hf : Γ ⊢[PRAAx] input f R x) (hg : Γ ⊢[PRAAx] input g S y) (h : Γ ⊢[PRAAx] crossEquivalent f g x y) :

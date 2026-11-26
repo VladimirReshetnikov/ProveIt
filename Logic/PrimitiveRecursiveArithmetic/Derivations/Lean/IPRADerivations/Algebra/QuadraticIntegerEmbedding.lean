@@ -17,7 +17,7 @@ set_option linter.unnecessarySeqFocus false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticIntegerEmbedding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open QuadraticSignCertificates (encode first second equal cone add negative multiply zeroCode
   first_value second_value zero_first_value zero_second_value multiply_first multiply_second
   negative_first negative_second positivePart negativePart parts_value parts_disjoint parts_zero_value)
@@ -26,16 +26,12 @@ open QuadraticConeOrder (equal_of_values equal_symm equal_trans equal_first equa
 open QuadraticIntegerOrder (positive isZero isNegative difference equivalent less
   cone_positive positive_value_congr zero_value_congr zero_isZero zero_negative
   positive_negative negative_positive positive_zero_absurd one_two_absurd)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 
 def integer (a : ZT n) : PTm n := encode a (ZT.ofNat zero)
-@[simp] theorem subst_integer {l : ℕ} (σ : Fin n → PTm l) (a : ZT n) :
-    Syn.subst σ (integer a) = integer (a.subst σ) := by simp [integer]
+ipra_subst integer
 
 theorem integer_first (a : ZT n) : ZT.toZ Γ (first (integer a)) = ZT.toZ Γ a := by
   exact first_value _ _
@@ -189,22 +185,18 @@ def embed (p q : PTm n) : PTm n := ap2 embeddingF p q
 def output (d p q : PTm n) : PTm n := pairT (embedding p q) (QuadraticSignCertificates.sign d (embedding p q))
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (d p q : PTm n) : PTm n := ap3 outputF d p q
-@[simp] theorem subst_embedding {l : ℕ} (σ : Fin n → PTm l) (p q : PTm n) :
-    Syn.subst σ (embedding p q) = embedding (Syn.subst σ p) (Syn.subst σ q) := by simp [embedding,ZT.subst]
-@[simp] theorem subst_embed {l : ℕ} (σ : Fin n → PTm l) (p q : PTm n) :
-    Syn.subst σ (embed p q) = embed (Syn.subst σ p) (Syn.subst σ q) := by simp [embed]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (d p q : PTm n) :
-    Syn.subst σ (output d p q) = output (Syn.subst σ d) (Syn.subst σ p) (Syn.subst σ q) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (d p q : PTm n) :
-    Syn.subst σ (run d p q) = run (Syn.subst σ d) (Syn.subst σ p) (Syn.subst σ q) := by simp [run]
+ipra_subst embedding [ZT.subst]
+ipra_subst embed
+ipra_subst output
+ipra_subst run
 theorem embedding_at (p q : PTm n) : Γ ⊢[PRAAx] embed p q ≐ embedding p q := by
   simpa [embed,embeddingF,ap2] using toPR_eq (Γ := Γ) (embedding (var 0) (var 1) : PTm 2) ![p,q]
 theorem program_at (d p q : PTm n) : Γ ⊢[PRAAx] run d p q ≐ output d p q := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![d,p,q]
 theorem returned_integer (d p q : PTm n) : Γ ⊢[PRAAx] fstT (run d p q) ≐ embedding p q :=
-  (congrFst (program_at _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _).fstE
 theorem returned_sign (d p q : PTm n) : Γ ⊢[PRAAx] sndT (run d p q) ≐ QuadraticSignCertificates.sign d (embedding p q) :=
-  (congrSnd (program_at _ _ _)).eqTrans (snd_pair _ _)
+  (program_at _ _ _).sndE
 theorem returned_zero_iff (d p q : PTm n) (hd : Γ ⊢[PRAAx] le one d) : Γ ⊢[PRAAx]
     Fm.iff (sndT (run d p q) ≐ zero) (ZT.eq (⟨p,q⟩ : ZT n) (ZT.ofNat zero)) :=
   .andI (.impI (integer_zero_reflect _ _ hd.wk ((returned_sign _ _ _).wk.eqSymm.eqTrans Prf.hyp0)))

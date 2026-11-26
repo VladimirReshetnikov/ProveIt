@@ -13,7 +13,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianFastValueCut (exponent query_budget)
 open GaussianStirlingAllOrderFirstPanelReadback (halfPanel)
@@ -23,9 +23,6 @@ open GaussianNameEquivalence (crossEquivalent point_at)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_radius_mono distance_triangle_same)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -39,18 +36,11 @@ def data (A B k : PTm n) : PTm n := pairT A (pairT B k)
 def nameF : PR 2 :=
   PTm.toPR (body (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))) (var 0))
 
-@[simp] theorem subst_clock {l : ℕ} (σ : Fin n → PTm l) (A B k p : PTm n) :
-    Syn.subst σ (clock A B k p) = clock (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ k) (Syn.subst σ p) := by
-  simp [clock,radiusCoefficient]
+ipra_subst clock [radiusCoefficient]
 
-@[simp] theorem subst_body {l : ℕ} (σ : Fin n → PTm l) (A B k p : PTm n) :
-    Syn.subst σ (body A B k p) = body (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ k) (Syn.subst σ p) := by
-  simp [body,halfPanel,mesh,GaussianStirlingAllOrderFirstPanelNamed.logClock,
-    GaussianHarmonicLogarithmName.clock,GammaEulerConstantName.mesh,GammaEulerConstantName.unit,
-    GaussianNamedBoundedProductObservation.clock]
+ipra_subst body [halfPanel, mesh, GaussianStirlingAllOrderFirstPanelNamed.logClock, GaussianHarmonicLogarithmName.clock, GammaEulerConstantName.mesh, GammaEulerConstantName.unit, GaussianNamedBoundedProductObservation.clock]
 
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (A B k : PTm n) :
-    Syn.subst σ (data A B k) = data (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ k) := by simp [data]
+ipra_subst data
 
 theorem name_at (A B k p : PTm n) : Γ ⊢[PRAAx] ap2 nameF p (data A B k) ≐ body A B k p := by
   let x := data A B k

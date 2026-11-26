@@ -18,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianWeightedPolynomialTail
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul evaluate horner)
 open GaussianRationalSyntheticDivision (qsub_congr)
 open GaussianRationalMetric (bounded distanceBounded)
@@ -29,10 +29,6 @@ open GaussianRationalPowerExpansion (partialSum)
 open GaussianEuclideanDistanceName (fraction)
 open RationalArgmin (rationalLE)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

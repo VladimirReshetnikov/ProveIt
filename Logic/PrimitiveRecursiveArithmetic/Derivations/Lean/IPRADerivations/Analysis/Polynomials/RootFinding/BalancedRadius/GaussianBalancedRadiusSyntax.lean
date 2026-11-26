@@ -16,14 +16,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBalancedRadiusSyntax
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalL1 (rawGaussian rawDen raw_den_positive raw_represents)
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder (normSq)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (positive_product)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,33 +38,16 @@ def input (C N : PTm n) : Fm PTm n :=
   Foundations.SequenceComposition.length C ≐ succ N ⋏
     (le one N ⋏ (le one (numerator C N zero) ⋏ nonconstant C N))
 
-@[simp] theorem subst_unit {m : ℕ} (σ : Fin n → PTm m) (t : PTm n) :
-    Syn.subst σ (unit t) = unit (Syn.subst σ t) := by simp [unit]
-@[simp] theorem subst_three {m : ℕ} (σ : Fin n → PTm m) : Syn.subst σ (three : PTm n) = (three : PTm m) := by
-  simp [three]
-@[simp] theorem subst_coefficient {m : ℕ} (σ : Fin n → PTm m) (C N i : PTm n) :
-    Syn.subst σ (coefficient C N i) = coefficient (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ i) := by
-  simp [coefficient]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (C N i : PTm n) :
-    Syn.subst σ (numerator C N i) = numerator (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ i) := by
-  simp [numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (C N i : PTm n) :
-    Syn.subst σ (denominator C N i) = denominator (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ i) := by
-  simp [denominator]
-@[simp] theorem subst_score {m : ℕ} (σ : Fin n → PTm m) (C N E j i : PTm n) :
-    Syn.subst σ (score C N E j i) = score (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ E)
-      (Syn.subst σ j) (Syn.subst σ i) := by simp [score]
-@[simp] theorem subst_cap {m : ℕ} (σ : Fin n → PTm m) (C N E i : PTm n) :
-    Syn.subst σ (cap C N E i) = cap (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ E) (Syn.subst σ i) := by
-  simp [cap]
-@[simp] theorem subst_fitAt {m : ℕ} (σ : Fin n → PTm m) (C N E j i : PTm n) :
-    (fitAt C N E j i).subst σ = fitAt (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ E)
-      (Syn.subst σ j) (Syn.subst σ i) := by simp [fitAt]
-@[simp] theorem subst_nonconstant {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    (nonconstant C N).subst σ = nonconstant (Syn.subst σ C) (Syn.subst σ N) := by
-  simp [nonconstant,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    (input C N).subst σ = input (Syn.subst σ C) (Syn.subst σ N) := by simp [input]
+ipra_subst unit
+ipra_subst three
+ipra_subst coefficient
+ipra_subst numerator
+ipra_subst denominator
+ipra_subst score
+ipra_subst cap
+ipra_subst fitAt
+ipra_subst nonconstant [Syn.subst_shift, Syn.shift_subst]
+ipra_subst input
 
 theorem unit_positive (t : PTm n) : Γ ⊢[PRAAx] le one (unit t) :=
   GaussianFactorBudget.power_positive two t (le_succ_self one)

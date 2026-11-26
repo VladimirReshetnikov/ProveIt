@@ -16,7 +16,7 @@ set_option maxHeartbeats 950000
 namespace LeanProofs.IPRA.Analysis.GaussianBinetSecondDecaySharedTail
 
 open GaussianBinetSecondDecayFrozenTail (mesh body)
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetSecondDecayFinite (finite_bound)
 open GaussianBinetSecondDecayGrid (value rowBody)
 open GaussianBinetSecondDecayPointwise (frozenPiNumerator frozen_pi_rate)
@@ -31,10 +31,6 @@ open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalRiemannRefinement (leftSum)
 open GaussianRightHalfPlaneLogarithm (source)
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (succ zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,9 +38,7 @@ def clockFloor (N T M k : PTm n) : PTm n :=
   let H := frozenPiNumerator M k
   num 20*N+(two*(T*N*H)+(M*M)*T*(num 8+num 10*T))
 
-@[simp] theorem subst_clockFloor {m : ℕ} (σ : Fin n → PTm m) (N T M k : PTm n) :
-    Syn.subst σ (clockFloor N T M k) = clockFloor (Syn.subst σ N) (Syn.subst σ T) (Syn.subst σ M) (Syn.subst σ k) :=
-  by simp [clockFloor,frozenPiNumerator,one,two]
+ipra_subst clockFloor [frozenPiNumerator, one, two]
 
 theorem shared_row_bound (q N T M k m K X Y D sign : PTm n)
     (hz : Γ ⊢[PRAAx] source X D sign) (hT : Γ ⊢[PRAAx] le one T)
@@ -108,9 +102,7 @@ private def term (i p N T k C x : PTm n) : PTm n :=
 def data (q N T k C X Y D sign : PTm n) : PTm n :=
   sampleData q N T k C (pairT (D*D) (GaussianBinetArctangentQuadrature.fixedData X Y D sign))
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (q N T k C X Y D sign : PTm n) :
-    Syn.subst σ (data q N T k C X Y D sign) = data (Syn.subst σ q) (Syn.subst σ N) (Syn.subst σ T) (Syn.subst σ k)
-      (Syn.subst σ C) (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign) := by simp [data]
+ipra_subst data
 
 theorem row_at (i q N T k C X Y D sign : PTm n) :
     Γ ⊢[PRAAx] inst2 body i (data q N T k C X Y D sign) ≐

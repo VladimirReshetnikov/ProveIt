@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Digamma.GaussianGammaDigammaNative
 import IPRADerivations.Analysis.RationalArithmetic.GaussianPositiveRealArithmetic
-import IPRADerivations.Core.Search
 
 /-!
 # Adjacent opposite signs on a digamma grid
@@ -15,14 +14,10 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaDyadicCrossing
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaDigammaNative (nameF data)
 open GaussianPositiveRealArithmetic (sign)
 open RationalSupMetric (numeratorOf)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -44,9 +39,7 @@ def leftIndex (p N : PTm n) : PTm n := pred (first p N)
     Syn.subst σ (test p N i) = test (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ i) := by
   simp [test, numeratorOf]
 
-@[simp] theorem subst_first {k : ℕ} (σ : Fin n → PTm k) (p N : PTm n) :
-    Syn.subst σ (first p N) = first (Syn.subst σ p) (Syn.subst σ N) := by
-  simp [first, input]
+ipra_subst first [input]
 
 @[simp] theorem subst_leftIndex {k : ℕ} (σ : Fin n → PTm k) (p N : PTm n) :
     Syn.subst σ (leftIndex p N) = leftIndex (Syn.subst σ p) (Syn.subst σ N) := by

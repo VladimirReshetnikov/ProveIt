@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGeneralFTARootName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianGeneralFTAConstants (B R C K H L QNum QDen rhoNum)
 open LeanProofs.IPRA.Analysis.GaussianGeneralFTATrajectory (trajectory polynomial J M alpha nameF nameData)
 open LeanProofs.IPRA.Analysis.GaussianGeneralPolynomialSamples (sourceInput sample)
@@ -25,15 +25,11 @@ open LeanProofs.IPRA.Analysis.GaussianRationalHorner (evaluate)
 open LeanProofs.IPRA.Analysis.GaussianCoefficientNameBounds (unit unit_positive)
 open LeanProofs.IPRA.Analysis.GaussianDescentClockArithmetic (positive_product)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def beta (a : PR 3) (N h x t : PTm n) : PTm n := evaluate (sample a N (M a N h x t) x) (alpha a N h x t)
-@[simp] theorem subst_beta {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x t : PTm n) :
-    Syn.subst σ (beta a N h x t) = beta a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) (Syn.subst σ t) := by simp [beta]
+ipra_subst beta
 
 theorem J_monotone (a : PR 3) (N h x t u : PTm n) (htu : Γ ⊢[PRAAx] le t u) : Γ ⊢[PRAAx]
     le (J a N h x t) (J a N h x u) :=

@@ -19,7 +19,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianExponentialInverse
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero)
 open GaussianRationalMetric (bounded qsub)
 open GaussianRationalReciprocal (bound_congr)
@@ -29,9 +29,6 @@ open GaussianNameEquivalence (diagonalEquivalent crossEquivalent cross_refl cros
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -81,8 +78,7 @@ theorem zero_exponential_cross (R x : PTm n) : Γ ⊢[PRAAx]
 def productF (f : PR 2) : PR 2 := GaussianNameArithmetic.multiplyF (nameF f) (nameF (negativeF f))
 def productData (f : PR 2) (R x : PTm n) : PTm n :=
   GaussianNameArithmetic.multiplyData (nameF f) (nameF (negativeF f)) (data R x) (data R (negativeData x))
-@[simp] theorem subst_productData {l : ℕ} (σ : Fin n → PTm l) (f : PR 2) (R x : PTm n) :
-    Syn.subst σ (productData f R x) = productData f (Syn.subst σ R) (Syn.subst σ x) := by simp [productData]
+ipra_subst productData
 
 theorem product_regular (f : PR 2) (R x : PTm n) (hf : Γ ⊢[PRAAx] input f R x) : Γ ⊢[PRAAx]
     pointCN (productF f) (productData f R x) :=

@@ -14,7 +14,7 @@ set_option maxHeartbeats 1500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLogConvexity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianGammaEulerRationalHeadConvexity (weight barycenter)
@@ -26,9 +26,6 @@ open GaussianNameEquivalence (crossEquivalent cross_refl cross_trans cross_symm)
 open GaussianNamedGammaHalfShift (add_cross)
 open GaussianNamedPositiveExponentialOrder (realOrder)
 open GaussianRationalHorner (positive_product)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "S" => GaussianNaturalScaleProductName.productF
@@ -49,14 +46,8 @@ def centerHeadData (N a d b r s : PTm n) : PTm n :=
 def weightedHeadData (N a d b r s : PTm n) : PTm n :=
   addData (sd L (succ r) (headLogData N a b)) (sd L s (headLogData N d b))
 
-@[simp] theorem subst_centerData {m : ℕ} (σ : Fin n → PTm m) (N a d b r s : PTm n) :
-    Syn.subst σ (centerData N a d b r s) =
-      centerData (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ d) (Syn.subst σ b) (Syn.subst σ r) (Syn.subst σ s) :=
-  by simp [centerData,weight,barycenter]
-@[simp] theorem subst_weightedData {m : ℕ} (σ : Fin n → PTm m) (N a d b r s : PTm n) :
-    Syn.subst σ (weightedData N a d b r s) =
-      weightedData (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ d) (Syn.subst σ b) (Syn.subst σ r) (Syn.subst σ s) :=
-  by simp [weightedData]
+ipra_subst centerData [weight, barycenter]
+ipra_subst weightedData
 
 theorem center_positive (a d r s : PTm n) (ha : Γ ⊢[PRAAx] le one a) :
     Γ ⊢[PRAAx] le one (barycenter a d r s) :=

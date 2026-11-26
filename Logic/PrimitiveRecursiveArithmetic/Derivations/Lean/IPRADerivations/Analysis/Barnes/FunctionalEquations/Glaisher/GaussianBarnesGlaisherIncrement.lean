@@ -16,7 +16,7 @@ set_option maxHeartbeats 1100000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesGlaisherIncrement
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale oneCode normSq normSq_scale normSq_neg normSq_one)
 open GaussianBarnesGlaisherQuartic (fourth weightNumerator weight negativeWeight correction residual
   residualNumerator residualDenominator residual_denominator_positive numeric_power_four)
@@ -34,10 +34,6 @@ open GaussianRationalMetric (qsub qnegative qnegative_represents qnegative_canon
 open GaussianRationalSyntheticDivision (qmul_congr qadd_congr)
 open GaussianEuclideanDistanceName (pointCN)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open LeanProofs.IPRA.PTm (num monus)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

@@ -1,5 +1,4 @@
 import IPRADerivations.Topology.BarycentricMesh
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The exact Euler polygons: norm bounds, stability and segment clearance
@@ -26,12 +25,8 @@ supplied as derived inequalities; the clearance polynomial as integer terms):
 
 namespace LeanProofs.IPRA.Analysis.EulerPolygon
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Topology.BarycentricMesh (mul_cancel_le num_pos)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

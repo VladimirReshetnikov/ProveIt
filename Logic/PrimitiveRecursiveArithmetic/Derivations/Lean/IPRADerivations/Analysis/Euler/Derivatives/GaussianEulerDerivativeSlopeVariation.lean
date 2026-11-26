@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerDerivativeSlopeVariation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerDerivativeParameterPath (point numerator denominator)
 open GaussianEulerLogarithmicImproperName (data nameF name_regular)
 open GaussianEulerParameterExponentialIncrement (shifted)
@@ -24,9 +24,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNamedInverseRate (independentRate rate_at rateNumerator rateDenominator denominator_positive)
 open ComplexLogarithmRemainder (scale normSq_scale)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -39,14 +36,9 @@ def source (r j z R B A h D N i : PTm n) : Fm PTm n :=
 def pathData (j z R B A h D N i : PTm n) : PTm n :=
   data j (numerator z B h D N i) (R+one) (denominator B D N) (two*A)
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (r j z R B A h D N i : PTm n) :
-    (source r j z R B A h D N i).subst σ =
-      source (Syn.subst σ r) (Syn.subst σ j) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-        (Syn.subst σ A) (Syn.subst σ h) (Syn.subst σ D) (Syn.subst σ N) (Syn.subst σ i) := by simp [source]
+ipra_subst source
 
-@[simp] theorem subst_pathData {m : ℕ} (σ : Fin n → PTm m) (j z R B A h D N i : PTm n) :
-    Syn.subst σ (pathData j z R B A h D N i) = pathData (Syn.subst σ j) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ h) (Syn.subst σ D) (Syn.subst σ N) (Syn.subst σ i) := by simp [pathData]
+ipra_subst pathData
 
 private theorem scaled_displacement (h D N i X Y : PTm n)
     (hD : Γ ⊢[PRAAx] le one D) (hN : Γ ⊢[PRAAx] le one N) (hi : Γ ⊢[PRAAx] le i N)

@@ -11,7 +11,7 @@ set_option maxHeartbeats 760000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRaabeAtOne
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameArithmetic (sum_distance)
 open GaussianPositiveRationalLogarithm (fraction sample)
@@ -22,10 +22,6 @@ open GaussianRationalHorner (qadd qzero positive_product)
 open GaussianRationalMetric (distanceBounded qnegative qsub qnegative_canonical)
 open GaussianRationalPowerDifference (distance_refl_zero)
 open GaussianRationalSyntheticDivision (qmul_congr qsub_congr qone qzero_add)
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

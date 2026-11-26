@@ -15,7 +15,7 @@ set_option maxHeartbeats 1400000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRightHalfPlaneLogarithmIncrement
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaFiniteApproximantName (exponential_input)
 open GaussianLogGammaEulerResidualDomain (native)
@@ -30,10 +30,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRightHalfPlaneLogarithmIncrementBound (input shift_input)
 open GaussianRightHalfPlaneLogarithmRelativeExponential (correctedF correctedData correctionData)
 open GaussianRightHalfPlaneLogarithmRelativeStep (numerator denominator radius relative)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "G" => GaussianRightHalfPlaneLogarithm.nameF

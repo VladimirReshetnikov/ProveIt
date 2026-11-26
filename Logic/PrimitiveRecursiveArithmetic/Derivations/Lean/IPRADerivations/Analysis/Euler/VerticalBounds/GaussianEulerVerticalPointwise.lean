@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerVerticalPointwise
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerVerticalExponentReference (source)
 open GaussianEulerVerticalNativeProjection (argument)
 open GaussianEulerIntegrandName (nameF data sample)
@@ -27,10 +27,6 @@ open GaussianDominantPairAlgebra (radiusPoint radius_represents)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianPositiveRadiusFiniteSum (boundBy)
 open ComplexLogarithmRemainder (re)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

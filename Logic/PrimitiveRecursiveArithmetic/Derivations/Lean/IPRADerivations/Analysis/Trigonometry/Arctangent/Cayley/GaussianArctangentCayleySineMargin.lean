@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentCayleySineMargin
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (normSq normSq_eval eval_re_code eval_im_code)
 open GaussianArctangentCayleyValues (denominator denominator_positive)
 open GaussianArctangentCayleyTrig (sinePoint sineCode)
@@ -21,8 +21,6 @@ open GaussianNameReciprocal (lower)
 open GaussianRationalHorner (positive_product ofGaussian_represents)
 open GaussianRationalMetric (qnormSq_represents squared_tolerance_represents comparison_of_cleared)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

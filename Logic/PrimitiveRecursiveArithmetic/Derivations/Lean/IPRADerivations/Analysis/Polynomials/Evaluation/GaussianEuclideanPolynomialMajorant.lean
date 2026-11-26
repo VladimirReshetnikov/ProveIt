@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEuclideanPolynomialMajorant
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul horner)
 open GaussianRationalSyntheticDivision (qone qadd_congr)
 open GaussianRationalSumMajorant (majorized majorized_congr)
@@ -24,9 +24,6 @@ open GaussianCoefficientL1 (normBody prefixNorm)
 open GaussianEuclideanDistanceName (fraction fraction_represents)
 open GaussianPositiveRealArithmetic (sign numerator natural_representation)
 open RationalSupMetric (denominatorOf)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -53,18 +50,15 @@ theorem entry_at (C i : PTm n) : Γ ⊢[PRAAx]
 def sumLaw (C j : PTm n) : Fm PTm n :=
   horner C qone j ≐ GaussianRationalFiniteSum.sum entryBody j C
 
-@[simp] theorem subst_sumLaw {m : ℕ} (σ : Fin n → PTm m) (C j : PTm n) :
-    (sumLaw C j).subst σ = sumLaw (Syn.subst σ C) (Syn.subst σ j) := by simp [sumLaw]
+ipra_subst sumLaw
 
 /-- Genuine QF induction compares two existing sums, with no list-shape guard. -/
 theorem horner_sum (C j : PTm n) : Γ ⊢[PRAAx]
     horner C qone j ≐ GaussianRationalFiniteSum.sum entryBody j C := by
   have all : Γ ⊢[PRAAx] .all (sumLaw (Syn.shift C) (var 0)) := by
-    refine PRA.qfInd _ (by trivial) ?_ ?_
-    · simp only [subst_sumLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (GaussianRationalHorner.horner_zero C qone).eqTrans (GaussianRationalFiniteSum.sum_zero entryBody C).eqSymm
-    · simp only [subst_sumLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact (GaussianRationalSumSegments.prefix_succ (Syn.shift C) (var 0)).eqTrans
+    ipra_qfind (by trivial) [subst_sumLaw]
+    · exact (GaussianRationalHorner.horner_zero C qone).eqTrans (GaussianRationalFiniteSum.sum_zero entryBody C).eqSymm
+    · exact (GaussianRationalSumSegments.prefix_succ (Syn.shift C) (var 0)).eqTrans
         ((qadd_congr Prf.hyp0 (entry_at (Syn.shift C) (var 0)).eqSymm).eqTrans
           (GaussianRationalFiniteSum.sum_succ entryBody (var 0) (Syn.shift C)).eqSymm)
   change Γ ⊢[PRAAx] sumLaw C j
@@ -74,9 +68,7 @@ def entriesMajorized (C D c T : PTm n) : Fm PTm n := .all
   (lt (var 0) (Syn.shift T) ⟶ majorized (Foundations.MasterCertificate.entry (Syn.shift C) (var 0))
     (RationalArithmetic.multiply (Syn.shift c) (qL1 (Foundations.MasterCertificate.entry (Syn.shift D) (var 0)))))
 
-@[simp] theorem subst_entriesMajorized {m : ℕ} (σ : Fin n → PTm m) (C D c T : PTm n) :
-    (entriesMajorized C D c T).subst σ = entriesMajorized (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ c) (Syn.subst σ T) := by
-  simp [entriesMajorized,Syn.subst_shift,Syn.shift_subst]
+ipra_subst entriesMajorized [Syn.subst_shift, Syn.shift_subst]
 
 theorem horner_majorized (C D c T : PTm n) (h : Γ ⊢[PRAAx] entriesMajorized C D c T) : Γ ⊢[PRAAx]
     majorized (horner C qone T) (RationalArithmetic.multiply c (prefixNorm D T)) := by

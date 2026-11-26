@@ -19,7 +19,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceExponential
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (eval_re_code scale oneCode)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianEuclideanDistanceName (pointCN)
@@ -35,10 +35,6 @@ open GaussianRationalReciprocal (bound_congr bounded_negative bounded_product)
 open GaussianRationalSyntheticBounds (natCode natCode_represents natCode_congr)
 open GaussianReconstructionRoots (distance_zero_iff)
 open RationalArgmin (rationalLE)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -52,18 +48,11 @@ def data (X Y D sign R T A B : PTm n) : PTm n :=
 
 def timeGain (R T : PTm n) : PTm n := GaussianRadiusExponentialLipschitzRate.factor (R*T)*R
 
-@[simp] theorem subst_exponent {m : ℕ} (σ : Fin n → PTm m) (X Y D sign A B : PTm n) :
-    Syn.subst σ (exponent X Y D sign A B) =
-      exponent (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [exponent, argument, ZT.subst, ZT.ofNat]
+ipra_subst exponent [argument, ZT.subst, ZT.ofNat]
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (X Y D sign R T A B : PTm n) :
-    Syn.subst σ (data X Y D sign R T A B) =
-      data (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign)
-        (Syn.subst σ R) (Syn.subst σ T) (Syn.subst σ A) (Syn.subst σ B) := by simp [data]
+ipra_subst data
 
-@[simp] theorem subst_timeGain {m : ℕ} (σ : Fin n → PTm m) (R T : PTm n) :
-    Syn.subst σ (timeGain R T) = timeGain (Syn.subst σ R) (Syn.subst σ T) := by simp [timeGain]
+ipra_subst timeGain
 
 theorem parameter_bound (X Y D sign R : PTm n) (h : Γ ⊢[PRAAx] source X Y D sign R) :
     Γ ⊢[PRAAx] bounded (argument X Y D sign) R one := by

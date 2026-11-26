@@ -1,8 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.Grids.GaussianRationalGridRounding
 import IPRADerivations.Analysis.RationalArithmetic.Directions.GaussianRationalDirectionNormalizer
 import IPRADerivations.Foundations.MasterCertificate
-import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Actual signed square grids and nearest Gaussian points
@@ -18,7 +16,7 @@ set_option linter.unnecessarySeqFocus false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalSquareGrid
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalL1 (rawDen rawGaussian raw_represents raw_den_positive)
 open GaussianRationalHorner (ofGaussian represents represents_congr represents_rescale positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
@@ -27,10 +25,6 @@ open GaussianRootAlgebra (sub re_sub im_sub re_scale im_scale)
 open LeanProofs.IPRA.Foundations.GapDecision (zabs zabs_sq zabs_congr)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -54,16 +48,11 @@ def nearestIndex (R M z : PTm n) : PTm n := nearestX R M z*side R M+nearestY R M
 
 def nativeError (R M z : PTm n) : PTm n := sub (scale M (rawGaussian z))
   (scale (rawDen z) (nativePoint R M (nearestX R M z) (nearestY R M z)))
-@[simp] theorem subst_side {l : ℕ} (σ : Fin n → PTm l) (R M : PTm n) :
-    Syn.subst σ (side R M) = side (Syn.subst σ R) (Syn.subst σ M) := by simp [side]
-@[simp] theorem subst_nativePoint {l : ℕ} (σ : Fin n → PTm l) (R M i j : PTm n) :
-    Syn.subst σ (nativePoint R M i j) = nativePoint (Syn.subst σ R) (Syn.subst σ M) (Syn.subst σ i) (Syn.subst σ j) := by simp [nativePoint]
-@[simp] theorem subst_point {l : ℕ} (σ : Fin n → PTm l) (R M i j : PTm n) :
-    Syn.subst σ (point R M i j) = point (Syn.subst σ R) (Syn.subst σ M) (Syn.subst σ i) (Syn.subst σ j) := by simp [point]
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (R M : PTm n) :
-    Syn.subst σ (data R M) = data (Syn.subst σ R) (Syn.subst σ M) := by simp [data]
-@[simp] theorem subst_grid {l : ℕ} (σ : Fin n → PTm l) (R M : PTm n) :
-    Syn.subst σ (grid R M) = grid (Syn.subst σ R) (Syn.subst σ M) := by simp [grid]
+ipra_subst side
+ipra_subst nativePoint
+ipra_subst point
+ipra_subst data
+ipra_subst grid
 @[simp] theorem subst_nearestX {l : ℕ} (σ : Fin n → PTm l) (R M z : PTm n) :
     Syn.subst σ (nearestX R M z) = nearestX (Syn.subst σ R) (Syn.subst σ M) (Syn.subst σ z) := by
   simp only [nearestX,GaussianRationalGridRounding.subst_index,GaussianRationalL1.subst_rawDen]
@@ -76,12 +65,9 @@ def nativeError (R M z : PTm n) : PTm n := sub (scale M (rawGaussian z))
   change GaussianRationalGridRounding.index ((im (rawGaussian z)).subst σ).pos ((im (rawGaussian z)).subst σ).neg
     (rawDen (Syn.subst σ z)) (Syn.subst σ R) (Syn.subst σ M) = _
   simp
-@[simp] theorem subst_nearest {l : ℕ} (σ : Fin n → PTm l) (R M z : PTm n) :
-    Syn.subst σ (nearest R M z) = nearest (Syn.subst σ R) (Syn.subst σ M) (Syn.subst σ z) := by simp [nearest]
-@[simp] theorem subst_nearestIndex {l : ℕ} (σ : Fin n → PTm l) (R M z : PTm n) :
-    Syn.subst σ (nearestIndex R M z) = nearestIndex (Syn.subst σ R) (Syn.subst σ M) (Syn.subst σ z) := by simp [nearestIndex]
-@[simp] theorem subst_nativeError {l : ℕ} (σ : Fin n → PTm l) (R M z : PTm n) :
-    Syn.subst σ (nativeError R M z) = nativeError (Syn.subst σ R) (Syn.subst σ M) (Syn.subst σ z) := by simp [nativeError]
+ipra_subst nearest
+ipra_subst nearestIndex
+ipra_subst nativeError
 
 theorem side_positive (R M : PTm n) : Γ ⊢[PRAAx] le one (side R M) := zero_lt_succ _
 theorem point_canonical (R M i j : PTm n) (hM : Γ ⊢[PRAAx] le one M) : Γ ⊢[PRAAx]
@@ -190,8 +176,7 @@ theorem grid_indices (R M r : PTm n) (hr : Γ ⊢[PRAAx] lt r (side R M*side R M
       (RationalIntegerNormalization.positive_form (side_positive R M)) r)
 
 def pointIndex (R M i j : PTm n) : PTm n := i*side R M+j
-@[simp] theorem subst_pointIndex {l : ℕ} (σ : Fin n → PTm l) (R M i j : PTm n) :
-    Syn.subst σ (pointIndex R M i j) = pointIndex (Syn.subst σ R) (Syn.subst σ M) (Syn.subst σ i) (Syn.subst σ j) := by simp [pointIndex]
+ipra_subst pointIndex
 theorem point_index_range (R M i j : PTm n) (hi : Γ ⊢[PRAAx] lt i (side R M)) (hj : Γ ⊢[PRAAx] lt j (side R M)) : Γ ⊢[PRAAx]
     lt (pointIndex R M i j) (side R M*side R M) := by
   have first : Γ ⊢[PRAAx] le (succ (pointIndex R M i j)) (succ i*side R M) :=
@@ -281,24 +266,22 @@ theorem nearest_bound (R M z : PTm n) (hM : Γ ⊢[PRAAx] le one M) (h : Γ ⊢[
 def output (R M z : PTm n) : PTm n := pairT (grid R M) (pairT (nearestIndex R M z) (pairT (nearest R M z) (side R M)))
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (R M z : PTm n) : PTm n := ap3 outputF R M z
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (R M z : PTm n) :
-    Syn.subst σ (output R M z) = output (Syn.subst σ R) (Syn.subst σ M) (Syn.subst σ z) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (R M z : PTm n) :
-    Syn.subst σ (run R M z) = run (Syn.subst σ R) (Syn.subst σ M) (Syn.subst σ z) := by simp [run]
+ipra_subst output
+ipra_subst run
 theorem program_at (R M z : PTm n) : Γ ⊢[PRAAx] run R M z ≐ output R M z := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![R,M,z]
 theorem returned_grid (R M z : PTm n) : Γ ⊢[PRAAx] fstT (run R M z) ≐ grid R M :=
-  (congrFst (program_at R M z)).eqTrans (fst_pair _ _)
+  (program_at R M z).fstE
 theorem returned_index (R M z : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run R M z)) ≐ nearestIndex R M z :=
-  (congrFst (congrSnd (program_at R M z))).eqTrans ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
+  (congrFst (congrSnd (program_at R M z))).eqTrans (snd_pair _ _).fstE
 theorem returned_point (R M z : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run R M z))) ≐ nearest R M z := by
-  have t1 := (congrSnd (program_at (Γ := Γ) R M z)).eqTrans (snd_pair _ _)
-  have t2 := (congrSnd t1).eqTrans (snd_pair _ _)
-  exact (congrFst t2).eqTrans (fst_pair _ _)
+  have t1 := (program_at (Γ := Γ) R M z).sndE
+  have t2 := t1.sndE
+  exact t2.fstE
 theorem returned_side (R M z : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run R M z))) ≐ side R M := by
-  have t1 := (congrSnd (program_at (Γ := Γ) R M z)).eqTrans (snd_pair _ _)
-  have t2 := (congrSnd t1).eqTrans (snd_pair _ _)
-  exact (congrSnd t2).eqTrans (snd_pair _ _)
+  have t1 := (program_at (Γ := Γ) R M z).sndE
+  have t2 := t1.sndE
+  exact t2.sndE
 theorem returned_cover (R M z : PTm n) (hM : Γ ⊢[PRAAx] le one M) (h : Γ ⊢[PRAAx] bounded z R one) : Γ ⊢[PRAAx]
     lt (fstT (sndT (run R M z))) (length (fstT (run R M z))) ⋏
       distanceBounded z (fstT (sndT (sndT (run R M z)))) one M :=

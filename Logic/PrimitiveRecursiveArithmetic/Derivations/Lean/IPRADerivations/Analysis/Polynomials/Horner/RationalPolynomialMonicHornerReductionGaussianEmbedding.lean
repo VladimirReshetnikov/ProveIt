@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Representation.RationalPolynomialConstantInjectionGaussianEmbedding
 import IPRADerivations.Analysis.Polynomials.CompanionMatrices.RationalPolynomialMultiplicationMatrixGaussianEmbedding
 import IPRADerivations.Analysis.Polynomials.Horner.GaussianPolynomialMonicHornerReduction
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual original rational arbitrary-high-Y remainder
@@ -18,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalPolynomialMonicHornerReductionGaussianEmbedding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalGaussianEmbedding (embed scalarZero)
 open RationalPolynomialGaussianEmbedding (embed_congr)
 open RationalPolynomialBuffersGaussianEmbedding (zeros zeros_length embeddedEntries)
@@ -29,9 +28,6 @@ open RationalPolynomialMultiplicationMatrixGaussianEmbedding (pairedRows paired_
 open LeanProofs.IPRA.Foundations.BoundedSyntax (BFm formula)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -46,17 +42,11 @@ def stepBody : PTm 3 := app advanceF ![fields (var 2) 0,fields (var 2) 1,fields 
 def stageF : PR 2 := rec2 initial stepBody
 def stage (F H m a c j : PTm n) : PTm n := ap2 stageF j (data F H m a c)
 
-@[simp] theorem subst_width {k : ℕ} (σ : Fin n → PTm k) (a c j : PTm n) :
-    Syn.subst σ (width a c j) = width (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ j) := by simp [width]
-@[simp] theorem subst_zeroRows {k : ℕ} (σ : Fin n → PTm k) (m a : PTm n) :
-    Syn.subst σ (zeroRows m a) = zeroRows (Syn.subst σ m) (Syn.subst σ a) := by simp [zeroRows]
-@[simp] theorem subst_data {k : ℕ} (σ : Fin n → PTm k) (F H m a c : PTm n) :
-    Syn.subst σ (data F H m a c) = data (Syn.subst σ F) (Syn.subst σ H) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by simp [data]
-@[simp] theorem subst_advance {k : ℕ} (σ : Fin n → PTm k) (F H m a c j R : PTm n) :
-    Syn.subst σ (advance F H m a c j R) = advance (Syn.subst σ F) (Syn.subst σ H) (Syn.subst σ m) (Syn.subst σ a)
-      (Syn.subst σ c) (Syn.subst σ j) (Syn.subst σ R) := by simp [advance]
-@[simp] theorem subst_stage {k : ℕ} (σ : Fin n → PTm k) (F H m a c j : PTm n) :
-    Syn.subst σ (stage F H m a c j) = stage (Syn.subst σ F) (Syn.subst σ H) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ j) := by simp [stage]
+ipra_subst width
+ipra_subst zeroRows
+ipra_subst data
+ipra_subst advance
+ipra_subst stage
 
 theorem tuple_seven_fifth {α : Type} (a b c d e f g : α) : ![a,b,c,d,e,f,g] (5 : Fin 7) = f := rfl
 theorem tuple_seven_last {α : Type} (a b c d e f g : α) : ![a,b,c,d,e,f,g] (6 : Fin 7) = g := rfl
@@ -101,9 +91,7 @@ theorem stage_succ (F H m a c j : PTm n) : Γ ⊢[PRAAx] stage F H m a c (succ j
 
 def targetStage (F H m a c L j : PTm n) : PTm n := GaussianPolynomialMonicHornerReduction.stage
   (RationalRowSpanGaussianEmbedding.matrix F m (succ c)) (RationalRowSpanGaussianEmbedding.matrix H L (succ a)) m a c j
-@[simp] theorem subst_targetStage {k : ℕ} (σ : Fin n → PTm k) (F H m a c L j : PTm n) :
-    Syn.subst σ (targetStage F H m a c L j) = targetStage (Syn.subst σ F) (Syn.subst σ H) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ L) (Syn.subst σ j) := by simp [targetStage]
+ipra_subst targetStage
 
 theorem zero_rows_profile (m a : PTm n) : Γ ⊢[PRAAx]
     pairedRows (zeroRows m a) (GaussianPolynomialMonicHornerReduction.zeroRows m a) m a := by
@@ -119,9 +107,7 @@ theorem zero_rows_profile (m a : PTm n) : Γ ⊢[PRAAx]
 
 def profile (F H m a c L j : PTm n) : Fm PTm n := le j L ⟶
   pairedRows (stage F H m a c j) (targetStage F H m a c L j) m (width a c j)
-@[simp] theorem subst_profile {k : ℕ} (σ : Fin n → PTm k) (F H m a c L j : PTm n) :
-    (profile F H m a c L j).subst σ = profile (Syn.subst σ F) (Syn.subst σ H) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ L) (Syn.subst σ j) := by simp [profile]
+ipra_subst profile
 
 theorem profile_base (F H m a c L : PTm n) : Γ ⊢[PRAAx] profile F H m a c L zero := by
   refine .impI ?_
@@ -191,11 +177,9 @@ theorem stage_rows_embedded (F H m a c L j : PTm n) (hm : Γ ⊢[PRAAx] le one m
 
 theorem stage_length (F H m a c j : PTm n) : Γ ⊢[PRAAx] length (stage F H m a c j) ≐ m := by
   have all : Γ ⊢[PRAAx] .all (length (stage (Syn.shift F) (Syn.shift H) (Syn.shift m) (Syn.shift a) (Syn.shift c) (var 0)) ≐ Syn.shift m) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,subst_length,subst_stage,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (congrFst (stage_zero _ _ _ _ _)).eqTrans (zero_rows_length _ _)
-    · simp only [Fm.subst_eq,subst_length,subst_stage,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact (congrFst (stage_succ _ _ _ _ _ _)).eqTrans (RationalPolynomialConstantInjectionGaussianEmbedding.inject_length _ _ _ _ _)
+    ipra_qfind [subst_length, subst_stage]
+    · exact (congrFst (stage_zero _ _ _ _ _)).eqTrans (zero_rows_length _ _)
+    · exact (congrFst (stage_succ _ _ _ _ _ _)).eqTrans (RationalPolynomialConstantInjectionGaussianEmbedding.inject_length _ _ _ _ _)
   simpa only [Fm.subst_eq,subst_length,subst_stage,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
 
 theorem row_shape_congr {A A' m m' b b' : PTm n} (hA : Γ ⊢[PRAAx] A ≐ A')
@@ -220,12 +204,9 @@ def input (F H m a c N : PTm n) : Fm PTm n := le one m ⋏ ((length F ≐ m) ⋏
   (rowShape F m c ⋏ ((length H ≐ succ N) ⋏ rowShape H (succ N) a)))
 def remainder (F H m a c N : PTm n) : PTm n := stage F H m a c (succ N)
 def originalValue (H x y : PTm n) : PTm n := RationalBivariateGaussianEmbedding.bivariate H (length H) x y
-@[simp] theorem subst_input {k : ℕ} (σ : Fin n → PTm k) (F H m a c N : PTm n) :
-    (input F H m a c N).subst σ = input (Syn.subst σ F) (Syn.subst σ H) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ N) := by simp [input]
-@[simp] theorem subst_remainder {k : ℕ} (σ : Fin n → PTm k) (F H m a c N : PTm n) :
-    Syn.subst σ (remainder F H m a c N) = remainder (Syn.subst σ F) (Syn.subst σ H) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ N) := by simp [remainder]
-@[simp] theorem subst_originalValue {k : ℕ} (σ : Fin n → PTm k) (H x y : PTm n) :
-    Syn.subst σ (originalValue H x y) = originalValue (Syn.subst σ H) (Syn.subst σ x) (Syn.subst σ y) := by simp [originalValue]
+ipra_subst input
+ipra_subst remainder
+ipra_subst originalValue
 
 theorem remainder_shape (F H m a c N : PTm n) (h : Γ ⊢[PRAAx] input F H m a c N) : Γ ⊢[PRAAx]
     rowShape (remainder F H m a c N) m (width a c (succ N)) :=
@@ -299,12 +280,7 @@ theorem remainder_coefficient_well_formed (F H m a c N r s : PTm n)
 
 def remainderF : PR 6 := PTm.toPR (remainder (var 0) (var 1) (var 2) (var 3) (var 4) (var 5))
 def run (F H m a c N : PTm n) : PTm n := app remainderF ![F,H,m,a,c,N]
-@[simp] theorem subst_run {k : ℕ} (σ : Fin n → PTm k) (F H m a c N : PTm n) :
-    Syn.subst σ (run F H m a c N) = run (Syn.subst σ F) (Syn.subst σ H) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ N) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst run
 theorem program_at (F H m a c N : PTm n) : Γ ⊢[PRAAx] run F H m a c N ≐ remainder F H m a c N := by
   simpa [run,remainderF] using toPR_eq (Γ := Γ) (remainder (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) ![F,H,m,a,c,N]
 theorem returned_length (F H m a c N : PTm n) : Γ ⊢[PRAAx] length (run F H m a c N) ≐ m :=

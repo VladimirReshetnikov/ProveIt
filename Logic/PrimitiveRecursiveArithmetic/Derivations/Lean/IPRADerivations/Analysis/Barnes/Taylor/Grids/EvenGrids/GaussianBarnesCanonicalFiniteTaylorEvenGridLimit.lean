@@ -15,7 +15,7 @@ set_option maxHeartbeats 1400000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalFiniteTaylorEvenGridLimit
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (normSq bounded_mono)
 open GaussianBarnesCanonicalFiniteTaylorEvenGridBudget (analyticCoefficient clockCoefficient observationCoefficient)
 open GaussianBarnesCanonicalFiniteTaylorEvenGridComparison (observed target)
@@ -34,10 +34,6 @@ open GaussianRationalHorner (ofGaussian ofGaussian_represents positive_product)
 open GaussianRationalLowerBounds (lower lower_from_representation)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalNaturalScale (natScale)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

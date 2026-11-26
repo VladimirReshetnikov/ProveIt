@@ -1,7 +1,6 @@
 import IPRADerivations.Topology.DimensionRational
 import IPRADerivations.Topology.CollisionScales
 import IPRADerivations.DiophantineNumberTheory.FLTMultiples
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The arithmetic dimension schema (`dimension_invariance_ipra`, `thm:schema`)
@@ -345,7 +344,7 @@ theorem N_pos : Γ ⊢[PRAAx] pw two (Syn.subst ![kOf d' a] μ) ≐ succ (pred (
 /-- A grid point over `⟨N, a⟩` is a valid point code with denominator `N`. -/
 theorem den_eq {u : PTm n} (hu : GridPt (d' + 1) Γ (bOf d' μ a) u) :
     Γ ⊢[PRAAx] den d' u ≐ pw two (Syn.subst ![kOf d' a] μ) :=
-  (congrFst hu.tl).eqTrans (fst_pair _ _)
+  hu.tl.fstE
 
 theorem valid_grid {u : PTm n} (hu : GridPt (d' + 1) Γ (bOf d' μ a) u) : Γ ⊢[PRAAx] valid d' u := by
   refine .andI ?_ ?_

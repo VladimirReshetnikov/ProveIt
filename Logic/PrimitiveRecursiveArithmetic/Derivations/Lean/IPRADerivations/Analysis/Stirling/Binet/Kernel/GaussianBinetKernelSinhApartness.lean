@@ -18,7 +18,7 @@ set_option maxHeartbeats 350000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetKernelSinhApartness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetKernelFrozenHyperbolic (fixedExpF fixedExpData fixedSinhF fixedSinhData fixed_exp_input expRadius halfTime)
 open GaussianBoundedConstantProductName (constantF constant_at constant_regular)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -39,10 +39,6 @@ open GaussianRationalSyntheticDivision (qmul_congr qsub_congr rescale_to)
 open GaussianRootAlgebra (equal_of_values re_mul im_mul re_add im_add re_sub im_sub re_neg im_neg re_scale im_scale)
 open GaussianScalarExponentialOddTaylor (oddSum)
 open GaussianSineProductImaginaryLogDerivative (realNumerator)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Diff" => GaussianNamedDifference.nameF

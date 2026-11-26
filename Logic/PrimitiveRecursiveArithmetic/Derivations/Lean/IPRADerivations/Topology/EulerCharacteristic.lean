@@ -22,12 +22,9 @@ Packet: `topology/general_topology_ipra_2026-11-19`, `paper/sections/05_algebrai
 
 namespace LeanProofs.IPRA.Topology.EulerCharacteristic
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.ErrorBudget (nsum toG_nsum)
 open LeanProofs.IPRA.Probability.ConditionalAveraging (toG_ite)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
 
 /-! ## A03 in a commutative ring -/
 

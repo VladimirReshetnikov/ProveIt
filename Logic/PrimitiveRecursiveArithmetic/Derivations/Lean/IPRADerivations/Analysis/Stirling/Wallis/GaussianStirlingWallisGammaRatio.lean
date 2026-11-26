@@ -19,7 +19,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingWallisGammaRatio
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode)
 open GaussianStirlingGammaLogarithm (source arg gammaData gamma_source gamma_source_at_radius gamma_regular)
 open GaussianStirlingWallisFactor (halfSquareFactor integerDivisor inverseIntegerDivisor ratioFactor
@@ -36,9 +36,6 @@ open GaussianEuclideanDistanceName (pointCN)
 open GaussianRationalNaturalScale (naturalPoint)
 open GaussianRootAlgebra (equal equal_of_values equal_symm)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -57,18 +54,12 @@ def ratioData (r : PTm n) : PTm n := multiplyData halfSquareF C (halfSquareData 
 def wallisF : PR 2 := multiplyF P C
 def wallisData (r x : PTm n) : PTm n := multiplyData P C x (ratioFactor (succ r))
 
-@[simp] theorem subst_halfNumerator {l : ℕ} (σ : Fin n → PTm l) (r : PTm n) :
-    Syn.subst σ (halfNumerator r) = halfNumerator (Syn.subst σ r) := by simp [halfNumerator,two,one]
-@[simp] theorem subst_halfData {l : ℕ} (σ : Fin n → PTm l) (r : PTm n) :
-    Syn.subst σ (halfData r) = halfData (Syn.subst σ r) := by simp [halfData,two,one]
-@[simp] theorem subst_integerData {l : ℕ} (σ : Fin n → PTm l) (r : PTm n) :
-    Syn.subst σ (integerData r) = integerData (Syn.subst σ r) := by simp [integerData,one]
-@[simp] theorem subst_halfSquareData {l : ℕ} (σ : Fin n → PTm l) (r : PTm n) :
-    Syn.subst σ (halfSquareData r) = halfSquareData (Syn.subst σ r) := by simp [halfSquareData]
-@[simp] theorem subst_ratioData {l : ℕ} (σ : Fin n → PTm l) (r : PTm n) :
-    Syn.subst σ (ratioData r) = ratioData (Syn.subst σ r) := by simp [ratioData]
-@[simp] theorem subst_wallisData {l : ℕ} (σ : Fin n → PTm l) (r x : PTm n) :
-    Syn.subst σ (wallisData r x) = wallisData (Syn.subst σ r) (Syn.subst σ x) := by simp [wallisData]
+ipra_subst halfNumerator [two, one]
+ipra_subst halfData [two, one]
+ipra_subst integerData [one]
+ipra_subst halfSquareData
+ipra_subst ratioData
+ipra_subst wallisData
 
 theorem half_source (r : PTm n) : Γ ⊢[PRAAx] source (halfNumerator r) two :=
   .andI (by unfold halfNumerator; ipra_le 2*𝔞 (succ r)) (le_succ_self one)

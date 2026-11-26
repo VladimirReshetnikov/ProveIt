@@ -12,14 +12,10 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaEulerMidpointHeadGap
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianGammaEulerRationalHead (numerator denominator numerator_zero numerator_succ)
 open GaussianGammaEulerRationalHeadConvexity (denominator_power_scale)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (monus)
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -28,15 +24,11 @@ def large (a d : PTm n) : PTm n := (a+d)*(a+d)
 def small (a d : PTm n) : PTm n := two*two*a*d
 def gap (a d : PTm n) : PTm n := monus (large a d) (small a d)
 
-@[simp] theorem subst_large {m : ℕ} (σ : Fin n → PTm m) (a d : PTm n) :
-    Syn.subst σ (large a d) = large (Syn.subst σ a) (Syn.subst σ d) := by simp [large]
-@[simp] theorem subst_small {m : ℕ} (σ : Fin n → PTm m) (a d : PTm n) :
-    Syn.subst σ (small a d) = small (Syn.subst σ a) (Syn.subst σ d) := by simp [small]
-@[simp] theorem subst_gap {m : ℕ} (σ : Fin n → PTm m) (a d : PTm n) :
-    Syn.subst σ (gap a d) = gap (Syn.subst σ a) (Syn.subst σ d) := by simp [gap]
+ipra_subst large
+ipra_subst small
+ipra_subst gap
 
-theorem square_power (a : PTm n) : Γ ⊢[PRAAx] pw a two ≐ a*a :=
-  (pw_succ a one).eqTrans (congrMul (pw_one a) (.eqRefl _))
+alias square_power := Common.pw_two
 
 theorem ordered_square (a d : PTm n) (h : Γ ⊢[PRAAx] le a d) :
     Γ ⊢[PRAAx] large a d ≐ small a d+monus d a*monus d a := by
@@ -69,22 +61,17 @@ def numeratorComparison (N a d b : PTm n) : Fm PTm n :=
   le (pw (pw two two) (succ N)*(numerator (succ N) a b*numerator (succ N) d b)*large a d)
     (pw (numerator (succ N) (a+d) (two*b)) two*small a d)
 
-@[simp] theorem subst_numeratorComparison {m : ℕ} (σ : Fin n → PTm m) (N a d b : PTm n) :
-    (numeratorComparison N a d b).subst σ =
-      numeratorComparison (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ d) (Syn.subst σ b) := by
-  simp [numeratorComparison]
+ipra_subst numeratorComparison
 
 private theorem numerator_first (a b : PTm n) : Γ ⊢[PRAAx] numerator (succ zero) a b ≐ a :=
   (numerator_succ zero a b).eqTrans ((congrMul (numerator_zero a b) (.eqRefl _)).eqTrans (by ipra_ring))
 
 private theorem numerator_base (a d b : PTm n) : Γ ⊢[PRAAx] numeratorComparison zero a d b := by
   have e := natEq ((pw_one (pw two two)).eqTrans (square_power (Γ := Γ) two))
-  have ea := natEq (numerator_first (Γ := Γ) a b)
-  have ed := natEq (numerator_first (Γ := Γ) d b)
   have ec := natEq ((square_power (numerator (succ zero) (a+d) (two*b))).eqTrans
     (congrMul (numerator_first (Γ := Γ) (a+d) (two*b)) (numerator_first (a+d) (two*b))))
   dsimp [numeratorComparison,large,small]
-  ipra_le 0 using rw [ea,ed,ec,e]; ring
+  ipra_le 0 using rw [natEq (numerator_first (Γ := Γ) a b),natEq (numerator_first (Γ := Γ) d b),ec,e]; ring
 
 private theorem numerator_step (N a d b : PTm n)
     (h : Γ ⊢[PRAAx] numeratorComparison N a d b) :

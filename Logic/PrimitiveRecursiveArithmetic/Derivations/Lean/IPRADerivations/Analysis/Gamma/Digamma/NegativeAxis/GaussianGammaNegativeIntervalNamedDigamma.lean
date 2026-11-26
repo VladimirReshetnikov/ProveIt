@@ -16,7 +16,7 @@ set_option maxHeartbeats 1400000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalNamedDigamma
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianFastValueCut (exponent query_budget)
@@ -29,9 +29,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianSignedNameExponentialOrder (realSamples real_sample_at)
 open GaussianUnitIntervalInputDecoding (numerator denominator fraction_recode)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -50,18 +47,11 @@ def data (x E N : PTm n) : PTm n := pairT x (pairT E N)
 def nameF (f : PR 2) : PR 2 := PTm.toPR
   (observation f (var 0) (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))) : PTm 2)
 
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (p E N : PTm n) :
-    Syn.subst σ (clock p E N) = clock (Syn.subst σ p) (Syn.subst σ E) (Syn.subst σ N) := by simp [clock]
-@[simp] theorem subst_frozenData {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (k x N : PTm n) :
-    Syn.subst σ (frozenData f k x N) = frozenData f (Syn.subst σ k) (Syn.subst σ x) (Syn.subst σ N) := by simp [frozenData]
-@[simp] theorem subst_frozenRealData {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (k x N : PTm n) :
-    Syn.subst σ (frozenRealData f k x N) = frozenRealData f (Syn.subst σ k) (Syn.subst σ x) (Syn.subst σ N) :=
-  by simp [frozenRealData]
-@[simp] theorem subst_observation {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p x E N : PTm n) :
-    Syn.subst σ (observation f p x E N) = observation f (Syn.subst σ p) (Syn.subst σ x) (Syn.subst σ E) (Syn.subst σ N) :=
-  by simp [observation]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (x E N : PTm n) :
-    Syn.subst σ (data x E N) = data (Syn.subst σ x) (Syn.subst σ E) (Syn.subst σ N) := by simp [data]
+ipra_subst clock
+ipra_subst frozenData
+ipra_subst frozenRealData
+ipra_subst observation
+ipra_subst data
 
 theorem sample_at (f : PR 2) (p x E N : PTm n) : Γ ⊢[PRAAx]
     ap2 (nameF f) p (data x E N) ≐ observation f p x E N := by

@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerSquareFactorObservation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerSquareIntegrand (factorF factorData jacobianF jacobianData factoredKernelF factoredKernelData)
 open GaussianEulerSquareKernel (doubled kernelF kernelData)
 open GaussianEulerSquareTimeGeometry (source)
@@ -29,9 +29,6 @@ open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -44,15 +41,10 @@ def auxiliaryCost (z R B E T c d a b : PTm n) : PTm n := amplification T c+two+
   (multiplyModulus factorF kernelF (factorData z B c d) (kernelData (doubled z B) B a b c d)+one)+
     kernelBound R E T c+factorBound z B c d
 
-@[simp] theorem subst_factorBound {m : ℕ} (σ : Fin n → PTm m) (z B c d : PTm n) :
-    Syn.subst σ (factorBound z B c d) = factorBound (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ c) (Syn.subst σ d) := by
-  simp [factorBound,GaussianEulerSquareIntegrand.factorData,GaussianEulerPositiveScalingConstant.scaleData]
-@[simp] theorem subst_kernelBound {m : ℕ} (σ : Fin n → PTm m) (R E T c : PTm n) :
-    Syn.subst σ (kernelBound R E T c) = kernelBound (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ c) := by simp [kernelBound]
-@[simp] theorem subst_leadingNumerator {m : ℕ} (σ : Fin n → PTm m) (p q r K F : PTm n) :
-    Syn.subst σ (leadingNumerator p q r K F) = leadingNumerator (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ r) (Syn.subst σ K) (Syn.subst σ F) := by simp [leadingNumerator]
-@[simp] theorem subst_leadingDenominator {m : ℕ} (σ : Fin n → PTm m) (p q r : PTm n) :
-    Syn.subst σ (leadingDenominator p q r) = leadingDenominator (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ r) := by simp [leadingDenominator]
+ipra_subst factorBound [GaussianEulerSquareIntegrand.factorData, GaussianEulerPositiveScalingConstant.scaleData]
+ipra_subst kernelBound
+ipra_subst leadingNumerator
+ipra_subst leadingDenominator
 
 theorem denominator_positive (p q r : PTm n) : Γ ⊢[PRAAx] le one (leadingDenominator p q r) :=
   positive_product _ _ (positive_product _ _ (unit_positive p) (unit_positive q)) (unit_positive r)

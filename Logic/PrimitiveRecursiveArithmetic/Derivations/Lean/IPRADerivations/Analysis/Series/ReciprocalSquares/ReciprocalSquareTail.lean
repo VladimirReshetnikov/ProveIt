@@ -1,5 +1,4 @@
 import IPRADerivations.Core.MultiSums
-import IPRADerivations.Core.Gcd
 import IPRADerivations.Core.CommonLemmas
 
 /-!
@@ -19,11 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.ReciprocalSquareTail
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus num)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -35,11 +30,7 @@ def errorBody (e : PR 2) : PTm 3 := ap2 e (succ (var 1 + var 0)) (var 2)
 /-- The finite error sum from `N + 1` through `N + r`. -/
 def tailSum (e : PR 2) (N r x : PTm n) : PTm n := ap3 (sum2F (errorBody e)) r N x
 
-@[simp] theorem subst_tailSum {m : ℕ} (σ : Fin n → PTm m)
-    (e : PR 2) (N r x : PTm n) :
-    Syn.subst σ (tailSum e N r x) =
-      tailSum e (Syn.subst σ N) (Syn.subst σ r) (Syn.subst σ x) := by
-  simp [tailSum]
+ipra_subst tailSum
 
 theorem tailSum_zero (e : PR 2) (N x : PTm n) :
     Γ ⊢[PRAAx] tailSum e N zero x ≐ zero := sum2_zero _ _ _
@@ -78,13 +69,8 @@ def majorant (e : PR 2) (A N C x : PTm n) : Fm PTm n :=
       ap2 e (succ (Syn.shift N + var 0)) (Syn.shift x))
     (Syn.shift C))
 
-@[simp] theorem subst_majorant {m : ℕ} (σ : Fin n → PTm m)
-    (e : PR 2) (A N C x : PTm n) :
-    (majorant e A N C x).subst σ =
-      majorant e (Syn.subst σ A) (Syn.subst σ N) (Syn.subst σ C) (Syn.subst σ x) := by
-  simp only [majorant, Fm.subst_all, subst_le, PTm.subst_mul, PTm.subst_add,
-    subst_ap2, ConciseIPRA.PTm.subst_succ, Syn.subst_var, Syn.up_zero,
-    Syn.subst_shift, Syn.shift_subst, Syn.up_succ]
+ipra_subst majorant [Fm.subst_all, subst_le, PTm.subst_mul, PTm.subst_add, subst_ap2, ConciseIPRA.PTm.subst_succ,
+    Syn.subst_var, Syn.up_zero, Syn.subst_shift, Syn.shift_subst, Syn.up_succ]
 
 @[simp] theorem shift_majorant (e : PR 2) (A N C x : PTm n) :
     Fm.shift (majorant e A N C x) =
@@ -100,15 +86,11 @@ theorem sharp (e : PR 2) (A N r C x : PTm n)
       (le (Syn.shift A * Syn.shift N * (Syn.shift N + var 0) *
           tailSum e (Syn.shift N) (var 0) (Syn.shift x))
         (var 0 * Syn.shift C)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le, PTm.subst_mul, PTm.subst_add, subst_tailSum,
-        Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
-      have eqL : Γ ⊢[PRAAx] A * N * (N + zero) * tailSum e N zero x ≐ zero :=
+    ipra_qfind (le_QF _ _) [subst_le, subst_tailSum]
+    · have eqL : Γ ⊢[PRAAx] A * N * (N + zero) * tailSum e N zero x ≐ zero :=
         (congrMul (.eqRefl _) (tailSum_zero e N x)).eqTrans (mul_zero _)
       exact le_congr eqL.eqSymm (zero_mul C).eqSymm (le_refl zero)
-    · simp only [subst_le, PTm.subst_mul, PTm.subst_add, subst_tailSum,
-        Syn.subst_var, Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero]
-      have shifted : Γ.map Fm.shift ⊢[PRAAx]
+    · have shifted : Γ.map Fm.shift ⊢[PRAAx]
           majorant e (Syn.shift A) (Syn.shift N) (Syn.shift C) (Syn.shift x) := by
         simpa only [shift_majorant] using hm.shift
       have positive : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift N) := by

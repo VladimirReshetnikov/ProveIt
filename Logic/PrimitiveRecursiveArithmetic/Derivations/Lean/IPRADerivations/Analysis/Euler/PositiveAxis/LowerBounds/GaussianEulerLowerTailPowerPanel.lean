@@ -15,15 +15,11 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLowerTailPowerPanel
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (fraction)
 open GaussianRationalHorner (positive_product)
 open RationalNonnegativePowers (power fraction_multiply denominator_positive)
 open RationalArgmin (rationalLE)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -31,14 +27,9 @@ def width (x y k : PTm n) : PTm n := monus (pw y (succ k)) (pw x (succ k))
 def panel (x y D k : PTm n) : PTm n :=
   RationalArithmetic.multiply (fraction (width x y k) (pw D (succ k))) (power D y k)
 
-@[simp] theorem subst_width {m : ℕ} (σ : Fin n → PTm m) (x y k : PTm n) :
-    Syn.subst σ (width x y k) = width (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ k) :=
-  by simp [width]
+ipra_subst width
 
-@[simp] theorem subst_panel {m : ℕ} (σ : Fin n → PTm m) (x y D k : PTm n) :
-    Syn.subst σ (panel x y D k) =
-      panel (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ D) (Syn.subst σ k) := by
-  simp [panel,power]
+ipra_subst panel [power]
 
 theorem width_bound (x y k : PTm n) (h : Γ ⊢[PRAAx] le x y) : Γ ⊢[PRAAx]
     le (width x y k) (monus y x*(succ k*pw y k)) := by

@@ -26,11 +26,8 @@ branches, which turn these identities into statements about `W`, are not derived
 
 namespace LeanProofs.IPRA.Analysis.LambertAlgebra
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
 
 section Addition
 

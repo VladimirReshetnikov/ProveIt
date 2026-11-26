@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedGammaLateInput
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedRightHalfPlane (source threshold radius numerator denominator actual_late_source)
 open GaussianGammaHalfPlaneInputContinuity (modulus original_gamma_observations)
 open GaussianNamedGamma (nameF data sample clock clock_margin clock_demand name_at name_regular input_observations)
@@ -25,10 +25,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianRationalHorner (positive_product)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -37,11 +33,8 @@ def encodedData (f : PR 2) (r x A : PTm n) : PTm n :=
   gammaData (numerator f r x) (radius f x) (denominator f r x) (two*A)
 def input (f : PR 2) (s r x A : PTm n) : Fm PTm n := source f x A ⋏
   (le (threshold A) r ⋏ le (succ (modulus s (radius f x) (two*A))) r)
-@[simp] theorem subst_encodedData {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (r x A : PTm n) :
-    Syn.subst σ (encodedData f r x A) = encodedData f (Syn.subst σ r) (Syn.subst σ x) (Syn.subst σ A) := by simp [encodedData]
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (s r x A : PTm n) :
-    (input f s r x A).subst σ = input f (Syn.subst σ s) (Syn.subst σ r) (Syn.subst σ x) (Syn.subst σ A) := by
-  simp [input,GaussianNamedRightHalfPlane.threshold,GaussianNamedRightHalfPlane.precision]
+ipra_subst encodedData
+ipra_subst input [GaussianNamedRightHalfPlane.threshold, GaussianNamedRightHalfPlane.precision]
 
 theorem encoded_source (f : PR 2) (s r x A : PTm n) (h : Γ ⊢[PRAAx] input f s r x A) : Γ ⊢[PRAAx]
     GaussianGammaHalfPlaneInputContinuity.source (numerator f r x) (radius f x) (denominator f r x) (two*A) :=

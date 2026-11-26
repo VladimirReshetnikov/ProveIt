@@ -16,7 +16,7 @@ set_option maxHeartbeats 1250000
 
 namespace LeanProofs.IPRA.Analysis.GaussianHarmonicWeightedQuadraticValue
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open ComplexLogarithmRemainder (scale add re oneCode)
@@ -33,10 +33,6 @@ open RationalRepresentedUpper (from_signed left right)
 open RationalValueBounds (upper)
 open Products (fact)
 open GammaEulerMesh (factorial_positive)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (monus)
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -44,11 +40,8 @@ local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
 def gapCode (a d B r s : PTm n) : PTm n := fraction (gapNumerator a d r s) (squareDen B r s)
 def point (x D Q : PTm n) : PTm n := embed (interval x D Q)
 
-@[simp] theorem subst_gapCode {m : ℕ} (σ : Fin n → PTm m) (a d B r s : PTm n) :
-    Syn.subst σ (gapCode a d B r s) = gapCode (Syn.subst σ a) (Syn.subst σ d) (Syn.subst σ B) (Syn.subst σ r) (Syn.subst σ s) := by
-  simp [gapCode]
-@[simp] theorem subst_point {m : ℕ} (σ : Fin n → PTm m) (x D Q : PTm n) :
-    Syn.subst σ (point x D Q) = point (Syn.subst σ x) (Syn.subst σ D) (Syn.subst σ Q) := by simp [point]
+ipra_subst gapCode
+ipra_subst point
 
 theorem comparison_denominator_positive (B r s : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
     Γ ⊢[PRAAx] le one (squareDen B r s) :=

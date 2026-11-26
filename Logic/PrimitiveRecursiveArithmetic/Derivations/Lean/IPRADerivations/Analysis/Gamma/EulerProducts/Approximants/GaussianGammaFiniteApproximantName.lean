@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.ReciprocalGamma.GaussianGammaCutoffName
 import IPRADerivations.Analysis.Gamma.EulerProducts.GammaMeshRobinLogBridge
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual names of the folded finite Gamma approximants
@@ -18,13 +17,11 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaFiniteApproximantName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular productF productData product_regular)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianRationalHorner (ofGaussian qmul)
 open GaussianRationalMetric (qnegative)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -14,7 +14,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalFiniteTaylorNamedQuotient
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add bounded_mono normSq normSq_scale scale)
 open GaussianBarnesCanonicalFiniteTaylorGridIncrementRate (observationClock numerator)
 open GaussianBarnesCanonicalFiniteTaylorMixedGridPolynomial (mixedGrid)
@@ -38,10 +38,6 @@ open GaussianRationalNaturalScale (natScale natScale_as_product natScale_product
 open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalRoundedPower (multiplication_difference)
 open GaussianRationalSyntheticDivision (qsub_congr qmul_congr)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

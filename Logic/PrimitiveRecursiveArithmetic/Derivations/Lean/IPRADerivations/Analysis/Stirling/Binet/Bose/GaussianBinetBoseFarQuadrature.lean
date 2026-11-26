@@ -18,12 +18,11 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetBoseFarQuadrature
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetArctangentQuadrature (fixedData subst_fixedData)
 open GaussianBinetBoseCompact (evaluatorF evaluator_at tag_lower gain)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalDistanceOrder (distance_congr distance_symmetric)
-open LeanProofs.IPRA.PTm (num)
 open GaussianBinetLaplaceStrip (tagNumerator)
 open GaussianCompactRiemannName (grid grid_inside inside quadrature sampleBody sampleData sample_body_at)
 open GaussianNamedDampingPowerReciprocalTail (row body gridData affine_grid_term original_scalar_left_embedded_bound)
@@ -31,8 +30,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded)
 open GaussianRationalSumMajorant (majorized majorized_congr termsMajorized)
 open GaussianRightHalfPlaneLogarithm (source)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

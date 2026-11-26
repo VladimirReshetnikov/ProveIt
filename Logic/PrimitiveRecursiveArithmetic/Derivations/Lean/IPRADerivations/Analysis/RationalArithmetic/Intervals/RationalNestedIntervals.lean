@@ -16,17 +16,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalNestedIntervals
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiCenters (midpoint)
 open RationalArgmin (rationalLE reflexive transitive rationalLE_congr)
 open RationalValueBounds (upper radius crossLeft)
 open RationalCubeGrid (scale scale_positive)
 open RationalConvexFiniteModulus (eps eps_nonnegative)
 open RationalConvexSecants (nonnegative)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔟" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -53,19 +49,11 @@ def centerOrder (L U J K : PR 3) (q z x : PTm n) : Fm PTm n :=
   .all (upper (center L U (Syn.shift q) (succ (succ (var 0))) (Syn.shift x))
     (center J K (Syn.shift z) (succ (succ (var 0))) (Syn.shift x)) one (scale (var 0)))
 
-@[simp] theorem subst_read {m : ℕ} (σ : Fin n → PTm m) (f : PR 3) (q p x : PTm n) :
-    Syn.subst σ (read f q p x) = read f (Syn.subst σ q) (Syn.subst σ p) (Syn.subst σ x) := by simp [read]
-@[simp] theorem subst_center {m : ℕ} (σ : Fin n → PTm m) (L U : PR 3) (q p x : PTm n) :
-    Syn.subst σ (center L U q p x) = center L U (Syn.subst σ q) (Syn.subst σ p) (Syn.subst σ x) := by simp [center]
-@[simp] theorem subst_intervalStep {m : ℕ} (σ : Fin n → PTm m) (L U : PR 3) (q p x : PTm n) :
-    (intervalStep L U q p x).subst σ = intervalStep L U (Syn.subst σ q) (Syn.subst σ p) (Syn.subst σ x) := by
-  simp [intervalStep,scale]
-@[simp] theorem subst_regular {m : ℕ} (σ : Fin n → PTm m) (L U : PR 3) (q x : PTm n) :
-    (regular L U q x).subst σ = regular L U (Syn.subst σ q) (Syn.subst σ x) := by
-  simp [regular,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_nested {m : ℕ} (σ : Fin n → PTm m) (L U : PR 3) (q p r x : PTm n) :
-    (nested L U q p r x).subst σ = nested L U (Syn.subst σ q) (Syn.subst σ p) (Syn.subst σ r) (Syn.subst σ x) := by
-  simp [nested]
+ipra_subst read
+ipra_subst center
+ipra_subst intervalStep [scale]
+ipra_subst regular [Syn.subst_shift, Syn.shift_subst]
+ipra_subst nested
 
 theorem center_at (L U : PR 3) (q p x : PTm n) :
     Γ ⊢[PRAAx] RationalConvexEndpointBudget.sample (centerF L U) q p x ≐ center L U q p x := by
@@ -87,14 +75,12 @@ theorem nesting_by_offset (L U : PR 3) (q p r x : PTm n) (h : Γ ⊢[PRAAx] regu
   have hs : Γ.map Fm.shift ⊢[PRAAx] regular L U (Syn.shift q) (Syn.shift x) := by
     simpa only [Fm.shift,subst_regular,Syn.shift] using h.shift
   have all : Γ ⊢[PRAAx] .all (nested L U (Syn.shift q) (Syn.shift p) (Syn.shift p+var 0) (Syn.shift x)) := by
-    refine PRA.qfInd _ (by unfold nested rationalLE; exact ⟨le_QF _ _,le_QF _ _⟩) ?_ ?_
-    · simp only [subst_nested,PTm.subst_add,Syn.subst_inst_shift,Syn.subst_var,Syn.inst_zero]
-      exact .andI (rationalLE_congr (.eqRefl _) (congrAp3 L (.eqRefl _) (add_zero p).eqSymm (.eqRefl _))
+    ipra_qfind (by unfold nested rationalLE; exact ⟨le_QF _ _,le_QF _ _⟩) [subst_nested]
+    · exact .andI (rationalLE_congr (.eqRefl _) (congrAp3 L (.eqRefl _) (add_zero p).eqSymm (.eqRefl _))
         (reflexive _))
         (rationalLE_congr (congrAp3 U (.eqRefl _) (add_zero p).eqSymm (.eqRefl _)) (.eqRefl _)
           (reflexive _))
-    · simp only [subst_nested,PTm.subst_add,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      let t := Syn.shift p+var 0
+    · let t := Syn.shift p+var 0
       have hi : nested L U (Syn.shift q) (Syn.shift p) t (Syn.shift x) :: Γ.map Fm.shift ⊢[PRAAx]
           nested L U (Syn.shift q) (Syn.shift p) t (Syn.shift x) := Prf.hyp0
       let Δ := nested L U (Syn.shift q) (Syn.shift p) t (Syn.shift x) :: Γ.map Fm.shift

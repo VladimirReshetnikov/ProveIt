@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaFoldedApproximantBalance
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNameArithmetic (addF addData multiplyF multiplyData multiply_fast multiply_equivalent)
 open GaussianRadiusExponentialName (input nameF data name_regular)
 open GaussianExponentialRadiusIndependence (input_widen same_input_cross independent_radii_proper)
@@ -25,8 +25,6 @@ open GaussianGammaCanonicalExponent (constantF constant_regular productF product
 open GaussianGammaFiniteApproximantName (pF pData qF qData logExponentF logExponentData log_exponent_regular
   approximantF approximantData exponential_input exponentialInputData)
 open GaussianGammaFoldedExponentBalance (correctionF correctionData correction_fast balanced_exponents)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

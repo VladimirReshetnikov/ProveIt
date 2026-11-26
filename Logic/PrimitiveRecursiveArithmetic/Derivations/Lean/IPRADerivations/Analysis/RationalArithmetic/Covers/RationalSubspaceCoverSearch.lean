@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Covers.RationalSubspaceCoverCandidates
 import IPRADerivations.Foundations.BoundedSyntax
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Exact bounded testing and search of finite rational subspace covers
@@ -17,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalSubspaceCoverSearch
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalSubspaceCoverCandidates (candidate bound encode encode_bound reconstructed_certificate)
 open RationalFiniteSpanCover (family covered coveredAt)
 open RationalRowSpanGaussianEmbedding (matrix hasCoefficients)
@@ -26,9 +25,6 @@ open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
 open LeanProofs.IPRA.Foundations.BoundedSyntax (BFm formula bit bit_cases bit_subst)
 open LeanProofs.IPRA.Foundations.BoundedReflection (wit)
-open ConciseIPRA.PTm (zero succ app)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -44,22 +40,10 @@ def certified (T M N w : PTm n) : Fm PTm n := family (candidate T M w) N ⋏ cov
 def test (T M N w : PTm n) : PTm n := eqb
   (properTest (candidate T M w) N * coverTest T (candidate T M w) N) one
 
-@[simp] theorem subst_properTest {q : ℕ} (σ : Fin n → PTm q) (D N : PTm n) :
-    Syn.subst σ (properTest D N) = properTest (Syn.subst σ D) (Syn.subst σ N) := by
-  simp only [properTest,bit_subst]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
-@[simp] theorem subst_coverTest {q : ℕ} (σ : Fin n → PTm q) (T D N : PTm n) :
-    Syn.subst σ (coverTest T D N) = coverTest (Syn.subst σ T) (Syn.subst σ D) (Syn.subst σ N) := by
-  simp only [coverTest,bit_subst]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
-@[simp] theorem subst_certified {q : ℕ} (σ : Fin n → PTm q) (T M N w : PTm n) :
-    (certified T M N w).subst σ = certified (Syn.subst σ T) (Syn.subst σ M) (Syn.subst σ N) (Syn.subst σ w) := by simp [certified]
-@[simp] theorem subst_test {q : ℕ} (σ : Fin n → PTm q) (T M N w : PTm n) :
-    Syn.subst σ (test T M N w) = test (Syn.subst σ T) (Syn.subst σ M) (Syn.subst σ N) (Syn.subst σ w) := by simp [test]
+ipra_subst properTest [bit_subst]
+ipra_subst coverTest [bit_subst]
+ipra_subst certified
+ipra_subst test
 
 private theorem iff_and {a b c d : Fm PTm n} (h : Γ ⊢[PRAAx] Fm.iff a b) (j : Γ ⊢[PRAAx] Fm.iff c d) :
     Γ ⊢[PRAAx] Fm.iff (a ⋏ c) (b ⋏ d) :=
@@ -133,13 +117,9 @@ def data (T M N : PTm n) : PTm n := pairT T (pairT M N)
 def testBody : PTm 2 := test (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))) (var 0)
 def selected (T M N : PTm n) : PTm n := wit testBody (bound T M) (data T M N)
 def chosen (T M N : PTm n) : PTm n := candidate T M (selected T M N)
-@[simp] theorem subst_data {q : ℕ} (σ : Fin n → PTm q) (T M N : PTm n) :
-    Syn.subst σ (data T M N) = data (Syn.subst σ T) (Syn.subst σ M) (Syn.subst σ N) := by simp [data]
-@[simp] theorem subst_selected {q : ℕ} (σ : Fin n → PTm q) (T M N : PTm n) :
-    Syn.subst σ (selected T M N) = selected (Syn.subst σ T) (Syn.subst σ M) (Syn.subst σ N) := by
-  simp [selected,Foundations.BoundedReflection.wit,Search.mu]
-@[simp] theorem subst_chosen {q : ℕ} (σ : Fin n → PTm q) (T M N : PTm n) :
-    Syn.subst σ (chosen T M N) = chosen (Syn.subst σ T) (Syn.subst σ M) (Syn.subst σ N) := by simp [chosen]
+ipra_subst data
+ipra_subst selected [Foundations.BoundedReflection.wit, Search.mu]
+ipra_subst chosen
 
 private theorem test_congr {T S M P N Q w v : PTm n} (hT : Γ ⊢[PRAAx] T ≐ S)
     (hM : Γ ⊢[PRAAx] M ≐ P) (hN : Γ ⊢[PRAAx] N ≐ Q) (hw : Γ ⊢[PRAAx] w ≐ v) : Γ ⊢[PRAAx]
@@ -147,8 +127,8 @@ private theorem test_congr {T S M P N Q w v : PTm n} (hT : Γ ⊢[PRAAx] T ≐ S
   ipra_congr (test (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hT, hM, hN, hw]
 theorem test_body_at (T M N w : PTm n) : Γ ⊢[PRAAx] inst2 testBody w (data T M N) ≐ test T M N w := by
   simp only [testBody,inst2,subst_test,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
-  exact test_congr (fst_pair _ _) ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
-    ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)) (.eqRefl _)
+  exact test_congr (fst_pair _ _) (snd_pair _ _).fstE
+    (snd_pair _ _).sndE (.eqRefl _)
 
 theorem selected_bound (T M N : PTm n) : Γ ⊢[PRAAx] le (selected T M N) (bound T M) :=
   .andE₁ (Search.search_spec (f := Foundations.BoundedReflection.nB testBody) (bound T M) zero (data T M N))
@@ -184,12 +164,8 @@ theorem chosen_length (T M N : PTm n) : Γ ⊢[PRAAx] length (chosen T M N) ≐ 
 def coverBit (T M N : PTm n) : PTm n := Foundations.BoundedReflection.exB testBody (bound T M) (data T M N)
 def existsCandidate (T M N : PTm n) : Fm PTm n := .ex
   (lt (var 0) (bound (Syn.shift T) (Syn.shift M)) ⋏ certified (Syn.shift T) (Syn.shift M) (Syn.shift N) (var 0))
-@[simp] theorem subst_coverBit {q : ℕ} (σ : Fin n → PTm q) (T M N : PTm n) :
-    Syn.subst σ (coverBit T M N) = coverBit (Syn.subst σ T) (Syn.subst σ M) (Syn.subst σ N) := by
-  simp [coverBit,Foundations.BoundedReflection.exB,Foundations.BoundedReflection.allB]
-@[simp] theorem subst_existsCandidate {q : ℕ} (σ : Fin n → PTm q) (T M N : PTm n) :
-    (existsCandidate T M N).subst σ = existsCandidate (Syn.subst σ T) (Syn.subst σ M) (Syn.subst σ N) := by
-  simp [existsCandidate,Syn.subst_shift,Syn.shift_subst]
+ipra_subst coverBit [Foundations.BoundedReflection.exB, Foundations.BoundedReflection.allB]
+ipra_subst existsCandidate [Syn.subst_shift, Syn.shift_subst]
 
 theorem cover_bit_cases (T M N : PTm n) : Γ ⊢[PRAAx] (coverBit T M N ≐ zero) ⋎ (coverBit T M N ≐ one) :=
   Foundations.BoundedReflection.ex_cases _ _ _
@@ -238,14 +214,8 @@ def output (T M N : PTm n) : PTm n := pairT (selected T M N)
   (pairT (chosen T M N) (pairT (bound T M) (coverBit T M N)))
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (T M N : PTm n) : PTm n := app outputF ![T,M,N]
-@[simp] theorem subst_output {q : ℕ} (σ : Fin n → PTm q) (T M N : PTm n) :
-    Syn.subst σ (output T M N) = output (Syn.subst σ T) (Syn.subst σ M) (Syn.subst σ N) := by simp [output]
-@[simp] theorem subst_run {q : ℕ} (σ : Fin n → PTm q) (T M N : PTm n) :
-    Syn.subst σ (run T M N) = run (Syn.subst σ T) (Syn.subst σ M) (Syn.subst σ N) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem test_program_at (T M N w : PTm n) : Γ ⊢[PRAAx] app testF ![T,M,N,w] ≐ test T M N w := by
   simpa [testF] using toPR_eq (Γ := Γ) (test (var 0) (var 1) (var 2) (var 3) : PTm 4) ![T,M,N,w]
@@ -253,13 +223,13 @@ theorem program_at (T M N : PTm n) : Γ ⊢[PRAAx] run T M N ≐ output T M N :=
   simpa [run,outputF,output,Matrix.cons_val_succ',Matrix.cons_val_zero'] using
     toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![T,M,N]
 theorem returned_code (T M N : PTm n) : Γ ⊢[PRAAx] fstT (run T M N) ≐ selected T M N :=
-  (congrFst (program_at T M N)).eqTrans (fst_pair _ _)
+  (program_at T M N).fstE
 theorem returned_family (T M N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run T M N)) ≐ chosen T M N :=
-  (congrFst ((congrSnd (program_at T M N)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at T M N).sndE.fstE
 theorem returned_bound (T M N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run T M N))) ≐ bound T M :=
-  (congrFst ((congrSnd ((congrSnd (program_at T M N)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at T M N).sndE.sndE.fstE
 theorem returned_bit (T M N : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run T M N))) ≐ coverBit T M N :=
-  (congrSnd ((congrSnd ((congrSnd (program_at T M N)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at T M N).sndE.sndE.sndE
 
 theorem returned_source_cover (T D N : PTm n) (hf : Γ ⊢[PRAAx] family D N) (hc : Γ ⊢[PRAAx] covered T D N) : Γ ⊢[PRAAx]
     family (fstT (sndT (run T (length D) N))) N ⋏ covered T (fstT (sndT (run T (length D) N))) N := by

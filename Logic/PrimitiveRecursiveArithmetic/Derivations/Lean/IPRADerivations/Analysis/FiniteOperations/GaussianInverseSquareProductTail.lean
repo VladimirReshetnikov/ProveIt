@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianInverseSquareProductTail
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalFiniteProduct (qprod product_zero product_succ offset_at product_canonical)
 open GaussianRationalSyntheticDivision (qone qone_canonical qmul_congr qadd_sub_cancel)
 open GaussianRationalHorner (ofGaussian ofGaussian_represents positive_product qmul)
@@ -26,9 +26,6 @@ open GaussianGammaEulerReflectionHead (body squareFactor square_factor_at)
 open GaussianReciprocalHorner (qmul_one_right)
 open GaussianRationalPowerDifference (distance_refl_zero)
 open GaussianRationalLinearProduct (add_sub_right)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -37,22 +34,15 @@ def product (f : PTm 2) (K r x : PTm n) : PTm n := qprod (offB f) r (pairT K x)
 def tailBound (f : PTm 2) (x C K r : PTm n) : Fm PTm n :=
   distanceBounded (product f K r x) qone (two*C*r) (K*(K+r))
 
-@[simp] theorem subst_product {m : ℕ} (σ : Fin n → PTm m) (f : PTm 2) (K r x : PTm n) :
-    Syn.subst σ (product f K r x) = product f (Syn.subst σ K) (Syn.subst σ r) (Syn.subst σ x) := by
-  simp [product]
+ipra_subst product
 
-@[simp] theorem subst_tailBound {m : ℕ} (σ : Fin n → PTm m) (f : PTm 2) (x C K r : PTm n) :
-    (tailBound f x C K r).subst σ =
-      tailBound f (Syn.subst σ x) (Syn.subst σ C) (Syn.subst σ K) (Syn.subst σ r) := by
-  simp [tailBound]
+ipra_subst tailBound
 
 def factorBounds (f : PTm 2) (x C K : PTm n) : Fm PTm n := .all
   (distanceBounded (inst2 f (Syn.shift K+var 0) (Syn.shift x)) qone
     (Syn.shift C) (succ (Syn.shift K+var 0)*succ (Syn.shift K+var 0)))
 
-@[simp] theorem subst_factorBounds {m : ℕ} (σ : Fin n → PTm m) (f : PTm 2) (x C K : PTm n) :
-    (factorBounds f x C K).subst σ = factorBounds f (Syn.subst σ x) (Syn.subst σ C) (Syn.subst σ K) := by
-  simp [factorBounds,Syn.subst_shift,Syn.shift_subst]
+ipra_subst factorBounds [Syn.subst_shift, Syn.shift_subst]
 
 theorem factor_bound_at (f : PTm 2) (x C K r : PTm n) (h : Γ ⊢[PRAAx] factorBounds f x C K) :
     Γ ⊢[PRAAx] distanceBounded (inst2 f (K+r) x) qone C (succ (K+r)*succ (K+r)) := by

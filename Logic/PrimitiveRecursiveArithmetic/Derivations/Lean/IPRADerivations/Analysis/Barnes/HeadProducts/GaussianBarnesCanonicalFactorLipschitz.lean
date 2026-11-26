@@ -18,7 +18,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalFactorLipschitz
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale)
 open GaussianBarnesCanonicalFactor (source base powerValue correction exponentRadius exponentialF exponentialData cap nameF data)
 open GaussianEulerNamedPowerScalingPowerFrozen (constant_bound multiply_same_denominator)
@@ -30,10 +30,6 @@ open GaussianRationalHorner (ofGaussian represents ofGaussian_represents represe
 open GaussianRationalMetric (distanceBounded bounded bounded_difference_iff)
 open GaussianRootAlgebra (equal_refl)
 open GaussianRationalSyntheticDivision (qone)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (pred)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

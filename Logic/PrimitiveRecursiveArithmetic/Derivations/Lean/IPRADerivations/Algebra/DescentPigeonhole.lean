@@ -1,8 +1,5 @@
 import IPRADerivations.Algebra.PowerDifference
-import IPRADerivations.Core.SumOrder
 import IPRADerivations.Foundations.BoundedReflection
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The pigeonhole step of the rational descent
@@ -28,13 +25,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Algebra.DescentPigeonhole
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Algebra.PowerDifference (gd geom_sum)
 open LeanProofs.IPRA.Foundations.BoundedReflection (eq_of_eqb)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -83,8 +76,7 @@ theorem drops_step {m x : PTm n}
   rw [inst2_e] at s
   have t := add_le_add₂ ih d
   refine le_of_add_le_add_right (c := inst2 k (two * m) x) (le_congr ?_ ?_ t)
-  · have c := natEq (congrInst2 (Γ := Γ) k (two_succ m) (.eqRefl x))
-    apply deriveNat; ipra_simps; linear_combination -c
+  · apply deriveNat; ipra_simps; linear_combination -natEq (congrInst2 (Γ := Γ) k (two_succ m) (.eqRefl x))
   · have c := natEq s
     apply deriveNat; ipra_simps; linear_combination -c
 
@@ -93,14 +85,10 @@ theorem drops (N x : PTm n) (hm : Γ ⊢[PRAAx] Fm.all (Mono k N x)) :
     Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
       le (inst2 k (two * var 0) (Syn.shift x) + var 0)
         (inst2 k (two * zero) (Syn.shift x) + ap2 (sumF (eB k)) (var 0) (Syn.shift x))) := by
-  refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_imp, subst_le, PTm.subst_add, PTm.subst_mul, subst_ap2, subst_inst2, Syn.subst_var,
-      Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine .impI (le_congr (.eqRefl _) ?_ (le_refl _))
+  ipra_qfind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2, subst_inst2]
+  · refine .impI (le_congr (.eqRefl _) ?_ (le_refl _))
     exact congrAdd (.eqRefl _) (sum_zero _ _).eqSymm
-  · simp only [Fm.subst_imp, subst_le, PTm.subst_add, PTm.subst_mul, subst_ap2, subst_inst2, Syn.subst_var,
-      Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have hf := hm.allOpen
+  · have hf := hm.allOpen
     refine .impI ?_
     have hle : (le (succ (var 0)) (Syn.shift N) ::
         (le (var 0) (Syn.shift N) ⟶ le (inst2 k (two * var 0) (Syn.shift x) + var 0)

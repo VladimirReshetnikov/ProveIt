@@ -2,7 +2,6 @@ import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRation
 import IPRADerivations.Analysis.Polynomials.Determinants.GaussianPolynomialDeterminant
 import IPRADerivations.Analysis.LinearAlgebra.Matrices.GaussianRationalMatrixFiniteSums
 import IPRADerivations.Analysis.RationalArithmetic.Representations.GaussianRationalValueEquality
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Scalar observations of the SAME actual runtime polynomial determinant
@@ -21,7 +20,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianScalarDeterminant
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero qmul canonical evaluate)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qmul_congr)
 open LeanProofs.IPRA.Analysis.GaussianTranslatedNonconstant (recode recode_congr recode_eq)
@@ -31,9 +30,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalFiberVandermonde (table table_leng
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
 open LeanProofs.IPRA.Analysis.GaussianRationalFiniteProduct (qprod)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,12 +39,9 @@ def evaluationBody : PTm 3 := evaluate (cell (fstT (var 2)) (var 0) (var 1)) (sn
 def evaluatedTable (M m z : PTm n) : PTm n := table evaluationBody m m (pairT M z)
 def scalarDet (A m : PTm n) : PTm n := evaluate (GaussianPolynomialDeterminant.determinant (constantTable A m) m zero) qzero
 
-@[simp] theorem subst_constantTable {l : ℕ} (σ : Fin n → PTm l) (A m : PTm n) :
-    Syn.subst σ (constantTable A m) = constantTable (Syn.subst σ A) (Syn.subst σ m) := by simp [constantTable]
-@[simp] theorem subst_evaluatedTable {l : ℕ} (σ : Fin n → PTm l) (M m z : PTm n) :
-    Syn.subst σ (evaluatedTable M m z) = evaluatedTable (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ z) := by simp [evaluatedTable]
-@[simp] theorem subst_scalarDet {l : ℕ} (σ : Fin n → PTm l) (A m : PTm n) :
-    Syn.subst σ (scalarDet A m) = scalarDet (Syn.subst σ A) (Syn.subst σ m) := by simp [scalarDet]
+ipra_subst constantTable
+ipra_subst evaluatedTable
+ipra_subst scalarDet
 
 theorem constant_lookup (A m r j : PTm n) (hr : Γ ⊢[PRAAx] lt r m) (hj : Γ ⊢[PRAAx] lt j m) : Γ ⊢[PRAAx]
     cell (constantTable A m) r j ≐ singleton (cell A r j) := by
@@ -87,18 +80,16 @@ def factorData (A m w : PTm n) : PTm n := pairT A (pairT m w)
 def factorBody : PTm 2 := cell (fstT (var 1))
   (Foundations.RuntimePermutationWords.digit (fstT (sndT (var 1))) (sndT (sndT (var 1))) (var 0)) (var 0)
 def rawProduct (A m w : PTm n) : PTm n := qprod factorBody m (factorData A m w)
-@[simp] theorem subst_factorData {l : ℕ} (σ : Fin n → PTm l) (A m w : PTm n) :
-    Syn.subst σ (factorData A m w) = factorData (Syn.subst σ A) (Syn.subst σ m) (Syn.subst σ w) := by simp [factorData]
-@[simp] theorem subst_rawProduct {l : ℕ} (σ : Fin n → PTm l) (A m w : PTm n) :
-    Syn.subst σ (rawProduct A m w) = rawProduct (Syn.subst σ A) (Syn.subst σ m) (Syn.subst σ w) := by simp [rawProduct]
+ipra_subst factorData
+ipra_subst rawProduct
 
 theorem factor_body_at (A m w i : PTm n) : Γ ⊢[PRAAx]
     inst2 factorBody i (factorData A m w) ≐ cell A (Foundations.RuntimePermutationWords.digit m w i) i := by
   simp only [factorBody,inst2,GaussianPolynomialDeterminantTerms.subst_cell,Foundations.RuntimePermutationWords.subst_digit,
     subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
   exact entry_congr (entry_congr (fst_pair _ _)
-    (Foundations.RuntimeAdjacentPermutationSwap.digit_congr ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
-      ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)) (.eqRefl _))) (.eqRefl _)
+    (Foundations.RuntimeAdjacentPermutationSwap.digit_congr (snd_pair _ _).fstE
+      (snd_pair _ _).sndE (.eqRefl _))) (.eqRefl _)
 
 theorem constant_scalar_product (A m w z : PTm n) : Γ ⊢[PRAAx]
     scalarProduct (constantTable A m) m zero w z m ≐ rawProduct A m w := by
@@ -124,10 +115,8 @@ def signedTerm (A m t : PTm n) : PTm n := qmul (signPoint m (GaussianPolynomialD
 def signedBody : PTm 2 := signedTerm (fstT (var 1)) (sndT (var 1)) (var 0)
 def scalarSum (A m : PTm n) : PTm n := GaussianRationalFiniteSum.sum signedBody
   (Foundations.RuntimePermutationWords.count m) (pairT A m)
-@[simp] theorem subst_signedTerm {l : ℕ} (σ : Fin n → PTm l) (A m t : PTm n) :
-    Syn.subst σ (signedTerm A m t) = signedTerm (Syn.subst σ A) (Syn.subst σ m) (Syn.subst σ t) := by simp [signedTerm]
-@[simp] theorem subst_scalarSum {l : ℕ} (σ : Fin n → PTm l) (A m : PTm n) :
-    Syn.subst σ (scalarSum A m) = scalarSum (Syn.subst σ A) (Syn.subst σ m) := by simp [scalarSum]
+ipra_subst signedTerm
+ipra_subst scalarSum
 
 theorem signed_body_at (A m t : PTm n) : Γ ⊢[PRAAx] inst2 signedBody t (pairT A m) ≐ signedTerm A m t := by
   simp only [signedBody,inst2,subst_signedTerm,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
@@ -155,12 +144,8 @@ def rowValuesEqual (M N m r z y : PTm n) : Fm PTm n := .all
     evaluate (cell (Syn.shift N) (Syn.shift r) (var 0)) (Syn.shift y))
 def cellValuesEqual (M N m z y : PTm n) : Fm PTm n := .all
   (lt (var 0) (Syn.shift m) ⟶ rowValuesEqual (Syn.shift M) (Syn.shift N) (Syn.shift m) (var 0) (Syn.shift z) (Syn.shift y))
-@[simp] theorem subst_rowValuesEqual {l : ℕ} (σ : Fin n → PTm l) (M N m r z y : PTm n) :
-    (rowValuesEqual M N m r z y).subst σ = rowValuesEqual (Syn.subst σ M) (Syn.subst σ N) (Syn.subst σ m)
-      (Syn.subst σ r) (Syn.subst σ z) (Syn.subst σ y) := by simp [rowValuesEqual,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_cellValuesEqual {l : ℕ} (σ : Fin n → PTm l) (M N m z y : PTm n) :
-    (cellValuesEqual M N m z y).subst σ = cellValuesEqual (Syn.subst σ M) (Syn.subst σ N) (Syn.subst σ m)
-      (Syn.subst σ z) (Syn.subst σ y) := by simp [cellValuesEqual,Syn.subst_shift,Syn.shift_subst]
+ipra_subst rowValuesEqual [Syn.subst_shift, Syn.shift_subst]
+ipra_subst cellValuesEqual [Syn.subst_shift, Syn.shift_subst]
 
 theorem cell_value_at (M N m z y r j : PTm n) (h : Γ ⊢[PRAAx] cellValuesEqual M N m z y)
     (hr : Γ ⊢[PRAAx] lt r m) (hj : Γ ⊢[PRAAx] lt j m) : Γ ⊢[PRAAx]
@@ -239,12 +224,8 @@ def scalarRowEqual (A B m r : PTm n) : Fm PTm n := .all (lt (var 0) (Syn.shift m
   GaussianRationalValueEquality.valueEqual (cell (Syn.shift A) (Syn.shift r) (var 0)) (cell (Syn.shift B) (Syn.shift r) (var 0)))
 def scalarCellsEqual (A B m : PTm n) : Fm PTm n := .all
   (lt (var 0) (Syn.shift m) ⟶ scalarRowEqual (Syn.shift A) (Syn.shift B) (Syn.shift m) (var 0))
-@[simp] theorem subst_scalarRowEqual {l : ℕ} (σ : Fin n → PTm l) (A B m r : PTm n) :
-    (scalarRowEqual A B m r).subst σ = scalarRowEqual (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ m) (Syn.subst σ r) := by
-  simp [scalarRowEqual,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_scalarCellsEqual {l : ℕ} (σ : Fin n → PTm l) (A B m : PTm n) :
-    (scalarCellsEqual A B m).subst σ = scalarCellsEqual (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ m) := by
-  simp [scalarCellsEqual,Syn.subst_shift,Syn.shift_subst]
+ipra_subst scalarRowEqual [Syn.subst_shift, Syn.shift_subst]
+ipra_subst scalarCellsEqual [Syn.subst_shift, Syn.shift_subst]
 
 theorem scalar_cell_at (A B m r j : PTm n) (h : Γ ⊢[PRAAx] scalarCellsEqual A B m)
     (hr : Γ ⊢[PRAAx] lt r m) (hj : Γ ⊢[PRAAx] lt j m) : Γ ⊢[PRAAx]
@@ -277,25 +258,23 @@ def output (A m : PTm n) : PTm n := pairT (constantTable A m)
 def outputF : PR 2 := PTm.toPR (output (var 0) (var 1))
 def run (A m : PTm n) : PTm n := ap2 outputF A m
 def evaluatedF : PR 3 := PTm.toPR (evaluatedTable (var 0) (var 1) (var 2))
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (A m : PTm n) :
-    Syn.subst σ (output A m) = output (Syn.subst σ A) (Syn.subst σ m) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (A m : PTm n) :
-    Syn.subst σ (run A m) = run (Syn.subst σ A) (Syn.subst σ m) := by simp [run]
+ipra_subst output
+ipra_subst run
 
 theorem program_at (A m : PTm n) : Γ ⊢[PRAAx] run A m ≐ output A m := by
   simpa [run,outputF,ap2] using toPR_eq (Γ := Γ) (output (var 0) (var 1) : PTm 2) ![A,m]
 theorem evaluated_program_at (M m z : PTm n) : Γ ⊢[PRAAx] ap3 evaluatedF M m z ≐ evaluatedTable M m z := by
   simpa [evaluatedF,ap3] using toPR_eq (Γ := Γ) (evaluatedTable (var 0) (var 1) (var 2) : PTm 3) ![M,m,z]
 theorem returned_table (A m : PTm n) : Γ ⊢[PRAAx] fstT (run A m) ≐ constantTable A m :=
-  (congrFst (program_at _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _).fstE
 theorem returned_old_run (A m : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run A m)) ≐ GaussianPolynomialDeterminant.run (constantTable A m) m zero :=
-  (congrFst ((congrSnd (program_at _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _).sndE.fstE
 theorem returned_polynomial (A m : PTm n) : Γ ⊢[PRAAx]
     fstT (fstT (sndT (run A m))) ≐ GaussianPolynomialDeterminant.determinant (constantTable A m) m zero :=
   (congrFst (returned_old_run _ _)).eqTrans (GaussianPolynomialDeterminant.returned_polynomial _ _ _)
 theorem returned_scalar (A m : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run A m)) ≐ scalarDet A m :=
-  (congrSnd ((congrSnd (program_at _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at _ _).sndE.sndE
 theorem returned_evaluation (A m : PTm n) : Γ ⊢[PRAAx]
     evaluate (fstT (fstT (sndT (run A m)))) qzero ≐ sndT (sndT (run A m)) :=
   (evaluate_congr (returned_polynomial _ _) (.eqRefl _)).eqTrans (returned_scalar _ _).eqSymm

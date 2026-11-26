@@ -17,7 +17,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentPrefixes
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetLaplaceMomentCompact (data regular)
 open GaussianBinetLaplaceMomentFloor (nameF evaluatorF fixedData gain)
 open GaussianBinetLaplaceMomentTail (coefficient)
@@ -31,10 +31,6 @@ open GaussianNamedSmallAddendRate (tailSamples)
 open GaussianRationalHorner (canonical)
 open GaussianRationalMetric (bounded)
 open GaussianRationalReciprocal (bound_congr)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "realSource" => GaussianLogGammaEulerResidualDomain.source
@@ -44,14 +40,9 @@ local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
 def prefixData (j X D R L : PTm n) : PTm n := data j X D R L zero L one
 def tailNumerator (j D : PTm n) : PTm n := two*coefficient j D
 
-@[simp] theorem subst_prefixData {m : ℕ} (σ : Fin n → PTm m) (j X D R L : PTm n) :
-    Syn.subst σ (prefixData j X D R L) =
-      prefixData (Syn.subst σ j) (Syn.subst σ X) (Syn.subst σ D) (Syn.subst σ R) (Syn.subst σ L) := by
-  simp [prefixData,one]
+ipra_subst prefixData [one]
 
-@[simp] theorem subst_tailNumerator {m : ℕ} (σ : Fin n → PTm m) (j D : PTm n) :
-    Syn.subst σ (tailNumerator j D) = tailNumerator (Syn.subst σ j) (Syn.subst σ D) := by
-  simp [tailNumerator,two,one]
+ipra_subst tailNumerator [two, one]
 
 private theorem panel_source (X D R K A C : PTm n)
     (h : Γ ⊢[PRAAx] realSource X zero D zero R) (hc : Γ ⊢[PRAAx] le (A+C) K) :

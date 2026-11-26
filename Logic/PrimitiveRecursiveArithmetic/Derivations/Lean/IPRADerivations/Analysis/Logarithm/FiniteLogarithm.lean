@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Exponential.FiniteExponential
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Literal finite logarithm polynomial and its differential residual
@@ -20,7 +19,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.FiniteLogarithm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.LogarithmExponentialCoefficients
   (value code eval_value_code eval_value_congr kernel kernelCode kernel_differential kernel_zero)
 open LeanProofs.IPRA.Analysis.FiniteExponential
@@ -28,10 +27,6 @@ open LeanProofs.IPRA.Analysis.FiniteExponential
     weight weight_exact data component)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -49,8 +44,7 @@ def monomial (differentiate : Bool) (x k : PTm n) : ZT n :=
 def monomialF (d : Bool) : PR 2 := PTm.toPR (code (monomial d (var 0) (var 1)))
 def monomialCode (d : Bool) (x k : PTm n) : PTm n := ap2 (monomialF d) x k
 
-@[simp] theorem subst_monomialCode {m : ℕ} (σ : Fin n → PTm m) (d : Bool) (x k : PTm n) :
-    Syn.subst σ (monomialCode d x k) = monomialCode d (Syn.subst σ x) (Syn.subst σ k) := by simp [monomialCode]
+ipra_subst monomialCode
 
 theorem monomial_at (d : Bool) (x k : PTm n) :
     Γ ⊢[PRAAx] monomialCode d x k ≐ code (monomial d x k) := by
@@ -75,12 +69,9 @@ def sum (d p : Bool) (r N x D : PTm n) : PTm n := ap2 (sumF (body d p)) r (data 
 def logarithm (x D N : PTm n) : ZT n := ⟨sum false true N N x D,sum false false N N x D⟩
 def derivative (x D N : PTm n) : ZT n := ⟨sum true true N N x D,sum true false N N x D⟩
 
-@[simp] theorem subst_sum {m : ℕ} (σ : Fin n → PTm m) (d p : Bool) (r N x D : PTm n) :
-    Syn.subst σ (sum d p r N x D) = sum d p (Syn.subst σ r) (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ D) := by simp [sum]
-@[simp] theorem subst_logarithm {m : ℕ} (σ : Fin n → PTm m) (x D N : PTm n) :
-    (logarithm x D N).subst σ = logarithm (Syn.subst σ x) (Syn.subst σ D) (Syn.subst σ N) := by simp [logarithm,ZT.subst]
-@[simp] theorem subst_derivative {m : ℕ} (σ : Fin n → PTm m) (x D N : PTm n) :
-    (derivative x D N).subst σ = derivative (Syn.subst σ x) (Syn.subst σ D) (Syn.subst σ N) := by simp [derivative,ZT.subst]
+ipra_subst sum
+ipra_subst logarithm [ZT.subst]
+ipra_subst derivative [ZT.subst]
 
 theorem coefficient_congr (d : Bool) {N N' k k' D D' : PTm n}
     (hN : Γ ⊢[PRAAx] N ≐ N') (hk : Γ ⊢[PRAAx] k ≐ k') (hD : Γ ⊢[PRAAx] D ≐ D') :
@@ -94,9 +85,9 @@ theorem body_at (d p : Bool) (k N x D : PTm n) :
       coefficient d N k D*component p (value (monomialCode d x k)) := by
   have hn : Γ ⊢[PRAAx] fstT (data N x D) ≐ N := fst_pair _ _
   have hx : Γ ⊢[PRAAx] fstT (sndT (data N x D)) ≐ x :=
-    (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
+    (snd_pair _ _).fstE
   have hd : Γ ⊢[PRAAx] sndT (sndT (data N x D)) ≐ D :=
-    (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
+    (snd_pair _ _).sndE
   have a : inst2 (body d p) k (data N x D) =
       coefficient d (fstT (data N x D)) k (sndT (sndT (data N x D)))*
         component p (value (monomialCode d (fstT (sndT (data N x D))) k)) := by
@@ -175,12 +166,11 @@ theorem derivative_recurrence (x D N : PTm n) : Γ ⊢[PRAAx]
 
 theorem zero_sum (d : Bool) (x D : PTm n) : Γ ⊢[PRAAx]
     ZT.eq (⟨sum d true zero zero x D,sum d false zero zero x D⟩ : ZT n) (ZT.natLit 0) := by
-  have p := natEq (sum_zero (Γ := Γ) (body d true) (data zero x D))
   have q := natEq (sum_zero (Γ := Γ) (body d false) (data zero x D))
   apply ZT.derive
   rw [ZT.toZ_natLit]
   simp only [ZT.toZ,sum]
-  linear_combination p-q
+  linear_combination natEq (sum_zero (Γ := Γ) (body d true) (data zero x D))-q
 
 theorem logarithm_zero (x D : PTm n) : Γ ⊢[PRAAx] ZT.eq (logarithm x D zero) (ZT.natLit 0) := zero_sum false x D
 theorem derivative_zero (x D : PTm n) : Γ ⊢[PRAAx] ZT.eq (derivative x D zero) (ZT.natLit 0) := zero_sum true x D
@@ -206,17 +196,14 @@ def differentialFormula (x D N : PTm n) : Fm PTm n :=
   ZT.eq ((ZT.ofNat D+value x)*derivative x D N+kernel N*power x N)
     (ZT.ofNat (FiniteExponential.denominator D N))
 
-@[simp] theorem subst_differentialFormula {m : ℕ} (σ : Fin n → PTm m) (x D N : PTm n) :
-    (differentialFormula x D N).subst σ =
-      differentialFormula (Syn.subst σ x) (Syn.subst σ D) (Syn.subst σ N) := by simp [differentialFormula]
+ipra_subst differentialFormula
 
 /-- Exact finite geometric derivative identity `(D+x) H'_N = N!D^N−g_N x^N`.
 The correction is the actual next logarithmic derivative coefficient. -/
 theorem differential_residual (x D N : PTm n) : Γ ⊢[PRAAx] differentialFormula x D N := by
   have all : Γ ⊢[PRAAx] .all (differentialFormula (Syn.shift x) (Syn.shift D) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_differentialFormula,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      have d := ZT.toZ_eq (derivative_zero (Γ := Γ) x D)
+    ipra_qfind [subst_differentialFormula]
+    · have d := ZT.toZ_eq (derivative_zero (Γ := Γ) x D)
       have p := ZT.toZ_eq (power_zero (Γ := Γ) x)
       have k := (eval_value_congr (kernel_zero (Γ := Γ) (n := n))).trans (eval_value_code (Γ := Γ) (ZT.natLit 1))
       have f := natEq (fact_zero (Γ := Γ) (zero : PTm n))
@@ -229,8 +216,7 @@ theorem differential_residual (x D N : PTm n) : Γ ⊢[PRAAx] differentialFormul
       change 𝔞(fact zero) = 1 at f
       change 𝔞(pw D zero) = 1 at z
       rw [d,p,k,f,z]; ring
-    · simp only [subst_differentialFormula,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      let Δ : List (Fm PTm (n+1)) :=
+    · let Δ : List (Fm PTm (n+1)) :=
         differentialFormula (Syn.shift x) (Syn.shift D) (var 0) :: Γ.map Fm.shift
       change Δ ⊢[PRAAx] differentialFormula (Syn.shift x) (Syn.shift D) (succ (var 0))
       have ih := ZT.toZ_eq (Γ := Δ) (Prf.hyp0 : Δ ⊢[PRAAx] differentialFormula (Syn.shift x) (Syn.shift D) (var 0))
@@ -252,8 +238,7 @@ def program (x D N : PTm n) : PTm n :=
   pairT (code (logarithm x D N)) (pairT (code (derivative x D N)) (FiniteExponential.denominator D N))
 def programF : PR 3 := PTm.toPR (program (var 0) (var 1) (var 2))
 
-@[simp] theorem subst_program {m : ℕ} (σ : Fin n → PTm m) (x D N : PTm n) :
-    Syn.subst σ (program x D N) = program (Syn.subst σ x) (Syn.subst σ D) (Syn.subst σ N) := by simp [program]
+ipra_subst program
 
 theorem program_at (x D N : PTm n) :
     Γ ⊢[PRAAx] ap3 programF x D N ≐ program x D N := by
@@ -287,8 +272,8 @@ theorem logarithmic_program_closed :
             ((sndT (sndT (program (var 0) (var 1) (var 2))) ≐ FiniteExponential.denominator (var 1) (var 2)) ⋏
               (le one (var 1) ⟶ le one (FiniteExponential.denominator (var 1) (var 2))))))) :=
   closeUniv 3 (.andI (program_at _ _ _) (.andI (fst_pair _ _)
-    (.andI ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
-      (.andI ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))
+    (.andI (snd_pair _ _).fstE
+      (.andI (snd_pair _ _).sndE
         (.impI (FiniteExponential.denominator_positive _ _ Prf.hyp0))))))
 
 end LeanProofs.IPRA.Analysis.FiniteLogarithm

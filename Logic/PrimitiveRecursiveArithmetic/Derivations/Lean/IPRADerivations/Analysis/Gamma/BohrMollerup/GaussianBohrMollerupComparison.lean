@@ -17,7 +17,7 @@ set_option maxHeartbeats 2200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBohrMollerupComparison
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale oneCode)
 open GaussianBohrMollerupChords (base translated base_source translated_source scale_cross rescale_from)
 open GaussianBohrMollerupPeriod (differenceF differenceData difference_regular difference_data_congr)
@@ -39,9 +39,6 @@ open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (positive_product canonical_unique ofGaussian_canonical ofGaussian_represents represents_congr)
 open GaussianRationalNaturalScale (naturalPoint natScale_canonical natScale_represents natScale_as_product)
 open GaussianStirlingGammaLogarithm (source)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "C" => constantF

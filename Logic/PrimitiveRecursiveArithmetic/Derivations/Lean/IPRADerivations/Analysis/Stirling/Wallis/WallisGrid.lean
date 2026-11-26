@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Integration.Quadrature.BaselQuadrature
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The rational quarter circle on a uniform grid
@@ -32,14 +31,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.WallisGrid
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.BaselQuadrature (uq d_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -54,12 +49,9 @@ def gm (j M L : PTm n) : PTm n := monus (M * M) (j * j) * uq j M L
 /-- `F w(j/M) = 2M² u_j`. -/
 def om (j M L : PTm n) : PTm n := two * (M * M) * uq j M L
 
-@[simp] theorem subst_sg {m : ℕ} (σ : Fin n → PTm m) (j M L : PTm n) :
-    Syn.subst σ (sg j M L) = sg (Syn.subst σ j) (Syn.subst σ M) (Syn.subst σ L) := by simp [sg]
-@[simp] theorem subst_gm {m : ℕ} (σ : Fin n → PTm m) (j M L : PTm n) :
-    Syn.subst σ (gm j M L) = gm (Syn.subst σ j) (Syn.subst σ M) (Syn.subst σ L) := by simp [gm]
-@[simp] theorem subst_om {m : ℕ} (σ : Fin n → PTm m) (j M L : PTm n) :
-    Syn.subst σ (om j M L) = om (Syn.subst σ j) (Syn.subst σ M) (Syn.subst σ L) := by simp [om]
+ipra_subst sg
+ipra_subst gm
+ipra_subst om
 
 /-- `L! = (M² + j²) u_j` for `j ≤ M = M₀ + 1` and `2M² ≤ L`. -/
 theorem u_eq_le {j M₀ L : PTm n} (hj : Γ ⊢[PRAAx] le j (succ M₀))
@@ -194,38 +186,34 @@ theorem T_pos (j M₀ : PTm n) :
 /-- `s` increases along the grid. -/
 theorem sg_mono (hj : Γ ⊢[PRAAx] le (succ j) (succ M₀)) (hL : Γ ⊢[PRAAx] le (two * (succ M₀ * succ M₀)) L) :
     Γ ⊢[PRAAx] le (sg j (succ M₀) L) (sg (succ j) (succ M₀) L) := by
-  have e := natEq (sg_step hj hL)
   refine mul_le_cancel (d' := M₀ * M₀ + two * M₀ + j * succ j)
     (le_congr (congrMul (T_pos j M₀) (.eqRefl _)) (congrMul (T_pos j M₀) (.eqRefl _)) ?_)
-  ipra_le (𝔞 M₀ + 1) * (𝔞 (gm j (succ M₀) L) + 𝔞 (gm (succ j) (succ M₀) L)) with e
+  ipra_le (𝔞 M₀ + 1) * (𝔞 (gm j (succ M₀) L) + 𝔞 (gm (succ j) (succ M₀) L)) with natEq (sg_step hj hL)
 
 /-- `c` decreases along the grid. -/
 theorem gm_anti (hj : Γ ⊢[PRAAx] le (succ j) (succ M₀)) (hL : Γ ⊢[PRAAx] le (two * (succ M₀ * succ M₀)) L) :
     Γ ⊢[PRAAx] le (gm (succ j) (succ M₀) L) (gm j (succ M₀) L) := by
-  have e := natEq (gm_step hj hL)
   refine mul_le_cancel (d' := M₀ * M₀ + two * M₀ + j * succ j)
     (le_congr (congrMul (T_pos j M₀) (.eqRefl _)) (congrMul (T_pos j M₀) (.eqRefl _)) ?_)
-  ipra_le (𝔞 M₀ + 1) * (𝔞 (sg j (succ M₀) L) + 𝔞 (sg (succ j) (succ M₀) L)) with e
+  ipra_le (𝔞 M₀ + 1) * (𝔞 (sg j (succ M₀) L) + 𝔞 (sg (succ j) (succ M₀) L)) with natEq (gm_step hj hL)
 
 /-- `s(v) − s(u) ≤ 2h`: `M (sg' − sg) ≤ 2F`. -/
 theorem sg_inc (hj : Γ ⊢[PRAAx] le (succ j) (succ M₀)) (hL : Γ ⊢[PRAAx] le (two * (succ M₀ * succ M₀)) L) :
     Γ ⊢[PRAAx] le (succ M₀ * sg (succ j) (succ M₀) L) (succ M₀ * sg j (succ M₀) L + two * fact L) := by
   have hj0 : Γ ⊢[PRAAx] le j (succ M₀) := le_trans (le_succ_self j) hj
-  have e := natEq (sg_step hj hL)
   have hs := sg_mono hj hL
   have hg := gm_le hj0 hL; have hg1 := gm_le hj hL
   refine mul_le_cancel (d' := M₀) ?_
-  ipra_le (𝔞 M₀ + 1) * (sl hg + sl hg1) + 𝔞 j * (𝔞 j + 1) * sl hs with e
+  ipra_le (𝔞 M₀ + 1) * (sl hg + sl hg1) + 𝔞 j * (𝔞 j + 1) * sl hs with natEq (sg_step hj hL)
 
 /-- `c(u) − c(v) ≤ 2h`: `M (gm − gm') ≤ 2F`. -/
 theorem gm_inc (hj : Γ ⊢[PRAAx] le (succ j) (succ M₀)) (hL : Γ ⊢[PRAAx] le (two * (succ M₀ * succ M₀)) L) :
     Γ ⊢[PRAAx] le (succ M₀ * gm j (succ M₀) L) (succ M₀ * gm (succ j) (succ M₀) L + two * fact L) := by
   have hj0 : Γ ⊢[PRAAx] le j (succ M₀) := le_trans (le_succ_self j) hj
-  have e := natEq (gm_step hj hL)
   have hc := gm_anti hj hL
   have hs := sg_le hj0 hL; have hs1 := sg_le hj hL
   refine mul_le_cancel (d' := M₀) ?_
-  ipra_le (𝔞 M₀ + 1) * (sl hs + sl hs1) + 𝔞 j * (𝔞 j + 1) * sl hc with e
+  ipra_le (𝔞 M₀ + 1) * (sl hs + sl hs1) + 𝔞 j * (𝔞 j + 1) * sl hc with natEq (gm_step hj hL)
 
 end cell
 

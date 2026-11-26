@@ -16,7 +16,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalCubicName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmName (baseNumerator baseDenominator base_positive)
 open GaussianBarnesCanonicalLogRow (cubic roundedCubic rounding_distance)
 open GaussianBarnesCanonicalLogObservation (cubic_ordered_distance)
@@ -30,10 +30,6 @@ open GaussianRationalHorner (ofGaussian ofGaussian_represents ofGaussian_canonic
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalSyntheticDivision (qadd_congr rescale_to)
 open DyadicComplexLogarithm (unit precision)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "dyadic" => GaussianCoefficientNameBounds.unit

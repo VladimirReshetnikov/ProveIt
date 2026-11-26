@@ -13,7 +13,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductFamilyCongruence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianNamedFiniteProduct (rowBoundsAt rowDistance row_bound_at amplification)
 open GaussianNamedFiniteProductFamily (rowF row_at regularRows radius productData family_bounds family_regular)
@@ -21,8 +21,6 @@ open GaussianNamedFiniteProductName (nameF rowBounds cofinalRows cofinal_raw bou
 open GaussianNameEquivalence (crossEquivalent cross_at)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalHorner (positive_product)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -30,9 +28,7 @@ def equalRows (f g : PR 2) (t u : PTm 2) (N x y : PTm n) : Fm PTm n :=
   .all (lt (var 0) (Syn.shift N) ⟶
     crossEquivalent f g (inst2 t (var 0) (Syn.shift x)) (inst2 u (var 0) (Syn.shift y)))
 
-@[simp] theorem subst_equalRows {l : ℕ} (σ : Fin n → PTm l) (f g : PR 2) (t u : PTm 2) (N x y : PTm n) :
-    (equalRows f g t u N x y).subst σ = equalRows f g t u (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ y) := by
-  simp [equalRows,Syn.subst_shift,Syn.shift_subst]
+ipra_subst equalRows [Syn.subst_shift, Syn.shift_subst]
 
 theorem equal_at (f g : PR 2) (t u : PTm 2) (N x y i : PTm n)
     (h : Γ ⊢[PRAAx] equalRows f g t u N x y) (hi : Γ ⊢[PRAAx] lt i N) :

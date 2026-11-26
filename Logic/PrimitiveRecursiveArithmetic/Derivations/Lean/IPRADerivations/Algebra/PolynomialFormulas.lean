@@ -20,9 +20,7 @@ factorisation.
 
 namespace LeanProofs.IPRA.Algebra.PolynomialFormulas
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
+open_ipra
 
 section Quadratic
 

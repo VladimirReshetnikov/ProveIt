@@ -19,7 +19,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialColumnCoefficients
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero qadd canonical evaluate)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qnegative qnegative_canonical qsub)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qadd_congr canonical_coefficient_at)
@@ -28,9 +28,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalCoefficientScaling (scaled scaled_
 open LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantTerms (tableShape)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,14 +37,10 @@ def swapped (M m L j : PTm n) : PTm n :=
 def cancellation (M m L j : PTm n) : PTm n := added (swapped M m L j) (original M m L) (succ (m*L))
 def negativePolynomial (M m L : PTm n) : PTm n :=
   scaled (original M m L) GaussianRationalMatrixFiniteSums.minusOne
-@[simp] theorem subst_original {l : ℕ} (σ : Fin n → PTm l) (M m L : PTm n) :
-    Syn.subst σ (original M m L) = original (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) := by simp [original]
-@[simp] theorem subst_swapped {l : ℕ} (σ : Fin n → PTm l) (M m L j : PTm n) :
-    Syn.subst σ (swapped M m L j) = swapped (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ j) := by simp [swapped]
-@[simp] theorem subst_cancellation {l : ℕ} (σ : Fin n → PTm l) (M m L j : PTm n) :
-    Syn.subst σ (cancellation M m L j) = cancellation (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ j) := by simp [cancellation]
-@[simp] theorem subst_negativePolynomial {l : ℕ} (σ : Fin n → PTm l) (M m L : PTm n) :
-    Syn.subst σ (negativePolynomial M m L) = negativePolynomial (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) := by simp [negativePolynomial]
+ipra_subst original
+ipra_subst swapped
+ipra_subst cancellation
+ipra_subst negativePolynomial
 
 theorem original_length (M m L : PTm n) : Γ ⊢[PRAAx] length (original M m L) ≐ succ (m*L) :=
   GaussianPolynomialDeterminant.determinant_length _ _ _
@@ -131,25 +124,19 @@ def output (M m L j : PTm n) : PTm n := pairT (GaussianPolynomialColumnAlternati
   (pairT (cancellation M m L j) (negativePolynomial M m L))
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (M m L j : PTm n) : PTm n := app outputF ![M,m,L,j]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (M m L j : PTm n) :
-    Syn.subst σ (output M m L j) = output (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ j) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (M m L j : PTm n) :
-    Syn.subst σ (run M m L j) = run (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ j) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 theorem program_at (M m L j : PTm n) : Γ ⊢[PRAAx] run M m L j ≐ output M m L j := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3)) ![M,m,L,j]
 theorem returned_column_program (M m L j : PTm n) : Γ ⊢[PRAAx]
     fstT (run M m L j) ≐ GaussianPolynomialColumnAlternation.run M m L j :=
-  (congrFst (program_at _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _).fstE
 theorem returned_cancellation (M m L j : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run M m L j)) ≐ cancellation M m L j :=
-  (congrFst ((congrSnd (program_at _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _).sndE.fstE
 theorem returned_negative (M m L j : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (run M m L j)) ≐ negativePolynomial M m L :=
-  (congrSnd ((congrSnd (program_at _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _).sndE.sndE
 theorem returned_original_polynomial (M m L j : PTm n) : Γ ⊢[PRAAx]
     fstT (fstT (sndT (fstT (run M m L j)))) ≐ original M m L :=
   (congrFst (congrFst (congrSnd (returned_column_program _ _ _ _)))).eqTrans

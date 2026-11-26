@@ -1,6 +1,4 @@
 import IPRADerivations.Probability.Lotus
-import IPRADerivations.Core.SumLemmas
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Pappus's theorems for finite grids and polygonal chains (`pappus_centroid_ipra_2026-11-15`, `thm:grid-pappus`, `thm:polygon-pappus`)
@@ -42,12 +40,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Geometry.PappusGrid
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Lotus (cmB inst2_cmB sum_const_mul)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

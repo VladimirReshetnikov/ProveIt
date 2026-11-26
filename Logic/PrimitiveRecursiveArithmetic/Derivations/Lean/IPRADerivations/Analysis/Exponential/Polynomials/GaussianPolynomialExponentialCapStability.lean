@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Exponential.Polynomials.GaussianRationalPolynomialExponentialStability
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Exact cap independence of the original finite exponential coefficients
@@ -18,23 +17,19 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialExponentialCapStability
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero)
 open GaussianRationalPolynomialPowers (powerPrefix)
 open GaussianRationalPolynomialExponential (stage polynomial inverseFactorial)
 open GaussianRationalPolynomialBuffers (added leftPad)
 open GaussianRationalCoefficientScaling (scaled)
 open GaussianRationalLowCoefficientConvolution (exponentCoefficient)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def parts (N j Q P : PTm n) : PTm n :=
   added (leftPad Q N) (scaled P (inverseFactorial (succ j))) (succ (succ j*N))
-@[simp] theorem subst_parts {m : ℕ} (σ : Fin n → PTm m) (N j Q P : PTm n) :
-    Syn.subst σ (parts N j Q P) = parts (Syn.subst σ N) (Syn.subst σ j) (Syn.subst σ Q) (Syn.subst σ P) := by simp [parts]
+ipra_subst parts
 
 theorem parts_congr (N j : PTm n) {Q Q' P P' : PTm n} (hQ : Γ ⊢[PRAAx] Q ≐ Q')
     (hP : Γ ⊢[PRAAx] P ≐ P') : Γ ⊢[PRAAx] parts N j Q P ≐ parts N j Q' P' := by
@@ -42,9 +37,7 @@ theorem parts_congr (N j : PTm n) {Q Q' P P' : PTm n} (hQ : Γ ⊢[PRAAx] Q ≐ 
 
 def capLaw (C N K H j : PTm n) : Fm PTm n := le j K ⟶ le j H ⟶
   powerPrefix C N K j ≐ powerPrefix C N H j ⋏ stage C N K j ≐ stage C N H j
-@[simp] theorem subst_capLaw {m : ℕ} (σ : Fin n → PTm m) (C N K H j : PTm n) :
-    (capLaw C N K H j).subst σ = capLaw (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ K)
-      (Syn.subst σ H) (Syn.subst σ j) := by simp [capLaw]
+ipra_subst capLaw
 
 theorem cap_zero (C N K H : PTm n) : Γ ⊢[PRAAx] capLaw C N K H zero :=
   .impI (.impI (.andI
@@ -71,11 +64,9 @@ theorem cap_step (C N K H j : PTm n) (ih : Γ ⊢[PRAAx] capLaw C N K H j) : Γ 
 theorem common_stage (C N K H j : PTm n) (hK : Γ ⊢[PRAAx] le j K) (hH : Γ ⊢[PRAAx] le j H) : Γ ⊢[PRAAx]
     powerPrefix C N K j ≐ powerPrefix C N H j ⋏ stage C N K j ≐ stage C N H j := by
   have all : Γ ⊢[PRAAx] .all (capLaw (Syn.shift C) (Syn.shift N) (Syn.shift K) (Syn.shift H) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,⟨le_QF _ _,⟨trivial,trivial⟩⟩⟩ ?_ ?_
-    · simp only [subst_capLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact cap_zero C N K H
-    · simp only [subst_capLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact cap_step _ _ _ _ _ Prf.hyp0
+    ipra_qfind (⟨le_QF _ _,⟨le_QF _ _,⟨trivial,trivial⟩⟩⟩) [subst_capLaw]
+    · exact cap_zero C N K H
+    · exact cap_step _ _ _ _ _ Prf.hyp0
   have gate : Γ ⊢[PRAAx] capLaw C N K H j := by
     simpa only [subst_capLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
   exact Prf.impE (Prf.impE gate hK) hH

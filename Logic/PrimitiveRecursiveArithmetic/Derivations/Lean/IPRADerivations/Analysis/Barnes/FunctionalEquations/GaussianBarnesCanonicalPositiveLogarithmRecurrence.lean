@@ -9,7 +9,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalPositiveLogarithmRecurrence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (eval_re_code eval_im_code)
 open GaussianBarnesCanonicalHyperfactorial (barnesData barnes_source barnes_regular specialLogData logarithm_source)
 open GaussianBarnesCanonicalPositiveLogarithm (default_source regular exponential_value)
@@ -20,9 +20,6 @@ open GaussianNameBounds (U)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
 open GaussianRealNameExponentialInjectivity (independent_radii_injective)
 open GaussianRootAlgebra (equal equal_of_values re_sub im_sub re_scale im_scale re_one im_one)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "L" => GaussianBarnesCanonicalPositiveLogarithm.nameF

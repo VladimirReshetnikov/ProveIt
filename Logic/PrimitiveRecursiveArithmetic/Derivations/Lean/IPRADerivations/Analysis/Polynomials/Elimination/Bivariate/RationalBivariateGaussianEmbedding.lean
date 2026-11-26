@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalBivariateGaussianEmbedding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalGaussianEmbedding (embed scalarOne scalarZero)
 open RationalPolynomialGaussianEmbedding (embed_congr evaluate hornerF)
 open RationalPolynomialBuffersGaussianEmbedding (embeddedEntries evaluation_transport)
@@ -24,10 +24,6 @@ open GaussianPolynomialMonicCompanion (rowShape row_shape_at)
 open GaussianRationalHorner (qzero)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,20 +36,11 @@ def monicValues (P R x : PTm n) : PTm n := sequence monicBody (succ R) (pairT P 
 def bivariate (P R x y : PTm n) : PTm n := evaluate (values P R x) y
 def monic (P R x y : PTm n) : PTm n := evaluate (monicValues P R x) y
 
-@[simp] theorem subst_values {l : ℕ} (σ : Fin n → PTm l) (P R x : PTm n) :
-    Syn.subst σ (values P R x) = values (Syn.subst σ P) (Syn.subst σ R) (Syn.subst σ x) := by simp [values]
-@[simp] theorem subst_monicCoefficient {l : ℕ} (σ : Fin n → PTm l) (P x i : PTm n) :
-    Syn.subst σ (monicCoefficient P x i) = monicCoefficient (Syn.subst σ P) (Syn.subst σ x)
-      (Syn.subst σ i) := by simp [monicCoefficient,Signum.sg]
-@[simp] theorem subst_monicValues {l : ℕ} (σ : Fin n → PTm l) (P R x : PTm n) :
-    Syn.subst σ (monicValues P R x) = monicValues (Syn.subst σ P) (Syn.subst σ R) (Syn.subst σ x) := by
-  simp [monicValues]
-@[simp] theorem subst_bivariate {l : ℕ} (σ : Fin n → PTm l) (P R x y : PTm n) :
-    Syn.subst σ (bivariate P R x y) = bivariate (Syn.subst σ P) (Syn.subst σ R) (Syn.subst σ x) (Syn.subst σ y) := by
-  simp [bivariate]
-@[simp] theorem subst_monic {l : ℕ} (σ : Fin n → PTm l) (P R x y : PTm n) :
-    Syn.subst σ (monic P R x y) = monic (Syn.subst σ P) (Syn.subst σ R) (Syn.subst σ x) (Syn.subst σ y) := by
-  simp [monic]
+ipra_subst values
+ipra_subst monicCoefficient [Signum.sg]
+ipra_subst monicValues
+ipra_subst bivariate
+ipra_subst monic
 
 theorem evaluation_congr {P Q x y : PTm n} (hP : Γ ⊢[PRAAx] P ≐ Q) (hx : Γ ⊢[PRAAx] x ≐ y) :
     Γ ⊢[PRAAx] evaluate P x ≐ evaluate Q y :=

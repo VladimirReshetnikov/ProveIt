@@ -11,7 +11,7 @@ set_option maxHeartbeats 780000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRaabeRightSide
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
@@ -25,9 +25,6 @@ open GaussianRationalHorner (qadd qmul qmul_canonical positive_product)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalPowerDifference (distance_refl_zero)
 open GaussianRationalSyntheticDivision (qmul_congr qsub_congr)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -44,9 +41,7 @@ def nameF : PR 2 := addF primitiveF C
 def data (A D w : PTm n) : PTm n := addData (primitiveData A D) (cd w)
 def cost (A : PTm n) : PTm n := num 9+two*A
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (A D w : PTm n) :
-    Syn.subst σ (data A D w) = data (Syn.subst σ A) (Syn.subst σ D) (Syn.subst σ w) := by
-  simp [data,primitiveData,productData]
+ipra_subst data [primitiveData, productData]
 
 private theorem product_regular (A D : PTm n) (h : Γ ⊢[PRAAx] GaussianPositiveRationalLogarithm.source A D) :
     Γ ⊢[PRAAx] pointCN productF (productData A D) :=

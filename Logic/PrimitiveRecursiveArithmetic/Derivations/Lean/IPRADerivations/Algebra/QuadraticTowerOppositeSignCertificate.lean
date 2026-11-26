@@ -1,6 +1,5 @@
 import IPRADerivations.Algebra.QuadraticTowerOppositeMultiplier
 import IPRADerivations.Algebra.QuadraticTowerExtensionSign
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Original opposite-sign dispatch and its actual multiplier certificate
@@ -17,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticTowerOppositeSignCertificate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open QuadraticTowerArrayCodec (arrayHeight normalized)
 open QuadraticTowerCoefficientArithmetic (added negated added_congr negated_congr)
 open QuadraticTowerMultiplicationTable (budget leftHalf rightHalf query)
@@ -27,9 +26,6 @@ open QuadraticTowerConeTest (lowerFirst lowerSecond lowerRadicand)
 open QuadraticTowerOppositeMultiplier (signedNorm)
 open QuadraticTowerExtensionSign (sourceCap returnedProduct returnedNorm productSign)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -204,8 +200,7 @@ theorem positive_product_certificate (h B D A b : PTm n) (p : Γ ⊢[PRAAx] Quad
       (product_source h B D A b p) (positive_product_flag h B D A b p hp))
 
 def negativeProduct (h B D A : PTm n) : PTm n := negated (succ h) (returnedProduct h B D A)
-@[simp] theorem subst_negativeProduct {k : ℕ} (σ : Fin n → PTm k) (h B D A : PTm n) :
-    Syn.subst σ (negativeProduct h B D A) = negativeProduct (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ A) := by simp [negativeProduct]
+ipra_subst negativeProduct
 
 theorem negative_product_first (h B D A b : PTm n) (p : Γ ⊢[PRAAx] QuadraticTowerOppositeMultiplier.input h B D A b) : Γ ⊢[PRAAx]
     lowerFirst h (sourceCap h b) D (negativeProduct h B D A) ≐
@@ -266,41 +261,35 @@ def output (h B D A b : PTm n) : PTm n := pairT (QuadraticTowerSignTable.query (
       (pairT (QuadraticTowerConeTest.flag h (sourceCap h b) D (negativeProduct h B D A)) (sourceCap h b))))
 def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (h B D A b : PTm n) : PTm n := PTm.app outputF ![h,B,D,A,b]
-@[simp] theorem subst_output {k : ℕ} (σ : Fin n → PTm k) (h B D A b : PTm n) :
-    Syn.subst σ (output h B D A b) = output (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ A) (Syn.subst σ b) := by simp [output]
-@[simp] theorem subst_run {k : ℕ} (σ : Fin n → PTm k) (h B D A b : PTm n) :
-    Syn.subst σ (run h B D A b) = run (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ A) (Syn.subst σ b) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (h B D A b : PTm n) : Γ ⊢[PRAAx] run h B D A b ≐ output h B D A b := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![h,B,D,A,b]
 theorem returned_original_tag (h B D A b : PTm n) : Γ ⊢[PRAAx] fstT (run h B D A b) ≐ QuadraticTowerSignTable.query (succ h) B D A :=
-  (congrFst (program_at _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _ _).fstE
 theorem returned_product_tail (h B D A b : PTm n) : Γ ⊢[PRAAx] sndT (run h B D A b) ≐
     pairT (productSign h B D A b)
       (pairT (QuadraticTowerConeTest.flag h (sourceCap h b) D (returnedProduct h B D A))
         (pairT (QuadraticTowerConeTest.flag h (sourceCap h b) D (negativeProduct h B D A)) (sourceCap h b))) :=
-  (congrSnd (program_at _ _ _ _ _)).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _ _).sndE
 theorem returned_product_tag (h B D A b : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run h B D A b)) ≐ productSign h B D A b :=
-  (congrFst (returned_product_tail _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_product_tail _ _ _ _ _).fstE
 theorem returned_flags (h B D A b : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run h B D A b)) ≐
     pairT (QuadraticTowerConeTest.flag h (sourceCap h b) D (returnedProduct h B D A))
       (pairT (QuadraticTowerConeTest.flag h (sourceCap h b) D (negativeProduct h B D A)) (sourceCap h b)) :=
-  (congrSnd (returned_product_tail _ _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_product_tail _ _ _ _ _).sndE
 theorem returned_positive_flag (h B D A b : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run h B D A b))) ≐
     QuadraticTowerConeTest.flag h (sourceCap h b) D (returnedProduct h B D A) :=
-  (congrFst (returned_flags _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_flags _ _ _ _ _).fstE
 theorem returned_negative_pair (h B D A b : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run h B D A b))) ≐
     pairT (QuadraticTowerConeTest.flag h (sourceCap h b) D (negativeProduct h B D A)) (sourceCap h b) :=
-  (congrSnd (returned_flags _ _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_flags _ _ _ _ _).sndE
 theorem returned_negative_flag (h B D A b : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (run h B D A b)))) ≐
     QuadraticTowerConeTest.flag h (sourceCap h b) D (negativeProduct h B D A) :=
-  (congrFst (returned_negative_pair _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_negative_pair _ _ _ _ _).fstE
 theorem returned_cap (h B D A b : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (run h B D A b)))) ≐ sourceCap h b :=
-  (congrSnd (returned_negative_pair _ _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_negative_pair _ _ _ _ _).sndE
 
 theorem returned_tags_equal (h B D A b : PTm n) (p : Γ ⊢[PRAAx] QuadraticTowerOppositeMultiplier.input h B D A b) : Γ ⊢[PRAAx]
     fstT (sndT (run h B D A b)) ≐ fstT (run h B D A b) :=

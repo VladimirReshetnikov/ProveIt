@@ -1,7 +1,6 @@
 import IPRADerivations.Combinatorics.BinomialTheorem
 import IPRADerivations.Analysis.Series.TerminatingSeries
 import IPRADerivations.Probability.Independence
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The signed binomial theorem and the binomial specialization
@@ -25,17 +24,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.BinomialSigned
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial (binom)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (binom_zero' binom_self' pascal_at)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrBinom congrPw)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.Analysis.Chebyshev (ps₂)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (zero_ne_one' one_ne_zero' congrEqb')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -200,13 +195,9 @@ private abbrev binF : Fm PTm 2 :=
   (E (var 0) (var 1) ≐ AA (var 0) ps₂) ⋏ (O (var 0) (var 1) ≐ BB (var 0) ps₂)
 
 private theorem bin₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] binF := by
-  refine ind _ ⟨trivial, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_and, Fm.subst_eq, subst_ap2, subst_pairT, subst_sim₁, subst_sim₂, Syn.subst_var,
-      Syn.inst_zero, Syn.inst_succ, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact bin_base _
-  · simp only [Fm.subst_and, Fm.subst_eq, subst_ap2, subst_pairT, subst_sim₁, subst_sim₂, Syn.subst_var,
-      Syn.repl_zero, Syn.repl_succ, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ, repl_one]
-    have s := bin_step (Γ := [binF]) (j := var 0) (ps := ps₂) Prf.hyp0
+  ipra_ind (⟨trivial, trivial⟩) [subst_ap2, subst_pairT, subst_sim₁, subst_sim₂, Syn.inst_succ, Syn.repl_succ]
+  · exact bin_base _
+  · have s := bin_step (Γ := [binF]) (j := var 0) (ps := ps₂) Prf.hyp0
     simpa [ps₂] using s
 
 /-- `cor:binomial-termination`: `∑_{n ≤ m} (−1)^n C(m, n) z^n = (1 − z)^m`, as `E_m = A_m` and `O_m = B_m`. -/

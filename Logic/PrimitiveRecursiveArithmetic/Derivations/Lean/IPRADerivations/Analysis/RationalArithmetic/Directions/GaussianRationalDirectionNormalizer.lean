@@ -20,7 +20,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalDirectionNormalizer
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder (re im normSq normSq_eval scale)
 open LeanProofs.IPRA.Analysis.GaussianRationalL1 (rawGaussian rawDen raw_den_positive raw_represents)
 open LeanProofs.IPRA.Analysis.GaussianIntegerCircleProjection (sign turn re_turn im_turn)
@@ -31,10 +31,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalHorner (positive_product)
 open LeanProofs.IPRA.Foundations.GapDecision (zabs subst_zabs zabs_sq)
 open LeanProofs.IPRA.Foundations.DemandClosure (maximum maximum_left maximum_right)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -58,12 +54,10 @@ def gap (c H : PTm n) : PTm n := monus (S c H*S c H) (norm c*factor c H*factor c
 def sixtyFour : PTm n := num 64
 def sixtyFive : PTm n := succ sixtyFour
 
-@[simp] theorem subst_negativeBit {m : ℕ} (σ : Fin n → PTm m) (a : ZT n) :
-    Syn.subst σ (negativeBit a) = negativeBit (a.subst σ) := by simp [negativeBit,ZT.subst]
+ipra_subst negativeBit [ZT.subst]
 
 
-@[simp] theorem subst_norm {m : ℕ} (σ : Fin n → PTm m) (c : PTm n) :
-    Syn.subst σ (norm c) = norm (Syn.subst σ c) := by simp [norm]
+ipra_subst norm
 
 @[simp] theorem subst_M {m : ℕ} (σ : Fin n → PTm m) (c : PTm n) :
     Syn.subst σ (M c) = M (Syn.subst σ c) := by
@@ -71,26 +65,19 @@ def sixtyFive : PTm n := succ sixtyFour
     ComplexLogarithmRemainder.subst_re, ComplexLogarithmRemainder.subst_im,
     GaussianRationalL1.subst_rawGaussian]
 
-@[simp] theorem subst_Mhat {m : ℕ} (σ : Fin n → PTm m) (c : PTm n) :
-    Syn.subst σ (Mhat c) = Mhat (Syn.subst σ c) := by simp [Mhat]
+ipra_subst Mhat
 
-@[simp] theorem subst_realFlag {m : ℕ} (σ : Fin n → PTm m) (c : PTm n) :
-    Syn.subst σ (realFlag c) = realFlag (Syn.subst σ c) := by simp [realFlag]
+ipra_subst realFlag
 
-@[simp] theorem subst_rotated {m : ℕ} (σ : Fin n → PTm m) (c : PTm n) :
-    Syn.subst σ (rotated c) = rotated (Syn.subst σ c) := by simp [rotated]
+ipra_subst rotated
 
-@[simp] theorem subst_imagFlag {m : ℕ} (σ : Fin n → PTm m) (c : PTm n) :
-    Syn.subst σ (imagFlag c) = imagFlag (Syn.subst σ c) := by simp [imagFlag]
+ipra_subst imagFlag
 
-@[simp] theorem subst_factor {m : ℕ} (σ : Fin n → PTm m) (c H : PTm n) :
-    Syn.subst σ (factor c H) = factor (Syn.subst σ c) (Syn.subst σ H) := by simp [factor]
+ipra_subst factor
 
-@[simp] theorem subst_W {m : ℕ} (σ : Fin n → PTm m) (c H : PTm n) :
-    Syn.subst σ (W c H) = W (Syn.subst σ c) (Syn.subst σ H) := by simp [W]
+ipra_subst W
 
-@[simp] theorem subst_S {m : ℕ} (σ : Fin n → PTm m) (c H : PTm n) :
-    Syn.subst σ (S c H) = S (Syn.subst σ c) (Syn.subst σ H) := by simp [S]
+ipra_subst S
 
 @[simp] theorem subst_X {m : ℕ} (σ : Fin n → PTm m) (c H : PTm n) :
     Syn.subst σ (X c H) = X (Syn.subst σ c) (Syn.subst σ H) := by
@@ -102,21 +89,17 @@ def sixtyFive : PTm n := succ sixtyFour
   simp only [V, PTm.subst_mul, subst_zabs, ComplexLogarithmRemainder.subst_im,
     subst_rotated, subst_factor]
 
-@[simp] theorem subst_normalizer {m : ℕ} (σ : Fin n → PTm m) (c H : PTm n) :
-    Syn.subst σ (normalizer c H) = normalizer (Syn.subst σ c) (Syn.subst σ H) := by simp [normalizer]
+ipra_subst normalizer
 
-@[simp] theorem subst_target {m : ℕ} (σ : Fin n → PTm m) (c H : PTm n) :
-    Syn.subst σ (target c H) = target (Syn.subst σ c) (Syn.subst σ H) := by simp [target]
+ipra_subst target
 
-@[simp] theorem subst_initial {m : ℕ} (σ : Fin n → PTm m) (c H : PTm n) :
-    Syn.subst σ (initial c H) = initial (Syn.subst σ c) (Syn.subst σ H) := by simp [initial]
+ipra_subst initial
 
-@[simp] theorem subst_gap {m : ℕ} (σ : Fin n → PTm m) (c H : PTm n) :
-    Syn.subst σ (gap c H) = gap (Syn.subst σ c) (Syn.subst σ H) := by simp [gap]
+ipra_subst gap
 
-@[simp] theorem subst_sixtyFour {m : ℕ} (σ : Fin n → PTm m) : Syn.subst σ (sixtyFour : PTm n) = (sixtyFour : PTm m) := by simp [sixtyFour]
+ipra_subst sixtyFour
 
-@[simp] theorem subst_sixtyFive {m : ℕ} (σ : Fin n → PTm m) : Syn.subst σ (sixtyFive : PTm n) = (sixtyFive : PTm m) := by simp [sixtyFive]
+ipra_subst sixtyFive
 
 theorem negative_bit_boolean (a : ZT n) : Γ ⊢[PRAAx] bit (negativeBit a) := Combinatorics.FiniteBijection.sg_bit _
 
@@ -393,8 +376,7 @@ def certificate (c H : PTm n) : Fm PTm n :=
             RationalArgmin.rationalLE (GaussianRationalMetric.qnormSq (GaussianRationalMetric.qsub (initial c H) (target c H)))
               (fraction GaussianRationalCircleParametrization.four H)))))
 
-@[simp] theorem subst_certificate {m : ℕ} (σ : Fin n → PTm m) (c H : PTm n) :
-    (certificate c H).subst σ = certificate (Syn.subst σ c) (Syn.subst σ H) := by simp [certificate]
+ipra_subst certificate
 
 theorem initialization (c H : PTm n) (hc : Γ ⊢[PRAAx] le one (norm c)) (h64 : Γ ⊢[PRAAx] le sixtyFour H) : Γ ⊢[PRAAx]
     certificate c H :=
@@ -410,10 +392,8 @@ def output (c H : PTm n) : PTm n := pairT (normalizer c H)
 def outputF : PR 2 := PTm.toPR (output (var 0) (var 1))
 def run (c H : PTm n) : PTm n := ap2 outputF c H
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (c H : PTm n) :
-    Syn.subst σ (output c H) = output (Syn.subst σ c) (Syn.subst σ H) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (c H : PTm n) :
-    Syn.subst σ (run c H) = run (Syn.subst σ c) (Syn.subst σ H) := by simp [run]
+ipra_subst output
+ipra_subst run
 
 theorem initial_program (c H : PTm n) : Γ ⊢[PRAAx] ap2 initialF c H ≐ initial c H := by
   simpa [initialF,ap2] using toPR_eq (Γ := Γ) (initial (var 0) (var 1) : PTm 2) ![c,H]
@@ -425,15 +405,15 @@ theorem program_at (c H : PTm n) : Γ ⊢[PRAAx] run c H ≐ output c H := by
   simpa [run,outputF,ap2] using toPR_eq (Γ := Γ) (output (var 0) (var 1) : PTm 2) ![c,H]
 
 theorem returned_normalizer (c H : PTm n) : Γ ⊢[PRAAx] fstT (run c H) ≐ normalizer c H :=
-  (congrFst (program_at c H)).eqTrans (fst_pair _ _)
+  (program_at c H).fstE
 theorem returned_initial (c H : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run c H)) ≐ initial c H :=
-  (congrFst ((congrSnd (program_at c H)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at c H).sndE.fstE
 theorem returned_target (c H : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run c H))) ≐ target c H :=
-  (congrFst ((congrSnd ((congrSnd (program_at c H)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at c H).sndE.sndE.fstE
 theorem returned_factor (c H : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (run c H)))) ≐ factor c H :=
-  (congrFst ((congrSnd ((congrSnd ((congrSnd (program_at c H)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at c H).sndE.sndE.sndE.fstE
 theorem returned_S (c H : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (run c H)))) ≐ S c H :=
-  (congrSnd ((congrSnd ((congrSnd ((congrSnd (program_at c H)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at c H).sndE.sndE.sndE.sndE
 
 theorem actual_direction_initialization_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2
     (le one (norm (var 0)) ⟶ le sixtyFour (var 1) ⟶ certificate (var 0) (var 1)) :=

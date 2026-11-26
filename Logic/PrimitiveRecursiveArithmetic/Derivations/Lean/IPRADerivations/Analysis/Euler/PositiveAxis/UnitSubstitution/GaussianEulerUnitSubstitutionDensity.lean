@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitSubstitutionDensity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegrandName (fixedData)
 open GaussianEulerPowerIncrement (point)
 open GaussianEulerIntegrationByPartsLinear (originalProduct)
@@ -32,10 +32,6 @@ open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -52,25 +48,13 @@ def numerator (p R E T C N : PTm n) : PTm n :=
     num 20*majorant R E T*(E*E*N*N)+C*rowCost R E T*(E*N)
 def denominator (p E N : PTm n) : PTm n := E*E*N*unit p
 
-@[simp] theorem subst_powerTerm {m : ℕ} (σ : Fin n → PTm m) (p t x : PTm n) :
-    Syn.subst σ (powerTerm p t x) = powerTerm (Syn.subst σ p) (Syn.subst σ t) (Syn.subst σ x) := by
-  simp [powerTerm,point]
-@[simp] theorem subst_density {m : ℕ} (σ : Fin n → PTm m) (p N z B a C E : PTm n) :
-    Syn.subst σ (density p N z B a C E) =
-      density (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) := by
-  simp [density]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B a C E T N : PTm n) :
-    (source z R B a C E T N).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ N) := by simp [source]
+ipra_subst powerTerm [point]
+ipra_subst density
+ipra_subst source
 
-@[simp] theorem subst_majorant {m : ℕ} (σ : Fin n → PTm m) (R E T : PTm n) :
-    Syn.subst σ (majorant R E T) = majorant (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T) := by
-  simp [majorant,GaussianEulerCompactPowerMajorant.exponentRadius]
-@[simp] theorem subst_stepError {m : ℕ} (σ : Fin n → PTm m) (b c p : PTm n) :
-    Syn.subst σ (stepError b c p) = stepError (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ p) := by
-  simp [stepError,GaussianNameRingLaws.three]
-@[simp] theorem subst_errorDen {m : ℕ} (σ : Fin n → PTm m) (b p : PTm n) :
-    Syn.subst σ (errorDen b p) = errorDen (Syn.subst σ b) (Syn.subst σ p) := by simp [errorDen]
+ipra_subst majorant [GaussianEulerCompactPowerMajorant.exponentRadius]
+ipra_subst stepError [GaussianNameRingLaws.three]
+ipra_subst errorDen
 
 theorem power_evaluator_at (p a b z B : PTm n) : Γ ⊢[PRAAx]
     ap3 powerEvaluatorF p (pairT a b) (fixedData z B) ≐ point p z B a b := by

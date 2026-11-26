@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaOriginalPrefixName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaOriginalC19Prefix (prefixValue)
 open GaussianGammaOriginalPrefixRegularity (modulus)
 open GaussianGammaCanonicalExponent (source)
@@ -23,10 +23,6 @@ open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianNamedInverseRate (rateNumerator rateDenominator)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ app)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,20 +34,16 @@ def nameF : PR 2 := GaussianFastValueCut.nameF rawF
 def data (z R B d : PTm n) : PTm n := GaussianFastValueCut.nameData (modulus R d) (rawData z R B d)
 def clock (p R d : PTm n) : PTm n := GaussianFastValueCut.exponent (modulus R d) p
 def sample (p z R B d : PTm n) : PTm n := ap2 nameF p (data z R B d)
-@[simp] theorem subst_rawData {l : ℕ} (σ : Fin n → PTm l) (z R B d : PTm n) :
-    Syn.subst σ (rawData z R B d) = rawData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ d) := by simp [rawData]
+ipra_subst rawData
 @[simp] theorem subst_rawValue {l : ℕ} (σ : Fin n → PTm l) (p x : PTm n) :
     Syn.subst σ (rawValue p x) = rawValue (Syn.subst σ p) (Syn.subst σ x) := by
   simp only [rawValue,PTm.subst_app]
   congr 1
   funext i
   fin_cases i <;> simp
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (z R B d : PTm n) :
-    Syn.subst σ (data z R B d) = data (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ d) := by simp [data]
-@[simp] theorem subst_clock {l : ℕ} (σ : Fin n → PTm l) (p R d : PTm n) :
-    Syn.subst σ (clock p R d) = clock (Syn.subst σ p) (Syn.subst σ R) (Syn.subst σ d) := by simp [clock]
-@[simp] theorem subst_sample {l : ℕ} (σ : Fin n → PTm l) (p z R B d : PTm n) :
-    Syn.subst σ (sample p z R B d) = sample (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ d) := by simp [sample]
+ipra_subst data
+ipra_subst clock
+ipra_subst sample
 
 theorem raw_value_at (p z R B d : PTm n) : Γ ⊢[PRAAx] rawValue p (rawData z R B d) ≐ prefixValue p z R B d := by
   have t := snd_pair (Γ := Γ) z (pairT R (pairT B d))

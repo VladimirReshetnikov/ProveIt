@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerCompactExhaustionUpperTail
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaIntegralCutoffs (height top)
 open GaussianEulerPositivePowerChartImageCompactModulus (data nameF)
 open GaussianEulerCompactModulus (lipschitz)
@@ -26,10 +26,6 @@ open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianRationalHorner (positive_product qzero)
 open GaussianRationalMetric (bounded qsub)
 open GaussianRationalReciprocal (bound_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -46,15 +42,9 @@ def cofinalNumerator (s k A C R : PTm n) : PTm n :=
 def cofinalDenominator (s k A R : PTm n) : PTm n :=
   unit (height k A R)*unit s
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B k A C E G T : PTm n) :
-    (source z R B k A C E G T).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ k) (Syn.subst σ A) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ G) (Syn.subst σ T) := by
-  simp [source,top,height,GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst source [top, height, GaussianGammaIntegralCutoffs.tailCoefficient]
 
-@[simp] theorem subst_point {m : ℕ} (σ : Fin n → PTm m) (p z R B k A C E G T : PTm n) :
-    Syn.subst σ (point p z R B k A C E G T) = point (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ k) (Syn.subst σ A) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ G) (Syn.subst σ T) := by
-  simp [point,top,height,GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst point [top, height, GaussianGammaIntegralCutoffs.tailCoefficient]
 
 theorem panel_source (z R B k A C E G T : PTm n) (h : Γ ⊢[PRAAx] source z R B k A C E G T) :
     Γ ⊢[PRAAx] GaussianEulerPositivePowerChartImageCompactModulus.source z R B (top k A R*E) C E G T := by

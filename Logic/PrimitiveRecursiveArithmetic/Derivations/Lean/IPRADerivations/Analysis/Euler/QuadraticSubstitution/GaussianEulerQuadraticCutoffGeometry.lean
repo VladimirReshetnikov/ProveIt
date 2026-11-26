@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerQuadraticCutoffGeometry
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaIntegralCutoffs (etaDen top)
 open GaussianEulerQuadraticUpperEndpoint (preimage image)
 open GaussianRationalQuadratureSquarePartition (lowerNumerator widthNumerator intervalDenominator)
@@ -23,9 +23,6 @@ open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded)
 open GaussianCoefficientNameBounds (unit)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {ℓ : ℕ} {Γ : List (Fm PTm ℓ)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -40,26 +37,13 @@ def leftData (n z R B A c d : PTm ℓ) : PTm ℓ := GaussianEulerIncompleteName.
 def rightData (n z R B A c d : PTm ℓ) : PTm ℓ := GaussianEulerIncompleteName.data z R B A
   (c+imageWidth n A R c d) (lowerDenominator n A R d)
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin ℓ → PTm m) (z R B A c d : PTm ℓ) :
-    (source z R B A c d).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ A) (Syn.subst σ c) (Syn.subst σ d) := by simp [source]
-@[simp] theorem subst_width {m : ℕ} (σ : Fin ℓ → PTm m) (n A R d : PTm ℓ) :
-    Syn.subst σ (width n A R d) = width (Syn.subst σ n) (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ d) := by
-  simp [width,etaDen,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_lowerDenominator {m : ℕ} (σ : Fin ℓ → PTm m) (n A R d : PTm ℓ) :
-    Syn.subst σ (lowerDenominator n A R d) = lowerDenominator (Syn.subst σ n) (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ d) := by
-  simp [lowerDenominator,etaDen,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_imageWidth {m : ℕ} (σ : Fin ℓ → PTm m) (n A R c d : PTm ℓ) :
-    Syn.subst σ (imageWidth n A R c d) = imageWidth (Syn.subst σ n) (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ c) (Syn.subst σ d) := by simp [imageWidth]
-@[simp] theorem subst_imageData {m : ℕ} (σ : Fin ℓ → PTm m) (n z R B A c d : PTm ℓ) :
-    Syn.subst σ (imageData n z R B A c d) = imageData (Syn.subst σ n) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ c) (Syn.subst σ d) := by simp [imageData]
-@[simp] theorem subst_leftData {m : ℕ} (σ : Fin ℓ → PTm m) (n z R B A c d : PTm ℓ) :
-    Syn.subst σ (leftData n z R B A c d) = leftData (Syn.subst σ n) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ c) (Syn.subst σ d) := by simp [leftData]
-@[simp] theorem subst_rightData {m : ℕ} (σ : Fin ℓ → PTm m) (n z R B A c d : PTm ℓ) :
-    Syn.subst σ (rightData n z R B A c d) = rightData (Syn.subst σ n) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ c) (Syn.subst σ d) := by simp [rightData]
+ipra_subst source
+ipra_subst width [etaDen, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst lowerDenominator [etaDen, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst imageWidth
+ipra_subst imageData
+ipra_subst leftData
+ipra_subst rightData
 
 theorem preimage_positive (n A R d : PTm ℓ) (hd : Γ ⊢[PRAAx] le one d) : Γ ⊢[PRAAx]
     le one (preimage n A R d) := positive_product _ _ hd (GaussianGammaIntegralCutoffs.top_positive n A R)

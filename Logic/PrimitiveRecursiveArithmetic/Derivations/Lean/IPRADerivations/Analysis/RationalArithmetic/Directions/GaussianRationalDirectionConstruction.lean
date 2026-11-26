@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalDirectionConstruction
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalDirectionClock (height sixteen eight)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (positive_product canonical)
 open LeanProofs.IPRA.Analysis.GaussianRationalReciprocal (power)
@@ -25,9 +25,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qnormSq distanceBounded)
 open LeanProofs.IPRA.Analysis.GaussianRationalDirectionNormalizer (norm initial target normalizer)
 open LeanProofs.IPRA.Analysis.GaussianDominantSyntax (four)
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (fraction)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -36,14 +33,10 @@ def direction (c k q : PTm n) : PTm n := GaussianRationalDirectionIteration.dire
 def normalized (c k q : PTm n) : PTm n := target c (height k q)
 def normalizing (c k q : PTm n) : PTm n := normalizer c (height k q)
 
-@[simp] theorem subst_start {m : ℕ} (σ : Fin n → PTm m) (c k q : PTm n) :
-    Syn.subst σ (start c k q) = start (Syn.subst σ c) (Syn.subst σ k) (Syn.subst σ q) := by simp [start]
-@[simp] theorem subst_direction {m : ℕ} (σ : Fin n → PTm m) (c k q : PTm n) :
-    Syn.subst σ (direction c k q) = direction (Syn.subst σ c) (Syn.subst σ k) (Syn.subst σ q) := by simp [direction]
-@[simp] theorem subst_normalized {m : ℕ} (σ : Fin n → PTm m) (c k q : PTm n) :
-    Syn.subst σ (normalized c k q) = normalized (Syn.subst σ c) (Syn.subst σ k) (Syn.subst σ q) := by simp [normalized]
-@[simp] theorem subst_normalizing {m : ℕ} (σ : Fin n → PTm m) (c k q : PTm n) :
-    Syn.subst σ (normalizing c k q) = normalizing (Syn.subst σ c) (Syn.subst σ k) (Syn.subst σ q) := by simp [normalizing]
+ipra_subst start
+ipra_subst direction
+ipra_subst normalized
+ipra_subst normalizing
 
 theorem initial_distance (c k q : PTm n) (hc : Γ ⊢[PRAAx] le one (norm c))
     (hk : Γ ⊢[PRAAx] le one k) (hq : Γ ⊢[PRAAx] le one q) : Γ ⊢[PRAAx]
@@ -114,8 +107,7 @@ def certificate (c k q : PTm n) : Fm PTm n := canonical (direction c k q) ⋏
     (distanceBounded (power (direction c k q) k) (normalized c k q) one (four*q) ⋏
       GaussianRationalDirectionNormalizer.certificate c (height k q)))
 
-@[simp] theorem subst_certificate {m : ℕ} (σ : Fin n → PTm m) (c k q : PTm n) :
-    (certificate c k q).subst σ = certificate (Syn.subst σ c) (Syn.subst σ k) (Syn.subst σ q) := by simp [certificate]
+ipra_subst certificate
 
 theorem construction_correct (c k q : PTm n) (hc : Γ ⊢[PRAAx] le one (norm c))
     (hk : Γ ⊢[PRAAx] le one k) (hq : Γ ⊢[PRAAx] le one q) : Γ ⊢[PRAAx] certificate c k q :=
@@ -127,31 +119,29 @@ def output (c k q : PTm n) : PTm n := pairT (direction c k q) (pairT (power (dir
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (c k q : PTm n) : PTm n := ap3 outputF c k q
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (c k q : PTm n) :
-    Syn.subst σ (output c k q) = output (Syn.subst σ c) (Syn.subst σ k) (Syn.subst σ q) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (c k q : PTm n) :
-    Syn.subst σ (run c k q) = run (Syn.subst σ c) (Syn.subst σ k) (Syn.subst σ q) := by simp [run]
+ipra_subst output
+ipra_subst run
 
 theorem program_at (c k q : PTm n) : Γ ⊢[PRAAx] run c k q ≐ output c k q := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![c,k,q]
 
 theorem returned_direction (c k q : PTm n) : Γ ⊢[PRAAx] fstT (run c k q) ≐ direction c k q :=
-  (congrFst (program_at c k q)).eqTrans (fst_pair _ _)
+  (program_at c k q).fstE
 
 theorem returned_power (c k q : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run c k q)) ≐ power (direction c k q) k :=
-  (congrFst ((congrSnd (program_at c k q)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at c k q).sndE.fstE
 
 theorem returned_normalizer (c k q : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run c k q))) ≐ normalizing c k q :=
-  (congrFst ((congrSnd ((congrSnd (program_at c k q)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at c k q).sndE.sndE.fstE
 
 theorem returned_normalized (c k q : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (run c k q)))) ≐ normalized c k q :=
-  (congrFst ((congrSnd ((congrSnd ((congrSnd (program_at c k q)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at c k q).sndE.sndE.sndE.fstE
 
 theorem returned_initial (c k q : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (sndT (run c k q))))) ≐ start c k q :=
-  (congrFst ((congrSnd ((congrSnd ((congrSnd ((congrSnd (program_at c k q)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at c k q).sndE.sndE.sndE.sndE.fstE
 
 theorem returned_clock (c k q : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (sndT (run c k q))))) ≐ GaussianRationalDirectionClock.run k q :=
-  (congrSnd ((congrSnd ((congrSnd ((congrSnd ((congrSnd (program_at c k q)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at c k q).sndE.sndE.sndE.sndE.sndE
 
 theorem nonzero_direction_construction_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3
     (le one (norm (var 0)) ⟶ le one (var 1) ⟶ le one (var 2) ⟶ certificate (var 0) (var 1) (var 2)) :=

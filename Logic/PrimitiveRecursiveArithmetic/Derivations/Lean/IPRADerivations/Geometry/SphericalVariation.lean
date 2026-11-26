@@ -30,9 +30,7 @@ analysis and is not derived here.
 
 namespace LeanProofs.IPRA.Geometry.SphericalVariation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

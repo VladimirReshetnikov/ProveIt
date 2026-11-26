@@ -1,8 +1,6 @@
 import IPRADerivations.Foundations.FiniteAMGM
 import IPRADerivations.Combinatorics.CoefficientLogConcave
 import IPRADerivations.Probability.Variance
-import IPRADerivations.Core.ProdLemmas
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The box inequality of the rational Brunn–Minkowski theorem
@@ -38,7 +36,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Geometry.BoxProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.CoefficientLogConcave (sub2 inst2_sub2 inst2_mul inst2_monus
   inst2_ap2)
 open LeanProofs.IPRA.Combinatorics.CatalanPowers (shift_pair shift_succ)
@@ -51,10 +49,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Foundations.FiniteAMGM (finite_amgm prod_succ'')
 open LeanProofs.IPRA.Probability.Variance (sum_const_of)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (eq_succ_pred)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -87,11 +81,9 @@ theorem prod_mul (f g : PTm 2) (N x : PTm n) :
     refine PRA.qfInd _ trivial ?_ ?_
     · have b : Γ ⊢[PRAAx] ap2 (prodF (f * g)) zero x ≐
           ap2 (prodF f) zero x * ap2 (prodF g) zero x := by
-        have e₁ := natEq (prod_zero (Γ := Γ) (f * g) x)
-        have e₂ := natEq (prod_zero (Γ := Γ) f x)
         have e₃ := natEq (prod_zero (Γ := Γ) g x)
         apply deriveNat; ipra_simps
-        rw [e₁, e₂, e₃]; ring
+        rw [natEq (prod_zero (Γ := Γ) (f * g) x), natEq (prod_zero (Γ := Γ) f x), e₃]; ring
       simpa using b
     · have st : (pmF f g x :: Γ.map Fm.shift) ⊢[PRAAx]
           ap2 (prodF (f * g)) (succ (var 0)) (Syn.shift x) ≐
@@ -151,10 +143,9 @@ theorem lo_step {N i x : PTm n}
   · have hlt : (le (succ N) i :: Γ) ⊢[PRAAx] lt N i := Prf.hyp0
     have e₁ := natEq ((prod_succ'' (lB c) N (pairT i x)).eqTrans
       (congrMul (.eqRefl _) (l_keep c (eqb_zero_of_gt hlt))))
-    have e₂ := natEq (Prf.impE ihA.wk (le_trans (le_succ_self N) hlt))
     have e₃ := natEq (prod_succ'' (Γ := le (succ N) i :: Γ) c N x)
     apply deriveNat; ipra_simps
-    rw [e₁, e₃, e₂]
+    rw [e₁, e₃, natEq (Prf.impE ihA.wk (le_trans (le_succ_self N) hlt))]
   · have hle : (lt i (succ N) :: Γ) ⊢[PRAAx] le i N := le_of_lt_succ Prf.hyp0
     refine .orE (lt_or_eq_of_le hle) ?_ ?_
     · have e₁ := natEq ((prod_succ'' (lB c) N (pairT i x)).eqTrans
@@ -170,9 +161,8 @@ theorem lo_step {N i x : PTm n}
         (congrMul (.eqRefl _) (l_drop c hi)))
       have e₂ := natEq (Prf.impE ihA.wk.wk (le_congr (.eqRefl _) hi.eqSymm (le_refl N)))
       have e₃ := natEq (prod_succ'' (Γ := (i ≐ N) :: lt i (succ N) :: Γ) c N x)
-      have e₄ := natEq (congrInst2 c hi (.eqRefl x))
       apply deriveNat; ipra_simps
-      rw [e₁, e₃, e₄, e₂]; ring
+      rw [e₁, e₃, natEq (congrInst2 c hi (.eqRefl x)), e₂]; ring
 
 /-- The induction formula of `lo_all`; variable `0` is the upper limit. -/
 abbrev loF (i x : PTm n) : Fm PTm (n + 1) :=
@@ -295,9 +285,8 @@ theorem prod_fam (m x : PTm n) :
   have e₂ := natEq E₂
   have e₃ := natEq E₃
   have e₅ := natEq E₅
-  have e₆ := natEq E₆
   apply deriveNat; ipra_simps
-  rw [← e₂, ← E₁, e₃, E₄, e₅, e₆]
+  rw [← e₂, ← E₁, e₃, E₄, e₅, natEq E₆]
 
 end Families
 
@@ -431,18 +420,16 @@ theorem box_base {N x E Q : PTm n}
         (ap2 (prodF a) (succ N) x * pw (ap2 (prodF (addBody a b)) (succ N) x) (succ N)))
       (pw (ap2 (sumF (fam (addBody a b) a)) (succ N) (pairT (succ N) x)) (succ N) *
         ap2 (prodF (addBody a b)) (succ N) x) := by
-    have e := natEq (prod_fam (Γ := Γ) (addBody a b) a (succ N) x)
     refine le_congr ?_ (.eqRefl _) (mul_le_mul_right (ap2 (prodF (addBody a b)) (succ N) x)
       (finite_amgm (fam (addBody a b) a) N (pairT (succ N) x)))
-    ipra_lc 𝔞 (pw (succ N) (succ N)) * e
+    ipra_lc 𝔞 (pw (succ N) (succ N)) * natEq (prod_fam (Γ := Γ) (addBody a b) a (succ N) x)
   have sB : Γ ⊢[PRAAx] le (pw (succ N) (succ N) *
         (ap2 (prodF b) (succ N) x * pw (ap2 (prodF (addBody a b)) (succ N) x) (succ N)))
       (pw (ap2 (sumF (fam (addBody a b) b)) (succ N) (pairT (succ N) x)) (succ N) *
         ap2 (prodF (addBody a b)) (succ N) x) := by
-    have e := natEq (prod_fam (Γ := Γ) (addBody a b) b (succ N) x)
     refine le_congr ?_ (.eqRefl _) (mul_le_mul_right (ap2 (prodF (addBody a b)) (succ N) x)
       (finite_amgm (fam (addBody a b) b) N (pairT (succ N) x)))
-    ipra_lc 𝔞 (pw (succ N) (succ N)) * e
+    ipra_lc 𝔞 (pw (succ N) (succ N)) * natEq (prod_fam (Γ := Γ) (addBody a b) b (succ N) x)
   exact box_alg (sum_fam a b (succ N) x) sA sB hP H
 
 end Box

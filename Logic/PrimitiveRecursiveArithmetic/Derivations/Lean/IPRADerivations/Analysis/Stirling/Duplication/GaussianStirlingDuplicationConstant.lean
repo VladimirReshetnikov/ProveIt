@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingDuplicationConstant
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaAdjacentCutoff (multiply_cross)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
@@ -32,8 +32,6 @@ open GaussianRealNameExponentialInjectivity (independent_radii_injective)
 open GaussianStirlingConstant (logDoubledPiF logDoubledPiData log_doubled_regular log_source)
 open GaussianStirlingGammaLogarithm (source logGammaF logGammaData log_gamma_axis log_gamma_regular gammaData gamma_regular)
 open GaussianStirlingLogDuplication (exponential_sum exponential_gamma exponential_regular)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "E" => GaussianRadiusExponentialName.nameF

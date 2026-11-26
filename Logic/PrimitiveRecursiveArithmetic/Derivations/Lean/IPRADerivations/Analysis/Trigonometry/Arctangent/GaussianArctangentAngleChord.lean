@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentAngleChord
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianArctangentInverseForward (input imaginaryOrder)
 open GaussianArctangentInverseCorrectness (roundTripF imaginarySamples imaginary_right_inverse)
 open GaussianArctangentNamedInverse (data)
@@ -25,8 +25,6 @@ open GaussianArctangentQuarterExponential (quarterF quarter_regular)
 open GaussianNamedSineFromExponential (sineF sineData sine_regular sine_proper)
 open GaussianNameArithmetic (multiplyF multiplyData multiply_equivalent)
 open GaussianNameEquivalence (crossEquivalent cross_symm cross_trans cross_refl cross_to_diagonal)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

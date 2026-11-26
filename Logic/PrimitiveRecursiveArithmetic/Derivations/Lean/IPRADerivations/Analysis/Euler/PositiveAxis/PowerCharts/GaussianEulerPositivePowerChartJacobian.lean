@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.GaussianEulerPositivePowerChart
 import IPRADerivations.Analysis.Euler.Integration.Parameters.GaussianEulerPowerIncrement
 import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDampedTimeRate
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Evaluated Jacobian and exact first-order step of the positive power chart
@@ -17,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartJacobian
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPositivePowerChart (argument parameters nameF data clock coefficient_exact power_source scale_bound sample_at)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianEulerDampedTimeRate (fraction_product)
@@ -27,9 +26,6 @@ open GaussianRationalMetric (qsub distanceBounded bounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianCompactLogarithmBounds (domain)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -48,32 +44,14 @@ def numerator (p q Q S E T b step : PTm n) : PTm n :=
   (E*E)*curvature Q S E T step*(unit p*unit q)+(unit q+num 5*unit p)*(b*b)
 def denominator (p q b : PTm n) : PTm n := (b*b)*(unit p*unit q)
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (e f d h Q S E T a b step : PTm n) :
-    (source e f d h Q S E T a b step).subst σ = source (Syn.subst σ e) (Syn.subst σ f) (Syn.subst σ d)
-      (Syn.subst σ h) (Syn.subst σ Q) (Syn.subst σ S) (Syn.subst σ E) (Syn.subst σ T)
-      (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ step) := by simp [source]
-@[simp] theorem subst_point {m : ℕ} (σ : Fin n → PTm m) (p e f d h S a b : PTm n) :
-    Syn.subst σ (point p e f d h S a b) = point (Syn.subst σ p) (Syn.subst σ e) (Syn.subst σ f)
-      (Syn.subst σ d) (Syn.subst σ h) (Syn.subst σ S) (Syn.subst σ a) (Syn.subst σ b) := by simp [point]
-@[simp] theorem subst_jacobian {m : ℕ} (σ : Fin n → PTm m) (p e f d h S a b : PTm n) :
-    Syn.subst σ (jacobian p e f d h S a b) = jacobian (Syn.subst σ p) (Syn.subst σ e) (Syn.subst σ f)
-      (Syn.subst σ d) (Syn.subst σ h) (Syn.subst σ S) (Syn.subst σ a) (Syn.subst σ b) := by simp [jacobian]
-@[simp] theorem subst_increment {m : ℕ} (σ : Fin n → PTm m) (p q e f d h S a b step : PTm n) :
-    Syn.subst σ (increment p q e f d h S a b step) = increment (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ e)
-      (Syn.subst σ f) (Syn.subst σ d) (Syn.subst σ h) (Syn.subst σ S) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ step) := by simp [increment]
-@[simp] theorem subst_linearTerm {m : ℕ} (σ : Fin n → PTm m) (p e f d h S a b step : PTm n) :
-    Syn.subst σ (linearTerm p e f d h S a b step) = linearTerm (Syn.subst σ p) (Syn.subst σ e) (Syn.subst σ f)
-      (Syn.subst σ d) (Syn.subst σ h) (Syn.subst σ S) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ step) := by simp [linearTerm]
-@[simp] theorem subst_curvature {m : ℕ} (σ : Fin n → PTm m) (Q S E T step : PTm n) :
-    Syn.subst σ (curvature Q S E T step) = curvature (Syn.subst σ Q) (Syn.subst σ S) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ step) := by
-  simp [curvature,GaussianEulerPowerIncrement.curvature,GaussianEulerPowerIncrement.productRemainder,
-    GaussianEulerPowerExponentialShift.coefficient,GaussianEulerCompactPowerMajorant.majorant,
-    GaussianEulerCompactPowerMajorant.exponentRadius,GaussianCompactLogarithmBounds.radius]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (p q Q S E T b step : PTm n) :
-    Syn.subst σ (numerator p q Q S E T b step) = numerator (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ Q)
-      (Syn.subst σ S) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ b) (Syn.subst σ step) := by simp [numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (p q b : PTm n) :
-    Syn.subst σ (denominator p q b) = denominator (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ b) := by simp [denominator]
+ipra_subst source
+ipra_subst point
+ipra_subst jacobian
+ipra_subst increment
+ipra_subst linearTerm
+ipra_subst curvature [GaussianEulerPowerIncrement.curvature, GaussianEulerPowerIncrement.productRemainder, GaussianEulerPowerExponentialShift.coefficient, GaussianEulerCompactPowerMajorant.majorant, GaussianEulerCompactPowerMajorant.exponentRadius, GaussianCompactLogarithmBounds.radius]
+ipra_subst numerator
+ipra_subst denominator
 
 theorem original_power_source (e f d h Q S E T a b step : PTm n)
     (hs : Γ ⊢[PRAAx] source e f d h Q S E T a b step) : Γ ⊢[PRAAx]
@@ -192,13 +170,7 @@ theorem original_increment (p q e f d h Q S E T a b step : PTm n)
 /-- The actual numerical Jacobian program, with no new oracle or recursor. -/
 def jacobianF : PR 8 := PTm.toPR (jacobian (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) (var 7))
 def run (p e f d h S a b : PTm n) : PTm n := PTm.app jacobianF ![p,e,f,d,h,S,a,b]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (p e f d h S a b : PTm n) :
-    Syn.subst σ (run p e f d h S a b) = run (Syn.subst σ p) (Syn.subst σ e) (Syn.subst σ f)
-      (Syn.subst σ d) (Syn.subst σ h) (Syn.subst σ S) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst run
 
 theorem program_at (p e f d h S a b : PTm n) : Γ ⊢[PRAAx] run p e f d h S a b ≐ jacobian p e f d h S a b := by
   have decoded : Syn.subst ![p,e,f,d,h,S,a,b]

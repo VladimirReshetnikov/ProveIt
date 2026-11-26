@@ -18,7 +18,7 @@ set_option maxHeartbeats 1150000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalIntegerStirlingGamma
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalIntegerLogarithm (factorialLogData)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
@@ -34,9 +34,6 @@ open GaussianStirlingGammaLogarithm (logGammaF logGammaData log_gamma_regular)
 open GaussianStirlingMultiplicativeAlgebra (remainderF remainderData remainder_regular normalizationF normalizationData
   normalization_regular sumData logarithmic_cancellation)
 open GaussianStirlingRationalTelescopers (upperValue)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "SF" => GaussianStirlingMultiplicativeAlgebra.sumF

@@ -17,7 +17,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianCyclicSineProductSquare
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCyclicChordSquare (chord chordRadius doubledSine doubled_sine_bound chord_bound squareError
   twiceSineRadius sineSquareRadius compareRadius chordError unitError square_error)
 open GaussianCyclicExponentialSeparation (fine clock clock_fine)
@@ -37,10 +37,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_t
 open GaussianCoefficientNameBounds (bounded_radius_mono unit unit_positive)
 open GaussianNamedNaturalScale (natural_point_bound)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -57,11 +53,9 @@ def normBudget (N : PTm n) : PTm n :=
   (succ N+GaussianNamedFiniteProduct.radius chordRadius N)*GaussianCyclicRootProduct.budget N+
     amplification radius N*squareError
 
-@[simp] theorem subst_data {L : ℕ} (σ : Fin n → PTm L) (N x : PTm n) :
-    Syn.subst σ (data N x) = data (Syn.subst σ N) (Syn.subst σ x) := by simp [data]
+ipra_subst data
 
-@[simp] theorem subst_index {L : ℕ} (σ : Fin n → PTm L) (N i : PTm n) :
-    Syn.subst σ (index N i) = index (Syn.subst σ N) (Syn.subst σ i) := by simp [index]
+ipra_subst index
 
 private theorem readback (g : PTm 4) (p N x i : PTm n) :
     Γ ⊢[PRAAx] Syn.subst ![p,fstT (data N x),sndT (data N x),i] g ≐ Syn.subst ![p,N,x,i] g :=

@@ -19,7 +19,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerNamedPowerScalingPowerFrozen
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerNamedPowerScalingFormula (source exponentF exponentData powerF powerData)
 open GaussianEulerPowerScalingKernel (scaleF scaleData scaleExpF scaleExpData)
 open GaussianEulerNamedPowerScalingParameterFrozen (frozenPoint original_frozen_source original_frozen_rate)
@@ -39,10 +39,6 @@ open GaussianRationalReciprocal (bound_congr)
 open GaussianFastValueCut (exponent query_budget)
 open GaussianExponentialReference (unit_monotone)
 open GaussianPositiveRationalLogarithm (logF)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -118,10 +114,7 @@ def powerClock (F G : PR 2) (s z R B x E y H : PTm n) : PTm n :=
   exponent (exponentGain F R x E H)
     (exponent (GaussianRadiusExponentialLipschitzRate.factor (exponentialRadius F G z R B x E y H)) s)
 
-@[simp] theorem subst_powerClock {m : ℕ} (σ : Fin n → PTm m) (F G : PR 2) (s z R B x E y H : PTm n) :
-    Syn.subst σ (powerClock F G s z R B x E y H) = powerClock F G (Syn.subst σ s) (Syn.subst σ z)
-      (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ x) (Syn.subst σ E) (Syn.subst σ y) (Syn.subst σ H) := by
-  simp [powerClock,exponentGain,exponentialRadius,exponentData]
+ipra_subst powerClock [exponentGain, exponentialRadius, exponentData]
 
 theorem exponent_rate (F G : PR 2) (k z R B A x E T y H J : PTm n)
     (hs : Γ ⊢[PRAAx] source F G z R B A x E T y H J) : Γ ⊢[PRAAx]

@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Exponential.Polynomials.GaussianFiniteExponentialWeightedNorm
 import IPRADerivations.Analysis.Exponential.FiniteSeries.ExponentialTail
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The actual Gaussian finite exponential and its scalar tail
@@ -17,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalExponentialTail
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero qadd qmul canonical positive_product)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qsub_congr)
 open GaussianRationalMetric (bounded distanceBounded)
@@ -25,10 +24,6 @@ open GaussianRationalReciprocal (power bound_congr bounded_product bounded_sum)
 open GaussianRationalPolynomialExponential (inverseFactorial factorial_positive scalarBody scalarSum)
 open GaussianRationalFiniteSum (sum sum_canonical)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,17 +33,11 @@ def tail (q N k : PTm n) : PTm n := sum shiftedBody k (data q N)
 def scalarPrefix (q N : PTm n) : PTm n := sum scalarBody N q
 def tailNumerator (N B k : PTm n) : PTm n := ExponentialTail.tsum N B k
 def tailDenominator (N k : PTm n) : PTm n := fact (N+k)
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (q N : PTm n) :
-    Syn.subst σ (data q N) = data (Syn.subst σ q) (Syn.subst σ N) := by simp [data]
-@[simp] theorem subst_tail {l : ℕ} (σ : Fin n → PTm l) (q N k : PTm n) :
-    Syn.subst σ (tail q N k) = tail (Syn.subst σ q) (Syn.subst σ N) (Syn.subst σ k) := by simp [tail]
-@[simp] theorem subst_scalarPrefix {l : ℕ} (σ : Fin n → PTm l) (q N : PTm n) :
-    Syn.subst σ (scalarPrefix q N) = scalarPrefix (Syn.subst σ q) (Syn.subst σ N) := by simp [scalarPrefix]
-@[simp] theorem subst_tailNumerator {l : ℕ} (σ : Fin n → PTm l) (N B k : PTm n) :
-    Syn.subst σ (tailNumerator N B k) = tailNumerator (Syn.subst σ N) (Syn.subst σ B) (Syn.subst σ k) := by
-  simp [tailNumerator,ExponentialTail.tsum]
-@[simp] theorem subst_tailDenominator {l : ℕ} (σ : Fin n → PTm l) (N k : PTm n) :
-    Syn.subst σ (tailDenominator N k) = tailDenominator (Syn.subst σ N) (Syn.subst σ k) := by simp [tailDenominator,fact]
+ipra_subst data
+ipra_subst tail
+ipra_subst scalarPrefix
+ipra_subst tailNumerator [ExponentialTail.tsum]
+ipra_subst tailDenominator [fact]
 
 theorem body_at (q N i : PTm n) : Γ ⊢[PRAAx]
     inst2 shiftedBody i (data q N) ≐ qmul (inverseFactorial (N+i)) (power q (N+i)) := by
@@ -81,9 +70,7 @@ theorem term_bound (q B e : PTm n) (hq : Γ ⊢[PRAAx] bounded q B one) : Γ ⊢
     (bounded_product _ _ _ _ _ _ (factorial_positive e) (le_refl _) inv pwr)
 
 def boundLaw (q N B k : PTm n) : Fm PTm n := bounded (tail q N k) (tailNumerator N B k) (tailDenominator N k)
-@[simp] theorem subst_boundLaw {l : ℕ} (σ : Fin n → PTm l) (q N B k : PTm n) :
-    (boundLaw q N B k).subst σ = boundLaw (Syn.subst σ q) (Syn.subst σ N) (Syn.subst σ B) (Syn.subst σ k) :=
-  by simp [boundLaw]
+ipra_subst boundLaw
 
 theorem bound_zero (q N B : PTm n) : Γ ⊢[PRAAx] boundLaw q N B zero :=
   bound_congr (tail_zero q N).eqSymm (ExponentialTail.tsum_zero N B).eqSymm (.eqRefl _)
@@ -119,10 +106,8 @@ theorem tail_bound (q N B k : PTm n) (hq : Γ ⊢[PRAAx] bounded q B one) : Γ �
 
 def cutoff (B p : PTm n) : PTm n := ExponentialTail.Nt B p
 def precisionDenominator (p : PTm n) : PTm n := pw two (p+num 3)
-@[simp] theorem subst_cutoff {l : ℕ} (σ : Fin n → PTm l) (B p : PTm n) :
-    Syn.subst σ (cutoff B p) = cutoff (Syn.subst σ B) (Syn.subst σ p) := by simp [cutoff,ExponentialTail.Nt]
-@[simp] theorem subst_precisionDenominator {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) :
-    Syn.subst σ (precisionDenominator p) = precisionDenominator (Syn.subst σ p) := by simp [precisionDenominator]
+ipra_subst cutoff [ExponentialTail.Nt]
+ipra_subst precisionDenominator
 
 theorem precision_positive (p : PTm n) : Γ ⊢[PRAAx] le one (precisionDenominator p) :=
   GaussianFactorBudget.power_positive _ _ (le_succ_self one)
@@ -142,8 +127,7 @@ theorem prefix_succ (q N : PTm n) : Γ ⊢[PRAAx] scalarPrefix q (succ N) ≐
     GaussianRationalFiniteSum.sum_succ (Γ := Γ) scalarBody N q
 
 def splitLaw (q N k : PTm n) : Fm PTm n := scalarPrefix q (N+k) ≐ qadd (scalarPrefix q N) (tail q N k)
-@[simp] theorem subst_splitLaw {l : ℕ} (σ : Fin n → PTm l) (q N k : PTm n) :
-    (splitLaw q N k).subst σ = splitLaw (Syn.subst σ q) (Syn.subst σ N) (Syn.subst σ k) := by simp [splitLaw]
+ipra_subst splitLaw
 
 theorem split_zero (q N : PTm n) : Γ ⊢[PRAAx] splitLaw q N zero :=
   (GaussianRationalFiniteSum.sum_index_congr scalarBody (add_zero N) (.eqRefl q)).eqTrans
@@ -175,8 +159,7 @@ theorem prefix_distance (q B p k : PTm n) (hq : Γ ⊢[PRAAx] bounded q B one) :
   bound_congr (prefix_difference q (cutoff B p) k).eqSymm (.eqRefl _) (.eqRefl _) (dyadic_tail_bound q B p k hq)
 
 def lastIndex (B p : PTm n) : PTm n := pred (cutoff B p)
-@[simp] theorem subst_lastIndex {l : ℕ} (σ : Fin n → PTm l) (B p : PTm n) :
-    Syn.subst σ (lastIndex B p) = lastIndex (Syn.subst σ B) (Syn.subst σ p) := by simp [lastIndex]
+ipra_subst lastIndex
 theorem cutoff_positive (B p : PTm n) : Γ ⊢[PRAAx] le one (cutoff B p) :=
   le_of_eq_add (d := B+B+B*(B+B)+p+num 3) (by unfold cutoff ExponentialTail.Nt; ipra_ring)
 theorem last_successor (B p : PTm n) : Γ ⊢[PRAAx] succ (lastIndex B p) ≐ cutoff B p :=
@@ -203,35 +186,29 @@ def output (q B p k : PTm n) : PTm n := pairT (tail q (cutoff B p) k)
     (pairT (lastIndex B p) (precisionDenominator p))))
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (q B p k : PTm n) : PTm n := PTm.app outputF ![q,B,p,k]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (q B p k : PTm n) :
-    Syn.subst σ (output q B p k) = output (Syn.subst σ q) (Syn.subst σ B) (Syn.subst σ p) (Syn.subst σ k) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (q B p k : PTm n) :
-    Syn.subst σ (run q B p k) = run (Syn.subst σ q) (Syn.subst σ B) (Syn.subst σ p) (Syn.subst σ k) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (q B p k : PTm n) : Γ ⊢[PRAAx] run q B p k ≐ output q B p k := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![q,B,p,k]
 theorem returned_tail (q B p k : PTm n) : Γ ⊢[PRAAx] fstT (run q B p k) ≐ tail q (cutoff B p) k :=
-  (congrFst (program_at _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _).fstE
 theorem returned_rest (q B p k : PTm n) : Γ ⊢[PRAAx] sndT (run q B p k) ≐
     pairT (scalarSum q (lastIndex B p)) (pairT (scalarSum q (lastIndex B p+k)) (pairT (lastIndex B p) (precisionDenominator p))) :=
-  (congrSnd (program_at _ _ _ _)).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _).sndE
 theorem returned_initial (q B p k : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run q B p k)) ≐ scalarSum q (lastIndex B p) :=
-  (congrFst (returned_rest _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_rest _ _ _ _).fstE
 theorem returned_suffix (q B p k : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run q B p k)) ≐
     pairT (scalarSum q (lastIndex B p+k)) (pairT (lastIndex B p) (precisionDenominator p)) :=
-  (congrSnd (returned_rest _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_rest _ _ _ _).sndE
 theorem returned_later (q B p k : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run q B p k))) ≐ scalarSum q (lastIndex B p+k) :=
-  (congrFst (returned_suffix _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_suffix _ _ _ _).fstE
 theorem returned_pair (q B p k : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run q B p k))) ≐ pairT (lastIndex B p) (precisionDenominator p) :=
-  (congrSnd (returned_suffix _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_suffix _ _ _ _).sndE
 theorem returned_last_index (q B p k : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (run q B p k)))) ≐ lastIndex B p :=
-  (congrFst (returned_pair _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_pair _ _ _ _).fstE
 theorem returned_denominator (q B p k : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (run q B p k)))) ≐ precisionDenominator p :=
-  (congrSnd (returned_pair _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_pair _ _ _ _).sndE
 theorem returned_tail_bound (q B p k : PTm n) (hq : Γ ⊢[PRAAx] bounded q B one) : Γ ⊢[PRAAx]
     bounded (fstT (run q B p k)) one (sndT (sndT (sndT (sndT (run q B p k))))) :=
   bound_congr (returned_tail _ _ _ _).eqSymm (.eqRefl _) (returned_denominator _ _ _ _).eqSymm

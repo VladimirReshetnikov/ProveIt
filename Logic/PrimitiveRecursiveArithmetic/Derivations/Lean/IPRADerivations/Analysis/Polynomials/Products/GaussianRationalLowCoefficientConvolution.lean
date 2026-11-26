@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Products.GaussianRationalPolynomialProduct
 import IPRADerivations.Analysis.LinearAlgebra.Matrices.GaussianRationalMatrixFiniteSums
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Low-exponent coefficients of the actual polynomial product
@@ -18,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalLowCoefficientConvolution
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero qmul)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qmul_zero_right)
 open GaussianRationalPolynomialProduct (product coefficient contribution contribution_inside contribution_body_at)
@@ -28,10 +27,6 @@ open GaussianRationalFiniteSum (sum)
 open GaussianRationalPermutationSum (mappedBody inst2_mappedBody)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -52,18 +47,10 @@ def reverseBody : PTm 2 := monus (getN (var 1)) (var 0)
 def termBody : PTm 2 := term (getP (var 1)) (getQ (var 1)) (getN (var 1)) (getM (var 1)) (getE (var 1)) (var 0)
 def cauchySum (P Q N M e : PTm n) : PTm n := sum termBody (succ e) (data P Q N M e)
 
-@[simp] theorem subst_exponentCoefficient {l : ℕ} (σ : Fin n → PTm l) (C N e : PTm n) :
-    Syn.subst σ (exponentCoefficient C N e) = exponentCoefficient (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ e) := by
-  simp [exponentCoefficient,Signum.sg]
-@[simp] theorem subst_term {l : ℕ} (σ : Fin n → PTm l) (P Q N M e i : PTm n) :
-    Syn.subst σ (term P Q N M e i) = term (Syn.subst σ P) (Syn.subst σ Q) (Syn.subst σ N)
-      (Syn.subst σ M) (Syn.subst σ e) (Syn.subst σ i) := by simp [term]
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (P Q N M e : PTm n) :
-    Syn.subst σ (data P Q N M e) = data (Syn.subst σ P) (Syn.subst σ Q) (Syn.subst σ N) (Syn.subst σ M) (Syn.subst σ e) := by
-  simp [data]
-@[simp] theorem subst_cauchySum {l : ℕ} (σ : Fin n → PTm l) (P Q N M e : PTm n) :
-    Syn.subst σ (cauchySum P Q N M e) = cauchySum (Syn.subst σ P) (Syn.subst σ Q) (Syn.subst σ N) (Syn.subst σ M) (Syn.subst σ e) := by
-  simp [cauchySum]
+ipra_subst exponentCoefficient [Signum.sg]
+ipra_subst term
+ipra_subst data
+ipra_subst cauchySum
 
 theorem exponent_inside (C N e : PTm n) (he : Γ ⊢[PRAAx] le e N) : Γ ⊢[PRAAx]
     exponentCoefficient C N e ≐ entry C (monus N e) :=
@@ -74,13 +61,13 @@ theorem exponent_outside (C N e : PTm n) (he : Γ ⊢[PRAAx] lt N e) : Γ ⊢[PR
 
 theorem get_p (P Q N M e : PTm n) : Γ ⊢[PRAAx] getP (data P Q N M e) ≐ P := fst_pair _ _
 theorem get_q (P Q N M e : PTm n) : Γ ⊢[PRAAx] getQ (data P Q N M e) ≐ Q :=
-  (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
+  (snd_pair _ _).fstE
 theorem get_n (P Q N M e : PTm n) : Γ ⊢[PRAAx] getN (data P Q N M e) ≐ N :=
-  (congrFst ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (snd_pair _ _).sndE.fstE
 theorem get_m (P Q N M e : PTm n) : Γ ⊢[PRAAx] getM (data P Q N M e) ≐ M :=
-  (congrFst ((congrSnd ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (snd_pair _ _).sndE.sndE.fstE
 theorem get_e (P Q N M e : PTm n) : Γ ⊢[PRAAx] getE (data P Q N M e) ≐ e :=
-  (congrSnd ((congrSnd ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (snd_pair _ _).sndE.sndE.sndE
 
 theorem source_at (P Q N M e i : PTm n) : Γ ⊢[PRAAx]
     inst2 sourceBody i (data P Q N M e) ≐ contribution P Q M (monus (N+M) e) i := by
@@ -244,23 +231,16 @@ def output (P Q N M e : PTm n) : PTm n :=
   pairT (entry (product P Q N M) (monus (N+M) e)) (cauchySum P Q N M e)
 def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (P Q N M e : PTm n) : PTm n := PTm.app outputF ![P,Q,N,M,e]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (P Q N M e : PTm n) :
-    Syn.subst σ (output P Q N M e) = output (Syn.subst σ P) (Syn.subst σ Q) (Syn.subst σ N) (Syn.subst σ M) (Syn.subst σ e) := by
-  simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (P Q N M e : PTm n) :
-    Syn.subst σ (run P Q N M e) = run (Syn.subst σ P) (Syn.subst σ Q) (Syn.subst σ N) (Syn.subst σ M) (Syn.subst σ e) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (P Q N M e : PTm n) : Γ ⊢[PRAAx] run P Q N M e ≐ output P Q N M e := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![P,Q,N,M,e]
 theorem returned_coefficient (P Q N M e : PTm n) : Γ ⊢[PRAAx]
     fstT (run P Q N M e) ≐ entry (product P Q N M) (monus (N+M) e) :=
-  (congrFst (program_at P Q N M e)).eqTrans (fst_pair _ _)
+  (program_at P Q N M e).fstE
 theorem returned_sum (P Q N M e : PTm n) : Γ ⊢[PRAAx] sndT (run P Q N M e) ≐ cauchySum P Q N M e :=
-  (congrSnd (program_at P Q N M e)).eqTrans (snd_pair _ _)
+  (program_at P Q N M e).sndE
 theorem returned_agreement (P Q N M e : PTm n) (hN : Γ ⊢[PRAAx] le e N)
     (hM : Γ ⊢[PRAAx] le e M) : Γ ⊢[PRAAx] fstT (run P Q N M e) ≐ sndT (run P Q N M e) :=
   (returned_coefficient P Q N M e).eqTrans ((coefficient_cauchy P Q N M e hN hM).eqTrans (returned_sum P Q N M e).eqSymm)

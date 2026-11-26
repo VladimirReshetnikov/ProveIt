@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialProductLeftPadding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalPolynomialProduct (product product_length product_evaluation product_canonical)
 open GaussianRationalPolynomialBuffers (leftPad pad_length pad_evaluation)
 open GaussianRationalSyntheticDivision (qmul_congr canonical_coefficient_at)
@@ -26,10 +26,6 @@ open GaussianRationalFiniteGridIdentity (gridPoint)
 open GaussianTranslatedNonconstant (recode_eq recode_congr)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

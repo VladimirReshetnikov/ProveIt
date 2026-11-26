@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Inequalities.GaussianCompactPositiveRadiusDominance
 import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalShiftedRadius
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Independent observations from actual compact row dominance
@@ -16,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCompactPositiveRadiusObservations
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCompactPositiveRadiusDominance (source correction)
 open GaussianCompactRiemannName (nameF data)
 open GaussianEulerVerticalRealRadius (gap denominator_positive)
@@ -27,10 +26,6 @@ open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianEuclideanDistanceName (fraction fraction_represents)
 open RationalGaussianEmbedding (scalarZero)
 open RationalValueBounds (upper upper_of_radius)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -44,9 +39,7 @@ def radiusDenominator (G : PR 3) (p q a C E L T y : PTm n) : PTm n :=
 def realBound (G : PR 3) (p q a C E L T y : PTm n) : PTm n :=
   RationalArithmetic.add (GaussianEulerVerticalShiftedRadius.shiftedScalar (point G q a C E L T y) (unit q)) (fraction one (unit p))
 
-@[simp] theorem subst_point {m : ℕ} (σ : Fin n → PTm m) (F : PR 3) (p a C E L T x : PTm n) :
-    Syn.subst σ (point F p a C E L T x) = point F (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ C)
-      (Syn.subst σ E) (Syn.subst σ L) (Syn.subst σ T) (Syn.subst σ x) := by simp [point]
+ipra_subst point
 
 private theorem positive_coordinate (r : PTm n) (h : Γ ⊢[PRAAx] GaussianPositiveRealArithmetic.positive r) : Γ ⊢[PRAAx]
     RationalArgmin.rationalLE scalarZero (fstT r) :=

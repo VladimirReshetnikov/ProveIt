@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaRadiusOverlap
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaFiniteApproximantName (pF pData)
 open GaussianGammaCanonicalExponent (source)
 open GaussianGammaWeierstrassConvergence (rate)
@@ -28,18 +28,13 @@ open GaussianRationalHorner (positive_product)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianNameEquivalence (crossEquivalent cross_at)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 
 def commonCutoff (t R S : PTm n) : PTm n :=
   GaussianGammaWeierstrassConvergence.cutoff t R+GaussianGammaWeierstrassConvergence.cutoff t S+t
-@[simp] theorem subst_commonCutoff {m : ℕ} (σ : Fin n → PTm m) (t R S : PTm n) :
-    Syn.subst σ (commonCutoff t R S) = commonCutoff (Syn.subst σ t) (Syn.subst σ R) (Syn.subst σ S) := by
-  simp [commonCutoff]
+ipra_subst commonCutoff
 
 theorem common_cutoff_bounds (t R S : PTm n) : Γ ⊢[PRAAx]
     le (GaussianGammaWeierstrassConvergence.cutoff t R) (commonCutoff t R S) ⋏

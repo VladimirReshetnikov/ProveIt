@@ -89,10 +89,8 @@ theorem congruence_det {U H : Mat k n} {d : Vec k n}
   refine ZT.derive ?_
   rw [Mat.toZ_det, toZ_prodFin]
   refine congruence_ring _ _ _ (fun i j hij => ?_) (fun i => ?_) e
-  · have e₁ := ZT.toZ_eq (hlow i j hij)
-    simpa using e₁
-  · have e₁ := ZT.toZ_eq (hdiag i)
-    simpa using e₁
+  · simpa using ZT.toZ_eq (hlow i j hij)
+  · simpa using ZT.toZ_eq (hdiag i)
 
 /-- `cor:strict-logconvex`, the finite identity: the Gram determinant of two coefficient
 vectors as a sum of squares of `2 × 2` minors. -/

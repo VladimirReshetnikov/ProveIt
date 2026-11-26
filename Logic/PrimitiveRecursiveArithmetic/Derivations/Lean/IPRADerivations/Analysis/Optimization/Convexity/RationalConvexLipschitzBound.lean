@@ -14,9 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalConvexLipschitzBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (monus)
+open_ipra
 open RationalArgmin (rationalLE denominator_positive)
 open RationalSupMetric (numeratorOf denominatorOf)
 open RationalConvexSecants (naturalNumerator nonnegative scale rescaled_representation
@@ -48,8 +46,6 @@ open RationalConvexScheduledModulus (threePoints cutoff cutoff_bounds cutoff_le_
 open RationalConvexSourceRLC (schedule)
 open RationalIntervalPowerComparison (centerOrder multiplicative_of_center_order)
 open RationalMultiplicativeConvexity (multiplicative_to_ordinary)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

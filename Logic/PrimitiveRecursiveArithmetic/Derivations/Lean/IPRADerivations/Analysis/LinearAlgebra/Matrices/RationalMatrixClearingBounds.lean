@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalMatrixClearingBounds
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open RationalSupMetric
   (coordinate rationalNumerator rationalDenominator denominatorBody denominatorBody_at rowDenominator
@@ -25,9 +25,6 @@ open RationalSupMetric
 open LeanProofs.IPRA.Foundations.GapDecision (zabs zabs_congr)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -47,13 +44,9 @@ def entryCap (P d H : PTm n) : PTm n := pw H (succ (length P*d))
     Foundations.GapDecision.subst_zabs,RationalSupMetric.subst_rationalNumerator,RationalSupMetric.subst_rationalDenominator,
     Syn.subst_var,Syn.up_zero,Syn.up_succ,Syn.subst_shift,Syn.shift_subst]
 
-@[simp] theorem subst_inputMatrix {k : ℕ} (σ : Fin n → PTm k) (P d H : PTm n) :
-    (inputMatrix P d H).subst σ = inputMatrix (Syn.subst σ P) (Syn.subst σ d) (Syn.subst σ H) := by
-  simp [inputMatrix,Syn.subst_shift,Syn.shift_subst]
+ipra_subst inputMatrix [Syn.subst_shift, Syn.shift_subst]
 
-@[simp] theorem subst_entryCap {k : ℕ} (σ : Fin n → PTm k) (P d H : PTm n) :
-    Syn.subst σ (entryCap P d H) = entryCap (Syn.subst σ P) (Syn.subst σ d) (Syn.subst σ H) := by
-  simp [entryCap]
+ipra_subst entryCap
 
 theorem input_row_at (P d H j : PTm n) (h : Γ ⊢[PRAAx] inputMatrix P d H) (hj : Γ ⊢[PRAAx] lt j (length P)) :
     Γ ⊢[PRAAx] inputRow (entry P j) d H := by
@@ -73,11 +66,9 @@ private theorem product_bound (f : PTm 2) (x N H : PTm n)
     Γ ⊢[PRAAx] le (ap2 (prodF f) N x) (pw H N) := by
   have all : Γ ⊢[PRAAx] .all (le (var 0) (Syn.shift N) ⟶
       le (ap2 (prodF f) (var 0) (Syn.shift x)) (pw (Syn.shift H) (var 0))) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp,subst_le,subst_ap2,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (le_congr (prod_zero _ _).eqSymm (pw_zero _).eqSymm (le_refl one))
-    · simp only [Fm.subst_imp,subst_le,subst_ap2,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_le, subst_ap2]
+    · exact .impI (le_congr (prod_zero _ _).eqSymm (pw_zero _).eqSymm (le_refl one))
+    · refine .impI ?_
       let k : PTm (n+1) := var 0
       let Δ := le (succ k) (Syn.shift N) ::
         (le k (Syn.shift N) ⟶ le (ap2 (prodF f) k (Syn.shift x)) (pw (Syn.shift H) k)) :: Γ.map Fm.shift
@@ -147,10 +138,10 @@ theorem program_at (P d : PTm n) : Γ ⊢[PRAAx] run P d ≐ output P d := by
   simpa [run,ap2,outputF,output] using toPR_eq (Γ := Γ) (output (var 0) (var 1) : PTm 2) ![P,d]
 
 theorem returned_denominator (P d : PTm n) : Γ ⊢[PRAAx] fstT (run P d) ≐ commonDenominator P d :=
-  (congrFst (program_at P d)).eqTrans (fst_pair _ _)
+  (program_at P d).fstE
 
 theorem returned_matrix (P d : PTm n) : Γ ⊢[PRAAx] sndT (run P d) ≐ normalizedList P d :=
-  (congrSnd (program_at P d)).eqTrans (snd_pair _ _)
+  (program_at P d).sndE
 
 theorem actual_common_denominator_bound_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3
     (inputMatrix (var 0) (var 1) (var 2) ⟶ le one (commonDenominator (var 0) (var 1)) ⋏

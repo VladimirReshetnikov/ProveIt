@@ -14,7 +14,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalHigherTail
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalHigherRows (coefficient coefficientGain coefficient_square_bound)
 open GaussianBarnesCanonicalLogTail (source row_source)
 open GaussianRationalFiniteSum (sum termsEqual)
@@ -23,9 +23,6 @@ open GaussianRationalMetric (bounded distanceBounded qsub)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalSyntheticDivision (qadd_congr qsub_congr qadd_sub_cancel)
 open GaussianReciprocalSquareInterval (denominator rowsBounded)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

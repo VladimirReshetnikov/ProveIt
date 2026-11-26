@@ -11,7 +11,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingHalfStep
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaCanonicalExponent (constantF constant_at)
 open GaussianNameArithmetic (addF addData multiplyModulus multiply_at recode_congr sum_distance)
@@ -27,10 +27,6 @@ open GaussianStirlingHalfStepIdentity (differenceF differenceData scaledLogF sca
   rightF rightData half_step_identity integer_source)
 open GaussianStirlingNames (point nameF nameData name_regular)
 open GaussianStirlingWallisGammaRatio (halfNumerator half_source)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "H" => GaussianStirlingWallisLogRate.nameF

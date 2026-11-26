@@ -13,9 +13,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianDigammaBernoulliName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero succ)
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianDigammaBernoulliRecurrence
   (meshCost prefixAt weightedPrimitive stepRadius step_distance)
@@ -26,8 +24,6 @@ open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalPowerDifference (distance_refl_zero)
 open GaussianRationalSyntheticDivision (qsub_congr)
 open GaussianStirlingNames (source)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "subF" => GaussianNamedDifference.nameF

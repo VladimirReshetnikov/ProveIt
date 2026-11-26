@@ -22,11 +22,9 @@ it.
 
 namespace LeanProofs.IPRA.Geometry.HellySpace
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Geometry.RadonPartition (pp)
 open LeanProofs.IPRA.Geometry.HellyPlane (radon_halfspace)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

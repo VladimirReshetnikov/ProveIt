@@ -15,7 +15,7 @@ set_option maxHeartbeats 500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalRelativeStep
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open ComplexLogarithmRemainder (add mul scale normSq normSq_mul normSq_eval oneCode)
 open GaussianBarnesCanonicalFactor (base)
@@ -28,10 +28,6 @@ open GaussianRationalHorner (ofGaussian ofGaussian_represents ofGaussian_canonic
 open GaussianRationalMetric (bounded bounded_of_cleared)
 open GaussianRationalReciprocal (conjugate norm_conjugate qone qone_represents_scaled re_conjugate im_conjugate)
 open GaussianRootAlgebra (equal equal_of_values re_add im_add re_mul im_mul re_scale im_scale re_one im_one)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num pred)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "rowSource" => GaussianBarnesCanonicalLogRow.source

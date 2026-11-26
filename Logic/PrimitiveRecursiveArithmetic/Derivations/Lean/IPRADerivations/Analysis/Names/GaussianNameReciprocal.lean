@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Names.GaussianNameRingLaws
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianGeneralCoefficientNames
 import IPRADerivations.Analysis.Polynomials.RootFinding.DominantTerms.GaussianDominantScalarOrder
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # An actual reciprocal name from a finite fractional apartness certificate
@@ -17,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNameReciprocal
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qsub qnormSq squaredTolerance bounded distanceBounded)
 open LeanProofs.IPRA.Analysis.GaussianRationalReciprocal
@@ -29,9 +28,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalDistanceOrder (distance_congr dist
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qsub_congr)
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder (normSq scale mul)
 open LeanProofs.IPRA.Analysis.GaussianRootAlgebra (sub)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,18 +39,12 @@ def input (f : PR 2) (h x : PTm n) : Fm PTm n := pointCN f x ⋏ apart f h x
 def tail (f : PR 2) (h x s : PTm n) : PTm n := ap2 f (s+anchor h) x
 def liftF (f : PR 2) : PR 3 := PTm.toPR (ap2 f (var 1) (var 2) : PTm 3)
 
-@[simp] theorem subst_anchor {m : ℕ} (σ : Fin n → PTm m) (h : PTm n) :
-    Syn.subst σ (anchor h) = anchor (Syn.subst σ h) := by simp [anchor]
-@[simp] theorem subst_R {m : ℕ} (σ : Fin n → PTm m) (h : PTm n) :
-    Syn.subst σ (R h) = R (Syn.subst σ h) := by simp [R]
-@[simp] theorem subst_lower {m : ℕ} (σ : Fin n → PTm m) (q r : PTm n) :
-    (lower q r).subst σ = lower (Syn.subst σ q) (Syn.subst σ r) := by simp [lower]
-@[simp] theorem subst_apart {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (h x : PTm n) :
-    (apart f h x).subst σ = apart f (Syn.subst σ h) (Syn.subst σ x) := by simp [apart]
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (h x : PTm n) :
-    (input f h x).subst σ = input f (Syn.subst σ h) (Syn.subst σ x) := by simp [input]
-@[simp] theorem subst_tail {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (h x s : PTm n) :
-    Syn.subst σ (tail f h x s) = tail f (Syn.subst σ h) (Syn.subst σ x) (Syn.subst σ s) := by simp [tail]
+ipra_subst anchor
+ipra_subst R
+ipra_subst lower
+ipra_subst apart
+ipra_subst input
+ipra_subst tail
 
 theorem lower_congr {q q' r r' : PTm n} (hq : Γ ⊢[PRAAx] q ≐ q') (hr : Γ ⊢[PRAAx] r ≐ r')
     (h : Γ ⊢[PRAAx] lower q r) : Γ ⊢[PRAAx] lower q' r' := by
@@ -187,14 +177,10 @@ def rawF (f : PR 2) : PR 2 := PTm.toPR
 def nameF (f : PR 2) : PR 2 := GaussianFastValueCut.nameF (rawF f)
 def nameData (h x : PTm n) : PTm n := GaussianFastValueCut.nameData (modulus h) (rawData h x)
 
-@[simp] theorem subst_modulus {m : ℕ} (σ : Fin n → PTm m) (h : PTm n) :
-    Syn.subst σ (modulus h) = modulus (Syn.subst σ h) := by simp [modulus]
-@[simp] theorem subst_raw {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (h x s : PTm n) :
-    Syn.subst σ (raw f h x s) = raw f (Syn.subst σ h) (Syn.subst σ x) (Syn.subst σ s) := by simp [raw]
-@[simp] theorem subst_rawData {m : ℕ} (σ : Fin n → PTm m) (h x : PTm n) :
-    Syn.subst σ (rawData h x) = rawData (Syn.subst σ h) (Syn.subst σ x) := by simp [rawData]
-@[simp] theorem subst_nameData {m : ℕ} (σ : Fin n → PTm m) (h x : PTm n) :
-    Syn.subst σ (nameData h x) = nameData (Syn.subst σ h) (Syn.subst σ x) := by simp [nameData]
+ipra_subst modulus
+ipra_subst raw
+ipra_subst rawData
+ipra_subst nameData
 
 theorem reciprocal_congr {q q' : PTm n} (h : Γ ⊢[PRAAx] q ≐ q') : Γ ⊢[PRAAx] reciprocal q ≐ reciprocal q' := by
   ipra_congr (reciprocal (var 0) : PTm 1) with [h]
@@ -288,9 +274,7 @@ theorem tail_inverse_identity (f : PR 2) (h x s : PTm n)
 def productBudget (f : PR 2) (h x : PTm n) : PTm n :=
   (GaussianNameArithmetic.multiplyModulus f (nameF f) x (nameData h x)+one+
     GaussianNameBounds.U f x*(modulus h+one))+two*R h
-@[simp] theorem subst_productBudget {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (h x : PTm n) :
-    Syn.subst σ (productBudget f h x) = productBudget f (Syn.subst σ h) (Syn.subst σ x) := by
-  simp [productBudget]
+ipra_subst productBudget
 
 theorem product_one_at (f : PR 2) (h x k : PTm n)
     (hf : Γ ⊢[PRAAx] pointCN f x) (ha : Γ ⊢[PRAAx] apart f h x) : Γ ⊢[PRAAx]
@@ -401,9 +385,7 @@ theorem names_equivalent (f g : PR 2) (h h' x y : PTm n)
 
 def equivalenceInput (f g : PR 2) (h h' x y : PTm n) : Fm PTm n :=
   input f h x ⋏ (input g h' y ⋏ GaussianNameEquivalence.diagonalEquivalent f g x y)
-@[simp] theorem subst_equivalenceInput {m : ℕ} (σ : Fin n → PTm m) (f g : PR 2) (h h' x y : PTm n) :
-    (equivalenceInput f g h h' x y).subst σ =
-      equivalenceInput f g (Syn.subst σ h) (Syn.subst σ h') (Syn.subst σ x) (Syn.subst σ y) := by simp [equivalenceInput]
+ipra_subst equivalenceInput
 
 theorem fractional_reciprocal_bound_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2
     (le one (var 1) ⋏ lower (var 0) (var 1) ⟶ bounded (reciprocal (var 0)) (var 1) one) :=

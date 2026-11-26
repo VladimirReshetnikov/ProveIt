@@ -1,9 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.ValuationMul
-import IPRADerivations.Core.SumSplit
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Probability.MedianCounts
 import IPRADerivations.Combinatorics.FiniteBijection
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Legendre's formula `v_p(m!) = ∑_{j≥1} ⌊m/p^j⌋`
@@ -25,7 +23,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.LegendreFact
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Algebra.CubeRootTwo (sg sg_zero sg_succ)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totatives (sg_lt sg_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val val_dvd val_not_dvd pw_pos' lt_pw)
@@ -38,10 +36,6 @@ open LeanProofs.IPRA.Probability.SortingBound (fct)
 open LeanProofs.IPRA.Probability.Variance (sum_one)
 open LeanProofs.IPRA.Probability.MedianCounts (congrSg)
 open LeanProofs.IPRA.Combinatorics.FiniteBijection (shift_pairT')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

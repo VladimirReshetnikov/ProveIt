@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingFiniteSeries
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode zeroCode scale)
 open GaussianEulerPositivePowerChartCorrectedImage (fraction_sum)
 open GaussianPositiveRationalLogarithm (fraction)
@@ -28,9 +28,6 @@ open GaussianStirlingRationalTelescopers
 open StirlingRationalSeries (fold fold_zero fold_succ)
 open RobbinsSeries (gq g_eq)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,11 +35,8 @@ def denominator (a b L K : PTm n) : PTm n := pw (denominatorSquare a b) K*fact L
 def folded (a b L K : PTm n) : PTm n :=
   fraction (fold (denominatorSquare a b) (numeratorSquare b) L K) (denominator a b L K)
 
-@[simp] theorem subst_denominator {l : ℕ} (σ : Fin n → PTm l) (a b L K : PTm n) :
-    Syn.subst σ (denominator a b L K) = denominator (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ L) (Syn.subst σ K) := by
-  simp [denominator]
-@[simp] theorem subst_folded {l : ℕ} (σ : Fin n → PTm l) (a b L K : PTm n) :
-    Syn.subst σ (folded a b L K) = folded (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ L) (Syn.subst σ K) := by simp [folded]
+ipra_subst denominator
+ipra_subst folded
 
 theorem denominator_positive (a b L K : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
     Γ ⊢[PRAAx] le one (denominator a b L K) :=
@@ -121,12 +115,10 @@ private def foldLaw (a b L j : PTm n) : Fm PTm n :=
 theorem partial_equals_fold (a b L K : PTm n) (hb : Γ ⊢[PRAAx] le one b)
     (hL : Γ ⊢[PRAAx] le (succ (two*K)) L) : Γ ⊢[PRAAx] partialSum a b K ≐ folded a b L K := by
   have all : Γ ⊢[PRAAx] .all (foldLaw (Syn.shift a) (Syn.shift b) (Syn.shift L) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_foldLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI ((partial_zero a b).eqTrans ((zero_is_fraction _ (denominator_positive a b L zero hb.wk)).eqTrans
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_foldLaw]
+    · exact .impI ((partial_zero a b).eqTrans ((zero_is_fraction _ (denominator_positive a b L zero hb.wk)).eqTrans
         (GaussianCompactRiemannName.fraction_congr _ _ _ _ (fold_zero _ _ _).eqSymm (.eqRefl _))))
-    · simp only [subst_foldLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    · refine .impI ?_
       let j : PTm (n+1) := var 0
       let a' := Syn.shift a
       let b' := Syn.shift b

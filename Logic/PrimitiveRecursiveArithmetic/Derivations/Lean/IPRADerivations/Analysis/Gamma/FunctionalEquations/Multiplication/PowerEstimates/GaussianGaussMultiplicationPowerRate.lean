@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationPowerRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianGaussMultiplicationLogarithm (top top_positive)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
@@ -27,10 +27,6 @@ open GaussianRationalReciprocal (bound_congr bounded_product qone_bounded)
 open GaussianRationalSyntheticDivision (qone)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -52,26 +48,15 @@ def powerData (z R B m x : PTm n) : PTm n :=
 def coefficient (R m : PTm n) : PTm n :=
   GaussianRadiusExponentialLipschitzRate.factor (radius R m)*amplification R m
 
-@[simp] theorem subst_multiplier {l : ℕ} (σ : Fin n → PTm l) (z B m : PTm n) :
-    Syn.subst σ (multiplier z B m) = multiplier (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ m) := by simp [multiplier]
-@[simp] theorem subst_amplification {l : ℕ} (σ : Fin n → PTm l) (R m : PTm n) :
-    Syn.subst σ (amplification R m) = amplification (Syn.subst σ R) (Syn.subst σ m) := by simp [amplification]
-@[simp] theorem subst_limitLogData {l : ℕ} (σ : Fin n → PTm l) (m : PTm n) :
-    Syn.subst σ (limitLogData m) = limitLogData (Syn.subst σ m) := by simp [limitLogData]
-@[simp] theorem subst_rowLogData {l : ℕ} (σ : Fin n → PTm l) (m N : PTm n) :
-    Syn.subst σ (rowLogData m N) = rowLogData (Syn.subst σ m) (Syn.subst σ N) := by simp [rowLogData]
-@[simp] theorem subst_logCap {l : ℕ} (σ : Fin n → PTm l) (m : PTm n) :
-    Syn.subst σ (logCap m) = logCap (Syn.subst σ m) := by simp [logCap]
-@[simp] theorem subst_radius {l : ℕ} (σ : Fin n → PTm l) (R m : PTm n) :
-    Syn.subst σ (radius R m) = radius (Syn.subst σ R) (Syn.subst σ m) := by simp [radius]
-@[simp] theorem subst_exponentData {l : ℕ} (σ : Fin n → PTm l) (z R B m x : PTm n) :
-    Syn.subst σ (exponentData z R B m x) =
-      exponentData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ m) (Syn.subst σ x) := by simp [exponentData]
-@[simp] theorem subst_powerData {l : ℕ} (σ : Fin n → PTm l) (z R B m x : PTm n) :
-    Syn.subst σ (powerData z R B m x) =
-      powerData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ m) (Syn.subst σ x) := by simp [powerData]
-@[simp] theorem subst_coefficient {l : ℕ} (σ : Fin n → PTm l) (R m : PTm n) :
-    Syn.subst σ (coefficient R m) = coefficient (Syn.subst σ R) (Syn.subst σ m) := by simp [coefficient]
+ipra_subst multiplier
+ipra_subst amplification
+ipra_subst limitLogData
+ipra_subst rowLogData
+ipra_subst logCap
+ipra_subst radius
+ipra_subst exponentData
+ipra_subst powerData
+ipra_subst coefficient
 
 theorem multiplier_bound (z R B m : PTm n) (hm : Γ ⊢[PRAAx] le one m)
     (hB : Γ ⊢[PRAAx] le one B) (hz : Γ ⊢[PRAAx] ComplexLogarithmRemainder.bounded z (R*B)) :

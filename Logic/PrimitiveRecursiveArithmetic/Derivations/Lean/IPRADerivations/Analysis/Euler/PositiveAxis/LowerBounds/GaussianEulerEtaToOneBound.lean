@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.GaussianEulerEtaToOneQuadratureBound
 import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerNamedLowerTail
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The actual original eta-to-one Euler compact name has radius A
@@ -15,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerEtaToOneBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerEtaToOneRootGrid (rootDen time timeDen totalWidth)
 open GaussianEulerEtaToOneRowBound (stepScale)
 open GaussianEulerLowerCofinalQuadrature (rootMesh transformed)
@@ -30,10 +29,6 @@ open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalDistanceOrder (distance_congr distance_symmetric)
 open GaussianRationalSlackRemoval (slack slack_removal_at)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,14 +36,10 @@ def width (k A R : PTm n) : PTm n := monus (etaDen k A R) one
 def data (z R B k A : PTm n) : PTm n := GaussianEulerCompactAdditivity.data z R B one (width k A R) (etaDen k A R) one
 def point (s z R B k A : PTm n) : PTm n := ap2 GaussianEulerCompactAdditivity.nameF s (data z R B k A)
 def result (s z R B k A : PTm n) : Fm PTm n := bounded (point s z R B k A) (A*unit s+one) (unit s)
-@[simp] theorem subst_width {m : ℕ} (σ : Fin n → PTm m) (k A R : PTm n) :
-    Syn.subst σ (width k A R) = width (Syn.subst σ k) (Syn.subst σ A) (Syn.subst σ R) := by simp [width,etaDen,height,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (z R B k A : PTm n) :
-    Syn.subst σ (data z R B k A) = data (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ k) (Syn.subst σ A) := by simp [data,etaDen,height,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_point {m : ℕ} (σ : Fin n → PTm m) (s z R B k A : PTm n) :
-    Syn.subst σ (point s z R B k A) = point (Syn.subst σ s) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ k) (Syn.subst σ A) := by simp [point]
-@[simp] theorem subst_result {m : ℕ} (σ : Fin n → PTm m) (s z R B k A : PTm n) :
-    (result s z R B k A).subst σ = result (Syn.subst σ s) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ k) (Syn.subst σ A) := by simp [result]
+ipra_subst width [etaDen, height, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst data [etaDen, height, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst point
+ipra_subst result
 
 theorem width_positive (k A R : PTm n) (hA : Γ ⊢[PRAAx] le one A) : Γ ⊢[PRAAx] le one (width k A R) := by
   have hp := positive_product (Γ := Γ) A (height k A R) hA (GaussianGammaIntegralCutoffs.height_positive k A R)

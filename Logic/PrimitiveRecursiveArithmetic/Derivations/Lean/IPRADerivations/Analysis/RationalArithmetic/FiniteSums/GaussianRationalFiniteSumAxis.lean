@@ -7,11 +7,9 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalFiniteSumAxis
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalFiniteSum (sum subst_sum)
 open RationalGaussianEmbedding (axis subst_axis axis_add axis_congr axis_zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

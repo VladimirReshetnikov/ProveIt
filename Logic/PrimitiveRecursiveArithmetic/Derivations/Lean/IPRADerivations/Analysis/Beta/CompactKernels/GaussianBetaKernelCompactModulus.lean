@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Beta.CompactKernels.GaussianBetaKernelLipschitz
 import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactPowerVariation
 import IPRADerivations.Analysis.Beta.CompactKernels.GaussianBetaKernelGridComparison
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # A degree-independent compact time modulus for original beta rows
@@ -19,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaKernelCompactModulus
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerExponentCompactBounds (source input)
 open GaussianCompactLogarithmBounds (domain)
 open GaussianBetaKernelGridComparison (row evaluatorF sampleDataBeta)
@@ -32,9 +31,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianPositiveRationalLogarithm (fraction)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -42,12 +38,8 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 def lipschitz (R E T : PTm n) : PTm n := GaussianEulerCompactPowerVariation.lipschitz R E T+GaussianEulerCompactPowerMajorant.majorant R E T
 def compactSource (z R B E T a C N : PTm n) : Fm PTm n :=
   source z R B E ⋏ ((le one N ⋏ le T N) ⋏ (le one a ⋏ le (a+C) (E*T)))
-@[simp] theorem subst_lipschitz {m : ℕ} (σ : Fin n → PTm m) (R E T : PTm n) :
-    Syn.subst σ (lipschitz R E T) = lipschitz (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T) := by
-  simp [lipschitz,GaussianEulerCompactPowerMajorant.majorant,GaussianEulerCompactPowerMajorant.exponentRadius]
-@[simp] theorem subst_compactSource {m : ℕ} (σ : Fin n → PTm m) (z R B E T a C N : PTm n) :
-    (compactSource z R B E T a C N).subst σ = compactSource (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ E)
-      (Syn.subst σ T) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ N) := by simp [compactSource]
+ipra_subst lipschitz [GaussianEulerCompactPowerMajorant.majorant, GaussianEulerCompactPowerMajorant.exponentRadius]
+ipra_subst compactSource
 
 private theorem support (a b E T N : PTm n) (h : Γ ⊢[PRAAx] domain a b E T)
     (hN : Γ ⊢[PRAAx] le one N) (hTN : Γ ⊢[PRAAx] le T N) : Γ ⊢[PRAAx] GaussianBetaKernelRefinement.source a b N :=

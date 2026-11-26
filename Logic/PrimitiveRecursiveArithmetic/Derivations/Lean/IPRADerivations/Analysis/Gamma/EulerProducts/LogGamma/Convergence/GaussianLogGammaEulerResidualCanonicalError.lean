@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerResidualCanonicalError
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianLocalLogarithmName (pointF)
 open GaussianLogGammaEulerResidualDomain (source rowOffset linearTerm admission)
@@ -22,10 +22,6 @@ open GaussianNameEquivalence (cross_at)
 open GaussianRationalDistanceOrder (distance_radius_mono)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "L" => GaussianRightHalfPlaneLogarithm.nameF
@@ -34,11 +30,7 @@ local notation "dL" => GaussianRightHalfPlaneLogarithm.data
 def canonicalPoint (p A B D neg k : PTm n) : PTm n :=
   ap2 L p (dL (A+k*D) B (D*k) neg)
 
-@[simp] theorem subst_canonicalPoint {m : ℕ} (σ : Fin n → PTm m) (p A B D neg k : PTm n) :
-    Syn.subst σ (canonicalPoint p A B D neg k) =
-      canonicalPoint (Syn.subst σ p) (Syn.subst σ A) (Syn.subst σ B)
-        (Syn.subst σ D) (Syn.subst σ neg) (Syn.subst σ k) := by
-  simp [canonicalPoint]
+ipra_subst canonicalPoint
 
 theorem canonical_sample_error (p A B D neg R k : PTm n) (h : Γ ⊢[PRAAx] source A B D neg R)
     (hk : Γ ⊢[PRAAx] le one k) (hlarge : Γ ⊢[PRAAx] le (num 8*R) k) :

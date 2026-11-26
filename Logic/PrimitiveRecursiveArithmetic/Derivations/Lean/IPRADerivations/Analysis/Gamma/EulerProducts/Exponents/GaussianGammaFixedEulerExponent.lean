@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaFixedEulerExponent
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (positive_product qzero ofGaussian)
 open GaussianRationalMetric (bounded qnegative)
 open GaussianRationalReciprocal (bound_congr bounded_sum bounded_product bounded_negative)
@@ -30,10 +30,6 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianFastValueCut (rawEnvelope)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -45,12 +41,9 @@ def productData (z B K N : PTm n) : PTm n := GaussianNameArithmetic.multiplyData
 def exponentF : PR 2 := GaussianNameArithmetic.addF productF GaussianGammaCanonicalTailName.pointF
 def exponentData (z R B N : PTm n) : PTm n := GaussianNameArithmetic.addData
   (productData z B (two*R) N) (GaussianGammaCanonicalTailName.data z R B (two*R))
-@[simp] theorem subst_differenceData {l : ℕ} (σ : Fin n → PTm l) (K N : PTm n) :
-    Syn.subst σ (differenceData K N) = differenceData (Syn.subst σ K) (Syn.subst σ N) := by simp [differenceData]
-@[simp] theorem subst_productData {l : ℕ} (σ : Fin n → PTm l) (z B K N : PTm n) :
-    Syn.subst σ (productData z B K N) = productData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ K) (Syn.subst σ N) := by simp [productData]
-@[simp] theorem subst_exponentData {l : ℕ} (σ : Fin n → PTm l) (z R B N : PTm n) :
-    Syn.subst σ (exponentData z R B N) = exponentData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [exponentData]
+ipra_subst differenceData
+ipra_subst productData
+ipra_subst exponentData
 
 theorem fixed_sample_bound (p N : PTm n) (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[PRAAx]
     bounded (ap2 fixedF p N) one one := by
@@ -113,11 +106,8 @@ def combinedF : PR 2 := GaussianNameArithmetic.addF exponentF (negativeF Gaussia
 def combinedData (z R B N : PTm n) : PTm n := GaussianNameArithmetic.addData (exponentData z R B N)
   (negativeData (GaussianGammaCanonicalTailName.data z R B N))
 def combinedPoint (p z R B N : PTm n) : PTm n := ap2 combinedF p (combinedData z R B N)
-@[simp] theorem subst_combinedData {l : ℕ} (σ : Fin n → PTm l) (z R B N : PTm n) :
-    Syn.subst σ (combinedData z R B N) = combinedData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [combinedData]
-@[simp] theorem subst_combinedPoint {l : ℕ} (σ : Fin n → PTm l) (p z R B N : PTm n) :
-    Syn.subst σ (combinedPoint p z R B N) = combinedPoint (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ N) := by simp [combinedPoint]
+ipra_subst combinedData
+ipra_subst combinedPoint
 
 theorem combined_regular (z R B N : PTm n) (h : Γ ⊢[PRAAx] input z R B N) :
     Γ ⊢[PRAAx] pointCN combinedF (combinedData z R B N) :=
@@ -167,8 +157,7 @@ theorem combined_envelope (z R B N : PTm n) (h : Γ ⊢[PRAAx] input z R B N) :
 
 def correctedF : PR 2 := GaussianExactDiskShrinking.nameF combinedF
 def correctedData (z R B N : PTm n) : PTm n := GaussianExactDiskShrinking.data (combinedData z R B N) (numericalRadius R) one one
-@[simp] theorem subst_correctedData {l : ℕ} (σ : Fin n → PTm l) (z R B N : PTm n) :
-    Syn.subst σ (correctedData z R B N) = correctedData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [correctedData]
+ipra_subst correctedData
 
 theorem corrected_regular (z R B N : PTm n) (h : Γ ⊢[PRAAx] input z R B N) :
     Γ ⊢[PRAAx] pointCN correctedF (correctedData z R B N) :=

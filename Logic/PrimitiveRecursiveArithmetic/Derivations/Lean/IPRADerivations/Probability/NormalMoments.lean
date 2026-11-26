@@ -1,6 +1,5 @@
 import IPRADerivations.Combinatorics.Catalan
 import IPRADerivations.DiophantineNumberTheory.FLTMultiples
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The moment numbers of the standard normal distribution
@@ -25,17 +24,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.NormalMoments
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.Products (fact fact_two_succ)
 open LeanProofs.IPRA.Combinatorics.Catalan (cb cb_fact)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul quo_of_eq)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (fact_pos)
 open LeanProofs.IPRA.DiophantineNumberTheory.FLTMultiples (pw_pos)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -88,13 +83,9 @@ theorem dfact_step {r : PTm n} (ih : Γ ⊢[PRAAx] df r * (pw two r * fact r) �
 private abbrev dfactF : Fm PTm 1 := df (var 0) * (pw two (var 0) * fact (var 0)) ≐ fact (two * var 0)
 
 private theorem dfact₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] dfactF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, PTm.subst_mul, subst_ap2, Syn.subst_var, Syn.inst_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact dfact_base
-  · simp only [Fm.subst_eq, PTm.subst_mul, subst_ap2, Syn.subst_var, Syn.repl_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact dfact_step Prf.hyp0
+  ipra_ind [subst_ap2]
+  · exact dfact_base
+  · exact dfact_step Prf.hyp0
 
 /-- `eq:standard-moments`: `(2r − 1)!! · 2^r r! = (2r)!`. -/
 theorem df_fact (r : PTm n) : Γ ⊢[PRAAx] df r * (pw two r * fact r) ≐ fact (two * r) := by
@@ -116,13 +107,9 @@ theorem edf_step {r : PTm n} (ih : Γ ⊢[PRAAx] edf r ≐ pw two r * fact r) :
 private abbrev edfF : Fm PTm 1 := edf (var 0) ≐ pw two (var 0) * fact (var 0)
 
 private theorem edf₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] edfF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, PTm.subst_mul, subst_ap2, Syn.subst_var, Syn.inst_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact edf_base
-  · simp only [Fm.subst_eq, PTm.subst_mul, subst_ap2, Syn.subst_var, Syn.repl_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact edf_step Prf.hyp0
+  ipra_ind [subst_ap2]
+  · exact edf_base
+  · exact edf_step Prf.hyp0
 
 /-- `(2r)!! = 2^r r!`. -/
 theorem edf_eq (r : PTm n) : Γ ⊢[PRAAx] edf r ≐ pw two r * fact r := by

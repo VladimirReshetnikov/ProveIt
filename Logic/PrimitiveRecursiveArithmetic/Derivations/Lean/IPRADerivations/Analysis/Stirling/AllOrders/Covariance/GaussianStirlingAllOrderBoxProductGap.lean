@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBoxProductGap
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (fraction fraction_represents)
 open GaussianPositiveRealArithmetic (sign)
 open GaussianRationalHorner (positive_product)
@@ -28,9 +28,6 @@ open RationalArithmetic (add multiply multiply_monotone)
 open RationalNonnegativePowers (fraction_multiply fraction_congr)
 open RationalNormalForm (wellFormed normalize_well_formed)
 open RationalReverseChebyshevCell (rectangle_margin)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

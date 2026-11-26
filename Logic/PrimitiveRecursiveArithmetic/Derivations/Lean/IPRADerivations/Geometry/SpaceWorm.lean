@@ -1,6 +1,4 @@
-import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.DiophantineNumberTheory.SimultaneousGrid
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The finite inequalities of the convex cover for unit space curves
@@ -28,12 +26,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Geometry.SpaceWorm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.SimultaneousGrid (cancel_pos)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

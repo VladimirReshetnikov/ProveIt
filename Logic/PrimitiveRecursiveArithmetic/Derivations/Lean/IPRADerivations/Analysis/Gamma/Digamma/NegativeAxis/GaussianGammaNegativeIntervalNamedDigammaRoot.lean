@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalNamedDigammaRoot
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaNegativeCriticalCorrection (guard)
@@ -39,9 +39,6 @@ open GaussianNamedPositiveLateLogSource (retimedF retimedData original_cross)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianRationalHorner (positive_product qzero)
 open GaussianRationalMetric (distanceBounded)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -51,8 +48,7 @@ local notation "rootF" => nameF fractionLocationF
 
 def rootCost (N : PTm n) : PTm n := coefficient N (mesh N)+residualCost N+num 5
 
-@[simp] theorem subst_rootCost {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (rootCost N) = rootCost (Syn.subst σ N) := by simp [rootCost]
+ipra_subst rootCost
 
 theorem original_rational_cross (a b c B N : PTm n)
     (ha : Γ ⊢[PRAAx] guard a b) (hc : Γ ⊢[PRAAx] guard c B)

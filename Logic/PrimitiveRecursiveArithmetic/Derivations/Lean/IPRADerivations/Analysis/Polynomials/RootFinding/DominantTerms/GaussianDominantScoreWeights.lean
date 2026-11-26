@@ -19,17 +19,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianDominantScoreWeights
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianDominantSyntax
   (four score numerator denominator score_represents denominator_positive)
 open LeanProofs.IPRA.Analysis.GaussianBalancedRadiusSyntax (unit unit_positive input)
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (fraction fraction_represents)
 open LeanProofs.IPRA.Analysis.GaussianDominantScaleArithmetic (denominator_succ)
 open LeanProofs.IPRA.Analysis.GaussianDominantPlateau (center winner)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -37,12 +33,8 @@ def weight (d : PTm n) : PTm n := unit (four*d)
 def weightedScore (C N E j h i d : PTm n) : PTm n :=
   RationalArithmetic.multiply (fraction (weight d) one) (score C N E j h i)
 
-@[simp] theorem subst_weight {m : ℕ} (σ : Fin n → PTm m) (d : PTm n) :
-    Syn.subst σ (weight d) = weight (Syn.subst σ d) := by simp [weight]
-@[simp] theorem subst_weightedScore {m : ℕ} (σ : Fin n → PTm m) (C N E j h i d : PTm n) :
-    Syn.subst σ (weightedScore C N E j h i d) = weightedScore (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ E) (Syn.subst σ j) (Syn.subst σ h) (Syn.subst σ i) (Syn.subst σ d) := by
-  simp [weightedScore]
+ipra_subst weight
+ipra_subst weightedScore
 
 theorem scale_gap (i k : PTm n) (hik : Γ ⊢[PRAAx] le i k) : Γ ⊢[PRAAx]
     unit (four*k) ≐ unit (four*i)*weight (monus k i) := by
@@ -105,9 +97,7 @@ theorem above_from_previous (C N E j h i k : PTm n) (hki : Γ ⊢[PRAAx] le k i)
 def atCenter (C N i d : PTm n) : PTm n := weightedScore C N
   (GaussianBalancedRadiusHeight.E C N) (GaussianBalancedRadiusSearch.radiusIndex C N) (center C N) i d
 
-@[simp] theorem subst_atCenter {m : ℕ} (σ : Fin n → PTm m) (C N i d : PTm n) :
-    Syn.subst σ (atCenter C N i d) = atCenter (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ i) (Syn.subst σ d) := by
-  simp [atCenter]
+ipra_subst atCenter
 
 theorem below_weight (C N i : PTm n) (hInput : Γ ⊢[PRAAx] input C N)
     (hi : Γ ⊢[PRAAx] le one i) (hiN : Γ ⊢[PRAAx] le i N) (hik : Γ ⊢[PRAAx] le i (winner C N)) : Γ ⊢[PRAAx]
@@ -148,9 +138,7 @@ def weightBounds (C N : PTm n) : Fm PTm n := .all
           (GaussianDominantRadiusValues.score (Syn.shift C) (Syn.shift N)
             (center (Syn.shift C) (Syn.shift N)) (winner (Syn.shift C) (Syn.shift N))))))
 
-@[simp] theorem subst_weightBounds {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    (weightBounds C N).subst σ = weightBounds (Syn.subst σ C) (Syn.subst σ N) := by
-  simp [weightBounds,Syn.subst_shift,Syn.shift_subst]
+ipra_subst weightBounds [Syn.subst_shift, Syn.shift_subst]
 
 theorem actual_weight_bounds (C N : PTm n) (hInput : Γ ⊢[PRAAx] input C N) : Γ ⊢[PRAAx]
     weightBounds C N := by

@@ -18,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaMinimumRational
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaDigammaDyadicLocation (lower)
 open GaussianGammaDigammaDyadicMesh (grid)
@@ -39,10 +39,6 @@ open GaussianRationalSyntheticDivision (qadd_congr qzero_add)
 open GaussianStirlingGammaLogarithm (source logGammaF logGammaData gammaRetimedF gammaRetimedData gammaLogMargin)
 open GaussianStirlingGammaFractionalIncrementObservations (scalar_upper)
 open RationalValueBounds (upper upper_congr upper_mono upper_triangle upper_order_left)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -51,9 +47,7 @@ local notation "lg" => logGammaData
 
 def rootMargin (k c d M : PTm n) : PTm n := margin (baseNumerator k d) (targetNumerator k c) (denominator k d) M
 
-@[simp] theorem subst_rootMargin {m : ℕ} (σ : Fin n → PTm m) (k c d M : PTm n) :
-    Syn.subst σ (rootMargin k c d M) = rootMargin (Syn.subst σ k) (Syn.subst σ c) (Syn.subst σ d) (Syn.subst σ M) := by
-  simp [rootMargin]
+ipra_subst rootMargin
 
 private theorem margin_denominator_positive (b M : PTm n) (hb : Γ ⊢[PRAAx] le one b)
     (hM : Γ ⊢[PRAAx] le two M) : Γ ⊢[PRAAx] le one (num 4*(M*b)*(M*b)) := by

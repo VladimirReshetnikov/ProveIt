@@ -15,7 +15,7 @@ set_option maxHeartbeats 1500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalNamedLog
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.FiniteQueryDemand (finiteMaximum finiteMaximum_at)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
@@ -29,9 +29,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianSignedNameExponentialOrder (realSamples real_sample_at)
 open GaussianUnitIntervalInputDecoding (numerator denominator fraction_recode)
 open GaussianExponentialReference (unit_monotone)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "L" => GaussianGammaNegativeIntervalLogAbsolute.nameF
@@ -48,16 +45,10 @@ def data (x E N : PTm n) : PTm n := pairT x (pairT E N)
 def nameF (f : PR 2) : PR 2 := PTm.toPR
   (sample f (var 0) (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))))
 
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (p E N : PTm n) :
-    Syn.subst σ (clock p E N) = clock (Syn.subst σ p) (Syn.subst σ E) (Syn.subst σ N) := by simp [clock]
-@[simp] theorem subst_encodedData {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (k x N : PTm n) :
-    Syn.subst σ (encodedData f k x N) = encodedData f (Syn.subst σ k) (Syn.subst σ x) (Syn.subst σ N) := by
-  simp [encodedData]
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p x E N : PTm n) :
-    Syn.subst σ (sample f p x E N) = sample f (Syn.subst σ p) (Syn.subst σ x) (Syn.subst σ E) (Syn.subst σ N) := by
-  simp [sample]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (x E N : PTm n) :
-    Syn.subst σ (data x E N) = data (Syn.subst σ x) (Syn.subst σ E) (Syn.subst σ N) := by simp [data]
+ipra_subst clock
+ipra_subst encodedData
+ipra_subst sample
+ipra_subst data
 
 private theorem demand_at (s E N : PTm n) : Γ ⊢[PRAAx] inst2 demandBody s (pairT E N) ≐ modulus s E N := by
   have h := Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (modulus (var 0) (var 1) (var 2) : PTm 3)

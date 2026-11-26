@@ -15,7 +15,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRaabeUnitStripBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianPositiveRationalLogarithm (fraction sample)
 open GaussianRaabeStirlingCell (elementary)
@@ -25,10 +25,6 @@ open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (bounded distanceBounded qsub)
 open GaussianRationalReciprocal (bounded_product bounded_difference bound_congr)
 open GaussianStirlingGammaLogarithm (logGammaF logGammaData log_gamma_regular)
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -37,10 +33,8 @@ def constantCost (w : PTm n) : PTm n :=
   GaussianNameBounds.U GaussianStirlingConstant.nameF (GaussianStirlingConstant.nameData w)
 def cost (w : PTm n) : PTm n := num 91+constantCost w
 
-@[simp] theorem subst_constantCost {m : ℕ} (σ : Fin n → PTm m) (w : PTm n) :
-    Syn.subst σ (constantCost w) = constantCost (Syn.subst σ w) := by simp [constantCost]
-@[simp] theorem subst_cost {m : ℕ} (σ : Fin n → PTm m) (w : PTm n) :
-    Syn.subst σ (cost w) = cost (Syn.subst σ w) := by simp [cost]
+ipra_subst constantCost
+ipra_subst cost
 
 private theorem elementary_bound (p A D : PTm n) (hD : Γ ⊢[PRAAx] le one D)
     (hDA : Γ ⊢[PRAAx] le D A) (hAD : Γ ⊢[PRAAx] le A (two*D)) :

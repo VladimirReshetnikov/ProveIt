@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalQuadratureSquareJacobian
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalQuadratureSquareCells (source timeMap jacobian cellWidth linearWidth remainder denominator)
 open GaussianRationalQuadratureDilation (pullData)
 open GaussianCompactRiemannName (grid quadrature sampleBody sampleData sample_body_at)
@@ -27,9 +27,6 @@ open GaussianRationalHorner (qmul qadd positive_product)
 open GaussianRationalSyntheticDivision (qmul_congr qsub_congr qadd_congr)
 open GaussianRationalMetric (bounded distanceBounded qsub)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -46,18 +43,11 @@ def correctedF (F : PR 3) : PR 3 := PTm.toPR (correctedTerm F (var 0) (var 1) (v
 def rowBounds (F : PR 3) (p N c d a C E x M : PTm n) : Fm PTm n :=
   summandsBounded (sampleBody (pullF F)) N (sampleData p N a C E (pullData c d x)) M one
 
-@[simp] theorem subst_pullTerm {m : ℕ} (σ : Fin n → PTm m) (F : PR 3) (p t y : PTm n) :
-    Syn.subst σ (pullTerm F p t y) = pullTerm F (Syn.subst σ p) (Syn.subst σ t) (Syn.subst σ y) := by simp [pullTerm]
-@[simp] theorem subst_jacobianTerm {m : ℕ} (σ : Fin n → PTm m) (F : PR 3) (p t y : PTm n) :
-    Syn.subst σ (jacobianTerm F p t y) = jacobianTerm F (Syn.subst σ p) (Syn.subst σ t) (Syn.subst σ y) := by simp [jacobianTerm]
-@[simp] theorem subst_correctedData {m : ℕ} (σ : Fin n → PTm m) (N c d C E x : PTm n) :
-    Syn.subst σ (correctedData N c d C E x) = correctedData (Syn.subst σ N) (Syn.subst σ c) (Syn.subst σ d)
-      (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ x) := by simp [correctedData]
-@[simp] theorem subst_correctedTerm {m : ℕ} (σ : Fin n → PTm m) (F : PR 3) (p t y : PTm n) :
-    Syn.subst σ (correctedTerm F p t y) = correctedTerm F (Syn.subst σ p) (Syn.subst σ t) (Syn.subst σ y) := by simp [correctedTerm]
-@[simp] theorem subst_rowBounds {m : ℕ} (σ : Fin n → PTm m) (F : PR 3) (p N c d a C E x M : PTm n) :
-    (rowBounds F p N c d a C E x M).subst σ = rowBounds F (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ c)
-      (Syn.subst σ d) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ x) (Syn.subst σ M) := by simp [rowBounds]
+ipra_subst pullTerm
+ipra_subst jacobianTerm
+ipra_subst correctedData
+ipra_subst correctedTerm
+ipra_subst rowBounds
 
 theorem pull_at (F : PR 3) (p t c d x : PTm n) : Γ ⊢[PRAAx]
     ap3 (pullF F) p t (pullData c d x) ≐ ap3 F p (timeMap c d t) x := by
@@ -77,7 +67,7 @@ theorem jacobian_at (F : PR 3) (p t c d x : PTm n) : Γ ⊢[PRAAx]
     simpa [jacobianF,ap3] using toPR_eq (Γ := Γ) (jacobianTerm F (var 0) (var 1) (var 2) : PTm 3) ![p,t,pullData c d x]
   have j : Γ ⊢[PRAAx] jacobian (fstT (pullData c d x)) (fstT (sndT (pullData c d x))) t ≐ jacobian c d t :=
     GaussianCompactRiemannName.fraction_congr _ _ _ _ (congrMul (congrMul (.eqRefl _) (fst_pair _ _)) (.eqRefl _))
-      (congrMul ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)) (.eqRefl _))
+      (congrMul (snd_pair _ _).fstE (.eqRefl _))
   exact term.eqTrans (qmul_congr j (pull_at F p t c d x))
 
 theorem corrected_at (F : PR 3) (p t N c d C E x : PTm n) : Γ ⊢[PRAAx]

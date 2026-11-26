@@ -14,16 +14,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalHarmonicInterval
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
 open LeanProofs.IPRA.AnalyticNumberTheory.MeshChange (S_denom)
 open Products (fact)
 open GammaEulerMesh (factorial_positive factorial_quotient)
 open RationalValueBounds (upper radius radius_of_upper)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -32,14 +28,10 @@ def numerator (a b Q L : PTm n) : ZT n := ⟨S (Q*a) (fact L), S (Q*b) (fact L)�
 def common (a b Q L : PTm n) : PTm n := RationalIntegerNormalization.normalize (numerator a b Q L) (fact L)
 def horizon (a b Q : PTm n) : PTm n := Q*(a+b)
 def interval (a b Q : PTm n) : PTm n := common a b Q (horizon a b Q)
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (a b Q L : PTm n) :
-    (numerator a b Q L).subst σ = numerator (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ Q) (Syn.subst σ L) := by simp [numerator,ZT.subst,S]
-@[simp] theorem subst_common {m : ℕ} (σ : Fin n → PTm m) (a b Q L : PTm n) :
-    Syn.subst σ (common a b Q L) = common (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ Q) (Syn.subst σ L) := by simp [common]
-@[simp] theorem subst_horizon {m : ℕ} (σ : Fin n → PTm m) (a b Q : PTm n) :
-    Syn.subst σ (horizon a b Q) = horizon (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ Q) := by simp [horizon]
-@[simp] theorem subst_interval {m : ℕ} (σ : Fin n → PTm m) (a b Q : PTm n) :
-    Syn.subst σ (interval a b Q) = interval (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ Q) := by simp [interval]
+ipra_subst numerator [ZT.subst, S]
+ipra_subst common
+ipra_subst horizon
+ipra_subst interval
 
 theorem common_value (a b Q L : PTm n) : Γ ⊢[PRAAx] RationalArithmetic.represents
     (common a b Q L) (numerator a b Q L) (fact L) :=
@@ -203,12 +195,11 @@ def input (a b Q E : PTm n) : Fm PTm n := le one a ⋏ (le one b ⋏ (le one Q �
 def output (a b Q E : PTm n) : PTm n := pairT (interval a b (E*Q)) (pairT (interval a b Q) Q)
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (a b Q E : PTm n) : PTm n := PTm.app outputF ![a,b,Q,E]
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (a b Q E : PTm n) :
-    Syn.subst σ (output a b Q E) = output (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ Q) (Syn.subst σ E) := by simp [output]
+ipra_subst output
 theorem program_at (a b Q E : PTm n) : Γ ⊢[PRAAx] run a b Q E ≐ output a b Q E := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![a,b,Q,E]
 theorem returned_fine (a b Q E : PTm n) : Γ ⊢[PRAAx] fstT (run a b Q E) ≐ interval a b (E*Q) :=
-  (congrFst (program_at a b Q E)).eqTrans (fst_pair _ _)
+  (program_at a b Q E).fstE
 theorem returned_coarse (a b Q E : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run a b Q E)) ≐ interval a b Q :=
   ((congrFst (congrSnd (program_at a b Q E))).eqTrans (congrFst (snd_pair _ _))).eqTrans (fst_pair _ _)
 theorem returned_denominator (a b Q E : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run a b Q E)) ≐ Q :=

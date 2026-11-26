@@ -15,7 +15,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalDeflatedFactor
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalFactor (source base powerValue exponentialF exponentialData exponentRadius correction)
 open GaussianBarnesCanonicalFactorApartness (minimumClock denominator denominator_positive power_lower)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
@@ -36,9 +36,6 @@ open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
 open GaussianNameReciprocal (apart anchor)
 open GaussianCyclicExponentialSamples (inverseBudget exponential_lower)
 open GaussianNamedSmallPerturbationTransport (productClock product_at)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

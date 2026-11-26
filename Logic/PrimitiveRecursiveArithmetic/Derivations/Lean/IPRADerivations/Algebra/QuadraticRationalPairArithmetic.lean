@@ -1,6 +1,5 @@
 import IPRADerivations.Algebra.QuadraticRationalClearing
 import IPRADerivations.Analysis.RationalArithmetic.RationalAlgebra
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Actual rational pair arithmetic at a positive integer radicand
@@ -17,14 +16,11 @@ set_option linter.unnecessarySeqFocus false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticRationalPairArithmetic
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.RationalSupMetric (numeratorOf denominatorOf)
 open QuadraticSignCertificates (first second equal)
 open QuadraticRationalClearing (clear denominator represents clear_represents denominator_positive)
 open QuadraticPositiveScaling (scale scale_first scale_second sign_scale)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -46,18 +42,12 @@ def multiply (d x y : PTm n) : PTm n := pairT
     (LeanProofs.IPRA.Analysis.RationalArithmetic.multiply (sndT x) (fstT y)))
 def positive (d x : PTm n) : Fm PTm n := QuadraticRationalClearing.sign d x ≐ one
 def isZero (d x : PTm n) : Fm PTm n := QuadraticRationalClearing.sign d x ≐ zero
-@[simp] theorem subst_scalar {l : ℕ} (σ : Fin n → PTm l) (d : PTm n) :
-    Syn.subst σ (scalar d) = scalar (Syn.subst σ d) := by simp [scalar,one]
-@[simp] theorem subst_add {l : ℕ} (σ : Fin n → PTm l) (x y : PTm n) :
-    Syn.subst σ (add x y) = add (Syn.subst σ x) (Syn.subst σ y) := by simp [add]
-@[simp] theorem subst_negative {l : ℕ} (σ : Fin n → PTm l) (x : PTm n) :
-    Syn.subst σ (negative x) = negative (Syn.subst σ x) := by simp [negative]
-@[simp] theorem subst_multiply {l : ℕ} (σ : Fin n → PTm l) (d x y : PTm n) :
-    Syn.subst σ (multiply d x y) = multiply (Syn.subst σ d) (Syn.subst σ x) (Syn.subst σ y) := by simp [multiply]
-@[simp] theorem subst_positive {l : ℕ} (σ : Fin n → PTm l) (d x : PTm n) :
-    (positive d x).subst σ = positive (Syn.subst σ d) (Syn.subst σ x) := by simp [positive]
-@[simp] theorem subst_isZero {l : ℕ} (σ : Fin n → PTm l) (d x : PTm n) :
-    (isZero d x).subst σ = isZero (Syn.subst σ d) (Syn.subst σ x) := by simp [isZero]
+ipra_subst scalar [one]
+ipra_subst add
+ipra_subst negative
+ipra_subst multiply
+ipra_subst positive
+ipra_subst isZero
 
 theorem scalar_code_congr {q r : PTm n} (a : ZT n) (D : PTm n) (h : Γ ⊢[PRAAx] q ≐ r)
     (hr : Γ ⊢[PRAAx] LeanProofs.IPRA.Analysis.RationalArithmetic.represents r a D) : Γ ⊢[PRAAx]
@@ -131,8 +121,7 @@ theorem multiply_represents (d x y A D B E : PTm n) (hD : Γ ⊢[PRAAx] le one D
 def wellFormed (x : PTm n) : Fm PTm n :=
   LeanProofs.IPRA.Analysis.RationalNormalForm.wellFormed (fstT x) ⋏
     LeanProofs.IPRA.Analysis.RationalNormalForm.wellFormed (sndT x)
-@[simp] theorem subst_wellFormed {l : ℕ} (σ : Fin n → PTm l) (x : PTm n) :
-    (wellFormed x).subst σ = wellFormed (Syn.subst σ x) := by simp [wellFormed]
+ipra_subst wellFormed
 theorem add_well_formed (x y : PTm n) : Γ ⊢[PRAAx] wellFormed (add x y) :=
   .andI (LeanProofs.IPRA.Analysis.RationalArithmetic.guard_congr (fst_pair _ _) (LeanProofs.IPRA.Analysis.RationalArithmetic.add_guard _ _))
     (LeanProofs.IPRA.Analysis.RationalArithmetic.guard_congr (snd_pair _ _) (LeanProofs.IPRA.Analysis.RationalArithmetic.add_guard _ _))
@@ -189,18 +178,16 @@ theorem zero_product_reflect (d x y : PTm n) (hd : Γ ⊢[PRAAx] le one d)
 def output (d x y : PTm n) : PTm n := pairT (add x y) (pairT (negative x) (multiply d x y))
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (d x y : PTm n) : PTm n := ap3 outputF d x y
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (d x y : PTm n) :
-    Syn.subst σ (output d x y) = output (Syn.subst σ d) (Syn.subst σ x) (Syn.subst σ y) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (d x y : PTm n) :
-    Syn.subst σ (run d x y) = run (Syn.subst σ d) (Syn.subst σ x) (Syn.subst σ y) := by simp [run]
+ipra_subst output
+ipra_subst run
 theorem program_at (d x y : PTm n) : Γ ⊢[PRAAx] run d x y ≐ output d x y := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![d,x,y]
 theorem returned_add (d x y : PTm n) : Γ ⊢[PRAAx] fstT (run d x y) ≐ add x y :=
-  (congrFst (program_at _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _).fstE
 theorem returned_negative (d x y : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run d x y)) ≐ negative x :=
-  (congrFst ((congrSnd (program_at _ _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _).sndE.fstE
 theorem returned_multiply (d x y : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run d x y)) ≐ multiply d x y :=
-  (congrSnd ((congrSnd (program_at _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at _ _ _).sndE.sndE
 
 theorem actual_rational_pair_normalization_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3
     (wellFormed (add (var 1) (var 2)) ⋏ (wellFormed (negative (var 1)) ⋏ wellFormed (multiply (var 0) (var 1) (var 2)))) :=

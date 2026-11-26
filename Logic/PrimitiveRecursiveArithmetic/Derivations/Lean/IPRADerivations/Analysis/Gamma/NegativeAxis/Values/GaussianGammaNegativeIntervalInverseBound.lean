@@ -18,7 +18,7 @@ set_option maxHeartbeats 1700000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalInverseBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open ComplexLogarithmRemainder (normSq)
 open GaussianEulerDampedTimeRate (fraction_product)
@@ -38,10 +38,6 @@ open GaussianReciprocalHorner (qmul_associative)
 open GaussianStirlingGammaLogarithm (arg)
 open RationalArgmin (rationalLE_congr)
 open RationalValueBounds (positive_cancel)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

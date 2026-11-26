@@ -1,6 +1,5 @@
 import IPRADerivations.Combinatorics.CatalanNarayana
 import IPRADerivations.Probability.Variance
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The square sum of the Catalan numbers
@@ -25,7 +24,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.CatalanSquares
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial (binom)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrBinom)
 open LeanProofs.IPRA.Combinatorics.Vandermonde (gb congrGb gb_zero gb_self gb_above)
@@ -33,10 +32,6 @@ open LeanProofs.IPRA.Combinatorics.CatalanNarayana (sqB nB inst2_sq inst2_n cent
 open LeanProofs.IPRA.Combinatorics.Catalan (cat cat_zero cat_spec)
 open LeanProofs.IPRA.Probability.Variance (ad ad_sq)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

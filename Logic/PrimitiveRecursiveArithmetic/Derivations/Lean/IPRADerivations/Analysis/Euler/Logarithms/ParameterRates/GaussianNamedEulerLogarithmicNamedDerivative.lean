@@ -22,7 +22,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicNamedDerivative
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedRightHalfPlane (numerator denominator radius)
 open GaussianNamedGammaSmallIncrementInput (sumData)
 open GaussianNamedGammaIncrementInput (incrementF incrementData)
@@ -36,10 +36,6 @@ open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalMetric (bounded)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianBoundedConstantProductName (constantF constant_at constant_regular)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -73,17 +69,9 @@ def freezeDelay (f K : PR 2) (p j x y A a : PTm n) : PTm n :=
     (two*differenceBound f K j x y A*GaussianNameReciprocal.modulus a+two*variationDemand f K p j x y A a) (succ p)
 def freezeIndex (f K : PR 2) (p j x y A a : PTm n) : PTm n := freezeDelay f K p j x y A a+anchor a
 
-@[simp] theorem subst_incrementModulus {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p j x A : PTm n) :
-    Syn.subst σ (incrementModulus f p j x A) =
-      incrementModulus f (Syn.subst σ p) (Syn.subst σ j) (Syn.subst σ x) (Syn.subst σ A) := by simp [incrementModulus]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (f K : PR 2) (p j x y A a : PTm n) :
-    (source f K p j x y A a).subst σ =
-      source f K (Syn.subst σ p) (Syn.subst σ j) (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ A) (Syn.subst σ a) := by
-  simp [source]
-@[simp] theorem subst_quotientData {m : ℕ} (σ : Fin n → PTm m) (f K : PR 2) (j x y A a : PTm n) :
-    Syn.subst σ (quotientData f K j x y A a) =
-      quotientData f K (Syn.subst σ j) (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ A) (Syn.subst σ a) := by
-  simp [quotientData]
+ipra_subst incrementModulus
+ipra_subst source
+ipra_subst quotientData
 
 private theorem modulus_positive (f : PR 2) (p j x A : PTm n) : Γ ⊢[PRAAx] le one (incrementModulus f p j x A) :=
   GaussianEulerLogarithmicContinuity.modulus_positive _ _ _ _

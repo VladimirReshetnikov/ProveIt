@@ -20,7 +20,7 @@ set_option maxHeartbeats 350000
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerDenominatorShift
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianLogGammaEulerHead (sumData rowBody rowData row_at subst_rowData sum_rows sum_regular shifted_source)
 open GaussianNameArithmetic (addF addData add_fast add_equivalent subst_addData)
@@ -31,9 +31,6 @@ open GaussianNamedFiniteProductFamilyCongruence (equalRows)
 open GaussianNamedFiniteSumFamilyCongruence (family_sum_cross)
 open GaussianNamedFiniteSumFamilySplit (first_cross append_cross regular_tail)
 open GaussianRightHalfPlaneLogarithm (source subst_data)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "EulerSum" => GaussianLogGammaEulerHead.sumF

@@ -15,7 +15,7 @@ set_option maxHeartbeats 1100000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentFloor
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianBinetLaplaceRealFloor (floor floorDenominator floor_denominator_positive sample_floor_with_cap numerator_cap)
@@ -31,10 +31,6 @@ open RationalArgmin (rationalLE)
 open RationalGaussianRealPart (realBody)
 open RationalSupMetric (numeratorOf denominatorOf)
 open RationalValueBounds (upper upper_congr upper_mono)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num monus pred)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -47,19 +43,11 @@ def clock (p j T : PTm n) : PTm n := GaussianFastValueCut.exponent (pw T j) p
 def observation (p j X D R T A B : PTm n) : PTm n :=
   qmul (ap2 cofinalF (clock p j T) (cofinalData X zero D zero R T A B)) (weight j A B)
 
-@[simp] theorem subst_weight {m : ℕ} (σ : Fin n → PTm m) (j A B : PTm n) :
-    Syn.subst σ (weight j A B) = weight (Syn.subst σ j) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [weight]
+ipra_subst weight
 
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (p j T : PTm n) :
-    Syn.subst σ (clock p j T) = clock (Syn.subst σ p) (Syn.subst σ j) (Syn.subst σ T) := by
-  simp [clock]
+ipra_subst clock
 
-@[simp] theorem subst_observation {m : ℕ} (σ : Fin n → PTm m) (p j X D R T A B : PTm n) :
-    Syn.subst σ (observation p j X D R T A B) =
-      observation (Syn.subst σ p) (Syn.subst σ j) (Syn.subst σ X) (Syn.subst σ D)
-        (Syn.subst σ R) (Syn.subst σ T) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [observation]
+ipra_subst observation
 
 private theorem weighted_floor (q A B W C U : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hC : Γ ⊢[PRAAx] le one C) (hlo : Γ ⊢[PRAAx] le B A) (hhi : Γ ⊢[PRAAx] le A (W*B))
@@ -123,23 +111,13 @@ def gain (j R T : PTm n) : PTm n := pw T j*meshGain R T+j*pw T (pred j)
 def unitPanelData (j X D R : PTm n) : PTm n :=
   GaussianCompactRiemannName.data (one+one) one one (gain j R two) two (fixedData j X D R two)
 
-@[simp] theorem subst_fixedData {m : ℕ} (σ : Fin n → PTm m) (j X D R T : PTm n) :
-    Syn.subst σ (fixedData j X D R T) =
-      fixedData (Syn.subst σ j) (Syn.subst σ X) (Syn.subst σ D) (Syn.subst σ R) (Syn.subst σ T) := by
-  simp [fixedData]
+ipra_subst fixedData
 
-@[simp] theorem subst_evaluatorTerm {m : ℕ} (σ : Fin n → PTm m) (p t x : PTm n) :
-    Syn.subst σ (evaluatorTerm p t x) = evaluatorTerm (Syn.subst σ p) (Syn.subst σ t) (Syn.subst σ x) := by
-  simp [evaluatorTerm,GaussianBinetLaplaceStrip.tagNumerator]
+ipra_subst evaluatorTerm [GaussianBinetLaplaceStrip.tagNumerator]
 
-@[simp] theorem subst_gain {m : ℕ} (σ : Fin n → PTm m) (j R T : PTm n) :
-    Syn.subst σ (gain j R T) = gain (Syn.subst σ j) (Syn.subst σ R) (Syn.subst σ T) := by
-  simp [gain]
+ipra_subst gain
 
-@[simp] theorem subst_unitPanelData {m : ℕ} (σ : Fin n → PTm m) (j X D R : PTm n) :
-    Syn.subst σ (unitPanelData j X D R) =
-      unitPanelData (Syn.subst σ j) (Syn.subst σ X) (Syn.subst σ D) (Syn.subst σ R) := by
-  simp [unitPanelData,one,two]
+ipra_subst unitPanelData [one, two]
 
 theorem evaluator_at (p t j X D R T : PTm n) :
     Γ ⊢[PRAAx] ap3 evaluatorF p t (fixedData j X D R T) ≐

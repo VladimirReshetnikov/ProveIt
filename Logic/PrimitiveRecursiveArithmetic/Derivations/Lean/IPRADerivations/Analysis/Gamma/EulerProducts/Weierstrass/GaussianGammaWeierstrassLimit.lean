@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaWeierstrassApproximant
 import IPRADerivations.Analysis.Gamma.EulerProducts.Weierstrass.GaussianGammaWeierstrassConvergence
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The original C11 Weierstrass limit
@@ -18,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaWeierstrassLimit
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaWeierstrassApproximant (literalF literalData original_finite_identity)
 open GaussianGammaWeierstrassConvergence (source local_source rate data)
 open GaussianGammaFiniteApproximantName (pF pData)
@@ -29,9 +28,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -63,8 +59,7 @@ theorem literal_observation_rate (p q z R B N : PTm n) (h : Γ ⊢[PRAAx] source
 
 def cutoff (p R : PTm n) : PTm n := GaussianGammaWeierstrassConvergence.cutoff p R+p
 
-@[simp] theorem subst_cutoff {l : ℕ} (σ : Fin n → PTm l) (p R : PTm n) :
-    Syn.subst σ (cutoff p R) = cutoff (Syn.subst σ p) (Syn.subst σ R) := by simp [cutoff]
+ipra_subst cutoff
 
 theorem cutoff_guards (p R : PTm n) : Γ ⊢[PRAAx]
     le p (cutoff p R) ⋏ (le (two*R) (cutoff p R) ⋏
@@ -78,10 +73,7 @@ def observation (p z R B : PTm n) : PTm n := ap2 literalF (succ p) (literalData 
 def nameF : PR 2 := PTm.toPR (observation (var 0) (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))) : PTm 2)
 def sample (p z R B : PTm n) : PTm n := ap2 nameF p (data z R B)
 
-@[simp] theorem subst_observation {l : ℕ} (σ : Fin n → PTm l) (p z R B : PTm n) :
-    Syn.subst σ (observation p z R B) = observation (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) := by
-  simp [observation,literalData,GaussianGammaWeierstrassFiniteName.nameData,GaussianGammaWeierstrassApproximant.positiveExpData,
-    GaussianGammaFiniteApproximantName.exponentialInputData,GaussianGammaWeierstrassApproximant.positiveExponentData]
+ipra_subst observation [literalData, GaussianGammaWeierstrassFiniteName.nameData, GaussianGammaWeierstrassApproximant.positiveExpData, GaussianGammaFiniteApproximantName.exponentialInputData, GaussianGammaWeierstrassApproximant.positiveExponentData]
 
 theorem observation_congr {p p' z z' R R' B B' : PTm n}
     (hp : Γ ⊢[PRAAx] p ≐ p') (hz : Γ ⊢[PRAAx] z ≐ z') (hR : Γ ⊢[PRAAx] R ≐ R') (hB : Γ ⊢[PRAAx] B ≐ B') :
@@ -94,8 +86,8 @@ theorem sample_at (p z R B : PTm n) : Γ ⊢[PRAAx] sample p z R B ≐ observati
     simpa [sample,nameF,ap2] using toPR_eq (Γ := Γ)
       (observation (var 0) (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))) : PTm 2) ![p,x]
   have tail : Γ ⊢[PRAAx] sndT x ≐ pairT R B := snd_pair _ _
-  exact e.eqTrans (observation_congr (.eqRefl _) (fst_pair _ _) ((congrFst tail).eqTrans (fst_pair _ _))
-    ((congrSnd tail).eqTrans (snd_pair _ _)))
+  exact e.eqTrans (observation_congr (.eqRefl _) (fst_pair _ _) tail.fstE
+    tail.sndE)
 
 theorem cofinal_observation_rate (p q z R B : PTm n) (h : Γ ⊢[PRAAx] GaussianGammaCanonicalExponent.source z R B) :
     Γ ⊢[PRAAx] distanceBounded (sample p z R B) (GaussianGammaC7Name.sample q z R B)

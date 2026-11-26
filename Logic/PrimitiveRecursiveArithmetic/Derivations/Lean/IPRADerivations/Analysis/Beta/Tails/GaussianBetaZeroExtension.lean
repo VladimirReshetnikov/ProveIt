@@ -15,16 +15,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaZeroExtension
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBetaKernelGridComparison (row sampleDataBeta)
 open GaussianBetaKernelExponential (kernel)
 open GaussianRationalHorner (qzero positive_product)
 open RationalArithmetic (select select_one select_zero)
 open GaussianRationalMonicReconstruction (select_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

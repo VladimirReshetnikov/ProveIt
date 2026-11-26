@@ -15,7 +15,7 @@ set_option maxHeartbeats 1250000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentTaylorGrid
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetLaplaceIntegrand (input)
 open GaussianBinetLaplaceMomentFloor (observation evaluatorF evaluator_at fixedData)
 open GaussianBinetLaplaceMomentTaylorMajorant (scalar observation_majorant coefficient errorCost scalar_observation_distance)
@@ -37,10 +37,6 @@ open GaussianRationalSumMajorant (termsMajorized majorized majorized_congr major
 open GaussianRationalSyntheticDivision (qmul_congr qadd_congr qsub_congr)
 open RationalGaussianEmbedding (embed)
 open RationalGaussianRealPart (embedBody)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "f" => sampleBody evaluatorF
@@ -57,23 +53,10 @@ def residualData (p M j X D R S T H Q A C E : PTm n) : PTm n :=
   rowData (qnegative (radiusPoint H Q)) (rowInput p M j (X*Q+H*D) (D*Q) S T A C E)
     (rowInput p M j X D R T A C E) (rowInput p M (succ j) X D R T A C E)
 
-@[simp] theorem subst_scalarEvaluatorTerm {m : ℕ} (σ : Fin n → PTm m) (p t x : PTm n) :
-    Syn.subst σ (scalarEvaluatorTerm p t x) = scalarEvaluatorTerm (Syn.subst σ p) (Syn.subst σ t) (Syn.subst σ x) := by
-  simp [scalarEvaluatorTerm,GaussianBinetLaplaceStrip.tagNumerator]
-@[simp] theorem subst_scalarData {m : ℕ} (σ : Fin n → PTm m) (p M j X D T H Q A C E : PTm n) :
-    Syn.subst σ (scalarData p M j X D T H Q A C E) =
-      scalarData (Syn.subst σ p) (Syn.subst σ M) (Syn.subst σ j) (Syn.subst σ X) (Syn.subst σ D)
-        (Syn.subst σ T) (Syn.subst σ H) (Syn.subst σ Q) (Syn.subst σ A) (Syn.subst σ C) (Syn.subst σ E) := by
-  simp [scalarData]
-@[simp] theorem subst_rowInput {m : ℕ} (σ : Fin n → PTm m) (p M j X D R T A C E : PTm n) :
-    Syn.subst σ (rowInput p M j X D R T A C E) =
-      rowInput (Syn.subst σ p) (Syn.subst σ M) (Syn.subst σ j) (Syn.subst σ X) (Syn.subst σ D)
-        (Syn.subst σ R) (Syn.subst σ T) (Syn.subst σ A) (Syn.subst σ C) (Syn.subst σ E) := by simp [rowInput]
-@[simp] theorem subst_residualData {m : ℕ} (σ : Fin n → PTm m) (p M j X D R S T H Q A C E : PTm n) :
-    Syn.subst σ (residualData p M j X D R S T H Q A C E) =
-      residualData (Syn.subst σ p) (Syn.subst σ M) (Syn.subst σ j) (Syn.subst σ X) (Syn.subst σ D)
-        (Syn.subst σ R) (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ H) (Syn.subst σ Q)
-        (Syn.subst σ A) (Syn.subst σ C) (Syn.subst σ E) := by simp [residualData]
+ipra_subst scalarEvaluatorTerm [GaussianBinetLaplaceStrip.tagNumerator]
+ipra_subst scalarData
+ipra_subst rowInput
+ipra_subst residualData
 
 private theorem val_four {α : Type} (a b c d e x g h i : α) : ![a,b,c,d,e,x,g,h,i] (4 : Fin 9) = e := rfl
 private theorem val_five {α : Type} (a b c d e x g h i : α) : ![a,b,c,d,e,x,g,h,i] (5 : Fin 9) = x := rfl

@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianConstantCoefficientNames
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianBalancedRadiusSyntax (coefficient numerator)
 open LeanProofs.IPRA.Analysis.GaussianCoefficientNameBounds (unit unit_positive)
 open LeanProofs.IPRA.Analysis.GaussianGeneralCoefficientNames (generalCN apart)
@@ -27,9 +27,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalHorner (positive_product)
 open LeanProofs.IPRA.Analysis.GaussianRationalDistanceOrder (distance_congr)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -39,11 +36,8 @@ def coefficientF : PR 3 := PTm.toPR coefficientBody
 def apartPrecision (C N k : PTm n) : PTm n :=
   GaussianRootSchedule.binaryLength (rawDen (coefficient C N k))
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (data C N) = data (Syn.subst σ C) (Syn.subst σ N) := by simp [data]
-@[simp] theorem subst_apartPrecision {m : ℕ} (σ : Fin n → PTm m) (C N k : PTm n) :
-    Syn.subst σ (apartPrecision C N k) =
-      apartPrecision (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ k) := by simp [apartPrecision]
+ipra_subst data
+ipra_subst apartPrecision
 
 theorem coefficient_at (C N k s : PTm n) : Γ ⊢[PRAAx]
     ap3 coefficientF k s (data C N) ≐ coefficient C N k := by

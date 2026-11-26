@@ -18,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitSubstitutionLatticeRows
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUnitSubstitutionLatticeGeometry (source disk start cuts_source denominator_positive)
 open GaussianEulerUnitSubstitutionFloorCuts (cut cutF data)
 open GaussianEulerUnitDecayInput (clock compactDenominator)
@@ -34,9 +34,6 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_symmetric)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -54,14 +51,8 @@ def anchorDenominator (k q N E T M : PTm n) : PTm n :=
   let p := clock k E T
   rateDenominator (GaussianEulerUnitSubstitutionNearbyKernel.leadingDenominator k (pointDenominator p N E M)) p q
 
-@[simp] theorem subst_anchorNumerator {m : ℕ} (σ : Fin n → PTm m) (k q N R C E T M : PTm n) :
-    Syn.subst σ (anchorNumerator k q N R C E T M) = anchorNumerator (Syn.subst σ k) (Syn.subst σ q)
-      (Syn.subst σ N) (Syn.subst σ R) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ M) := by
-  simp [anchorNumerator,pointNumerator,pointDenominator,displacementNumerator,displacementDenominator]
-@[simp] theorem subst_anchorDenominator {m : ℕ} (σ : Fin n → PTm m) (k q N E T M : PTm n) :
-    Syn.subst σ (anchorDenominator k q N E T M) = anchorDenominator (Syn.subst σ k) (Syn.subst σ q)
-      (Syn.subst σ N) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ M) := by
-  simp [anchorDenominator,pointDenominator,displacementDenominator]
+ipra_subst anchorNumerator [pointNumerator, pointDenominator, displacementNumerator, displacementDenominator]
+ipra_subst anchorDenominator [pointDenominator, displacementDenominator]
 
 theorem point_denominator_positive (k N z R B a C E T M : PTm n) (h : Γ ⊢[PRAAx] source k N z R B a C E T M) :
     Γ ⊢[PRAAx] le one (pointDenominator (clock k E T) N E M) := by
@@ -123,13 +114,8 @@ def latticeData (k q N z B a C E T M : PTm n) : PTm n :=
 def powerData (k N z B a C E T : PTm n) : PTm n :=
   GaussianEulerUnitSubstitutionReversedDensity.data (clock k E T) N z B a C E
 
-@[simp] theorem subst_latticeData {m : ℕ} (σ : Fin n → PTm m) (k q N z B a C E T M : PTm n) :
-    Syn.subst σ (latticeData k q N z B a C E T M) = latticeData (Syn.subst σ k) (Syn.subst σ q) (Syn.subst σ N)
-      (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ M) := by
-  simp [latticeData]
-@[simp] theorem subst_powerData {m : ℕ} (σ : Fin n → PTm m) (k N z B a C E T : PTm n) :
-    Syn.subst σ (powerData k N z B a C E T) = powerData (Syn.subst σ k) (Syn.subst σ N) (Syn.subst σ z)
-      (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by simp [powerData]
+ipra_subst latticeData
+ipra_subst powerData
 
 private theorem shifted_lattice_row (j p z B L M I : PTm n) : Γ ⊢[PRAAx]
     inst2 (offB body) j (pairT I (GaussianEulerUnitKernelLatticeSum.data p z B L M)) ≐

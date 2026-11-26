@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaMinimumFreezeLocation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit)
 open GaussianGammaDigammaDyadicLocation (locationF lower)
 open GaussianGammaDigammaDyadicMesh (grid)
@@ -23,9 +23,6 @@ open GaussianGammaMinimumFreeze (nameF data frozen_log_rate_at_rational)
 open GaussianNamedInverseRate (independentRate)
 open GaussianNamedRightHalfPlane (radius threshold)
 open GaussianStirlingGammaLogarithm (logGammaF logGammaData gammaLogMargin)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "modulus" => GaussianGammaHalfPlaneInputContinuity.modulus

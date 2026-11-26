@@ -15,7 +15,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalCorrectedMercatorCoefficients
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (zeroCode)
 open GaussianBarnesCanonicalCorrectedMercator (polynomial correctionDelta)
 open GaussianBarnesCanonicalDerivativeAlgebra (linearTerm)
@@ -28,8 +28,6 @@ open GaussianRationalReciprocal (power powerF power_succ)
 open GaussianRationalSumAlgebra (qadd_associative)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qmul_zero_left qmul_zero_right qzero_canonical qzero_add)
 open GaussianReciprocalHorner (qadd_commutative qadd_zero_right)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

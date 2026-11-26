@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationPowerPerturbation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit)
 open GaussianGaussMultiplicationPowerRate
   (amplification multiplier_bound exponentF exponentData radius powerF powerData rowLogData limitLogData row_power_input limit_power_input)
@@ -29,21 +29,14 @@ open GaussianNameRingLaws (oneF one_at one_fast)
 open GaussianNamedMultiplyRate (sampleBound)
 open GaussianRadiusExponentialName (data name_regular)
 open GaussianRationalMetric (distanceBounded)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def limitData (z R B m : PTm n) : PTm n := powerData z R B m (limitLogData m)
 def rowData (z R B m N : PTm n) : PTm n := powerData z R B m (rowLogData m N)
 
-@[simp] theorem subst_limitData {l : ℕ} (σ : Fin n → PTm l) (z R B m : PTm n) :
-    Syn.subst σ (limitData z R B m) = limitData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ m) := by
-  simp [limitData]
-@[simp] theorem subst_rowData {l : ℕ} (σ : Fin n → PTm l) (z R B m N : PTm n) :
-    Syn.subst σ (rowData z R B m N) = rowData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ m) (Syn.subst σ N) := by
-  simp [rowData]
+ipra_subst limitData
+ipra_subst rowData
 
 theorem power_product_cross (z R B m N : PTm n)
     (hm : Γ ⊢[PRAAx] le one m) (hN : Γ ⊢[PRAAx] le one N) (hA : Γ ⊢[PRAAx] le (amplification R m) N)

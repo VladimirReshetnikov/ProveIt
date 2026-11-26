@@ -1,5 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.GramBound
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Mantel's theorem: the triangle-free case of Turán's theorem
@@ -38,12 +37,8 @@ The extremal graphs and the assembly of the recursion over the neighbourhoods ar
 
 namespace LeanProofs.IPRA.Combinatorics.Mantel
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.GramBound (zle_cancel)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n k : ℕ} {Γ : List (Fm PTm n)}
 

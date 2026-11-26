@@ -12,15 +12,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianDigammaBernoulliBaseAgreement
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit subst_unit)
 open GaussianDigammaBernoulliName (nameF nameData radius requiredMesh base_le_requiredMesh)
 open GaussianDigammaBernoulliRecurrence (prefixAt subst_prefixAt)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianRationalMetric (distanceBounded subst_distanceBounded)
 open GaussianStirlingNames (source)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -30,10 +28,7 @@ def agreement (initial : PR 2) (demand : PR 3) (A B x cost : PTm n) : Fm PTm n :
     distanceBounded (prefixAt 0 (sh A) (sh B) (var 0) (var 1)) (ap2 initial (var 1) (sh x))
       (sh cost) (unit (var 1))))
 
-@[simp] theorem subst_agreement {l : ℕ} (σ : Fin n → PTm l) (initial : PR 2) (demand : PR 3) (A B x cost : PTm n) :
-    (agreement initial demand A B x cost).subst σ =
-      agreement initial demand (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ x) (Syn.subst σ cost) := by
-  simp [agreement,Syn.subst_shift,Syn.shift_subst,one]
+ipra_subst agreement [Syn.subst_shift, Syn.shift_subst, one]
 
 theorem agreement_at (initial : PR 2) (demand : PR 3) (A B x cost p Q : PTm n)
     (h : Γ ⊢[PRAAx] agreement initial demand A B x cost)

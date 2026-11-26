@@ -11,7 +11,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGaussTriplicationPi
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianGammaGaussReferenceSquare (doubledPiBody doubledPiPowerF doubledPiPowerData)
 open GaussianGammaGaussReflectionFamily (piBody pi_at pi_rows)
@@ -28,9 +28,6 @@ open GaussianRationalNonnegativeProducts (nonnegative)
 open GaussianRationalNaturalScale (naturalPoint)
 open GaussianRationalHorner (canonical)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "P" => GaussianGammaHalfPiName.nameF

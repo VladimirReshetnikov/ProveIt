@@ -13,20 +13,14 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderPowerGap
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def mixedIncrement (q a b c : PTm n) : Fm PTm n :=
   le (pw (a+b) q+pw (a+c) q) (pw (a+b+c) q+pw a q)
 
-@[simp] theorem subst_mixedIncrement {m : ℕ} (σ : Fin n → PTm m) (q a b c : PTm n) :
-    (mixedIncrement q a b c).subst σ =
-      mixedIncrement (Syn.subst σ q) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) :=
-  by simp [mixedIncrement,pw]
+ipra_subst mixedIncrement [pw]
 
 private theorem mixed_zero (a b c : PTm n) : Γ ⊢[PRAAx] mixedIncrement zero a b c :=
   le_congr (congrAdd (pw_zero _) (pw_zero _)).eqSymm (congrAdd (pw_zero _) (pw_zero _)).eqSymm (le_refl _)
@@ -59,14 +53,9 @@ def low (a b d : PTm n) : PTm n := b*(a*(a+d))
 def base (a b d h : PTm n) : PTm n := low a b d+a*b*h+d*(a*(a+d))
 def gap (q a b d h : PTm n) : PTm n := d*h*(a+b+d)*pw (base a b d h) q
 
-@[simp] theorem subst_low {m : ℕ} (σ : Fin n → PTm m) (a b d : PTm n) :
-    Syn.subst σ (low a b d) = low (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ d) := by simp [low]
-@[simp] theorem subst_base {m : ℕ} (σ : Fin n → PTm m) (a b d h : PTm n) :
-    Syn.subst σ (base a b d h) = base (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ d) (Syn.subst σ h) :=
-  by simp [base]
-@[simp] theorem subst_gap {m : ℕ} (σ : Fin n → PTm m) (q a b d h : PTm n) :
-    Syn.subst σ (gap q a b d h) = gap (Syn.subst σ q) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ d) (Syn.subst σ h) :=
-  by simp [gap,pw]
+ipra_subst low
+ipra_subst base
+ipra_subst gap [pw]
 
 theorem cleared_weight_gap (q a d h : PTm n) :
     Γ ⊢[PRAAx] le

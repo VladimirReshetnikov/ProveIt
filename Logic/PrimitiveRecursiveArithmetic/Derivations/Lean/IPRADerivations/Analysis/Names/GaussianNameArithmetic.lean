@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Names.GaussianNameBounds
 import IPRADerivations.Analysis.RationalArithmetic.Representations.GaussianValueNormalizerExtensionality
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual addition and multiplication of fast Gaussian names
@@ -20,7 +19,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNameArithmetic
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qsub bounded distanceBounded)
 open LeanProofs.IPRA.Analysis.GaussianCoefficientNameBounds (unit unit_positive subst_unit)
@@ -30,9 +29,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalL1
   (rawGaussian rawDen raw_represents)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qadd_congr qmul_congr)
 open LeanProofs.IPRA.Analysis.GaussianRationalDistanceOrder (distance_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -52,20 +48,13 @@ def multiplyData (f g : PR 2) (x y : PTm n) : PTm n :=
   GaussianFastValueCut.nameData (multiplyModulus f g x y) (data x y)
 def input (f g : PR 2) (x y : PTm n) : Fm PTm n := pointCN f x ⋏ pointCN g y
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (x y : PTm n) :
-    Syn.subst σ (data x y) = data (Syn.subst σ x) (Syn.subst σ y) := by simp [data]
-@[simp] theorem subst_addRaw {m : ℕ} (σ : Fin n → PTm m) (f g : PR 2) (s x y : PTm n) :
-    Syn.subst σ (addRaw f g s x y) = addRaw f g (Syn.subst σ s) (Syn.subst σ x) (Syn.subst σ y) := by simp [addRaw]
-@[simp] theorem subst_multiplyRaw {m : ℕ} (σ : Fin n → PTm m) (f g : PR 2) (s x y : PTm n) :
-    Syn.subst σ (multiplyRaw f g s x y) = multiplyRaw f g (Syn.subst σ s) (Syn.subst σ x) (Syn.subst σ y) := by simp [multiplyRaw]
-@[simp] theorem subst_multiplyModulus {m : ℕ} (σ : Fin n → PTm m) (f g : PR 2) (x y : PTm n) :
-    Syn.subst σ (multiplyModulus f g x y) = multiplyModulus f g (Syn.subst σ x) (Syn.subst σ y) := by simp [multiplyModulus]
-@[simp] theorem subst_addData {m : ℕ} (σ : Fin n → PTm m) (x y : PTm n) :
-    Syn.subst σ (addData x y) = addData (Syn.subst σ x) (Syn.subst σ y) := by simp [addData]
-@[simp] theorem subst_multiplyData {m : ℕ} (σ : Fin n → PTm m) (f g : PR 2) (x y : PTm n) :
-    Syn.subst σ (multiplyData f g x y) = multiplyData f g (Syn.subst σ x) (Syn.subst σ y) := by simp [multiplyData]
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (f g : PR 2) (x y : PTm n) :
-    (input f g x y).subst σ = input f g (Syn.subst σ x) (Syn.subst σ y) := by simp [input]
+ipra_subst data
+ipra_subst addRaw
+ipra_subst multiplyRaw
+ipra_subst multiplyModulus
+ipra_subst addData
+ipra_subst multiplyData
+ipra_subst input
 
 theorem add_raw_at (f g : PR 2) (s x y : PTm n) : Γ ⊢[PRAAx]
     ap2 (addRawF f g) s (data x y) ≐ addRaw f g s x y := by
@@ -297,11 +286,7 @@ def equivalenceInput (f f' g g' : PR 2) (x x' y y' : PTm n) : Fm PTm n :=
   input f g x y ⋏ (input f' g' x' y' ⋏
     (diagonalEquivalent f f' x x' ⋏ diagonalEquivalent g g' y y'))
 
-@[simp] theorem subst_equivalenceInput {m : ℕ} (σ : Fin n → PTm m)
-    (f f' g g' : PR 2) (x x' y y' : PTm n) :
-    (equivalenceInput f f' g g' x x' y y').subst σ =
-      equivalenceInput f f' g g' (Syn.subst σ x) (Syn.subst σ x') (Syn.subst σ y) (Syn.subst σ y') := by
-  simp [equivalenceInput]
+ipra_subst equivalenceInput
 
 theorem actual_addition_name_at_closed (f g : PR 2) : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3
     (ap2 (addF f g) (var 2) (addData (var 0) (var 1)) ≐ GaussianFastValueCut.recode

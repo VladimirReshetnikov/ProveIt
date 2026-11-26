@@ -20,7 +20,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentQuarterExponential
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (normSq normSq_eval eval_re_code eval_im_code)
 open GaussianArctangentCayleyValues (imaginaryCode imaginaryPoint)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -34,10 +34,6 @@ open GaussianRationalMetric (bounded bounded_of_cleared distanceBounded)
 open GaussianRationalPolynomialExponential (scalarSum)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianScalarExponentialProductTail (rectangleCutoff)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔟" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -57,23 +53,11 @@ def quarterF : PR 2 := PTm.toPR (argument (var 0) (var 1) : PTm 2)
 def exponentialF : PR 2 := GaussianRadiusExponentialName.nameF quarterF
 def exponentialData (z : PTm n) : PTm n := GaussianRadiusExponentialName.data radius z
 
-@[simp] theorem subst_argument {m : ℕ} (σ : Fin n → PTm m) (p z : PTm n) :
-    Syn.subst σ (argument p z) = argument (Syn.subst σ p) (Syn.subst σ z) := by
-  simp [argument,halfImaginary,imaginaryCode]
-@[simp] theorem subst_stage {m : ℕ} (σ : Fin n → PTm m) (p : PTm n) :
-    Syn.subst σ (stage p) = stage (Syn.subst σ p) := by
-  simp [stage,GaussianGammaHalfPiName.meshAt,GaussianGammaHalfPiName.meshIndex,
-    GaussianGammaHalfPiName.orderAt,GaussianGammaHalfPiName.orderIndex]
-@[simp] theorem subst_finiteValue {m : ℕ} (σ : Fin n → PTm m) (p z : PTm n) :
-    Syn.subst σ (finiteValue p z) = finiteValue (Syn.subst σ p) (Syn.subst σ z) := by
-  simp [finiteValue,radius,rectangleCutoff,GaussianScalarExponentialProductTail.reserve,
-    GaussianScalarExponentialProductTail.growthExponent]
-@[simp] theorem subst_finiteEstimate {m : ℕ} (σ : Fin n → PTm m) (z C : PTm n) :
-    (finiteEstimate z C).subst σ = finiteEstimate (Syn.subst σ z) (Syn.subst σ C) := by
-  simp [finiteEstimate,imaginaryPoint,imaginaryCode,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_boundedArguments {m : ℕ} (σ : Fin n → PTm m) (z : PTm n) :
-    (boundedArguments z).subst σ = boundedArguments (Syn.subst σ z) := by
-  simp [boundedArguments,radius,Syn.subst_shift,Syn.shift_subst]
+ipra_subst argument [halfImaginary, imaginaryCode]
+ipra_subst stage [GaussianGammaHalfPiName.meshAt, GaussianGammaHalfPiName.meshIndex, GaussianGammaHalfPiName.orderAt, GaussianGammaHalfPiName.orderIndex]
+ipra_subst finiteValue [radius, rectangleCutoff, GaussianScalarExponentialProductTail.reserve, GaussianScalarExponentialProductTail.growthExponent]
+ipra_subst finiteEstimate [imaginaryPoint, imaginaryCode, Syn.subst_shift, Syn.shift_subst]
+ipra_subst boundedArguments [radius, Syn.subst_shift, Syn.shift_subst]
 
 theorem sample_at (p z : PTm n) : Γ ⊢[PRAAx] ap2 quarterF p z ≐ argument p z := by
   simpa [quarterF,ap2] using toPR_eq (Γ := Γ) (argument (var 0) (var 1) : PTm 2) ![p,z]

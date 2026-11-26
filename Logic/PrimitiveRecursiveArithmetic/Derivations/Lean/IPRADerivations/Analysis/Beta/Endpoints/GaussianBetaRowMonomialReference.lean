@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaRowMonomialReference
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBetaKernelDecayDampedError (reference referenceScalar referenceNumerator referenceDenominator)
 open GaussianBetaUpperRowDampedError (monomialNumerator monomialDenominator)
 open GaussianDominantPairAlgebra (radiusPoint radiusNumerator radius_represents radius_numerator_norm radius_bounded radius_multiply radius_congr)
@@ -25,10 +25,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianEuclideanDistanceName (fraction fraction_represents)
 open RationalGaussianEmbedding (embed)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -215,21 +211,10 @@ theorem actual_scalar_row_majorant_matches_literal_scaled_monomial_closed :
   closeUniv 9 (.impI (original_majorant_monomial_comparison _ _ _ _ _ _ _ _ _
     Prf.hyp0.andE₁ Prf.hyp0.andE₂.andE₁ Prf.hyp0.andE₂.andE₂))
 
-@[simp] theorem subst_scalarMajorant {m : ℕ} (σ : Fin n → PTm m) (p v q R a b N : PTm n) :
-    Syn.subst σ (scalarMajorant p v q R a b N) = scalarMajorant (Syn.subst σ p) (Syn.subst σ v) (Syn.subst σ q)
-      (Syn.subst σ R) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by
-  simp [scalarMajorant,monomialNumerator,monomialDenominator,GaussianBetaKernelDecayDampedError.referenceBudget,
-    referenceNumerator,referenceDenominator,referenceScalar,reference,GaussianPositiveRealArithmetic.numerator,
-    RationalSupMetric.numeratorOf,GaussianEulerDecayOrder.signedTime]
-@[simp] theorem subst_scaledMonomial {m : ℕ} (σ : Fin n → PTm m) (r d a b N : PTm n) :
-    Syn.subst σ (scaledMonomial r d a b N) = scaledMonomial (Syn.subst σ r) (Syn.subst σ d) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by
-  simp [scaledMonomial]
-@[simp] theorem subst_comparisonNumerator {m : ℕ} (σ : Fin n → PTm m) (p v q r d T N : PTm n) :
-    Syn.subst σ (comparisonNumerator p v q r d T N) = comparisonNumerator (Syn.subst σ p) (Syn.subst σ v) (Syn.subst σ q)
-      (Syn.subst σ r) (Syn.subst σ d) (Syn.subst σ T) (Syn.subst σ N) := by simp [comparisonNumerator]
-@[simp] theorem subst_comparisonDenominator {m : ℕ} (σ : Fin n → PTm m) (p v q r N : PTm n) :
-    Syn.subst σ (comparisonDenominator p v q r N) = comparisonDenominator (Syn.subst σ p) (Syn.subst σ v) (Syn.subst σ q)
-      (Syn.subst σ r) (Syn.subst σ N) := by simp [comparisonDenominator]
+ipra_subst scalarMajorant [monomialNumerator, monomialDenominator, GaussianBetaKernelDecayDampedError.referenceBudget, referenceNumerator, referenceDenominator, referenceScalar, reference, GaussianPositiveRealArithmetic.numerator, RationalSupMetric.numeratorOf, GaussianEulerDecayOrder.signedTime]
+ipra_subst scaledMonomial
+ipra_subst comparisonNumerator
+ipra_subst comparisonDenominator
 
 theorem original_beta_Euler_row_actual_scalar_majorant_closed :
     ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 9

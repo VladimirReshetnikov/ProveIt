@@ -1,6 +1,5 @@
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Algebra.QuadraticRingFive
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Irreducibility of `2`, `3` and `1 ± θ` in `ℤ[√−5]`
@@ -28,12 +27,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticRingFiveIrreducible
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Algebra.QuadraticRingFive (N5 no_norm_two no_norm_three)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -81,9 +76,8 @@ theorem zero_r {x y c : PTm n} (y0 : Γ ⊢[PRAAx] y ≐ zero) (h : Γ ⊢[PRAAx
 
 theorem big {x y c : PTm n} (hx : Γ ⊢[PRAAx] le four x) (hy : Γ ⊢[PRAAx] le four y)
     (h : Γ ⊢[PRAAx] x * y ≐ c) (hc : Γ ⊢[PRAAx] lt c (four * four)) : Γ ⊢[PRAAx] Fm.bot := by
-  have hn := natEq h
   have bad : Γ ⊢[PRAAx] le one zero := by
-    ipra_le sl hx * sl hy + 4 * sl hx + 4 * sl hy + sl hc with -hn
+    ipra_le sl hx * sl hy + 4 * sl hx + 4 * sl hy + sl hc with -natEq h
   exact lt_zero_absurd _ bad
 
 /-- If `x`, `y` are each `0`, `1` or `≥ 4` and `1 ≤ x y < 16`, then `x = 1` or `y = 1`. -/
@@ -147,21 +141,18 @@ theorem norm_values :
 theorem norms_distinct :
     Γ ⊢[PRAAx] neg ((two * two : PTm n) ≐ two * succ two) ⋏ neg ((succ two * succ two : PTm n) ≐ two * succ two) := by
   refine .andI (.impI ?_) (.impI ?_)
-  · have e := natEq (Prf.hyp0 (Γ := Γ) (φ := (two * two : PTm n) ≐ two * succ two))
-    refine succ_ne_zero' _ (a := one) ?_
-    ipra_lc -e
-  · have e := natEq (Prf.hyp0 (Γ := Γ) (φ := (succ two * succ two : PTm n) ≐ two * succ two))
-    refine succ_ne_zero' _ (a := two) ?_
-    ipra_lc e
+  · refine succ_ne_zero' _ (a := one) ?_
+    ipra_lc -natEq (Prf.hyp0 (Γ := Γ) (φ := (two * two : PTm n) ≐ two * succ two))
+  · refine succ_ne_zero' _ (a := two) ?_
+    ipra_lc natEq (Prf.hyp0 (Γ := Γ) (φ := (succ two * succ two : PTm n) ≐ two * succ two))
 
 /-- **`2` is not prime**: `2a ≠ 1`, so `2` divides neither `1 + θ` nor `1 − θ`. -/
 theorem two_not_dvd (a : PTm n) : Γ ⊢[PRAAx] neg (two * a ≐ one) := by
   refine .impI ?_
   have e : ((two * a ≐ one) :: Γ) ⊢[PRAAx] two * a ≐ one := Prf.hyp0
   refine .orE (zero_or_succ a) ?_ ?_
-  · have x := natEq (e.wk (ψ := a ≐ zero))
-    refine succ_ne_zero' _ (a := zero) ?_
-    ipra_lc -x + 2 * natEq (Prf.hyp0 (Γ := (two * a ≐ one) :: Γ) (φ := a ≐ zero))
+  · refine succ_ne_zero' _ (a := zero) ?_
+    ipra_lc -natEq (e.wk (ψ := a ≐ zero)) + 2 * natEq (Prf.hyp0 (Γ := (two * a ≐ one) :: Γ) (φ := a ≐ zero))
   · have x := natEq (e.wk (ψ := a ≐ succ (pred a)))
     refine succ_ne_zero' _ (a := two * pred a) ?_
     ipra_lc x - 2 * natEq (Prf.hyp0 (Γ := (two * a ≐ one) :: Γ) (φ := a ≐ succ (pred a)))

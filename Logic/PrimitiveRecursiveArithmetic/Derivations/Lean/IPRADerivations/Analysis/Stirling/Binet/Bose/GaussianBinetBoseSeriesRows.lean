@@ -15,7 +15,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetBoseSeriesRows
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetBoseExponential (scaleF scaleData scaleBudget exp_input exp_regular expRadius expData expF)
 open GaussianBinetBoseSeries (ratio denominatorClock)
 open GaussianBinetBoseDenominator (sampleClock)
@@ -27,10 +27,6 @@ open GaussianNamedNaturalScale (radius)
 open GaussianRationalDistanceOrder (distance_triangle_same)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (power reciprocal)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "SF" => GaussianNamedNaturalScale.nameF scaleF

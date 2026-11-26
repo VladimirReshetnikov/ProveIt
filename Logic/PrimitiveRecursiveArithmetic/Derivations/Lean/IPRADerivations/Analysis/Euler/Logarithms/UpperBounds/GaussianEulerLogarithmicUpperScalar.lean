@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicUpperScalar
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLogarithmicUpperPointwise (source original_upper_pointwise)
 open GaussianEulerLogarithmicCompactName (sample evaluatorF fixedData)
 open GaussianEulerUpperTailPointwise (majorantTop majorantBottom majorant_bottom_positive)
@@ -26,8 +26,6 @@ open GaussianRationalHorner (qmul)
 open GaussianDominantPairAlgebra (radiusPoint)
 open GaussianCoefficientNameBounds (unit)
 open RationalGaussianEmbedding (embed)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalNamedCritical
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaNegativeCriticalEndpoints (mesh)
 open GaussianGammaNegativeCriticalLocation (fractionLocationF)
@@ -28,9 +28,6 @@ open GaussianNameEquivalence (crossEquivalent cross_symm cross_trans cross_refl)
 open GaussianNameRingLaws (zeroF)
 open GaussianNamedInverseRate (independentRate)
 open GaussianNamedPositiveLateLogSource (retimedF retimedData original_cross)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "D" => GaussianGammaNegativeIntervalNamedDerivative.nameF

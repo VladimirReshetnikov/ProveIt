@@ -16,14 +16,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianScalarSlackRemoval
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianEuclideanPointDistance (unit unit_positive subst_unit)
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (fraction fraction_represents)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (positive_product)
 open LeanProofs.IPRA.Analysis.RationalArgmin (rationalLE)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -33,17 +30,9 @@ def slack (z A B C m : PTm n) : Fm PTm n :=
 def allSlack (z A B C : PTm n) : Fm PTm n :=
   .all (slack (Syn.shift z) (Syn.shift A) (Syn.shift B) (Syn.shift C) (var 0))
 
-@[simp] theorem subst_precision {l : ℕ} (σ : Fin n → PTm l) (E B C : PTm n) :
-    Syn.subst σ (precision E B C) = precision (Syn.subst σ E) (Syn.subst σ B) (Syn.subst σ C) := by
-  simp [precision]
-@[simp] theorem subst_slack {l : ℕ} (σ : Fin n → PTm l) (z A B C m : PTm n) :
-    (slack z A B C m).subst σ = slack (Syn.subst σ z) (Syn.subst σ A) (Syn.subst σ B)
-      (Syn.subst σ C) (Syn.subst σ m) := by
-  simp [slack]
-@[simp] theorem subst_allSlack {l : ℕ} (σ : Fin n → PTm l) (z A B C : PTm n) :
-    (allSlack z A B C).subst σ = allSlack (Syn.subst σ z) (Syn.subst σ A)
-      (Syn.subst σ B) (Syn.subst σ C) := by
-  simp [allSlack,Syn.subst_shift,Syn.shift_subst]
+ipra_subst precision
+ipra_subst slack
+ipra_subst allSlack [Syn.subst_shift, Syn.shift_subst]
 
 theorem slack_at (z A B C m : PTm n) (h : Γ ⊢[PRAAx] allSlack z A B C) :
     Γ ⊢[PRAAx] slack z A B C m := by

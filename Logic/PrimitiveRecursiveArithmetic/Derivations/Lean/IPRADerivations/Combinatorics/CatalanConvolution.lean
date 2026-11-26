@@ -1,8 +1,5 @@
 import IPRADerivations.Combinatorics.Catalan
-import IPRADerivations.Core.SumReflect
 import IPRADerivations.Probability.Independence
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The Segner convolution of the Catalan numbers
@@ -25,15 +22,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.CatalanConvolution
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
 open LeanProofs.IPRA.Combinatorics.Catalan (cat cat_zero cat_rec succ_pos)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -91,7 +84,6 @@ theorem sym_pt {i m : PTm n} (h : Γ ⊢[PRAAx] le i m) :
 /-- `2 ∑_{i ≤ m} i c_i c_{m−i} = m ∑_{i ≤ m} c_i c_{m−i}`. -/
 theorem conv_symm (m : PTm n) :
     Γ ⊢[PRAAx] two * ap2 (sumF wB) (succ m) m ≐ m * ap2 (sumF convB) (succ m) m := by
-  have r := natEq (sum_reflect (Γ := Γ) wB (succ m) m)
   have c : Γ ⊢[PRAAx] ap2 (sumF (rflBody wB)) (succ m) (pairT (succ m) m) ≐ ap2 (sumF rB) (succ m) m := by
     refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
     simp only [Syn.shift, subst_pairT, ConciseIPRA.PTm.subst_succ]
@@ -103,7 +95,7 @@ theorem conv_symm (m : PTm n) :
     exact sym_pt ((succ_monus_succ _ _).eqSymm.eqTrans Prf.hyp0)
   have c' := natEq c; have s' := natEq s
   apply deriveNat; ipra_simps
-  linear_combination r + c' - a + s'
+  linear_combination natEq (sum_reflect (Γ := Γ) wB (succ m) m) + c' - a + s'
 
 /-! ## The ratio recurrence inside the sum -/
 
@@ -184,13 +176,9 @@ theorem segner_step {m : PTm n} (ih : Γ ⊢[PRAAx] ap2 (sumF convB) (succ m) m 
 private abbrev segF : Fm PTm 1 := ap2 (sumF convB) (succ (var 0)) (var 0) ≐ cat (succ (var 0))
 
 private theorem seg₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] segF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, PTm.subst_mul, PTm.subst_monus, subst_ap2, Syn.subst_var, Syn.inst_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact segner_base
-  · simp only [Fm.subst_eq, PTm.subst_mul, PTm.subst_monus, subst_ap2, Syn.subst_var, Syn.repl_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact segner_step Prf.hyp0
+  ipra_ind [subst_ap2]
+  · exact segner_base
+  · exact segner_step Prf.hyp0
 
 /-- The Segner recurrence: `∑_{i ≤ m} Cat_i Cat_{m−i} = Cat_{m+1}`. -/
 theorem segner (m : PTm n) : Γ ⊢[PRAAx] ap2 (sumF convB) (succ m) m ≐ cat (succ m) := by

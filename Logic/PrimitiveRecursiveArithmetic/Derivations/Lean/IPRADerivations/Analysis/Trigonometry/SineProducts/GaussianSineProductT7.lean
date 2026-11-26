@@ -16,7 +16,7 @@ set_option maxHeartbeats 270000
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineProductT7
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaEulerReflectionHead (sineProduct)
 open GaussianGammaReflectionProduct (complementarySource complementaryData gammaPairF)
@@ -29,9 +29,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_r
 open GaussianRationalHorner (ofGaussian positive_product)
 open GaussianRationalMetric (distanceBounded)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -50,14 +47,11 @@ theorem t4_cutoff_le (R p : PTm n) : Γ ⊢[PRAAx] le (GaussianSineProductT4Budg
 theorem tail_cutoff_le (R p : PTm n) : Γ ⊢[PRAAx] le (GaussianSineProductName.cutoff R p) (cutoff R p) :=
   le_trans (le_add_left _ _) (le_add_right _ _)
 
-@[simp] theorem subst_cutoff {m : ℕ} (σ : Fin n → PTm m) (R p : PTm n) :
-    Syn.subst σ (cutoff R p) = cutoff (Syn.subst σ R) (Syn.subst σ p) := by simp [cutoff,one]
+ipra_subst cutoff [one]
 
 def sincData (z B x : PTm n) : PTm n := GaussianNamedSinc.data argumentF (argumentRadius z B x) (argumentData z B x)
 
-@[simp] theorem subst_sincData {m : ℕ} (σ : Fin n → PTm m) (z B x : PTm n) :
-    Syn.subst σ (sincData z B x) = sincData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ x) :=
-  by simp [sincData,argumentRadius,argumentData]
+ipra_subst sincData [argumentRadius, argumentData]
 
 theorem sinc_regular (z B x : PTm n) : Γ ⊢[PRAAx] GaussianEuclideanDistanceName.pointCN T (sincData z B x) := by
   have hr := GaussianGammaHalfPiName.name_regular (Γ := Γ) x
@@ -69,18 +63,12 @@ theorem sinc_regular (z B x : PTm n) : Γ ⊢[PRAAx] GaussianEuclideanDistanceNa
 def prefixAt (z R B x A p : PTm n) : Fm PTm n :=
   distanceBounded (ap2 T p (sincData z B x)) (sineProduct z B (cutoff R p)) A (unit p)
 
-@[simp] theorem subst_prefixAt {m : ℕ} (σ : Fin n → PTm m) (z R B x A p : PTm n) :
-    (prefixAt z R B x A p).subst σ =
-      prefixAt (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ x) (Syn.subst σ A) (Syn.subst σ p) :=
-  by simp [prefixAt,sineProduct]
+ipra_subst prefixAt [sineProduct]
 
 def prefixRate (z R B x A : PTm n) : Fm PTm n :=
   .all (prefixAt (Syn.shift z) (Syn.shift R) (Syn.shift B) (Syn.shift x) (Syn.shift A) (var 0))
 
-@[simp] theorem subst_prefixRate {m : ℕ} (σ : Fin n → PTm m) (z R B x A : PTm n) :
-    (prefixRate z R B x A).subst σ =
-      prefixRate (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ x) (Syn.subst σ A) :=
-  by simp [prefixRate,Syn.shift_subst,Syn.subst_shift]
+ipra_subst prefixRate [Syn.shift_subst, Syn.subst_shift]
 
 theorem rate_at (z R B x A p : PTm n) (h : Γ ⊢[PRAAx] prefixRate z R B x A) :
     Γ ⊢[PRAAx] prefixAt z R B x A p := by

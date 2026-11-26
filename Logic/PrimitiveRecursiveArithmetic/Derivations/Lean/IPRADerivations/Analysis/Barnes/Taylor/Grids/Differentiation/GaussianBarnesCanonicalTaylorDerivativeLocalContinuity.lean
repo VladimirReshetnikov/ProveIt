@@ -17,7 +17,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalTaylorDerivativeLocalContinuity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add bounded_mono normSq)
 open GaussianBarnesCanonicalCenteredExponentialShift (baseData)
 open GaussianBarnesCanonicalCentralUniformBound (centralCap central_samples)
@@ -34,10 +34,6 @@ open GaussianRationalDistanceOrder (distance_radius_mono distance_symmetric)
 open GaussianRationalHorner (canonical ofGaussian ofGaussian_represents positive_product qmul qmul_canonical)
 open GaussianRationalMetric (bounded distanceBounded qsub qsub_canonical bounded_of_cleared)
 open GaussianRationalReciprocal (bound_congr bounded_product bounded_sum)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num pred)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

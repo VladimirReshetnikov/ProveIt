@@ -15,16 +15,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentSlope
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Foundations.FiniteHausdorff (sum_mono)
 open BaselQuadrature (Qb uq inst_Qb)
 open GaussianArctangentCayleyValues (denominator denominator_positive)
 open GaussianArctangentExponentialPrefix (source subst_source total subst_total)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -35,15 +32,9 @@ def upperSlope (j k M L : PTm n) : Fm PTm n :=
 def slope (j k M L : PTm n) : Fm PTm n := lowerSlope j k M L ⋏ upperSlope j k M L
 private def guardedSlope (j k M L : PTm n) : Fm PTm n := le (j+k) M ⟶ slope j k M L
 
-@[simp] theorem subst_lowerSlope {m : ℕ} (σ : Fin n → PTm m) (j k M L : PTm n) :
-    (lowerSlope j k M L).subst σ = lowerSlope (Syn.subst σ j) (Syn.subst σ k) (Syn.subst σ M) (Syn.subst σ L) := by
-  simp [lowerSlope,Products.fact]
-@[simp] theorem subst_upperSlope {m : ℕ} (σ : Fin n → PTm m) (j k M L : PTm n) :
-    (upperSlope j k M L).subst σ = upperSlope (Syn.subst σ j) (Syn.subst σ k) (Syn.subst σ M) (Syn.subst σ L) := by
-  simp [upperSlope,Products.fact]
-@[simp] theorem subst_slope {m : ℕ} (σ : Fin n → PTm m) (j k M L : PTm n) :
-    (slope j k M L).subst σ = slope (Syn.subst σ j) (Syn.subst σ k) (Syn.subst σ M) (Syn.subst σ L) := by
-  simp [slope]
+ipra_subst lowerSlope [Products.fact]
+ipra_subst upperSlope [Products.fact]
+ipra_subst slope
 @[simp] private theorem subst_guardedSlope {m : ℕ} (σ : Fin n → PTm m) (j k M L : PTm n) :
     (guardedSlope j k M L).subst σ = guardedSlope (Syn.subst σ j) (Syn.subst σ k) (Syn.subst σ M) (Syn.subst σ L) := by
   simp [guardedSlope]
@@ -108,11 +99,9 @@ private theorem slope_step (j k M L : PTm n) (hs : Γ ⊢[PRAAx] source M L)
 theorem finite_slope (j k M L : PTm n) (hs : Γ ⊢[PRAAx] source M L)
     (hend : Γ ⊢[PRAAx] le (j+k) M) : Γ ⊢[PRAAx] slope j k M L := by
   have all : Γ ⊢[PRAAx] .all (guardedSlope (Syn.shift j) (var 0) (Syn.shift M) (Syn.shift L)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,⟨le_QF _ _,le_QF _ _⟩⟩ ?_ ?_
-    · simp only [subst_guardedSlope,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (slope_zero _ _ _)
-    · simp only [subst_guardedSlope,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,⟨le_QF _ _,le_QF _ _⟩⟩) [subst_guardedSlope]
+    · exact .impI (slope_zero _ _ _)
+    · refine .impI ?_
       let a := Syn.shift j
       let m := Syn.shift M
       let l := Syn.shift L

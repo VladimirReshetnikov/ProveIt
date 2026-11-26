@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderHarmonicIntegral
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB inst2_h)
 open GammaEulerMesh (factorial_positive factorial_quotient)
 open GaussianEuclideanDistanceName (fraction fraction_represents)
@@ -25,9 +25,6 @@ open RationalArithmetic (add)
 open RationalIntegerNormalization (normalize normalize_preserves_value)
 open RationalNormalForm (normalize_well_formed)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -36,12 +33,8 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 def numerator (N L T : PTm n) : ZT n := ⟨S (N+L) (fact T),S N (fact T)⟩
 def value (N L T : PTm n) : PTm n := normalize (numerator N L T) (fact T)
 
-@[simp] theorem subst_numerator {l : ℕ} (σ : Fin n → PTm l) (N L T : PTm n) :
-    (numerator N L T).subst σ = numerator (Syn.subst σ N) (Syn.subst σ L) (Syn.subst σ T) :=
-  by simp [numerator,ZT.subst,S]
-@[simp] theorem subst_value {l : ℕ} (σ : Fin n → PTm l) (N L T : PTm n) :
-    Syn.subst σ (value N L T) = value (Syn.subst σ N) (Syn.subst σ L) (Syn.subst σ T) :=
-  by simp [value]
+ipra_subst numerator [ZT.subst, S]
+ipra_subst value
 
 private theorem value_zero (N T : PTm n) : Γ ⊢[PRAAx] value N zero T ≐ fraction zero one := by
   have hF := factorial_positive (Γ := Γ) T
@@ -49,11 +42,10 @@ private theorem value_zero (N T : PTm n) : Γ ⊢[PRAAx] value N zero T ≐ frac
     (normalize_well_formed _ _ (le_refl one)) (normalize_preserves_value _ _ hF)
     (fraction_represents _ _ (le_refl one)) hF (le_refl one)
   apply ZT.derive (u := numerator N zero T*ZT.ofNat one) (v := ZT.ofNat zero*ZT.ofNat (fact T))
-  have ee := natEq (congrAp2 (sumF hB) (add_zero (Γ := Γ) N) (.eqRefl (fact T)))
   simp only [ZT.toZ_mul,ZT.toZ_ofNat]
   simp only [numerator,ZT.toZ]
   ipra_simps
-  rw [ee]
+  rw [natEq (congrAp2 (sumF hB) (add_zero (Γ := Γ) N) (.eqRefl (fact T)))]
   ring
 
 private theorem value_succ (N L T : PTm n) (h : Γ ⊢[PRAAx] le (N+succ L) T) :
@@ -87,18 +79,14 @@ private theorem value_succ (N L T : PTm n) (h : Γ ⊢[PRAAx] le (N+succ L) T) :
 def intervalLaw (N L T : PTm n) : Fm PTm n :=
   le (N+L) T ⟶ tail one N L ≐ value N L T
 
-@[simp] theorem subst_intervalLaw {l : ℕ} (σ : Fin n → PTm l) (N L T : PTm n) :
-    (intervalLaw N L T).subst σ = intervalLaw (Syn.subst σ N) (Syn.subst σ L) (Syn.subst σ T) :=
-  by simp [intervalLaw]
+ipra_subst intervalLaw
 
 theorem sum_at_factorial (N L T : PTm n) (h : Γ ⊢[PRAAx] le (N+L) T) :
     Γ ⊢[PRAAx] tail one N L ≐ value N L T := by
   have all : Γ ⊢[PRAAx] .all (intervalLaw (Syn.shift N) (var 0) (Syn.shift T)) := by
-    refine PRA.qfInd _ ⟨trivial,trivial⟩ ?_ ?_
-    · simp only [subst_intervalLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI ((tail_zero one N).eqTrans (value_zero N T).eqSymm)
-    · simp only [subst_intervalLaw,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨trivial,trivial⟩) [subst_intervalLaw]
+    · exact .impI ((tail_zero one N).eqTrans (value_zero N T).eqSymm)
+    · refine .impI ?_
       let N' := Syn.shift N
       let T' := Syn.shift T
       let Δ := le (N'+succ (var 0)) T' :: intervalLaw N' (var 0) T' :: Γ.map Fm.shift
@@ -122,11 +110,10 @@ theorem sum_at_original (A B Q : PTm n) :
   apply RationalFiniteSum.canonical_equal _ _ _ _ _ _
     (normalize_well_formed _ _ hF) (RationalHarmonicInterval.common_canonical (A+B) A Q T)
     (normalize_preserves_value _ _ hF) (RationalHarmonicInterval.common_value (A+B) A Q T) hF hF
-  have eq := natEq (congrAp2 (sumF hB) e (.eqRefl (fact T)))
   apply ZT.derive (u := numerator (Q*A) (Q*B) T*ZT.ofNat (fact T))
     (v := RationalHarmonicInterval.numerator (A+B) A Q T*ZT.ofNat (fact T))
   simp only [ZT.toZ_mul,ZT.toZ_ofNat]
   simp only [numerator,RationalHarmonicInterval.numerator,ZT.toZ]
-  rw [eq]
+  rw [natEq (congrAp2 (sumF hB) e (.eqRefl (fact T)))]
 
 end LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderHarmonicIntegral

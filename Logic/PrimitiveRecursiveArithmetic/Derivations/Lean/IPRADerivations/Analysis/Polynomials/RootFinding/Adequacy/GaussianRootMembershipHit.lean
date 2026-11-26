@@ -18,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRootMembershipHit
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianCoefficientNameBounds (A R CN unit unit_positive)
 open LeanProofs.IPRA.Analysis.GaussianFactorParameters (monicRD)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (bounded)
@@ -29,9 +29,6 @@ open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName
 open LeanProofs.IPRA.Analysis.GaussianRootMembershipBudget (slackCoefficient)
 open LeanProofs.IPRA.Analysis.GaussianRootSchedule (four coefficientConstant)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,14 +38,10 @@ def slack (a : PR 3) (N U x : PTm n) : PTm n := slackCoefficient (c a N x) (M a 
 def residual (a : PR 3) (point : PR 2) (N s x : PTm n) : PTm n :=
   evaluate (GaussianRootSamples.sample a N s x) (ap2 point s x)
 
-@[simp] theorem subst_c {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N x : PTm n) :
-    Syn.subst σ (c a N x) = c a (Syn.subst σ N) (Syn.subst σ x) := by simp [c]
-@[simp] theorem subst_M {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N U x : PTm n) :
-    Syn.subst σ (M a N U x) = M a (Syn.subst σ N) (Syn.subst σ U) (Syn.subst σ x) := by simp [M]
-@[simp] theorem subst_slack {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N U x : PTm n) :
-    Syn.subst σ (slack a N U x) = slack a (Syn.subst σ N) (Syn.subst σ U) (Syn.subst σ x) := by simp [slack]
-@[simp] theorem subst_residual {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (point : PR 2) (N s x : PTm n) :
-    Syn.subst σ (residual a point N s x) = residual a point (Syn.subst σ N) (Syn.subst σ s) (Syn.subst σ x) := by simp [residual]
+ipra_subst c
+ipra_subst M
+ipra_subst slack
+ipra_subst residual
 
 theorem residual_from_cut (step a : PR 3) (point : PR 2) (N U t s m x : PTm n)
     (hRD : Γ ⊢[PRAAx] monicRD step) (hCN : Γ ⊢[PRAAx] CN a N x)

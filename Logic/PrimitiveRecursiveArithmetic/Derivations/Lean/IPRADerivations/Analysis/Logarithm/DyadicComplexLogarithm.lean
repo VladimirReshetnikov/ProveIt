@@ -1,7 +1,5 @@
 import IPRADerivations.Analysis.Logarithm.ComplexLogarithmCauchy
 import IPRADerivations.Foundations.GapDecision
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Primitive-recursive dyadic observations of finite complex log tails
@@ -21,7 +19,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.DyadicComplexLogarithm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Foundations.GapDecision (zabs zabs_sq zabs_congr)
 open LeanProofs.IPRA.Probability.MedianWeighted (ad_le_of)
@@ -30,10 +28,6 @@ open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder
   (re im code add scale normSq bounded series bounded_scale bounded_add bounded_neg
     bounded_mono normSq_eval normSq_code eval_re_code eval_im_code)
 open LeanProofs.IPRA.Analysis.ComplexLogarithmCauchy (eval_re_congr eval_im_congr power_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -51,19 +45,11 @@ def rounded (c D A : PTm n) : PTm n :=
 def roundingError (c D A : PTm n) : PTm n :=
   add (scale D (rounded c D A)) (ComplexLogarithmRemainder.neg (scale A c))
 
-@[simp] theorem subst_roundedCoordinate {m : ℕ} (σ : Fin n → PTm m) (x : ZT n) (D A : PTm n) :
-    (roundedCoordinate x D A).subst σ =
-      roundedCoordinate (x.subst σ) (Syn.subst σ D) (Syn.subst σ A) := by
-  simp [roundedCoordinate, ZT.subst]
+ipra_subst roundedCoordinate [ZT.subst]
 
-@[simp] theorem subst_rounded {m : ℕ} (σ : Fin n → PTm m) (c D A : PTm n) :
-    Syn.subst σ (rounded c D A) = rounded (Syn.subst σ c) (Syn.subst σ D) (Syn.subst σ A) := by
-  simp [rounded]
+ipra_subst rounded
 
-@[simp] theorem subst_roundingError {m : ℕ} (σ : Fin n → PTm m) (c D A : PTm n) :
-    Syn.subst σ (roundingError c D A) =
-      roundingError (Syn.subst σ c) (Syn.subst σ D) (Syn.subst σ A) := by
-  simp [roundingError]
+ipra_subst roundingError
 
 theorem positive_division (x D : PTm n) (hD : Γ ⊢[PRAAx] le one D) :
     Γ ⊢[PRAAx] (x ≐ D * quo x D + rem x D) ⋏ lt (rem x D) D := by
@@ -214,18 +200,10 @@ def observationF : PR 4 := PTm.toPR (observationTerm (var 0) (var 1) (var 2) (va
 def observation (p z R N : PTm n) : PTm n :=
   ComplexLogarithmCauchy.ap4 observationF p z R N
 
-@[simp] theorem subst_precision {m : ℕ} (σ : Fin n → PTm m) (p : PTm n) :
-    Syn.subst σ (precision p) = precision (Syn.subst σ p) := by simp [precision]
-@[simp] theorem subst_unit {m : ℕ} (σ : Fin n → PTm m) (p : PTm n) :
-    Syn.subst σ (unit p) = unit (Syn.subst σ p) := by simp [unit]
-@[simp] theorem subst_observationTerm {m : ℕ} (σ : Fin n → PTm m) (p z R N : PTm n) :
-    Syn.subst σ (observationTerm p z R N) =
-      observationTerm (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ N) := by
-  simp [observationTerm]
-@[simp] theorem subst_observation {m : ℕ} (σ : Fin n → PTm m) (p z R N : PTm n) :
-    Syn.subst σ (observation p z R N) =
-      observation (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ N) := by
-  simp [observation]
+ipra_subst precision
+ipra_subst unit
+ipra_subst observationTerm
+ipra_subst observation
 
 theorem observation_compute (p z R N : PTm n) :
     Γ ⊢[PRAAx] observation p z R N ≐ observationTerm p z R N := by
@@ -281,10 +259,7 @@ def discrepancy (p k z R N : PTm n) : PTm n :=
   add (observation (p + k) z R N)
     (ComplexLogarithmRemainder.neg (scale (pw two k) (observation p z R N)))
 
-@[simp] theorem subst_discrepancy {m : ℕ} (σ : Fin n → PTm m) (p k z R N : PTm n) :
-    Syn.subst σ (discrepancy p k z R N) = discrepancy (Syn.subst σ p) (Syn.subst σ k)
-      (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ N) := by
-  simp [discrepancy]
+ipra_subst discrepancy
 
 theorem discrepancy_compute (p k z R N : PTm n) :
     Γ ⊢[PRAAx] discrepancy p k z R N ≐

@@ -15,7 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBoundedIntegerExponential
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBoundedIntegerExponentialStages
   (input scaledF stageData radius expF expData point majorant powerBudget point_regular point_zero
     point_bound one_error power_bound successor_product_error)
@@ -26,10 +26,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaCanonicalExponent (constantF)
 open GaussianNameEquivalence (crossEquivalent)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -37,12 +33,9 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 def stepCost (E R A : PTm n) : PTm n := two+num 4*majorant E R+two*powerBudget E A
 def multiplier (E R A : PTm n) : PTm n := majorant E R+stepCost E R A+one
 def error (E i R A : PTm n) : PTm n := pw (multiplier E R A) (succ i)
-@[simp] theorem subst_stepCost {m : ℕ} (σ : Fin n → PTm m) (E R A : PTm n) :
-    Syn.subst σ (stepCost E R A) = stepCost (Syn.subst σ E) (Syn.subst σ R) (Syn.subst σ A) := by simp [stepCost]
-@[simp] theorem subst_multiplier {m : ℕ} (σ : Fin n → PTm m) (E R A : PTm n) :
-    Syn.subst σ (multiplier E R A) = multiplier (Syn.subst σ E) (Syn.subst σ R) (Syn.subst σ A) := by simp [multiplier]
-@[simp] theorem subst_error {m : ℕ} (σ : Fin n → PTm m) (E i R A : PTm n) :
-    Syn.subst σ (error E i R A) = error (Syn.subst σ E) (Syn.subst σ i) (Syn.subst σ R) (Syn.subst σ A) := by simp [error]
+ipra_subst stepCost
+ipra_subst multiplier
+ipra_subst error
 
 theorem multiplier_positive (E R A : PTm n) : Γ ⊢[PRAAx] le one (multiplier E R A) :=
   le_congr (.eqRefl _) (by unfold multiplier; ipra_ring) (le_add_right one (majorant E R+stepCost E R A))
@@ -51,10 +44,9 @@ theorem error_positive (E i R A : PTm n) : Γ ⊢[PRAAx] le one (error E i R A) 
 theorem error_growth (E i R A : PTm n) : Γ ⊢[PRAAx]
     le (majorant E R*error E i R A+stepCost E R A) (error E (succ i) R A) := by
   have positive := error_positive (Γ := Γ) E i R A
-  have step := natEq (pw_succ (Γ := Γ) (multiplier E R A) (succ i))
   ipra_le 𝔞(stepCost E R A)*sl positive+𝔞(error E i R A) using
     unfold error
-    rw [step]
+    rw [natEq (pw_succ (Γ := Γ) (multiplier E R A) (succ i))]
     unfold multiplier
     ipra_simps
     ring
@@ -91,13 +83,11 @@ theorem prefix_error (f : PR 2) (p E i R x c A : PTm n) (h : Γ ⊢[PRAAx] input
   have hall : Γ ⊢[PRAAx] .all (le (var 0) (Syn.shift E) ⟶
       distanceBounded (point f (Syn.shift p) (Syn.shift E) (var 0) (Syn.shift R) (Syn.shift x)) (power (Syn.shift c) (var 0))
         (error (Syn.shift E) (var 0) (Syn.shift R) (Syn.shift A)) (unit (Syn.shift p))) := by
-    refine PRA.qfInd _ ⟨trivial,trivial⟩ ?_ ?_
-    · simp only [Fm.subst_imp,subst_le,GaussianRationalMetric.subst_distanceBounded,GaussianBoundedIntegerExponentialStages.subst_point,
-        GaussianRationalReciprocal.subst_power,subst_error,GaussianCoefficientNameBounds.subst_unit,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (error_zero f p E R x c A)
-    · simp only [Fm.subst_imp,subst_le,GaussianRationalMetric.subst_distanceBounded,GaussianBoundedIntegerExponentialStages.subst_point,
-        GaussianRationalReciprocal.subst_power,subst_error,GaussianCoefficientNameBounds.subst_unit,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨trivial,trivial⟩) [subst_le, GaussianRationalMetric.subst_distanceBounded,
+        GaussianBoundedIntegerExponentialStages.subst_point, GaussianRationalReciprocal.subst_power, subst_error,
+        GaussianCoefficientNameBounds.subst_unit]
+    · exact .impI (error_zero f p E R x c A)
+    · refine .impI ?_
       let IH : Fm PTm (n+1) := le (var 0) (Syn.shift E) ⟶
         distanceBounded (point f (Syn.shift p) (Syn.shift E) (var 0) (Syn.shift R) (Syn.shift x)) (power (Syn.shift c) (var 0))
           (error (Syn.shift E) (var 0) (Syn.shift R) (Syn.shift A)) (unit (Syn.shift p))

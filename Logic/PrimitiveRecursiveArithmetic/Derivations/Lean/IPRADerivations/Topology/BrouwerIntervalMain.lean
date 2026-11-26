@@ -20,12 +20,8 @@ With `m = k + 2`, the samples `g(i, x) = N · A(i/N, m)` on the grid, the witnes
 
 namespace LeanProofs.IPRA.Topology.BrouwerIntervalMain
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Topology.BrouwerInterval (W approx_fixed_point)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

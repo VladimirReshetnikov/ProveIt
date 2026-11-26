@@ -14,7 +14,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalSecondDerivativeRow
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode normSq_one)
 open GaussianBarnesCanonicalDeflatedFactor (inverseInteger)
 open GaussianBarnesCanonicalDerivativeRow (offset offset_bound base_lower inverse_base_bound)
@@ -30,10 +30,6 @@ open GaussianRationalRoundedPower (multiplication_difference)
 open GaussianRationalSumAlgebra (qadd_associative)
 open GaussianRationalSyntheticDivision (qone_canonical qadd_congr qsub_congr qmul_congr qadd_sub_cancel)
 open GaussianReciprocalHorner (qmul_associative qmul_one_right qadd_commutative)
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

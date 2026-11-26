@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitSubstitutionArbitraryExhaustion
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUnitSubstitutionArbitraryPanels (exhaustionSource boundarySource innerIndex innerDen surrounding_sources)
 open GaussianEulerUnitSubstitutionOrdinaryImproper (source)
 open GaussianEulerUnitSubstitutionOrdinaryContainment (containmentIndex containment_index_later)
@@ -31,10 +31,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianNamedInverseRate (rateNumerator rateDenominator denominator_positive)
 open GaussianRationalHorner (positive_product)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

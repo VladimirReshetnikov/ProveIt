@@ -18,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicPathCompactTaylor
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerDerivativeParameterPath (increment)
 open GaussianEulerLogarithmicIntervalName (nameF data name_regular)
 open GaussianEulerLogarithmicMultiplier (logRadius)
@@ -27,10 +27,6 @@ open GaussianRationalHorner (ofGaussian positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -50,14 +46,8 @@ def numerator (p q r j R C E T N : PTm n) : PTm n :=
   GaussianNamedAffineRemainderRate.numerator (quadraticNumerator j R C E T) (quadraticDenominator E N) p q r
 def denominator (p q r E N : PTm n) : PTm n := GaussianNamedAffineRemainderRate.denominator (quadraticDenominator E N) p q r
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B A h D a C E T N i : PTm n) :
-    (source z R B A h D a C E T N i).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ A) (Syn.subst σ h) (Syn.subst σ D) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E)
-      (Syn.subst σ T) (Syn.subst σ N) (Syn.subst σ i) := by simp [source]
-@[simp] theorem subst_pathData {m : ℕ} (σ : Fin n → PTm m) (i j z R B h D N a C E T : PTm n) :
-    Syn.subst σ (pathData i j z R B h D N a C E T) = pathData (Syn.subst σ i) (Syn.subst σ j) (Syn.subst σ z)
-      (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ h) (Syn.subst σ D) (Syn.subst σ N) (Syn.subst σ a)
-      (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by simp [pathData]
+ipra_subst source
+ipra_subst pathData
 
 theorem count_positive (z R B A h D a C E T N i : PTm n)
     (hs : Γ ⊢[PRAAx] source z R B A h D a C E T N i) : Γ ⊢[PRAAx] le one N := by

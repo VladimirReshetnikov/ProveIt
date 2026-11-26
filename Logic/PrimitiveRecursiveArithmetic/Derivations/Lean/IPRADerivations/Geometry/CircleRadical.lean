@@ -1,5 +1,4 @@
 import IPRADerivations.Geometry.TriangleCentres
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Tangents from a point, radical axes and the concyclicity determinant
@@ -29,10 +28,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Geometry.CircleRadical
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Geometry.TriangleCentres (dot det nsq)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

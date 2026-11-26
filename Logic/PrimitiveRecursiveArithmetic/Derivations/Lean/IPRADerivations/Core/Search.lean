@@ -61,17 +61,13 @@ private abbrev M : PTm 3 := mu f (var 0) (var 2)
 private abbrev M' : PTm 3 := mu f (succ (var 0)) (var 2)
 
 theorem spec_open : ([] : List (Fm PTm 3)) ⊢[PRAAx] specF (f := f) := by
-  refine ind _ ⟨le_QF _ _, ⟨lt_QF _ _, trivial⟩, lt_QF _ _, trivial, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_and, Fm.subst_imp, Fm.subst_eq, subst_le, subst_lt, subst_neg, subst_ap2,
-      subst_inst2, Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero]
-    have h0 := mu_zero (f := f) (Γ := ([] : List (Fm PTm 2))) (var 1)
+  ipra_ind (⟨le_QF _ _, ⟨lt_QF _ _, trivial⟩, lt_QF _ _, trivial, trivial⟩) [subst_le, subst_lt, subst_neg,
+      subst_ap2, subst_inst2]
+  · have h0 := mu_zero (f := f) (Γ := ([] : List (Fm PTm 2))) (var 1)
     refine .andI (le_congr h0.eqSymm (.eqRefl _) (le_refl _)) (.andI ?_ ?_)
     · exact .impI (lt_zero_absurd _ (lt_congr h0.wk (.eqRefl _) Prf.hyp0))
     · exact .impI (lt_zero_absurd _ (lt_congr (.eqRefl _) h0.wk Prf.hyp0))
-  · simp only [Fm.subst_and, Fm.subst_imp, Fm.subst_eq, subst_le, subst_lt, subst_neg, subst_ap2,
-      subst_inst2, Syn.subst_var, Syn.repl_zero, repl_one, repl_two, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    have hle : [specF (f := f)] ⊢[PRAAx] le (M (f := f)) (var 0) := .andE₁ Prf.hyp0
+  · have hle : [specF (f := f)] ⊢[PRAAx] le (M (f := f)) (var 0) := .andE₁ Prf.hyp0
     have hfound : [specF (f := f)] ⊢[PRAAx]
         lt (M (f := f)) (var 0) ⟶ (inst2 f (M (f := f)) (var 2) ≐ zero) := .andE₁ (.andE₂ Prf.hyp0)
     have hmin : [specF (f := f)] ⊢[PRAAx]

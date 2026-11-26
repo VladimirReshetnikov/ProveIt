@@ -15,16 +15,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaPositiveRationalProperness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegralGammaIdentification (source)
 open GaussianEulerLogarithmicZeroIdentification (original_logarithmic_order_zero_is_Gamma)
 open GaussianNameEquivalence (crossEquivalent cross_symm cross_trans)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (ofGaussian)
 open GaussianStirlingGammaLogarithm (arg euler_real_source)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "GF" => GaussianGammaReciprocalInverse.gammaF

@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerHalfDecayLeftNorm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerHalfDecayQuadrature (halfF half_decay_independent_endpoint)
 open GaussianEulerDecayMesh (observation)
 open GaussianEulerDecayQuadraturePrecision (endpointDifference)
@@ -24,10 +24,6 @@ open GaussianRationalMetric (bounded)
 open GaussianRationalReciprocal (bounded_product bound_congr)
 open GaussianRationalNaturalScale (naturalPoint)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,16 +36,11 @@ def denominator (p q M E B : PTm n) : PTm n := B*errorDenominator p q M E
 def source (M a C E B : PTm n) : Fm PTm n :=
   le one a ⋏ le one M ⋏ le one E ⋏ le one C ⋏ le one B ⋏ le C ((two*E)*M)
 
-@[simp] theorem subst_errorNumerator {m : ℕ} (σ : Fin n → PTm m) (p q M C E : PTm n) :
-    Syn.subst σ (errorNumerator p q M C E) = errorNumerator (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ M) (Syn.subst σ C) (Syn.subst σ E) := by simp [errorNumerator]
-@[simp] theorem subst_errorDenominator {m : ℕ} (σ : Fin n → PTm m) (p q M E : PTm n) :
-    Syn.subst σ (errorDenominator p q M E) = errorDenominator (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ M) (Syn.subst σ E) := by simp [errorDenominator]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (p q M C E A B : PTm n) :
-    Syn.subst σ (numerator p q M C E A B) = numerator (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ M) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ A) (Syn.subst σ B) := by simp [numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (p q M E B : PTm n) :
-    Syn.subst σ (denominator p q M E B) = denominator (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ M) (Syn.subst σ E) (Syn.subst σ B) := by simp [denominator]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (M a C E B : PTm n) :
-    (source M a C E B).subst σ = source (Syn.subst σ M) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ B) := by simp [source]
+ipra_subst errorNumerator
+ipra_subst errorDenominator
+ipra_subst numerator
+ipra_subst denominator
+ipra_subst source
 
 theorem error_denominator_positive (p q M E : PTm n) (hM : Γ ⊢[PRAAx] le one M)
     (hE : Γ ⊢[PRAAx] le one E) : Γ ⊢[PRAAx] le one (errorDenominator p q M E) :=

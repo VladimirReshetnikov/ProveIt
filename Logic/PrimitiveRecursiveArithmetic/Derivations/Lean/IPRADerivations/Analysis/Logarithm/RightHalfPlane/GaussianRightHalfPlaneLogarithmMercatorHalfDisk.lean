@@ -14,7 +14,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRightHalfPlaneLogarithmMercatorHalfDisk
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianFastValueCut (exponent)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianGammaFiniteApproximantName (exponential_input)
@@ -29,8 +29,6 @@ open GaussianRationalReciprocal (bounded_sum bounded_negative bound_congr)
 open GaussianRationalSyntheticDivision (qadd_congr)
 open GaussianRightHalfPlaneLogarithmOffset (offset)
 open GaussianFiniteLogarithmCompositionTail (linearValue)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "L" => GaussianRightHalfPlaneLogarithm.nameF
@@ -49,16 +47,9 @@ def lateLogBound (A B D neg C : PTm n) : Fm PTm n := .all
   (le (Syn.shift C) (var 0) ⟶
     bounded (ap2 L (var 0) (ld (Syn.shift A) (Syn.shift B) (Syn.shift D) (Syn.shift neg))) two one)
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (A B D neg R : PTm n) :
-    (source A B D neg R).subst σ =
-      source (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ neg) (Syn.subst σ R) := by
-  simp [source,GaussianRightHalfPlaneLogarithm.source,GaussianRightHalfPlaneArgument.source,
-    ComplexLogarithmRemainder.bounded,two,one]
+ipra_subst source [GaussianRightHalfPlaneLogarithm.source, GaussianRightHalfPlaneArgument.source, ComplexLogarithmRemainder.bounded, two, one]
 
-@[simp] theorem subst_lateLogBound {m : ℕ} (σ : Fin n → PTm m) (A B D neg C : PTm n) :
-    (lateLogBound A B D neg C).subst σ =
-      lateLogBound (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ neg) (Syn.subst σ C) := by
-  simp [lateLogBound,Syn.subst_shift,Syn.shift_subst,two,one]
+ipra_subst lateLogBound [Syn.subst_shift, Syn.shift_subst, two, one]
 
 theorem local_source (A B D neg R : PTm n) (h : Γ ⊢[PRAAx] source A B D neg R) :
     Γ ⊢[PRAAx] GaussianLocalLogarithmName.source (offset A B D neg) R D :=

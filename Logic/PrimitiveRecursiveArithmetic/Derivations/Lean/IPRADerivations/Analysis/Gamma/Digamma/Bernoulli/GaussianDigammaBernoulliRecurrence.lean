@@ -14,9 +14,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianDigammaBernoulliRecurrence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (fraction)
 open GaussianNamedDifference (difference_distance)
@@ -44,8 +42,6 @@ open RationalArithmetic (add_guard multiply)
 open RationalGaussianEmbedding (embed embed_multiply)
 open RationalGaussianRealPart (embed_congr)
 open RationalSumConstants (multiply_one_right)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -64,17 +60,11 @@ def weightedPrimitive (m : ℕ) (A B : PTm n) : PTm n :=
 def stepRadius (m : ℕ) (B : PTm n) : PTm n :=
   one+constantCap (meanPoint m)*(power (exponent m) B+one)
 
-@[simp] theorem subst_prefixAt {l : ℕ} (σ : Fin n → PTm l) (m : ℕ) (A B Q p : PTm n) :
-    Syn.subst σ (prefixAt m A B Q p) = prefixAt m (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ Q) (Syn.subst σ p) :=
-  by simp [prefixAt]
+ipra_subst prefixAt
 
-@[simp] theorem subst_weightedPrimitive {l : ℕ} (σ : Fin n → PTm l) (m : ℕ) (A B : PTm n) :
-    Syn.subst σ (weightedPrimitive m A B) = weightedPrimitive m (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [weightedPrimitive,signedMean,GaussianStirlingAllOrderPanelDerivative.meanNumerator,BernoulliBounds.zint]
+ipra_subst weightedPrimitive [signedMean, GaussianStirlingAllOrderPanelDerivative.meanNumerator, BernoulliBounds.zint]
 
-@[simp] theorem subst_stepRadius {l : ℕ} (σ : Fin n → PTm l) (m : ℕ) (B : PTm n) :
-    Syn.subst σ (stepRadius m B) = stepRadius m (Syn.subst σ B) := by
-  simp [stepRadius,power,one,pw]
+ipra_subst stepRadius [power, one, pw]
 
 theorem ratio_one (m : ℕ) : Γ ⊢[PRAAx] (ratio (m+1) (exponent m) : PTm n) ≐ fraction one one := by
   have h : degreeProduct (m+1) = secondCoefficient (exponent m) := by

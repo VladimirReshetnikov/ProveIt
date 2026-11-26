@@ -1,8 +1,4 @@
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.Powers
-import IPRADerivations.Core.Parity
-import IPRADerivations.Core.BoundedSums
-import IPRADerivations.Core.Gcd
 import IPRADerivations.DiophantineNumberTheory.FLTMultiples
 
 /-!
@@ -31,11 +27,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.InexactTrace
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -64,18 +56,14 @@ theorem inexact_trace (d : PTm 2) {N x η : PTm n} (hs : Γ ⊢[PRAAx] stepPrem 
   have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
       le (pw two (var 0) * inst2 d (var 0) (Syn.shift x) + two * Syn.shift η)
         (inst2 d zero (Syn.shift x) + pw two (succ (var 0)) * Syn.shift η)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, PTm.subst_mul, PTm.subst_add, subst_ap2, subst_inst2, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2, subst_inst2]
+    · refine .impI ?_
       have e0 : (le zero N :: Γ) ⊢[PRAAx] pw two zero ≐ one := pw_zero two
       have e1 : (le zero N :: Γ) ⊢[PRAAx] pw two (succ zero) ≐ one * two :=
         (pw_succ two zero).eqTrans (congrMul e0 (.eqRefl _))
       exact le_congr (congrAdd (congrMul e0.eqSymm (.eqRefl _)) (.eqRefl _))
         (congrAdd (.eqRefl _) (congrMul e1.eqSymm (.eqRefl _))) (base_alg (inst2 d zero x) η)
-    · simp only [Fm.subst_imp, subst_le, PTm.subst_mul, PTm.subst_add, subst_ap2, subst_inst2, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      refine .impI ?_
+    · refine .impI ?_
       have hlt : (le (succ (var 0)) (Syn.shift N) ::
           (le (var 0) (Syn.shift N) ⟶
             le (pw two (var 0) * inst2 d (var 0) (Syn.shift x) + two * Syn.shift η)

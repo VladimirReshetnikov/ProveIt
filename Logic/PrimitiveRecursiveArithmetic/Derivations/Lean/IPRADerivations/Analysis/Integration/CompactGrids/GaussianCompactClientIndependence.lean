@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCompactClientIndependence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCompactRiemannName (inside evaluatorName nameData evaluator_at grid grid_inside sampleBody sampleData
   sample_body_at quadrature sample mesh precision)
 open GaussianCompactMeshIndependence (commonPrecision arbitrary_refinement)
@@ -24,9 +24,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_symmetric)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,16 +35,9 @@ def input (F G : PR 3) (a C E L T M S x y : PTm n) : Fm PTm n :=
   GaussianCompactRiemannName.input F a C E L T x ⋏
     (GaussianCompactRiemannName.input G a C E M S y ⋏ localAgreement F G a C E x y)
 
-@[simp] theorem subst_agreementBody {m : ℕ} (σ : Fin n → PTm m) (F G : PR 3) (a C E x y t : PTm n) :
-    (agreementBody F G a C E x y t).subst σ = agreementBody F G (Syn.subst σ a) (Syn.subst σ C)
-      (Syn.subst σ E) (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ t) := by simp [agreementBody]
-@[simp] theorem subst_localAgreement {m : ℕ} (σ : Fin n → PTm m) (F G : PR 3) (a C E x y : PTm n) :
-    (localAgreement F G a C E x y).subst σ = localAgreement F G (Syn.subst σ a) (Syn.subst σ C)
-      (Syn.subst σ E) (Syn.subst σ x) (Syn.subst σ y) := by
-  simp [localAgreement,Syn.subst_shift,Syn.shift_subst,Syn.up]
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (F G : PR 3) (a C E L T M S x y : PTm n) :
-    (input F G a C E L T M S x y).subst σ = input F G (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E)
-      (Syn.subst σ L) (Syn.subst σ T) (Syn.subst σ M) (Syn.subst σ S) (Syn.subst σ x) (Syn.subst σ y) := by simp [input]
+ipra_subst agreementBody
+ipra_subst localAgreement [Syn.subst_shift, Syn.shift_subst, Syn.up]
+ipra_subst input
 
 theorem agreement_at (F G : PR 3) (a C E x y p q t : PTm n)
     (h : Γ ⊢[PRAAx] localAgreement F G a C E x y) (ht : Γ ⊢[PRAAx] inside a C E t) : Γ ⊢[PRAAx]

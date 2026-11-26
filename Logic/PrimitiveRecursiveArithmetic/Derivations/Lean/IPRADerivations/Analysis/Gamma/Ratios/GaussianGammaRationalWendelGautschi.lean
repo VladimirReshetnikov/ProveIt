@@ -16,7 +16,7 @@ set_option maxHeartbeats 1500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaRationalWendelGautschi
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaFiniteApproximantName (exponentialInputData)
 open GaussianGammaRationalGautschi (powerF powerData source)
 open GaussianGammaRationalUnscaledChord (fractionalData fractional_regular fractional_real)
@@ -27,8 +27,6 @@ open GaussianNameRingLaws (oneF zeroF zero_at zero_fast)
 open GaussianSignedNameExponentialOrder (realSamples)
 open GaussianStirlingMultiplicativeBoundsStrictOrder (strictOrder strict_exponential_order strict_transport)
 open GaussianStirlingLogDuplication (exponential_regular)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "E" => GaussianRadiusExponentialName.nameF

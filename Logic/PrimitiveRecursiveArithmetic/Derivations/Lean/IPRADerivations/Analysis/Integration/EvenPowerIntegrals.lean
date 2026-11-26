@@ -29,15 +29,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.EvenPowerIntegrals
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.BaselCore (lift3 inst2_lift3)
 open LeanProofs.IPRA.Algebra.PowerDifference (gd power_diff gd_le)
 open LeanProofs.IPRA.Analysis.PowerIncrement (kd gd_kd)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -63,15 +59,12 @@ theorem x0_eq (M : PTm n) : Γ ⊢[PRAAx] xs zero M ≐ M * M :=
 
 /-- `x_i ≤ M²` for `i ≤ M`. -/
 theorem x_le_sq {i M : PTm n} (hi : Γ ⊢[PRAAx] le i M) : Γ ⊢[PRAAx] le (xs i M) (M * M) := by
-  have a := natEq (eq_add_of_le (le_mul_mono hi hi))
-  ipra_le 𝔞 i * 𝔞 i with a
+  ipra_le 𝔞 i * 𝔞 i with natEq (eq_add_of_le (le_mul_mono hi hi))
 
 /-- `x_{i+1} ≤ x_i` for `i + 1 ≤ M`. -/
 theorem x_anti {i M : PTm n} (hi : Γ ⊢[PRAAx] le (succ i) M) : Γ ⊢[PRAAx] le (xs (succ i) M) (xs i M) := by
   have hi0 : Γ ⊢[PRAAx] le i M := le_trans (le_succ_self i) hi
-  have a := natEq (eq_add_of_le (le_mul_mono hi0 hi0))
-  have b := natEq (eq_add_of_le (le_mul_mono hi hi))
-  ipra_le 2 * 𝔞 i + 1 with b - a
+  ipra_le 2 * 𝔞 i + 1 with natEq (eq_add_of_le (le_mul_mono hi hi)) - natEq (eq_add_of_le (le_mul_mono hi0 hi0))
 
 /-! ## One cell -/
 
@@ -135,8 +128,7 @@ abbrev LInv (k j₀ M : PTm n) : Fm PTm n :=
 theorem u_base (j₀ M : PTm n) : Γ ⊢[PRAAx] UInv zero j₀ M := by
   have z1 := natEq (sum_zero (Γ := Γ) Pb (pairT (succ j₀) M))
   have z2 := natEq (sum_zero (Γ := Γ) Pb (pairT j₀ M))
-  have e0 := natEq (congrAp2 powF (.eqRefl (succ j₀)) (x0_eq (Γ := Γ) M))
-  ipra_le 0 using rw [z1, z2, e0]; ring
+  ipra_le 0 using rw [z1, z2, natEq (congrAp2 powF (.eqRefl (succ j₀)) (x0_eq (Γ := Γ) M))]; ring
 
 theorem l_base (j₀ M : PTm n) : Γ ⊢[PRAAx] LInv zero j₀ M := by
   have z1 := natEq (sum_zero (Γ := Γ) Pb (pairT (succ j₀) M))
@@ -162,34 +154,21 @@ theorem l_step {k j₀ M : PTm n} (hk : Γ ⊢[PRAAx] le (succ k) M) (ih : Γ �
   have e1 := natEq (sum_succ' (Γ := Γ) Pb k (pairT (succ j₀) M))
   have e2 := natEq (inst_Pb (Γ := Γ) k (succ j₀) M)
   have e3 := natEq (sum_succ' (Γ := Γ) Pb k (pairT j₀ M))
-  have e4 := natEq (inst_Pb (Γ := Γ) k j₀ M)
-  ipra_le sl ih + sl c using rw [e1, e2, e3, e4]; ring
+  ipra_le sl ih + sl c using rw [e1, e2, e3, natEq (inst_Pb (Γ := Γ) k j₀ M)]; ring
 
 /-- Variables: `0 = k` (induction), `1 = j₀`, `2 = M`. -/
 private abbrev uF : Fm PTm 3 := le (var 0) (var 2) ⟶ UInv (var 0) (var 1) (var 2)
 private abbrev lF : Fm PTm 3 := le (var 0) (var 2) ⟶ LInv (var 0) (var 1) (var 2)
 
 private theorem u₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] uF := by
-  refine ind _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_imp, subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, PTm.subst_monus,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact .impI (u_base _ _)
-  · simp only [Fm.subst_imp, subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, PTm.subst_monus,
-      Syn.subst_var, Syn.repl_zero, repl_one, repl_two, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact .impI (u_step Prf.hyp0 (Prf.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)))
+  ipra_ind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2, subst_pairT]
+  · exact .impI (u_base _ _)
+  · exact .impI (u_step Prf.hyp0 (Prf.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)))
 
 private theorem l₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] lF := by
-  refine ind _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_imp, subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, PTm.subst_monus,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact .impI (l_base _ _)
-  · simp only [Fm.subst_imp, subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, PTm.subst_monus,
-      Syn.subst_var, Syn.repl_zero, repl_one, repl_two, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact .impI (l_step Prf.hyp0 (Prf.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)))
+  ipra_ind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2, subst_pairT]
+  · exact .impI (l_base _ _)
+  · exact .impI (l_step Prf.hyp0 (Prf.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)))
 
 theorem u_all {k M : PTm n} (j₀ : PTm n) (hk : Γ ⊢[PRAAx] le k M) : Γ ⊢[PRAAx] UInv k j₀ M := by
   have h := inst (Γ := Γ) u₀ (![k, j₀, M] : Fin 3 → PTm n)
@@ -268,13 +247,9 @@ theorem q_step {j M : PTm n} (ih : Γ ⊢[PRAAx] QInv j M) : Γ ⊢[PRAAx] QInv 
 private abbrev qF : Fm PTm 2 := QInv (var 0) (var 1)
 
 private theorem q₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] qF := by
-  refine ind _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_and, subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact q_base _
-  · simp only [Fm.subst_and, subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul,
-      Syn.subst_var, Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact q_step Prf.hyp0
+  ipra_ind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2, subst_pairT]
+  · exact q_base _
+  · exact q_step Prf.hyp0
 
 /-- `eq:piapprox`/`eq:Jrec` in closed form: the left Riemann sum of `(1 − t²)^j` on `M` cells is within
 `2j/M` of `(2j)!!/(2j+1)!!`. -/

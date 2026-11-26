@@ -15,7 +15,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedFiniteSumFamily
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianFastValueCut (exponent query_budget)
@@ -26,8 +26,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalRiemannRefinement (termsDistance sum_distance)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -40,12 +38,9 @@ def observation (f : PR 2) (t : PTm 2) (p N x : PTm n) : PTm n := finite f t (ex
 def nameF (f : PR 2) (t : PTm 2) : PR 2 :=
   PTm.toPR (observation f t (var 0) (fstT (var 1)) (sndT (var 1)) : PTm 2)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (N x : PTm n) :
-    Syn.subst σ (data N x) = data (Syn.subst σ N) (Syn.subst σ x) := by simp [data]
+ipra_subst data
 
-@[simp] theorem subst_observation {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (t : PTm 2) (p N x : PTm n) :
-    Syn.subst σ (observation f t p N x) = observation f t (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ x) := by
-  simp [observation,finite]
+ipra_subst observation [finite]
 
 theorem term_at (f : PR 2) (t : PTm 2) (i k x : PTm n) :
     Γ ⊢[PRAAx] inst2 (body f t) i (pairT k x) ≐ ap2 f k (inst2 t i x) := by

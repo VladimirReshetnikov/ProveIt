@@ -18,7 +18,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRightHalfPlaneLogarithm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameArithmetic (addF addData add_fast)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_trans)
@@ -26,9 +26,6 @@ open GaussianNameRingLaws (zeroF zero_fast add_associative)
 open GaussianNamedGammaHalfShift (add_cross)
 open GaussianPositiveRationalLogarithm (logF)
 open GaussianRationalHorner (positive_product)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "F" => GaussianRightHalfPlaneRadialLogarithm.nameF
@@ -41,9 +38,7 @@ def source (A D neg : PTm n) : Fm PTm n := GaussianRightHalfPlaneArgument.source
 def nameF : PR 2 := addF F G
 def data (A B D neg : PTm n) : PTm n := addData (X A B D) (Y A B neg)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (A B D neg : PTm n) :
-    Syn.subst σ (data A B D neg) = data (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ neg) := by
-  simp [data]
+ipra_subst data
 
 theorem regular (A B D neg : PTm n) (h : Γ ⊢[PRAAx] source A D neg) :
     Γ ⊢[PRAAx] pointCN nameF (data A B D neg) :=

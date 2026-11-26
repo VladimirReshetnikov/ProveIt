@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaEulerFactorPolynomial
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qadd qmul evaluate ofGaussian)
 open GaussianRationalSyntheticDivision (qone qadd_congr)
 open GaussianGammaHarmonicIncrement (reciprocalPoint)
@@ -28,17 +28,13 @@ open GaussianEuclideanDistanceName (fraction fraction_order)
 open GaussianRationalL1 (qL1)
 open RationalArgmin (rationalLE)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def constant : PTm n := leftPad (singleton qone) one
 def polynomial (i : PTm n) : PTm n := added (monomial (reciprocalPoint i)) constant two
-@[simp] theorem subst_constant {m : ℕ} (σ : Fin n → PTm m) : Syn.subst σ (constant : PTm n) = (constant : PTm m) := by simp [constant]
-@[simp] theorem subst_polynomial {m : ℕ} (σ : Fin n → PTm m) (i : PTm n) :
-    Syn.subst σ (polynomial i) = polynomial (Syn.subst σ i) := by simp [polynomial]
+ipra_subst constant
+ipra_subst polynomial
 
 theorem reciprocal_norm (i : PTm n) : Γ ⊢[PRAAx] rationalLE (qL1 (reciprocalPoint i)) (natCode one) :=
   RationalArgmin.rationalLE_congr

@@ -13,15 +13,12 @@ set_option maxHeartbeats 1250000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedFiniteEqualityChain
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameEquivalence (crossEquivalent diagonal_at cross_to_diagonal)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_triangle_same)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -33,17 +30,11 @@ def allSteps (f : PR 2) (t : PTm 2) (x : PTm n) : Fm PTm n :=
 def estimate (f : PR 2) (t : PTm 2) (p j x : PTm n) : Fm PTm n :=
   distanceBounded (sample f t p j x) (sample f t p zero x) (two*j) (unit p)
 
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (t : PTm 2) (p j x : PTm n) :
-    Syn.subst σ (sample f t p j x) = sample f t (Syn.subst σ p) (Syn.subst σ j) (Syn.subst σ x) := by
-  simp [sample,subst_inst2]
+ipra_subst sample [subst_inst2]
 
-@[simp] theorem subst_allSteps {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (t : PTm 2) (x : PTm n) :
-    (allSteps f t x).subst σ = allSteps f t (Syn.subst σ x) := by
-  simp [allSteps,subst_inst2,Syn.subst_shift,Syn.shift_subst]
+ipra_subst allSteps [subst_inst2, Syn.subst_shift, Syn.shift_subst]
 
-@[simp] theorem subst_estimate {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (t : PTm 2) (p j x : PTm n) :
-    (estimate f t p j x).subst σ = estimate f t (Syn.subst σ p) (Syn.subst σ j) (Syn.subst σ x) := by
-  simp [estimate]
+ipra_subst estimate
 
 theorem step_at (f : PR 2) (t : PTm 2) (j x : PTm n) (h : Γ ⊢[PRAAx] allSteps f t x) :
     Γ ⊢[PRAAx] crossEquivalent f f (inst2 t (succ j) x) (inst2 t j x) := by

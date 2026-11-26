@@ -25,11 +25,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.ProductTelescope
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -83,13 +79,9 @@ theorem prod_telescope (a b : PTm 2) (x N M : PTm n)
       (le (inst2 a (var 0) (Syn.shift x)) (Syn.shift M) ⋏ le (inst2 b (var 0) (Syn.shift x)) (Syn.shift M)))) :
     Γ ⊢[PRAAx] PInv a b N x M := by
   have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶ PInv a b (var 0) (Syn.shift x) (Syn.shift M)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, Fm.subst_and, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
-      exact .impI (pinv_base a b x M)
-    · simp only [Fm.subst_imp, Fm.subst_and, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      have hf := h.allOpen
+    ipra_qfind (⟨le_QF _ _, le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2]
+    · exact .impI (pinv_base a b x M)
+    · have hf := h.allOpen
       refine .impI ?_
       have hle : (le (succ (var 0)) (Syn.shift N) ::
           (le (var 0) (Syn.shift N) ⟶ PInv a b (var 0) (Syn.shift x) (Syn.shift M)) ::

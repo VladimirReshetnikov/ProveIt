@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartLogarithm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPositivePowerChart (argument source scale_bound)
 open GaussianEulerIntegrandName (powerExponentF powerExponentData powerRadius powerF powerData)
 open GaussianPositiveRationalLogarithm (logF fraction)
@@ -22,8 +22,6 @@ open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianNameArithmetic (addF addData add_fast multiplyF multiplyData)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -34,15 +32,9 @@ abbrev exponentialF : PR 2 := GaussianRadiusExponentialName.nameF logarithmF
 def exponentialData (e f d h a b : PTm n) : PTm n :=
   GaussianGammaFiniteApproximantName.exponentialInputData logarithmF (logarithmData e f d h a b)
 
-@[simp] theorem subst_logarithmData {m : ℕ} (σ : Fin n → PTm m) (e f d h a b : PTm n) :
-    Syn.subst σ (logarithmData e f d h a b) =
-      logarithmData (Syn.subst σ e) (Syn.subst σ f) (Syn.subst σ d) (Syn.subst σ h)
-        (Syn.subst σ a) (Syn.subst σ b) := by simp [logarithmData]
+ipra_subst logarithmData
 
-@[simp] theorem subst_exponentialData {m : ℕ} (σ : Fin n → PTm m) (e f d h a b : PTm n) :
-    Syn.subst σ (exponentialData e f d h a b) =
-      exponentialData (Syn.subst σ e) (Syn.subst σ f) (Syn.subst σ d) (Syn.subst σ h)
-        (Syn.subst σ a) (Syn.subst σ b) := by simp [exponentialData,GaussianGammaFiniteApproximantName.exponentialInputData]
+ipra_subst exponentialData [GaussianGammaFiniteApproximantName.exponentialInputData]
 
 theorem power_source (e f d h Q S E T a b : PTm n)
     (hs : Γ ⊢[PRAAx] source e f d h Q S E T a b) :

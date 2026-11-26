@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialCoefficientDifferences
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner
   (qadd qmul qzero represents qadd_represents represents_congr canonical_unique)
 open GaussianRationalMetric (qsub qsub_canonical qsub_represents)
@@ -29,8 +29,6 @@ open RationalArgmin (rationalLE rationalLE_congr)
 open RationalArithmetic (add multiply)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

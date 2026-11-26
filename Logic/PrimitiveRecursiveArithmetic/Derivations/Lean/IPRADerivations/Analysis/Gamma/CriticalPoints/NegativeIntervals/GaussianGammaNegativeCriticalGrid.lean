@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Gamma.CriticalPoints.NegativeIntervals.GaussianGammaNegativeCriticalSigns
 import IPRADerivations.Analysis.Gamma.CriticalPoints.NegativeIntervals.GaussianGammaNegativeCriticalRescale
 import IPRADerivations.Analysis.Gamma.CriticalPoints.NegativeIntervals.GaussianGammaNegativeCriticalSlope
-import IPRADerivations.Core.Search
 
 /-!
 # Actual bounded search on the truncated negative digamma interval
@@ -18,7 +17,7 @@ set_option maxHeartbeats 1900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeCriticalGrid
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianGammaDigammaCriticalSigns (quarter negativeQuarter)
@@ -45,10 +44,6 @@ open RationalArgmin (rationalLE rationalLE_congr)
 open RationalGaussianEmbedding (scalarZero)
 open RationalSupMetric (numeratorOf)
 open RationalValueBounds (upper upper_congr radius)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus num pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -66,22 +61,14 @@ def location (p N : PTm n) : PTm n :=
   qsub (fraction (numerator p (leftIndex p N)) (denominator p N)) (fraction (succ N) one)
 def locationF : PR 2 := PTm.toPR (location (var 0) (var 1))
 
-@[simp] theorem subst_denominator {k : ℕ} (σ : Fin n → PTm k) (p N : PTm n) :
-    Syn.subst σ (denominator p N) = denominator (Syn.subst σ p) (Syn.subst σ N) := by simp [denominator]
-@[simp] theorem subst_numerator {k : ℕ} (σ : Fin n → PTm k) (p i : PTm n) :
-    Syn.subst σ (numerator p i) = numerator (Syn.subst σ p) (Syn.subst σ i) := by simp [numerator]
-@[simp] theorem subst_span {k : ℕ} (σ : Fin n → PTm k) (p N : PTm n) :
-    Syn.subst σ (span p N) = span (Syn.subst σ p) (Syn.subst σ N) := by simp [span]
-@[simp] theorem subst_sample {k : ℕ} (σ : Fin n → PTm k) (p N i : PTm n) :
-    Syn.subst σ (sample p N i) = sample (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ i) := by simp [sample]
-@[simp] theorem subst_test {k : ℕ} (σ : Fin n → PTm k) (p N i : PTm n) :
-    Syn.subst σ (test p N i) = test (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ i) := by simp [test,numeratorOf]
-@[simp] theorem subst_first {k : ℕ} (σ : Fin n → PTm k) (p N : PTm n) :
-    Syn.subst σ (first p N) = first (Syn.subst σ p) (Syn.subst σ N) := by simp [first]
-@[simp] theorem subst_leftIndex {k : ℕ} (σ : Fin n → PTm k) (p N : PTm n) :
-    Syn.subst σ (leftIndex p N) = leftIndex (Syn.subst σ p) (Syn.subst σ N) := by simp [leftIndex]
-@[simp] theorem subst_location {k : ℕ} (σ : Fin n → PTm k) (p N : PTm n) :
-    Syn.subst σ (location p N) = location (Syn.subst σ p) (Syn.subst σ N) := by simp [location]
+ipra_subst denominator
+ipra_subst numerator
+ipra_subst span
+ipra_subst sample
+ipra_subst test [numeratorOf]
+ipra_subst first
+ipra_subst leftIndex
+ipra_subst location
 
 theorem location_at (p N : PTm n) : Γ ⊢[PRAAx] ap2 locationF p N ≐ location p N := by
   simpa only [locationF,ap2,subst_location,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using

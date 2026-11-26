@@ -24,10 +24,8 @@ Packet: `topology/general_topology_ipra_2026-11-19`, `paper/sections/03_finite.t
 
 namespace LeanProofs.IPRA.Topology.FiniteSeparation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Topology.FiniteInteriorClosure
-open Syn
-open scoped Fm
 
 variable {n k l r : ℕ} {Γ : List (Fm PTm n)} {rel : Fin k → Fin k → Prop}
 

@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelVerticalPointwise
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUnitKernelVerticalSquare (source kernel_source real_source original_kernel_square
   original_real_kernel_samples original_real_kernel_nonnegative)
 open GaussianEulerVerticalNativeProjection (argument)
@@ -24,9 +24,6 @@ open GaussianEulerVerticalRealRadius (denominator denominator_positive corrected
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (positive_product)
 open GaussianPositiveRadiusFiniteSum (boundBy)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

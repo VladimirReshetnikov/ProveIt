@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedDampingPowerReciprocalTail
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (fraction fraction_order fraction_represents)
 open GaussianRationalHorner (positive_product scalar_congr)
 open GaussianRationalSyntheticBounds (add_monotone)
@@ -25,9 +25,6 @@ open RationalArgmin (rationalLE rationalEq rationalLE_congr)
 open RationalNonnegativePowers (fraction_congr fraction_multiply)
 open RationalConvexClockRescale (fraction_rescale)
 open RationalReciprocalPowerTail (zero_fraction add_zero_right)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -43,14 +40,11 @@ def conserved (S k r : PTm n) : Fm PTm n :=
 def gridData (M a E N : PTm n) : PTm n := pairT (M*(E*N)*(E*N)) (a*N)
 def quadrature (M a W E N : PTm n) : PTm n := prefixSum (M*(E*N)) (a*N) (W*N)
 
-@[simp] theorem subst_row {m : ℕ} (σ : Fin n → PTm m) (S k : PTm n) :
-    Syn.subst σ (row S k) = row (Syn.subst σ S) (Syn.subst σ k) := by simp [row]
-@[simp] theorem subst_potential {m : ℕ} (σ : Fin n → PTm m) (S k : PTm n) :
-    Syn.subst σ (potential S k) = potential (Syn.subst σ S) (Syn.subst σ k) := by simp [potential,two,one]
+ipra_subst row
+ipra_subst potential [two, one]
 @[simp] theorem subst_prefix {m : ℕ} (σ : Fin n → PTm m) (S k r : PTm n) :
     Syn.subst σ (prefixSum S k r) = prefixSum (Syn.subst σ S) (Syn.subst σ k) (Syn.subst σ r) := by simp [prefixSum]
-@[simp] theorem subst_conserved {m : ℕ} (σ : Fin n → PTm m) (S k r : PTm n) :
-    (conserved S k r).subst σ = conserved (Syn.subst σ S) (Syn.subst σ k) (Syn.subst σ r) := by simp [conserved]
+ipra_subst conserved
 
 private theorem potential_congr (S : PTm n) {k l : PTm n} (e : Γ ⊢[PRAAx] k ≐ l) :
     Γ ⊢[PRAAx] potential S k ≐ potential S l := fraction_congr (.eqRefl _) e

@@ -18,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialPerturbation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder
   (re im add mul scale zeroCode normSq bounded bounded_add bounded_mul bounded_scale bounded_mono)
 open LeanProofs.IPRA.Analysis.GaussianRootAlgebra
@@ -30,10 +30,6 @@ open LeanProofs.IPRA.Foundations.MasterCertificate
   (entry sequence sequence_length sequence_decode subst_entry subst_sequence)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -41,12 +37,8 @@ local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
 def residual (F G z k : PTm n) : PTm n := sub (horner G z k) (horner F z k)
 def budget (D R δ k : PTm n) : PTm n := D*k*pw R (pred k)*δ
 
-@[simp] theorem subst_residual {m : ℕ} (σ : Fin n → PTm m) (F G z k : PTm n) :
-    Syn.subst σ (residual F G z k) = residual (Syn.subst σ F) (Syn.subst σ G)
-      (Syn.subst σ z) (Syn.subst σ k) := by simp [residual]
-@[simp] theorem subst_budget {m : ℕ} (σ : Fin n → PTm m) (D R δ k : PTm n) :
-    Syn.subst σ (budget D R δ k) = budget (Syn.subst σ D) (Syn.subst σ R)
-      (Syn.subst σ δ) (Syn.subst σ k) := by simp [budget]
+ipra_subst residual
+ipra_subst budget
 
 theorem power_positive (R k : PTm n) (hR : Γ ⊢[PRAAx] le one R) : Γ ⊢[PRAAx] le one (pw R k) := by
   have h := AnalyticNumberTheory.Valuation.pw_pos' (Analysis.RationalIntegerNormalization.positive_form hR) k
@@ -119,10 +111,7 @@ def weightedErrors (F G N D δ : PTm n) : Fm PTm n :=
     bounded (sub (entry (Syn.shift G) (succ (var 0))) (entry (Syn.shift F) (succ (var 0))))
       (pw (Syn.shift D) (succ (var 0))*Syn.shift δ))
 
-@[simp] theorem subst_weightedErrors {m : ℕ} (σ : Fin n → PTm m) (F G N D δ : PTm n) :
-    (weightedErrors F G N D δ).subst σ = weightedErrors (Syn.subst σ F) (Syn.subst σ G)
-      (Syn.subst σ N) (Syn.subst σ D) (Syn.subst σ δ) := by
-  simp [weightedErrors,Syn.subst_shift,Syn.shift_subst]
+ipra_subst weightedErrors [Syn.subst_shift, Syn.shift_subst]
 
 theorem weighted_error_at (F G N D δ j : PTm n)
     (h : Γ ⊢[PRAAx] weightedErrors F G N D δ) (hj : Γ ⊢[PRAAx] lt j N) :
@@ -167,10 +156,7 @@ theorem bounded_of_equal {a b R : PTm n} (h : Γ ⊢[PRAAx] equal a b)
 def prefixBound (F G z N D R δ k : PTm n) : Fm PTm n :=
   le k N ⟶ bounded (residual F G z (succ k)) (budget D R δ k)
 
-@[simp] theorem subst_prefixBound {m : ℕ} (σ : Fin n → PTm m) (F G z N D R δ k : PTm n) :
-    (prefixBound F G z N D R δ k).subst σ = prefixBound (Syn.subst σ F) (Syn.subst σ G)
-      (Syn.subst σ z) (Syn.subst σ N) (Syn.subst σ D) (Syn.subst σ R) (Syn.subst σ δ) (Syn.subst σ k) := by
-  simp [prefixBound]
+ipra_subst prefixBound
 
 /-- The prefix proof uses only the actual coefficient comparisons. The
 Horner recurrence and the entire evaluation bound are conclusions. -/
@@ -181,16 +167,14 @@ theorem weighted_horner_bound (F G z N D R δ k : PTm n)
     (hErrors : Γ ⊢[PRAAx] weightedErrors F G N D δ) : Γ ⊢[PRAAx] prefixBound F G z N D R δ k := by
   have all : Γ ⊢[PRAAx] .all (prefixBound (Syn.shift F) (Syn.shift G) (Syn.shift z)
       (Syn.shift N) (Syn.shift D) (Syn.shift R) (Syn.shift δ) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [subst_prefixBound,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_prefixBound]
+    · refine .impI ?_
       have lead := residual_one (Γ := le zero N :: Γ) F G z
         (le_trans (zero_lt_succ N) hF.wk) (le_trans (zero_lt_succ N) hG.wk) hLead.wk
       have l := (normSq_equal lead).eqTrans ComplexLogarithmRemainder.normSq_zero
       have r := (congrMul (budget_zero (Γ := le zero N :: Γ) D R δ) (budget_zero D R δ)).eqTrans (zero_mul zero)
       exact le_congr l.eqSymm r.eqSymm (le_refl zero)
-    · simp only [subst_prefixBound,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    · refine .impI ?_
       let I := prefixBound (Syn.shift F) (Syn.shift G) (Syn.shift z) (Syn.shift N)
         (Syn.shift D) (Syn.shift R) (Syn.shift δ) (var 0)
       let Δ := le (succ (var 0)) (Syn.shift N) :: I :: Γ.map Fm.shift
@@ -227,12 +211,9 @@ def clearBody : PTm 2 := scale (pw (sndT (var 1)) (var 0)) (entry (fstT (var 1))
 def clear (C D : PTm n) : PTm n := sequence clearBody (length C) (clearData C D)
 def H (C z D k : PTm n) : PTm n := horner (clear C D) z k
 
-@[simp] theorem subst_clearData {m : ℕ} (σ : Fin n → PTm m) (C D : PTm n) :
-    Syn.subst σ (clearData C D) = clearData (Syn.subst σ C) (Syn.subst σ D) := by simp [clearData]
-@[simp] theorem subst_clear {m : ℕ} (σ : Fin n → PTm m) (C D : PTm n) :
-    Syn.subst σ (clear C D) = clear (Syn.subst σ C) (Syn.subst σ D) := by simp [clear]
-@[simp] theorem subst_H {m : ℕ} (σ : Fin n → PTm m) (C z D k : PTm n) :
-    Syn.subst σ (H C z D k) = H (Syn.subst σ C) (Syn.subst σ z) (Syn.subst σ D) (Syn.subst σ k) := by simp [H]
+ipra_subst clearData
+ipra_subst clear
+ipra_subst H
 
 theorem clear_body_at (C D i : PTm n) : Γ ⊢[PRAAx]
     inst2 clearBody i (clearData C D) ≐ scale (pw D i) (entry C i) := by
@@ -274,9 +255,7 @@ def coefficientErrors (F G N δ : PTm n) : Fm PTm n :=
   .all (lt (var 0) (Syn.shift N) ⟶
     bounded (sub (entry (Syn.shift G) (succ (var 0))) (entry (Syn.shift F) (succ (var 0)))) (Syn.shift δ))
 
-@[simp] theorem subst_coefficientErrors {m : ℕ} (σ : Fin n → PTm m) (F G N δ : PTm n) :
-    (coefficientErrors F G N δ).subst σ = coefficientErrors (Syn.subst σ F) (Syn.subst σ G)
-      (Syn.subst σ N) (Syn.subst σ δ) := by simp [coefficientErrors,Syn.subst_shift,Syn.shift_subst]
+ipra_subst coefficientErrors [Syn.subst_shift, Syn.shift_subst]
 
 theorem coefficient_error_at (F G N δ j : PTm n)
     (h : Γ ⊢[PRAAx] coefficientErrors F G N δ) (hj : Γ ⊢[PRAAx] lt j N) :

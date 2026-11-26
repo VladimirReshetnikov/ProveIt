@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedEulerUnitKernelAtTime
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedEulerUnitKernel (nameF data lipschitz encodedData)
 open GaussianEulerIntegrandName (coefficient powerF powerData powerExponentF powerExponentData powerRadius)
 open GaussianUnitIntervalInputDecoding (numerator denominator)
@@ -27,9 +27,6 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalDistanceOrder (distance_triangle_same distance_radius_mono)
 open GaussianRationalHorner (positive_product)
 open GaussianNamedInverseRate (independentRate)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -37,11 +34,8 @@ def source (f : PR 2) (x z R B a b E : PTm n) : Fm PTm n :=
   GaussianNamedEulerUnitKernel.source f x z R B E ⋏ GaussianNamedEulerUnitOuterLogRate.source f x a b E
 def budget (R E : PTm n) : PTm n := (lipschitz R E+two)+(lipschitz R E+two)
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x z R B a b E : PTm n) :
-    (source f x z R B a b E).subst σ = source f (Syn.subst σ x) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ E) := by simp [source]
-@[simp] theorem subst_budget {m : ℕ} (σ : Fin n → PTm m) (R E : PTm n) :
-    Syn.subst σ (budget R E) = budget (Syn.subst σ R) (Syn.subst σ E) := by simp [budget]
+ipra_subst source
+ipra_subst budget
 
 private theorem coefficient_samples (z R B E : PTm n) (h : Γ ⊢[PRAAx] GaussianEulerExponentCompactBounds.source z R B E) :
     Γ ⊢[PRAAx] GaussianNamedMultiplyRate.sampleBound constantF (coefficient z B) (R+one) := by

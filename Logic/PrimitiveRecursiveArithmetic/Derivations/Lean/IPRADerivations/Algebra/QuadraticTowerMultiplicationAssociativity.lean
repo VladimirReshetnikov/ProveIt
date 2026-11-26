@@ -15,7 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationAssociativity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis
 open QuadraticTowerCoefficients (width singleton)
 open QuadraticTowerArrayCodec (arrayHeight horizon code normalized)
@@ -25,15 +25,11 @@ open QuadraticTowerMultiplicationTable (lookup budget recipe leftHalf rightHalf)
 open QuadraticTowerMultiplicationHeight (radicandsHeight word cap state)
 open LeanProofs.IPRA.Foundations.BoundedSyntax (BFm formula)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def productHeight (h b : PTm n) : PTm n := growth (QuadraticTowerGrowth.path h) b
-@[simp] theorem subst_productHeight {k : ℕ} (σ : Fin n → PTm k) (h b : PTm n) :
-    Syn.subst σ (productHeight h b) = productHeight (Syn.subst σ h) (Syn.subst σ b) := by simp [productHeight]
+ipra_subst productHeight
 
 def rowLaw (h B D T b u v w : PTm n) : Fm PTm n := le (productHeight h b) B ⟶ radicandsHeight D h b ⟶
   arrayHeight h (word h b u) b ⟶ arrayHeight h (word h b v) b ⟶ arrayHeight h (word h b w) b ⟶
@@ -51,9 +47,7 @@ def atHeight (h B D T b : PTm n) : Fm PTm n := .all
 def localLaw (h B D T : PTm n) : Fm PTm n := .all
   (lt (var 0) (succ (Syn.shift B)) ⟶ atHeight (Syn.shift h) (Syn.shift B)
     (Syn.shift D) (Syn.shift T) (var 0))
-@[simp] theorem subst_rowLaw {k : ℕ} (σ : Fin n → PTm k) (h B D T b u v w : PTm n) :
-    (rowLaw h B D T b u v w).subst σ = rowLaw (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D)
-      (Syn.subst σ T) (Syn.subst σ b) (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ w) := by simp [rowLaw]
+ipra_subst rowLaw
 @[simp] theorem subst_atSecond {k : ℕ} (σ : Fin n → PTm k) (h B D T b u v : PTm n) :
     (atSecond h B D T b u v).subst σ = atSecond (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D)
       (Syn.subst σ T) (Syn.subst σ b) (Syn.subst σ u) (Syn.subst σ v) := by
@@ -69,9 +63,7 @@ def localLaw (h B D T : PTm n) : Fm PTm n := .all
       (Syn.subst σ T) (Syn.subst σ b) := by
   simp [atHeight,Syn.subst_shift,Syn.shift_subst]
   simp only [Syn.shift,QuadraticTowerArrayCodec.subst_horizon,Syn.subst_subst]
-@[simp] theorem subst_localLaw {k : ℕ} (σ : Fin n → PTm k) (h B D T : PTm n) :
-    (localLaw h B D T).subst σ = localLaw (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ T) := by
-  simp [localLaw,Syn.subst_shift,Syn.shift_subst]
+ipra_subst localLaw [Syn.subst_shift, Syn.shift_subst]
 
 def rowSyntax (h B D T b u v w : PTm n) : BFm n := .imp (.le (productHeight h b) B)
   (.imp (QuadraticTowerMultiplicationHeight.radicandsSyntax D h b)
@@ -175,15 +167,9 @@ def firstProduct (h K T d a b c e : PTm n) : PTm n := added h (lookup h K T a c)
 def secondProduct (h K T a b c e : PTm n) : PTm n := added h (lookup h K T a e) (lookup h K T b c)
 def pairProduct (h K T d a b c e : PTm n) : PTm n := Foundations.SequenceComposition.append
   (firstProduct h K T d a b c e) (secondProduct h K T a b c e)
-@[simp] theorem subst_firstProduct {k : ℕ} (σ : Fin n → PTm k) (h K T d a b c e : PTm n) :
-    Syn.subst σ (firstProduct h K T d a b c e) = firstProduct (Syn.subst σ h) (Syn.subst σ K) (Syn.subst σ T) (Syn.subst σ d)
-      (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ e) := by simp [firstProduct]
-@[simp] theorem subst_secondProduct {k : ℕ} (σ : Fin n → PTm k) (h K T a b c e : PTm n) :
-    Syn.subst σ (secondProduct h K T a b c e) = secondProduct (Syn.subst σ h) (Syn.subst σ K) (Syn.subst σ T)
-      (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ e) := by simp [secondProduct]
-@[simp] theorem subst_pairProduct {k : ℕ} (σ : Fin n → PTm k) (h K T d a b c e : PTm n) :
-    Syn.subst σ (pairProduct h K T d a b c e) = pairProduct (Syn.subst σ h) (Syn.subst σ K) (Syn.subst σ T) (Syn.subst σ d)
-      (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ e) := by simp [pairProduct]
+ipra_subst firstProduct
+ipra_subst secondProduct
+ipra_subst pairProduct
 
 theorem recipe_pair (h B T D A C : PTm n) : Γ ⊢[PRAAx] recipe h B T D A C ≐
     pairProduct h (budget h B D) T (entry D h) (leftHalf h A) (rightHalf h A) (leftHalf h C) (rightHalf h C) := .eqRefl _
@@ -508,9 +494,7 @@ theorem local_congr {h h' B B' D D' T T' : PTm n} (hh : Γ ⊢[PRAAx] h ≐ h')
 def forwardLaw (H B D t : PTm n) : Fm PTm n := le t H ⟶ localLaw t (cap H B t D) D (state H B t D)
 def forwardSyntax (H B D t : PTm n) : BFm n := .imp (.le t H)
   (localSyntax t (cap H B t D) D (state H B t D))
-@[simp] theorem subst_forwardLaw {k : ℕ} (σ : Fin n → PTm k) (H B D t : PTm n) :
-    (forwardLaw H B D t).subst σ = forwardLaw (Syn.subst σ H) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ t) := by
-  simp [forwardLaw]
+ipra_subst forwardLaw
 theorem forward_formula (H B D t : PTm n) : formula (forwardSyntax H B D t) = forwardLaw H B D t := by
   simp [forwardSyntax,forwardLaw,formula,local_formula,BFm.le,le]
 
@@ -598,28 +582,22 @@ def output (h b D A C E : PTm n) : PTm n := pairT
       (productHeight h b))
 def outputF : PR 6 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5))
 def run (h b D A C E : PTm n) : PTm n := PTm.app outputF ![h,b,D,A,C,E]
-@[simp] theorem subst_output {k : ℕ} (σ : Fin n → PTm k) (h b D A C E : PTm n) :
-    Syn.subst σ (output h b D A C E) = output (Syn.subst σ h) (Syn.subst σ b) (Syn.subst σ D) (Syn.subst σ A) (Syn.subst σ C) (Syn.subst σ E) := by simp [output]
-@[simp] theorem subst_run {k : ℕ} (σ : Fin n → PTm k) (h b D A C E : PTm n) :
-    Syn.subst σ (run h b D A C E) = run (Syn.subst σ h) (Syn.subst σ b) (Syn.subst σ D) (Syn.subst σ A) (Syn.subst σ C) (Syn.subst σ E) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (h b D A C E : PTm n) : Γ ⊢[PRAAx] run h b D A C E ≐ output h b D A C E := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) ![h,b,D,A,C,E]
 theorem returned_left (h b D A C E : PTm n) : Γ ⊢[PRAAx] fstT (run h b D A C E) ≐
     QuadraticTowerMultiplicationTable.query h (productHeight h b) D (QuadraticTowerMultiplicationTable.query h (productHeight h b) D A C) E :=
-  (congrFst (program_at _ _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _ _ _).fstE
 theorem returned_tail (h b D A C E : PTm n) : Γ ⊢[PRAAx] sndT (run h b D A C E) ≐
     pairT (QuadraticTowerMultiplicationTable.query h (productHeight h b) D A (QuadraticTowerMultiplicationTable.query h (productHeight h b) D C E)) (productHeight h b) :=
-  (congrSnd (program_at _ _ _ _ _ _)).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _ _ _).sndE
 theorem returned_right (h b D A C E : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run h b D A C E)) ≐
     QuadraticTowerMultiplicationTable.query h (productHeight h b) D A (QuadraticTowerMultiplicationTable.query h (productHeight h b) D C E) :=
-  (congrFst (returned_tail _ _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_tail _ _ _ _ _ _).fstE
 theorem returned_cap (h b D A C E : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run h b D A C E)) ≐ productHeight h b :=
-  (congrSnd (returned_tail _ _ _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_tail _ _ _ _ _ _).sndE
 theorem returned_associative (h b D A C E : PTm n)
     (hD : Γ ⊢[PRAAx] radicandsHeight D h b) (ha : Γ ⊢[PRAAx] arrayHeight h A b)
     (hc : Γ ⊢[PRAAx] arrayHeight h C b) (he : Γ ⊢[PRAAx] arrayHeight h E b) : Γ ⊢[PRAAx]

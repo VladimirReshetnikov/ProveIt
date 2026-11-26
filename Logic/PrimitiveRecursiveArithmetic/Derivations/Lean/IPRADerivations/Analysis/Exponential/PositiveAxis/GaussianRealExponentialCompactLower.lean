@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRealExponentialCompactLower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianSignedNameExponentialOrder (realSamples real_sample_at constant_input)
 open GaussianNamedPositiveExponentialOrder (sampleOrder realOrder real_order_at scalar_coordinate_distance)
 open GaussianRadiusExponentialName (input nameF data)
@@ -26,10 +26,6 @@ open GaussianRationalHorner (positive_product canonical)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open RationalValueBounds (upper)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

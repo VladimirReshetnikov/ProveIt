@@ -15,7 +15,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalIntegerLeadingCoefficients
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (code scale oneCode eval_re_code eval_im_code)
 open GaussianBarnesGlaisherQuartic (negativeWeight weightNumerator)
 open GaussianBarnesGlaisherFinite (squareQuarter)
@@ -29,10 +29,6 @@ open GaussianRootAlgebra (equal equal_of_values equal_refl re_add im_add re_scal
 open GaussianRationalReciprocal (qone qone_represents_scaled)
 open GaussianStirlingNames (offset)
 open GaussianStirlingRationalTelescopers (upperValue)
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "neg" => ComplexLogarithmRemainder.neg

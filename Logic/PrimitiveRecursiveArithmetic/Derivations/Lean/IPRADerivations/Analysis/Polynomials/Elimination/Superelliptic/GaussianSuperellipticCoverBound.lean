@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSuperellipticCoverBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
 open LeanProofs.IPRA.Foundations.FiniteCoverAssignment (groupBounds groupSize group_length cover_count)
 open GaussianRationalOriginalSpanRank (proper_subspace_bound)
@@ -22,8 +22,6 @@ open GaussianSuperellipticSubspaceWitness (curveInput points)
 open GaussianSuperellipticCoverMembership
   (data testBody family covered matrix rows group family_at generic_cover pointMembership_groups)
 open GaussianSuperellipticCoverPoints (group_points)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

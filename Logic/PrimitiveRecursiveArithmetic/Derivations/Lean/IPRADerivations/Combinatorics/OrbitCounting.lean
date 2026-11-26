@@ -20,9 +20,7 @@ Not derived: the group axioms behind the fibre bijections, and Pólya's inventor
 
 namespace LeanProofs.IPRA.Combinatorics.OrbitCounting
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
+open_ipra
 
 variable {n s X m : ℕ} {Γ : List (Fm PTm n)}
 
@@ -62,11 +60,9 @@ theorem orbit_stabilizer (T : Fin s → Fin X → ZT n) (o : Fin X → ZT n) (st
     (hfib : ∀ y, Γ ⊢[PRAAx] ZT.eq (ZT.sumFin fun g => T g y) (o y * st)) :
     Γ ⊢[PRAAx] ZT.eq (ZT.natLit s) (ZT.sumFin o * st) := by
   have hrow1 : ∀ g, ∑ y, ZT.toZ Γ (T g y) = 1 := fun g => by
-    have h := ZT.toZ_eq (hrow g)
-    simpa only [ZT.toZ_sumFin, ZT.toZ_natLit, Nat.cast_one] using h
+    simpa only [ZT.toZ_sumFin, ZT.toZ_natLit, Nat.cast_one] using ZT.toZ_eq (hrow g)
   have hfib1 : ∀ y, ∑ g, ZT.toZ Γ (T g y) = ZT.toZ Γ (o y) * ZT.toZ Γ st := fun y => by
-    have h := ZT.toZ_eq (hfib y)
-    simpa only [ZT.toZ_sumFin, ZT.toZ_mul] using h
+    simpa only [ZT.toZ_sumFin, ZT.toZ_mul] using ZT.toZ_eq (hfib y)
   have e := orbit_stabilizer_sum (fun g y => ZT.toZ Γ (T g y)) (fun y => ZT.toZ Γ (o y)) _ hrow1 hfib1
   beta_reduce at e
   apply ZT.derive
@@ -79,11 +75,9 @@ theorem orbit_count (F : Fin s → Fin X → ZT n) (O : Fin X → Fin m → ZT n
     (hc : ∀ c, Γ ⊢[PRAAx] ZT.eq (ZT.sumFin fun x => O x c * ZT.sumFin fun g => F g x) S) :
     Γ ⊢[PRAAx] ZT.eq (ZT.sumFin fun g => ZT.sumFin fun x => F g x) (ZT.natLit m * S) := by
   have hO1 : ∀ x, ∑ c, ZT.toZ Γ (O x c) = 1 := fun x => by
-    have h := ZT.toZ_eq (hO x)
-    simpa only [ZT.toZ_sumFin, ZT.toZ_natLit, Nat.cast_one] using h
+    simpa only [ZT.toZ_sumFin, ZT.toZ_natLit, Nat.cast_one] using ZT.toZ_eq (hO x)
   have hc1 : ∀ c, ∑ x, ZT.toZ Γ (O x c) * ∑ g, ZT.toZ Γ (F g x) = ZT.toZ Γ S := fun c => by
-    have h := ZT.toZ_eq (hc c)
-    simpa only [ZT.toZ_sumFin, ZT.toZ_mul] using h
+    simpa only [ZT.toZ_sumFin, ZT.toZ_mul] using ZT.toZ_eq (hc c)
   have e := orbit_count_sum (fun g x => ZT.toZ Γ (F g x)) (fun x c => ZT.toZ Γ (O x c)) _ hO1 hc1
   beta_reduce at e
   apply ZT.derive

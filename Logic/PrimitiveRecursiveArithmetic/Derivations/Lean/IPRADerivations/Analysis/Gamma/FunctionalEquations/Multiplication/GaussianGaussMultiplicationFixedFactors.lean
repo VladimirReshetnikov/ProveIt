@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationFixedFactors
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode scale)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaGaussDomain (scaledRadius)
@@ -25,9 +25,6 @@ open GaussianGaussMultiplicationPowerPerturbation (rowData)
 open GaussianNameBounds (U)
 open GaussianRationalMetric (bounded)
 open GaussianRootApproximationWitness (pointBounds)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "needed" => GaussianGammaEulerInverseApproximationName.cutoff
@@ -42,23 +39,13 @@ def unitBound : PTm n := eulerBound oneCode one one one
 def powerBound (R m : PTm n) : PTm n :=
   GaussianRadiusExponentialLipschitzRate.factor (GaussianGaussMultiplicationPowerRate.radius R m)
 
-@[simp] theorem subst_scaledEulerData {l : ℕ} (σ : Fin n → PTm l) (z R B m d N : PTm n) :
-    Syn.subst σ (scaledEulerData z R B m d N) =
-      scaledEulerData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ m) (Syn.subst σ d) (Syn.subst σ N) :=
-  by simp [scaledEulerData]
-@[simp] theorem subst_unitEulerData {l : ℕ} (σ : Fin n → PTm l) (m N : PTm n) :
-    Syn.subst σ (unitEulerData m N) = unitEulerData (Syn.subst σ m) (Syn.subst σ N) :=
-  by simp [unitEulerData,one]
-@[simp] theorem subst_eulerBound {l : ℕ} (σ : Fin n → PTm l) (z R B d : PTm n) :
-    Syn.subst σ (eulerBound z R B d) = eulerBound (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ d) :=
-  by simp [eulerBound]
-@[simp] theorem subst_scaledBound {l : ℕ} (σ : Fin n → PTm l) (z R B m d : PTm n) :
-    Syn.subst σ (scaledBound z R B m d) = scaledBound (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ m) (Syn.subst σ d) :=
-  by simp [scaledBound]
+ipra_subst scaledEulerData
+ipra_subst unitEulerData [one]
+ipra_subst eulerBound
+ipra_subst scaledBound
 @[simp] theorem subst_unitBound {l : ℕ} (σ : Fin n → PTm l) : Syn.subst σ (unitBound : PTm n) = unitBound :=
   by simp [unitBound,one]
-@[simp] theorem subst_powerBound {l : ℕ} (σ : Fin n → PTm l) (R m : PTm n) :
-    Syn.subst σ (powerBound R m) = powerBound (Syn.subst σ R) (Syn.subst σ m) := by simp [powerBound]
+ipra_subst powerBound
 
 theorem euler_bound_at (s p z R B a d N : PTm n) (h : Γ ⊢[PRAAx] GaussianGammaReciprocalInverse.source z R B a d)
     (hn : Γ ⊢[PRAAx] le (needed s R a d) N) :

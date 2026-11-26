@@ -18,7 +18,7 @@ set_option maxHeartbeats 1100000
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerFactorSum
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianLogGammaEulerHead (rowBody rowData row_at sumData)
 open GaussianEuclideanDistanceName (pointCN subst_pointCN)
 open GaussianNameArithmetic (addF addData add_fast)
@@ -32,9 +32,6 @@ open GaussianNamedGammaHalfShift (add_cross)
 open GaussianPositiveRationalLogarithm (logF)
 open GaussianRightHalfPlaneLogarithm (source)
 open GaussianRationalHorner (positive_product)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "G" => GaussianRightHalfPlaneLogarithm.nameF

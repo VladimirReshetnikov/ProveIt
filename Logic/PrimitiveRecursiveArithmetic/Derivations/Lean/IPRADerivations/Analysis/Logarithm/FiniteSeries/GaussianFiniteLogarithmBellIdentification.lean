@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Logarithm.FiniteSeries.GaussianFiniteLogarithmCoefficientRecursion
 import IPRADerivations.Analysis.Logarithm.FiniteSeries.GaussianFiniteLogarithmLinearRecursion
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Literal finite exponential coefficients are the original Bell coefficients
@@ -17,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmBellIdentification
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (ofGaussian represents canonical canonical_unique)
 open GaussianRationalSyntheticDivision (qone qone_canonical qzero_canonical canonicalCoefficients rescale_to)
 open GaussianRationalLowCoefficientConvolution (exponentCoefficient)
@@ -27,10 +26,6 @@ open GaussianRationalCoefficientRecursion (prefixEqual)
 open GaussianRationalEulerCoefficients (euler)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -39,10 +34,8 @@ def signedFraction (c D : PTm n) : PTm n :=
 def bellValue (e : PTm n) : PTm n := signedFraction
   (fstT (ap1 LogarithmExponentialCoefficients.rationalCoefficientF e))
   (sndT (ap1 LogarithmExponentialCoefficients.rationalCoefficientF e))
-@[simp] theorem subst_signedFraction {l : ℕ} (σ : Fin n → PTm l) (c D : PTm n) :
-    Syn.subst σ (signedFraction c D) = signedFraction (Syn.subst σ c) (Syn.subst σ D) := by simp [signedFraction]
-@[simp] theorem subst_bellValue {l : ℕ} (σ : Fin n → PTm l) (e : PTm n) :
-    Syn.subst σ (bellValue e) = bellValue (Syn.subst σ e) := by simp [bellValue]
+ipra_subst signedFraction
+ipra_subst bellValue
 theorem signed_fraction_congr {c c' D D' : PTm n} (hc : Γ ⊢[PRAAx] c ≐ c') (hD : Γ ⊢[PRAAx] D ≐ D') :
     Γ ⊢[PRAAx] signedFraction c D ≐ signedFraction c' D' := by
   ipra_congr (signedFraction (var 0) (var 1) : PTm 2) with [hc, hD]
@@ -53,8 +46,8 @@ theorem bell_congr {e f : PTm n} (h : Γ ⊢[PRAAx] e ≐ f) : Γ ⊢[PRAAx] bel
 theorem bell_formula (e : PTm n) : Γ ⊢[PRAAx] bellValue e ≐
     signedFraction (LogarithmExponentialCoefficients.coefficientCode e) (fact e) :=
   signed_fraction_congr
-    ((congrFst (LogarithmExponentialCoefficients.rationalCoefficient_at e)).eqTrans (fst_pair _ _))
-    ((congrSnd (LogarithmExponentialCoefficients.rationalCoefficient_at e)).eqTrans (snd_pair _ _))
+    (LogarithmExponentialCoefficients.rationalCoefficient_at e).fstE
+    (LogarithmExponentialCoefficients.rationalCoefficient_at e).sndE
 
 theorem signed_fraction_one (c D : PTm n) (hD : Γ ⊢[PRAAx] le one D)
     (hc : Γ ⊢[PRAAx] ZT.eq (LogarithmExponentialCoefficients.value c) (ZT.ofNat D)) :
@@ -79,9 +72,8 @@ theorem signed_fraction_zero (c D : PTm n) (hD : Γ ⊢[PRAAx] le one D)
   have native : Γ ⊢[PRAAx] GaussianRootAlgebra.equal
       (ComplexLogarithmRemainder.code (LogarithmExponentialCoefficients.value c) (ZT.ofNat zero))
       ComplexLogarithmRemainder.zeroCode := by
-    have h := ZT.toZ_eq hc
     apply GaussianRootAlgebra.equal_of_values
-    · simpa [ComplexLogarithmRemainder.eval_re_code,GaussianRootAlgebra.re_zero,ZT.toZ_natLit] using h
+    · simpa [ComplexLogarithmRemainder.eval_re_code,GaussianRootAlgebra.re_zero,ZT.toZ_natLit] using ZT.toZ_eq hc
     · simp only [ComplexLogarithmRemainder.eval_im_code,GaussianRootAlgebra.im_zero,ZT.toZ_ofNat,Q.mk_zero,map_zero]
   exact canonical_unique _ _ _ D (GaussianRationalHorner.ofGaussian_canonical _ _ hD) qzero_canonical hD
     (GaussianRationalHorner.represents_congr (.eqRefl _) native (.eqRefl _)
@@ -138,19 +130,17 @@ def bellF : PR 1 := PTm.toPR (bellValue (var 0))
 def output (d K e : PTm n) : PTm n := pairT (composition d K) (bellValue e)
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (d K e : PTm n) : PTm n := ap3 outputF d K e
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (d K e : PTm n) :
-    Syn.subst σ (output d K e) = output (Syn.subst σ d) (Syn.subst σ K) (Syn.subst σ e) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (d K e : PTm n) :
-    Syn.subst σ (run d K e) = run (Syn.subst σ d) (Syn.subst σ K) (Syn.subst σ e) := by simp [run]
+ipra_subst output
+ipra_subst run
 
 theorem bell_program_at (e : PTm n) : Γ ⊢[PRAAx] ap1 bellF e ≐ bellValue e := by
   simpa [bellF,ap1] using toPR_eq (Γ := Γ) (bellValue (var 0) : PTm 1) ![e]
 theorem program_at (d K e : PTm n) : Γ ⊢[PRAAx] run d K e ≐ output d K e := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![d,K,e]
 theorem returned_composition (d K e : PTm n) : Γ ⊢[PRAAx] fstT (run d K e) ≐ composition d K :=
-  (congrFst (program_at d K e)).eqTrans (fst_pair _ _)
+  (program_at d K e).fstE
 theorem returned_bell (d K e : PTm n) : Γ ⊢[PRAAx] sndT (run d K e) ≐ bellValue e :=
-  (congrSnd (program_at d K e)).eqTrans (snd_pair _ _)
+  (program_at d K e).sndE
 theorem returned_identification (d K e : PTm n) (he : Γ ⊢[PRAAx] le e d) (hK : Γ ⊢[PRAAx] le e K) : Γ ⊢[PRAAx]
     exponentCoefficient (fstT (run d K e)) (K*d) e ≐ sndT (run d K e) :=
   (GaussianRationalPolynomialExponentialStability.exponent_congr (returned_composition d K e) (.eqRefl _) (.eqRefl _)).eqTrans

@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingCubicCell
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit)
 open GaussianEulerPositivePowerChartCorrectedImage (fraction_sum)
 open GaussianPositiveRationalLogarithm (fraction)
@@ -29,10 +29,6 @@ open GaussianStirlingRationalTelescopers (firstTerm geometricMain gap denominato
 open GaussianStirlingTailComparison (point_add_order point_order_refl)
 open RationalArgmin (rationalLE rationalLE_congr)
 open RationalValueBounds (upper upper_congr upper_order_left)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -54,17 +50,11 @@ def marginDenominator (a b : PTm n) : PTm n :=
   num 45*cube (gap a b)*denominatorSquare a b*denominatorSquare a b
 def margin (a b : PTm n) : PTm n := fraction (marginNumerator a b) (marginDenominator a b)
 
-@[simp] theorem subst_cube {l : ℕ} (σ : Fin n → PTm l) (a : PTm n) :
-    Syn.subst σ (cube a) = cube (Syn.subst σ a) := by simp [cube]
-@[simp] theorem subst_fourth {l : ℕ} (σ : Fin n → PTm l) (a : PTm n) :
-    Syn.subst σ (fourth a) = fourth (Syn.subst σ a) := by simp [fourth]
-@[simp] theorem subst_cubicValue {l : ℕ} (σ : Fin n → PTm l) (a b : PTm n) :
-    Syn.subst σ (cubicValue a b) = cubicValue (Syn.subst σ a) (Syn.subst σ b) := by simp [cubicValue]
-@[simp] theorem subst_correctedCell {l : ℕ} (σ : Fin n → PTm l) (a b : PTm n) :
-    Syn.subst σ (correctedCell a b) = correctedCell (Syn.subst σ a) (Syn.subst σ b) := by simp [correctedCell,cellCorrection,num,two,one]
-@[simp] theorem subst_margin {l : ℕ} (σ : Fin n → PTm l) (a b : PTm n) :
-    Syn.subst σ (margin a b) = margin (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [margin,marginNumerator,marginDenominator,num]
+ipra_subst cube
+ipra_subst fourth
+ipra_subst cubicValue
+ipra_subst correctedCell [cellCorrection, num, two, one]
+ipra_subst margin [marginNumerator, marginDenominator, num]
 
 theorem cube_positive (a : PTm n) (h : Γ ⊢[PRAAx] le one a) : Γ ⊢[PRAAx] le one (cube a) :=
   positive_product _ _ (positive_product _ _ h h) h

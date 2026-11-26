@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerEtaToOneRowBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerEtaToOneRootGrid (root rootDen time timeDen totalWidth rightTime right_guard)
 open GaussianEulerLowerTailPartition (offset panelWidth root_step_exact exact_panel_width)
 open GaussianEulerLowerTailLocalComparison (index index_in_panel panel_gap native_gap native_inside uniform_value)
@@ -27,10 +27,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianGammaIntegralCutoffs (height)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaFoldedC9Bound
 import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaExactTailDisk
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerConvergence
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The quantitative C11 rate of the original folded Weierstrass products
@@ -18,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaWeierstrassConvergence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaFiniteApproximantName (pF pData)
 open GaussianGammaFoldedC9Bound (tail_input tailRadius tailData negativeExpF negativeExpData)
 open GaussianNameRingLaws (negativeF negativeData)
@@ -31,18 +30,13 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNamedSmallPerturbationTransport (correctionSamples budgetNumerator budgetDenominator denominator_positive)
 open GaussianGammaC9Bound (majorant)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 
 def source (z R B N : PTm n) : Fm PTm n := GaussianGammaCanonicalExponent.source z R B ⋏
   (le (two*R) N ⋏ le (R*R) N)
-@[simp] theorem subst_source {l : ℕ} (σ : Fin n → PTm l) (z R B N : PTm n) :
-    (source z R B N).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [source]
+ipra_subst source
 
 theorem folded_source (z R B N : PTm n) (h : Γ ⊢[PRAAx] source z R B N) :
     Γ ⊢[PRAAx] GaussianGammaFoldedMajorantExponent.input z R B N := .andI h.andE₁ h.andE₂.andE₁
@@ -52,8 +46,7 @@ theorem local_source (z R B N : PTm n) (h : Γ ⊢[PRAAx] source z R B N) :
 
 def negativeTailF : PR 2 := negativeF GaussianGammaCanonicalTailName.pointF
 def negativeTailData (z R B N : PTm n) : PTm n := negativeData (tailData z R B N)
-@[simp] theorem subst_negativeTailData {l : ℕ} (σ : Fin n → PTm l) (z R B N : PTm n) :
-    Syn.subst σ (negativeTailData z R B N) = negativeTailData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [negativeTailData]
+ipra_subst negativeTailData
 
 theorem negative_tail_regular (z R B N : PTm n) (h : Γ ⊢[PRAAx] source z R B N) :
     Γ ⊢[PRAAx] pointCN negativeTailF (negativeTailData z R B N) :=
@@ -125,10 +118,8 @@ theorem observation_error (p q z R B N : PTm n) (h : Γ ⊢[PRAAx] source z R B 
 
 def rate (R : PTm n) : PTm n := num 3*majorant R*(R*R)
 def cutoff (p R : PTm n) : PTm n := two*R+R*R+rate R*unit (succ p)
-@[simp] theorem subst_rate {l : ℕ} (σ : Fin n → PTm l) (R : PTm n) :
-    Syn.subst σ (rate R) = rate (Syn.subst σ R) := by simp [rate]
-@[simp] theorem subst_cutoff {l : ℕ} (σ : Fin n → PTm l) (p R : PTm n) :
-    Syn.subst σ (cutoff p R) = cutoff (Syn.subst σ p) (Syn.subst σ R) := by simp [cutoff]
+ipra_subst rate
+ipra_subst cutoff
 
 theorem cutoff_guards (p R : PTm n) : Γ ⊢[PRAAx]
     le (two*R) (cutoff p R) ⋏ (le (R*R) (cutoff p R) ⋏ le (rate R*unit (succ p)) (cutoff p R)) := by
@@ -161,11 +152,8 @@ def observation (p z R B : PTm n) : PTm n := ap2 pF (succ p) (pData z B (cutoff 
 def data (z R B : PTm n) : PTm n := pairT z (pairT R B)
 def nameF : PR 2 := PTm.toPR (observation (var 0) (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))) : PTm 2)
 def sample (p z R B : PTm n) : PTm n := ap2 nameF p (data z R B)
-@[simp] theorem subst_observation {l : ℕ} (σ : Fin n → PTm l) (p z R B : PTm n) :
-    Syn.subst σ (observation p z R B) = observation (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) := by
-  simp only [observation,subst_ap2,ConciseIPRA.PTm.subst_succ,GaussianGammaFoldedC9Bound.subst_pData,subst_cutoff]
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (z R B : PTm n) :
-    Syn.subst σ (data z R B) = data (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) := by simp [data]
+ipra_subst observation
+ipra_subst data
 
 theorem observation_congr {p p' z z' R R' B B' : PTm n}
     (hp : Γ ⊢[PRAAx] p ≐ p') (hz : Γ ⊢[PRAAx] z ≐ z') (hR : Γ ⊢[PRAAx] R ≐ R') (hB : Γ ⊢[PRAAx] B ≐ B') :
@@ -179,8 +167,8 @@ theorem sample_at (p z R B : PTm n) : Γ ⊢[PRAAx] sample p z R B ≐ observati
     simpa only [sample,nameF,ap2,subst_observation,subst_fstT,subst_sndT,Syn.subst_var,
       Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.head_cons] using raw
   have tail := snd_pair (Γ := Γ) z (pairT R B)
-  exact e.eqTrans (observation_congr (.eqRefl _) (fst_pair _ _) ((congrFst tail).eqTrans (fst_pair _ _))
-    ((congrSnd tail).eqTrans (snd_pair _ _)))
+  exact e.eqTrans (observation_congr (.eqRefl _) (fst_pair _ _) tail.fstE
+    tail.sndE)
 
 theorem named_equivalence (z R B : PTm n) (h : Γ ⊢[PRAAx] GaussianGammaCanonicalExponent.source z R B) :
     Γ ⊢[PRAAx] crossEquivalent nameF GaussianGammaC7Name.nameF (data z R B) (GaussianGammaC7Name.data z R B) := by

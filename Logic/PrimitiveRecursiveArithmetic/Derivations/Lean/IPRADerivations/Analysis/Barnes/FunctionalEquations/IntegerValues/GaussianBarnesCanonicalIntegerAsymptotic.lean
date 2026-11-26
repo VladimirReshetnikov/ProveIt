@@ -17,7 +17,7 @@ set_option maxHeartbeats 1350000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalIntegerAsymptotic
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalIntegerLogarithm (barnesLogData barnes_regular factorialLogData weightedF weightedData
   weighted_regular original_prefix_sum)
 open GaussianBarnesGlaisherFinite (squareQuarter)
@@ -35,10 +35,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalNaturalScale (naturalPoint)
 open GaussianStirlingGammaLogarithm (logGammaF log_gamma_regular)
 open GaussianStirlingCubicCell (cube cube_positive)
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "L" => GaussianBarnesCanonicalPositiveLogarithm.nameF

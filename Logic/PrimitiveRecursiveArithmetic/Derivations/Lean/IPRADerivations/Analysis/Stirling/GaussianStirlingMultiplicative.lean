@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingMultiplicative
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaAdjacentCutoff (multiply_cross)
@@ -31,9 +31,6 @@ open GaussianStirlingNames (logGammaF logGammaData log_gamma_regular source poin
 open GaussianStirlingLogDuplication (exponential_sum exponential_gamma exponential_regular)
 open GaussianStirlingMultiplicativeAlgebra (remainderF remainderData remainder_regular normalizationSumF normalizationSumData
   normalization_sum_regular normalizationF normalizationData normalization_regular logarithmic_cancellation)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "E" => GaussianRadiusExponentialName.nameF

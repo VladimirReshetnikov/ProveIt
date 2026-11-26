@@ -16,17 +16,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitLogarithmicMargin
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
 open RationalHarmonicInterval (horizon)
 open GaussianRationalHorner (represents represents_congr positive_product)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianHarmonicLogarithmName (clock)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -39,22 +35,15 @@ def numerator (p a b : PTm n) : PTm n :=
 def timeF : PR 2 := GaussianHarmonicLogarithmName.nameF
 def timeData (a b : PTm n) : PTm n := GaussianHarmonicLogarithmName.data b a
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    (source a b).subst σ = source (Syn.subst σ a) (Syn.subst σ b) := by simp [source]
-@[simp] theorem subst_mesh {m : ℕ} (σ : Fin n → PTm m) (p : PTm n) :
-    Syn.subst σ (mesh p) = mesh (Syn.subst σ p) := by simp [mesh,GammaEulerConstantName.mesh,GammaEulerConstantName.unit]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (p a b : PTm n) :
-    Syn.subst σ (denominator p a b) = denominator (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ b) := by simp [denominator]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (p a b : PTm n) :
-    Syn.subst σ (numerator p a b) = numerator (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ b) := by simp [numerator,S]
-@[simp] theorem subst_timeData {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (timeData a b) = timeData (Syn.subst σ a) (Syn.subst σ b) := by simp [timeData]
+ipra_subst source
+ipra_subst mesh [GammaEulerConstantName.mesh, GammaEulerConstantName.unit]
+ipra_subst denominator
+ipra_subst numerator [S]
+ipra_subst timeData
 
 theorem denominator_positive (p a b : PTm n) : Γ ⊢[PRAAx] le one (denominator p a b) := GammaEulerMesh.factorial_positive _
 
-theorem gap_positive (a b : PTm n) (h : Γ ⊢[PRAAx] lt a b) : Γ ⊢[PRAAx] le one (monus b a) := by
-  have e := eq_add_of_le (le_of_lt h)
-  exact le_of_add_le_add_right (le_congr (by ipra_ring) (e.eqTrans (add_comm _ _)) h)
+alias gap_positive := Common.one_le_monus_of_lt
 
 /-- The original factorial harmonic numerator satisfies the exact lower
 rectangle bound; only the actual mesh is canceled. -/
@@ -75,13 +64,12 @@ theorem finite_margin (a b Q : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hab : Γ �
   have div := GammaEulerMesh.factorial_quotient u (horizon b a Q) hu (RationalHarmonicInterval.left_horizon b a Q)
   have factor : Γ ⊢[PRAAx] F ≐ (v+Q*g)*quo F u := div.eqSymm.eqTrans (congrMul endpoint.eqSymm (.eqRefl _))
   have lower := AnalyticNumberTheory.LogElementary.log_lower v (Q*g) factor
-  have sumEq := natEq (eq_add_of_le (AnalyticNumberTheory.HarmonicChebyshev.S_mono F vu))
   have lower' : Γ ⊢[PRAAx] le (u*S v F+F*(Q*g)) (u*S u F) :=
     le_congr (congrAdd (congrMul endpoint (.eqRefl _)) (.eqRefl _))
       (congrMul endpoint (congrAp2 (sumF hB) endpoint (.eqRefl F))) lower
   have clear : Γ ⊢[PRAAx] le (F*(Q*g)) (u*d) := by
     dsimp only [d]
-    ipra_le sl lower' with 𝔞(u)*sumEq
+    ipra_le sl lower' with 𝔞(u)*natEq (eq_add_of_le (AnalyticNumberTheory.HarmonicChebyshev.S_mono F vu))
   exact RationalValueBounds.positive_cancel hQ
     (le_congr (by ipra_ring) (by dsimp only [u]; ipra_ring) clear)
 
@@ -144,13 +132,12 @@ theorem numerator_upper (p a b : PTm n) (h : Γ ⊢[PRAAx] source a b) : Γ ⊢[
   let d := monus (S u F) (S v F)
   have hQ : Γ ⊢[PRAAx] le one Q := GammaEulerConstantName.mesh_positive (clock p)
   have vu : Γ ⊢[PRAAx] le v u := le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right Q (le_of_lt h.andE₂))
-  have equation := natEq (eq_add_of_le (AnalyticNumberTheory.HarmonicChebyshev.S_mono F vu))
   have increment := RationalHarmonicIntervalVariation.harmonic_increment u v F vu
   have weak := le_trans increment (add_le_add₂ (le_refl (v*S v F))
     (mul_le_mul_right F (GaussianRationalMonicReconstruction.monus_le_left u v)))
   have delta : Γ ⊢[PRAAx] le (v*d) (u*F) := by
     dsimp only [d]
-    ipra_le sl weak with 𝔞(v)*equation
+    ipra_le sl weak with 𝔞(v)*natEq (eq_add_of_le (AnalyticNumberTheory.HarmonicChebyshev.S_mono F vu))
   have clear : Γ ⊢[PRAAx] le (a*d) (b*F) := RationalValueBounds.positive_cancel hQ
     (le_congr (by dsimp only [u,v]; ipra_ring) (by dsimp only [u,v]; ipra_ring) delta)
   exact le_trans (le_congr (one_mul _) (.eqRefl _) (mul_le_mul_right d h.andE₁)) clear

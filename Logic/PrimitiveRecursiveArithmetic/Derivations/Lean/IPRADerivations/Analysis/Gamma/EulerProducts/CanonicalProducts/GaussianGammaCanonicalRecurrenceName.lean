@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaCanonicalRecurrenceName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianRationalNaturalScale (natScale)
@@ -26,15 +26,11 @@ open GaussianGammaRecurrenceSourceObservations (denominator_positive)
 open GaussianGammaCanonicalRecurrenceTerms (canonicalSum queryFactor)
 open GaussianGammaCanonicalRecurrenceObservations (numerator original_canonical_coefficient_recurrence_error)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def modulus (s : PTm n) : PTm n := succ s*queryFactor (succ s)
-@[simp] theorem subst_modulus {l : ℕ} (σ : Fin n → PTm l) (s : PTm n) :
-    Syn.subst σ (modulus s) = modulus (Syn.subst σ s) := by simp [modulus]
+ipra_subst modulus
 
 theorem regularity_slack (p q t s : PTm n) : Γ ⊢[PRAAx]
     GaussianRationalSlackRemoval.slack (qsub (canonicalSum p (succ s)) (canonicalSum q (succ s)))
@@ -70,12 +66,9 @@ def nameF : PR 2 := GaussianFastValueCut.nameF rawF
 def data (s : PTm n) : PTm n := GaussianFastValueCut.nameData (modulus s) s
 def clock (p s : PTm n) : PTm n := GaussianFastValueCut.exponent (modulus s) p
 def sumSample (p s : PTm n) : PTm n := ap2 nameF p (data s)
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (s : PTm n) :
-    Syn.subst σ (data s) = data (Syn.subst σ s) := by simp [data]
-@[simp] theorem subst_clock {l : ℕ} (σ : Fin n → PTm l) (p s : PTm n) :
-    Syn.subst σ (clock p s) = clock (Syn.subst σ p) (Syn.subst σ s) := by simp [clock]
-@[simp] theorem subst_sumSample {l : ℕ} (σ : Fin n → PTm l) (p s : PTm n) :
-    Syn.subst σ (sumSample p s) = sumSample (Syn.subst σ p) (Syn.subst σ s) := by simp [sumSample]
+ipra_subst data
+ipra_subst clock
+ipra_subst sumSample
 
 theorem raw_at (p s : PTm n) : Γ ⊢[PRAAx] ap2 rawF p s ≐ canonicalSum p (succ s) := by
   simpa [rawF,ap2] using toPR_eq (Γ := Γ) (canonicalSum (var 0) (succ (var 1)) : PTm 2) ![p,s]

@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartImageComparison
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPositivePowerChartImageCuts (data numeratorBody denominatorBody cutF start count denominator)
 open GaussianEulerPositivePowerChartImageLattice (cutData)
 open GaussianEulerPositivePowerChartImageWeights (original_lattice_geometry original_block_width)
@@ -36,9 +36,6 @@ open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianCoefficientNameBounds (unit_positive)
 open GaussianReciprocalHorner (qmul_associative)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

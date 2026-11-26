@@ -18,7 +18,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaTwoShiftNamedBinding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
@@ -35,10 +35,6 @@ open GaussianRationalMetric (qsub)
 open GaussianRationalSyntheticDivision (qsub_congr)
 open GaussianSignedNameExponentialOrder (realSamples own_sample_rate)
 open GaussianStirlingGammaLogarithm (logGammaF logGammaData gammaLogMargin log_gamma_regular)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "GF" => GaussianGammaMinimumFreeze.nameF
@@ -69,19 +65,11 @@ def powerBudget (f g h : PR 2) (x y z M : PTm n) : PTm n :=
 
 def budget (f g h : PR 2) (x y z M : PTm n) : PTm n := gammaLogMargin+(gammaLogMargin+powerBudget f g h x y z M)
 
-@[simp] theorem subst_quotientLogData {m : ℕ} (σ : Fin n → PTm m) (f g h : PR 2) (x y z M : PTm n) :
-    Syn.subst σ (quotientLogData f g h x y z M) =
-      quotientLogData f g h (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ z) (Syn.subst σ M) := by
-  simp [quotientLogData,denominatorLogData,powerLogData]
+ipra_subst quotientLogData [denominatorLogData, powerLogData]
 
-@[simp] theorem subst_quotientData {m : ℕ} (σ : Fin n → PTm m) (f g h : PR 2) (x y z M : PTm n) :
-    Syn.subst σ (quotientData f g h x y z M) =
-      quotientData f g h (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ z) (Syn.subst σ M) := by
-  simp [quotientData,GaussianGammaFiniteApproximantName.exponentialInputData]
+ipra_subst quotientData [GaussianGammaFiniteApproximantName.exponentialInputData]
 
-@[simp] theorem subst_budget {m : ℕ} (σ : Fin n → PTm m) (f g h : PR 2) (x y z M : PTm n) :
-    Syn.subst σ (budget f g h x y z M) = budget f g h (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ z) (Syn.subst σ M) := by
-  simp [budget,powerBudget,GaussianNamedUniformRateClosure.productBudget,GaussianStirlingGammaLogarithm.gammaLogMargin,one,two]
+ipra_subst budget [powerBudget, GaussianNamedUniformRateClosure.productBudget, GaussianStirlingGammaLogarithm.gammaLogMargin, one, two]
 
 theorem quotient_log_regular (f g h : PR 2) (x y z M : PTm n) (hs : Γ ⊢[PRAAx] source f g h x y z M) :
     Γ ⊢[PRAAx] pointCN (quotientLogF f g h) (quotientLogData f g h x y z M) :=

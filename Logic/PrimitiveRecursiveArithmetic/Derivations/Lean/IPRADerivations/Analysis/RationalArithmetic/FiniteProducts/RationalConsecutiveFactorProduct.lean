@@ -2,7 +2,6 @@ import IPRADerivations.Analysis.Polynomials.Products.RationalPolynomialProductGa
 import IPRADerivations.Analysis.Polynomials.Products.GaussianRationalPolynomialProductDegree
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianCoefficientNormOrder
 import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalFiniteProduct
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The actual rational polynomial with roots 1 through m
@@ -18,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalConsecutiveFactorProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalGaussianEmbedding (embed embed_add embed_multiply embed_negative embed_one embed_zero scalarOne scalarZero)
 open RationalPolynomialGaussianEmbedding (coefficients coefficient_lookup embed_congr evaluate horner hornerF horner_zero horner_succ)
 open RationalPolynomialProductGaussianEmbedding (product product_length product_evaluation product_embedding)
@@ -28,9 +27,6 @@ open GaussianRationalMonicReduction (singleton singleton_length singleton_lookup
 open GaussianRationalSyntheticBounds (natCode)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (append append_length append_left append_right entry_congr length)
-open ConciseIPRA.PTm (succ zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -44,12 +40,9 @@ def step : PTm 2 := product (var 1) (linear (var 0)) (var 0) one
 def consecutiveF : PR 1 := rec1 initial step
 def consecutive (m : PTm n) : PTm n := ap1 consecutiveF m
 
-@[simp] theorem subst_root {k : ℕ} (σ : Fin n → PTm k) (j : PTm n) :
-    Syn.subst σ (root j) = root (Syn.subst σ j) := by simp [root]
-@[simp] theorem subst_linear {k : ℕ} (σ : Fin n → PTm k) (j : PTm n) :
-    Syn.subst σ (linear j) = linear (Syn.subst σ j) := by simp [linear]
-@[simp] theorem subst_consecutive {k : ℕ} (σ : Fin n → PTm k) (m : PTm n) :
-    Syn.subst σ (consecutive m) = consecutive (Syn.subst σ m) := by simp [consecutive]
+ipra_subst root
+ipra_subst linear
+ipra_subst consecutive
 
 theorem linear_length (j : PTm n) : Γ ⊢[PRAAx] length (linear j) ≐ succ one :=
   (append_length _ _).eqTrans ((congrAdd (singleton_length _) (singleton_length _)).eqTrans
@@ -92,13 +85,9 @@ theorem consecutive_succ (m : PTm n) : Γ ⊢[PRAAx] consecutive (succ m) ≐ pr
 
 theorem consecutive_length (m : PTm n) : Γ ⊢[PRAAx] length (consecutive m) ≐ succ m := by
   have all : Γ ⊢[PRAAx] .all (length (consecutive (var 0)) ≐ succ (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,Foundations.SequenceComposition.subst_length,subst_consecutive,
-        ConciseIPRA.PTm.subst_succ,Syn.subst_var,Syn.inst_zero]
-      exact (congrFst (consecutive_zero (Γ := Γ))).eqTrans (singleton_length scalarOne)
-    · simp only [Fm.subst_eq,Foundations.SequenceComposition.subst_length,subst_consecutive,
-        ConciseIPRA.PTm.subst_succ,Syn.subst_var,Syn.repl_zero]
-      exact (congrFst (consecutive_succ _)).eqTrans ((product_length _ _ _ _).eqTrans
+    ipra_qfind [Foundations.SequenceComposition.subst_length, subst_consecutive]
+    · exact (congrFst (consecutive_zero (Γ := Γ))).eqTrans (singleton_length scalarOne)
+    · exact (congrFst (consecutive_succ _)).eqTrans ((product_length _ _ _ _).eqTrans
         (congrSucc ((add_succ _ zero).eqTrans (congrSucc (add_zero _)))))
   simpa using all.allE m
 
@@ -125,14 +114,11 @@ private theorem product_head (P Q N M : PTm n) : Γ ⊢[PRAAx]
 
 theorem consecutive_head (m : PTm n) : Γ ⊢[PRAAx] embed (entry (consecutive m) zero) ≐ qone := by
   have all : Γ ⊢[PRAAx] .all (embed (entry (consecutive (var 0)) zero) ≐ qone) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,RationalGaussianEmbedding.subst_embed,Foundations.MasterCertificate.subst_entry,
-        subst_consecutive,ConciseIPRA.PTm.subst_zero,GaussianRationalSyntheticDivision.subst_qone,Syn.subst_var,Syn.inst_zero]
-      exact (embed_congr ((entry_congr (consecutive_zero (Γ := Γ)) (.eqRefl zero)).eqTrans
+    ipra_qfind [RationalGaussianEmbedding.subst_embed, Foundations.MasterCertificate.subst_entry, subst_consecutive,
+        GaussianRationalSyntheticDivision.subst_qone]
+    · exact (embed_congr ((entry_congr (consecutive_zero (Γ := Γ)) (.eqRefl zero)).eqTrans
         (singleton_lookup scalarOne))).eqTrans embed_one
-    · simp only [Fm.subst_eq,RationalGaussianEmbedding.subst_embed,Foundations.MasterCertificate.subst_entry,
-        subst_consecutive,ConciseIPRA.PTm.subst_zero,GaussianRationalSyntheticDivision.subst_qone,Syn.subst_var,Syn.repl_zero]
-      have right := (embed_congr (linear_head (Γ := Γ.map Fm.shift) (var 0))).eqTrans embed_one
+    · have right := (embed_congr (linear_head (Γ := Γ.map Fm.shift) (var 0))).eqTrans embed_one
       exact (embed_congr (entry_congr (consecutive_succ _) (.eqRefl zero))).eqTrans
         ((product_head _ _ _ _).eqTrans ((qmul_congr Prf.hyp0 right.wk).eqTrans
           ((GaussianRationalFiniteProduct.raw_one_left qone).eqTrans
@@ -149,8 +135,7 @@ theorem consecutive_evaluation_succ (m z : PTm n) : Γ ⊢[PRAAx]
 
 def rootLaw (j m : PTm n) : Fm PTm n := lt j m ⟶ embed (evaluate (consecutive m) (root j)) ≐ qzero
 
-@[simp] theorem subst_rootLaw {k : ℕ} (σ : Fin n → PTm k) (j m : PTm n) :
-    (rootLaw j m).subst σ = rootLaw (Syn.subst σ j) (Syn.subst σ m) := by simp [rootLaw]
+ipra_subst rootLaw
 
 private theorem root_step (j m : PTm n) (h : Γ ⊢[PRAAx] rootLaw j m) : Γ ⊢[PRAAx] rootLaw j (succ m) := by
   refine .impI (.orE (lt_or_le j m) ?_ ?_)
@@ -167,11 +152,9 @@ private theorem root_step (j m : PTm n) (h : Γ ⊢[PRAAx] rootLaw j m) : Γ ⊢
 theorem consecutive_root (j m : PTm n) (hj : Γ ⊢[PRAAx] lt j m) : Γ ⊢[PRAAx]
     RationalArgmin.rationalEq (evaluate (consecutive m) (root j)) scalarZero := by
   have all : Γ ⊢[PRAAx] .all (rootLaw (Syn.shift j) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_rootLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (lt_zero_absurd _ Prf.hyp0)
-    · simp only [subst_rootLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact root_step _ _ Prf.hyp0
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_rootLaw]
+    · exact .impI (lt_zero_absurd _ Prf.hyp0)
+    · exact root_step _ _ Prf.hyp0
   have atRoot : Γ ⊢[PRAAx] rootLaw j m := by simpa using all.allE m
   exact RationalGaussianEmbedding.rational_equal_of_embed _ _ ((Prf.impE atRoot hj).eqTrans embed_zero.eqSymm)
 

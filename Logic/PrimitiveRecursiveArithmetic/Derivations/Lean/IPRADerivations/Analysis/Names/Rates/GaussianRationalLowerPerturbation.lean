@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalLowerBounds
 import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianCoordinateRadius
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Exact lower bounds from finite Gaussian rational observations
@@ -15,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalLowerPerturbation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalLowerBounds (lower lower_from_representation lower_to_cleared)
 open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (bounded distanceBounded bounded_difference_iff bounded_to_cleared)
@@ -25,9 +24,6 @@ open GaussianRootAlgebra (sub re_sub re_scale re_one)
 open ComplexLogarithmRemainder (re im normSq scale oneCode)
 open LeanProofs.IPRA.Foundations.GapDecision (zabs zabs_congr zabs_tri)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

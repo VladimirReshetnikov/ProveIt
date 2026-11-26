@@ -15,7 +15,7 @@ set_option maxHeartbeats 750000
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineProductImaginaryHyperbolicProductRuleAlgebra
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianPiRationalScale (point point_add point_bound)
 open GaussianNameArithmetic (sum_difference)
 open GaussianRationalDistanceOrder (distance_congr)
@@ -31,8 +31,6 @@ open GaussianSineProductImaginaryFirstOrder (step)
 open GaussianSineProductImaginaryFirstOrderBound (derivative_bound derivativeBound finite_error bound)
 open GaussianSineProductImaginaryLogDerivative (product derivative)
 open GaussianSineProductImaginaryLogDerivativeTail (rational_real_bound)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,10 +40,7 @@ def tangent (pi A B N : PTm n) : PTm n := qmul pi (qadd (product A B N) (qmul (p
 
 def residualBound (R : PTm n) : PTm n := R*bound R+derivativeBound R
 
-@[simp] theorem subst_residualBound {m : ℕ} (σ : Fin n → PTm m) (R : PTm n) :
-    Syn.subst σ (residualBound R) = residualBound (Syn.subst σ R) := by
-  simp [residualBound,bound,derivativeBound,GaussianSineProductImaginaryFirstOrderBound.exponent,
-    GaussianSineProductImaginaryFirstOrderBound.forcingBound,GaussianSineProductImaginaryFirstOrderBound.productBound,two]
+ipra_subst residualBound [bound, derivativeBound, GaussianSineProductImaginaryFirstOrderBound.exponent, GaussianSineProductImaginaryFirstOrderBound.forcingBound, GaussianSineProductImaginaryFirstOrderBound.productBound, two]
 
 private theorem rotate_product (a b c : PTm n) : Γ ⊢[PRAAx] qmul (qmul a b) c ≐ qmul b (qmul c a) :=
   (qmul_congr (qmul_commutative a b) (.eqRefl c)).eqTrans

@@ -13,7 +13,7 @@ set_option maxHeartbeats 1500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaRationalWendelBoundary
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode scale zeroCode)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
@@ -35,9 +35,6 @@ open GaussianRationalHorner (qmul qmul_canonical qzero canonical_unique ofGaussi
 open GaussianRationalSyntheticDivision (qmul_congr qmul_zero_left qzero_canonical)
 open GaussianRootAlgebra (equal_of_values re_scale im_scale re_zero im_zero)
 open GaussianStirlingGammaLogarithm (source logGammaF logGammaData log_gamma_regular)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "C" => constantF
@@ -200,9 +197,7 @@ theorem weak_of_endpoint (a b r s : PTm n) (h : Γ ⊢[PRAAx] endpoint a b r s) 
     (GaussianNamedRealOrderTransport.transport _ _ _ _ _ _ _ _ h.andE₂
       (cross_refl _ _ (GaussianNameRingLaws.one_fast z)) oneOrder)
 
-@[simp] theorem subst_endpoint {m : ℕ} (σ : Fin n → PTm m) (a b r s : PTm n) :
-    (endpoint a b r s).subst σ = endpoint (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ r) (Syn.subst σ s) := by
-  simp [endpoint,powerData,relativeData,relativeExponentData,ratioExponentData,fractionalData,GaussianGammaFiniteApproximantName.exponentialInputData]
+ipra_subst endpoint [powerData, relativeData, relativeExponentData, ratioExponentData, fractionalData, GaussianGammaFiniteApproximantName.exponentialInputData]
 
 theorem endpoint_congr (a b r s r' s' : PTm n) (er : Γ ⊢[PRAAx] r ≐ r') (es : Γ ⊢[PRAAx] s ≐ s')
     (h : Γ ⊢[PRAAx] endpoint a b r s) : Γ ⊢[PRAAx] endpoint a b r' s' := by

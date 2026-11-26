@@ -19,7 +19,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaFiniteEulerFactorization
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRationalLowCoefficientConvolution (exponentCoefficient exponent_inside)
@@ -31,10 +31,6 @@ open GaussianGammaEulerHeadLogarithmicKernel (kernel)
 open GaussianGammaEulerHeadPolynomial (polynomial)
 open GaussianGammaReciprocalDegreeCells (degree)
 open LeanProofs.IPRA.Foundations.SequenceComposition (entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -84,14 +80,10 @@ def input (q N L : PTm n) : PTm n := GaussianGammaExponentCoefficientPolynomial.
 def exponential (q N L K : PTm n) : PTm n := GaussianRationalPolynomialExponential.polynomial (input q N L) (degree L) K
 def totalDegree (N L K : PTm n) : PTm n := succ N+K*degree L
 def whole (q N L K : PTm n) : PTm n := product (polynomial N) (exponential q N L K) (succ N) (K*degree L)
-@[simp] theorem subst_input {l : ℕ} (σ : Fin n → PTm l) (q N L : PTm n) :
-    Syn.subst σ (input q N L) = input (Syn.subst σ q) (Syn.subst σ N) (Syn.subst σ L) := by simp [input]
-@[simp] theorem subst_exponential {l : ℕ} (σ : Fin n → PTm l) (q N L K : PTm n) :
-    Syn.subst σ (exponential q N L K) = exponential (Syn.subst σ q) (Syn.subst σ N) (Syn.subst σ L) (Syn.subst σ K) := by simp [exponential]
-@[simp] theorem subst_totalDegree {l : ℕ} (σ : Fin n → PTm l) (N L K : PTm n) :
-    Syn.subst σ (totalDegree N L K) = totalDegree (Syn.subst σ N) (Syn.subst σ L) (Syn.subst σ K) := by simp [totalDegree]
-@[simp] theorem subst_whole {l : ℕ} (σ : Fin n → PTm l) (q N L K : PTm n) :
-    Syn.subst σ (whole q N L K) = whole (Syn.subst σ q) (Syn.subst σ N) (Syn.subst σ L) (Syn.subst σ K) := by simp [whole]
+ipra_subst input
+ipra_subst exponential
+ipra_subst totalDegree
+ipra_subst whole
 
 theorem exponential_kernel_reader (q N L K e : PTm n) (hD : Γ ⊢[PRAAx] le e (degree L))
     (hK : Γ ⊢[PRAAx] le e K) : Γ ⊢[PRAAx]

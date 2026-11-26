@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingHalfStepAlgebra
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale)
 open GaussianRationalHorner (qadd qmul qadd_canonical qadd_represents qmul_represents represents
   canonical_unique represents_congr represents_rescale ofGaussian_represents positive_product)
@@ -25,8 +25,6 @@ open GaussianStirlingDifferenceAlgebra (rawA)
 open GaussianStirlingDuplicationAlgebra (rawResidual)
 open GaussianStirlingGammaLogarithm (arg)
 open GaussianStirlingNames (point offset)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

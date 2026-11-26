@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalNamedApartness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (normSq scale oneCode)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianExponentialReference (unit_monotone)
@@ -39,10 +39,6 @@ open GaussianRationalSyntheticDivision (rescale_to)
 open GaussianStirlingMultiplicativeBoundsLog (fractions_order)
 open RationalArgmin (rationalLE)
 open RationalHarmonicIntervalVariation (gap)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num monus)
 
 export GaussianGammaMinimumGlobalApartness (separationDenominator separation_denominator_positive)
 
@@ -59,11 +55,9 @@ def apart (f : PR 2) (h N y : PTm n) : Fm PTm n :=
 
 def marginDenominator (h : PTm n) : PTm n := num 16*separationDenominator h*separationDenominator h
 
-@[simp] theorem subst_apart {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (h N y : PTm n) :
-    (apart f h N y).subst σ = apart f (Syn.subst σ h) (Syn.subst σ N) (Syn.subst σ y) := by simp [apart]
+ipra_subst apart
 
-@[simp] theorem subst_marginDenominator {m : ℕ} (σ : Fin n → PTm m) (h : PTm n) :
-    Syn.subst σ (marginDenominator h) = marginDenominator (Syn.subst σ h) := by simp [marginDenominator]
+ipra_subst marginDenominator
 
 theorem margin_denominator_positive (h : PTm n) : Γ ⊢[PRAAx] le one (marginDenominator h) := by
   have hd := separation_denominator_positive (Γ := Γ) h

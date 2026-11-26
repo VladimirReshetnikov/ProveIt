@@ -14,7 +14,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaDirichletUniformBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianEulerIntegralGammaIdentification (source)
 open GaussianEulerPositiveScalingConstant (inverseF inverseData)
@@ -29,10 +29,6 @@ open GaussianRationalHorner (canonical canonical_congr)
 open GaussianRationalMetric (bounded qsub)
 open GaussianRationalReciprocal (bounded_sum bound_congr)
 open GaussianRationalSyntheticDivision (qadd_congr qzero_add)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "C" => GaussianGammaZetaDirichletCofinal.nameF
@@ -40,8 +36,7 @@ local notation "cd" => GaussianGammaZetaDirichletCofinal.data
 
 def cap (A : PTm n) : PTm n := budget A+num 6
 
-@[simp] theorem subst_cap {m : ℕ} (σ : Fin n → PTm m) (A : PTm n) :
-    Syn.subst σ (cap A) = cap (Syn.subst σ A) := by simp [cap]
+ipra_subst cap
 
 private theorem block_zero (A : PTm n) : Γ ⊢[PRAAx] block A zero ≐ one :=
   (congrAp2 powF (.eqRefl A) (pw_zero two)).eqTrans (GaussianPolynomialPerturbation.one_power A)

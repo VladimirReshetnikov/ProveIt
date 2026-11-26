@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Elimination.Bivariate.GaussianBivariatePowerExpansion
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalBlockSums
 import IPRADerivations.Analysis.Inequalities.GaussianWeightedMonomialBasis
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The original bivariate power sum on one numerical interval
@@ -15,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBivariateFlatSum
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianBivariatePowerExpansion (bivariateSum rowBody row_body_at data)
 open LeanProofs.IPRA.Analysis.GaussianPolynomialMonicCompanion (values rowShape)
 open LeanProofs.IPRA.Analysis.GaussianPolynomialMultiplicationMatrix (slot)
@@ -30,10 +29,6 @@ open LeanProofs.IPRA.Analysis.GaussianReciprocalHorner (qmul_associative)
 open LeanProofs.IPRA.Analysis.GaussianWeightedMonomialBasis (stride label horizon decodeY decodeX decode_label)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (entry_congr)
-open LeanProofs.IPRA.PTm (monus)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -47,9 +42,7 @@ def flatBody : PTm 2 := flatTerm (fstT (var 1)) (fstT (sndT (var 1))) (fstT (snd
 
 def flatSum (G m a x y : PTm n) : PTm n := sum flatBody (horizon m a) (data G m a x y)
 
-@[simp] theorem subst_flatTerm {l : ℕ} (σ : Fin n → PTm l) (G m a x y h : PTm n) :
-    Syn.subst σ (flatTerm G m a x y h) = flatTerm (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a)
-      (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ h) := by simp [flatTerm,monomialTerm]
+ipra_subst flatTerm [monomialTerm]
 
 private theorem flat_congr {G G' m m' a a' x x' y y' h h' : PTm n}
     (hG : Γ ⊢[PRAAx] G ≐ G') (hm : Γ ⊢[PRAAx] m ≐ m') (ha : Γ ⊢[PRAAx] a ≐ a')
@@ -62,9 +55,9 @@ theorem flat_body_at (G m a x y h : PTm n) : Γ ⊢[PRAAx] inst2 flatBody h (dat
   have second := (congrSnd tail).eqTrans (snd_pair m (pairT a (pairT x y)))
   have third := (congrSnd second).eqTrans (snd_pair a (pairT x y))
   simp only [flatBody,inst2,subst_flatTerm,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
-  exact flat_congr (fst_pair _ _) ((congrFst tail).eqTrans (fst_pair _ _))
-    ((congrFst second).eqTrans (fst_pair _ _)) ((congrFst third).eqTrans (fst_pair _ _))
-    ((congrSnd third).eqTrans (snd_pair _ _)) (.eqRefl _)
+  exact flat_congr (fst_pair _ _) tail.fstE
+    second.fstE third.fstE
+    third.sndE (.eqRefl _)
 
 theorem flat_label_term (G m a x y i j : PTm n) (hj : Γ ⊢[PRAAx] le j a) : Γ ⊢[PRAAx]
     flatTerm G m a x y (label a i j) ≐ monomialTerm G m a x y i j := by

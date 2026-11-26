@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRealExponentialPositiveRepresentative
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalGaussianEmbedding (embed native)
 open RationalSupMetric (numeratorOf denominatorOf)
 open GaussianRationalHorner (ofGaussian represents canonical_unique represents_congr positive_product qadd)
@@ -26,9 +26,6 @@ open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianGammaFiniteApproximantName (exponentialInputData exponential_input)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -39,14 +36,10 @@ def positiveData (c : PTm n) : PTm n := squareData (GaussianRadiusExponentialNam
   (exponentialInputData constantF (halfPoint c))
 def originalData (c : PTm n) : PTm n := exponentialInputData constantF (embed c)
 
-@[simp] theorem subst_halfPoint {m : ℕ} (σ : Fin n → PTm m) (c : PTm n) :
-    Syn.subst σ (halfPoint c) = halfPoint (Syn.subst σ c) := by simp [halfPoint]
-@[simp] theorem subst_halfRadius {m : ℕ} (σ : Fin n → PTm m) (c : PTm n) :
-    Syn.subst σ (halfRadius c) = halfRadius (Syn.subst σ c) := by simp [halfRadius]
-@[simp] theorem subst_positiveData {m : ℕ} (σ : Fin n → PTm m) (c : PTm n) :
-    Syn.subst σ (positiveData c) = positiveData (Syn.subst σ c) := by simp [positiveData,exponentialInputData]
-@[simp] theorem subst_originalData {m : ℕ} (σ : Fin n → PTm m) (c : PTm n) :
-    Syn.subst σ (originalData c) = originalData (Syn.subst σ c) := by simp [originalData,exponentialInputData]
+ipra_subst halfPoint
+ipra_subst halfRadius
+ipra_subst positiveData [exponentialInputData]
+ipra_subst originalData [exponentialInputData]
 
 theorem half_denominator_positive (c : PTm n) : Γ ⊢[PRAAx] le one (two*denominatorOf c) :=
   positive_product _ _ (le_succ_self one) (RationalArgmin.denominator_positive c)

@@ -18,7 +18,7 @@ set_option maxHeartbeats 500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceExhaustion
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetLaplaceStrip (Kernel nameF data source evaluatorF fixedData subst_data subst_source)
 open GaussianBinetLaplaceIntegrand (meshGain)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -28,10 +28,6 @@ open GaussianNameEquivalence (crossEquivalent)
 open GaussianNamedInverseRate (independentRate)
 open GaussianNamedSmallAddendRate (tailSamples)
 open GaussianRationalHorner (positive_product)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

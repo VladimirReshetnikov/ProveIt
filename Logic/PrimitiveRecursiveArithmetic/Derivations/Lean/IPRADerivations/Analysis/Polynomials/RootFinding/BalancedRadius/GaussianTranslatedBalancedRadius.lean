@@ -19,7 +19,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianTranslatedBalancedRadius
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalTranslation (translated)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (evaluate qadd)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qone)
@@ -28,9 +28,6 @@ open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder (normSq)
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (fraction)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,12 +35,9 @@ def inputContract (C N : PTm n) : Fm PTm n := length C ≐ succ N ⋏ (le one N 
 def residual (C z : PTm n) : PTm n := normSq (rawGaussian (evaluate C z))
 def radius (C N z : PTm n) : PTm n := GaussianBalancedRadius.radius (translated C N z) N
 
-@[simp] theorem subst_inputContract {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    (inputContract C N).subst σ = inputContract (Syn.subst σ C) (Syn.subst σ N) := by simp [inputContract]
-@[simp] theorem subst_residual {m : ℕ} (σ : Fin n → PTm m) (C z : PTm n) :
-    Syn.subst σ (residual C z) = residual (Syn.subst σ C) (Syn.subst σ z) := by simp [residual]
-@[simp] theorem subst_radius {m : ℕ} (σ : Fin n → PTm m) (C N z : PTm n) :
-    Syn.subst σ (radius C N z) = radius (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z) := by simp [radius]
+ipra_subst inputContract
+ipra_subst residual
+ipra_subst radius
 
 theorem constant_coefficient (C N z : PTm n) : Γ ⊢[PRAAx]
     GaussianBalancedRadiusSyntax.coefficient (translated C N z) N zero ≐ evaluate C z :=
@@ -76,9 +70,7 @@ def translationLaw (C N z : PTm n) : Fm PTm n := .all
   (evaluate (translated (Syn.shift C) (Syn.shift N) (Syn.shift z)) (var 0) ≐
     evaluate (Syn.shift C) (qadd (Syn.shift z) (var 0)))
 
-@[simp] theorem subst_translationLaw {m : ℕ} (σ : Fin n → PTm m) (C N z : PTm n) :
-    (translationLaw C N z).subst σ = translationLaw (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z) := by
-  simp [translationLaw,Syn.subst_shift,Syn.shift_subst]
+ipra_subst translationLaw [Syn.subst_shift, Syn.shift_subst]
 
 theorem translation_law (C N z : PTm n) (hLen : Γ ⊢[PRAAx] length C ≐ succ N) : Γ ⊢[PRAAx]
     translationLaw C N z := by
@@ -98,8 +90,7 @@ def certificate (C N z : PTm n) : Fm PTm n :=
   ((residual C z ≐ zero ⟶ radius C N z ≐ fraction zero one) ⋏
    (le one (residual C z) ⟶ GaussianBalancedRadius.balancedBranch (translated C N z) N)))))))
 
-@[simp] theorem subst_certificate {m : ℕ} (σ : Fin n → PTm m) (C N z : PTm n) :
-    (certificate C N z).subst σ = certificate (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z) := by simp [certificate]
+ipra_subst certificate
 
 theorem translated_balanced_radius (C N z : PTm n) (h : Γ ⊢[PRAAx] inputContract C N) : Γ ⊢[PRAAx]
     certificate C N z :=
@@ -115,19 +106,17 @@ def output (C N z : PTm n) : PTm n :=
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (C N z : PTm n) : PTm n := ap3 outputF C N z
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (C N z : PTm n) :
-    Syn.subst σ (output C N z) = output (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (C N z : PTm n) :
-    Syn.subst σ (run C N z) = run (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z) := by simp [run]
+ipra_subst output
+ipra_subst run
 
 theorem program_at (C N z : PTm n) : Γ ⊢[PRAAx] run C N z ≐ output C N z := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![C,N,z]
 
 theorem returned_polynomial (C N z : PTm n) : Γ ⊢[PRAAx] fstT (run C N z) ≐ translated C N z :=
-  (congrFst (program_at C N z)).eqTrans (fst_pair _ _)
+  (program_at C N z).fstE
 
 theorem returned_radius (C N z : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run C N z)) ≐ radius C N z :=
-  (congrFst ((congrSnd (program_at C N z)).eqTrans (snd_pair _ _))).eqTrans (GaussianBalancedRadius.returned_radius _ _)
+  (congrFst (program_at C N z).sndE).eqTrans (GaussianBalancedRadius.returned_radius _ _)
 
 theorem returned_constant (C N z : PTm n) : Γ ⊢[PRAAx]
     entry (fstT (run C N z)) N ≐ evaluate C z :=

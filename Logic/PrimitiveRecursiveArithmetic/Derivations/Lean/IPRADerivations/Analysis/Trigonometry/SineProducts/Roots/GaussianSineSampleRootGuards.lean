@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineSampleRootGuards
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianArctangentDivisionAngles (modulus)
 open GaussianArctangentDivisionAngleResidual (rootSample mesh index mesh_positive positiveBudget)
 open GaussianArctangentDivisionCayleyMargins (precision sine_lower_at squared_sine_gap_at)
@@ -33,10 +33,6 @@ open GaussianSineSampleRootList (roots roots_at roots_length subst_roots sineMar
 open GaussianSineSquaredPolynomial (coefficients)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -46,23 +42,13 @@ def rootDenominator (J : PTm n) : PTm n :=
 def fine (p J : PTm n) : Fm PTm n := le (num 28*modulus J) (unit (precision p))
 def clock (p J : PTm n) : PTm n := p+num 28*modulus J
 
-@[simp] theorem subst_sineDenominator {l : ℕ} (σ : Fin n → PTm l) (J : PTm n) :
-    Syn.subst σ (sineDenominator J) = sineDenominator (Syn.subst σ J) := by
-  simp [sineDenominator]
+ipra_subst sineDenominator
 
-@[simp] theorem subst_rootDenominator {l : ℕ} (σ : Fin n → PTm l) (J : PTm n) :
-    Syn.subst σ (rootDenominator J) = rootDenominator (Syn.subst σ J) := by
-  simp [rootDenominator,GaussianArctangentCayleySquareGap.separationDenominator]
+ipra_subst rootDenominator [GaussianArctangentCayleySquareGap.separationDenominator]
 
-@[simp] theorem subst_fine {l : ℕ} (σ : Fin n → PTm l) (p J : PTm n) :
-    (fine p J).subst σ = fine (Syn.subst σ p) (Syn.subst σ J) := by
-  simp [fine,precision,GaussianArctangentInverseCayleySamples.inversePrecision,
-    GaussianArctangentNamedInverse.precision,GaussianArctangentNamedInverse.modulus,
-    GaussianArctangentNamedExtension.clock,two,one]
+ipra_subst fine [precision, GaussianArctangentInverseCayleySamples.inversePrecision, GaussianArctangentNamedInverse.precision, GaussianArctangentNamedInverse.modulus, GaussianArctangentNamedExtension.clock, two, one]
 
-@[simp] theorem subst_clock {l : ℕ} (σ : Fin n → PTm l) (p J : PTm n) :
-    Syn.subst σ (clock p J) = clock (Syn.subst σ p) (Syn.subst σ J) := by
-  simp [clock]
+ipra_subst clock
 
 theorem sine_denominator_positive (J : PTm n) : Γ ⊢[PRAAx] le one (sineDenominator J) :=
   positive_product _ _ (le_of_eq_add (d := num 3) (by ipra_ring)) (zero_lt_succ _)

@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaPrimitiveLinearStep
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianEulerBetaPolynomialPrimitive (primitive)
 open GaussianEulerPowerIncrement (point slopeTerm)
@@ -33,9 +33,6 @@ open GaussianReciprocalHorner (qmul_associative qmul_one_right)
 open GaussianRationalCoefficientScaling (qmul_add)
 open ComplexLogarithmRemainder (oneCode scale)
 open GaussianRootAlgebra (equal_of_values re_add im_add re_one im_one re_scale im_scale re_mul im_mul)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

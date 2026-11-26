@@ -19,7 +19,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLowerRationalPowerReference
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLowerPowerCoefficients (lowerMultiplier amplification)
 open GaussianEulerLowerPowerRebasing (exponent)
 open GaussianRationalHorner (qmul)
@@ -29,9 +29,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent cross_trans)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,14 +39,10 @@ def source (A a b : PTm n) : Fm PTm n := le one A ⋏ (GaussianPositiveRationalL
 def referenceData (R A a b : PTm n) : PTm n := GaussianEulerLowerPowerOrder.rightData R A (pw a A) (pw b A)
 def targetData (A a b : PTm n) : PTm n := GaussianHarmonicIntegerExponential.originalExponentData (exponent A) b a
 def cost (R A : PTm n) : PTm n := two*(amplification R+exponent A)
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (A a b : PTm n) :
-    (source A a b).subst σ = source (Syn.subst σ A) (Syn.subst σ a) (Syn.subst σ b) := by simp [source]
-@[simp] theorem subst_referenceData {m : ℕ} (σ : Fin n → PTm m) (R A a b : PTm n) :
-    Syn.subst σ (referenceData R A a b) = referenceData (Syn.subst σ R) (Syn.subst σ A) (Syn.subst σ a) (Syn.subst σ b) := by simp [referenceData]
-@[simp] theorem subst_targetData {m : ℕ} (σ : Fin n → PTm m) (A a b : PTm n) :
-    Syn.subst σ (targetData A a b) = targetData (Syn.subst σ A) (Syn.subst σ a) (Syn.subst σ b) := by simp [targetData,GaussianHarmonicIntegerExponential.originalExponentData]
-@[simp] theorem subst_cost {m : ℕ} (σ : Fin n → PTm m) (R A : PTm n) :
-    Syn.subst σ (cost R A) = cost (Syn.subst σ R) (Syn.subst σ A) := by simp [cost]
+ipra_subst source
+ipra_subst referenceData
+ipra_subst targetData [GaussianHarmonicIntegerExponential.originalExponentData]
+ipra_subst cost
 
 theorem powered_time_source (A a b : PTm n) (h : Γ ⊢[PRAAx] source A a b) : Γ ⊢[PRAAx]
     GaussianPositiveRationalLogarithm.source (pw a A) (pw b A) ⋏ le (pw a A) (pw b A) :=

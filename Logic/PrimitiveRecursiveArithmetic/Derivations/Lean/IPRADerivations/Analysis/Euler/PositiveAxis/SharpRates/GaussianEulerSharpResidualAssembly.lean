@@ -14,15 +14,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerSharpResidualAssembly
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (positive_product qadd)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalReciprocal (bound_congr bounded_sum)
 open GaussianRationalDistanceOrder (distance_radius_mono distance_symmetric)
 open GaussianReconstructionRoots (distance_triangle)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

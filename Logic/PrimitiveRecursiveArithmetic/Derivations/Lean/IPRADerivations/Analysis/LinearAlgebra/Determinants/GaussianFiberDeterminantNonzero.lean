@@ -21,7 +21,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianFiberDeterminantNonzero
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero qmul canonical evaluate)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision
   (qone qmul_congr qmul_zero_left canonical_coefficient_at)
@@ -31,19 +31,14 @@ open LeanProofs.IPRA.Analysis.GaussianRationalFiberRightInverse (Z)
 open LeanProofs.IPRA.Analysis.GaussianRationalMatrixFiniteSums (matrixProduct)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def polynomial (R m : PTm n) : PTm n := GaussianPolynomialDeterminant.determinant (WP R m) m zero
 def determinant (R m : PTm n) : PTm n := scalarDet (W R m) m
 
-@[simp] theorem subst_polynomial {l : ℕ} (σ : Fin n → PTm l) (R m : PTm n) :
-    Syn.subst σ (polynomial R m) = polynomial (Syn.subst σ R) (Syn.subst σ m) := by simp [polynomial]
-@[simp] theorem subst_determinant {l : ℕ} (σ : Fin n → PTm l) (R m : PTm n) :
-    Syn.subst σ (determinant R m) = determinant (Syn.subst σ R) (Syn.subst σ m) := by simp [determinant]
+ipra_subst polynomial
+ipra_subst determinant
 
 theorem product_identity_entries (R m : PTm n)
     (hDistinct : Γ ⊢[PRAAx] GaussianRationalFiniteRoots.distinct R)
@@ -108,38 +103,31 @@ def determinantField (c : PTm n) : PTm n := fstT (sndT c)
 def inverseDeterminantField (c : PTm n) : PTm n := fstT (sndT (sndT c))
 def polynomialField (c : PTm n) : PTm n := fstT (sndT (sndT (sndT c)))
 def coefficientField (c : PTm n) : PTm n := sndT (sndT (sndT (sndT c)))
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (R m : PTm n) :
-    Syn.subst σ (output R m) = output (Syn.subst σ R) (Syn.subst σ m) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (R m : PTm n) :
-    Syn.subst σ (run R m) = run (Syn.subst σ R) (Syn.subst σ m) := by simp [run]
-@[simp] theorem subst_inverseField {l : ℕ} (σ : Fin n → PTm l) (c : PTm n) :
-    Syn.subst σ (inverseField c) = inverseField (Syn.subst σ c) := by simp [inverseField]
-@[simp] theorem subst_determinantField {l : ℕ} (σ : Fin n → PTm l) (c : PTm n) :
-    Syn.subst σ (determinantField c) = determinantField (Syn.subst σ c) := by simp [determinantField]
-@[simp] theorem subst_inverseDeterminantField {l : ℕ} (σ : Fin n → PTm l) (c : PTm n) :
-    Syn.subst σ (inverseDeterminantField c) = inverseDeterminantField (Syn.subst σ c) := by simp [inverseDeterminantField]
-@[simp] theorem subst_polynomialField {l : ℕ} (σ : Fin n → PTm l) (c : PTm n) :
-    Syn.subst σ (polynomialField c) = polynomialField (Syn.subst σ c) := by simp [polynomialField]
-@[simp] theorem subst_coefficientField {l : ℕ} (σ : Fin n → PTm l) (c : PTm n) :
-    Syn.subst σ (coefficientField c) = coefficientField (Syn.subst σ c) := by simp [coefficientField]
+ipra_subst output
+ipra_subst run
+ipra_subst inverseField
+ipra_subst determinantField
+ipra_subst inverseDeterminantField
+ipra_subst polynomialField
+ipra_subst coefficientField
 
 theorem program_at (R m : PTm n) : Γ ⊢[PRAAx] run R m ≐ output R m := by
   simpa [run,outputF,ap2] using toPR_eq (Γ := Γ) (output (var 0) (var 1) : PTm 2) ![R,m]
 theorem returned_inverse (R m : PTm n) : Γ ⊢[PRAAx]
     inverseField (run R m) ≐ GaussianRationalFiberRightInverse.run R m :=
-  (congrFst (program_at _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _).fstE
 theorem returned_determinant (R m : PTm n) : Γ ⊢[PRAAx] determinantField (run R m) ≐ determinant R m :=
-  (congrFst ((congrSnd (program_at _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _).sndE.fstE
 theorem returned_inverse_determinant (R m : PTm n) : Γ ⊢[PRAAx]
     inverseDeterminantField (run R m) ≐ scalarDet (Z R m) m := by
-  have tail := (congrSnd ((congrSnd (program_at (Γ := Γ) R m)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
-  exact (congrFst tail).eqTrans (fst_pair _ _)
+  have tail := (program_at (Γ := Γ) R m).sndE.sndE
+  exact tail.fstE
 theorem returned_polynomial (R m : PTm n) : Γ ⊢[PRAAx] polynomialField (run R m) ≐ polynomial R m := by
-  have tail := (congrSnd ((congrSnd ((congrSnd (program_at (Γ := Γ) R m)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
-  exact (congrFst tail).eqTrans (fst_pair _ _)
+  have tail := (program_at (Γ := Γ) R m).sndE.sndE.sndE
+  exact tail.fstE
 theorem returned_coefficient (R m : PTm n) : Γ ⊢[PRAAx] coefficientField (run R m) ≐ entry (polynomial R m) zero := by
-  have tail := (congrSnd ((congrSnd ((congrSnd (program_at (Γ := Γ) R m)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
-  exact (congrSnd tail).eqTrans (snd_pair _ _)
+  have tail := (program_at (Γ := Γ) R m).sndE.sndE.sndE
+  exact tail.sndE
 theorem returned_coefficient_value (R m : PTm n) : Γ ⊢[PRAAx]
     coefficientField (run R m) ≐ determinantField (run R m) :=
   (returned_coefficient _ _).eqTrans ((polynomial_coefficient _ _).eqTrans (returned_determinant _ _).eqSymm)
@@ -148,25 +136,19 @@ def sourceOutput (L p g m : PTm n) : PTm n := pairT (run (GaussianRationalCurveF
   (pairT (GaussianRationalCurveFibers.selectedX L p g) (GaussianRationalFiberGrouping.partitionTotal L p))
 def sourceF : PR 4 := PTm.toPR (sourceOutput (var 0) (var 1) (var 2) (var 3))
 def sourceRun (L p g m : PTm n) : PTm n := app sourceF ![L,p,g,m]
-@[simp] theorem subst_sourceOutput {l : ℕ} (σ : Fin n → PTm l) (L p g m : PTm n) :
-    Syn.subst σ (sourceOutput L p g m) = sourceOutput (Syn.subst σ L) (Syn.subst σ p) (Syn.subst σ g) (Syn.subst σ m) := by simp [sourceOutput]
-@[simp] theorem subst_sourceRun {l : ℕ} (σ : Fin n → PTm l) (L p g m : PTm n) :
-    Syn.subst σ (sourceRun L p g m) = sourceRun (Syn.subst σ L) (Syn.subst σ p) (Syn.subst σ g) (Syn.subst σ m) := by
-  simp only [sourceRun,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst sourceOutput
+ipra_subst sourceRun
 theorem source_program_at (L p g m : PTm n) : Γ ⊢[PRAAx] sourceRun L p g m ≐ sourceOutput L p g m := by
   simpa [sourceRun,sourceF] using toPR_eq (Γ := Γ) (sourceOutput (var 0) (var 1) (var 2) (var 3) : PTm 4) ![L,p,g,m]
 theorem source_returned_generic (L p g m : PTm n) : Γ ⊢[PRAAx]
     fstT (sourceRun L p g m) ≐ run (GaussianRationalCurveFibers.yList L p g) m :=
-  (congrFst (source_program_at _ _ _ _)).eqTrans (fst_pair _ _)
+  (source_program_at _ _ _ _).fstE
 theorem source_returned_x (L p g m : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sourceRun L p g m)) ≐ GaussianRationalCurveFibers.selectedX L p g :=
-  (congrFst ((congrSnd (source_program_at _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (source_program_at _ _ _ _).sndE.fstE
 theorem source_returned_partition (L p g m : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (sourceRun L p g m)) ≐ length L :=
-  ((congrSnd ((congrSnd (source_program_at _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)).eqTrans
+  (source_program_at _ _ _ _).sndE.sndE.eqTrans
     (GaussianRationalFiberGrouping.cardinal_partition _ _)
 
 theorem determinant_inverse (R m : PTm n)
@@ -205,8 +187,7 @@ def certificate (R m : PTm n) : Fm PTm n :=
     ((qmul (determinant R m) (scalarDet (Z R m) m) ≐ qone) ⋏
       (neg (determinant R m ≐ qzero) ⋏ ((length (polynomial R m) ≐ one) ⋏
         ((entry (polynomial R m) zero ≐ determinant R m) ⋏ neg (entry (polynomial R m) zero ≐ qzero)))))
-@[simp] theorem subst_certificate {l : ℕ} (σ : Fin n → PTm l) (R m : PTm n) :
-    (certificate R m).subst σ = certificate (Syn.subst σ R) (Syn.subst σ m) := by simp [certificate]
+ipra_subst certificate
 theorem determinant_correct (R m : PTm n)
     (hDistinct : Γ ⊢[PRAAx] GaussianRationalFiniteRoots.distinct R)
     (hSize : Γ ⊢[PRAAx] le (length R) m) : Γ ⊢[PRAAx] certificate R m :=

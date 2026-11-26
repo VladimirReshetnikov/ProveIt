@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GammaCanonicalNames
 import IPRADerivations.Analysis.Logarithm.Local.GaussianLocalLogarithmName
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The original canonical Gamma tail as a Gaussian regular name
@@ -19,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianRationalHorner (ofGaussian ofGaussian_represents represents positive_product)
 open GaussianRationalMetric (bounded distanceBounded qsub)
@@ -29,10 +28,6 @@ open GaussianEuclideanDistanceName (pointCN)
 open DyadicComplexLogarithm (unit)
 open GammaCanonicalNames (observation)
 open GaussianLocalLogarithmName (unit_positive unit_factor unit_lower)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,16 +37,11 @@ def safeSource (z R B N : PTm n) : Fm PTm n := source z R B N ⋏ le (num 4*R*R)
 def value (p z R B N : PTm n) : PTm n := ofGaussian (observation p z R B N) (unit p)
 def radius (p R N : PTm n) : PTm n := R*R*unit p+two*N
 def denominator (p N : PTm n) : PTm n := N*unit p
-@[simp] theorem subst_source {l : ℕ} (σ : Fin n → PTm l) (z R B N : PTm n) :
-    (source z R B N).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [source]
-@[simp] theorem subst_safeSource {l : ℕ} (σ : Fin n → PTm l) (z R B N : PTm n) :
-    (safeSource z R B N).subst σ = safeSource (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [safeSource]
-@[simp] theorem subst_value {l : ℕ} (σ : Fin n → PTm l) (p z R B N : PTm n) :
-    Syn.subst σ (value p z R B N) = value (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [value]
-@[simp] theorem subst_radius {l : ℕ} (σ : Fin n → PTm l) (p R N : PTm n) :
-    Syn.subst σ (radius p R N) = radius (Syn.subst σ p) (Syn.subst σ R) (Syn.subst σ N) := by simp [radius]
-@[simp] theorem subst_denominator {l : ℕ} (σ : Fin n → PTm l) (p N : PTm n) :
-    Syn.subst σ (denominator p N) = denominator (Syn.subst σ p) (Syn.subst σ N) := by simp [denominator]
+ipra_subst source
+ipra_subst safeSource
+ipra_subst value
+ipra_subst radius
+ipra_subst denominator
 
 theorem denominator_positive (p N : PTm n) (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[PRAAx] le one (denominator p N) :=
   positive_product _ _ hN (unit_positive p)
@@ -146,12 +136,9 @@ def data (z R B N : PTm n) : PTm n := pairT z (pairT R (pairT B N))
 def pointTerm (p x : PTm n) : PTm n := value p (fstT x) (fstT (sndT x)) (fstT (sndT (sndT x))) (sndT (sndT (sndT x)))
 def pointF : PR 2 := PTm.toPR (pointTerm (var 0) (var 1))
 def point (p z R B N : PTm n) : PTm n := ap2 pointF p (data z R B N)
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (z R B N : PTm n) :
-    Syn.subst σ (data z R B N) = data (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [data]
-@[simp] theorem subst_pointTerm {l : ℕ} (σ : Fin n → PTm l) (p x : PTm n) :
-    Syn.subst σ (pointTerm p x) = pointTerm (Syn.subst σ p) (Syn.subst σ x) := by simp [pointTerm]
-@[simp] theorem subst_point {l : ℕ} (σ : Fin n → PTm l) (p z R B N : PTm n) :
-    Syn.subst σ (point p z R B N) = point (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [point]
+ipra_subst data
+ipra_subst pointTerm
+ipra_subst point
 
 theorem point_at (p z R B N : PTm n) : Γ ⊢[PRAAx] point p z R B N ≐ value p z R B N := by
   have prog : Γ ⊢[PRAAx] point p z R B N ≐ pointTerm p (data z R B N) := by
@@ -164,9 +151,9 @@ theorem point_at (p z R B N : PTm n) : Γ ⊢[PRAAx] point p z R B N ≐ value p
         fin_cases i
         · exact .eqRefl _
         · exact fst_pair _ _
-        · exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-        · exact (congrFst ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
-        · exact (congrSnd ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))
+        · exact (snd_pair _ _).fstE
+        · exact (snd_pair _ _).sndE.fstE
+        · exact (snd_pair _ _).sndE.sndE)
 
 theorem point_canonical (p z R B N : PTm n) : Γ ⊢[PRAAx] GaussianRationalHorner.canonical (point p z R B N) :=
   GaussianRationalHorner.canonical_congr (point_at p z R B N) (GaussianRationalHorner.ofGaussian_canonical _ _ (unit_positive p))

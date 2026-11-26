@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineProductReflectionArgument
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianSineProductScaledArguments (coefficient nameF data name_regular)
 open GaussianArctangentQuarterExponential (quarterF)
 open GaussianBoundedConstantProductName (clock)
@@ -37,8 +37,6 @@ open GaussianNameEquivalence (crossEquivalent)
 open GaussianNamedDiagonalRate (diagonalRate cross_of_diagonal_rate)
 open GaussianRootAlgebra (equal_of_values re_scale im_scale re_mul im_mul re_neg im_neg)
 open ComplexLogarithmRemainder (scale mul eval_re_code eval_im_code)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "piF" => GaussianGammaHalfPiName.nameF
@@ -75,9 +73,7 @@ theorem scaled_argument_at (z R B x p : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
 def budget (z R B x : PTm n) : PTm n :=
   R*two+(multiplyModulus piF constantF x (ofGaussian z B)+one)
 
-@[simp] theorem subst_budget {l : ℕ} (σ : Fin n → PTm l) (z R B x : PTm n) :
-    Syn.subst σ (budget z R B x) = budget (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ x) :=
-  by simp [budget]
+ipra_subst budget
 
 theorem diagonal_argument (z R B x p : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hz : Γ ⊢[PRAAx] ComplexLogarithmRemainder.bounded z (R*B)) :

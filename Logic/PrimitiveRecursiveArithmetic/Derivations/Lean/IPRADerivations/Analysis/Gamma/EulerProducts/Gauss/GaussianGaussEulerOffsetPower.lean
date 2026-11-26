@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGaussEulerOffsetPower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianGammaEulerShift (merge_head)
 open GaussianGammaFiniteApproximantName (logF log_regular logExponentF exponential_input)
@@ -31,8 +31,6 @@ open GaussianRationalHorner (qmul)
 open GaussianRationalMetric (qnegative)
 open GaussianRationalNaturalScale (naturalPoint natScale_as_product)
 open GaussianRadiusExponentialName (input)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

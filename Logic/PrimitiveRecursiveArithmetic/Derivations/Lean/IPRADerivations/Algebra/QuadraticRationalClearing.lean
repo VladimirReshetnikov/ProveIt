@@ -1,6 +1,5 @@
 import IPRADerivations.Algebra.QuadraticPositiveScaling
 import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalRepresentations
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Actual rational-coefficient clearing for one quadratic stage
@@ -20,14 +19,11 @@ set_option linter.unnecessarySeqFocus false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticRationalClearing
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.RationalSupMetric (numeratorOf denominatorOf)
 open LeanProofs.IPRA.Analysis.RationalArgmin (rationalEq)
 open QuadraticSignCertificates (first second encode equal first_value second_value)
 open QuadraticPositiveScaling (scale scale_first scale_second cross_scale_sign)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -42,16 +38,11 @@ def represents (x A D : PTm n) : Fm PTm n :=
 def sameCoefficients (x y : PTm n) : Fm PTm n :=
   rationalEq (fstT x) (fstT y) ⋏ rationalEq (sndT x) (sndT y)
 def sign (d x : PTm n) : PTm n := QuadraticSignCertificates.sign d (clear x)
-@[simp] theorem subst_denominator {l : ℕ} (σ : Fin n → PTm l) (x : PTm n) :
-    Syn.subst σ (denominator x) = denominator (Syn.subst σ x) := by simp [denominator]
-@[simp] theorem subst_clear {l : ℕ} (σ : Fin n → PTm l) (x : PTm n) :
-    Syn.subst σ (clear x) = clear (Syn.subst σ x) := by simp [clear]
-@[simp] theorem subst_represents {l : ℕ} (σ : Fin n → PTm l) (x A D : PTm n) :
-    (represents x A D).subst σ = represents (Syn.subst σ x) (Syn.subst σ A) (Syn.subst σ D) := by simp [represents]
-@[simp] theorem subst_sameCoefficients {l : ℕ} (σ : Fin n → PTm l) (x y : PTm n) :
-    (sameCoefficients x y).subst σ = sameCoefficients (Syn.subst σ x) (Syn.subst σ y) := by simp [sameCoefficients]
-@[simp] theorem subst_sign {l : ℕ} (σ : Fin n → PTm l) (d x : PTm n) :
-    Syn.subst σ (sign d x) = sign (Syn.subst σ d) (Syn.subst σ x) := by simp [sign]
+ipra_subst denominator
+ipra_subst clear
+ipra_subst represents
+ipra_subst sameCoefficients
+ipra_subst sign
 
 theorem denominator_positive (x : PTm n) : Γ ⊢[PRAAx] le one (denominator x) :=
   LeanProofs.IPRA.Analysis.RationalArithmetic.product_denominator_positive (fstT x) (sndT x)
@@ -109,18 +100,16 @@ theorem sign_congr (d x y : PTm n) (hd : Γ ⊢[PRAAx] le one d)
 def output (d x : PTm n) : PTm n := pairT (clear x) (pairT (denominator x) (sign d x))
 def outputF : PR 2 := PTm.toPR (output (var 0) (var 1))
 def run (d x : PTm n) : PTm n := ap2 outputF d x
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (d x : PTm n) :
-    Syn.subst σ (output d x) = output (Syn.subst σ d) (Syn.subst σ x) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (d x : PTm n) :
-    Syn.subst σ (run d x) = run (Syn.subst σ d) (Syn.subst σ x) := by simp [run]
+ipra_subst output
+ipra_subst run
 theorem program_at (d x : PTm n) : Γ ⊢[PRAAx] run d x ≐ output d x := by
   simpa [run,outputF,ap2] using toPR_eq (Γ := Γ) (output (var 0) (var 1) : PTm 2) ![d,x]
 theorem returned_clear (d x : PTm n) : Γ ⊢[PRAAx] fstT (run d x) ≐ clear x :=
-  (congrFst (program_at _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _).fstE
 theorem returned_denominator (d x : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run d x)) ≐ denominator x :=
-  (congrFst ((congrSnd (program_at _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _).sndE.fstE
 theorem returned_sign (d x : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run d x)) ≐ sign d x :=
-  (congrSnd ((congrSnd (program_at _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at _ _).sndE.sndE
 theorem returned_positive_denominator (d x : PTm n) : Γ ⊢[PRAAx] le one (fstT (sndT (run d x))) :=
   le_congr (.eqRefl _) (returned_denominator _ _).eqSymm (denominator_positive x)
 theorem returned_represents (d x : PTm n) : Γ ⊢[PRAAx]

@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGaussEulerReferenceHeads
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode scale)
 open GaussianGammaEulerDenominatorGrouping (shiftedNumerator shiftedData)
 open GaussianGammaEulerHead (run headF)
@@ -28,17 +28,13 @@ open GaussianRationalFiniteSum (termsEqual)
 open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRootAlgebra (equal equal_of_values re_add im_add re_scale im_scale re_one im_one)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def referenceHeadBody : PTm 2 := run (argument (var 0)) (fstT (var 1)) (sndT (var 1))
 def referenceHeads (m N : PTm n) : PTm n := qprod referenceHeadBody m (pairT m N)
 
-@[simp] theorem subst_referenceHeads {l : ℕ} (σ : Fin n → PTm l) (m N : PTm n) :
-    Syn.subst σ (referenceHeads m N) = referenceHeads (Syn.subst σ m) (Syn.subst σ N) := by
-  simp [referenceHeads]
+ipra_subst referenceHeads
 
 theorem reference_head_at (r m N : PTm n) : Γ ⊢[PRAAx]
     inst2 referenceHeadBody r (pairT m N) ≐ run (argument r) m N := by

@@ -14,7 +14,7 @@ set_option maxHeartbeats 450000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderPanelPartsFinite
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianStirlingAllOrderCenteredBernoulli (sample)
 open GaussianStirlingAllOrderBernoulliEnvelope (subst_sample)
 open GaussianStirlingAllOrderPanelDerivative (secondSample secondNumerator)
@@ -33,10 +33,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr)
 open RationalAlgebra (multiply_congr)
 open RationalFiniteSum (term)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -59,13 +55,9 @@ def interiorDensity (m e : ℕ) (U B M : PTm n) : PTm n :=
 def boundaryValue (m e : ℕ) (U B M : PTm n) : PTm n :=
   boundary (profileBody m) (weightBody e) (interior M) (fraction (M*M) one) M (parameters U B M)
 
-@[simp] theorem subst_interior {l : ℕ} (σ : Fin n → PTm l) (M : PTm n) :
-    Syn.subst σ (interior M) = interior (Syn.subst σ M) := by simp [interior]
-@[simp] theorem subst_parameters {l : ℕ} (σ : Fin n → PTm l) (U B M : PTm n) :
-    Syn.subst σ (parameters U B M) = parameters (Syn.subst σ U) (Syn.subst σ B) (Syn.subst σ M) := by simp [parameters]
-@[simp] theorem subst_weightAt {l : ℕ} (σ : Fin n → PTm l) (e : ℕ) (U B M i : PTm n) :
-    Syn.subst σ (weightAt e U B M i) = weightAt e (Syn.subst σ U) (Syn.subst σ B) (Syn.subst σ M) (Syn.subst σ i) := by
-  simp [weightAt,weight,power,gridDen,pw]
+ipra_subst interior
+ipra_subst parameters
+ipra_subst weightAt [weight, power, gridDen, pw]
 
 private theorem subst_signed_sum {l d : ℕ} (σ : Fin n → PTm l) (f : Fin d → ZT n) :
     (ZT.sumFin f).subst σ = ZT.sumFin (fun i => (f i).subst σ) := by
@@ -73,10 +65,7 @@ private theorem subst_signed_sum {l d : ℕ} (σ : Fin n → PTm l) (f : Fin d �
   | zero => simp only [ZT.sumFin,ZT.subst_natLit]
   | succ d ih => simp only [ZT.sumFin,ZT.subst_add,ih]
 
-@[simp] theorem subst_targetRow {l : ℕ} (σ : Fin n → PTm l) (m e : ℕ) (U B M r : PTm n) :
-    Syn.subst σ (targetRow m e U B M r) = targetRow m e (Syn.subst σ U) (Syn.subst σ B) (Syn.subst σ M) (Syn.subst σ r) := by
-  simp [targetRow,weight,power,derivative,coefficient,gridDen,secondSample,secondNumerator,
-    GaussianStirlingAllOrderCenteredBernoulli.denominator,BernoulliBounds.pv,BernoulliBounds.zint,subst_signed_sum,pw]
+ipra_subst targetRow [weight, power, derivative, coefficient, gridDen, secondSample, secondNumerator, GaussianStirlingAllOrderCenteredBernoulli.denominator, BernoulliBounds.pv, BernoulliBounds.zint, subst_signed_sum, pw]
 
 @[simp] theorem profile_at (m : ℕ) (M i : PTm n) :
     inst2 (profileBody m) i M = sample (m+1) i M := by simp [profileBody,inst2]

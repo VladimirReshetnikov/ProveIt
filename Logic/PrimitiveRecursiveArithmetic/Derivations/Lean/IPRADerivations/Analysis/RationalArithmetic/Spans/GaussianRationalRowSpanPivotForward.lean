@@ -15,7 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalRowSpanPivotForward
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero qadd qmul)
 open GaussianRationalMetric (qsub)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qsub_congr)
@@ -27,9 +27,6 @@ open GaussianTranslatedNonconstant (recode recode_eq)
 open LeanProofs.IPRA.Foundations.GuardedTotalization (sel sel_one sel_zero)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,15 +37,9 @@ def body : PTm 2 := value (fields (var 1) 0) (fields (var 1) 1) (fields (var 1) 
   (fields (var 1) 3) (fields (var 1) 4) (var 0)
 def forward (A R u i p : PTm n) : PTm n := sequence body R (data A R u i p)
 
-@[simp] theorem subst_correction {k : ℕ} (σ : Fin n → PTm k) (A R u i p : PTm n) :
-    Syn.subst σ (correction A R u i p) = correction (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ u)
-      (Syn.subst σ i) (Syn.subst σ p) := by simp [correction]
-@[simp] theorem subst_value {k : ℕ} (σ : Fin n → PTm k) (A R u i p r : PTm n) :
-    Syn.subst σ (value A R u i p r) = value (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ u)
-      (Syn.subst σ i) (Syn.subst σ p) (Syn.subst σ r) := by simp [value,sel]
-@[simp] theorem subst_forward {k : ℕ} (σ : Fin n → PTm k) (A R u i p : PTm n) :
-    Syn.subst σ (forward A R u i p) = forward (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ u)
-      (Syn.subst σ i) (Syn.subst σ p) := by simp [forward]
+ipra_subst correction
+ipra_subst value [sel]
+ipra_subst forward
 
 theorem body_at (A R u i p r : PTm n) : Γ ⊢[PRAAx]
     inst2 body r (data A R u i p) ≐ value A R u i p r := by
@@ -159,13 +150,7 @@ theorem membership_forward (A R N u i p v : PTm n) (hInput : Γ ⊢[PRAAx] input
 
 def outputF : PR 5 := PTm.toPR (forward (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (A R u i p : PTm n) : PTm n := app outputF ![A,R,u,i,p]
-@[simp] theorem subst_run {k : ℕ} (σ : Fin n → PTm k) (A R u i p : PTm n) :
-    Syn.subst σ (run A R u i p) = run (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ u)
-      (Syn.subst σ i) (Syn.subst σ p) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext j
-  fin_cases j <;> rfl
+ipra_subst run
 theorem program_at (A R u i p : PTm n) : Γ ⊢[PRAAx] run A R u i p ≐ forward A R u i p := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (forward (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![A,R,u,i,p]
 theorem returned_length (A R u i p : PTm n) : Γ ⊢[PRAAx] length (run A R u i p) ≐ R :=

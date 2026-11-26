@@ -19,7 +19,7 @@ set_option maxHeartbeats 220000
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineProductT7Actual
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaReflectionProduct (complementarySource complementaryData gammaPairF)
 open GaussianGammaReflectionQuotient (reciprocalHeight quotientF quotientData apart_of_product quotient_of_cleared)
@@ -35,8 +35,6 @@ open GaussianSineProductNamedT3 (factoredF factoredDataAt factorization_at)
 open GaussianSineProductT4Budget (halfIndex)
 open GaussianSineProductT7 (cutoff cutoff_positive t4_cutoff_le prefixAt prefixRate product_identification)
 open GaussianSineProductT4Actual (cofinalClock clock_later named_factored_distance precision_at)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

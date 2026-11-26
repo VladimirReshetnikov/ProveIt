@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaAllDegreeInverseContinuity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBetaAllDegreeEulerInverse (endpointF endpointData nameF data)
 open GaussianBetaUniformEndpointBound (endpointBound)
 open GaussianGammaFiniteApproximantName (qF qData q_regular)
@@ -25,9 +25,6 @@ open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalHorner (positive_product ofGaussian)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -36,14 +33,9 @@ def source (z w R B C A N : PTm n) : Fm PTm n :=
 def gain (R A N : PTm n) : PTm n := endpointBound R A N*endpointBound R A N*GaussianGammaFiniteInputContinuity.gain R N
 def input (z w R B A X Y N : PTm n) : Fm PTm n := source z w R B B A N ⋏
   (le one Y ⋏ distanceBounded (ofGaussian z B) (ofGaussian w B) X Y)
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z w R B C A N : PTm n) :
-    (source z w R B C A N).subst σ = source (Syn.subst σ z) (Syn.subst σ w) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ C) (Syn.subst σ A) (Syn.subst σ N) := by simp [source]
-@[simp] theorem subst_gain {m : ℕ} (σ : Fin n → PTm m) (R A N : PTm n) :
-    Syn.subst σ (gain R A N) = gain (Syn.subst σ R) (Syn.subst σ A) (Syn.subst σ N) := by simp [gain]
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (z w R B A X Y N : PTm n) :
-    (input z w R B A X Y N).subst σ = input (Syn.subst σ z) (Syn.subst σ w) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ N) := by simp [input]
+ipra_subst source
+ipra_subst gain
+ipra_subst input
 
 theorem rate_congr (F G : PR 2) (x y X X' Y Y' : PTm n)
     (hX : Γ ⊢[PRAAx] X ≐ X') (hY : Γ ⊢[PRAAx] Y ≐ Y')

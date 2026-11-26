@@ -118,10 +118,7 @@ theorem positive_panel_sum (m : ℕ) (q A B S : PTm n)
 
 def panelFloor (m : ℕ) (q A B : PTm n) : PTm n := fraction one (num 8*boundDenominator m q A B)
 
-@[simp] theorem subst_panelFloor {l : ℕ} (σ : Fin n → PTm l) (m : ℕ) (q A B : PTm n) :
-    Syn.subst σ (panelFloor m q A B) = panelFloor m (Syn.subst σ q) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [panelFloor,boundDenominator,GaussianStirlingAllOrderBernoulliMeshMargin.coarseDen,
-    GaussianStirlingAllOrderCenteredBernoulli.denominator,pw,one]
+ipra_subst panelFloor [boundDenominator, GaussianStirlingAllOrderBernoulliMeshMargin.coarseDen, GaussianStirlingAllOrderCenteredBernoulli.denominator, pw, one]
 
 theorem panel_floor_den_positive (m : ℕ) (q A B : PTm n) (hA : Γ ⊢[PRAAx] le one A) :
     Γ ⊢[PRAAx] le one (num 8*boundDenominator m q A B) :=

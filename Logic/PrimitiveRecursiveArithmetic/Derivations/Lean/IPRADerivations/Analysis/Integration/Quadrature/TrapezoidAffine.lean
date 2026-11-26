@@ -1,5 +1,4 @@
 import IPRADerivations.Core.Telescoping
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Exact facts about trapezoidal sums
@@ -26,11 +25,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.TrapezoidAffine
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

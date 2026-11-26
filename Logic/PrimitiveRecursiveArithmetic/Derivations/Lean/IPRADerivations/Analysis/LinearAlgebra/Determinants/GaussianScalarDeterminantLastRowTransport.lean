@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarDeterminantRowSelection
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual last-row transports for a vanishing scalar determinant
@@ -16,8 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianScalarDeterminantLastRowTransport
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (succ)
+open_ipra
 open GaussianRationalFiberVandermonde (table table_lookup)
 open GaussianPolynomialDeterminantTerms (cell)
 open GaussianScalarDeterminant (scalarDet scalarCellsEqual scalar_det_congr)
@@ -30,8 +28,6 @@ open GaussianScalarColumnSelection (cell_congr)
 open LeanProofs.IPRA.Foundations.RuntimePermutationDeletion (slot slot_bound)
 open LeanProofs.IPRA.Foundations.GuardedTotalization (sel sel_one sel_zero)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -39,10 +35,8 @@ def moveIndex (m p r : PTm n) : PTm n := sel (eqb r m) p (slot p r)
 def moveBody : PTm 2 := moveIndex (fstT (var 1)) (sndT (var 1)) (var 0)
 def moveToLast (A m p : PTm n) : PTm n := selected moveBody A (succ m) (pairT m p)
 
-@[simp] theorem subst_moveIndex {l : ℕ} (σ : Fin n → PTm l) (m p r : PTm n) :
-    Syn.subst σ (moveIndex m p r) = moveIndex (Syn.subst σ m) (Syn.subst σ p) (Syn.subst σ r) := by simp [moveIndex,sel]
-@[simp] theorem subst_moveToLast {l : ℕ} (σ : Fin n → PTm l) (A m p : PTm n) :
-    Syn.subst σ (moveToLast A m p) = moveToLast (Syn.subst σ A) (Syn.subst σ m) (Syn.subst σ p) := by simp [moveToLast]
+ipra_subst moveIndex [sel]
+ipra_subst moveToLast
 
 theorem move_index_congr {m b p q r s : PTm n} (hm : Γ ⊢[PRAAx] m ≐ b) (hp : Γ ⊢[PRAAx] p ≐ q)
     (hr : Γ ⊢[PRAAx] r ≐ s) : Γ ⊢[PRAAx] moveIndex m p r ≐ moveIndex b q s := by
@@ -91,15 +85,10 @@ def duplicated (A m k : PTm n) : PTm n := selected duplicateBody (zeroedLast A m
 def repeatedLastRow (A m k : PTm n) : Fm PTm n := .all
   (lt (var 0) (succ (Syn.shift m)) ⟶ valueEqual (cell (Syn.shift A) (Syn.shift m) (var 0)) (cell (Syn.shift A) (Syn.shift k) (var 0)))
 
-@[simp] theorem subst_zeroedLast {l : ℕ} (σ : Fin n → PTm l) (A m : PTm n) :
-    Syn.subst σ (zeroedLast A m) = zeroedLast (Syn.subst σ A) (Syn.subst σ m) := by simp [zeroedLast]
-@[simp] theorem subst_duplicateIndex {l : ℕ} (σ : Fin n → PTm l) (m k r : PTm n) :
-    Syn.subst σ (duplicateIndex m k r) = duplicateIndex (Syn.subst σ m) (Syn.subst σ k) (Syn.subst σ r) := by simp [duplicateIndex,sel]
-@[simp] theorem subst_duplicated {l : ℕ} (σ : Fin n → PTm l) (A m k : PTm n) :
-    Syn.subst σ (duplicated A m k) = duplicated (Syn.subst σ A) (Syn.subst σ m) (Syn.subst σ k) := by simp [duplicated]
-@[simp] theorem subst_repeatedLastRow {l : ℕ} (σ : Fin n → PTm l) (A m k : PTm n) :
-    (repeatedLastRow A m k).subst σ = repeatedLastRow (Syn.subst σ A) (Syn.subst σ m) (Syn.subst σ k) := by
-  simp [repeatedLastRow,Syn.subst_shift,Syn.shift_subst]
+ipra_subst zeroedLast
+ipra_subst duplicateIndex [sel]
+ipra_subst duplicated
+ipra_subst repeatedLastRow [Syn.subst_shift, Syn.shift_subst]
 
 theorem zeroed_lookup (A m r j : PTm n) (hr : Γ ⊢[PRAAx] lt r (succ m)) (hj : Γ ⊢[PRAAx] lt j (succ m)) : Γ ⊢[PRAAx]
     cell (zeroedLast A m) r j ≐ sel (eqb r m) qzero (cell A r j) := by
@@ -213,18 +202,17 @@ theorem repeated_last_determinant (A m k : PTm n) (hk : Γ ⊢[PRAAx] lt k m) (h
 def output (A m p : PTm n) : PTm n := pairT (moveToLast A m p) (pairT (zeroedLast A m) (duplicated A m p))
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (A m p : PTm n) : PTm n := ap3 outputF A m p
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (A m p : PTm n) :
-    Syn.subst σ (output A m p) = output (Syn.subst σ A) (Syn.subst σ m) (Syn.subst σ p) := by simp [output]
+ipra_subst output
 theorem program_at (A m p : PTm n) : Γ ⊢[PRAAx] run A m p ≐ output A m p := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![A,m,p]
 theorem returned_moved (A m p : PTm n) : Γ ⊢[PRAAx] fstT (run A m p) ≐ moveToLast A m p :=
-  (congrFst (program_at A m p)).eqTrans (fst_pair _ _)
+  (program_at A m p).fstE
 theorem returned_tail (A m p : PTm n) : Γ ⊢[PRAAx] sndT (run A m p) ≐ pairT (zeroedLast A m) (duplicated A m p) :=
-  (congrSnd (program_at A m p)).eqTrans (snd_pair _ _)
+  (program_at A m p).sndE
 theorem returned_zeroed (A m p : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run A m p)) ≐ zeroedLast A m :=
-  (congrFst (returned_tail A m p)).eqTrans (fst_pair _ _)
+  (returned_tail A m p).fstE
 theorem returned_duplicated (A m p : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run A m p)) ≐ duplicated A m p :=
-  (congrSnd (returned_tail A m p)).eqTrans (snd_pair _ _)
+  (returned_tail A m p).sndE
 
 theorem actual_move_row_to_last_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 4
     (lt (var 2) (succ (var 1)) ⟶ lt (var 3) (succ (var 1)) ⟶

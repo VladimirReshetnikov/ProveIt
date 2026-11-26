@@ -14,21 +14,16 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRepresentedPointBounds
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (bounded)
 open LeanProofs.IPRA.Analysis.GaussianCoefficientNameBounds (unit unit_positive)
 open LeanProofs.IPRA.Analysis.GaussianRootApproximationWitness (pointBounds)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def normLE (point : PR 2) (Z x : PTm n) : Fm PTm n :=
   .all (bounded (ap2 point (var 0) (Syn.shift x)) (Syn.shift Z*unit (var 0)+one) (unit (var 0)))
-@[simp] theorem subst_normLE {m : ℕ} (σ : Fin n → PTm m) (point : PR 2) (Z x : PTm n) :
-    (normLE point Z x).subst σ = normLE point (Syn.subst σ Z) (Syn.subst σ x) := by
-  simp [normLE,Syn.subst_shift,Syn.shift_subst]
+ipra_subst normLE [Syn.subst_shift, Syn.shift_subst]
 
 theorem norm_le_at (point : PR 2) (Z x s : PTm n) (h : Γ ⊢[PRAAx] normLE point Z x) :
     Γ ⊢[PRAAx] bounded (ap2 point s x) (Z*unit s+one) (unit s) := by

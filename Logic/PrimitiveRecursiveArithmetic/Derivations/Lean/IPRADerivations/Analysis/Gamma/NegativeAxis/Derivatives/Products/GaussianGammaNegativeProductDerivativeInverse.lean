@@ -14,7 +14,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeProductDerivativeInverse
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalDistanceOrder (distance_congr distance_triangle_same)
 open GaussianRationalHorner (canonical canonical_unique positive_product qmul represents_congr)
 open GaussianRationalL1 (rawGaussian rawDen raw_den_positive raw_represents)
@@ -23,17 +23,12 @@ open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalReciprocal (bound_congr bounded_negative bounded_product)
 open GaussianRationalSyntheticDivision (qmul_congr qsub_congr qone rescale_to)
 open GaussianReciprocalHorner (qmul_associative qmul_one_right)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def inverseCoefficient (c1 c0 pDelta : PTm n) : PTm n := qmul (qmul c1 c0) (qnegative pDelta)
 
-@[simp] theorem subst_inverseCoefficient {m : ℕ} (σ : Fin n → PTm m) (c1 c0 pDelta : PTm n) :
-    Syn.subst σ (inverseCoefficient c1 c0 pDelta) =
-      inverseCoefficient (Syn.subst σ c1) (Syn.subst σ c0) (Syn.subst σ pDelta) := by
-  simp [inverseCoefficient]
+ipra_subst inverseCoefficient
 
 private theorem reverse_difference (a b : PTm n) : Γ ⊢[PRAAx] qsub b a ≐ qnegative (qsub a b) := by
   let A := rawGaussian a

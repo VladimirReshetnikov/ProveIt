@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Spans.GaussianRationalPivotSearch
 import IPRADerivations.Foundations.BoundedSyntaxInduction
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual column-ordered rectangular elimination and tag history
@@ -18,15 +17,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalEliminationLoop
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length empty empty_length append append_length entry_congr)
 open LeanProofs.IPRA.Analysis.GaussianRationalMonicReduction (singleton singleton_length singleton_lookup)
 open LeanProofs.IPRA.Analysis.GaussianRationalRowElimination (shape nullRows)
 open LeanProofs.IPRA.Foundations.BoundedSyntax (BFm formula)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,16 +37,11 @@ def state (A R N c : PTm n) : PTm n := ap2 stateF c (data A R N)
 def matrix (A R N c : PTm n) : PTm n := fstT (state A R N c)
 def history (A R N c : PTm n) : PTm n := sndT (state A R N c)
 
-@[simp] theorem subst_data {k : ℕ} (σ : Fin n → PTm k) (A R N : PTm n) :
-    Syn.subst σ (data A R N) = data (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) := by simp [data]
-@[simp] theorem subst_advance {k : ℕ} (σ : Fin n → PTm k) (E H R N c : PTm n) :
-    Syn.subst σ (advance E H R N c) = advance (Syn.subst σ E) (Syn.subst σ H) (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ c) := by simp [advance]
-@[simp] theorem subst_state {k : ℕ} (σ : Fin n → PTm k) (A R N c : PTm n) :
-    Syn.subst σ (state A R N c) = state (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ c) := by simp [state]
-@[simp] theorem subst_matrix {k : ℕ} (σ : Fin n → PTm k) (A R N c : PTm n) :
-    Syn.subst σ (matrix A R N c) = matrix (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ c) := by simp [matrix]
-@[simp] theorem subst_history {k : ℕ} (σ : Fin n → PTm k) (A R N c : PTm n) :
-    Syn.subst σ (history A R N c) = history (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ c) := by simp [history]
+ipra_subst data
+ipra_subst advance
+ipra_subst state
+ipra_subst matrix
+ipra_subst history
 
 theorem advance_congr {E E' H H' R R' N N' c c' : PTm n} (hE : Γ ⊢[PRAAx] E ≐ E')
     (hH : Γ ⊢[PRAAx] H ≐ H') (hR : Γ ⊢[PRAAx] R ≐ R') (hN : Γ ⊢[PRAAx] N ≐ N') (hc : Γ ⊢[PRAAx] c ≐ c') : Γ ⊢[PRAAx]
@@ -65,23 +56,21 @@ theorem state_succ (A R N c : PTm n) : Γ ⊢[PRAAx] state A R N (succ c) ≐ ad
   simp only [stepBody,subst_advance,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
     Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] at e
   exact e.eqTrans (advance_congr (.eqRefl _) (.eqRefl _)
-    ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)) ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)) (.eqRefl _))
-theorem matrix_zero (A R N : PTm n) : Γ ⊢[PRAAx] matrix A R N zero ≐ A := (congrFst (state_zero _ _ _)).eqTrans (fst_pair _ _)
-theorem history_zero (A R N : PTm n) : Γ ⊢[PRAAx] history A R N zero ≐ empty := (congrSnd (state_zero _ _ _)).eqTrans (snd_pair _ _)
+    (snd_pair _ _).fstE (snd_pair _ _).sndE (.eqRefl _))
+theorem matrix_zero (A R N : PTm n) : Γ ⊢[PRAAx] matrix A R N zero ≐ A := (state_zero _ _ _).fstE
+theorem history_zero (A R N : PTm n) : Γ ⊢[PRAAx] history A R N zero ≐ empty := (state_zero _ _ _).sndE
 theorem matrix_succ (A R N c : PTm n) : Γ ⊢[PRAAx] matrix A R N (succ c) ≐
     GaussianRationalPivotSearch.next (matrix A R N c) R N (history A R N c) c c :=
-  (congrFst (state_succ _ _ _ _)).eqTrans (fst_pair _ _)
+  (state_succ _ _ _ _).fstE
 theorem history_succ (A R N c : PTm n) : Γ ⊢[PRAAx] history A R N (succ c) ≐
     append (history A R N c) (singleton (GaussianRationalPivotSearch.tag (matrix A R N c) R (history A R N c) c c)) :=
-  (congrSnd (state_succ _ _ _ _)).eqTrans (snd_pair _ _)
+  (state_succ _ _ _ _).sndE
 
 theorem history_length (A R N c : PTm n) : Γ ⊢[PRAAx] length (history A R N c) ≐ c := by
   have all : Γ ⊢[PRAAx] .all (length (history (Syn.shift A) (Syn.shift R) (Syn.shift N) (var 0)) ≐ var 0) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,subst_length,subst_history,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (congrFst (history_zero _ _ _)).eqTrans empty_length
-    · simp only [Fm.subst_eq,subst_length,subst_history,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact (congrFst (history_succ _ _ _ _)).eqTrans ((append_length _ _).eqTrans
+    ipra_qfind [subst_length, subst_history]
+    · exact (congrFst (history_zero _ _ _)).eqTrans empty_length
+    · exact (congrFst (history_succ _ _ _ _)).eqTrans ((append_length _ _).eqTrans
         ((congrAdd Prf.hyp0 (singleton_length _)).eqTrans (succ_eq_add_one _).eqSymm))
   simpa only [Fm.subst_eq,subst_length,subst_history,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE c
 
@@ -132,9 +121,7 @@ def nullLawSyntax (A R N l c : PTm n) : BFm n := .imp (.le c N)
   (.and (.imp (nullSyntax A R N l) (nullSyntax (matrix A R N c) R N l))
     (.imp (nullSyntax (matrix A R N c) R N l) (nullSyntax A R N l)))
 theorem null_law_formula (A R N l c : PTm n) : formula (nullLawSyntax A R N l c) = nullLaw A R N l c := rfl
-@[simp] theorem subst_nullLaw {k : ℕ} (σ : Fin n → PTm k) (A R N l c : PTm n) :
-    (nullLaw A R N l c).subst σ = nullLaw (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ l) (Syn.subst σ c) := by
-  simp [nullLaw,Fm.iff]
+ipra_subst nullLaw [Fm.iff]
 
 theorem prefix_null_equivalence (A R N l c : PTm n) (hA : Γ ⊢[PRAAx] shape A R N) (hc : Γ ⊢[PRAAx] le c N) : Γ ⊢[PRAAx]
     Fm.iff (nullRows A R N l) (nullRows (matrix A R N c) R N l) := by
@@ -174,14 +161,8 @@ def output (A R N c : PTm n) : PTm n := pairT (matrix A R N c) (pairT (history A
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (A R N c : PTm n) : PTm n := app outputF ![A,R,N,c]
 def fields (p : PTm n) : Fin 3 → PTm n := ![fstT p,fstT (sndT p),sndT (sndT p)]
-@[simp] theorem subst_output {k : ℕ} (σ : Fin n → PTm k) (A R N c : PTm n) :
-    Syn.subst σ (output A R N c) = output (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ c) := by simp [output]
-@[simp] theorem subst_run {k : ℕ} (σ : Fin n → PTm k) (A R N c : PTm n) :
-    Syn.subst σ (run A R N c) = run (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ c) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 @[simp] theorem subst_fields {k : ℕ} (σ : Fin n → PTm k) (p : PTm n) (i : Fin 3) :
     Syn.subst σ (fields p i) = fields (Syn.subst σ p) i := by fin_cases i <;> simp [fields]
 theorem program_at (A R N c : PTm n) : Γ ⊢[PRAAx] run A R N c ≐ output A R N c := by
@@ -189,11 +170,11 @@ theorem program_at (A R N c : PTm n) : Γ ⊢[PRAAx] run A R N c ≐ output A R 
 theorem returned_fields (A R N c : PTm n) (i : Fin 3) : Γ ⊢[PRAAx]
     fields (run A R N c) i ≐ ![matrix A R N c,history A R N c,c] i := by
   have e0 := program_at (Γ := Γ) A R N c
-  have e1 := (congrSnd e0).eqTrans (snd_pair _ _)
+  have e1 := e0.sndE
   fin_cases i
-  · exact (congrFst e0).eqTrans (fst_pair _ _)
-  · exact (congrFst e1).eqTrans (fst_pair _ _)
-  · exact (congrSnd e1).eqTrans (snd_pair _ _)
+  · exact e0.fstE
+  · exact e1.fstE
+  · exact e1.sndE
 theorem returned_history_length (A R N c : PTm n) : Γ ⊢[PRAAx]
     length (fields (run A R N c) 1) ≐ fields (run A R N c) 2 :=
   (congrFst (returned_fields _ _ _ _ 1)).eqTrans ((history_length _ _ _ _).eqTrans (returned_fields _ _ _ _ 2).eqSymm)

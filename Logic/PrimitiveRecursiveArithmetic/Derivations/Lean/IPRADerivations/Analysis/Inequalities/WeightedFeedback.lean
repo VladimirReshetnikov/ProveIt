@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Inequalities.WeightedRowContraction
 import IPRADerivations.Probability.ClipLaws
-import IPRADerivations.Core.Gcd
 
 /-!
 # Vector-valued weighted feedback certificates
@@ -27,17 +26,13 @@ quantitative contracts from finite weighted certificates", for a fixed dimension
 
 namespace LeanProofs.IPRA.Analysis.WeightedFeedback
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.EventAlgebraMetric (wsum wsum_le)
 open LeanProofs.IPRA.Probability.BayesEvents (wsum_mul wsum_zero)
 open LeanProofs.IPRA.Analysis.WeightedRowContraction (row_domination half_contract_row)
 open LeanProofs.IPRA.Probability.Variance (ad)
 open LeanProofs.IPRA.Probability.ClipLaws (ad_triangle)
 open LeanProofs.IPRA.Probability.MedianWeighted (ad_le_of)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n m : ℕ} {Γ : List (Fm PTm n)}
 
@@ -59,10 +54,9 @@ theorem contract_scaled (C : Cert Γ a w T D) {x y : Fin m → PTm n} (hx : D x)
     (h : ∀ j, Γ ⊢[PRAAx] le (s * ad (x j) (y j)) (r * w j)) (i : Fin m) :
     Γ ⊢[PRAAx] le (two * (s * ad (T x i) (T y i))) (r * w i) := by
   have g := C.gain x y hx hy i
-  have e := natEq (wsum_mul (Γ := Γ) (a i) (fun j => ad (x j) (y j)) s (List.finRange m))
   have hg : Γ ⊢[PRAAx] le (s * ad (T x i) (T y i))
       (wsum (a i) (fun j => s * ad (x j) (y j)) (List.finRange m)) := by
-    ipra_le 𝔟 s * sl g with e
+    ipra_le 𝔟 s * sl g with natEq (wsum_mul (Γ := Γ) (a i) (fun j => ad (x j) (y j)) s (List.finRange m))
   exact half_contract_row (a i) w (fun j => s * ad (x j) (y j)) (List.finRange m) (fun j _ => h j) (C.half i) hg
 
 /-- The orbit `x₀ = c`, `x_{k+1} = T x_k`. -/

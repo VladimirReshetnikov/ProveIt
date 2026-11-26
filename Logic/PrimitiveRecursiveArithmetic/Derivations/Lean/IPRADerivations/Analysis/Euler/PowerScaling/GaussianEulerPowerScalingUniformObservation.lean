@@ -15,7 +15,7 @@ set_option maxHeartbeats 2000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingUniformObservation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPowerChartUniformSchedule (panelStage cutoffIndex cutoff_later original_uniform_image_source)
 open GaussianEulerPowerChartUniformEndpoints (uniform_physical_panel)
 open GaussianEulerPowerChartCofinalEndpoints (lowerDenominator upperNumerator width)
@@ -36,9 +36,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_radius_mono distance_symmetric)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianExponentialReference (unit_monotone)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -53,14 +50,7 @@ def compactData (s z R B A e f d h L Q S U M : PTm n) : PTm n :=
   GaussianEulerPowerScalingCompactName.data z R B e f d h Q S one
     (width L U S V) (lowerDenominator S V L) (upperNumerator U V L)
 
-@[simp] theorem subst_compactData {m : ℕ} (σ : Fin n → PTm m) (s z R B A e f d h L Q S U M : PTm n) :
-    Syn.subst σ (compactData s z R B A e f d h L Q S U M) =
-      compactData (Syn.subst σ s) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A)
-        (Syn.subst σ e) (Syn.subst σ f) (Syn.subst σ d) (Syn.subst σ h) (Syn.subst σ L)
-        (Syn.subst σ Q) (Syn.subst σ S) (Syn.subst σ U) (Syn.subst σ M) := by
-  simp [compactData,GaussianEulerPowerScalingCompactName.data,cutoffSize,width,lowerDenominator,upperNumerator,
-    GaussianGammaIntegralCutoffs.etaDen,GaussianGammaIntegralCutoffs.top,GaussianGammaIntegralCutoffs.height,
-    GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst compactData [GaussianEulerPowerScalingCompactName.data, cutoffSize, width, lowerDenominator, upperNumerator, GaussianGammaIntegralCutoffs.etaDen, GaussianGammaIntegralCutoffs.top, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient]
 
 private theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B A e f d h L Q S U M : PTm n) :
     (source z R B A e f d h L Q S U M).subst σ =

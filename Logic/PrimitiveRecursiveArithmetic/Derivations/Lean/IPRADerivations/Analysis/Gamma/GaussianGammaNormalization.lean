@@ -15,7 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNormalization
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (ofGaussian canonical_unique represents_congr positive_product)
 open ComplexLogarithmRemainder (oneCode scale)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
@@ -27,9 +27,6 @@ open GaussianNameArithmetic (multiplyF multiplyData multiply_fast)
 open GaussianNameEquivalence (crossEquivalent cross_trans cross_symm cross_refl)
 open GaussianRationalMetric (distanceBounded)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -37,12 +34,9 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 def integerPoint (k : PTm n) : PTm n := ofGaussian (scale k oneCode) one
 def ratio (N : PTm n) : PTm n := ofGaussian (scale (succ N) oneCode) N
 def headLaw (N : PTm n) : Fm PTm n := GaussianGammaEulerHead.head oneCode one N ≐ integerPoint (succ N)
-@[simp] theorem subst_integerPoint {l : ℕ} (σ : Fin n → PTm l) (k : PTm n) :
-    Syn.subst σ (integerPoint k) = integerPoint (Syn.subst σ k) := by simp [integerPoint]
-@[simp] theorem subst_ratio {l : ℕ} (σ : Fin n → PTm l) (N : PTm n) :
-    Syn.subst σ (ratio N) = ratio (Syn.subst σ N) := by simp [ratio]
-@[simp] theorem subst_headLaw {l : ℕ} (σ : Fin n → PTm l) (N : PTm n) :
-    (headLaw N).subst σ = headLaw (Syn.subst σ N) := by simp [headLaw]
+ipra_subst integerPoint
+ipra_subst ratio
+ipra_subst headLaw
 
 theorem head_zero : Γ ⊢[PRAAx] headLaw (zero : PTm n) := by
   refine (GaussianGammaEulerHead.head_zero oneCode one (le_refl _)).eqTrans ?_
@@ -136,8 +130,7 @@ theorem unit_source : Γ ⊢[PRAAx] GaussianGammaCanonicalExponent.source (oneCo
 
 def cutoff (t : PTm n) : PTm n := one+t+two+GaussianGammaPerturbationExponent.numerator one+
   (GaussianGammaFunctionalEquation.eulerRate one+one)*unit t
-@[simp] theorem subst_cutoff {l : ℕ} (σ : Fin n → PTm l) (t : PTm n) :
-    Syn.subst σ (cutoff t) = cutoff (Syn.subst σ t) := by simp [cutoff]
+ipra_subst cutoff
 
 theorem cutoff_positive (t : PTm n) : Γ ⊢[PRAAx] le one (cutoff t) := by
   unfold cutoff
@@ -253,16 +246,13 @@ def output (p q : PTm n) : PTm n := pairT (GaussianGammaC7Name.sample p oneCode 
     (ap2 GaussianNameRingLaws.oneF q zero))
 def outputF : PR 2 := PTm.toPR (output (var 0) (var 1))
 def run (p q : PTm n) : PTm n := ap2 outputF p q
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (p q : PTm n) :
-    Syn.subst σ (output p q) = output (Syn.subst σ p) (Syn.subst σ q) := by
-  simp [output,GaussianGammaReciprocalInverse.gammaData,GaussianGammaReciprocalInverse.gammaHeight]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (p q : PTm n) :
-    Syn.subst σ (run p q) = run (Syn.subst σ p) (Syn.subst σ q) := by simp [run]
+ipra_subst output [GaussianGammaReciprocalInverse.gammaData, GaussianGammaReciprocalInverse.gammaHeight]
+ipra_subst run
 
 theorem program_at (p q : PTm n) : Γ ⊢[PRAAx] run p q ≐ output p q := by
   simpa [run,outputF,ap2] using toPR_eq (Γ := Γ) (output (var 0) (var 1) : PTm 2) ![p,q]
 theorem returned_P (p q : PTm n) : Γ ⊢[PRAAx] fstT (run p q) ≐ GaussianGammaC7Name.sample p oneCode one one :=
-  (congrFst (program_at p q)).eqTrans (fst_pair _ _)
+  (program_at p q).fstE
 theorem returned_Gamma (p q : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run p q)) ≐ ap2 GaussianGammaReciprocalInverse.gammaF p (GaussianGammaReciprocalInverse.gammaData oneCode one one one) :=
   ((congrFst (congrSnd (program_at p q))).eqTrans (congrFst (snd_pair _ _))).eqTrans (fst_pair _ _)

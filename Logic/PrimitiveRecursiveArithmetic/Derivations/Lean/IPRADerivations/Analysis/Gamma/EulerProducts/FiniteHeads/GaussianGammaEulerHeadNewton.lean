@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.FiniteHeads.GaussianGammaEulerHeadGeometricStep
 import IPRADerivations.Analysis.Polynomials.Division.GaussianRationalSyntheticCoefficientValues
 import IPRADerivations.Foundations.BoundedSyntaxInduction
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Newton identity for the unchanged original Euler-head program
@@ -20,7 +19,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaEulerHeadNewton
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero qadd qmul)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr)
 open GaussianRationalNaturalScale (natScale natScale_congr)
@@ -29,20 +28,14 @@ open GaussianGammaEulerHeadGeometricStep (value)
 open GaussianGammaHarmonicIncrement (reciprocalPoint)
 open GaussianRationalFiniteSum (sum)
 open LeanProofs.IPRA.Foundations.BoundedSyntax (BFm formula)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def data (N s : PTm n) : PTm n := pairT N s
 def body : PTm 2 := value (reciprocalPoint (var 0)) (fstT (var 1)) (sndT (var 1))
 def newtonSum (N s : PTm n) : PTm n := sum body N (data N s)
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (N s : PTm n) :
-    Syn.subst σ (data N s) = data (Syn.subst σ N) (Syn.subst σ s) := by simp [data]
-@[simp] theorem subst_newtonSum {l : ℕ} (σ : Fin n → PTm l) (N s : PTm n) :
-    Syn.subst σ (newtonSum N s) = newtonSum (Syn.subst σ N) (Syn.subst σ s) := by simp [newtonSum]
+ipra_subst data
+ipra_subst newtonSum
 
 theorem value_congr {a b N M s t : PTm n} (ha : Γ ⊢[PRAAx] a ≐ b)
     (hN : Γ ⊢[PRAAx] N ≐ M) (hs : Γ ⊢[PRAAx] s ≐ t) : Γ ⊢[PRAAx] value a N s ≐ value b M t := by
@@ -104,8 +97,7 @@ theorem scale_sum (t x y : PTm n) : Γ ⊢[PRAAx]
         (GaussianRationalNaturalScale.natScale_as_product _ _).eqSymm))
 
 def law (N s : PTm n) : Fm PTm n := newtonSum N s ≐ natScale s (reader N (succ s))
-@[simp] theorem subst_law {l : ℕ} (σ : Fin n → PTm l) (N s : PTm n) :
-    (law N s).subst σ = law (Syn.subst σ N) (Syn.subst σ s) := by simp [law]
+ipra_subst law
 
 theorem law_transport (N s t : PTm n) (hst : Γ ⊢[PRAAx] s ≐ t) (h : Γ ⊢[PRAAx] law N t) :
     Γ ⊢[PRAAx] law N s :=

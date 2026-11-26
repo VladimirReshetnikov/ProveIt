@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaReflectionProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianGammaEulerReflectionLimit (pairF pairData scaledF scaledData original_reciprocal_reflection_product)
 open GaussianGammaReciprocalInverse (gammaF gammaData gamma_regular gamma_product inverse_pairs named_product_exchange)
@@ -27,8 +27,6 @@ open GaussianNameArithmetic (multiplyF multiplyData multiply_fast)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
 open GaussianNameRingLaws (oneF multiply_associative multiply_commutative)
 open GaussianRationalHorner (ofGaussian)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "gneg" => ComplexLogarithmRemainder.neg

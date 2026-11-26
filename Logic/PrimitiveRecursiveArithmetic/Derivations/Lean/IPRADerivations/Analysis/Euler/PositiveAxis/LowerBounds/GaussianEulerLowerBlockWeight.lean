@@ -14,15 +14,11 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLowerBlockWeight
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (bounded)
 open GaussianRationalFiniteSum (sum)
 open GaussianUniformFiniteSumBound (summandsBounded uniform_sum_bound)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -31,16 +27,11 @@ def rowDenominator (D v P : PTm n) : PTm n := v*D*P
 def numerator (D S L P : PTm n) : PTm n := S*(D*P+L*S*P+num 3*D)
 def denominator (D P : PTm n) : PTm n := D*D*P
 def source (N D u v S P : PTm n) : Fm PTm n := le one D ⋏ (le one u ⋏ (le one v ⋏ (le one P ⋏ (le N (S*v) ⋏ le N (S*u)))))
-@[simp] theorem subst_rowNumerator {m : ℕ} (σ : Fin n → PTm m) (D u v S L P : PTm n) :
-    Syn.subst σ (rowNumerator D u v S L P) = rowNumerator (Syn.subst σ D) (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ S) (Syn.subst σ L) (Syn.subst σ P) := by simp [rowNumerator]
-@[simp] theorem subst_rowDenominator {m : ℕ} (σ : Fin n → PTm m) (D v P : PTm n) :
-    Syn.subst σ (rowDenominator D v P) = rowDenominator (Syn.subst σ D) (Syn.subst σ v) (Syn.subst σ P) := by simp [rowDenominator]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (D S L P : PTm n) :
-    Syn.subst σ (numerator D S L P) = numerator (Syn.subst σ D) (Syn.subst σ S) (Syn.subst σ L) (Syn.subst σ P) := by simp [numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (D P : PTm n) :
-    Syn.subst σ (denominator D P) = denominator (Syn.subst σ D) (Syn.subst σ P) := by simp [denominator]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (N D u v S P : PTm n) :
-    (source N D u v S P).subst σ = source (Syn.subst σ N) (Syn.subst σ D) (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ S) (Syn.subst σ P) := by simp [source]
+ipra_subst rowNumerator
+ipra_subst rowDenominator
+ipra_subst numerator
+ipra_subst denominator
+ipra_subst source
 
 theorem row_denominator_positive (D v P : PTm n) (hD : Γ ⊢[PRAAx] le one D) (hv : Γ ⊢[PRAAx] le one v) (hP : Γ ⊢[PRAAx] le one P) : Γ ⊢[PRAAx]
     le one (rowDenominator D v P) := positive_product _ _ (positive_product _ _ hv hD) hP

@@ -1,5 +1,4 @@
 import IPRADerivations.Combinatorics.BellWindowPeriod
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The backward recurrence for Bell windows modulo `m` (`bell_numbers_ipra`, `thm:all-moduli-period`)
@@ -27,7 +26,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.BellWindowBackward
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Bell (bell)
 open LeanProofs.IPRA.Combinatorics.BellPascalInversion (congrBell)
 open LeanProofs.IPRA.Combinatorics.BellTouchardPower (cong_add cong_mul cong_of_eq cong_sum
@@ -40,10 +39,6 @@ open LeanProofs.IPRA.Combinatorics.LinearFactorTable (cyc actB pair_congr)
 open LeanProofs.IPRA.Foundations.BoundedReflection (allB all_elim all_intro)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (eq_of_eqb_ne)
 open LeanProofs.IPRA.AnalyticNumberTheory.Euler (congrEqb)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -66,9 +61,9 @@ theorem w_at (i a b m : PTm n) :
         (rem (bell (sndT (fstT (wpar a b m)) + i)) (sndT (wpar a b m))) := by simp [inst2]
   rw [h]
   have ha : Γ ⊢[PRAAx] fstT (fstT (wpar a b m)) ≐ a :=
-    (congrFst (fst_pair _ _)).eqTrans (fst_pair _ _)
+    (fst_pair _ _).fstE
   have hb : Γ ⊢[PRAAx] sndT (fstT (wpar a b m)) ≐ b :=
-    (congrSnd (fst_pair _ _)).eqTrans (snd_pair _ _)
+    (fst_pair _ _).sndE
   exact congrEqb (congrAp2 remF (congrBell (congrAdd ha (.eqRefl _))) (snd_pair _ _))
     (congrAp2 remF (congrBell (congrAdd hb (.eqRefl _))) (snd_pair _ _))
 

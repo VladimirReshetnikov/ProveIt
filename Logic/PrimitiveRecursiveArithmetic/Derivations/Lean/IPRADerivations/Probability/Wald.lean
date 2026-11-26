@@ -1,5 +1,4 @@
 import IPRADerivations.Probability.ProductPower
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Wald's identity on the finite product law
@@ -27,17 +26,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.Wald
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.BlockSum (qr_block)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
 open LeanProofs.IPRA.Probability.ProductPower (dg dB_at dg_low dg_top rem_shift TB TB_at Pr pr_peel peel_sum lin3
   shift_inst2' one_bound)
 open LeanProofs.IPRA.Probability.Expectation (inst2_mul')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -64,8 +59,8 @@ theorem gdB_at (j t M x : PTm n) :
         (pairT j (sndT (sndT (pairT t (pairT M x))))) := by
     simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
   rw [e]
-  have hM : Γ ⊢[PRAAx] fstT (sndT (pairT t (pairT M x))) ≐ M := (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-  have hx : Γ ⊢[PRAAx] sndT (sndT (pairT t (pairT M x))) ≐ x := (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
+  have hM : Γ ⊢[PRAAx] fstT (sndT (pairT t (pairT M x))) ≐ M := (snd_pair _ _).fstE
+  have hx : Γ ⊢[PRAAx] sndT (sndT (pairT t (pairT M x))) ≐ x := (snd_pair _ _).sndE
   exact congrInst2 G (congrAp2 remF (fst_pair _ _) (Combinatorics.BinomialTheorem.congrPw hM (.eqRefl _)))
     (congrPairT (.eqRefl _) hx)
 
@@ -139,7 +134,7 @@ theorem GB_at (t r M x : PTm n) :
     simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
   rw [e]
   exact congrMul (TB_at w _ _ _ _) (congrInst2 G (.eqRefl _)
-    (congrPairT (fst_pair _ _) ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))))
+    (congrPairT (fst_pair _ _) (snd_pair _ _).sndE))
 
 theorem inst2_zero2 (v p : PTm n) : inst2 (zero : PTm 2) v p = zero := by simp [inst2]
 
@@ -204,14 +199,10 @@ theorem wald (w X G : PTm 2) {N M x : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pre
   have hM' : Γ.map Fm.shift ⊢[PRAAx] Syn.shift M ≐ succ (pred (Syn.shift M)) := by simpa [Fm.shift, Syn.shift] using hM.shift
   have hall : Γ ⊢[PRAAx] Fm.all (ap2 (sumF w) (Syn.shift M) (Syn.shift x) * Qt w X G (var 0) (Syn.shift M) (Syn.shift x) ≐
       ap2 (sumF (w * X)) (Syn.shift M) (Syn.shift x) * Qt w (one : PTm 2) G (var 0) (Syn.shift M) (Syn.shift x)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Qt, Fm.subst_eq, PTm.subst_mul, subst_ap2, subst_pairT, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      exact ((congrMul (.eqRefl _) (Q_zero w X G _ _)).eqTrans (mul_zero _)).eqTrans
+    ipra_qfind [Qt, subst_ap2, subst_pairT]
+    · exact ((congrMul (.eqRefl _) (Q_zero w X G _ _)).eqTrans (mul_zero _)).eqTrans
         ((congrMul (.eqRefl _) (Q_zero w (one : PTm 2) G _ _)).eqTrans (mul_zero _)).eqSymm
-    · simp only [Qt, Fm.subst_eq, PTm.subst_mul, subst_ap2, subst_pairT, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      let C : List (Fm PTm (n + 1)) := (ap2 (sumF w) (Syn.shift M) (Syn.shift x) * Qt w X G (var 0) (Syn.shift M) (Syn.shift x) ≐
+    · let C : List (Fm PTm (n + 1)) := (ap2 (sumF w) (Syn.shift M) (Syn.shift x) * Qt w X G (var 0) (Syn.shift M) (Syn.shift x) ≐
           ap2 (sumF (w * X)) (Syn.shift M) (Syn.shift x) * Qt w (one : PTm 2) G (var 0) (Syn.shift M) (Syn.shift x)) :: Γ.map Fm.shift
       have ih0 : C ⊢[PRAAx] ap2 (sumF w) (Syn.shift M) (Syn.shift x) * Qt w X G (var 0) (Syn.shift M) (Syn.shift x) ≐
           ap2 (sumF (w * X)) (Syn.shift M) (Syn.shift x) * Qt w (one : PTm 2) G (var 0) (Syn.shift M) (Syn.shift x) := Prf.hyp0

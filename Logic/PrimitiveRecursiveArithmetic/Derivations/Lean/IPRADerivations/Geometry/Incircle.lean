@@ -1,5 +1,4 @@
 import IPRADerivations.Geometry.TriangleCentres
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Angle bisectors, the incircle, the excircles and Euler's `OI` identity
@@ -33,10 +32,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Geometry.Incircle
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Geometry.TriangleCentres (dot det nsq)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

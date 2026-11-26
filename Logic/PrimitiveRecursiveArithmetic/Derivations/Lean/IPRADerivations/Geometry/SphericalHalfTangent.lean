@@ -29,10 +29,8 @@ The remaining five equations are the cyclic relabellings of these two.
 
 namespace LeanProofs.IPRA.Geometry.SphericalHalfTangent
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Geometry.SphericalHalf
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

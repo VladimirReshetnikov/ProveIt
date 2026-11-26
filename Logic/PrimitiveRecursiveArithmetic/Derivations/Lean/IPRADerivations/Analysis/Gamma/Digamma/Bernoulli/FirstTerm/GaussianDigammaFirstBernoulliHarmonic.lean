@@ -14,8 +14,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianDigammaFirstBernoulliHarmonic
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero succ)
+open_ipra
 open GaussianStirlingAllOrderHarmonicIntegral (sum_at_original)
 open GaussianStirlingAllOrderPanelPartsFinite (weightBody weight_at weightAt parameters)
 open GaussianStirlingAllOrderPanelPartsRecurrence (panelMass fullMass)
@@ -29,8 +28,6 @@ open RationalFiniteSum (sum term termwiseEq sum_ext canonical_equal)
 open RationalNonnegativePowers (fraction_congr fraction_multiply)
 open RationalNormalForm (normalize_well_formed)
 open RationalSumLinearity (scaledBody scaled_term sum_homogeneous)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

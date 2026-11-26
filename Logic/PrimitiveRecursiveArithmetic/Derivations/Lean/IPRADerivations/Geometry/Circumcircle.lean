@@ -19,11 +19,7 @@ Also Lemma `lem:square-compare`: `(u − v)² ≤ |u² − v²|` for `u, v ≥ 0
 
 namespace LeanProofs.IPRA.Geometry.Circumcircle
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 /-! ## The circumcentre -/
 

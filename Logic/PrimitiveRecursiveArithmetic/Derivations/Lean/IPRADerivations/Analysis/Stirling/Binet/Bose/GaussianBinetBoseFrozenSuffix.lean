@@ -14,7 +14,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetBoseFrozenSuffix
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetBoseFrozenMatrix (matrix matrix_at cell_at subst_frozenPiNumerator subst_piDenominator)
 open GaussianBinetBosePrefixTranspose (data)
 open GaussianBinetBoseFrozenTimeRescale (coordinates rescale_error)
@@ -31,10 +31,6 @@ open GaussianRationalRiemannRefinement (termsDistance sum_distance weight weight
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRightHalfPlaneLogarithm (source)
 open GaussianStirlingConstant (piDenominator)
-open ConciseIPRA.PTm (succ zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -56,20 +52,11 @@ def suffixValue (q k N T E B C X Y D sign : PTm n) : PTm n :=
 def prefixValue (q k N T E B X Y D sign : PTm n) : PTm n :=
   qmul (weight one E B) (columnFirst matrix B N (fullData q k T E B X Y D sign))
 
-@[simp] theorem subst_geometry {m : ℕ} (σ : Fin n → PTm m) (T E B C : PTm n) :
-    (geometry T E B C).subst σ = geometry (Syn.subst σ T) (Syn.subst σ E) (Syn.subst σ B) (Syn.subst σ C) := by
-  simp [geometry,one]
-@[simp] theorem subst_fullMesh {m : ℕ} (σ : Fin n → PTm m) (T E B : PTm n) :
-    Syn.subst σ (fullMesh T E B) = fullMesh (Syn.subst σ T) (Syn.subst σ E) (Syn.subst σ B) := by simp [fullMesh]
-@[simp] theorem subst_fullData {m : ℕ} (σ : Fin n → PTm m) (q k T E B X Y D sign : PTm n) :
-    Syn.subst σ (fullData q k T E B X Y D sign) = fullData (Syn.subst σ q) (Syn.subst σ k) (Syn.subst σ T)
-      (Syn.subst σ E) (Syn.subst σ B) (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign) := by
-  simp [fullData,one]
-@[simp] theorem subst_segmentData {m : ℕ} (σ : Fin n → PTm m) (L S d : PTm n) :
-    Syn.subst σ (segmentData L S d) = segmentData (Syn.subst σ L) (Syn.subst σ S) (Syn.subst σ d) := by simp [segmentData]
-@[simp] theorem subst_columnSegment {m : ℕ} (σ : Fin n → PTm m) (j L S d : PTm n) :
-    Syn.subst σ (columnSegment j L S d) = columnSegment (Syn.subst σ j) (Syn.subst σ L) (Syn.subst σ S) (Syn.subst σ d) :=
-  by simp [columnSegment]
+ipra_subst geometry [one]
+ipra_subst fullMesh
+ipra_subst fullData [one]
+ipra_subst segmentData
+ipra_subst columnSegment
 
 theorem strip_source (T E B C X D sign : PTm n) (h : Γ ⊢[PRAAx] geometry T E B C) (hz : Γ ⊢[PRAAx] source X D sign) :
     Γ ⊢[PRAAx] GaussianBinetBoseCompact.source X D sign T one C E :=

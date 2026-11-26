@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalNamedDigammaUniqueness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaNegativeCriticalSlope (coefficient)
 open GaussianGammaNegativeIntervalNamedDigamma (source nameF data frozenData original_frozen_rate)
@@ -26,17 +26,13 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRationalHorner (positive_product qzero)
 open GaussianRationalMetric (distanceBounded)
 open GaussianUnitIntervalInputDecoding (decoded_distance)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "NF" => GaussianGammaNegativeCriticalEndpoints.nameF
 
 def cost (E F N : PTm n) : PTm n := (coefficient N E+two)+two+(coefficient N F+two)
 
-@[simp] theorem subst_cost {m : ℕ} (σ : Fin n → PTm m) (E F N : PTm n) :
-    Syn.subst σ (cost E F N) = cost (Syn.subst σ E) (Syn.subst σ F) (Syn.subst σ N) := by simp [cost]
+ipra_subst cost
 
 private theorem frozen_diagonal (f : PR 2) (p x E N : PTm n) (hf : Γ ⊢[PRAAx] source f x E) :
     Γ ⊢[PRAAx] distanceBounded (ap2 (nameF f) p (data x E N)) (ap2 NF p (frozenData f p x N))

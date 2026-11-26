@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialPowerNormVariation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalPolynomialPowers (table powerPrefix)
 open GaussianCoefficientL1 (coefficientNorm subCoefficients)
 open GaussianCoefficientNormOrder (coefficientNorm_congr subCoefficients_congr)
@@ -27,9 +27,6 @@ open GaussianPolynomialDeterminantStageNorm (factorBounds)
 open GaussianPolynomialDeterminantStageError (factorDifferences)
 open RationalArgmin (rationalLE)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

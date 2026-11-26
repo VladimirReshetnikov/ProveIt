@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalExponent
 import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalRepresentations
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The exact harmonic increment in the original Gamma exponent
@@ -18,8 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaHarmonicIncrement
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero succ)
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum (S_succ)
 open LeanProofs.IPRA.AnalyticNumberTheory.MeshChange (S_denom)
@@ -28,8 +26,6 @@ open GaussianGammaCanonicalExponent (harmonic harmonicPoint harmonic_represents 
 open GaussianRationalHorner (ofGaussian qadd positive_product)
 open RationalGaussianEmbedding (embed)
 open Products (fact)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -39,10 +35,8 @@ def reciprocal (N : PTm n) : PTm n :=
 def reciprocalPoint (N : PTm n) : PTm n :=
   ofGaussian ComplexLogarithmRemainder.oneCode (succ N)
 
-@[simp] theorem subst_reciprocal {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (reciprocal N) = reciprocal (Syn.subst σ N) := by simp [reciprocal]
-@[simp] theorem subst_reciprocalPoint {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (reciprocalPoint N) = reciprocalPoint (Syn.subst σ N) := by simp [reciprocalPoint]
+ipra_subst reciprocal
+ipra_subst reciprocalPoint
 
 theorem reciprocal_represents (N : PTm n) : Γ ⊢[PRAAx]
     RationalArithmetic.represents (reciprocal N) (ZT.ofNat one) (succ N) :=

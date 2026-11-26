@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianRootAlgebra
 import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalNormalForm
 import IPRADerivations.Foundations.SequenceEquality
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual runtime-degree Gaussian root-product polynomials
@@ -18,17 +17,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRootProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder
   (re im code add mul scale zeroCode oneCode normSq normSq_mul normSq_one)
 open LeanProofs.IPRA.Analysis.GaussianRootAlgebra
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode subst_entry subst_sequence)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
 open LeanProofs.IPRA.Signum (sg)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "ℜ" c:max => ZT.toZ Γ (re c)
@@ -39,10 +34,8 @@ local notation "𝔞" c:max => Groth.ι (Q.mk Γ c)
 def padded (C i : PTm n) : PTm n := scale (sg (monus (length C) i)) (entry C i)
 def delayed (C i : PTm n) : PTm n := scale (sg i) (padded C (pred i))
 
-@[simp] theorem subst_padded {m : ℕ} (σ : Fin n → PTm m) (C i : PTm n) :
-    Syn.subst σ (padded C i) = padded (Syn.subst σ C) (Syn.subst σ i) := by simp [padded]
-@[simp] theorem subst_delayed {m : ℕ} (σ : Fin n → PTm m) (C i : PTm n) :
-    Syn.subst σ (delayed C i) = delayed (Syn.subst σ C) (Syn.subst σ i) := by simp [delayed]
+ipra_subst padded
+ipra_subst delayed
 
 theorem padded_inside (C i : PTm n) (hi : Γ ⊢[PRAAx] lt i (length C)) :
     Γ ⊢[PRAAx] equal (padded C i) (entry C i) := by
@@ -74,11 +67,8 @@ def linearCoefficientF : PR 3 := PTm.toPR (linearCoefficient (var 0) (var 1) (va
 def linearBody : PTm 2 := ap3 linearCoefficientF (fstT (var 1)) (sndT (var 1)) (var 0)
 def linear (C r : PTm n) : PTm n := sequence linearBody (succ (length C)) (pairT C r)
 
-@[simp] theorem subst_linearCoefficient {m : ℕ} (σ : Fin n → PTm m) (C r i : PTm n) :
-    Syn.subst σ (linearCoefficient C r i) = linearCoefficient (Syn.subst σ C) (Syn.subst σ r) (Syn.subst σ i) := by simp [linearCoefficient]
-@[simp] theorem subst_linear {m : ℕ} (σ : Fin n → PTm m) (C r : PTm n) :
-    Syn.subst σ (linear C r) = linear (Syn.subst σ C) (Syn.subst σ r) := by
-  simp only [linear,subst_sequence,subst_pairT,subst_length,ConciseIPRA.PTm.subst_succ]
+ipra_subst linearCoefficient
+ipra_subst linear
 
 theorem linearCoefficient_at (C r i : PTm n) : Γ ⊢[PRAAx] ap3 linearCoefficientF C r i ≐ linearCoefficient C r i := by
   simpa [linearCoefficientF,ap3] using toPR_eq (Γ := Γ) (linearCoefficient (var 0) (var 1) (var 2) : PTm 3) ![C,r,i]
@@ -99,10 +89,8 @@ def hornerF : PR 3 := recDef zeroCode hornerStep
 def horner (C z k : PTm n) : PTm n := ap3 hornerF k C z
 def evaluate (C z : PTm n) : PTm n := horner C z (length C)
 
-@[simp] theorem subst_horner {m : ℕ} (σ : Fin n → PTm m) (C z k : PTm n) :
-    Syn.subst σ (horner C z k) = horner (Syn.subst σ C) (Syn.subst σ z) (Syn.subst σ k) := by simp [horner]
-@[simp] theorem subst_evaluate {m : ℕ} (σ : Fin n → PTm m) (C z : PTm n) :
-    Syn.subst σ (evaluate C z) = evaluate (Syn.subst σ C) (Syn.subst σ z) := by simp [evaluate]
+ipra_subst horner
+ipra_subst evaluate
 
 theorem horner_zero (C z : PTm n) : Γ ⊢[PRAAx] horner C z zero ≐ zeroCode := by
   have h := rec_zero (Γ := Γ) (zeroCode : PTm 2) hornerStep ![C,z]
@@ -165,9 +153,7 @@ theorem linear_relation (C r k : PTm n) (hk : Γ ⊢[PRAAx] le k (length C)) :
 def prefixLaw (C r z k : PTm n) : Fm PTm n := le k (succ (length C)) ⟶
   equal (add (horner (linear C r) z k) (mul r (horner C z (pred k)))) (horner C z k)
 
-@[simp] theorem subst_prefixLaw {m : ℕ} (σ : Fin n → PTm m) (C r z k : PTm n) :
-    (prefixLaw C r z k).subst σ = prefixLaw (Syn.subst σ C) (Syn.subst σ r) (Syn.subst σ z) (Syn.subst σ k) := by
-  simp [prefixLaw]
+ipra_subst prefixLaw
 
 theorem prefix_zero (C r z : PTm n) : Γ ⊢[PRAAx]
     equal (add (horner (linear C r) z zero) (mul r (horner C z (pred zero)))) (horner C z zero) := by
@@ -187,11 +173,10 @@ theorem prefix_zero (C r z : PTm n) : Γ ⊢[PRAAx]
 literal constructed linear factor, with no evaluation identity as input. -/
 theorem linear_prefix (C r z k : PTm n) : Γ ⊢[PRAAx] prefixLaw C r z k := by
   have all : Γ ⊢[PRAAx] .all (prefixLaw (Syn.shift C) (Syn.shift r) (Syn.shift z) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,⟨trivial,trivial⟩⟩ ?_ ?_
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift,prefixLaw,Fm.subst_imp,subst_le,subst_length,subst_equal,ComplexLogarithmRemainder.subst_add,ComplexLogarithmRemainder.subst_mul,subst_horner,subst_linear,PTm.subst_pred,ConciseIPRA.PTm.subst_succ]
-      exact .impI (prefix_zero C r z)
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift,prefixLaw,Fm.subst_imp,subst_le,subst_length,subst_equal,ComplexLogarithmRemainder.subst_add,ComplexLogarithmRemainder.subst_mul,subst_horner,subst_linear,PTm.subst_pred,ConciseIPRA.PTm.subst_succ]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,⟨trivial,trivial⟩⟩) [subst_prefixLaw, prefixLaw, subst_le, subst_length, subst_equal,
+        ComplexLogarithmRemainder.subst_add, ComplexLogarithmRemainder.subst_mul, subst_horner, subst_linear]
+    · exact .impI (prefix_zero C r z)
+    · refine .impI ?_
       let I := prefixLaw (Syn.shift C) (Syn.shift r) (Syn.shift z) (var 0)
       let Δ := le (succ (var 0)) (succ (length (Syn.shift C))) :: I :: Γ.map Fm.shift
       have bound : Δ ⊢[PRAAx] le (var 0) (length (Syn.shift C)) :=
@@ -260,14 +245,13 @@ theorem evaluate_linear (C r z : PTm n) :
 /-! ## Actual root-list coefficient construction and independent factor fold -/
 
 def initial : PTm n := sequence (oneCode : PTm 2) one zero
-@[simp] theorem subst_initial {m : ℕ} (σ : Fin n → PTm m) : Syn.subst σ (initial : PTm n) = (initial : PTm m) := by simp [initial]
+ipra_subst initial
 
 def coefficientStep : PTm 3 := linear (var 1) (entry (var 2) (var 0))
 def coefficientsF : PR 2 := rec2 initial coefficientStep
 def coefficients (R N : PTm n) : PTm n := ap2 coefficientsF N R
 
-@[simp] theorem subst_coefficients {m : ℕ} (σ : Fin n → PTm m) (R N : PTm n) :
-    Syn.subst σ (coefficients R N) = coefficients (Syn.subst σ R) (Syn.subst σ N) := by simp [coefficients]
+ipra_subst coefficients
 
 theorem coefficients_zero (R : PTm n) : Γ ⊢[PRAAx] coefficients R zero ≐ initial := by
   simpa only [coefficients,coefficientsF,subst_initial] using rec2_zero (Γ := Γ) initial coefficientStep R
@@ -278,19 +262,16 @@ theorem coefficients_succ (R N : PTm n) : Γ ⊢[PRAAx]
 
 theorem coefficients_length (R N : PTm n) : Γ ⊢[PRAAx] length (coefficients R N) ≐ succ N := by
   have all : Γ ⊢[PRAAx] .all (length (coefficients (Syn.shift R) (var 0)) ≐ succ (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,subst_length,subst_coefficients,ConciseIPRA.PTm.subst_succ,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (congrFst (coefficients_zero R)).eqTrans (sequence_length _ _ _)
-    · simp only [Fm.subst_eq,subst_length,subst_coefficients,ConciseIPRA.PTm.subst_succ,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact (congrFst (coefficients_succ _ _)).eqTrans ((linear_length _ _).eqTrans (congrSucc Prf.hyp0))
+    ipra_qfind [subst_length, subst_coefficients]
+    · exact (congrFst (coefficients_zero R)).eqTrans (sequence_length _ _ _)
+    · exact (congrFst (coefficients_succ _ _)).eqTrans ((linear_length _ _).eqTrans (congrSucc Prf.hyp0))
   simpa only [Fm.subst_eq,subst_length,subst_coefficients,ConciseIPRA.PTm.subst_succ,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using Prf.allE N all
 
 def factorStep : PTm 4 := mul (sub (var 3) (entry (var 2) (var 0))) (var 1)
 def factorF : PR 3 := recDef oneCode factorStep
 def factors (R z N : PTm n) : PTm n := ap3 factorF N R z
 
-@[simp] theorem subst_factors {m : ℕ} (σ : Fin n → PTm m) (R z N : PTm n) :
-    Syn.subst σ (factors R z N) = factors (Syn.subst σ R) (Syn.subst σ z) (Syn.subst σ N) := by simp [factors]
+ipra_subst factors
 
 theorem factors_zero (R z : PTm n) : Γ ⊢[PRAAx] factors R z zero ≐ oneCode := by
   have h := rec_zero (Γ := Γ) (oneCode : PTm 2) factorStep ![R,z]
@@ -329,8 +310,7 @@ theorem initial_evaluate (z : PTm n) : Γ ⊢[PRAAx] equal (evaluate initial z) 
     simp only [re_zero,im_zero,im_one]; ring
 
 def evaluationLaw (R z N : PTm n) : Fm PTm n := equal (evaluate (coefficients R N) z) (factors R z N)
-@[simp] theorem subst_evaluationLaw {m : ℕ} (σ : Fin n → PTm m) (R z N : PTm n) :
-    (evaluationLaw R z N).subst σ = evaluationLaw (Syn.subst σ R) (Syn.subst σ z) (Syn.subst σ N) := by simp [evaluationLaw]
+ipra_subst evaluationLaw
 
 theorem evaluation_step (R z N : PTm n) (ih : Γ ⊢[PRAAx] evaluationLaw R z N) :
     Γ ⊢[PRAAx] evaluationLaw R z (succ N) :=
@@ -342,12 +322,10 @@ theorem evaluation_step (R z N : PTm n) (ih : Γ ⊢[PRAAx] evaluationLaw R z N)
 at every internally quantified degree. No polynomial/factor identity is supplied. -/
 theorem evaluate_product (R z N : PTm n) : Γ ⊢[PRAAx] evaluationLaw R z N := by
   have all : Γ ⊢[PRAAx] .all (evaluationLaw (Syn.shift R) (Syn.shift z) (var 0)) := by
-    refine PRA.qfInd _ ⟨trivial,trivial⟩ ?_ ?_
-    · simp only [subst_evaluationLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact equal_trans (equal_of_code (evaluate_code_congr (coefficients_zero R) (.eqRefl z)))
+    ipra_qfind (⟨trivial,trivial⟩) [subst_evaluationLaw]
+    · exact equal_trans (equal_of_code (evaluate_code_congr (coefficients_zero R) (.eqRefl z)))
         (equal_trans (initial_evaluate z) (equal_symm (equal_of_code (factors_zero R z))))
-    · simp only [subst_evaluationLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact evaluation_step _ _ _ Prf.hyp0
+    · exact evaluation_step _ _ _ Prf.hyp0
   simpa only [subst_evaluationLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using Prf.allE N all
 
 theorem factor_tail_step (R z s k : PTm n) (h : Γ ⊢[PRAAx] equal (factors R z (s+k)) zeroCode) :
@@ -360,13 +338,9 @@ theorem factor_tail_step (R z s k : PTm n) (h : Γ ⊢[PRAAx] equal (factors R z
 theorem factor_tail_zero (R z s k : PTm n) (h : Γ ⊢[PRAAx] equal (factors R z s) zeroCode) :
     Γ ⊢[PRAAx] equal (factors R z (s+k)) zeroCode := by
   have all : Γ ⊢[PRAAx] .all (equal (factors (Syn.shift R) (Syn.shift z) (Syn.shift s+var 0)) zeroCode) := by
-    refine PRA.qfInd _ ⟨trivial,trivial⟩ ?_ ?_
-    · simp only [subst_equal,subst_factors,PTm.subst_add,ComplexLogarithmRemainder.subst_zeroCode,
-        Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact equal_trans (equal_of_code (congrAp3 factorF (add_zero s) (.eqRefl _) (.eqRefl _))) h
-    · simp only [subst_equal,subst_factors,PTm.subst_add,ComplexLogarithmRemainder.subst_zeroCode,
-        Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact factor_tail_step _ _ _ _ Prf.hyp0
+    ipra_qfind (⟨trivial,trivial⟩) [subst_equal, subst_factors, ComplexLogarithmRemainder.subst_zeroCode]
+    · exact equal_trans (equal_of_code (congrAp3 factorF (add_zero s) (.eqRefl _) (.eqRefl _))) h
+    · exact factor_tail_step _ _ _ _ Prf.hyp0
   simpa only [subst_equal,subst_factors,PTm.subst_add,ComplexLogarithmRemainder.subst_zeroCode,
     Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using Prf.allE k all
 
@@ -411,21 +385,17 @@ theorem coefficients_monic_step (R N : PTm n)
 theorem coefficients_monic (R N : PTm n) :
     Γ ⊢[PRAAx] equal (entry (coefficients R N) zero) oneCode := by
   have all : Γ ⊢[PRAAx] .all (equal (entry (coefficients (Syn.shift R) (var 0)) zero) oneCode) := by
-    refine PRA.qfInd _ ⟨trivial,trivial⟩ ?_ ?_
-    · simp only [subst_equal,subst_entry,subst_coefficients,ConciseIPRA.PTm.subst_zero,
-        ComplexLogarithmRemainder.subst_oneCode,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact equal_of_code ((Foundations.SequenceComposition.entry_congr (coefficients_zero R) (.eqRefl zero)).eqTrans initial_entry)
-    · simp only [subst_equal,subst_entry,subst_coefficients,ConciseIPRA.PTm.subst_zero,
-        ComplexLogarithmRemainder.subst_oneCode,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact coefficients_monic_step _ _ Prf.hyp0
+    ipra_qfind (⟨trivial,trivial⟩) [subst_equal, subst_entry, subst_coefficients,
+        ComplexLogarithmRemainder.subst_oneCode]
+    · exact equal_of_code ((Foundations.SequenceComposition.entry_congr (coefficients_zero R) (.eqRefl zero)).eqTrans initial_entry)
+    · exact coefficients_monic_step _ _ Prf.hyp0
   simpa only [subst_equal,subst_entry,subst_coefficients,ConciseIPRA.PTm.subst_zero,
     ComplexLogarithmRemainder.subst_oneCode,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using Prf.allE N all
 
 def normBody : PTm 2 := normSq (sub (sndT (var 1)) (entry (fstT (var 1)) (var 0)))
 def normFactors (R z N : PTm n) : PTm n := ap2 (prodF normBody) N (pairT R z)
 
-@[simp] theorem subst_normFactors {m : ℕ} (σ : Fin n → PTm m) (R z N : PTm n) :
-    Syn.subst σ (normFactors R z N) = normFactors (Syn.subst σ R) (Syn.subst σ z) (Syn.subst σ N) := by simp [normFactors]
+ipra_subst normFactors
 
 theorem normBody_at (R z j : PTm n) :
     Γ ⊢[PRAAx] inst2 normBody j (pairT R z) ≐ normSq (sub z (entry R j)) := by
@@ -454,14 +424,10 @@ This is suitable for the numerical bounded factor-witness search. -/
 theorem factors_norm (R z N : PTm n) : Γ ⊢[PRAAx] normSq (factors R z N) ≐ normFactors R z N := by
   have all : Γ ⊢[PRAAx] .all (normSq (factors (Syn.shift R) (Syn.shift z) (var 0)) ≐
       normFactors (Syn.shift R) (Syn.shift z) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,ComplexLogarithmRemainder.subst_normSq,subst_factors,subst_normFactors,
-        Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (ComplexLogarithmRemainder.congr_normSq (factors_zero R z)).eqTrans
+    ipra_qfind [ComplexLogarithmRemainder.subst_normSq, subst_factors, subst_normFactors]
+    · exact (ComplexLogarithmRemainder.congr_normSq (factors_zero R z)).eqTrans
         ((normSq_one (Γ := Γ)).eqTrans (normFactors_zero R z).eqSymm)
-    · simp only [Fm.subst_eq,ComplexLogarithmRemainder.subst_normSq,subst_factors,subst_normFactors,
-        Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact factors_norm_step _ _ _ Prf.hyp0
+    · exact factors_norm_step _ _ _ Prf.hyp0
   simpa only [Fm.subst_eq,ComplexLogarithmRemainder.subst_normSq,subst_factors,subst_normFactors,
     Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using Prf.allE N all
 
@@ -474,8 +440,7 @@ theorem evaluation_norm_product (R z N : PTm n) :
 def program (R z N : PTm n) : PTm n :=
   pairT (coefficients R N) (pairT (evaluate (coefficients R N) z) (factors R z N))
 def programF : PR 3 := PTm.toPR (program (var 0) (var 1) (var 2))
-@[simp] theorem subst_program {m : ℕ} (σ : Fin n → PTm m) (R z N : PTm n) :
-    Syn.subst σ (program R z N) = program (Syn.subst σ R) (Syn.subst σ z) (Syn.subst σ N) := by simp [program]
+ipra_subst program
 
 theorem program_at (R z N : PTm n) : Γ ⊢[PRAAx] ap3 programF R z N ≐ program R z N := by
   simpa [programF,ap3] using toPR_eq (Γ := Γ) (program (var 0) (var 1) (var 2) : PTm 3) ![R,z,N]
@@ -508,9 +473,9 @@ theorem root_product_program_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3
           (sndT (sndT (ap3 programF (var 0) (var 1) (var 2)))))) := by
   apply closeUniv 3
   have p := program_at (Γ := ([] : List (Fm PTm 3))) (var 0) (var 1) (var 2)
-  have f := (congrFst p).eqTrans (fst_pair _ _)
-  have l := (congrFst (congrSnd p)).eqTrans ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
-  have r := (congrSnd (congrSnd p)).eqTrans ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))
+  have f := p.fstE
+  have l := (congrFst (congrSnd p)).eqTrans (snd_pair _ _).fstE
+  have r := (congrSnd (congrSnd p)).eqTrans (snd_pair _ _).sndE
   exact .andI p (.andI f (equal_trans (equal_of_code l)
     (equal_trans (evaluate_product _ _ _) (equal_symm (equal_of_code r)))))
 

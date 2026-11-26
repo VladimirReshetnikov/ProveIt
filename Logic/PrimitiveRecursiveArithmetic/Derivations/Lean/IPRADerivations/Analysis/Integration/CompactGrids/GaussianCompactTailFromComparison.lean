@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCompactTailFromComparison
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCompactNamedAdditivity (input name_additivity left_input right_input)
 open GaussianCompactRiemannName (nameF data name_regular name_canonical)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -24,18 +24,12 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalSyntheticDivision (qadd_sub_cancel)
 open GaussianNameEquivalence (cross_at)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def observation (F : PR 3) (p a C E L T x : PTm n) : PTm n := ap2 (nameF F) p (data a C E L T x)
 
-@[simp] theorem subst_observation {m : ℕ} (σ : Fin n → PTm m) (F : PR 3) (p a C E L T x : PTm n) :
-    Syn.subst σ (observation F p a C E L T x) = observation F (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ C)
-      (Syn.subst σ E) (Syn.subst σ L) (Syn.subst σ T) (Syn.subst σ x) := by simp [observation]
+ipra_subst observation
 
 theorem observation_additivity (F : PR 3) (p a C1 C2 E L T x : PTm n)
     (h : Γ ⊢[PRAAx] input F a C1 C2 E L T x) : Γ ⊢[PRAAx]

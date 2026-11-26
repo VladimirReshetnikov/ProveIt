@@ -14,17 +14,13 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetSecondEarlySchedule
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetArctangentSineUniform (cutoff count count_dominates)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianExponentialReference (unit_monotone)
 open GaussianLogGammaEulerResidualDomain (source)
 open GaussianRationalHorner (positive_product)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -41,38 +37,23 @@ def angularAccuracy (p D K : PTm n) : PTm n := succ (num 8*index p D K)
 def frequencyCutoff (p D K : PTm n) : PTm n := cutoff (angularAccuracy p D K) (timeHorizon p D K) K
 def frequencyHorizon (p D K : PTm n) : PTm n := D*frequencyCutoff p D K
 
-@[simp] theorem subst_seed {m : ℕ} (σ : Fin n → PTm m) (D K : PTm n) :
-    Syn.subst σ (seed D K) = seed (Syn.subst σ D) (Syn.subst σ K) := by simp [seed,one]
+ipra_subst seed [one]
 
-@[simp] theorem subst_height {m : ℕ} (σ : Fin n → PTm m) (p D K : PTm n) :
-    Syn.subst σ (height p D K) = height (Syn.subst σ p) (Syn.subst σ D) (Syn.subst σ K) := by simp [height]
+ipra_subst height
 
-@[simp] theorem subst_index {m : ℕ} (σ : Fin n → PTm m) (p D K : PTm n) :
-    Syn.subst σ (index p D K) = index (Syn.subst σ p) (Syn.subst σ D) (Syn.subst σ K) := by simp [index]
+ipra_subst index
 
-@[simp] theorem subst_timeHorizon {m : ℕ} (σ : Fin n → PTm m) (p D K : PTm n) :
-    Syn.subst σ (timeHorizon p D K) = timeHorizon (Syn.subst σ p) (Syn.subst σ D) (Syn.subst σ K) := by
-  simp [timeHorizon]
+ipra_subst timeHorizon
 
-@[simp] theorem subst_kernelCutoff {m : ℕ} (σ : Fin n → PTm m) (p D K : PTm n) :
-    Syn.subst σ (kernelCutoff p D K) = kernelCutoff (Syn.subst σ p) (Syn.subst σ D) (Syn.subst σ K) := by
-  simp [kernelCutoff]
+ipra_subst kernelCutoff
 
-@[simp] theorem subst_stripDenominator {m : ℕ} (σ : Fin n → PTm m) (p D K : PTm n) :
-    Syn.subst σ (stripDenominator p D K) = stripDenominator (Syn.subst σ p) (Syn.subst σ D) (Syn.subst σ K) := by
-  simp [stripDenominator]
+ipra_subst stripDenominator
 
-@[simp] theorem subst_angularAccuracy {m : ℕ} (σ : Fin n → PTm m) (p D K : PTm n) :
-    Syn.subst σ (angularAccuracy p D K) = angularAccuracy (Syn.subst σ p) (Syn.subst σ D) (Syn.subst σ K) := by
-  simp [angularAccuracy]
+ipra_subst angularAccuracy
 
-@[simp] theorem subst_frequencyCutoff {m : ℕ} (σ : Fin n → PTm m) (p D K : PTm n) :
-    Syn.subst σ (frequencyCutoff p D K) = frequencyCutoff (Syn.subst σ p) (Syn.subst σ D) (Syn.subst σ K) := by
-  simp [frequencyCutoff]
+ipra_subst frequencyCutoff
 
-@[simp] theorem subst_frequencyHorizon {m : ℕ} (σ : Fin n → PTm m) (p D K : PTm n) :
-    Syn.subst σ (frequencyHorizon p D K) = frequencyHorizon (Syn.subst σ p) (Syn.subst σ D) (Syn.subst σ K) := by
-  simp [frequencyHorizon]
+ipra_subst frequencyHorizon
 
 theorem seed_bounds (D K : PTm n) : Γ ⊢[PRAAx]
     le (num 64+num 8*K) (seed D K) ⋏

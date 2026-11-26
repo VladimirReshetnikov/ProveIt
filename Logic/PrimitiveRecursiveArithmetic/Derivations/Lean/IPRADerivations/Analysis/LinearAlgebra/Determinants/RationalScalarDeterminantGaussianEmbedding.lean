@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Spans.RationalRowSpanGaussianEmbedding
 import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarDeterminant
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Original rational runtime determinants and their Gaussian embedding
@@ -15,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalGaussianEmbedding (embed scalarZero scalarOne)
 open RationalGaussianRealPart (embedBody embed_congr)
 open GaussianRationalHorner (qzero qmul)
@@ -24,17 +23,13 @@ open GaussianPolynomialDeterminantTerms (cell signPoint)
 open RationalRowSpanGaussianEmbedding (matrix matrix_lookup)
 open LeanProofs.IPRA.Foundations.RuntimePermutationWords (count parity digit)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def productStep (t : PTm 2) : PTm 3 := RationalArithmetic.multiply (var 1) (inst2 t (var 0) (var 2))
 def productF (t : PTm 2) : PR 2 := rec2 (scalarOne : PTm 1) (productStep t)
 def product (t : PTm 2) (N x : PTm n) : PTm n := ap2 (productF t) N x
-@[simp] theorem subst_product {l : ℕ} (σ : Fin n → PTm l) (t : PTm 2) (N x : PTm n) :
-    Syn.subst σ (product t N x) = product t (Syn.subst σ N) (Syn.subst σ x) := by simp [product]
+ipra_subst product
 
 theorem product_zero (t : PTm 2) (x : PTm n) : Γ ⊢[PRAAx] product t zero x ≐ scalarOne := by
   simpa only [product,productF,RationalGaussianEmbedding.subst_scalarOne] using
@@ -47,8 +42,7 @@ theorem product_succ (t : PTm 2) (N x : PTm n) : Γ ⊢[PRAAx]
 
 def productLaw (t : PTm 2) (N x : PTm n) : Fm PTm n :=
   embed (product t N x) ≐ GaussianRationalFiniteProduct.qprod (embedBody t) N x
-@[simp] theorem subst_productLaw {l : ℕ} (σ : Fin n → PTm l) (t : PTm 2) (N x : PTm n) :
-    (productLaw t N x).subst σ = productLaw t (Syn.subst σ N) (Syn.subst σ x) := by simp [productLaw]
+ipra_subst productLaw
 
 theorem product_embedding_step (t : PTm 2) (N x : PTm n)
     (ih : Γ ⊢[PRAAx] productLaw t N x) : Γ ⊢[PRAAx] productLaw t (succ N) x := by
@@ -62,12 +56,10 @@ theorem product_embedding_step (t : PTm 2) (N x : PTm n)
 theorem product_embedding (t : PTm 2) (N x : PTm n) : Γ ⊢[PRAAx]
     embed (product t N x) ≐ GaussianRationalFiniteProduct.qprod (embedBody t) N x := by
   have all : Γ ⊢[PRAAx] .all (productLaw t (var 0) (Syn.shift x)) := by
-    refine PRA.qfInd _ (by trivial) ?_ ?_
-    · simp only [subst_productLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (embed_congr (product_zero t x)).eqTrans
+    ipra_qfind (by trivial) [subst_productLaw]
+    · exact (embed_congr (product_zero t x)).eqTrans
         (RationalGaussianEmbedding.embed_one.eqTrans (GaussianRationalFiniteProduct.product_zero (embedBody t) x).eqSymm)
-    · simp only [subst_productLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact product_embedding_step t (var 0) (Syn.shift x) Prf.hyp0
+    · exact product_embedding_step t (var 0) (Syn.shift x) Prf.hyp0
   change Γ ⊢[PRAAx] productLaw t N x
   simpa only [subst_productLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
 
@@ -81,14 +73,10 @@ def signedTerm (A m t : PTm n) : PTm n := RationalArithmetic.multiply
 def signedBody : PTm 2 := signedTerm (fstT (var 1)) (sndT (var 1)) (var 0)
 def determinant (A m : PTm n) : PTm n := RationalFiniteSum.sum signedBody (count m) (pairT A m)
 
-@[simp] theorem subst_sign {l : ℕ} (σ : Fin n → PTm l) (m w : PTm n) :
-    Syn.subst σ (sign m w) = sign (Syn.subst σ m) (Syn.subst σ w) := by simp [sign]
-@[simp] theorem subst_rawProduct {l : ℕ} (σ : Fin n → PTm l) (A m w : PTm n) :
-    Syn.subst σ (rawProduct A m w) = rawProduct (Syn.subst σ A) (Syn.subst σ m) (Syn.subst σ w) := by simp [rawProduct]
-@[simp] theorem subst_signedTerm {l : ℕ} (σ : Fin n → PTm l) (A m t : PTm n) :
-    Syn.subst σ (signedTerm A m t) = signedTerm (Syn.subst σ A) (Syn.subst σ m) (Syn.subst σ t) := by simp [signedTerm]
-@[simp] theorem subst_determinant {l : ℕ} (σ : Fin n → PTm l) (A m : PTm n) :
-    Syn.subst σ (determinant A m) = determinant (Syn.subst σ A) (Syn.subst σ m) := by simp [determinant]
+ipra_subst sign
+ipra_subst rawProduct
+ipra_subst signedTerm
+ipra_subst determinant
 
 theorem sign_even (m w : PTm n) (h : Γ ⊢[PRAAx] parity m w ≐ zero) :
     Γ ⊢[PRAAx] sign m w ≐ scalarOne := Foundations.GuardedTotalization.sel_zero h
@@ -180,10 +168,8 @@ def output (A m : PTm n) : PTm n := pairT (determinant A m)
   (pairT (matrix A m m) (GaussianScalarDeterminant.run (matrix A m m) m))
 def outputF : PR 2 := PTm.toPR (output (var 0) (var 1))
 def run (A m : PTm n) : PTm n := ap2 outputF A m
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (A m : PTm n) :
-    Syn.subst σ (output A m) = output (Syn.subst σ A) (Syn.subst σ m) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (A m : PTm n) :
-    Syn.subst σ (run A m) = run (Syn.subst σ A) (Syn.subst σ m) := by simp [run]
+ipra_subst output
+ipra_subst run
 theorem determinant_at (A m : PTm n) : Γ ⊢[PRAAx] ap2 determinantF A m ≐ determinant A m := by
   simpa only [determinantF,ap2,subst_determinant,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
     toPR_eq (Γ := Γ) (determinant (var 0) (var 1) : PTm 2) ![A,m]
@@ -191,12 +177,12 @@ theorem program_at (A m : PTm n) : Γ ⊢[PRAAx] run A m ≐ output A m := by
   simpa only [run,outputF,ap2,subst_output,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
     toPR_eq (Γ := Γ) (output (var 0) (var 1) : PTm 2) ![A,m]
 theorem returned_rational (A m : PTm n) : Γ ⊢[PRAAx] fstT (run A m) ≐ determinant A m :=
-  (congrFst (program_at A m)).eqTrans (fst_pair _ _)
+  (program_at A m).fstE
 theorem returned_matrix (A m : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run A m)) ≐ matrix A m m :=
-  (congrFst ((congrSnd (program_at A m)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at A m).sndE.fstE
 theorem returned_gaussian_run (A m : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (run A m)) ≐ GaussianScalarDeterminant.run (matrix A m m) m :=
-  (congrSnd ((congrSnd (program_at A m)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at A m).sndE.sndE
 theorem returned_gaussian_scalar (A m : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (sndT (sndT (run A m)))) ≐ GaussianScalarDeterminant.scalarDet (matrix A m m) m :=
   (congrSnd (congrSnd (returned_gaussian_run A m))).eqTrans (GaussianScalarDeterminant.returned_scalar _ _)

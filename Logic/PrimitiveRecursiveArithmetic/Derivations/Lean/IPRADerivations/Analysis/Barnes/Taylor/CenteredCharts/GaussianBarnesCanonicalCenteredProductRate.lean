@@ -15,7 +15,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalCenteredProductRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add)
 open GaussianBarnesCanonicalLogCofinal (source)
 open GaussianBarnesCanonicalLogSchedule (initial)
@@ -31,9 +31,6 @@ open GaussianNamedInverseRate (independentRate)
 open GaussianNamedMultiplyRate (sampleBound leadingNumerator leadingDenominator)
 open GaussianRationalMetric (bounded)
 open GaussianRationalReciprocal (bound_congr)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

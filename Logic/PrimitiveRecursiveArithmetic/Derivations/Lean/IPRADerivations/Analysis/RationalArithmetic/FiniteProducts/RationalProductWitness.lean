@@ -21,11 +21,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.RationalProductWitness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -33,10 +29,8 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 def product (P : PTm 2) (N x : PTm n) : PTm n := ap2 (prodF P) N x
 def scaledProduct (P : PTm 2) (N B x : PTm n) : PTm n := pw B N*product P N x
 
-@[simp] theorem subst_product {m : ℕ} (σ : Fin n → PTm m) (P : PTm 2) (N x : PTm n) :
-    Syn.subst σ (product P N x) = product P (Syn.subst σ N) (Syn.subst σ x) := by simp [product]
-@[simp] theorem subst_scaledProduct {m : ℕ} (σ : Fin n → PTm m) (P : PTm 2) (N B x : PTm n) :
-    Syn.subst σ (scaledProduct P N B x) = scaledProduct P (Syn.subst σ N) (Syn.subst σ B) (Syn.subst σ x) := by simp [scaledProduct]
+ipra_subst product
+ipra_subst scaledProduct
 
 theorem scaled_product_zero (P : PTm 2) (B x : PTm n) :
     Γ ⊢[PRAAx] scaledProduct P zero B x ≐ one :=
@@ -66,10 +60,8 @@ def allLarge (P Q : PTm 2) (N A B x : PTm n) : Fm PTm n :=
   .all (lt (var 0) (Syn.shift N) ⟶
     lt (Syn.shift A*inst2 Q (var 0) (Syn.shift x)) (Syn.shift B*inst2 P (var 0) (Syn.shift x)))
 
-@[simp] theorem subst_allLarge {m : ℕ} (σ : Fin n → PTm m) (P Q : PTm 2) (N A B x : PTm n) :
-    (allLarge P Q N A B x).subst σ = allLarge P Q (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ x) := by
-  simp only [allLarge,Fm.subst_all,Fm.subst_imp,subst_lt,PTm.subst_mul,subst_inst2,
-    Syn.subst_var,Syn.up_zero,Syn.up_succ,Syn.subst_shift,Syn.shift_subst]
+ipra_subst allLarge [Fm.subst_all, Fm.subst_imp, subst_lt, PTm.subst_mul, subst_inst2, Syn.subst_var, Syn.up_zero,
+    Syn.up_succ, Syn.subst_shift, Syn.shift_subst]
 
 theorem large_at (P Q : PTm 2) (N A B x i : PTm n) (h : Γ ⊢[PRAAx] allLarge P Q N A B x)
     (hi : Γ ⊢[PRAAx] lt i N) :
@@ -96,14 +88,10 @@ theorem prefix_bounds (P Q : PTm 2) (N A B x k : PTm n)
   have all : Γ ⊢[PRAAx] .all (le (var 0) (Syn.shift N) ⟶
       (le one (scaledProduct P (var 0) (Syn.shift B) (Syn.shift x)) ⋏
         le (scaledProduct Q (var 0) (Syn.shift A) (Syn.shift x)) (scaledProduct P (var 0) (Syn.shift B) (Syn.shift x)))) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp,Fm.subst_and,subst_le,subst_scaledProduct,Syn.subst_var,Syn.inst_zero,
-        Syn.subst_inst_shift,ConciseIPRA.PTm.subst_zero,ConciseIPRA.PTm.subst_succ]
-      exact .impI (.andI (le_congr (.eqRefl _) (scaled_product_zero P B x).eqSymm (le_refl _))
+    ipra_qfind (⟨le_QF _ _,le_QF _ _,le_QF _ _⟩) [subst_le, subst_scaledProduct]
+    · exact .impI (.andI (le_congr (.eqRefl _) (scaled_product_zero P B x).eqSymm (le_refl _))
         (le_congr (scaled_product_zero Q A x).eqSymm (scaled_product_zero P B x).eqSymm (le_refl _)))
-    · simp only [Fm.subst_imp,Fm.subst_and,subst_le,subst_scaledProduct,Syn.subst_var,Syn.repl_zero,
-        subst_repl_shift,ConciseIPRA.PTm.subst_zero,ConciseIPRA.PTm.subst_succ]
-      refine .impI ?_
+    · refine .impI ?_
       let Δ : List (Fm PTm (n+1)) := le (succ (var 0)) (Syn.shift N) ::
         (le (var 0) (Syn.shift N) ⟶
           (le one (scaledProduct P (var 0) (Syn.shift B) (Syn.shift x)) ⋏
@@ -140,18 +128,16 @@ def comparisonBody (P Q : PTm 2) : PTm 2 :=
     (fstT (var 1)*inst2 Q (var 0) (sndT (sndT (var 1))))
 def selected (P Q : PTm 2) (N A B x : PTm n) : PTm n := Search.mu (comparisonBody P Q) N (data A B x)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (A B x : PTm n) :
-    Syn.subst σ (data A B x) = data (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ x) := by simp [data]
-@[simp] theorem subst_selected {m : ℕ} (σ : Fin n → PTm m) (P Q : PTm 2) (N A B x : PTm n) :
-    Syn.subst σ (selected P Q N A B x) = selected P Q (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ x) := by simp [selected,Search.mu]
+ipra_subst data
+ipra_subst selected [Search.mu]
 
 theorem comparison_at (P Q : PTm 2) (i A B x : PTm n) : Γ ⊢[PRAAx]
     inst2 (comparisonBody P Q) i (data A B x) ≐ monus (B*inst2 P i x) (A*inst2 Q i x) := by
   have a : Γ ⊢[PRAAx] fstT (data A B x) ≐ A := fst_pair _ _
   have b : Γ ⊢[PRAAx] fstT (sndT (data A B x)) ≐ B :=
-    (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
+    (snd_pair _ _).fstE
   have c : Γ ⊢[PRAAx] sndT (sndT (data A B x)) ≐ x :=
-    (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
+    (snd_pair _ _).sndE
   have e : inst2 (comparisonBody P Q) i (data A B x) =
       monus (fstT (sndT (data A B x))*inst2 P i (sndT (sndT (data A B x))))
         (fstT (data A B x)*inst2 Q i (sndT (sndT (data A B x)))) := by
@@ -209,11 +195,8 @@ theorem selected_least (P Q : PTm 2) (N A B x i : PTm n) (hi : Γ ⊢[PRAAx] lt 
 def denominatorGuard (Q : PTm 2) (N x : PTm n) : Fm PTm n :=
   .all (lt (var 0) (Syn.shift N) ⟶ le one (inst2 Q (var 0) (Syn.shift x)))
 
-@[simp] theorem subst_denominatorGuard {m : ℕ} (σ : Fin n → PTm m) (Q : PTm 2) (N x : PTm n) :
-    (denominatorGuard Q N x).subst σ = denominatorGuard Q (Syn.subst σ N) (Syn.subst σ x) := by
-  simp only [denominatorGuard,Fm.subst_all,Fm.subst_imp,subst_lt,subst_le,subst_inst2,
-    Syn.subst_var,Syn.up_zero,Syn.up_succ,Syn.subst_shift,Syn.shift_subst,
-    ConciseIPRA.PTm.subst_zero,ConciseIPRA.PTm.subst_succ]
+ipra_subst denominatorGuard [Fm.subst_all, Fm.subst_imp, subst_lt, subst_le, subst_inst2, Syn.subst_var, Syn.up_zero,
+    Syn.up_succ, Syn.subst_shift, Syn.shift_subst, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
 
 theorem denominator_at (Q : PTm 2) (N x i : PTm n) (h : Γ ⊢[PRAAx] denominatorGuard Q N x)
     (hi : Γ ⊢[PRAAx] lt i N) : Γ ⊢[PRAAx] le one (inst2 Q i x) := by
@@ -264,9 +247,7 @@ def selectedF (P Q : PTm 2) : PR 4 := PTm.toPR (selected P Q (var 0) (var 1) (va
 def outputF (P Q : PTm 2) : PR 4 := PTm.toPR (output P Q (var 0) (var 1) (var 2) (var 3))
 def run (P Q : PTm 2) (N A B x : PTm n) : PTm n := ConciseIPRA.PTm.app (outputF P Q) ![N,A,B,x]
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (P Q : PTm 2) (N A B x : PTm n) :
-    Syn.subst σ (output P Q N A B x) = output P Q (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ x) := by
-  simp only [output,subst_pairT,subst_selected,subst_inst2]
+ipra_subst output
 
 theorem selected_at (P Q : PTm 2) (N A B x : PTm n) :
     Γ ⊢[PRAAx] ConciseIPRA.PTm.app (selectedF P Q) ![N,A,B,x] ≐ selected P Q N A B x := by
@@ -277,13 +258,13 @@ theorem output_at (P Q : PTm 2) (N A B x : PTm n) : Γ ⊢[PRAAx] run P Q N A B 
 
 theorem output_index (P Q : PTm 2) (N A B x : PTm n) :
     Γ ⊢[PRAAx] fstT (run P Q N A B x) ≐ selected P Q N A B x :=
-  (congrFst (output_at P Q N A B x)).eqTrans (fst_pair _ _)
+  (output_at P Q N A B x).fstE
 theorem output_numerator (P Q : PTm 2) (N A B x : PTm n) :
     Γ ⊢[PRAAx] fstT (sndT (run P Q N A B x)) ≐ inst2 P (selected P Q N A B x) x :=
-  (congrFst ((congrSnd (output_at P Q N A B x)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (output_at P Q N A B x).sndE.fstE
 theorem output_denominator (P Q : PTm 2) (N A B x : PTm n) :
     Γ ⊢[PRAAx] sndT (sndT (run P Q N A B x)) ≐ inst2 Q (selected P Q N A B x) x :=
-  (congrSnd ((congrSnd (output_at P Q N A B x)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (output_at P Q N A B x).sndE.sndE
 
 def programCorrect (P Q : PTm 2) (N A B x : PTm n) : Fm PTm n :=
   lt (fstT (run P Q N A B x)) N ⋏

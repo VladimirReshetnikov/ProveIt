@@ -12,7 +12,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderPanelPartsBoundary
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianStirlingAllOrderCenteredBernoulli (sample endpoint_samples_zero)
 open GaussianStirlingAllOrderBernoulliEnvelope (sample_envelope sample_congr)
 open GaussianStirlingAllOrderEndpointError (endpointCoefficient endpoint_upper reflected_endpoint_upper)
@@ -37,10 +37,6 @@ open RationalArithmetic (add multiply negative)
 open RationalAlgebra (add_congr multiply_congr negative_congr multiply_commutative negative_minus_multiply add_commutative)
 open RationalReciprocalPowerTail (add_zero_right)
 open RationalArgmin (rationalLE_congr reflexive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

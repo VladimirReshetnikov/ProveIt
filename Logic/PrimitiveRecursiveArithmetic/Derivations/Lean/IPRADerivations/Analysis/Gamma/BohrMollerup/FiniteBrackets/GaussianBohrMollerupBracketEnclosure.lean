@@ -15,7 +15,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBohrMollerupBracketEnclosure
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBohrMollerupBlockChord (source)
 open GaussianBohrMollerupBracketEndpoints (baseF baseData bracketF lowerData upperData endpointData sumData sum_regular)
 open GaussianBohrMollerupBracketIncrements (incrementF incrementData boundData)
@@ -34,9 +34,6 @@ open GaussianNamedRealOrderTransport (transport)
 open GaussianNaturalScaleProductName (productF)
 open GaussianNamedStrictOrderDifference (sum_sub_right)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "D" => GaussianNamedDifference.nameF

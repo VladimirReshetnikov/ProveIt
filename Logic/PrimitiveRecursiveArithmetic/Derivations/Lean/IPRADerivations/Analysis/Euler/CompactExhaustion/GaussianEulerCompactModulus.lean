@@ -3,7 +3,6 @@ import IPRADerivations.Analysis.Exponential.Estimates.GaussianRadiusExponentialL
 import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialRadiusIndependence
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
 import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactRiemannName
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual constructive Euler-integrand compact modulus
@@ -20,17 +19,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerCompactModulus
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianNamedInverseRate (independentRate)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianEulerIntegrandName (exponentF exponentData)
 open GaussianCompactLogarithmBounds (domain)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -39,12 +34,9 @@ def lipschitz (R E T : PTm n) : PTm n := GaussianRadiusExponentialLipschitzRate.
 def source (z R B E T C : PTm n) : Fm PTm n := GaussianEulerExponentCompactBounds.source z R B E ⋏ le (one+C) (E*T)
 def data (z R B E T C : PTm n) : PTm n := GaussianCompactRiemannName.data one C E (lipschitz R E T) T (GaussianEulerIntegrandName.fixedData z B)
 def nameF : PR 2 := GaussianCompactRiemannName.nameF GaussianEulerIntegrandName.evaluatorF
-@[simp] theorem subst_lipschitz {m : ℕ} (σ : Fin n → PTm m) (R E T : PTm n) :
-    Syn.subst σ (lipschitz R E T) = lipschitz (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T) := by simp [lipschitz]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B E T C : PTm n) :
-    (source z R B E T C).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ C) := by simp [source]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (z R B E T C : PTm n) :
-    Syn.subst σ (data z R B E T C) = data (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ C) := by simp [data]
+ipra_subst lipschitz
+ipra_subst source
+ipra_subst data
 
 theorem rate_congr (F G : PR 2) (x y A A' D : PTm n) (he : Γ ⊢[PRAAx] A ≐ A')
     (h : Γ ⊢[PRAAx] independentRate F G x y A D) : Γ ⊢[PRAAx] independentRate F G x y A' D := by
@@ -170,9 +162,7 @@ def output (p z R B E T C : PTm n) : PTm n := pairT (ap2 nameF p (data z R B E T
   (pairT (lipschitz R E T) (pairT (GaussianCompactRiemannName.mesh p (lipschitz R E T) T) (GaussianCompactRiemannName.precision p T)))
 def outputF : PR 7 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6))
 def run (p z R B E T C : PTm n) : PTm n := PTm.app outputF ![p,z,R,B,E,T,C]
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (p z R B E T C : PTm n) :
-    Syn.subst σ (output p z R B E T C) = output (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ C) := by simp [output]
+ipra_subst output
 theorem program_at (p z R B E T C : PTm n) : Γ ⊢[PRAAx] run p z R B E T C ≐ output p z R B E T C := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) : PTm 7) ![p,z,R,B,E,T,C]
 theorem returned_sample (p z R B E T C : PTm n) : Γ ⊢[PRAAx]
@@ -182,12 +172,12 @@ theorem returned_sample (p z R B E T C : PTm n) : Γ ⊢[PRAAx]
 theorem returned_tail (p z R B E T C : PTm n) : Γ ⊢[PRAAx]
     sndT (run p z R B E T C) ≐ pairT (lipschitz R E T)
       (pairT (GaussianCompactRiemannName.mesh p (lipschitz R E T) T) (GaussianCompactRiemannName.precision p T)) :=
-  (congrSnd (program_at p z R B E T C)).eqTrans (snd_pair _ _)
+  (program_at p z R B E T C).sndE
 theorem returned_modulus (p z R B E T C : PTm n) : Γ ⊢[PRAAx]
-    fstT (sndT (run p z R B E T C)) ≐ lipschitz R E T := (congrFst (returned_tail p z R B E T C)).eqTrans (fst_pair _ _)
+    fstT (sndT (run p z R B E T C)) ≐ lipschitz R E T := (returned_tail p z R B E T C).fstE
 theorem returned_schedules (p z R B E T C : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (run p z R B E T C)) ≐ pairT (GaussianCompactRiemannName.mesh p (lipschitz R E T) T) (GaussianCompactRiemannName.precision p T) :=
-  (congrSnd (returned_tail p z R B E T C)).eqTrans (snd_pair _ _)
+  (returned_tail p z R B E T C).sndE
 
 theorem original_Euler_integrand_verified_sampled_modulus_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 6
     (source (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) ⟶

@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalUniformFirstOrderPolynomial
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalVariableHornerBudget (size size_succ denominator denominator_positive)
 open GaussianRationalFirstOrderPolynomial (paddedQuotient slope remainder padded_length)
 open GaussianRationalHorner (positive_product evaluate horner qadd)
@@ -25,23 +25,16 @@ open GaussianRationalSyntheticDivision (quotient)
 open GaussianEuclideanResidualRadius (coefficientBounds)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def mass (C U : PTm n) : PTm n := size C U (length C)
 def constant (C N U : PTm n) : PTm n := GaussianRationalHornerLipschitz.constant N U (mass C U)
 def slopeConstant (C N U : PTm n) : PTm n := mass C U*GaussianRationalHornerLipschitz.geometric U (succ N)
-@[simp] theorem subst_mass {m : ℕ} (σ : Fin n → PTm m) (C U : PTm n) :
-    Syn.subst σ (mass C U) = mass (Syn.subst σ C) (Syn.subst σ U) := by simp [mass]
-@[simp] theorem subst_constant {m : ℕ} (σ : Fin n → PTm m) (C N U : PTm n) :
-    Syn.subst σ (constant C N U) = constant (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ U) := by simp [constant]
+ipra_subst mass
+ipra_subst constant
 
-@[simp] theorem subst_slopeConstant {m : ℕ} (σ : Fin n → PTm m) (C N U : PTm n) :
-    Syn.subst σ (slopeConstant C N U) = slopeConstant (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ U) := by simp [slopeConstant]
+ipra_subst slopeConstant
 
 theorem size_index_congr (C U : PTm n) {k l : PTm n} (h : Γ ⊢[PRAAx] k ≐ l) : Γ ⊢[PRAAx] size C U k ≐ size C U l :=
   congrFst (congrAp2 GaussianRationalVariableHornerBudget.stateF h (.eqRefl _))
@@ -50,16 +43,13 @@ theorem size_increment (C U k : PTm n) (hU : Γ ⊢[PRAAx] le one U) : Γ ⊢[PR
   exact le_trans grow (le_congr (.eqRefl _) (size_succ C U k).eqSymm (le_add_right _ _))
 
 def sizeLaw (C U k j : PTm n) : Fm PTm n := le (size C U k) (size C U (k+j))
-@[simp] theorem subst_sizeLaw {m : ℕ} (σ : Fin n → PTm m) (C U k j : PTm n) :
-    (sizeLaw C U k j).subst σ = sizeLaw (Syn.subst σ C) (Syn.subst σ U) (Syn.subst σ k) (Syn.subst σ j) := by simp [sizeLaw]
+ipra_subst sizeLaw
 theorem size_forward (C U k j : PTm n) (hU : Γ ⊢[PRAAx] le one U) : Γ ⊢[PRAAx] sizeLaw C U k j := by
   have us : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift U) := by simpa [Fm.shift,Syn.shift] using hU.shift
   have all : Γ ⊢[PRAAx] .all (sizeLaw (Syn.shift C) (Syn.shift U) (Syn.shift k) (var 0)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_sizeLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact le_congr (.eqRefl _) (size_index_congr C U (add_zero k)).eqSymm (le_refl _)
-    · simp only [subst_sizeLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact le_trans Prf.hyp0 (le_congr (.eqRefl _)
+    ipra_qfind (le_QF _ _) [subst_sizeLaw]
+    · exact le_congr (.eqRefl _) (size_index_congr C U (add_zero k)).eqSymm (le_refl _)
+    · exact le_trans Prf.hyp0 (le_congr (.eqRefl _)
         (size_index_congr _ _ (add_succ (Syn.shift k) (var 0))).eqSymm
         (size_increment _ _ _ us.wk))
   simpa only [subst_sizeLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j

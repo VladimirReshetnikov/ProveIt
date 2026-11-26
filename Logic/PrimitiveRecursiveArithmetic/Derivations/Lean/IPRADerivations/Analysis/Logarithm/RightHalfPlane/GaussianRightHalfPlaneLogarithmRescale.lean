@@ -14,7 +14,7 @@ set_option maxHeartbeats 600000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRightHalfPlaneLogarithmRescale
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameArithmetic (addF addData)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
@@ -23,8 +23,6 @@ open GaussianPositiveRationalLogarithm (logF name_regular)
 open GaussianRationalHorner (positive_product)
 open GaussianRightHalfPlaneLogarithm (source nameF data)
 open GaussianRightHalfPlaneRadialLogarithm (normNum normDen log_source)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "RF" => GaussianRightHalfPlaneRadialLogarithm.nameF

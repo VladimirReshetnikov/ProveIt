@@ -15,7 +15,7 @@ set_option maxHeartbeats 1100000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalExponentTaylorCoefficientMassGap
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
 open GaussianBarnesCanonicalExponentTaylorBuffer (buffer subst_buffer)
@@ -33,10 +33,6 @@ open GaussianRationalMetric (qsub)
 open GaussianRationalSyntheticBounds (natCode)
 open GaussianRationalSyntheticDivision (qsub_congr)
 open RationalArgmin (rationalLE rationalLE_congr)
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

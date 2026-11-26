@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingFactorialRobbinsQuotient
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaAdjacentCutoff (multiply_cross)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
@@ -30,8 +30,6 @@ open GaussianStirlingMultiplicative (quotientF quotientData expRemainderF expRem
   denominatorF denominatorData sqrtF sqrtData sqrt_regular powerF powerData decayF decayData factor_inverse multiplicative_formula)
 open GaussianStirlingMultiplicativeAlgebra (normalizationF normalizationData normalization_regular)
 open GaussianStirlingNames (source gammaData gamma_regular)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

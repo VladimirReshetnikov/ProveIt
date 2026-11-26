@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNameConjugation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalConjugation (point point_congr)
 open GaussianRationalReciprocal (conjugate)
 open GaussianGammaCanonicalExponent (source gammaF gamma_regular constantF constant_at constant_regular)
@@ -28,9 +28,6 @@ open GaussianGammaWeierstrassApproximant (positiveExponentF positiveExponentData
   positive_exponent_regular positive_exp_regular literal_regular)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalMetric (distanceBounded)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -182,15 +179,8 @@ def output (p q z R B : PTm n) : PTm n :=
     (GaussianGammaC7Name.sample q (conjugate z) R B)
 def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (p q z R B : PTm n) : PTm n := PTm.app outputF ![p,q,z,R,B]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (p q z R B : PTm n) :
-    Syn.subst σ (output p q z R B) = output (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) := by
-  simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (p q z R B : PTm n) :
-    Syn.subst σ (run p q z R B) = run (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (p q z R B : PTm n) : Γ ⊢[PRAAx] run p q z R B ≐ output p q z R B := by
   simpa only [run,outputF,subst_output,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
@@ -199,10 +189,10 @@ theorem program_at (p q z R B : PTm n) : Γ ⊢[PRAAx] run p q z R B ≐ output 
 
 theorem returned_conjugate (p q z R B : PTm n) : Γ ⊢[PRAAx]
     fstT (run p q z R B) ≐ ap2 (GaussianNameConjugation.nameF GaussianGammaC7Name.nameF) p (GaussianGammaC7Name.data z R B) :=
-  (congrFst (program_at p q z R B)).eqTrans (fst_pair _ _)
+  (program_at p q z R B).fstE
 theorem returned_original (p q z R B : PTm n) : Γ ⊢[PRAAx]
     sndT (run p q z R B) ≐ GaussianGammaC7Name.sample q (conjugate z) R B :=
-  (congrSnd (program_at p q z R B)).eqTrans (snd_pair _ _)
+  (program_at p q z R B).sndE
 theorem returned_distance (p q z R B : PTm n) (h : Γ ⊢[PRAAx] source z R B) : Γ ⊢[PRAAx]
     distanceBounded (fstT (run p q z R B)) (sndT (run p q z R B)) (unit p+unit q) (unit p*unit q) :=
   GaussianRationalDistanceOrder.distance_congr (returned_conjugate p q z R B).eqSymm (returned_original p q z R B).eqSymm

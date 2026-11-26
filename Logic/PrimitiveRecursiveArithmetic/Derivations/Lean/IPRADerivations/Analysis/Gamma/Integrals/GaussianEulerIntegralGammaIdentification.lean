@@ -22,7 +22,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIntegralGammaIdentification
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaIntegralCutoffs (etaDen eta_den_positive)
 open GaussianRationalHorner (qadd qmul_canonical positive_product)
 open GaussianRationalMetric (distanceBounded bounded)
@@ -32,18 +32,12 @@ open GaussianGammaReciprocalInverse (gammaF gammaData)
 open GaussianBetaFiniteEulerComparison (slack)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def source (z R B A : PTm n) : Fm PTm n :=
   GaussianEulerLowerPowerCoefficients.source z R B A ⋏ le one R
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B A : PTm n) :
-    (source z R B A).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) := by
-  simp [source]
+ipra_subst source
 
 def cutoff (t A : PTm n) : PTm n := t+GaussianBetaFiniteEulerAtCutoff.minimumCutoff (slack t) A
 def degree (t k A R : PTm n) : PTm n :=

@@ -15,7 +15,7 @@ set_option maxHeartbeats 1800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalNormalizedMultiplier
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalBaseProductShift (terminal)
 open GaussianBarnesCanonicalGaussNormalizers (integerLogF integerLogData integerExpData integer_log_exponential factorial_log_exponential)
 open GaussianBarnesCanonicalNormalizedExponent (offset offsetF offsetData)
@@ -37,9 +37,6 @@ open GaussianRationalMetric (qnegative)
 open GaussianRationalNaturalScale (naturalPoint)
 open GaussianRationalReciprocal (power)
 open Products (fact)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

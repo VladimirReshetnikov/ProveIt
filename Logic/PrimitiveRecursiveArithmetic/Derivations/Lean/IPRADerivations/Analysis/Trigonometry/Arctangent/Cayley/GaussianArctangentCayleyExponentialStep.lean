@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentCayleyExponentialStep
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (normSq normSq_eval eval_re_code eval_im_code scale oneCode)
 open GaussianArctangentCayleyStep (conjugateValue increment incrementCode local_defect)
 open GaussianArctangentCayleyValues (numerator denominator denominator_positive exact_square_norm
@@ -38,10 +38,6 @@ open GaussianReciprocalHorner (qmul_associative)
 open GaussianApproximateInverseDistance (multiply_distance)
 open GaussianReconstructionRoots (distance_zero_iff distance_triangle)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -50,13 +46,9 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 def sample (P s : PTm n) : PTm n := scalarSum P (rectangleCutoff two s)
 def row (M j s P : PTm n) : PTm n := qmul (sample P s) (conjugateValue M j)
 
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (P s : PTm n) :
-    Syn.subst σ (sample P s) = sample (Syn.subst σ P) (Syn.subst σ s) := by
-  simp [sample, rectangleCutoff, reserve, growthExponent]
+ipra_subst sample [rectangleCutoff, reserve, growthExponent]
 
-@[simp] theorem subst_row {m : ℕ} (σ : Fin n → PTm m) (M j s P : PTm n) :
-    Syn.subst σ (row M j s P) = row (Syn.subst σ M) (Syn.subst σ j) (Syn.subst σ s) (Syn.subst σ P) := by
-  simp [row, conjugateValue, numerator, denominator]
+ipra_subst row [conjugateValue, numerator, denominator]
 
 theorem sample_canonical (P s : PTm n) : Γ ⊢[PRAAx] canonical (sample P s) :=
   GaussianRationalFiniteSum.sum_canonical scalarBody (succ (rectangleCutoff two s)) P

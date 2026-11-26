@@ -18,7 +18,7 @@ set_option maxHeartbeats 600000
 
 namespace LeanProofs.IPRA.Analysis.GaussianLocalLogarithmMultiplicativeIncrement
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianFiniteLogarithmCompositionTail (linearValue)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianLocalLogarithmName (source point pointF data point_unit_disk name_regular original_exponential_input)
@@ -32,10 +32,6 @@ open GaussianRationalMetric (bounded qnegative)
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalReciprocal (bound_congr bounded_negative bounded_sum)
 open GaussianRationalSyntheticDivision (qmul_congr)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "L" => pointF

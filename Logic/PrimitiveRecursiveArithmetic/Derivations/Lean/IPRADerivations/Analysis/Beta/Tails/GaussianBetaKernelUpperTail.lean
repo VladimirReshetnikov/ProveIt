@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaKernelUpperTail
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUpperPowerOrder (source)
 open GaussianEulerUpperPowerCompatibility (old_source)
 open GaussianEulerIntegrandName (powerF powerData decayF decayData productF productData sample sample_at)
@@ -34,10 +34,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianEuclideanDistanceName (fraction)
 open RationalGaussianEmbedding (embed)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -49,20 +45,12 @@ def row (p z B a b N : PTm n) : PTm n := replacement p z B a b (kernel a b N)
 def top (p q R a b : PTm n) : PTm n := majorant R*referenceTop q a b*unit p+num 4*referenceBottom q a b
 def bottom (p q a b : PTm n) : PTm n := referenceBottom q a b*unit p
 
-@[simp] theorem subst_positiveReference {m : ℕ} (σ : Fin n → PTm m) (s a b : PTm n) :
-    Syn.subst σ (positiveReference s a b) = positiveReference (Syn.subst σ s) (Syn.subst σ a) (Syn.subst σ b) :=
-  by simp [positiveReference,signedTime]
-@[simp] theorem subst_upperReference {m : ℕ} (σ : Fin n → PTm m) (s a b : PTm n) :
-    Syn.subst σ (upperReference s a b) = upperReference (Syn.subst σ s) (Syn.subst σ a) (Syn.subst σ b) := by simp [upperReference]
-@[simp] theorem subst_powerBudget {m : ℕ} (σ : Fin n → PTm m) (z B a b : PTm n) :
-    Syn.subst σ (powerBudget z B a b) = powerBudget (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by simp [powerBudget]
-@[simp] theorem subst_row {m : ℕ} (σ : Fin n → PTm m) (p z B a b N : PTm n) :
-    Syn.subst σ (row p z B a b N) = row (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) :=
-  by simp [row,kernel,GaussianBetaKernelExponential.base]
-@[simp] theorem subst_top {m : ℕ} (σ : Fin n → PTm m) (p q R a b : PTm n) :
-    Syn.subst σ (top p q R a b) = top (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ R) (Syn.subst σ a) (Syn.subst σ b) := by simp [top]
-@[simp] theorem subst_bottom {m : ℕ} (σ : Fin n → PTm m) (p q a b : PTm n) :
-    Syn.subst σ (bottom p q a b) = bottom (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ a) (Syn.subst σ b) := by simp [bottom]
+ipra_subst positiveReference [signedTime]
+ipra_subst upperReference
+ipra_subst powerBudget
+ipra_subst row [kernel, GaussianBetaKernelExponential.base]
+ipra_subst top
+ipra_subst bottom
 
 theorem upper_reference_real (s a b : PTm n) : Γ ⊢[PRAAx]
     fstT (upperReference s a b) ≐ RationalArithmetic.add (fstT (positiveReference s a b)) (fraction (num 3) (unit s)) :=
@@ -218,19 +206,19 @@ theorem program_at (p q z R B a b N : PTm n) : Γ ⊢[PRAAx] run p q z R B a b N
   simpa [run,outputF,output] using toPR_eq (Γ := Γ)
     (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) (var 7) : PTm 8) ![p,q,z,R,B,a,b,N]
 theorem returned_row (p q z R B a b N : PTm n) : Γ ⊢[PRAAx] fstT (run p q z R B a b N) ≐ row p z B a b N :=
-  (congrFst (program_at p q z R B a b N)).eqTrans (fst_pair _ _)
+  (program_at p q z R B a b N).fstE
 theorem returned_tail (p q z R B a b N : PTm n) : Γ ⊢[PRAAx] sndT (run p q z R B a b N) ≐
     pairT (kernel a b N) (pairT (top p q R a b) (bottom p q a b)) :=
-  (congrSnd (program_at p q z R B a b N)).eqTrans (snd_pair _ _)
+  (program_at p q z R B a b N).sndE
 theorem returned_kernel (p q z R B a b N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run p q z R B a b N)) ≐ kernel a b N :=
-  (congrFst (returned_tail p q z R B a b N)).eqTrans (fst_pair _ _)
+  (returned_tail p q z R B a b N).fstE
 theorem returned_radius (p q z R B a b N : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run p q z R B a b N)) ≐
     pairT (top p q R a b) (bottom p q a b) :=
-  (congrSnd (returned_tail p q z R B a b N)).eqTrans (snd_pair _ _)
+  (returned_tail p q z R B a b N).sndE
 theorem returned_top (p q z R B a b N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run p q z R B a b N))) ≐ top p q R a b :=
-  (congrFst (returned_radius p q z R B a b N)).eqTrans (fst_pair _ _)
+  (returned_radius p q z R B a b N).fstE
 theorem returned_bottom (p q z R B a b N : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run p q z R B a b N))) ≐ bottom p q a b :=
-  (congrSnd (returned_radius p q z R B a b N)).eqTrans (snd_pair _ _)
+  (returned_radius p q z R B a b N).sndE
 theorem returned_bound (p q z R B a b N : PTm n)
     (h : Γ ⊢[PRAAx] source z R B a b) (hN : Γ ⊢[PRAAx] le one N) (ht : Γ ⊢[PRAAx] le a (b*N)) : Γ ⊢[PRAAx]
     bounded (fstT (run p q z R B a b N)) (fstT (sndT (sndT (run p q z R B a b N))))
@@ -265,10 +253,8 @@ theorem actual_returned_weighted_beta_upper_tail_bound_closed : ([] : List (Fm P
 def scalarMajorant (p R a b : PTm n) : PTm n := RationalArithmetic.add
   (GaussianEulerUpperTailScalar.scalarMajorant p R a b) (fraction (num 3) (unit p))
 def referenceBudget (R : PTm n) : PTm n := num 3*majorant R+num 4
-@[simp] theorem subst_scalarMajorant {m : ℕ} (σ : Fin n → PTm m) (p R a b : PTm n) :
-    Syn.subst σ (scalarMajorant p R a b) = scalarMajorant (Syn.subst σ p) (Syn.subst σ R) (Syn.subst σ a) (Syn.subst σ b) := by simp [scalarMajorant]
-@[simp] theorem subst_referenceBudget {m : ℕ} (σ : Fin n → PTm m) (R : PTm n) :
-    Syn.subst σ (referenceBudget R) = referenceBudget (Syn.subst σ R) := by simp [referenceBudget]
+ipra_subst scalarMajorant
+ipra_subst referenceBudget
 
 theorem original_beta_cell_majorized (p z R B a b N : PTm n)
     (h : Γ ⊢[PRAAx] source z R B a b) (hN : Γ ⊢[PRAAx] le one N) (ht : Γ ⊢[PRAAx] le a (b*N)) : Γ ⊢[PRAAx]

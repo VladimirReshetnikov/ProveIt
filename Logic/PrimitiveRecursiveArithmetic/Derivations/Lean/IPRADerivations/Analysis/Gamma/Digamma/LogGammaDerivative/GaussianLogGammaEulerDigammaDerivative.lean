@@ -14,15 +14,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerDigammaDerivative
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianLogGammaEulerDerivativeQuotient (errorNumerator uniformSource)
 open GaussianLogGammaEulerStepReciprocal (certified_step numerator radius)
 open GaussianNameEquivalence (cross_refl cross_symm)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator rate_at)
 open GaussianRationalMetric (distanceBounded)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

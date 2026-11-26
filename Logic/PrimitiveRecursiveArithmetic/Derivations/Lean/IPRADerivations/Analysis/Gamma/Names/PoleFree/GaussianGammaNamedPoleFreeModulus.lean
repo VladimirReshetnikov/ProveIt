@@ -14,7 +14,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNamedPoleFreeModulus
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaHalfPlaneInputContinuity (modulus inverseClock original_C7_mixed_rate)
 open GaussianGammaReciprocalInverse (source gammaF gammaData inverseF inverseData inverse_disk inverse_regular
@@ -22,8 +22,6 @@ open GaussianGammaReciprocalInverse (source gammaF gammaData inverseF inverseDat
 open GaussianNamedInverseRate (independentRate)
 open GaussianRationalHorner (ofGaussian positive_product)
 open GaussianRationalMetric (distanceBounded)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

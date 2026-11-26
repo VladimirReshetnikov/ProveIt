@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalPolynomialLeadingGaussianEmbedding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalGaussianEmbedding (embed)
 open RationalPolynomialDegreeGaussianEmbedding (first flag)
 open RationalPolynomialBuffersGaussianEmbedding (embeddedEntries)
@@ -21,16 +21,12 @@ open RationalPolynomialGaussianEmbedding (coefficients coefficient_lookup)
 open GaussianTranslatedNonconstant (recode recode_congr recode_eq)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (entry_congr)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def leading (C N : PTm n) : PTm n := RationalArithmetic.recode (entry C (first C N))
 
-@[simp] theorem subst_leading {l : ℕ} (σ : Fin n → PTm l) (C N : PTm n) :
-    Syn.subst σ (leading C N) = leading (Syn.subst σ C) (Syn.subst σ N) := by simp [leading]
+ipra_subst leading
 
 theorem leading_canonical (C N : PTm n) : Γ ⊢[PRAAx] RationalNormalForm.wellFormed (leading C N) :=
   RationalArithmetic.recode_guard _

@@ -2,7 +2,6 @@ import IPRADerivations.Analysis.Polynomials.RootFinding.DominantTerms.GaussianDo
 import IPRADerivations.Analysis.Polynomials.RootFinding.DominantTerms.GaussianDominantSyntax
 import IPRADerivations.Analysis.Polynomials.RootFinding.BalancedRadius.GaussianBalancedRadiusSearch
 import IPRADerivations.Analysis.Polynomials.RootFinding.DominantTerms.GaussianDominantScaleArithmetic
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual least dominant coefficient at every balanced-radius scale
@@ -20,14 +19,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianDominantSelector
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianDominantSyntax (score)
 open LeanProofs.IPRA.Analysis.RationalArgmin (rationalLE rationalEq selected)
 open LeanProofs.IPRA.Analysis.RationalValueBounds (negate)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -44,18 +39,11 @@ def indexData (C N : PTm n) : PTm n := pairT C N
 def indexBody : PTm 2 := index (fstT (var 1)) (sndT (var 1)) (var 0)
 def indexF : PR 2 := PTm.toPR indexBody
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (C N E j h : PTm n) :
-    Syn.subst σ (data C N E j h) = data (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ E) (Syn.subst σ j) (Syn.subst σ h) := by simp [data]
-@[simp] theorem subst_negativeScore {m : ℕ} (σ : Fin n → PTm m) (C N E j h r : PTm n) :
-    Syn.subst σ (negativeScore C N E j h r) = negativeScore (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ E) (Syn.subst σ j) (Syn.subst σ h) (Syn.subst σ r) := by simp [negativeScore]
-@[simp] theorem subst_winner {m : ℕ} (σ : Fin n → PTm m) (C N E j h : PTm n) :
-    Syn.subst σ (winner C N E j h) = winner (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ E) (Syn.subst σ j) (Syn.subst σ h) := by simp [winner]
-@[simp] theorem subst_index {m : ℕ} (σ : Fin n → PTm m) (C N h : PTm n) :
-    Syn.subst σ (index C N h) = index (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ h) := by simp [index]
-@[simp] theorem subst_indexData {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (indexData C N) = indexData (Syn.subst σ C) (Syn.subst σ N) := by simp [indexData]
+ipra_subst data
+ipra_subst negativeScore
+ipra_subst winner
+ipra_subst index
+ipra_subst indexData
 
 theorem norm_congr {q r : PTm n} (h : Γ ⊢[PRAAx] q ≐ r) : Γ ⊢[PRAAx]
     GaussianRationalMetric.qnormSq q ≐ GaussianRationalMetric.qnormSq r :=
@@ -80,15 +68,15 @@ theorem score_index_congr (C N E j h : PTm n) {i k : PTm n} (hik : Γ ⊢[PRAAx]
 theorem negative_score_at (C N E j h r : PTm n) : Γ ⊢[PRAAx]
     ap2 negativeScoreF r (data C N E j h) ≐ negate (score C N E j h (succ r)) := by
   have t1 : Γ ⊢[PRAAx] sndT (data C N E j h) ≐ pairT N (pairT E (pairT j h)) := snd_pair _ _
-  have t2 := (congrSnd t1).eqTrans (snd_pair _ _)
-  have t3 := (congrSnd t2).eqTrans (snd_pair _ _)
+  have t2 := t1.sndE
+  have t3 := t2.sndE
   have fields : Γ ⊢[PRAAx]
       negativeScore (fstT (data C N E j h)) (fstT (sndT (data C N E j h)))
         (fstT (sndT (sndT (data C N E j h)))) (fstT (sndT (sndT (sndT (data C N E j h)))))
         (sndT (sndT (sndT (sndT (data C N E j h))))) r ≐ negativeScore C N E j h r :=
     RationalValueBounds.negate_congr (score_congr (fst_pair _ _)
-      ((congrFst t1).eqTrans (fst_pair _ _)) ((congrFst t2).eqTrans (fst_pair _ _))
-      ((congrFst t3).eqTrans (fst_pair _ _)) ((congrSnd t3).eqTrans (snd_pair _ _)) (.eqRefl _))
+      t1.fstE t2.fstE
+      t3.fstE t3.sndE (.eqRefl _))
   have shape : Syn.subst ![r,data C N E j h] negativeBody =
       negativeScore (fstT (data C N E j h)) (fstT (sndT (data C N E j h)))
         (fstT (sndT (sndT (data C N E j h)))) (fstT (sndT (sndT (sndT (data C N E j h)))))
@@ -195,11 +183,9 @@ theorem index_offset (C N h r : PTm n) (hInput : Γ ⊢[PRAAx] GaussianBalancedR
     simpa only [Fm.shift,GaussianBalancedRadiusSyntax.subst_input,Syn.shift] using hInput.shift
   have all : Γ ⊢[PRAAx] .all (le (index (Syn.shift C) (Syn.shift N) (Syn.shift h+var 0))
       (index (Syn.shift C) (Syn.shift N) (Syn.shift h))) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le,subst_index,PTm.subst_add,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact le_congr (index_congr C N (add_zero h)).eqSymm (.eqRefl _) (le_refl _)
-    · simp only [subst_le,subst_index,PTm.subst_add,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      let I := le (index (Syn.shift C) (Syn.shift N) (Syn.shift h+var 0)) (index (Syn.shift C) (Syn.shift N) (Syn.shift h))
+    ipra_qfind (le_QF _ _) [subst_le, subst_index]
+    · exact le_congr (index_congr C N (add_zero h)).eqSymm (.eqRefl _) (le_refl _)
+    · let I := le (index (Syn.shift C) (Syn.shift N) (Syn.shift h+var 0)) (index (Syn.shift C) (Syn.shift N) (Syn.shift h))
       have step : I :: Γ.map Fm.shift ⊢[PRAAx] le
           (index (Syn.shift C) (Syn.shift N) (succ (Syn.shift h+var 0)))
           (index (Syn.shift C) (Syn.shift N) (Syn.shift h+var 0)) :=

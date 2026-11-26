@@ -18,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalProperSpanWitness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero canonical canonical_congr)
 open GaussianRationalSyntheticDivision (qone qone_canonical qmul_congr)
 open GaussianTranslatedNonconstant (recode recode_congr recode_eq)
@@ -27,9 +27,6 @@ open GaussianRationalFiberVandermonde (delta delta_canonical)
 open GaussianRationalAnnihilatorVector (freeColumn)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open ConciseIPRA.PTm (zero app)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -46,22 +43,13 @@ def certificate (A R N v : PTm n) : Fm PTm n := length v ≐ N ⋏ outside A R N
 def properSpan (A R N : PTm n) : Fm PTm n := .ex
   (certificate (Syn.shift A) (Syn.shift R) (Syn.shift N) (var 0))
 
-@[simp] theorem subst_unit {k : ℕ} (σ : Fin n → PTm k) (N s : PTm n) :
-    Syn.subst σ (unit N s) = unit (Syn.subst σ N) (Syn.subst σ s) := by simp [unit]
-@[simp] theorem subst_annihilator {k : ℕ} (σ : Fin n → PTm k) (A R N : PTm n) :
-    Syn.subst σ (annihilator A R N) = annihilator (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) := by simp [annihilator]
-@[simp] theorem subst_witness {k : ℕ} (σ : Fin n → PTm k) (A R N : PTm n) :
-    Syn.subst σ (witness A R N) = witness (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) := by simp [witness]
-@[simp] theorem subst_input {k : ℕ} (σ : Fin n → PTm k) (A R N : PTm n) :
-    (input A R N).subst σ = input (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) := by simp [input]
-@[simp] theorem subst_outside {k : ℕ} (σ : Fin n → PTm k) (A R N v : PTm n) :
-    (outside A R N v).subst σ = outside (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ v) := by
-  simp [outside,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_certificate {k : ℕ} (σ : Fin n → PTm k) (A R N v : PTm n) :
-    (certificate A R N v).subst σ = certificate (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ v) := by simp [certificate]
-@[simp] theorem subst_properSpan {k : ℕ} (σ : Fin n → PTm k) (A R N : PTm n) :
-    (properSpan A R N).subst σ = properSpan (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) := by
-  simp [properSpan,Syn.subst_shift,Syn.shift_subst]
+ipra_subst unit
+ipra_subst annihilator
+ipra_subst witness
+ipra_subst input
+ipra_subst outside [Syn.subst_shift, Syn.shift_subst]
+ipra_subst certificate
+ipra_subst properSpan [Syn.subst_shift, Syn.shift_subst]
 
 theorem unit_body_at (s j : PTm n) : inst2 unitBody j s = delta s j := by simp [unitBody,inst2]
 theorem entry_body_at (v j : PTm n) : inst2 entryBody j v = entry v j := by simp [entryBody,inst2]
@@ -119,12 +107,7 @@ theorem witness_certificate (A R N : PTm n) (h : Γ ⊢[PRAAx] input A R N) : Γ
 def unitF : PR 2 := PTm.toPR (unit (var 0) (var 1))
 def witnessF : PR 3 := PTm.toPR (witness (var 0) (var 1) (var 2))
 def run (A R N : PTm n) : PTm n := app witnessF ![A,R,N]
-@[simp] theorem subst_run {k : ℕ} (σ : Fin n → PTm k) (A R N : PTm n) :
-    Syn.subst σ (run A R N) = run (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst run
 theorem unit_program_at (N s : PTm n) : Γ ⊢[PRAAx] app unitF ![N,s] ≐ unit N s := by
   simpa [unitF] using toPR_eq (Γ := Γ) (unit (var 0) (var 1) : PTm 2) ![N,s]
 theorem program_at (A R N : PTm n) : Γ ⊢[PRAAx] run A R N ≐ witness A R N := by

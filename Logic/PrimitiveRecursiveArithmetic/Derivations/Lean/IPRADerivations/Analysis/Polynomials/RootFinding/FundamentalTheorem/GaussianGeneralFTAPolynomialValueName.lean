@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGeneralFTAPolynomialValueName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianGeneralFTAConstants (R K H L)
 open LeanProofs.IPRA.Analysis.GaussianGeneralFTATrajectory (alpha M J)
 open LeanProofs.IPRA.Analysis.GaussianGeneralFTARootName (beta)
@@ -25,9 +25,6 @@ open LeanProofs.IPRA.Analysis.GaussianGeneralPolynomialSamples (sourceInput samp
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (evaluate canonical positive_product)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (bounded distanceBounded)
 open LeanProofs.IPRA.Analysis.GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -37,16 +34,11 @@ def shift (a : PR 3) (N h x : PTm n) : PTm n := GaussianGeneralFTAConstants.bl (
 def exponent (a : PR 3) (N h x t : PTm n) : PTm n := t+shift a N h x
 def value (a : PR 3) (N h x t : PTm n) : PTm n := observation a N h x (exponent a N h x t)
 
-@[simp] theorem subst_S {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x : PTm n) :
-    Syn.subst σ (S a N h x) = S a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) := by simp [S]
-@[simp] theorem subst_observation {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x t : PTm n) :
-    Syn.subst σ (observation a N h x t) = observation a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) (Syn.subst σ t) := by simp [observation]
-@[simp] theorem subst_shift {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x : PTm n) :
-    Syn.subst σ (shift a N h x) = shift a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) := by simp [shift]
-@[simp] theorem subst_exponent {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x t : PTm n) :
-    Syn.subst σ (exponent a N h x t) = exponent a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) (Syn.subst σ t) := by simp [exponent]
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x t : PTm n) :
-    Syn.subst σ (value a N h x t) = value a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) (Syn.subst σ t) := by simp [value]
+ipra_subst S
+ipra_subst observation
+ipra_subst shift
+ipra_subst exponent
+ipra_subst value
 
 theorem M_ge_index (a : PR 3) (N h x t : PTm n) (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[PRAAx]
     le t (M a N h x t) :=
@@ -146,8 +138,7 @@ def nameData (N h x : PTm n) : PTm n := pairT N (pairT h x)
 def nameBody (a : PR 3) : PTm 2 := value a (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))) (var 0)
 def nameF (a : PR 3) : PR 2 := PTm.toPR (nameBody a)
 
-@[simp] theorem subst_nameData {m : ℕ} (σ : Fin n → PTm m) (N h x : PTm n) :
-    Syn.subst σ (nameData N h x) = nameData (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) := by simp [nameData]
+ipra_subst nameData
 
 theorem name_body_at (a : PR 3) (N h x t : PTm n) : Γ ⊢[PRAAx]
     inst2 (nameBody a) t (nameData N h x) ≐ value a N h x t := by
@@ -156,8 +147,8 @@ theorem name_body_at (a : PR 3) (N h x t : PTm n) : Γ ⊢[PRAAx]
     (σ' := ![N,h,x,t]) (fun i => by
       fin_cases i
       · exact fst_pair _ _
-      · exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-      · exact (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
+      · exact (snd_pair _ _).fstE
+      · exact (snd_pair _ _).sndE
       · exact .eqRefl _)
   simpa only [nameBody,inst2,subst_value,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,
     Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using fields
@@ -193,11 +184,9 @@ theorem name_fast (a : PR 3) (N k h x : PTm n) (hSource : Γ ⊢[PRAAx] sourceIn
 
 def nameZero (a : PR 3) (N h x : PTm n) : Fm PTm n :=
   .all (bounded (ap2 (nameF a) (var 0) (nameData (Syn.shift N) (Syn.shift h) (Syn.shift x))) one (unit (var 0)))
-@[simp] theorem subst_nameZero {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x : PTm n) :
-    (nameZero a N h x).subst σ = nameZero a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) := by
-  simp only [nameZero,Fm.subst_all,GaussianRationalMetric.subst_bounded,subst_ap2,subst_nameData,
-    ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero,GaussianCoefficientNameBounds.subst_unit,
-    Syn.subst_var,Syn.up_zero,Syn.up_succ,Syn.subst_shift,Syn.shift_subst]
+ipra_subst nameZero [Fm.subst_all, GaussianRationalMetric.subst_bounded, subst_ap2, subst_nameData,
+    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, GaussianCoefficientNameBounds.subst_unit, Syn.subst_var,
+    Syn.up_zero, Syn.up_succ, Syn.subst_shift, Syn.shift_subst]
 
 theorem name_zero (a : PR 3) (N k h x : PTm n) (hSource : Γ ⊢[PRAAx] sourceInput a N k h x) : Γ ⊢[PRAAx]
     nameZero a N h x := by

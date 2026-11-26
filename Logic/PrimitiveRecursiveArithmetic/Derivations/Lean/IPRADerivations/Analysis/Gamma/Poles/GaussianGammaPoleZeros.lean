@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerHeadLower
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.ReciprocalGamma.GaussianGammaC7Name
 import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialReference
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Exact zeros of the original reciprocal Gamma program at the poles
@@ -16,17 +15,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaPoleZeros
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero qmul ofGaussian ofGaussian_represents canonical_unique represents_congr)
 open GaussianRationalSyntheticDivision (qzero_canonical qmul_congr qmul_zero_left qmul_zero_right)
 open GaussianGammaEulerHead (head factor head_zero head_succ head_split program_at)
 open GaussianGammaEulerHeadLower (translated translated_zero factor_represents)
 open ComplexLogarithmRemainder (zeroCode oneCode scale)
 open GaussianRootAlgebra (equal equal_of_values re_add im_add re_neg im_neg re_zero im_zero)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

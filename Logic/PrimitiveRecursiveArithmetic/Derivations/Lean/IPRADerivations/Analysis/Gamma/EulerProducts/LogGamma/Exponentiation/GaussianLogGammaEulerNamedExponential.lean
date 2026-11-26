@@ -17,7 +17,7 @@ set_option maxHeartbeats 700000
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerNamedExponential
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaReciprocalInverse (gammaF)
@@ -28,10 +28,6 @@ open GaussianRadiusExponentialName (inputPrecision)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "L" => GaussianLogGammaEulerNamed.nameF
@@ -49,9 +45,7 @@ def nameF (f : PR 2) : PR 2 := Exp (L f)
 def data (f : PR 2) (x M R : PTm n) : PTm n :=
   ed (disk (L f) (ld x M R)) (ld x M R)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x M R : PTm n) :
-    Syn.subst σ (data f x M R) = data f (Syn.subst σ x) (Syn.subst σ M) (Syn.subst σ R) := by
-  simp [data]
+ipra_subst data
 
 theorem name_regular (f : PR 2) (x M R : PTm n) (h : Γ ⊢[PRAAx] source f x M R) :
     Γ ⊢[PRAAx] pointCN (nameF f) (data f x M R) :=

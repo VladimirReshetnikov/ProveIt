@@ -15,7 +15,7 @@ set_option maxHeartbeats 560000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingOddCoefficients
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinGamma (Pv)
 open ComplexLogarithmRemainder (oneCode scale)
 open GaussianPositiveRationalLogarithm (fraction)
@@ -26,9 +26,6 @@ open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qone qone_canonica
 open GaussianStirlingDifference (coefficient minusOne)
 open GaussianStirlingOddSeries (baseDenominator degree)
 open GaussianRootAlgebra (equal equal_of_values re_add im_add re_mul im_mul re_scale im_scale re_one im_one)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -83,9 +80,7 @@ private theorem fraction_one (a : PTm n) (ha : Γ ⊢[PRAAx] le one a) : Γ ⊢[
   canonical_unique _ _ _ a (ofGaussian_canonical _ _ ha) qone_canonical ha
     (ofGaussian_represents _ _ ha) (GaussianRationalReciprocal.qone_represents_scaled a)
 
-theorem coefficient_denominator_positive (B : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
-    Γ ⊢[PRAAx] le one (two*B) :=
-  positive_product _ _ RationalAlgebra.two_positive hB
+alias coefficient_denominator_positive := Common.one_le_two_mul
 
 theorem base_positive (A B : PTm n) (hA : Γ ⊢[PRAAx] le one A) :
     Γ ⊢[PRAAx] le one (baseDenominator A B) := by
@@ -104,11 +99,10 @@ theorem first_term (A B : PTm n) (hA : Γ ⊢[PRAAx] le one A) (hB : Γ ⊢[PRAA
   have term : Γ ⊢[PRAAx] GaussianRobinOddLogarithm.term B s zero ≐ fraction P s := by
     have ea : Γ ⊢[PRAAx] two*Pv zero B ≐ P := congrMul (.eqRefl _) (eval B)
     have eb : Γ ⊢[PRAAx] GaussianRobinOddLogarithm.oddIndex zero*Pv zero s ≐ s := by
-      have u := natEq (eval s)
       dsimp [GaussianRobinOddLogarithm.oddIndex]
       apply deriveNat
       ipra_simps
-      linear_combination u
+      linear_combination natEq (eval s)
     have e := Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (fraction (var 0) (var 1) : PTm 2)
       (σ := ![two*Pv zero B, GaussianRobinOddLogarithm.oddIndex zero*Pv zero s]) (σ' := ![P,s])
       (fun i => by fin_cases i; exact ea; exact eb)

@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIncompleteLargeEndpoint
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaIntegralCutoffs (height etaDen top)
 open GaussianEulerWeightedHalfDecay (majorant)
 open GaussianEulerIncompleteName (upperF)
@@ -27,10 +27,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianNamedInverseRate (rate_at rateNumerator rateDenominator)
 open GaussianRationalSlackRemoval (precision slack slack_removal_at)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {ℓ : ℕ} {Γ : List (Fm PTm ℓ)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -40,11 +36,8 @@ def source (z R B A b : PTm ℓ) : Fm PTm ℓ :=
 def data (k z R B A b : PTm ℓ) : PTm ℓ :=
   GaussianEulerIncompleteName.data z R B A (top k A R*b) b
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin ℓ → PTm m) (z R B A b : PTm ℓ) :
-    (source z R B A b).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ b) := by simp [source]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin ℓ → PTm m) (k z R B A b : PTm ℓ) :
-    Syn.subst σ (data k z R B A b) = data (Syn.subst σ k) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ b) := by
-  simp [data,top,height,GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst source
+ipra_subst data [top, height, GaussianGammaIntegralCutoffs.tailCoefficient]
 
 theorem exact_upper_width (k m A R b : PTm ℓ) (h : Γ ⊢[PRAAx] le k m) : Γ ⊢[PRAAx]
     GaussianEulerIncompleteCutoff.upperWidth m A R (top k A R*b) b ≐

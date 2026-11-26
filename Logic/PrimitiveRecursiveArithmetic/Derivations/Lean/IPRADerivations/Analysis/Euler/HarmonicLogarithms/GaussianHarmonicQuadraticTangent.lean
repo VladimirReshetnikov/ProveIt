@@ -15,16 +15,12 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianHarmonicQuadraticTangent
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum (S_succ)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open Products (fact)
 open GammaEulerMesh (factorial_quotient)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -42,9 +38,7 @@ def lowerTangent (j v u M L : PTm n) : Fm PTm n :=
 def law (j v u M L : PTm n) : Fm PTm n :=
   le (v+j) u ⟶ upperTangent j v M L ⋏ lowerTangent j v u M L
 
-@[simp] theorem subst_law {m : ℕ} (σ : Fin n → PTm m) (j v u M L : PTm n) :
-    (law j v u M L).subst σ = law (Syn.subst σ j) (Syn.subst σ v) (Syn.subst σ u) (Syn.subst σ M) (Syn.subst σ L) := by
-  simp [law,upperTangent,lowerTangent,scale,S]
+ipra_subst law [upperTangent, lowerTangent, scale, S]
 
 private theorem base (v u M L : PTm n) : Γ ⊢[PRAAx] law zero v u M L := by
   have eq : Γ ⊢[PRAAx] S (v+zero) (fact L) ≐ S v (fact L) :=

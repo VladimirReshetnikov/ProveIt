@@ -1,5 +1,4 @@
 import IPRADerivations.Geometry.CircleChords
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Lagrange's identity in finite dimension, planes and the circumsphere
@@ -30,10 +29,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Geometry.EuclideanSpace
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Geometry.CircleChords (zle_of_sq_le)
-open Syn
-open scoped Fm
 
 variable {n d : ℕ} {Γ : List (Fm PTm n)}
 

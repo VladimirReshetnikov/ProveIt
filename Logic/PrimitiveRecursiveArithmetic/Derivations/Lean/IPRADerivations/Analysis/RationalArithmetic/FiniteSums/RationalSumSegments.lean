@@ -13,16 +13,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalSumSegments
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (fraction)
 open GaussianRationalFiniteProduct (offset_at)
 open RationalAlgebra (add_congr add_associative)
 open RationalArithmetic (add)
 open RationalFiniteSum (sum term sum_at sumCodeF sum_well_formed subst_sum)
 open RationalReciprocalPowerTail (add_zero_right zero_fraction)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -33,9 +30,7 @@ theorem sum_congr (body : PTm 2) {N N' x x' : PTm n}
 def splitLaw (body : PTm 2) (N M x : PTm n) : Fm PTm n :=
   sum body (N+M) x ≐ add (sum body N x) (sum (offB body) M (pairT N x))
 
-@[simp] theorem subst_splitLaw {l : ℕ} (σ : Fin n → PTm l) (body : PTm 2) (N M x : PTm n) :
-    (splitLaw body N M x).subst σ = splitLaw body (Syn.subst σ N) (Syn.subst σ M) (Syn.subst σ x) := by
-  simp [splitLaw]
+ipra_subst splitLaw
 
 private theorem split_zero (body : PTm 2) (N x : PTm n) :
     Γ ⊢[PRAAx] splitLaw body N zero x :=

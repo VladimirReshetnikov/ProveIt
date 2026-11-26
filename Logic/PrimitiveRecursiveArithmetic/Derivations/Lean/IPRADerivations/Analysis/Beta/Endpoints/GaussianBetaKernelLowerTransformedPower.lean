@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaKernelLowerTransformedPower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLowerPowerOrder (source)
 open GaussianEulerCompactProductComparison (clock)
 open GaussianBetaKernelGridComparison (row)
@@ -26,20 +26,13 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded)
 open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def numerator (p A a b : PTm n) : PTm n := GaussianEulerLowerTransformedPower.numerator p A a b
 def denominator (p A a : PTm n) : PTm n := GaussianEulerLowerTransformedPower.denominator p A a
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (p A a b : PTm n) :
-    Syn.subst σ (numerator p A a b) = numerator (Syn.subst σ p) (Syn.subst σ A) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [numerator,GaussianEulerLowerTransformedPower.numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (p A a : PTm n) :
-    Syn.subst σ (denominator p A a) = denominator (Syn.subst σ p) (Syn.subst σ A) (Syn.subst σ a) := by
-  simp [denominator,GaussianEulerLowerTransformedPower.denominator]
+ipra_subst numerator [GaussianEulerLowerTransformedPower.numerator]
+ipra_subst denominator [GaussianEulerLowerTransformedPower.denominator]
 
 theorem kernel_source (z R B A a b N : PTm n) (h : Γ ⊢[PRAAx] source z R B A a b)
     (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[PRAAx] GaussianBetaKernelRefinement.source (pw a A) (pw b A) N := by

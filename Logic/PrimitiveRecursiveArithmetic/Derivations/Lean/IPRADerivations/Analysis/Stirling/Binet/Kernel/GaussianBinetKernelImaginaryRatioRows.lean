@@ -15,7 +15,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetKernelImaginaryRatioRows
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open ComplexLogarithmRemainder (scale oneCode eval_re_code eval_im_code)
 open GaussianBinetKernelPi (sample sample_fraction sample_margins)
@@ -29,10 +29,6 @@ open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRootAlgebra (equal equal_of_values re_scale im_scale re_one im_one)
 open GaussianSineProductImaginaryLogDerivative (logarithmRow rationalReal realNumerator squareDenominator)
 open GaussianStirlingConstant (piNumerator piDenominator)
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -122,16 +118,8 @@ def ratioNumerator (p A : PTm n) : PTm n := A*piDenominator p
 def ratioDenominator (p B : PTm n) : PTm n := two*B*piNumerator p
 def ratioRadius (A : PTm n) : PTm n := A+one
 
-@[simp] theorem subst_ratioNumerator {m : ℕ} (σ : Fin n → PTm m) (p A : PTm n) :
-    Syn.subst σ (ratioNumerator p A) = ratioNumerator (Syn.subst σ p) (Syn.subst σ A) := by
-  simp [ratioNumerator,piDenominator,GaussianGammaHalfPiName.clearing,GaussianGammaHalfPiName.meshAt,
-    GaussianGammaHalfPiName.meshIndex,GaussianGammaHalfPiName.orderAt,GaussianGammaHalfPiName.orderIndex,
-    Products.fact,two,one]
-@[simp] theorem subst_ratioDenominator {m : ℕ} (σ : Fin n → PTm m) (p B : PTm n) :
-    Syn.subst σ (ratioDenominator p B) = ratioDenominator (Syn.subst σ p) (Syn.subst σ B) := by
-  simp [ratioDenominator,piNumerator,BaselQuadrature.Q,GaussianGammaHalfPiName.clearing,
-    GaussianGammaHalfPiName.meshAt,GaussianGammaHalfPiName.meshIndex,GaussianGammaHalfPiName.orderAt,
-    GaussianGammaHalfPiName.orderIndex,two,one]
+ipra_subst ratioNumerator [piDenominator, GaussianGammaHalfPiName.clearing, GaussianGammaHalfPiName.meshAt, GaussianGammaHalfPiName.meshIndex, GaussianGammaHalfPiName.orderAt, GaussianGammaHalfPiName.orderIndex, Products.fact, two, one]
+ipra_subst ratioDenominator [piNumerator, BaselQuadrature.Q, GaussianGammaHalfPiName.clearing, GaussianGammaHalfPiName.meshAt, GaussianGammaHalfPiName.meshIndex, GaussianGammaHalfPiName.orderAt, GaussianGammaHalfPiName.orderIndex, two, one]
 
 theorem ratio_source (p A B : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx]
     le one (ratioRadius A) ⋏ (le one (ratioDenominator p B) ⋏

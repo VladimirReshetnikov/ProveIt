@@ -16,7 +16,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelImproper
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianStirlingNames (source)
 open GaussianStirlingGlobalBounds (steps translatedPoint endpoint_close remainder_regular remainder_cross remainderF remainderData
@@ -29,9 +29,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianNameEquivalence (crossEquivalent cross_at point_at)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianValueNormalizerExtensionality (rawDiagonal)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "panelsF" => GaussianStirlingAllOrderFirstPanelFiniteSum.nameF
@@ -44,12 +41,9 @@ def rawData (A B : PTm n) : PTm n := pairT A B
 def nameF : PR 2 := GaussianFastValueCut.nameF rawF
 def data (A B : PTm n) : PTm n := GaussianFastValueCut.nameData (num 47) (rawData A B)
 
-@[simp] theorem subst_raw {l : ℕ} (σ : Fin n → PTm l) (p A B : PTm n) :
-    Syn.subst σ (raw p A B) = raw (Syn.subst σ p) (Syn.subst σ A) (Syn.subst σ B) := by simp [raw]
-@[simp] theorem subst_rawData {l : ℕ} (σ : Fin n → PTm l) (A B : PTm n) :
-    Syn.subst σ (rawData A B) = rawData (Syn.subst σ A) (Syn.subst σ B) := by simp [rawData]
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (A B : PTm n) :
-    Syn.subst σ (data A B) = data (Syn.subst σ A) (Syn.subst σ B) := by simp [data]
+ipra_subst raw
+ipra_subst rawData
+ipra_subst data
 
 theorem raw_at (p A B : PTm n) : Γ ⊢[PRAAx] ap2 rawF p (rawData A B) ≐ raw p A B := by
   let w := rawData A B

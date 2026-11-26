@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerVerticalProjection
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaRealValues (projection axisF axis_sample_at axis_regular projection_distance)
 open GaussianNamedRightHalfPlane (source certificate marginPoint)
 open GaussianEuclideanDistanceName (pointCN)
@@ -24,15 +24,12 @@ open GaussianRationalHorner (canonical qzero)
 open GaussianNamedPositiveExponentialOrder (realOrder real_order_at)
 open GaussianSignedNameExponentialOrder (realSamples)
 open GaussianExponentialSmallPerturbation (smallSamples)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 theorem projected_coordinate (f : PR 2) (p x : PTm n) : Γ ⊢[PRAAx]
     fstT (ap2 (axisF f) p x) ≐ RationalArithmetic.recode (fstT (ap2 f p x)) :=
-  (congrFst (axis_sample_at f p x)).eqTrans (fst_pair _ _)
+  (axis_sample_at f p x).fstE
 
 theorem coordinate_order (f : PR 2) (p x : PTm n) : Γ ⊢[PRAAx]
     RationalArgmin.rationalLE (fstT (ap2 f p x)) (fstT (ap2 (axisF f) p x)) :=

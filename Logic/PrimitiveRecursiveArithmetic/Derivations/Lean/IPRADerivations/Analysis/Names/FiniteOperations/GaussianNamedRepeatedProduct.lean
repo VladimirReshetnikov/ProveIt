@@ -13,7 +13,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedRepeatedProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (point_at)
@@ -23,9 +23,6 @@ open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRationalReciprocal (power power_zero power_succ bound_congr)
 open GaussianRationalMetric (bounded)
 open GaussianRationalSyntheticDivision (qmul_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -37,26 +34,20 @@ theorem row_at (f : PR 2) (p i x : PTm n) : Γ ⊢[PRAAx] ap3 (repeatF f) p i x 
 def repeatLaw (f : PR 2) (p N x : PTm n) : Fm PTm n :=
   sample (repeatF f) p N x ≐ power (ap2 f p x) N
 
-@[simp] theorem subst_repeatLaw {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p N x : PTm n) :
-    (repeatLaw f p N x).subst σ = repeatLaw f (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ x) := by
-  simp [repeatLaw]
+ipra_subst repeatLaw
 
 theorem sample_power (f : PR 2) (p N x : PTm n) : Γ ⊢[PRAAx] repeatLaw f p N x := by
   have all : Γ ⊢[PRAAx] .all (repeatLaw f (Syn.shift p) (var 0) (Syn.shift x)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_repeatLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (sample_zero (repeatF f) p x).eqTrans (power_zero (ap2 f p x)).eqSymm
-    · simp only [subst_repeatLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact (sample_succ (repeatF f) _ _ _).eqTrans
+    ipra_qfind [subst_repeatLaw]
+    · exact (sample_zero (repeatF f) p x).eqTrans (power_zero (ap2 f p x)).eqSymm
+    · exact (sample_succ (repeatF f) _ _ _).eqTrans
         ((qmul_congr Prf.hyp0 (row_at f _ _ _)).eqTrans (power_succ _ _).eqSymm)
   simpa only [subst_repeatLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
 
 def bounds (f : PR 2) (R x : PTm n) : Fm PTm n :=
   .all (bounded (ap2 f (var 0) (Syn.shift x)) (Syn.shift R) one)
 
-@[simp] theorem subst_bounds {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (R x : PTm n) :
-    (bounds f R x).subst σ = bounds f (Syn.subst σ R) (Syn.subst σ x) := by
-  simp [bounds,one,Syn.subst_shift,Syn.shift_subst]
+ipra_subst bounds [one, Syn.subst_shift, Syn.shift_subst]
 
 theorem bound_at (f : PR 2) (p R x : PTm n) (h : Γ ⊢[PRAAx] bounds f R x) :
     Γ ⊢[PRAAx] bounded (ap2 f p x) R one := by simpa [bounds,one] using h.allE p

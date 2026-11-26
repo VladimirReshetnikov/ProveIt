@@ -18,7 +18,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaReciprocalLipschitz
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaDigammaFiniteSum (index reciprocalBody reciprocalSum)
 open GaussianGammaDigammaHarmonicPrefix (index_succ reciprocal_succ)
 open GaussianGammaDigammaReciprocalPair (fraction_gap row_gap)
@@ -33,10 +33,6 @@ open GaussianStirlingMultiplicativeBoundsLog (fractions_order)
 open GaussianStirlingTailComparison (point_order_refl point_add_order)
 open GaussianCompactRiemannName (fraction_congr)
 open RationalArgmin (rationalLE rationalLE_congr transitive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -49,15 +45,9 @@ def law (a c b N : PTm n) : Fm PTm n :=
   rationalLE (fstT (qadd (difference a c b (succ N)) (potential a c b N)))
     (fstT (qadd (firstCap a c b) (potential a c b zero)))
 
-@[simp] theorem subst_difference {l : ℕ} (σ : Fin n → PTm l) (a c b N : PTm n) :
-    Syn.subst σ (difference a c b N) = difference (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ b) (Syn.subst σ N) :=
-  by simp [difference]
-@[simp] theorem subst_potential {l : ℕ} (σ : Fin n → PTm l) (a c b N : PTm n) :
-    Syn.subst σ (potential a c b N) = potential (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ b) (Syn.subst σ N) :=
-  by simp [potential]
-@[simp] theorem subst_law {l : ℕ} (σ : Fin n → PTm l) (a c b N : PTm n) :
-    (law a c b N).subst σ = law (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ b) (Syn.subst σ N) :=
-  by simp [law,firstCap]
+ipra_subst difference
+ipra_subst potential
+ipra_subst law [firstCap]
 
 private theorem index_zero (a b : PTm n) : Γ ⊢[PRAAx] index a b zero ≐ a :=
   by unfold index; ipra_ring

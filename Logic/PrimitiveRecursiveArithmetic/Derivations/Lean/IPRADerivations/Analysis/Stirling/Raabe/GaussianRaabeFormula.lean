@@ -14,7 +14,7 @@ set_option maxHeartbeats 860000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRaabeFormula
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent cross_symm cross_trans point_at)
@@ -24,9 +24,6 @@ open GaussianRaabePositiveComparison (value)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -36,8 +33,7 @@ local notation "fd" => GaussianRaabeRightSide.data
 def data (A D : PTm n) : PTm n := pairT A D
 def nameF : PR 2 := PTm.toPR (value (var 0+num 4) (fstT (var 1)) (sndT (var 1)) : PTm 2)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (A D : PTm n) :
-    Syn.subst σ (data A D) = data (Syn.subst σ A) (Syn.subst σ D) := by simp [data]
+ipra_subst data
 
 theorem sample_at (p A D : PTm n) :
     Γ ⊢[PRAAx] ap2 nameF p (data A D) ≐ value (p+num 4) A D := by

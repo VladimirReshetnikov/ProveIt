@@ -16,7 +16,7 @@ set_option maxHeartbeats 280000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedSineMultipleAngle
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBoundedIntegerExponentialSample (stage_input)
 open GaussianBoundedIntegerExponentialStages (scaledF stageData radius)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
@@ -36,10 +36,6 @@ open GaussianRationalPowerDifference (bounded_sum_same)
 open GaussianSineMultipleAngleContinuity (growth value_bound value_distance)
 open GaussianSineMultipleAngleRecurrence (value)
 open GaussianSineSquaredTrace (sineValue)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -50,14 +46,9 @@ def recurrenceData (f : PR 2) (k R x : PTm n) : PTm n := GaussianSineTraceName.d
 def multipleF (f : PR 2) : PR 2 := multiplyF (sineF f) (recurrenceF f)
 def multipleData (f : PR 2) (k R x : PTm n) : PTm n := multiplyData (sineF f) (recurrenceF f) (sineData f R x) (recurrenceData f k R x)
 
-@[simp] theorem subst_traceData {m : ℕ} (σ : Fin n → PTm m) (R x : PTm n) :
-    Syn.subst σ (traceData R x) = traceData (Syn.subst σ R) (Syn.subst σ x) := by simp [traceData]
-@[simp] theorem subst_recurrenceData {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (k R x : PTm n) :
-    Syn.subst σ (recurrenceData f k R x) = recurrenceData f (Syn.subst σ k) (Syn.subst σ R) (Syn.subst σ x) := by
-  simp [recurrenceData]
-@[simp] theorem subst_multipleData {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (k R x : PTm n) :
-    Syn.subst σ (multipleData f k R x) = multipleData f (Syn.subst σ k) (Syn.subst σ R) (Syn.subst σ x) := by
-  simp [multipleData]
+ipra_subst traceData
+ipra_subst recurrenceData
+ipra_subst multipleData
 
 theorem trace_regular (f : PR 2) (R x : PTm n) (h : Γ ⊢[PRAAx] input f R x) :
     Γ ⊢[PRAAx] pointCN (traceF f) (traceData R x) :=
@@ -75,10 +66,8 @@ def traceRadius (f : PR 2) (R x : PTm n) : PTm n := num 5+baseNegativeRadius f R
 def traceDisk (f : PR 2) (R x : PTm n) : PTm n :=
   GaussianNameBounds.U (traceF f) (traceData R x)+(disk R+inverseDisk f R x)
 
-@[simp] theorem subst_traceRadius {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (R x : PTm n) :
-    Syn.subst σ (traceRadius f R x) = traceRadius f (Syn.subst σ R) (Syn.subst σ x) := by simp [traceRadius]
-@[simp] theorem subst_traceDisk {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (R x : PTm n) :
-    Syn.subst σ (traceDisk f R x) = traceDisk f (Syn.subst σ R) (Syn.subst σ x) := by simp [traceDisk]
+ipra_subst traceRadius
+ipra_subst traceDisk
 
 theorem trace_sample (f : PR 2) (p R x : PTm n) (h : Γ ⊢[PRAAx] input f R x) :
     Γ ⊢[PRAAx] distanceBounded (ap2 (traceF f) p (traceData R x)) (qadd (positive f p R x) (negative f p R x))
@@ -106,9 +95,7 @@ private theorem trace_pair_bound (f : PR 2) (p R x : PTm n) (h : Γ ⊢[PRAAx] i
 def recurrenceRadius (f : PR 2) (k R x : PTm n) : PTm n :=
   (GaussianSineTraceName.modulus (traceF f) k (traceData R x)+one)+traceRadius f R x*growth (traceDisk f R x) k
 
-@[simp] theorem subst_recurrenceRadius {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (k R x : PTm n) :
-    Syn.subst σ (recurrenceRadius f k R x) = recurrenceRadius f (Syn.subst σ k) (Syn.subst σ R) (Syn.subst σ x) := by
-  simp [recurrenceRadius,one]
+ipra_subst recurrenceRadius [one]
 
 theorem recurrence_sample (f : PR 2) (p k R x : PTm n) (h : Γ ⊢[PRAAx] input f R x) :
     Γ ⊢[PRAAx] distanceBounded (ap2 (recurrenceF f) p (recurrenceData f k R x))
@@ -122,9 +109,7 @@ def multipleRadius (f : PR 2) (k R x : PTm n) : PTm n :=
   (multiplyModulus (sineF f) (recurrenceF f) (sineData f R x) (recurrenceData f k R x)+one)+
     (baseRadius f R x*growth (traceDisk f R x) k+GaussianNameBounds.U (sineF f) (sineData f R x)*recurrenceRadius f k R x)
 
-@[simp] theorem subst_multipleRadius {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (k R x : PTm n) :
-    Syn.subst σ (multipleRadius f k R x) = multipleRadius f (Syn.subst σ k) (Syn.subst σ R) (Syn.subst σ x) := by
-  simp [multipleRadius,one]
+ipra_subst multipleRadius [one]
 
 theorem multiple_sample (f : PR 2) (p k R x : PTm n) (h : Γ ⊢[PRAAx] input f R x) :
     Γ ⊢[PRAAx] distanceBounded (ap2 (multipleF f) p (multipleData f k R x))
@@ -146,9 +131,7 @@ theorem multiple_sample (f : PR 2) (p k R x : PTm n) (h : Γ ⊢[PRAAx] input f 
 
 def identityRadius (f : PR 2) (E k R x : PTm n) : PTm n := scaledRadius f E k R x+multipleRadius f k R x
 
-@[simp] theorem subst_identityRadius {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (E k R x : PTm n) :
-    Syn.subst σ (identityRadius f E k R x) = identityRadius f (Syn.subst σ E) (Syn.subst σ k) (Syn.subst σ R) (Syn.subst σ x) := by
-  simp [identityRadius]
+ipra_subst identityRadius
 
 theorem identity_at (f : PR 2) (p E k R x : PTm n) (h : Γ ⊢[PRAAx] input f R x) (hi : Γ ⊢[PRAAx] le (succ k) E) :
     Γ ⊢[PRAAx] distanceBounded (ap2 (sineF (scaledF f)) p (sineData (scaledF f) (radius E R) (stageData E (succ k) x)))

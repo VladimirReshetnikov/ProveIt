@@ -20,7 +20,7 @@ set_option maxHeartbeats 500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerReciprocalSlopeGap
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianEuclideanDistanceName (fraction_represents)
 open GaussianGammaDigammaFiniteSum (reciprocalBody reciprocal_entry)
@@ -41,9 +41,6 @@ open GaussianRationalSumMajorant (majorized from_representation termsMajorized s
 open GaussianRationalSyntheticDivision (qadd_congr qsub_congr qadd_sub_cancel)
 open GaussianReciprocalHorner (qadd_commutative)
 open RationalSupMetric (denominatorOf)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "sum" => GaussianRationalFiniteSum.sum
@@ -56,10 +53,7 @@ def interval (A B D neg N r : PTm n) : PTm n :=
 def observed (p A B D neg N : PTm n) : PTm n :=
   qsub (sample p N one) (reciprocalSum A B D neg (succ N))
 
-@[simp] theorem subst_observed {l : ℕ} (σ : Fin n → PTm l) (p A B D neg N : PTm n) :
-    Syn.subst σ (observed p A B D neg N) =
-      observed (Syn.subst σ p) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ neg) (Syn.subst σ N) := by
-  simp [observed, reciprocalSum, sample, one]
+ipra_subst observed [reciprocalSum, sample, one]
 
 private theorem harmonic_entry (N i : PTm n) :
     Γ ⊢[PRAAx] inst2 reciprocalBody i (pairT (succ N) one) ≐ gf one (succ (N + i)) :=

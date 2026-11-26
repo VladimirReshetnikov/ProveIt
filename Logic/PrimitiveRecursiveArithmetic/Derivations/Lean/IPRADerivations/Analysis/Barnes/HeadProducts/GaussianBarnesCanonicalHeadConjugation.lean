@@ -16,15 +16,12 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalHeadConjugation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalHead (source nameF data parameters body)
 open GaussianNameEquivalence (crossEquivalent cross_trans)
 open GaussianNamedFiniteProductFamily (rowF productData)
 open GaussianNamedFiniteProductFamilyCongruence (equalRows family_product_cross)
 open GaussianRationalReciprocal (conjugate)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

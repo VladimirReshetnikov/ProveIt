@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GammaCanonicalFactors
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Exact degree-dependent finite canonical Gamma remainder
@@ -18,16 +17,12 @@ identification of the analytic logarithm or a construction of Gamma.
 
 namespace LeanProofs.IPRA.Analysis.GammaCanonicalRemainder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.LogarithmRemainder
   (three denominator denominator_succ denominator_positive)
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder
   (scale bounded bounded_scale bounded_mono normSq normSq_eval eval_re_code eval_im_code)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (monus)
 open LeanProofs.IPRA.Analysis.Products (fact)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -38,10 +33,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 def tailScale (L R N : PTm n) : PTm n :=
   (L+three)*pw N (L+two)*monus N R
 
-@[simp] theorem subst_tailScale {m : ℕ} (σ : Fin n → PTm m) (L R N : PTm n) :
-    Syn.subst σ (tailScale L R N) =
-      tailScale (Syn.subst σ L) (Syn.subst σ R) (Syn.subst σ N) := by
-  simp [tailScale]
+ipra_subst tailScale
 
 /-- The unused geometric tail is kept in the induction invariant. -/
 def strong (L R N K : PTm n) : Fm PTm n :=
@@ -49,10 +41,7 @@ def strong (L R N K : PTm n) : Fm PTm n :=
       denominator N L*fact (L+K+two)*pw N (L+two)*pw R (L+K+three))
     (pw R (L+three)*denominator N L*denominator N (L+K))
 
-@[simp] theorem subst_strong {m : ℕ} (σ : Fin n → PTm m) (L R N K : PTm n) :
-    (strong L R N K).subst σ = strong
-      (Syn.subst σ L) (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ K) := by
-  simp [strong, fact]
+ipra_subst strong [fact]
 
 theorem strong_zero (L R N : PTm n) : Γ ⊢[PRAAx] strong L R N zero := by
   have a := natEq (ComplexLogarithmCauchy.positive_zero (Γ := Γ) L R N)
@@ -126,8 +115,7 @@ theorem finite_factor_remainder (z N L R K : PTm n) (hz : Γ ⊢[PRAAx] bounded 
   have eq : Γ ⊢[PRAAx] normSq (scale (tailScale L R N) (GammaCanonicalFactors.factorDifference z N L K)) ≐
       normSq (scale ((two*N*N)*(two*N*N)) (scale (tailScale L R N) (ComplexLogarithmCauchy.difference z N L K))) := by
     apply deriveNat
-    have E := natEq (GammaCanonicalFactors.difference_norm (Γ := Γ) z N L K (tailScale L R N))
-    rw [E]
+    rw [natEq (GammaCanonicalFactors.difference_norm (Γ := Γ) z N L K (tailScale L R N))]
     rw [normSq_eval, normSq_eval]
     simp only [scale, eval_re_code, eval_im_code, ZT.toZ_mul, ZT.toZ_ofNat, Q.mk_mul, map_mul]
     ring
@@ -135,12 +123,7 @@ theorem finite_factor_remainder (z N L R K : PTm n) (hz : Γ ⊢[PRAAx] bounded 
 
 /-- Strictly inside the geometric disk, the displayed remainder divisor is
 positive, including radius zero. -/
-theorem gap_positive (R N : PTm n) (h : Γ ⊢[PRAAx] lt R N) :
-    Γ ⊢[PRAAx] le one (monus N R) := by
-  have e : Γ ⊢[PRAAx] N ≐ R+succ (monus N (succ R)) :=
-    (eq_add_of_le h).eqTrans (by ipra_ring)
-  have g := (congrMonus e (.eqRefl R)).eqTrans (add_monus' (succ (monus N (succ R))) R)
-  exact le_congr (.eqRefl _) g.eqSymm (zero_lt_succ _)
+alias gap_positive := Common.one_le_monus_of_lt
 
 theorem scale_positive (L R N : PTm n) (h : Γ ⊢[PRAAx] lt R N) :
     Γ ⊢[PRAAx] le one (tailScale L R N) := by
@@ -160,10 +143,7 @@ def certificate (z N L R K : PTm n) : Fm PTm n :=
           (pw R (L+three)*GammaCanonicalFactors.factorDenominator N L*
             GammaCanonicalFactors.factorDenominator N (L+K))))
 
-@[simp] theorem subst_certificate {m : ℕ} (σ : Fin n → PTm m) (z N L R K : PTm n) :
-    (certificate z N L R K).subst σ = certificate
-      (Syn.subst σ z) (Syn.subst σ N) (Syn.subst σ L) (Syn.subst σ R) (Syn.subst σ K) := by
-  simp [certificate]
+ipra_subst certificate
 
 theorem factor_certificate (z N L R K : PTm n) (hz : Γ ⊢[PRAAx] bounded z R)
     (h : Γ ⊢[PRAAx] lt R N) : Γ ⊢[PRAAx] certificate z N L R K := by
@@ -183,18 +163,9 @@ def output (z N L R K : PTm n) : PTm n :=
 def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (z N L R K : PTm n) : PTm n := PTm.app outputF ![z,N,L,R,K]
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (z N L R K : PTm n) :
-    Syn.subst σ (output z N L R K) = output
-      (Syn.subst σ z) (Syn.subst σ N) (Syn.subst σ L) (Syn.subst σ R) (Syn.subst σ K) := by
-  simp [output]
+ipra_subst output
 
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (z N L R K : PTm n) :
-    Syn.subst σ (run z N L R K) = run
-      (Syn.subst σ z) (Syn.subst σ N) (Syn.subst σ L) (Syn.subst σ R) (Syn.subst σ K) := by
-  simp only [run, ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst run
 
 theorem program_at (z N L R K : PTm n) : Γ ⊢[PRAAx] run z N L R K ≐ output z N L R K := by
   simpa [run, outputF] using toPR_eq (Γ := Γ)
@@ -202,25 +173,25 @@ theorem program_at (z N L R K : PTm n) : Γ ⊢[PRAAx] run z N L R K ≐ output 
 
 theorem returned_difference (z N L R K : PTm n) : Γ ⊢[PRAAx]
     fstT (run z N L R K) ≐ GammaCanonicalFactors.factorDifference z N L K :=
-  (congrFst (program_at _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _ _).fstE
 
 theorem returned_scale (z N L R K : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run z N L R K)) ≐ tailScale L R N :=
-  (congrFst ((congrSnd (program_at _ _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _ _).sndE.fstE
 
 theorem returned_lower_denominator (z N L R K : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (run z N L R K))) ≐ GammaCanonicalFactors.factorDenominator N L :=
-  (congrFst ((congrSnd ((congrSnd (program_at _ _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans
+  (congrFst ((congrSnd (program_at _ _ _ _ _).sndE).eqTrans
     (snd_pair _ _))).eqTrans (fst_pair _ _)
 
 theorem returned_upper_denominator (z N L R K : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (sndT (run z N L R K)))) ≐ GammaCanonicalFactors.factorDenominator N (L+K) :=
-  (congrFst ((congrSnd ((congrSnd ((congrSnd (program_at _ _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans
+  (congrFst ((congrSnd ((congrSnd (program_at _ _ _ _ _).sndE).eqTrans
     (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
 
 theorem returned_radius_power (z N L R K : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (sndT (sndT (run z N L R K)))) ≐ pw R (L+three) :=
-  (congrSnd ((congrSnd ((congrSnd ((congrSnd (program_at _ _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans
+  (congrSnd ((congrSnd ((congrSnd (program_at _ _ _ _ _).sndE).eqTrans
     (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
 
 theorem returned_remainder (z N L R K : PTm n) (hz : Γ ⊢[PRAAx] bounded z R)

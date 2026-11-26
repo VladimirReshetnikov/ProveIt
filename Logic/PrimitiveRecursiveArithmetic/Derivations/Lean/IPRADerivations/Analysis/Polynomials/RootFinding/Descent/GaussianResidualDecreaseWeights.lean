@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.DominantTerms.GaussianDominantScalarOrder
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Exact natural weights for residual decrease
@@ -14,12 +13,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianResidualDecreaseWeights
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (positive_product)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -35,26 +30,16 @@ def rateNum (D : PTm n) : PTm n := monus (rateDen D) one
 def lowerBound (D P Q : PTm n) : Fm PTm n := le ((num 64)*Q) ((num 65)*D*P)
 def input (D P Q : PTm n) : Fm PTm n := le one D ⋏ (le one Q ⋏ (le P Q ⋏ lowerBound D P Q))
 
-@[simp] theorem subst_mainWeight {m : ℕ} (σ : Fin n → PTm m) (P Q : PTm n) :
-    Syn.subst σ (mainWeight P Q) = mainWeight (Syn.subst σ P) (Syn.subst σ Q) := by simp [mainWeight]
-@[simp] theorem subst_errorWeight {m : ℕ} (σ : Fin n → PTm m) (P : PTm n) :
-    Syn.subst σ (errorWeight P) = errorWeight (Syn.subst σ P) := by simp [errorWeight]
-@[simp] theorem subst_otherWeight {m : ℕ} (σ : Fin n → PTm m) (P : PTm n) :
-    Syn.subst σ (otherWeight P) = otherWeight (Syn.subst σ P) := by simp [otherWeight]
-@[simp] theorem subst_sumWeight {m : ℕ} (σ : Fin n → PTm m) (P Q : PTm n) :
-    Syn.subst σ (sumWeight P Q) = sumWeight (Syn.subst σ P) (Syn.subst σ Q) := by simp [sumWeight]
-@[simp] theorem subst_scale {m : ℕ} (σ : Fin n → PTm m) (Q : PTm n) :
-    Syn.subst σ (scale Q) = scale (Syn.subst σ Q) := by simp [scale]
-@[simp] theorem subst_gain {m : ℕ} (σ : Fin n → PTm m) (P : PTm n) :
-    Syn.subst σ (gain P) = gain (Syn.subst σ P) := by simp [gain]
-@[simp] theorem subst_rateDen {m : ℕ} (σ : Fin n → PTm m) (D : PTm n) :
-    Syn.subst σ (rateDen D) = rateDen (Syn.subst σ D) := by simp [rateDen]
-@[simp] theorem subst_rateNum {m : ℕ} (σ : Fin n → PTm m) (D : PTm n) :
-    Syn.subst σ (rateNum D) = rateNum (Syn.subst σ D) := by simp [rateNum]
-@[simp] theorem subst_lowerBound {m : ℕ} (σ : Fin n → PTm m) (D P Q : PTm n) :
-    (lowerBound D P Q).subst σ = lowerBound (Syn.subst σ D) (Syn.subst σ P) (Syn.subst σ Q) := by simp [lowerBound]
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (D P Q : PTm n) :
-    (input D P Q).subst σ = input (Syn.subst σ D) (Syn.subst σ P) (Syn.subst σ Q) := by simp [input]
+ipra_subst mainWeight
+ipra_subst errorWeight
+ipra_subst otherWeight
+ipra_subst sumWeight
+ipra_subst scale
+ipra_subst gain
+ipra_subst rateDen
+ipra_subst rateNum
+ipra_subst lowerBound
+ipra_subst input
 
 theorem scale_positive (Q : PTm n) (hQ : Γ ⊢[PRAAx] le one Q) : Γ ⊢[PRAAx] le one (scale Q) :=
   positive_product _ _ (le_of_eq_add (d := num 6143) (by ipra_ring)) hQ
@@ -128,26 +113,24 @@ def output (D P Q : PTm n) : PTm n := pairT (mainWeight P Q)
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (D P Q : PTm n) : PTm n := ap3 outputF D P Q
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (D P Q : PTm n) :
-    Syn.subst σ (output D P Q) = output (Syn.subst σ D) (Syn.subst σ P) (Syn.subst σ Q) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (D P Q : PTm n) :
-    Syn.subst σ (run D P Q) = run (Syn.subst σ D) (Syn.subst σ P) (Syn.subst σ Q) := by simp [run]
+ipra_subst output
+ipra_subst run
 
 theorem program_at (D P Q : PTm n) : Γ ⊢[PRAAx] run D P Q ≐ output D P Q := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![D,P,Q]
 
 theorem returned_main (D P Q : PTm n) : Γ ⊢[PRAAx] fstT (run D P Q) ≐ mainWeight P Q :=
-  (congrFst (program_at D P Q)).eqTrans (fst_pair _ _)
+  (program_at D P Q).fstE
 theorem returned_error (D P Q : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run D P Q)) ≐ errorWeight P :=
-  (congrFst ((congrSnd (program_at D P Q)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at D P Q).sndE.fstE
 theorem returned_other (D P Q : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run D P Q))) ≐ otherWeight P :=
-  (congrFst ((congrSnd ((congrSnd (program_at D P Q)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at D P Q).sndE.sndE.fstE
 theorem returned_scale (D P Q : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (run D P Q)))) ≐ scale Q :=
-  (congrFst ((congrSnd ((congrSnd ((congrSnd (program_at D P Q)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at D P Q).sndE.sndE.sndE.fstE
 theorem returned_rate_num (D P Q : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (sndT (run D P Q))))) ≐ rateNum D :=
-  (congrFst ((congrSnd ((congrSnd ((congrSnd ((congrSnd (program_at D P Q)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at D P Q).sndE.sndE.sndE.sndE.fstE
 theorem returned_rate_den (D P Q : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (sndT (run D P Q))))) ≐ rateDen D :=
-  (congrSnd ((congrSnd ((congrSnd ((congrSnd ((congrSnd (program_at D P Q)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at D P Q).sndE.sndE.sndE.sndE.sndE
 
 theorem exact_residual_weights_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3
     (input (var 0) (var 1) (var 2) ⟶

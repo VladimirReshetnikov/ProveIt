@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaEulerTailDifferencePointwise
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUpperPowerOrder (source)
 open GaussianEulerUpperPowerCompatibility (old_source)
 open GaussianEulerIntegrandName (powerF powerData decayF decayData productF productData sample sample_at)
@@ -30,22 +30,15 @@ open GaussianRationalMetric (qsub bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def numerator (p q R a b : PTm n) : PTm n := majorant R*referenceTop q a b*unit p+num 7*referenceBottom q a b
 def denominator (p q a b : PTm n) : PTm n := referenceBottom q a b*unit p
 def difference (p z B a b N : PTm n) : PTm n := qsub (row p z B a b N) (sample p z B a b)
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (p q R a b : PTm n) :
-    Syn.subst σ (numerator p q R a b) = numerator (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ R) (Syn.subst σ a) (Syn.subst σ b) := by simp [numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (p q a b : PTm n) :
-    Syn.subst σ (denominator p q a b) = denominator (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ a) (Syn.subst σ b) := by simp [denominator]
-@[simp] theorem subst_difference {m : ℕ} (σ : Fin n → PTm m) (p z B a b N : PTm n) :
-    Syn.subst σ (difference p z B a b N) = difference (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by simp [difference]
+ipra_subst numerator
+ipra_subst denominator
+ipra_subst difference
 
 theorem upper_reference_representation (s a b : PTm n) : Γ ⊢[PRAAx]
     represents (upperReference s a b) (RationalGaussianEmbedding.native (ZT.ofNat (referenceBudget s a b)))
@@ -138,10 +131,8 @@ theorem original_difference_pointwise (p q z R B a b N : PTm n)
 def scalarMajorant (p R a b : PTm n) : PTm n := RationalArithmetic.add
   (GaussianEulerUpperTailScalar.scalarMajorant p R a b) (GaussianEuclideanDistanceName.fraction (num 6) (unit p))
 def referenceError (R : PTm n) : PTm n := num 3*majorant R+num 7
-@[simp] theorem subst_scalarMajorant {m : ℕ} (σ : Fin n → PTm m) (p R a b : PTm n) :
-    Syn.subst σ (scalarMajorant p R a b) = scalarMajorant (Syn.subst σ p) (Syn.subst σ R) (Syn.subst σ a) (Syn.subst σ b) := by simp [scalarMajorant]
-@[simp] theorem subst_referenceError {m : ℕ} (σ : Fin n → PTm m) (R : PTm n) :
-    Syn.subst σ (referenceError R) = referenceError (Syn.subst σ R) := by simp [referenceError]
+ipra_subst scalarMajorant
+ipra_subst referenceError
 
 theorem original_difference_cell_majorized (p z R B a b N : PTm n)
     (h : Γ ⊢[PRAAx] source z R B a b) (hN : Γ ⊢[PRAAx] le one N) (ht : Γ ⊢[PRAAx] le a (b*N)) : Γ ⊢[PRAAx]

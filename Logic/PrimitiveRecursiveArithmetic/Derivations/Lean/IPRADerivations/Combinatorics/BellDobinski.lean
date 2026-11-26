@@ -1,8 +1,6 @@
 import IPRADerivations.Combinatorics.StirlingInclusion
 import IPRADerivations.Combinatorics.FallingFactorial
 import IPRADerivations.Probability.Independence
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The finite Dobinski formula
@@ -29,7 +27,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.BellDobinski
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial (binom bden)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Combinatorics.Stirling (gle gle_of_le stir)
@@ -40,10 +38,6 @@ open LeanProofs.IPRA.Combinatorics.Vandermonde (gb congrGb gb_above)
 open LeanProofs.IPRA.Combinatorics.BellPascalInversion (ev od congrEv congrOd)
 open LeanProofs.IPRA.Combinatorics.StirlingInclusion (Ep Om eB_at oB_at stirling_ie mul_one' sum1)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

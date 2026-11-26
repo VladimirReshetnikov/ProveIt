@@ -13,7 +13,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetArctangentSineGridComparison
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetArctangentQuadrature (evaluatorF fixedData nameF data)
 open GaussianBinetArctangentCosineLaplace (error)
 open GaussianBinetOscillatorySineRows (numeratorBound)
@@ -24,9 +24,6 @@ open GaussianNamedInverseRate (rateNumerator rateDenominator denominator_positiv
 open GaussianRationalDistanceOrder (distance_congr distance_symmetric)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Sine" => GaussianBinetOscillatorySineRectangle.value

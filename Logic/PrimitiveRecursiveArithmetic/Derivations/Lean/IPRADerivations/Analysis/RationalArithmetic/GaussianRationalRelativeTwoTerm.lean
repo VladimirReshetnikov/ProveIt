@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalThreeTermBudget
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerAlgebra
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Two actual rational Gaussian terms with a common relative norm bound
@@ -18,16 +17,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalRelativeTwoTerm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner
   (qzero qadd qmul represents positive_product qadd_represents)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qnormSq qnegative qsub bounded)
 open LeanProofs.IPRA.Analysis.GaussianRationalL1 (rawGaussian rawDen raw_represents raw_den_positive)
 open LeanProofs.IPRA.Analysis.GaussianRationalRelativeNormAlgebra (relative)
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder (normSq scale add zeroCode)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

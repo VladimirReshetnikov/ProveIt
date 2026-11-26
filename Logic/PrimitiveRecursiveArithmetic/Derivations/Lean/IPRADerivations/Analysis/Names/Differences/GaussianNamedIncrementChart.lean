@@ -2,7 +2,6 @@ import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedInc
 import IPRADerivations.Analysis.Gamma.GaussianGammaEncodingRescaling
 import IPRADerivations.Analysis.Polynomials.Division.GaussianRationalSyntheticCoefficientValues
 import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianL1
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Common rational chart for a named Gaussian base and increment
@@ -19,7 +18,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedIncrementChart
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add scale normSq normSq_scale bounded_add)
 open GaussianFastValueCut (recode exponent recode_bound_iff)
 open GaussianGammaEncodingRescaling (fraction_rescale fraction_denominator_congr)
@@ -35,9 +34,6 @@ open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalSyntheticDivision (qadd_congr)
 open GaussianRootApproximationWitness (pointBounds)
 open LeanProofs.IPRA.Common (le_of_sq_le mul_cancel_le)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

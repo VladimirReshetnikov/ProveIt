@@ -15,8 +15,7 @@ set_option maxHeartbeats 1050000
 
 namespace LeanProofs.IPRA.Analysis.GaussianDigammaBernoulliCoefficients
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open LeanProofs.IPRA.PTm (num)
+open_ipra
 open BernoulliBounds (bden bden_pos bint zint toZ_zint)
 open GaussianDigammaBernoulliRecurrence (exponent weightedPrimitive)
 open GaussianEuclideanDistanceName (fraction fraction_represents)
@@ -34,8 +33,6 @@ open RationalGaussianRealPart (embed_congr)
 open RationalIntegerNormalization (normalize normalize_preserves_value)
 open RationalNormalForm (normalize_well_formed)
 open RationalRepresentations (represents_multiply represents_negative)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -47,9 +44,7 @@ def inversePower (m : ℕ) (A B : PTm n) : PTm n := fraction (power (2*m+2) B) (
 
 def correction (m : ℕ) (A B : PTm n) : PTm n := embed (multiply (coefficient m) (inversePower m A B))
 
-@[simp] theorem subst_correction {l : ℕ} (σ : Fin n → PTm l) (m : ℕ) (A B : PTm n) :
-    Syn.subst σ (correction m A B) = correction m (Syn.subst σ A) (Syn.subst σ B) :=
-  by simp [correction,coefficient,inversePower,power,zint]
+ipra_subst correction [coefficient, inversePower, power, zint]
 
 theorem bernoulli_coefficient (m : ℕ) :
     (coefficientNumerator m : ℚ) / (bden (2*m+2) : ℚ) =

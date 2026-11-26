@@ -19,7 +19,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedRightHalfPlane
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (ofGaussian ofGaussian_represents positive_product)
 open GaussianRationalL1 (rawGaussian rawDen raw_represents raw_den_positive)
 open GaussianGammaCanonicalExponent (constantF constant_at)
@@ -29,10 +29,6 @@ open RationalValueBounds (upper upper_congr)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open ComplexLogarithmRemainder (oneCode re)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -45,22 +41,14 @@ def denominator (f : PR 2) (p x : PTm n) : PTm n := rawDen (ap2 f p x)
 def radius (f : PR 2) (x : PTm n) : PTm n := GaussianNameBounds.U f x
 def precision (p A : PTm n) : PTm n := GaussianFastValueCut.exponent (two*A) p
 def threshold (A : PTm n) : PTm n := precision zero A
-@[simp] theorem subst_marginPoint {l : ℕ} (σ : Fin n → PTm l) (A : PTm n) :
-    Syn.subst σ (marginPoint A) = marginPoint (Syn.subst σ A) := by simp [marginPoint,oneCode,ComplexLogarithmRemainder.code,ZT.ofNat]
-@[simp] theorem subst_certificate {l : ℕ} (σ : Fin n → PTm l) (f : PR 2) (x A : PTm n) :
-    (certificate f x A).subst σ = certificate f (Syn.subst σ x) (Syn.subst σ A) := by simp [certificate]
-@[simp] theorem subst_source {l : ℕ} (σ : Fin n → PTm l) (f : PR 2) (x A : PTm n) :
-    (source f x A).subst σ = source f (Syn.subst σ x) (Syn.subst σ A) := by simp [source]
-@[simp] theorem subst_numerator {l : ℕ} (σ : Fin n → PTm l) (f : PR 2) (p x : PTm n) :
-    Syn.subst σ (numerator f p x) = numerator f (Syn.subst σ p) (Syn.subst σ x) := by simp [numerator]
-@[simp] theorem subst_denominator {l : ℕ} (σ : Fin n → PTm l) (f : PR 2) (p x : PTm n) :
-    Syn.subst σ (denominator f p x) = denominator f (Syn.subst σ p) (Syn.subst σ x) := by simp [denominator]
-@[simp] theorem subst_radius {l : ℕ} (σ : Fin n → PTm l) (f : PR 2) (x : PTm n) :
-    Syn.subst σ (radius f x) = radius f (Syn.subst σ x) := by simp [radius]
-@[simp] theorem subst_precision {l : ℕ} (σ : Fin n → PTm l) (p A : PTm n) :
-    Syn.subst σ (precision p A) = precision (Syn.subst σ p) (Syn.subst σ A) := by simp [precision]
-@[simp] theorem subst_threshold {l : ℕ} (σ : Fin n → PTm l) (A : PTm n) :
-    Syn.subst σ (threshold A) = threshold (Syn.subst σ A) := by simp [threshold]
+ipra_subst marginPoint [oneCode, ComplexLogarithmRemainder.code, ZT.ofNat]
+ipra_subst certificate
+ipra_subst source
+ipra_subst numerator
+ipra_subst denominator
+ipra_subst radius
+ipra_subst precision
+ipra_subst threshold
 
 theorem source_upper_slack (f : PR 2) (x A p t : PTm n) (h : Γ ⊢[PRAAx] certificate f x A) : Γ ⊢[PRAAx]
     upperSlack (fstT (marginPoint A)) (fstT (ap2 f p x)) one (unit p) one t :=

@@ -18,7 +18,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerNormalizedDifference
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN subst_pointCN)
 open GaussianGammaAdjacentCutoff (multiply_cross)
@@ -37,10 +37,6 @@ open GaussianRationalHorner (qadd)
 open GaussianRationalMetric (qsub qnegative distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_triangle_same)
 open GaussianRightHalfPlaneLogarithm (source)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "G" => GaussianRightHalfPlaneLogarithm.nameF
@@ -56,10 +52,7 @@ def rangeF : PR 2 := GaussianNamedFiniteSumFamily.nameF G (GaussianNamedFiniteSu
 def rangeData (A B D neg N r : PTm n) : PTm n :=
   GaussianNamedFiniteSumFamilyRange.rangeData N r (rowData A B D neg)
 
-@[simp] theorem subst_rangeData {m : ℕ} (σ : Fin n → PTm m) (A B D neg N r : PTm n) :
-    Syn.subst σ (rangeData A B D neg N r) =
-      rangeData (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ neg)
-        (Syn.subst σ N) (Syn.subst σ r) := by simp [rangeData]
+ipra_subst rangeData
 
 def weightedLogF : PR 2 := multiplyF constantF (diffF logF logF)
 def weightedLogData (A B D neg N r : PTm n) : PTm n :=
@@ -69,11 +62,7 @@ def windowF : PR 2 := diffF weightedLogF rangeF
 def windowData (A B D neg N r : PTm n) : PTm n :=
   diffData (weightedLogData A B D neg N r) (rangeData A B D neg N r)
 
-@[simp] theorem subst_windowData {m : ℕ} (σ : Fin n → PTm m) (A B D neg N r : PTm n) :
-    Syn.subst σ (windowData A B D neg N r) =
-      windowData (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ neg)
-        (Syn.subst σ N) (Syn.subst σ r) := by
-  simp [windowData,weightedLogData,argument,ZT.subst,ZT.ofNat,one]
+ipra_subst windowData [weightedLogData, argument, ZT.subst, ZT.ofNat, one]
 
 theorem range_row_at (A B D neg N i : PTm n) : Γ ⊢[PRAAx]
     inst2 (GaussianNamedFiniteSumFamilyRange.rangeBody residualBody) i (pairT N (rowData A B D neg)) ≐

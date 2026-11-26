@@ -18,7 +18,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaGaussPositiveReferenceRows
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaGaussReflectionDomain (referenceData)
 open GaussianGammaReciprocalInverse (gammaF gammaHeight)
 open GaussianGammaGaussReference (reference_source)
@@ -38,10 +38,6 @@ open RationalArgmin (rationalLE)
 open ComplexLogarithmRemainder (scale oneCode im re normSq)
 open LeanProofs.IPRA.Foundations.GapDecision (zabs)
 open PolynomialBisection (zle_congr zle_trans)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -51,12 +47,9 @@ def nameF : PR 2 := retimedF (axisF gammaF)
 def nameData (r m : PTm n) : PTm n := retimedData (referenceData r m) (num 18)
 def clock (p : PTm n) : PTm n := p+threshold (num 18)
 
-@[simp] theorem subst_lowerDen {l : ℕ} (σ : Fin n → PTm l) :
-    Syn.subst σ (lowerDen : PTm n) = (lowerDen : PTm l) := by simp [lowerDen,two]
-@[simp] theorem subst_nameData {l : ℕ} (σ : Fin n → PTm l) (r m : PTm n) :
-    Syn.subst σ (nameData r m) = nameData (Syn.subst σ r) (Syn.subst σ m) := by simp [nameData]
-@[simp] theorem subst_clock {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) :
-    Syn.subst σ (clock p) = clock (Syn.subst σ p) := by simp [clock]
+ipra_subst lowerDen [two]
+ipra_subst nameData
+ipra_subst clock
 
 theorem denominator_positive : Γ ⊢[PRAAx] le one (lowerDen : PTm n) := by
   unfold lowerDen
@@ -80,7 +73,7 @@ private theorem native_fixed (r : PTm n) : Γ ⊢[PRAAx]
   change Γ ⊢[PRAAx] pairT (pairT (fstT (fstT z)) (sndT (fstT z)))
     (pairT (sndT (sndT z)) (fstT (sndT z))) ≐ pairT a b
   exact congrPairT
-    (congrPairT ((congrFst p).eqTrans (fst_pair _ _)) ((congrSnd p).eqTrans (snd_pair _ _)))
+    (congrPairT p.fstE p.sndE)
     (congrPairT ((congrSnd q).eqTrans ((snd_pair _ _).eqTrans e.eqSymm))
       ((congrFst q).eqTrans ((fst_pair _ _).eqTrans e)))
 
@@ -160,7 +153,7 @@ theorem sample_nonnegative (p r m : PTm n) (hr : Γ ⊢[PRAAx] le one r) (hm : �
   let a := re (rawGaussian q)
   have s : Γ ⊢[PRAAx] zle (ZT.ofNat zero) a :=
     margin_order a lowerDen b denominator_positive (sample_margin p r m hr hm)
-  refine .andI ?_ ((congrSnd (name_at p r m)).eqTrans (snd_pair _ _))
+  refine .andI ?_ (name_at p r m).sndE
   apply RationalArithmetic.order_of_representations scalarZero (fstT q) (ZT.ofNat zero) a one b
     (scalar_zero_represents one) (raw_represents q).andE₁ (le_refl one) (raw_den_positive q)
   apply zle_congr _ _ s <;> simp [ZT.toZ_mul,ZT.toZ_ofNat,IPRA.Q.mk_zero,map_zero,IPRA.Q.mk_one,map_one]

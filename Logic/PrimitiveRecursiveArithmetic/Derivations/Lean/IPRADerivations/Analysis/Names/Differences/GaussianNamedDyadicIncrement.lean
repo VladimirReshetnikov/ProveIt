@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedDyadicIncrement
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode normSq normSq_one scale)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianExponentialSmallPerturbation (smallSamples)
@@ -23,16 +23,12 @@ open GaussianRationalHorner (ofGaussian ofGaussian_represents)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianRealNameExponentialInjectivity (axisSamples)
 open RationalGaussianEmbedding (axis axis_congr)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def data (h : PTm n) : PTm n := ofGaussian oneCode (unit h)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (h : PTm n) :
-    Syn.subst σ (data h) = data (Syn.subst σ h) := by
-  simp [data]
+ipra_subst data
 
 theorem sample_at (h p : PTm n) : Γ ⊢[PRAAx] ap2 constantF p (data h) ≐ data h :=
   constant_at p (data h)

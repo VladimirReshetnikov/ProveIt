@@ -19,7 +19,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineProductT4Actual
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaEulerReflectionHead (sineProduct square_factor_at)
 open GaussianInverseSquareProductComparison (rowErrors rowErrorDenominator)
@@ -44,10 +44,6 @@ open GaussianSineProductT4SharpRow (actual_head_row prefactor_bound)
 open GaussianSineProductT6 (factorSize)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -70,28 +66,18 @@ def startingPrecision (z R B K x p : PTm n) : PTm n := p+headCost z R B K x+name
 def cofinalClock (z R B K x p : PTm n) : PTm n :=
   GaussianSineProductSynchronizedMagnitude.clock z R B K x (startingPrecision z R B K x p)
 
-@[simp] theorem subst_sineSize {l : ℕ} (σ : Fin n → PTm l) (z R B K x : PTm n) :
-    Syn.subst σ (sineSize z R B K x) = sineSize (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ K)
-      (Syn.subst σ x) := by simp [sineSize,one]
-@[simp] theorem subst_namedCost {l : ℕ} (σ : Fin n → PTm l) (z R B K x : PTm n) :
-    Syn.subst σ (namedCost z R B K x) = namedCost (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ K)
-      (Syn.subst σ x) := by simp [namedCost,sincData,productData,rootFactorData,one]
-@[simp] theorem subst_headCostAt {l : ℕ} (σ : Fin n → PTm l) (z R B K x i : PTm n) :
-    Syn.subst σ (headCostAt z R B K x i) = headCostAt (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ K) (Syn.subst σ x) (Syn.subst σ i) := by simp [headCostAt,rowErrorDenominator]
-@[simp] theorem subst_headCost {l : ℕ} (σ : Fin n → PTm l) (z R B K x : PTm n) :
-    Syn.subst σ (headCost z R B K x) = headCost (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ K)
-      (Syn.subst σ x) := by simp [headCost,headCostData]
-@[simp] theorem subst_cofinalClock {l : ℕ} (σ : Fin n → PTm l) (z R B K x p : PTm n) :
-    Syn.subst σ (cofinalClock z R B K x p) = cofinalClock (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ K) (Syn.subst σ x) (Syn.subst σ p) := by simp [cofinalClock,startingPrecision]
+ipra_subst sineSize [one]
+ipra_subst namedCost [sincData, productData, rootFactorData, one]
+ipra_subst headCostAt [rowErrorDenominator]
+ipra_subst headCost [headCostData]
+ipra_subst cofinalClock [startingPrecision]
 
 private theorem head_cost_body_at (z R B K x i : PTm n) :
     Γ ⊢[PRAAx] inst2 headCostBody i (headCostData z R B K x) ≐ headCostAt z R B K x i := by
   let u := headCostData z R B K x
   have t1 : Γ ⊢[PRAAx] sndT u ≐ pairT R (pairT B (pairT K x)) := snd_pair _ _
-  have t2 := (congrSnd t1).eqTrans (snd_pair _ _)
-  have t3 := (congrSnd t2).eqTrans (snd_pair _ _)
+  have t2 := t1.sndE
+  have t3 := t2.sndE
   simpa [headCostBody,LeanProofs.IPRA.inst2,u] using Prf.eqCongr (Γ := Γ) (Ax := PRAAx)
     (headCostAt (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6)
     (σ := ![fstT u,fstT (sndT u),fstT (sndT (sndT u)),fstT (sndT (sndT (sndT u))),
@@ -99,10 +85,10 @@ private theorem head_cost_body_at (z R B K x i : PTm n) :
     (σ' := ![z,R,B,K,x,i]) (fun j => by
       fin_cases j
       · exact fst_pair _ _
-      · exact (congrFst t1).eqTrans (fst_pair _ _)
-      · exact (congrFst t2).eqTrans (fst_pair _ _)
-      · exact (congrFst t3).eqTrans (fst_pair _ _)
-      · exact (congrSnd t3).eqTrans (snd_pair _ _)
+      · exact t1.fstE
+      · exact t2.fstE
+      · exact t3.fstE
+      · exact t3.sndE
       · exact .eqRefl _)
 
 theorem head_cost_at (z R B K x i : PTm n) (hi : Γ ⊢[PRAAx] lt i K) :
@@ -140,21 +126,11 @@ def synchronizedValue (z R B K x p : PTm n) : PTm n :=
     (forwardProduct (GaussianSineSampleRootGuards.clock p (halfIndex R K)) (halfIndex R K) x (sineAt z R B K x p))
 def cofinalValue (z R B K x p : PTm n) : PTm n := synchronizedValue z R B K x (cofinalClock z R B K x p)
 
-@[simp] theorem subst_sineAt {l : ℕ} (σ : Fin n → PTm l) (z R B K x p : PTm n) :
-    Syn.subst σ (sineAt z R B K x p) = sineAt (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ K)
-      (Syn.subst σ x) (Syn.subst σ p) := by simp [sineAt]
-@[simp] theorem subst_forwardData {l : ℕ} (σ : Fin n → PTm l) (z R B K x p : PTm n) :
-    Syn.subst σ (forwardData z R B K x p) = forwardData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ K)
-      (Syn.subst σ x) (Syn.subst σ p) := by simp [forwardData,GaussianSineNormalizedSampleProduct.data]
-@[simp] theorem subst_rowData {l : ℕ} (σ : Fin n → PTm l) (z R B K x p : PTm n) :
-    Syn.subst σ (rowData z R B K x p) = rowData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ K)
-      (Syn.subst σ x) (Syn.subst σ p) := by simp [rowData]
-@[simp] theorem subst_synchronizedValue {l : ℕ} (σ : Fin n → PTm l) (z R B K x p : PTm n) :
-    Syn.subst σ (synchronizedValue z R B K x p) = synchronizedValue (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ K) (Syn.subst σ x) (Syn.subst σ p) := by simp [synchronizedValue,sincValue,one]
-@[simp] theorem subst_cofinalValue {l : ℕ} (σ : Fin n → PTm l) (z R B K x p : PTm n) :
-    Syn.subst σ (cofinalValue z R B K x p) = cofinalValue (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ K) (Syn.subst σ x) (Syn.subst σ p) := by simp [cofinalValue]
+ipra_subst sineAt
+ipra_subst forwardData [GaussianSineNormalizedSampleProduct.data]
+ipra_subst rowData
+ipra_subst synchronizedValue [sincValue, one]
+ipra_subst cofinalValue
 
 private theorem padding_at (z R B K x p i : PTm n) :
     Γ ⊢[PRAAx] inst2 paddedRow i (rowData z R B K x p) ≐

@@ -1,6 +1,5 @@
 import IPRADerivations.Combinatorics.Fibonacci
 import IPRADerivations.AnalyticNumberTheory.PhiUpper
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Divisibility of Fibonacci numbers and d'Ocagne's identity
@@ -20,16 +19,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.FibonacciGcd
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Fibonacci
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.Order (gcd_pos_right)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (eq_succ_pred)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,13 +38,9 @@ theorem fibS_pos_step {k : PTm n} (ih : Γ ⊢[PRAAx] fibS k ≐ succ (pred (fib
 private abbrev posF : Fm PTm 1 := fibS (var 0) ≐ succ (pred (fibS (var 0)))
 
 private theorem pos₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] posF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, PTm.subst_pred, subst_fibS, Syn.subst_var, Syn.inst_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact eq_succ_pred fibS_zero
-  · simp only [Fm.subst_eq, PTm.subst_pred, subst_fibS, Syn.subst_var, Syn.repl_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact fibS_pos_step Prf.hyp0
+  ipra_ind [subst_fibS]
+  · exact eq_succ_pred fibS_zero
+  · exact fibS_pos_step Prf.hyp0
 
 /-- `F_{k+1} ≥ 1`. -/
 theorem fibS_pos (k : PTm n) : Γ ⊢[PRAAx] fibS k ≐ succ (pred (fibS k)) := by
@@ -106,13 +97,9 @@ theorem dvd_step {q G : PTm n} (hG : Γ ⊢[PRAAx] fib G ≐ succ (pred (fib G))
 private abbrev dvdF : Fm PTm 2 := dvd (fib (succ (var 1))) (fib (var 0 * succ (var 1)))
 
 private theorem dvd₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] dvdF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_mul, subst_fib, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact dvd_congr (fib_zero.eqSymm.eqTrans (congrFib (zero_mul _).eqSymm)) (rem_zero _)
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_mul, subst_fib, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact dvd_step (fib_pos (congrSucc (pred_succ _).eqSymm)) Prf.hyp0
+  ipra_ind [subst_ap2, subst_fib]
+  · exact dvd_congr (fib_zero.eqSymm.eqTrans (congrFib (zero_mul _).eqSymm)) (rem_zero _)
+  · exact dvd_step (fib_pos (congrSucc (pred_succ _).eqSymm)) Prf.hyp0
 
 /-- `F_g ∣ F_{qg}` for `g ≥ 1`. -/
 theorem fib_dvd_mul {g : PTm n} (hg : Γ ⊢[PRAAx] g ≐ succ (pred g)) (q : PTm n) :

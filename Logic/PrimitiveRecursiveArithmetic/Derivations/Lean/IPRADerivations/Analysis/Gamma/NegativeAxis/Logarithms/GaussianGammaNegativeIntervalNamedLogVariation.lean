@@ -21,7 +21,7 @@ set_option maxHeartbeats 1900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalNamedLogVariation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
@@ -48,9 +48,6 @@ open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalSyntheticDivision (qone)
 open GaussianStirlingGammaLogarithm (gammaData gamma_regular)
 open GaussianStirlingRationalTelescopers (fraction_same)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "C" => constantF
@@ -67,9 +64,7 @@ def logCost (E N : PTm n) : PTm n := GaussianGammaNegativeIntervalLogAbsoluteRet
 def time (s E N : PTm n) : PTm n := GaussianFastValueCut.exponent (logCost E N) s
 def modulus (s E N : PTm n) : PTm n := terminalModulus (time s E N)
 
-@[simp] theorem subst_modulus {m : ℕ} (σ : Fin n → PTm m) (s E N : PTm n) :
-    Syn.subst σ (modulus s E N) = modulus (Syn.subst σ s) (Syn.subst σ E) (Syn.subst σ N) := by
-  simp [modulus,time,logCost,gammaCost,inverseCost,GaussianGammaDigammaLocationProduct.gammaCap,one,two]
+ipra_subst modulus [time, logCost, gammaCost, inverseCost, GaussianGammaDigammaLocationProduct.gammaCap, one, two]
 
 private theorem inverse_bound (a b E N : PTm n) (h : Γ ⊢[PRAAx] window a b E) :
     Γ ⊢[PRAAx] bounded (inverse a b N) (E*E) one :=

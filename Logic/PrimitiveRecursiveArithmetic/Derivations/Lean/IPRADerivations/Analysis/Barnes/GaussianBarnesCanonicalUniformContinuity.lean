@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalUniformContinuity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalLogCofinal (source)
 open GaussianBarnesCanonicalProduct (literalData)
 open GaussianBarnesCanonicalUniformCutoff (cutoff uniform_rate)
@@ -28,9 +28,6 @@ open GaussianNamedMultiplyRate (sampleBound)
 open GaussianNamedRateComposition (symmetric same_denominator)
 open GaussianRationalHorner (ofGaussian)
 open GaussianRationalMetric (distanceBounded)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "P" => GaussianBarnesCanonicalPrefactor.nameF

@@ -21,14 +21,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaEulerInverseConvergence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
 open GaussianGammaFiniteApproximantName (qF qData)
 open GaussianGammaReciprocalInverse (lambdaNumerator lambdaDenominator)
 open GaussianRationalMetric (distanceBounded)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -52,15 +49,9 @@ def coefficientNumerator (R d : PTm n) : PTm n :=
   lambdaDenominator R d*lambdaDenominator R d*GaussianGammaEulerApproximationName.rate R
 def coefficientDenominator (R a N : PTm n) : PTm n := lambdaNumerator R a*lambdaNumerator R a*N
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B a d N : PTm n) :
-    (source z R B a d N).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ d) (Syn.subst σ N) := by simp [source]
-@[simp] theorem subst_coefficientNumerator {m : ℕ} (σ : Fin n → PTm m) (R d : PTm n) :
-    Syn.subst σ (coefficientNumerator R d) = coefficientNumerator (Syn.subst σ R) (Syn.subst σ d) := by
-  simp [coefficientNumerator]
-@[simp] theorem subst_coefficientDenominator {m : ℕ} (σ : Fin n → PTm m) (R a N : PTm n) :
-    Syn.subst σ (coefficientDenominator R a N) = coefficientDenominator (Syn.subst σ R) (Syn.subst σ a) (Syn.subst σ N) := by
-  simp [coefficientDenominator]
+ipra_subst source
+ipra_subst coefficientNumerator
+ipra_subst coefficientDenominator
 
 theorem direct_source (z R B a d N : PTm n) (h : Γ ⊢[PRAAx] source z R B a d N) :
     Γ ⊢[PRAAx] GaussianGammaEulerConvergence.source z R B N := .andI h.andE₁.andE₁ h.andE₂

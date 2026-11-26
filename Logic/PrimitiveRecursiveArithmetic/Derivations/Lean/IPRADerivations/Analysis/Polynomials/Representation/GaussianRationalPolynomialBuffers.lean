@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalFiniteSum
 import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalLinearProduct
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual zero buffers, padding and addition for rational polynomials
@@ -16,7 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalPolynomialBuffers
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner
   (qzero qadd qmul canonical horner hornerF evaluate)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision
@@ -26,10 +25,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalLinearProduct
 open LeanProofs.IPRA.Foundations.MasterCertificate
   (entry sequence sequence_length sequence_decode subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr subst_length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -45,19 +40,12 @@ def leftPad (C t : PTm n) : PTm n := sequence padBody (t+length C) (padData C t)
 def addBody : PTm 2 := qadd (entry (fstT (var 1)) (var 0)) (entry (sndT (var 1)) (var 0))
 def added (C D L : PTm n) : PTm n := sequence addBody L (pairT C D)
 
-@[simp] theorem subst_zeros {m : ℕ} (σ : Fin n → PTm m) (L : PTm n) :
-    Syn.subst σ (zeros L) = zeros (Syn.subst σ L) := by simp [zeros]
-@[simp] theorem subst_appendZero {m : ℕ} (σ : Fin n → PTm m) (C : PTm n) :
-    Syn.subst σ (appendZero C) = appendZero (Syn.subst σ C) := by simp [appendZero]
-@[simp] theorem subst_padCoefficient {m : ℕ} (σ : Fin n → PTm m) (C t i : PTm n) :
-    Syn.subst σ (padCoefficient C t i) = padCoefficient (Syn.subst σ C) (Syn.subst σ t) (Syn.subst σ i) := by
-  simp [padCoefficient,Signum.sg]
-@[simp] theorem subst_padData {m : ℕ} (σ : Fin n → PTm m) (C t : PTm n) :
-    Syn.subst σ (padData C t) = padData (Syn.subst σ C) (Syn.subst σ t) := by simp [padData]
-@[simp] theorem subst_leftPad {m : ℕ} (σ : Fin n → PTm m) (C t : PTm n) :
-    Syn.subst σ (leftPad C t) = leftPad (Syn.subst σ C) (Syn.subst σ t) := by simp [leftPad]
-@[simp] theorem subst_added {m : ℕ} (σ : Fin n → PTm m) (C D L : PTm n) :
-    Syn.subst σ (added C D L) = added (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ L) := by simp [added]
+ipra_subst zeros
+ipra_subst appendZero
+ipra_subst padCoefficient [Signum.sg]
+ipra_subst padData
+ipra_subst leftPad
+ipra_subst added
 
 theorem zeros_length (L : PTm n) : Γ ⊢[PRAAx] length (zeros L) ≐ L := sequence_length _ _ _
 theorem zeros_lookup (L i : PTm n) (hi : Γ ⊢[PRAAx] lt i L) :
@@ -118,17 +106,14 @@ theorem added_lookup (C D L i : PTm n) (hi : Γ ⊢[PRAAx] lt i L) : Γ ⊢[PRAA
   (sequence_decode addBody hi).eqTrans (add_body_at C D i)
 
 def zeroLaw (L z r : PTm n) : Fm PTm n := le r L ⟶ horner (zeros L) z r ≐ qzero
-@[simp] theorem subst_zeroLaw {m : ℕ} (σ : Fin n → PTm m) (L z r : PTm n) :
-    (zeroLaw L z r).subst σ = zeroLaw (Syn.subst σ L) (Syn.subst σ z) (Syn.subst σ r) := by simp [zeroLaw]
+ipra_subst zeroLaw
 
 theorem zeros_prefix (L z r : PTm n) (hr : Γ ⊢[PRAAx] le r L) : Γ ⊢[PRAAx]
     horner (zeros L) z r ≐ qzero := by
   have all : Γ ⊢[PRAAx] .all (zeroLaw (Syn.shift L) (Syn.shift z) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_zeroLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (GaussianRationalHorner.horner_zero _ _)
-    · simp only [subst_zeroLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_zeroLaw]
+    · exact .impI (GaussianRationalHorner.horner_zero _ _)
+    · refine .impI ?_
       let Δ := le (succ (var 0)) (Syn.shift L) :: zeroLaw (Syn.shift L) (Syn.shift z) (var 0) :: Γ.map Fm.shift
       have ih : Δ ⊢[PRAAx] horner (zeros (Syn.shift L)) (Syn.shift z) (var 0) ≐ qzero :=
         .impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)
@@ -163,19 +148,15 @@ theorem append_evaluation (C z : PTm n) : Γ ⊢[PRAAx]
 def leadingLaw (C t z r : PTm n) : Fm PTm n := le r t ⟶ horner (leftPad C t) z r ≐ qzero
 def tailLaw (C t z r : PTm n) : Fm PTm n := le r (length C) ⟶
   horner (leftPad C t) z (t+r) ≐ horner C z r
-@[simp] theorem subst_leadingLaw {m : ℕ} (σ : Fin n → PTm m) (C t z r : PTm n) :
-    (leadingLaw C t z r).subst σ = leadingLaw (Syn.subst σ C) (Syn.subst σ t) (Syn.subst σ z) (Syn.subst σ r) := by simp [leadingLaw]
-@[simp] theorem subst_tailLaw {m : ℕ} (σ : Fin n → PTm m) (C t z r : PTm n) :
-    (tailLaw C t z r).subst σ = tailLaw (Syn.subst σ C) (Syn.subst σ t) (Syn.subst σ z) (Syn.subst σ r) := by simp [tailLaw]
+ipra_subst leadingLaw
+ipra_subst tailLaw
 
 theorem pad_leading_prefix (C t z r : PTm n) (hr : Γ ⊢[PRAAx] le r t) : Γ ⊢[PRAAx]
     horner (leftPad C t) z r ≐ qzero := by
   have all : Γ ⊢[PRAAx] .all (leadingLaw (Syn.shift C) (Syn.shift t) (Syn.shift z) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_leadingLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (GaussianRationalHorner.horner_zero _ _)
-    · simp only [subst_leadingLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_leadingLaw]
+    · exact .impI (GaussianRationalHorner.horner_zero _ _)
+    · refine .impI ?_
       let Δ := le (succ (var 0)) (Syn.shift t) :: leadingLaw (Syn.shift C) (Syn.shift t) (Syn.shift z) (var 0) :: Γ.map Fm.shift
       have ih : Δ ⊢[PRAAx] horner (leftPad (Syn.shift C) (Syn.shift t)) (Syn.shift z) (var 0) ≐ qzero :=
         .impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)
@@ -189,12 +170,10 @@ theorem pad_leading_prefix (C t z r : PTm n) (hr : Γ ⊢[PRAAx] le r t) : Γ �
 theorem pad_tail_prefix (C t z r : PTm n) (hr : Γ ⊢[PRAAx] le r (length C)) : Γ ⊢[PRAAx]
     horner (leftPad C t) z (t+r) ≐ horner C z r := by
   have all : Γ ⊢[PRAAx] .all (tailLaw (Syn.shift C) (Syn.shift t) (Syn.shift z) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_tailLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI ((congrAp3 hornerF (add_zero _) (.eqRefl _) (.eqRefl _)).eqTrans
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_tailLaw]
+    · exact .impI ((congrAp3 hornerF (add_zero _) (.eqRefl _) (.eqRefl _)).eqTrans
         ((pad_leading_prefix C t z t (le_refl _)).eqTrans (GaussianRationalHorner.horner_zero C z).eqSymm)).wk
-    · simp only [subst_tailLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    · refine .impI ?_
       let Δ := le (succ (var 0)) (length (Syn.shift C)) :: tailLaw (Syn.shift C) (Syn.shift t) (Syn.shift z) (var 0) :: Γ.map Fm.shift
       have ih : Δ ⊢[PRAAx] horner (leftPad (Syn.shift C) (Syn.shift t)) (Syn.shift z) (Syn.shift t+var 0) ≐ horner (Syn.shift C) (Syn.shift z) (var 0) :=
         .impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)
@@ -220,21 +199,17 @@ theorem distribute_right (a b z : PTm n) : Γ ⊢[PRAAx]
 
 def addLaw (C D L z r : PTm n) : Fm PTm n := le r L ⟶
   horner (added C D L) z r ≐ qadd (horner C z r) (horner D z r)
-@[simp] theorem subst_addLaw {m : ℕ} (σ : Fin n → PTm m) (C D L z r : PTm n) :
-    (addLaw C D L z r).subst σ = addLaw (Syn.subst σ C) (Syn.subst σ D)
-      (Syn.subst σ L) (Syn.subst σ z) (Syn.subst σ r) := by simp [addLaw]
+ipra_subst addLaw
 
 theorem added_prefix (C D L z r : PTm n) (hr : Γ ⊢[PRAAx] le r L) : Γ ⊢[PRAAx]
     horner (added C D L) z r ≐ qadd (horner C z r) (horner D z r) := by
   have all : Γ ⊢[PRAAx] .all (addLaw (Syn.shift C) (Syn.shift D) (Syn.shift L) (Syn.shift z) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_addLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI ((GaussianRationalHorner.horner_zero _ _).eqTrans
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_addLaw]
+    · exact .impI ((GaussianRationalHorner.horner_zero _ _).eqTrans
         ((qzero_add qzero qzero_canonical).eqSymm.eqTrans
           (qadd_congr (GaussianRationalHorner.horner_zero C z).eqSymm
             (GaussianRationalHorner.horner_zero D z).eqSymm)))
-    · simp only [subst_addLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    · refine .impI ?_
       let Δ := le (succ (var 0)) (Syn.shift L) :: addLaw (Syn.shift C) (Syn.shift D) (Syn.shift L) (Syn.shift z) (var 0) :: Γ.map Fm.shift
       have ih : Δ ⊢[PRAAx] horner (added (Syn.shift C) (Syn.shift D) (Syn.shift L)) (Syn.shift z) (var 0) ≐
           qadd (horner (Syn.shift C) (Syn.shift z) (var 0)) (horner (Syn.shift D) (Syn.shift z) (var 0)) :=
@@ -264,21 +239,19 @@ def output (C D L : PTm n) : PTm n :=
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (C D L : PTm n) : PTm n := ap3 outputF C D L
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (C D L : PTm n) :
-    Syn.subst σ (output C D L) = output (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ L) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (C D L : PTm n) :
-    Syn.subst σ (run C D L) = run (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ L) := by simp [run]
+ipra_subst output
+ipra_subst run
 
 theorem program_at (C D L : PTm n) : Γ ⊢[PRAAx] run C D L ≐ output C D L := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![C,D,L]
 theorem returned_zeros (C D L : PTm n) : Γ ⊢[PRAAx] fstT (run C D L) ≐ zeros L :=
-  (congrFst (program_at C D L)).eqTrans (fst_pair _ _)
+  (program_at C D L).fstE
 theorem returned_append (C D L : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run C D L)) ≐ appendZero C :=
-  (congrFst ((congrSnd (program_at C D L)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at C D L).sndE.fstE
 theorem returned_pad (C D L : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run C D L))) ≐ leftPad C L :=
-  (congrFst ((congrSnd ((congrSnd (program_at C D L)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at C D L).sndE.sndE.fstE
 theorem returned_add (C D L : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run C D L))) ≐ added C D L :=
-  (congrSnd ((congrSnd ((congrSnd (program_at C D L)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at C D L).sndE.sndE.sndE
 
 theorem actual_zero_buffer_evaluation_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2
     (evaluate (zeros (var 0)) (var 1) ≐ qzero) := closeUniv 2 (zeros_evaluation _ _)

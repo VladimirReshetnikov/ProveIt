@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingCubicFinite
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEulerPositivePowerChartCorrectedImage (fraction_sum)
 open GaussianPositiveRationalLogarithm (fraction)
@@ -31,10 +31,6 @@ open GaussianStirlingTailComparison (point_add_order point_add_upper_same point_
 open GaussianStirlingTelescope (shifted shifted_source rawSum)
 open RationalArgmin (rationalLE rationalLE_congr)
 open RationalValueBounds (upper upper_congr upper_of_order upper_order_left)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "D" => GaussianStirlingDifference.nameF
@@ -45,9 +41,7 @@ def cubicDifference (N a b : PTm n) : PTm n :=
   let Y := shifted a b N
   fraction (cube b*e*(num 3*a*a+num 3*a*e+e*e)) (num 360*cube a*cube Y)
 
-@[simp] theorem subst_cubicDifference {l : ℕ} (σ : Fin n → PTm l) (N a b : PTm n) :
-    Syn.subst σ (cubicDifference N a b) = cubicDifference (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [cubicDifference]
+ipra_subst cubicDifference
 
 theorem cubic_diff_den_positive (N a b : PTm n) (hs : Γ ⊢[PRAAx] source a b) :
     Γ ⊢[PRAAx] le one (num 360*cube a*cube (shifted a b N)) :=
@@ -158,9 +152,7 @@ def rawLower (p N a b : PTm n) : Fm PTm n :=
   upper (fstT (qadd (upperDifference a b (succ N)) (margin a b)))
     (fstT (qadd (rawSum p (succ N) a b) (cubicDifference (succ N) a b))) (succ N) (unit p)
 
-@[simp] theorem subst_rawLower {l : ℕ} (σ : Fin n → PTm l) (p N a b : PTm n) :
-    (rawLower p N a b).subst σ = rawLower (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [rawLower]
+ipra_subst rawLower
 
 private theorem raw_succ (p N a b : PTm n) (hs : Γ ⊢[PRAAx] source a b)
     (h : Γ ⊢[PRAAx] rawLower p N a b) : Γ ⊢[PRAAx] rawLower p (succ N) a b := by

@@ -13,7 +13,7 @@ set_option maxHeartbeats 550000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetStirlingVerticalStep
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetLogVerticalStep (step)
 open GaussianBinetLogGammaVerticalStep (scaled_distance step_bound dyadicCost)
 open GaussianBinetStirlingRemainder (offset)
@@ -35,9 +35,6 @@ open GaussianRationalReciprocal (bounded_product reciprocal)
 open GaussianReconstructionRoots (distance_zero_iff)
 open GaussianRightHalfPlaneLogarithm (source)
 open GaussianRightHalfPlaneLogarithmIncrementMargin (smallStep)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "R" => GaussianBinetStirlingRemainder.nameF

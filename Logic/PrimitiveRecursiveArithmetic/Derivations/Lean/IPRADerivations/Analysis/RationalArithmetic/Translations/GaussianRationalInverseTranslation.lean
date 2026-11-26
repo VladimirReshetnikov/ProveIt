@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalInverseTranslation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalNaturalScale (natScale natScale_congr)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qmul canonical)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qmul_congr)
@@ -29,9 +29,6 @@ open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrBinom)
 open LeanProofs.IPRA.Combinatorics.Vandermonde (gb)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,14 +40,9 @@ def sourceBody : PTm 2 := sourceTerm (fstT (var 1)) (fstT (sndT (var 1)))
 def sourceSum (B N z k : PTm n) : PTm n := GaussianRationalFiniteSum.sum sourceBody
   (succ (PTm.monus N k)) (data B N z k)
 
-@[simp] theorem subst_sourceTerm {m : ℕ} (σ : Fin n → PTm m) (B N z k r : PTm n) :
-    Syn.subst σ (sourceTerm B N z k r) = sourceTerm (Syn.subst σ B) (Syn.subst σ N)
-      (Syn.subst σ z) (Syn.subst σ k) (Syn.subst σ r) := by simp [sourceTerm]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (B N z k : PTm n) :
-    Syn.subst σ (data B N z k) = data (Syn.subst σ B) (Syn.subst σ N) (Syn.subst σ z) (Syn.subst σ k) := by simp [data]
-@[simp] theorem subst_sourceSum {m : ℕ} (σ : Fin n → PTm m) (B N z k : PTm n) :
-    Syn.subst σ (sourceSum B N z k) = sourceSum (Syn.subst σ B) (Syn.subst σ N)
-      (Syn.subst σ z) (Syn.subst σ k) := by simp [sourceSum]
+ipra_subst sourceTerm
+ipra_subst data
+ipra_subst sourceSum
 
 theorem source_term_congr {B B' N N' z z' k k' r r' : PTm n}
     (hB : Γ ⊢[PRAAx] B ≐ B') (hN : Γ ⊢[PRAAx] N ≐ N') (hz : Γ ⊢[PRAAx] z ≐ z')
@@ -65,8 +57,8 @@ theorem source_body_at (B N z k r : PTm n) : Γ ⊢[PRAAx]
   have tail := snd_pair (Γ := Γ) B (pairT N (pairT z k))
   have nt := (congrSnd tail).eqTrans (snd_pair N (pairT z k))
   have eqs := source_term_congr (fst_pair B (pairT N (pairT z k)))
-    ((congrFst tail).eqTrans (fst_pair _ _))
-    ((congrFst nt).eqTrans (fst_pair _ _)) ((congrSnd nt).eqTrans (snd_pair _ _)) (.eqRefl r)
+    tail.fstE
+    nt.fstE nt.sndE (.eqRefl r)
   simpa only [sourceBody,inst2,subst_sourceTerm,subst_fstT,subst_sndT,Syn.subst_var,data,
     Matrix.cons_val_zero,Matrix.cons_val_one] using eqs
 
@@ -132,14 +124,12 @@ def output (C N z k : PTm n) : PTm n := pairT (recode (entry C (PTm.monus N k)))
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (C N z k : PTm n) : PTm n := PTm.app outputF ![C,N,z,k]
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (C N z k : PTm n) :
-    Syn.subst σ (output C N z k) = output (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ z) (Syn.subst σ k) := by simp [output]
+ipra_subst output
 theorem program_at (C N z k : PTm n) : Γ ⊢[PRAAx] run C N z k ≐ output C N z k := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![C,N,z,k]
 theorem returned_original (C N z k : PTm n) : Γ ⊢[PRAAx]
     fstT (run C N z k) ≐ recode (entry C (PTm.monus N k)) :=
-  (congrFst (program_at C N z k)).eqTrans (fst_pair _ _)
+  (program_at C N z k).fstE
 theorem returned_sum (C N z k : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run C N z k)) ≐ sourceSum (GaussianRationalTranslation.translated C N z) N z k :=
   ((congrFst (congrSnd (program_at C N z k))).eqTrans (congrFst (snd_pair _ _))).eqTrans (fst_pair _ _)

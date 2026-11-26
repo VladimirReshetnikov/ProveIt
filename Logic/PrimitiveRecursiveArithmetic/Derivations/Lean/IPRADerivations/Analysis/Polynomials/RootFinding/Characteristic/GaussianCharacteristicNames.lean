@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.LinearAlgebra.Matrices.GaussianMatrixNames
 import IPRADerivations.Analysis.Polynomials.RootFinding.Characteristic.GaussianCharacteristicPrecisionShift
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Regular names for the actual characteristic coefficients
@@ -16,17 +15,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCharacteristicNames
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianMatrixNames (sample B)
 open GaussianCharacteristicPrecisionShift (clock characteristic_shifted_distance)
 open GaussianCoefficientNameBounds (unit regularCoefficient)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,13 +33,9 @@ def coefficient (a : PR 4) (N k s x : PTm n) : PTm n := entry (samplePolynomial 
 def coefficientBody (a : PR 4) : PTm 3 := coefficient a (fstT (var 2)) (var 0) (var 1) (sndT (var 2))
 def coefficientF (a : PR 4) : PR 3 := PTm.toPR (coefficientBody a)
 
-@[simp] theorem subst_samplePolynomial {l : ℕ} (σ : Fin n → PTm l) (a : PR 4) (N s x : PTm n) :
-    Syn.subst σ (samplePolynomial a N s x) =
-      samplePolynomial a (Syn.subst σ N) (Syn.subst σ s) (Syn.subst σ x) := by simp [samplePolynomial]
+ipra_subst samplePolynomial
 
-@[simp] theorem subst_coefficient {l : ℕ} (σ : Fin n → PTm l) (a : PR 4) (N k s x : PTm n) :
-    Syn.subst σ (coefficient a N k s x) =
-      coefficient a (Syn.subst σ N) (Syn.subst σ k) (Syn.subst σ s) (Syn.subst σ x) := by simp [coefficient]
+ipra_subst coefficient
 
 theorem coefficient_congr (a : PR 4) {N N' k k' s s' x x' : PTm n}
     (hN : Γ ⊢[PRAAx] N ≐ N') (hk : Γ ⊢[PRAAx] k ≐ k')

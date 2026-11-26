@@ -1,5 +1,4 @@
 import IPRADerivations.Probability.MedianCounts
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Finite Bernoulli bounds and the finite product bound of the FTA iteration
@@ -20,13 +19,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Algebra.FTABounds
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Probability.MedianCounts (subst_data)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -48,17 +43,13 @@ private abbrev binomF : Fm PTm 2 :=
   le (pw (var 1) (succ (var 0)) + succ (var 0) * pw (var 1) (var 0)) (pw (succ (var 1)) (succ (var 0)))
 
 private theorem binom₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] binomF := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, PTm.subst_add, PTm.subst_mul, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have d := natEq (pw_zero (Γ := ([] : List (Fm PTm 1))) (succ (var 0)))
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2]
+  · have d := natEq (pw_zero (Γ := ([] : List (Fm PTm 1))) (succ (var 0)))
     refine le_of_eq_add (d := zero) ?_
     ipra_lc natEq (pw_succ (Γ := ([] : List (Fm PTm 1))) (succ (var 0)) zero) -
       natEq (pw_succ (Γ := ([] : List (Fm PTm 1))) (var 0) zero) + (𝔞 (var 0 : PTm 1) + 1) * d -
       (𝔞 (var 0 : PTm 1) + 1) * natEq (pw_zero (Γ := ([] : List (Fm PTm 1))) (var 0))
-  · simp only [subst_le, PTm.subst_add, PTm.subst_mul, subst_ap2, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact binom_step Prf.hyp0
+  · exact binom_step Prf.hyp0
 
 /-- `y^(m+1) + (m+1) y^m ≤ (y+1)^(m+1)`. -/
 theorem binom_lower (y m : PTm n) :
@@ -102,15 +93,11 @@ private abbrev bernF : Fm PTm 2 :=
   le (pw (succ (var 1)) (var 0) * monus (succ (var 1)) (var 0)) (succ (var 1) * pw (var 1) (var 0))
 
 private theorem bern₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] bernF := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, PTm.subst_monus, PTm.subst_mul, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine le_congr ?_ ?_ (le_refl (succ (var 0) : PTm 1))
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2]
+  · refine le_congr ?_ ?_ (le_refl (succ (var 0) : PTm 1))
     · exact ((congrMul (pw_zero _) (monus_zero _)).eqTrans (one_mul _)).eqSymm
     · exact ((congrMul (.eqRefl _) (pw_zero _)).eqTrans ((mul_comm _ _).eqTrans (one_mul _))).eqSymm
-  · simp only [subst_le, PTm.subst_monus, PTm.subst_mul, subst_ap2, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact bern_step Prf.hyp0
+  · exact bern_step Prf.hyp0
 
 /-- `eq:rho-q`: `K^m (K ∸ m) ≤ K y^m` for `K = y + 1`, i.e. `ρ^m ≥ 1 − m/K`. -/
 theorem bernoulli_down (y m : PTm n) :
@@ -125,9 +112,8 @@ theorem prod_pt_le {D α s : PTm n} (h : Γ ⊢[PRAAx] le (s + α) D) :
   have e := eq_add_of_le h
   have m₁ : Γ ⊢[PRAAx] monus D s ≐ α + monus D (s + α) :=
     (congrMonus (e.eqTrans (by ipra_ring)) (.eqRefl s)).eqTrans (add_monus' _ _)
-  have m₁' := natEq m₁
   refine le_of_eq_add (d := α * (s + α)) ?_
-  ipra_lc 𝔞 D * m₁' + 𝔞 α * natEq e
+  ipra_lc 𝔞 D * natEq m₁ + 𝔞 α * natEq e
 
 /-- `(D + α)(D ∸ (s + α)) ≤ D (D ∸ s)`. -/
 theorem prod_pt (D α s : PTm n) : Γ ⊢[PRAAx] le ((D + α) * monus D (s + α)) (D * monus D s) := by
@@ -182,16 +168,12 @@ private abbrev prodBF : Fm PTm 3 :=
     (pw (var 1) (var 0) * var 1)
 
 private theorem prodB₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] prodBF a := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, PTm.subst_monus, PTm.subst_mul, subst_ap2, subst_ap2, subst_pairT, Syn.subst_var,
-      Syn.inst_zero, Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine le_congr ?_ ?_ (le_refl (var 0 : PTm 2))
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2, subst_pairT]
+  · refine le_congr ?_ ?_ (le_refl (var 0 : PTm 2))
     · exact ((congrMul (prod_zero _ _) ((congrMonus (.eqRefl _) (sum_zero _ _)).eqTrans (monus_zero _))).eqTrans
         (one_mul _)).eqSymm
     · exact ((congrMul (pw_zero _) (.eqRefl _)).eqTrans (one_mul _)).eqSymm
-  · simp only [subst_le, PTm.subst_monus, PTm.subst_mul, subst_ap2, subst_ap2, subst_pairT, Syn.subst_var,
-      Syn.repl_zero, repl_one, repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact prod_bound_step a Prf.hyp0
+  · exact prod_bound_step a Prf.hyp0
 
 /-- `eq:finite-product`: `∏_{i<m} (D + a_i) · (D ∸ ∑_{i<m} a_i) ≤ D^m D`, i.e.
 `∏ (1 + x_i) ≤ 1/(1 − S)` for `x_i = a_i/D`, `S < 1`. -/

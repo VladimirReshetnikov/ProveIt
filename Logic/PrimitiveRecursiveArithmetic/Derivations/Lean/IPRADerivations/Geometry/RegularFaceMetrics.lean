@@ -1,6 +1,5 @@
 import IPRADerivations.Core.PolynomialImplications
 import IPRADerivations.Core.IntCancel
-import IPRADerivations.Core.Order
 
 /-!
 # The regular face metrics and the spherical hinge (`platonic_solids_ipra`)
@@ -50,7 +49,7 @@ monotonicity of the hinge in `γ`, and the arm lemma.
 
 namespace LeanProofs.IPRA.Geometry.RegularFaceMetrics
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ZExp
 
 /-! ## The rotation `c + i s` -/
@@ -188,8 +187,6 @@ end Hinge
 
 section Domain
 
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

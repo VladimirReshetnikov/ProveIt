@@ -13,14 +13,11 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNamedHalfPlanePoleFreeQuotient
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm)
 open GaussianNamedInverseRate (independentRate)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -48,17 +45,9 @@ def source (f K : PR 2) (p x y A R E S D a : PTm n) : Fm PTm n :=
   halfSource f K p x y A a ⋏
     (poleSource f x R E ⋏ poleSource (incrementF f K) (incrementData x y) S D)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (f K : PR 2) (x y R E S D a : PTm n) :
-    Syn.subst σ (data f K x y R E S D a) =
-      data f K (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ R) (Syn.subst σ E)
-        (Syn.subst σ S) (Syn.subst σ D) (Syn.subst σ a) := by
-  simp [data]
+ipra_subst data
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (f K : PR 2) (p x y A R E S D a : PTm n) :
-    (source f K p x y A R E S D a).subst σ =
-      source f K (Syn.subst σ p) (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ A)
-        (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ S) (Syn.subst σ D) (Syn.subst σ a) := by
-  simp [source,GaussianNamedGammaEulerFirstDerivative.source]
+ipra_subst source [GaussianNamedGammaEulerFirstDerivative.source]
 
 theorem name_regular (f K : PR 2) (x y R E S D a : PTm n)
     (hK : Γ ⊢[PRAAx] GaussianNameReciprocal.input K a y)

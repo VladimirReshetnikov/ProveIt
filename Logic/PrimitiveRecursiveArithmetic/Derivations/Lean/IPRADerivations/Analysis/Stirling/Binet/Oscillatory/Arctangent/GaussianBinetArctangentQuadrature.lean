@@ -15,7 +15,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetArctangentQuadrature
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetArctangentResolvent (value)
 open GaussianBinetLaplaceStrip (tagNumerator)
 open GaussianCompactRiemannName (inside nameData evaluatorName localBody sampledModulus)
@@ -26,9 +26,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRightHalfPlaneLogarithm (source)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -41,16 +38,11 @@ abbrev nameF : PR 2 := GaussianCompactRiemannName.nameF evaluatorF
 def data (X Y D sign A B : PTm n) : PTm n :=
   GaussianCompactRiemannName.data (B+zero) A B (D*D) A (fixedData X Y D sign)
 
-@[simp] theorem subst_fixedData {m : ℕ} (σ : Fin n → PTm m) (X Y D sign : PTm n) :
-    Syn.subst σ (fixedData X Y D sign) =
-      fixedData (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign) := by simp [fixedData]
+ipra_subst fixedData
 
-@[simp] theorem subst_evaluatorTerm {m : ℕ} (σ : Fin n → PTm m) (t x : PTm n) :
-    Syn.subst σ (evaluatorTerm t x) = evaluatorTerm (Syn.subst σ t) (Syn.subst σ x) := by simp [evaluatorTerm]
+ipra_subst evaluatorTerm
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (X Y D sign A B : PTm n) :
-    Syn.subst σ (data X Y D sign A B) = data (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D)
-      (Syn.subst σ sign) (Syn.subst σ A) (Syn.subst σ B) := by simp [data]
+ipra_subst data
 
 theorem evaluator_at (p t X Y D sign : PTm n) : Γ ⊢[PRAAx]
     ap3 evaluatorF p t (fixedData X Y D sign) ≐ value X Y D sign (tagNumerator t) (sndT t) := by

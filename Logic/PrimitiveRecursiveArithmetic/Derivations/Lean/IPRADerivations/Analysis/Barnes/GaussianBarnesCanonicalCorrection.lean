@@ -14,7 +14,7 @@ set_option maxHeartbeats 550000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalCorrection
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmName (baseNumerator baseDenominator)
 open ComplexLogarithmRemainder (mul scale)
 open GaussianBarnesCanonicalCubicName (base)
@@ -23,8 +23,6 @@ open GaussianRationalHorner (ofGaussian ofGaussian_represents qmul qadd qzero re
 open GaussianRationalNaturalScale (natScale natScale_as_product natScale_represents natScale_canonical)
 open GaussianRationalMetric (qnegative qnegative_represents qnegative_canonical qsub qsub_canonical qsub_represents)
 open GaussianRationalSyntheticDivision (rescale_to qadd_congr)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

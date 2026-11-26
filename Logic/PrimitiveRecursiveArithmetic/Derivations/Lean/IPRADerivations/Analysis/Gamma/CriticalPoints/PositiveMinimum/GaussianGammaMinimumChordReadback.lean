@@ -17,7 +17,7 @@ set_option maxHeartbeats 2000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaMinimumChordReadback
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianGammaMinimumChord (centerData center_source lowerData margin scaledF strong_chord weightedData)
@@ -37,10 +37,6 @@ open GaussianStirlingGammaLogarithm (logGammaF logGammaData log_gamma_regular)
 open GaussianStirlingGlobalBounds (small_join)
 open GaussianStirlingTailComparison (point_add_upper_same point_order_refl)
 open RationalValueBounds (upper upper_congr upper_of_order upper_of_radius)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "C" => constantF
@@ -50,9 +46,7 @@ local notation "lg" => logGammaData
 def budget (a c b W : PTm n) : PTm n :=
   cost G W (centerData a c b W)+cost G (pred W) (lg a b)+num 8
 
-@[simp] theorem subst_budget {m : ℕ} (σ : Fin n → PTm m) (a c b W : PTm n) :
-    Syn.subst σ (budget a c b W) = budget (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ b) (Syn.subst σ W) := by
-  simp [budget]
+ipra_subst budget
 
 theorem log_sample_canonical (p a b : PTm n) : Γ ⊢[PRAAx] canonical (ap2 G p (lg a b)) := by
   unfold logGammaF logGammaData

@@ -16,7 +16,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetSineDampedPanels
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetArctangentResolvent (pole)
 open GaussianBinetExponentialIntegralGrid (row exponent)
 open GaussianBinetExponentialPanel (sample)
@@ -37,9 +37,6 @@ open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalReciprocal (reciprocal bound_congr bounded_product)
 open GaussianRationalSyntheticDivision (qmul_congr qsub_congr)
 open GaussianReciprocalHorner (qmul_associative qmul_one_right)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -53,8 +50,7 @@ def shiftedPanel (p X Y D sign A B a b R U T : PTm n) : PTm n :=
 def targetPanel (p X Y D sign A B a b R U T : PTm n) : PTm n :=
   qmul (row p (qnegative (argument X Y D sign)) (R*T) a b) (quotient p a b (U*T) A B)
 
-@[simp] theorem subst_multiplier {m : ℕ} (σ : Fin n → PTm m) (A B : PTm n) :
-    Syn.subst σ (multiplier A B) = multiplier (Syn.subst σ A) (Syn.subst σ B) := by simp [multiplier,one,two]
+ipra_subst multiplier [one, two]
 
 private theorem sample_cast (p C C' x y : PTm n) (hC : Γ ⊢[PRAAx] C ≐ C') (e : Γ ⊢[PRAAx] x ≐ y) :
     Γ ⊢[PRAAx] sample p x C ≐ sample p y C' :=

@@ -17,7 +17,7 @@ set_option maxHeartbeats 1100000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalHeadDerivativeContinuity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalBaseProductShift (powerProduct)
 open GaussianBarnesCanonicalHead (source)
 open GaussianBarnesCanonicalHeadDerivative (correctionDerivativeCap correction_derivative_samples)
@@ -33,9 +33,6 @@ open GaussianNamedMultiplyRate (sampleBound)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRationalHorner (ofGaussian positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "F" => constantF

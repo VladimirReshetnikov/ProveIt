@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerDerivativeCompactSlopeBinding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerDerivativeCommonInterval (compactData improperData)
 open GaussianEulerLogarithmicImproperName (data)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
@@ -25,10 +25,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "C" => GaussianEulerLogarithmicIntervalName.nameF
@@ -39,13 +35,9 @@ def source (u j z R B A h D N i : PTm n) : Fm PTm n :=
 def gain (s u : PTm n) : PTm n := two*unit u+num 5*unit (s+num 6)
 def denominator (s u : PTm n) : PTm n := unit (s+num 6)*unit u
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (u j z R B A h D N i : PTm n) :
-    (source u j z R B A h D N i).subst σ = source (Syn.subst σ u) (Syn.subst σ j) (Syn.subst σ z)
-      (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ h) (Syn.subst σ D) (Syn.subst σ N) (Syn.subst σ i) := by simp [source]
-@[simp] theorem subst_gain {m : ℕ} (σ : Fin n → PTm m) (s u : PTm n) :
-    Syn.subst σ (gain s u) = gain (Syn.subst σ s) (Syn.subst σ u) := by simp [gain]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (s u : PTm n) :
-    Syn.subst σ (denominator s u) = denominator (Syn.subst σ s) (Syn.subst σ u) := by simp [denominator]
+ipra_subst source
+ipra_subst gain
+ipra_subst denominator
 
 theorem denominator_positive (s u : PTm n) : Γ ⊢[PRAAx] le one (denominator s u) :=
   positive_product _ _ (unit_positive _) (unit_positive _)

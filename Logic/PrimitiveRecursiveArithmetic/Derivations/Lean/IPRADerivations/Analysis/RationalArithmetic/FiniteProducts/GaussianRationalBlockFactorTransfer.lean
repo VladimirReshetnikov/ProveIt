@@ -4,7 +4,6 @@ import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerN
 import IPRADerivations.Analysis.Polynomials.Division.GaussianPolynomialRowQuotient
 import IPRADerivations.Analysis.RationalArithmetic.Translations.GaussianRationalTranslationStages
 import IPRADerivations.Foundations.BoundedSyntaxInduction
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual inner fixed-width factor transfer
@@ -23,7 +22,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalBlockFactorTransfer
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero qmul canonical evaluate)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qsub)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qone qmul_congr canonicalCoefficients)
@@ -36,10 +35,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalGridCoefficientEquality (gridEqual
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
 open LeanProofs.IPRA.Foundations.BoundedSyntax (BFm formula)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -63,29 +58,14 @@ def input (C Q J T D E t x : PTm n) : Fm PTm n := (length C ≐ succ T) ⋏
   ((length Q ≐ succ D) ⋏ ((length J ≐ succ E) ⋏
     (neg (evaluate C x ≐ qzero) ⋏ gridEqual (baseLeft C Q T D E t) (baseRight J T D E t x) (width T D E t))))
 
-@[simp] theorem subst_width {l : ℕ} (σ : Fin n → PTm l) (T D E t : PTm n) :
-    Syn.subst σ (width T D E t) = width (Syn.subst σ T) (Syn.subst σ D) (Syn.subst σ E) (Syn.subst σ t) := by simp [width]
-@[simp] theorem subst_remaining {l : ℕ} (σ : Fin n → PTm l) (t r : PTm n) :
-    Syn.subst σ (remaining t r) = remaining (Syn.subst σ t) (Syn.subst σ r) := by simp [remaining]
-@[simp] theorem subst_baseLeft {l : ℕ} (σ : Fin n → PTm l) (C Q T D E t : PTm n) :
-    Syn.subst σ (baseLeft C Q T D E t) = baseLeft (Syn.subst σ C) (Syn.subst σ Q)
-      (Syn.subst σ T) (Syn.subst σ D) (Syn.subst σ E) (Syn.subst σ t) := by simp [baseLeft]
-@[simp] theorem subst_baseRight {l : ℕ} (σ : Fin n → PTm l) (J T D E t x : PTm n) :
-    Syn.subst σ (baseRight J T D E t x) = baseRight (Syn.subst σ J) (Syn.subst σ T)
-      (Syn.subst σ D) (Syn.subst σ E) (Syn.subst σ t) (Syn.subst σ x) := by simp [baseRight]
-@[simp] theorem subst_leftBuffer {l : ℕ} (σ : Fin n → PTm l) (C Q T D E t x r : PTm n) :
-    Syn.subst σ (leftBuffer C Q T D E t x r) = leftBuffer (Syn.subst σ C) (Syn.subst σ Q)
-      (Syn.subst σ T) (Syn.subst σ D) (Syn.subst σ E) (Syn.subst σ t) (Syn.subst σ x) (Syn.subst σ r) := by simp [leftBuffer]
-@[simp] theorem subst_rightBuffer {l : ℕ} (σ : Fin n → PTm l) (J T D E t x r : PTm n) :
-    Syn.subst σ (rightBuffer J T D E t x r) = rightBuffer (Syn.subst σ J) (Syn.subst σ T)
-      (Syn.subst σ D) (Syn.subst σ E) (Syn.subst σ t) (Syn.subst σ x) (Syn.subst σ r) := by simp [rightBuffer]
-@[simp] theorem subst_relation {l : ℕ} (σ : Fin n → PTm l) (C Q J T D E t x r : PTm n) :
-    (relation C Q J T D E t x r).subst σ = relation (Syn.subst σ C) (Syn.subst σ Q) (Syn.subst σ J)
-      (Syn.subst σ T) (Syn.subst σ D) (Syn.subst σ E) (Syn.subst σ t) (Syn.subst σ x) (Syn.subst σ r) := by
-  simp [relation,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_input {l : ℕ} (σ : Fin n → PTm l) (C Q J T D E t x : PTm n) :
-    (input C Q J T D E t x).subst σ = input (Syn.subst σ C) (Syn.subst σ Q) (Syn.subst σ J)
-      (Syn.subst σ T) (Syn.subst σ D) (Syn.subst σ E) (Syn.subst σ t) (Syn.subst σ x) := by simp [input]
+ipra_subst width
+ipra_subst remaining
+ipra_subst baseLeft
+ipra_subst baseRight
+ipra_subst leftBuffer
+ipra_subst rightBuffer
+ipra_subst relation [Syn.subst_shift, Syn.shift_subst]
+ipra_subst input
 
 theorem product_congr {A A' B B' N N' M M' : PTm n} (hA : Γ ⊢[PRAAx] A ≐ A')
     (hB : Γ ⊢[PRAAx] B ≐ B') (hN : Γ ⊢[PRAAx] N ≐ N') (hM : Γ ⊢[PRAAx] M ≐ M') : Γ ⊢[PRAAx]
@@ -290,9 +270,7 @@ def stateSyntax (C Q J T D E t x r : PTm n) : BFm n := .imp (.le r t)
       (Syn.shift t) (Syn.shift x) (Syn.shift r)) (var 0))
     (entry (rightBuffer (Syn.shift J) (Syn.shift T) (Syn.shift D) (Syn.shift E)
       (Syn.shift t) (Syn.shift x) (Syn.shift r)) (var 0))))
-@[simp] theorem subst_stateLaw {l : ℕ} (σ : Fin n → PTm l) (C Q J T D E t x r : PTm n) :
-    (stateLaw C Q J T D E t x r).subst σ = stateLaw (Syn.subst σ C) (Syn.subst σ Q) (Syn.subst σ J)
-      (Syn.subst σ T) (Syn.subst σ D) (Syn.subst σ E) (Syn.subst σ t) (Syn.subst σ x) (Syn.subst σ r) := by simp [stateLaw]
+ipra_subst stateLaw
 theorem state_formula (C Q J T D E t x r : PTm n) : formula (stateSyntax C Q J T D E t x r) = stateLaw C Q J T D E t x r := by
   simp [stateSyntax,formula,stateLaw,relation,BFm.le,le,Syn.shift]
 
@@ -351,16 +329,8 @@ def outputF : PR 9 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4) (
 def run (C Q J T D E t x r : PTm n) : PTm n := app outputF ![C,Q,J,T,D,E,t,x,r]
 def fields (p : PTm n) (i : Fin 5) : PTm n := ![fstT p,fstT (sndT p),fstT (sndT (sndT p)),
   fstT (sndT (sndT (sndT p))),sndT (sndT (sndT (sndT p)))] i
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (C Q J T D E t x r : PTm n) :
-    Syn.subst σ (output C Q J T D E t x r) = output (Syn.subst σ C) (Syn.subst σ Q) (Syn.subst σ J)
-      (Syn.subst σ T) (Syn.subst σ D) (Syn.subst σ E) (Syn.subst σ t) (Syn.subst σ x) (Syn.subst σ r) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (C Q J T D E t x r : PTm n) :
-    Syn.subst σ (run C Q J T D E t x r) = run (Syn.subst σ C) (Syn.subst σ Q) (Syn.subst σ J)
-      (Syn.subst σ T) (Syn.subst σ D) (Syn.subst σ E) (Syn.subst σ t) (Syn.subst σ x) (Syn.subst σ r) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 @[simp] theorem subst_fields {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) (i : Fin 5) :
     Syn.subst σ (fields p i) = fields (Syn.subst σ p) i := by fin_cases i <;> simp [fields]
 theorem program_at (C Q J T D E t x r : PTm n) : Γ ⊢[PRAAx] run C Q J T D E t x r ≐ output C Q J T D E t x r := by
@@ -370,15 +340,15 @@ theorem returned_fields (C Q J T D E t x r : PTm n) (i : Fin 5) : Γ ⊢[PRAAx]
     fields (run C Q J T D E t x r) i ≐ ![block Q D x r,leftBuffer C Q T D E t x r,
       rightBuffer J T D E t x r,width T D E t,remaining t r] i := by
   have e0 := program_at (Γ := Γ) C Q J T D E t x r
-  have e1 := (congrSnd e0).eqTrans (snd_pair _ _)
-  have e2 := (congrSnd e1).eqTrans (snd_pair _ _)
-  have e3 := (congrSnd e2).eqTrans (snd_pair _ _)
+  have e1 := e0.sndE
+  have e2 := e1.sndE
+  have e3 := e2.sndE
   fin_cases i
-  · exact (congrFst e0).eqTrans (fst_pair _ _)
-  · exact (congrFst e1).eqTrans (fst_pair _ _)
-  · exact (congrFst e2).eqTrans (fst_pair _ _)
-  · exact (congrFst e3).eqTrans (fst_pair _ _)
-  · exact (congrSnd e3).eqTrans (snd_pair _ _)
+  · exact e0.fstE
+  · exact e1.fstE
+  · exact e2.fstE
+  · exact e3.fstE
+  · exact e3.sndE
 theorem returned_transfer (C Q J T D E t x r : PTm n) (h : Γ ⊢[PRAAx] input C Q J T D E t x)
     (hr : Γ ⊢[PRAAx] le r t) : Γ ⊢[PRAAx]
     coefficientsEqual (fields (run C Q J T D E t x r) 1) (fields (run C Q J T D E t x r) 2) (width T D E t) :=

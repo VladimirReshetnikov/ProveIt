@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianScalarSincTaylor
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianArctangentCayleyValues (imaginaryPoint)
 open GaussianNamedSineFromExponential (multiplier)
 open GaussianRationalPolynomialExponential (inverseFactorial scalarSum)
@@ -27,9 +27,6 @@ open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalReciprocal (qone power powerF power_zero power_succ)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qsub_congr qone_canonical)
 open GaussianReciprocalHorner (qmul_associative qadd_commutative qsub_add_cancel)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -39,17 +36,11 @@ def sincBody : PTm 2 := sincTerm (var 1) (var 0)
 def sincTaylor (z K : PTm n) : PTm n := sum sincBody K z
 def sincTail (z K : PTm n) : PTm n := sum (shiftBody sincBody) K z
 
-@[simp] theorem subst_sincTerm {m : ℕ} (σ : Fin n → PTm m) (z j : PTm n) :
-    Syn.subst σ (sincTerm z j) = sincTerm (Syn.subst σ z) (Syn.subst σ j) := by
-  simp [sincTerm]
+ipra_subst sincTerm
 
-@[simp] theorem subst_sincTaylor {m : ℕ} (σ : Fin n → PTm m) (z K : PTm n) :
-    Syn.subst σ (sincTaylor z K) = sincTaylor (Syn.subst σ z) (Syn.subst σ K) := by
-  simp [sincTaylor]
+ipra_subst sincTaylor
 
-@[simp] theorem subst_sincTail {m : ℕ} (σ : Fin n → PTm m) (z K : PTm n) :
-    Syn.subst σ (sincTail z K) = sincTail (Syn.subst σ z) (Syn.subst σ K) := by
-  simp [sincTail]
+ipra_subst sincTail
 
 theorem sinc_body_at (z j : PTm n) : inst2 sincBody j z = sincTerm z j := by
   simp [sincBody,inst2]

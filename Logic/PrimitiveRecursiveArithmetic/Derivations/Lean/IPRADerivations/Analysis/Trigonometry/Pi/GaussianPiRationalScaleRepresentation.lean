@@ -11,7 +11,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPiRationalScaleRepresentation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianNameConjugation (equal_samples_cross)
 open GaussianNameEquivalence (crossEquivalent)
@@ -19,8 +19,6 @@ open GaussianPiRationalScale (nameF data point point_negate regular)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (qnegative)
 open GaussianRationalSyntheticDivision (qmul_congr)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

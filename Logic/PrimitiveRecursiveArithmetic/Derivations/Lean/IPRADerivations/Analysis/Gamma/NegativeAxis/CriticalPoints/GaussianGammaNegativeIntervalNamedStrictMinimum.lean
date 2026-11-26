@@ -14,7 +14,7 @@ set_option maxHeartbeats 1500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalNamedStrictMinimum
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianGammaNegativeCriticalEndpoints (mesh)
 open GaussianGammaNegativeCriticalLocation (fractionLocationF)
@@ -31,10 +31,6 @@ open GaussianRationalHorner (qzero)
 open GaussianStirlingMultiplicativeBoundsCaps (strict_fractions)
 open GaussianStirlingMultiplicativeBoundsLog (constant_order fractions_order)
 open GaussianStirlingMultiplicativeBoundsStrictOrder (strictOrder strict_transport)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

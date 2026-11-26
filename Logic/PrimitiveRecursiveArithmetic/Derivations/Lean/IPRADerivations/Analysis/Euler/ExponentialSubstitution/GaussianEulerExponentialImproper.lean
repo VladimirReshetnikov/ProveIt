@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerExponentialImproper
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegralGammaIdentification (source)
 open GaussianGammaIntegralCutoffs (etaDen height top tailCoefficient)
 open GaussianGammaCompactQuadratureBoundary (width)
@@ -26,9 +26,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianNameEquivalence (crossEquivalent cross_symm cross_trans cross_at)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,9 +35,7 @@ def compactData (k z R B A : PTm n) : PTm n :=
 def sample (p z R B A : PTm n) : PTm n :=
   ap2 GaussianEulerExponentialLogCompact.nameF (succ (succ p)) (compactData (succ p) z R B A)
 
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (p z R B A : PTm n) :
-    Syn.subst σ (sample p z R B A) = sample (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) := by
-  simp [sample,compactData,width,etaDen,top,height,tailCoefficient]
+ipra_subst sample [compactData, width, etaDen, top, height, tailCoefficient]
 
 private def fields (p x : PTm n) : Fin 5 → PTm n :=
   ![p,fstT x,fstT (sndT x),fstT (sndT (sndT x)),sndT (sndT (sndT x))]

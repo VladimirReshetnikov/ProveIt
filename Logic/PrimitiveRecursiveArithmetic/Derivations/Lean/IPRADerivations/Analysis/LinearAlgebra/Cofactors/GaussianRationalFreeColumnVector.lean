@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Polynomials.Elimination.RowReduction.GaussianRationalRowElimination
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # An actual finite vector from one free column
@@ -16,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalFreeColumnVector
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantTerms (cell)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero qadd qmul canonical canonical_congr)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qnegative qnegative_canonical)
@@ -29,10 +28,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalRowElimination (rowDot dotBody dot
 open LeanProofs.IPRA.Foundations.GuardedTotalization (sel sel_one sel_zero)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open LeanProofs.IPRA.PTm (monus)
-open ConciseIPRA.PTm (zero succ app)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -46,20 +41,12 @@ def freeInput (H N s : PTm n) : Fm PTm n := lt s N ⋏ (entry H s ≐ zero)
 def nonzeroVector (v N : PTm n) : Fm PTm n := .ex
   (lt (var 0) (Syn.shift N) ⋏ neg (recode (entry (Syn.shift v) (var 0)) ≐ qzero))
 
-@[simp] theorem subst_pivotRow {l : ℕ} (σ : Fin n → PTm l) (H j : PTm n) :
-    Syn.subst σ (pivotRow H j) = pivotRow (Syn.subst σ H) (Syn.subst σ j) := by simp [pivotRow]
-@[simp] theorem subst_value {l : ℕ} (σ : Fin n → PTm l) (E H s j : PTm n) :
-    Syn.subst σ (value E H s j) = value (Syn.subst σ E) (Syn.subst σ H) (Syn.subst σ s) (Syn.subst σ j) := by
-  simp [value,sel]
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (E H s : PTm n) :
-    Syn.subst σ (data E H s) = data (Syn.subst σ E) (Syn.subst σ H) (Syn.subst σ s) := by simp [data]
-@[simp] theorem subst_vector {l : ℕ} (σ : Fin n → PTm l) (E H N s : PTm n) :
-    Syn.subst σ (vector E H N s) = vector (Syn.subst σ E) (Syn.subst σ H) (Syn.subst σ N) (Syn.subst σ s) := by simp [vector]
-@[simp] theorem subst_freeInput {l : ℕ} (σ : Fin n → PTm l) (H N s : PTm n) :
-    (freeInput H N s).subst σ = freeInput (Syn.subst σ H) (Syn.subst σ N) (Syn.subst σ s) := by simp [freeInput]
-@[simp] theorem subst_nonzeroVector {l : ℕ} (σ : Fin n → PTm l) (v N : PTm n) :
-    (nonzeroVector v N).subst σ = nonzeroVector (Syn.subst σ v) (Syn.subst σ N) := by
-  simp [nonzeroVector,Syn.subst_shift,Syn.shift_subst]
+ipra_subst pivotRow
+ipra_subst value [sel]
+ipra_subst data
+ipra_subst vector
+ipra_subst freeInput
+ipra_subst nonzeroVector [Syn.subst_shift, Syn.shift_subst]
 
 theorem value_congr {E E' H H' s s' j j' : PTm n} (hE : Γ ⊢[PRAAx] E ≐ E')
     (hH : Γ ⊢[PRAAx] H ≐ H') (hs : Γ ⊢[PRAAx] s ≐ s') (hj : Γ ⊢[PRAAx] j ≐ j') :
@@ -68,8 +55,8 @@ theorem value_congr {E E' H H' s s' j j' : PTm n} (hE : Γ ⊢[PRAAx] E ≐ E')
 
 theorem body_at (E H s j : PTm n) : Γ ⊢[PRAAx] inst2 body j (data E H s) ≐ value E H s j := by
   simp only [body,inst2,subst_value,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
-  exact value_congr (fst_pair _ _) ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
-    ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)) (.eqRefl _)
+  exact value_congr (fst_pair _ _) (snd_pair _ _).fstE
+    (snd_pair _ _).sndE (.eqRefl _)
 theorem vector_length (E H N s : PTm n) : Γ ⊢[PRAAx] length (vector E H N s) ≐ N := sequence_length _ _ _
 theorem vector_lookup (E H N s j : PTm n) (hj : Γ ⊢[PRAAx] lt j N) :
     Γ ⊢[PRAAx] entry (vector E H N s) j ≐ value E H s j :=
@@ -124,10 +111,7 @@ def pivotProfile (E H N r p : PTm n) : Fm PTm n :=
   (lt p N ⋏ (entry H p ≐ succ r)) ⋏ ((recode (cell E r p) ≐ qone) ⋏ .all
     (lt (var 0) (Syn.shift N) ⟶ neg (var 0 ≐ Syn.shift p) ⟶
       neg (entry (Syn.shift H) (var 0) ≐ zero) ⟶ recode (cell (Syn.shift E) (Syn.shift r) (var 0)) ≐ qzero))
-@[simp] theorem subst_pivotProfile {l : ℕ} (σ : Fin n → PTm l) (E H N r p : PTm n) :
-    (pivotProfile E H N r p).subst σ = pivotProfile (Syn.subst σ E) (Syn.subst σ H)
-      (Syn.subst σ N) (Syn.subst σ r) (Syn.subst σ p) := by
-  simp [pivotProfile,Syn.subst_shift,Syn.shift_subst]
+ipra_subst pivotProfile [Syn.subst_shift, Syn.shift_subst]
 
 theorem profile_off (E H N r p j : PTm n) (h : Γ ⊢[PRAAx] pivotProfile E H N r p)
     (hj : Γ ⊢[PRAAx] lt j N) (hne : Γ ⊢[PRAAx] neg (j ≐ p))
@@ -146,20 +130,19 @@ def twoData (s p a : PTm n) : PTm n := pairT s (pairT p a)
 def leftBody : PTm 2 := spike (fstT (var 1)) (recode (sndT (sndT (var 1)))) (var 0)
 def rightBody : PTm 2 := spike (fstT (sndT (var 1))) (qnegative (sndT (sndT (var 1)))) (var 0)
 def twoBody : PTm 2 := GaussianRationalFiniteSum.addBody leftBody rightBody
-@[simp] theorem subst_twoData {l : ℕ} (σ : Fin n → PTm l) (s p a : PTm n) :
-    Syn.subst σ (twoData s p a) = twoData (Syn.subst σ s) (Syn.subst σ p) (Syn.subst σ a) := by simp [twoData]
+ipra_subst twoData
 theorem left_body_at (s p a j : PTm n) : Γ ⊢[PRAAx]
     inst2 leftBody j (twoData s p a) ≐ spike s (recode a) j := by
   simp only [leftBody,inst2,GaussianRationalMonicReconstruction.subst_spike,
     GaussianTranslatedNonconstant.subst_recode,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
   exact GaussianRationalMonicReconstruction.spike_congr (fst_pair _ _)
-    (recode_congr ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))) (.eqRefl _)
+    (recode_congr (snd_pair _ _).sndE) (.eqRefl _)
 theorem right_body_at (s p a j : PTm n) : Γ ⊢[PRAAx]
     inst2 rightBody j (twoData s p a) ≐ spike p (qnegative a) j := by
   simp only [rightBody,inst2,GaussianRationalMonicReconstruction.subst_spike,
     GaussianRationalMetric.subst_qnegative,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
-  exact GaussianRationalMonicReconstruction.spike_congr ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
-    (GaussianInverseBinomialRows.negative_congr ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))) (.eqRefl _)
+  exact GaussianRationalMonicReconstruction.spike_congr (snd_pair _ _).fstE
+    (GaussianInverseBinomialRows.negative_congr (snd_pair _ _).sndE) (.eqRefl _)
 theorem two_body_at (s p a j : PTm n) : Γ ⊢[PRAAx]
     inst2 twoBody j (twoData s p a) ≐ qadd (spike s (recode a) j) (spike p (qnegative a) j) := by
   simpa only [twoBody,GaussianRationalFiniteSum.inst2_addBody] using
@@ -263,9 +246,7 @@ theorem pivot_row_dot_zero (E H N s r p : PTm n) (hF : Γ ⊢[PRAAx] freeInput H
 /-- Field zero is tested after genuine canonical recoding, not by raw-code equality. -/
 def fieldZeroRow (E N r : PTm n) : Fm PTm n := .all
   (lt (var 0) (Syn.shift N) ⟶ recode (cell (Syn.shift E) (Syn.shift r) (var 0)) ≐ qzero)
-@[simp] theorem subst_fieldZeroRow {l : ℕ} (σ : Fin n → PTm l) (E N r : PTm n) :
-    (fieldZeroRow E N r).subst σ = fieldZeroRow (Syn.subst σ E) (Syn.subst σ N) (Syn.subst σ r) := by
-  simp [fieldZeroRow,Syn.subst_shift,Syn.shift_subst]
+ipra_subst fieldZeroRow [Syn.subst_shift, Syn.shift_subst]
 theorem field_zero_at (E N r j : PTm n) (h : Γ ⊢[PRAAx] fieldZeroRow E N r)
     (hj : Γ ⊢[PRAAx] lt j N) : Γ ⊢[PRAAx] recode (cell E r j) ≐ qzero := by
   have rule : Γ ⊢[PRAAx] lt j N ⟶ recode (cell E r j) ≐ qzero := by simpa [fieldZeroRow] using h.allE j
@@ -284,12 +265,7 @@ theorem field_zero_row_dot (E N v r : PTm n) (h : Γ ⊢[PRAAx] fieldZeroRow E N
 
 def outputF : PR 4 := PTm.toPR (vector (var 0) (var 1) (var 2) (var 3))
 def run (E H N s : PTm n) : PTm n := app outputF ![E,H,N,s]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (E H N s : PTm n) :
-    Syn.subst σ (run E H N s) = run (Syn.subst σ E) (Syn.subst σ H) (Syn.subst σ N) (Syn.subst σ s) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext j
-  fin_cases j <;> rfl
+ipra_subst run
 theorem program_at (E H N s : PTm n) : Γ ⊢[PRAAx] run E H N s ≐ vector E H N s := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (vector (var 0) (var 1) (var 2) (var 3) : PTm 4) ![E,H,N,s]
 theorem returned_length (E H N s : PTm n) : Γ ⊢[PRAAx] length (run E H N s) ≐ N :=

@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.SpecialPolynomials.Chebyshev
 import IPRADerivations.Analysis.RationalArithmetic.Powers.Pochhammer
 import IPRADerivations.AnalyticNumberTheory.Mobius
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The terminating hypergeometric series
@@ -23,17 +22,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.TerminatingSeries
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Analysis.Chebyshev (ps₂)
 open LeanProofs.IPRA.Combinatorics.Binomial (binom bden)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (binom_eq mul_cancel)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (fact_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (par_succ one_ne_zero' zero_ne_one' congrEqb')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -172,13 +167,9 @@ private abbrev ffFactF : Fm PTm 2 :=
   le (var 0) (var 1) ⟶ FF (var 0) (var 1) * fact (monus (var 1) (var 0)) ≐ fact (var 1)
 
 private theorem ff_fact₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] ffFactF := by
-  refine ind _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, PTm.subst_mul, PTm.subst_monus, subst_ap2, Syn.subst_var,
-      Syn.inst_zero, Syn.inst_succ, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact ff_fact_base _
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, PTm.subst_mul, PTm.subst_monus, subst_ap2, Syn.subst_var,
-      Syn.repl_zero, Syn.repl_succ, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ, repl_one]
-    exact ff_fact_step Prf.hyp0
+  ipra_ind (⟨le_QF _ _, trivial⟩) [subst_le, subst_ap2, Syn.inst_succ, Syn.repl_succ]
+  · exact ff_fact_base _
+  · exact ff_fact_step Prf.hyp0
 
 /-- `ff j m · (m ∸ j)! = m!` for `j ≤ m`. -/
 theorem ff_fact {j m : PTm n} (h : Γ ⊢[PRAAx] le j m) : Γ ⊢[PRAAx] FF j m * fact (monus m j) ≐ fact m := by

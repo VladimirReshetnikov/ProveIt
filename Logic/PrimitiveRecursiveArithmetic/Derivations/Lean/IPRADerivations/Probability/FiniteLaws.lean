@@ -1,7 +1,4 @@
 import IPRADerivations.Probability.ExpectationCorollaries
-import IPRADerivations.Core.SumOrder
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Conditional cells, Bernoulli, balance point and finite Fatou
@@ -24,14 +21,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.FiniteLaws
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Expectation (Ew Wt inst2_mul')
 open LeanProofs.IPRA.Probability.ExpectationCorollaries (zml cst exp_scale exp_const)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -180,15 +173,11 @@ theorem mn_succ (k x : PTm n) :
 private abbrev mlF : Fm PTm 3 := le (var 1) (var 0) ⟶ le (Mn Y (var 0) (var 2)) (inst2 Y (var 1) (var 2))
 
 private theorem ml₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] mlF Y := by
-  refine ind _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · simp only [mlF, Fm.subst_imp, subst_le, subst_ap2, subst_inst2, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      inst_two, ConciseIPRA.PTm.subst_zero]
-    refine .impI ?_
+  ipra_ind (⟨le_QF _ _, le_QF _ _⟩) [mlF, subst_le, subst_ap2, subst_inst2]
+  · refine .impI ?_
     have t0 : (le (var 0) zero :: ([] : List (Fm PTm 2))) ⊢[PRAAx] var 0 ≐ zero := le_antisymm Prf.hyp0 (zero_le _)
     exact le_congr (mn_zero Y _).eqSymm (congrInst2 Y t0.eqSymm (.eqRefl _)) (le_refl _)
-  · simp only [mlF, Fm.subst_imp, subst_le, subst_ap2, subst_inst2, Syn.subst_var, Syn.repl_zero, repl_one, repl_two,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine .impI ?_
+  · refine .impI ?_
     refine le_congr (mn_succ Y _ _).eqSymm (.eqRefl _) ?_
     refine .orE (lt_or_eq_of_le Prf.hyp0) ?_ ?_
     · have h : (lt (var 1) (succ (var 0)) :: le (var 1) (succ (var 0)) :: [mlF Y]) ⊢[PRAAx] le (var 1 : PTm 3) (var 0) :=
@@ -222,8 +211,8 @@ theorem YB_at (t i N x : PTm n) : Γ ⊢[PRAAx] inst2 (YB X) t (pairT i (pairT N
       (fstT (pairT i (pairT N x))) (sndT (sndT (pairT i (pairT N x)))) := by
     simp only [inst2, inst3, YB, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
   rw [e]
-  exact congrInst3 X (congrAdd ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)) (.eqRefl _)) (fst_pair _ _)
-    ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))
+  exact congrInst3 X (congrAdd (snd_pair _ _).fstE (.eqRefl _)) (fst_pair _ _)
+    (snd_pair _ _).sndE
 
 theorem wmB_at (i L N x : PTm n) : Γ ⊢[PRAAx] inst2 (wmB w X) i (pairT L (pairT N x)) ≐
     inst2 w i x * Mn (YB X) L (pairT i (pairT N x)) := by
@@ -234,7 +223,7 @@ theorem wmB_at (i L N x : PTm n) : Γ ⊢[PRAAx] inst2 (wmB w X) i (pairT L (pai
       simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
     simp only [inst2, wmB, PTm.subst_mul, hf]; simp
   rw [e]
-  exact congrMul (congrInst2 w (.eqRefl _) ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)))
+  exact congrMul (congrInst2 w (.eqRefl _) (snd_pair _ _).sndE)
     (congrAp2 (mnF (YB X)) (fst_pair _ _) (congrPairT (.eqRefl _) (snd_pair _ _)))
 
 theorem rB_at (i m x : PTm n) : Γ ⊢[PRAAx] inst2 (rB w X) i (pairT m x) ≐ inst2 w i x * inst3 X m i x := by

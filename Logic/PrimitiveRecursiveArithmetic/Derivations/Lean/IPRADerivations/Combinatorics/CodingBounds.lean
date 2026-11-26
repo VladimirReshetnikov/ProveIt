@@ -1,5 +1,4 @@
 import IPRADerivations.Combinatorics.HallCondition
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Sphere packing, sphere covering and the Singleton bound
@@ -26,10 +25,8 @@ the greedy construction of the Gilbert code and the Hamming code itself.
 
 namespace LeanProofs.IPRA.Combinatorics.CodingBounds
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.HallCondition (double_weighted)
-open Syn
-open scoped Fm
 
 variable {n m N K : ℕ} {Γ : List (Fm PTm n)}
 
@@ -72,11 +69,9 @@ theorem perfect_code (B : Fin m → Fin N → ZT n) (V : ZT n)
     (hpart : ∀ w, Γ ⊢[PRAAx] ZT.eq (ZT.sumFin fun c => B c w) (ZT.natLit 1)) :
     Γ ⊢[PRAAx] ZT.eq (ZT.natLit m * V) (ZT.natLit N) := by
   have hb : ∀ c, ∑ w, ZT.toZ Γ (B c w) = ZT.toZ Γ V := fun c => by
-    have e := ZT.toZ_eq (hball c)
-    simpa only [ZT.toZ_sumFin] using e
+    simpa only [ZT.toZ_sumFin] using ZT.toZ_eq (hball c)
   have hp : ∀ w, ∑ c, ZT.toZ Γ (B c w) = 1 := fun w => by
-    have e := ZT.toZ_eq (hpart w)
-    simpa only [ZT.toZ_sumFin, ZT.toZ_natLit, Nat.cast_one] using e
+    simpa only [ZT.toZ_sumFin, ZT.toZ_natLit, Nat.cast_one] using ZT.toZ_eq (hpart w)
   have sw : ∑ c, ∑ w, ZT.toZ Γ (B c w) = ∑ w, ∑ c, ZT.toZ Γ (B c w) := Finset.sum_comm
   rw [Finset.sum_congr rfl fun c _ => hb c, Finset.sum_congr rfl fun w _ => hp w] at sw
   simp only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, _root_.mul_one] at sw

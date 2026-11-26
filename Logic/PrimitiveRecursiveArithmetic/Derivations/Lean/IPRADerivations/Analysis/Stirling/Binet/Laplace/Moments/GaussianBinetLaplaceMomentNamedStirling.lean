@@ -17,7 +17,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentNamedStirling
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.GapDecision (zabs_congr)
 open GaussianBinetFirstFormulaDecay (laplaceData subst_laplaceData)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -27,10 +27,6 @@ open GaussianNamedRightHalfPlane (radius threshold)
 open GaussianNamedRightHalfPlaneSigned (actual_late realNumerator imagNumerator denominator sign)
 open GaussianRationalDistanceOrder (distance_radius_mono)
 open GaussianRationalMetric (distanceBounded)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "source" => GaussianNamedGammaPositiveLower.source

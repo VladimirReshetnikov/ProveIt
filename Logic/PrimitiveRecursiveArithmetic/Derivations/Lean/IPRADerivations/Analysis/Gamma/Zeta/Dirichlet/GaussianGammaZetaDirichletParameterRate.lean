@@ -17,7 +17,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaDirichletParameterRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEulerIntegralGammaIdentification (source)
 open GaussianEulerPositiveScalingConstant (inverseF inverseData)
@@ -31,9 +31,6 @@ open GaussianNamedRateComposition (same_denominator symmetric)
 open GaussianNamedRateRadius (weaken)
 open GaussianRationalHorner (ofGaussian)
 open GaussianRationalMetric (distanceBounded)
-open ConciseIPRA.PTm (succ zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "C" => GaussianGammaZetaDirichletCofinal.nameF
@@ -50,9 +47,7 @@ def cutoff (s A : PTm n) : PTm n := block A (tailLevel s A)
 
 def demand (s R A : PTm n) : PTm n := exponent (prefixGain R (cutoff s A)) (pay s)
 
-@[simp] theorem subst_demand {m : ℕ} (σ : Fin n → PTm m) (s R A : PTm n) :
-    Syn.subst σ (demand s R A) = demand (Syn.subst σ s) (Syn.subst σ R) (Syn.subst σ A) := by
-  simp [demand,prefixGain,cutoff,tailLevel,pay,one]
+ipra_subst demand [prefixGain, cutoff, tailLevel, pay, one]
 
 private theorem row_data_congr (x y x' y' H D : PTm n)
     (hx : Γ ⊢[PRAAx] x ≐ x') (hy : Γ ⊢[PRAAx] y ≐ y') (h : Γ ⊢[PRAAx] independentRate inverseF inverseF x y H D) :

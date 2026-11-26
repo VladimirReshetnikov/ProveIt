@@ -1,6 +1,5 @@
 import IPRADerivations.Algebra.QuadraticRationalRing
 import IPRADerivations.Algebra.QuadraticRationalZeroProjection
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # One quadratic sign program for nonnegative rational radicands
@@ -15,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticRationalNonnegativeRadicand
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis
 open RationalSupMetric (numeratorOf denominatorOf)
 open RationalArgmin (rationalEq rationalEq_congr left left_congr)
@@ -24,9 +23,6 @@ open QuadraticRationalEmbedding (embed root)
 open QuadraticRationalEqualityOrder (difference)
 open QuadraticRationalPairArithmetic (add negative)
 open QuadraticRationalClearing (sameCoefficients)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,9 +37,7 @@ def isZero (d x : PTm n) : Fm PTm n := sign d x ≐ zero
 def equivalent (d x y : PTm n) : Fm PTm n := isZero d (difference x y)
 def less (d x y : PTm n) : Fm PTm n := positive d (difference y x)
 
-@[simp] theorem subst_sign {k : ℕ} (σ : Fin n → PTm k) (d x : PTm n) :
-    Syn.subst σ (sign d x) = sign (Syn.subst σ d) (Syn.subst σ x) := by
-  simp [sign,QuadraticRationalRadicand.sign,QuadraticRationalRadicand.changeBasis]
+ipra_subst sign [QuadraticRationalRadicand.sign, QuadraticRationalRadicand.changeBasis]
 
 theorem radicand_cases (d : PTm n) (hd : Γ ⊢[PRAAx] nonnegative d) : Γ ⊢[PRAAx]
     isPositive d ⋎ radicandZero d := by

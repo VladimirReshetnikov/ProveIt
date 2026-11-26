@@ -15,11 +15,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianDominantSyntax
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianBalancedRadiusSyntax (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -29,17 +26,11 @@ def score (C N E j h i : PTm n) : PTm n := GaussianBalancedRadiusValues.scaledNo
 def numerator (C N j i : PTm n) : PTm n := GaussianBalancedRadiusValues.scaledNumerator C N j i
 def denominator (C N E h i : PTm n) : PTm n := GaussianBalancedRadiusValues.scaledDenominator C N (exponent E h) i
 
-@[simp] theorem subst_four {m : ℕ} (σ : Fin n → PTm m) : Syn.subst σ (four : PTm n) = (four : PTm m) := by simp [four]
-@[simp] theorem subst_exponent {m : ℕ} (σ : Fin n → PTm m) (E h : PTm n) :
-    Syn.subst σ (exponent E h) = exponent (Syn.subst σ E) (Syn.subst σ h) := by simp [exponent]
-@[simp] theorem subst_score {m : ℕ} (σ : Fin n → PTm m) (C N E j h i : PTm n) :
-    Syn.subst σ (score C N E j h i) = score (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ E)
-      (Syn.subst σ j) (Syn.subst σ h) (Syn.subst σ i) := by simp [score]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (C N j i : PTm n) :
-    Syn.subst σ (numerator C N j i) = numerator (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ j) (Syn.subst σ i) := by simp [numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (C N E h i : PTm n) :
-    Syn.subst σ (denominator C N E h i) = denominator (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ E) (Syn.subst σ h) (Syn.subst σ i) := by simp [denominator]
+ipra_subst four
+ipra_subst exponent
+ipra_subst score
+ipra_subst numerator
+ipra_subst denominator
 
 theorem denominator_positive (C N E h i : PTm n) : Γ ⊢[PRAAx] le one (denominator C N E h i) :=
   GaussianBalancedRadiusValues.scaled_denominator_positive _ _ _ _

@@ -17,7 +17,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRightHalfPlaneLogarithmRelativeStep
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (normSq normSq_eval normSq_scale scale mul add oneCode)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianFiniteLogarithmCompositionTail (linearValue)
@@ -34,10 +34,6 @@ open GaussianRootAlgebra (sub equal equal_of_values equal_refl normSq_equal
   re_add im_add re_mul im_mul re_sub im_sub re_scale im_scale re_one im_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (cancel_pos)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -47,14 +43,10 @@ def denominator (u : PTm n) : PTm n := normSq u
 def relative (u v : PTm n) : PTm n := ofGaussian (numerator u v) (denominator u)
 def radius (A B H : PTm n) : PTm n := H*(A+B)
 
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (u v : PTm n) :
-    Syn.subst σ (numerator u v) = numerator (Syn.subst σ u) (Syn.subst σ v) := by simp [numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (u : PTm n) :
-    Syn.subst σ (denominator u) = denominator (Syn.subst σ u) := by simp [denominator]
-@[simp] theorem subst_relative {m : ℕ} (σ : Fin n → PTm m) (u v : PTm n) :
-    Syn.subst σ (relative u v) = relative (Syn.subst σ u) (Syn.subst σ v) := by simp [relative]
-@[simp] theorem subst_radius {m : ℕ} (σ : Fin n → PTm m) (A B H : PTm n) :
-    Syn.subst σ (radius A B H) = radius (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ H) := by simp [radius]
+ipra_subst numerator
+ipra_subst denominator
+ipra_subst relative
+ipra_subst radius
 
 private theorem native_lower (A B neg : PTm n) (hs : Γ ⊢[PRAAx] GaussianRightHalfPlaneArgument.source A neg) :
     Γ ⊢[PRAAx] le (A*A) (denominator (native A B neg)) :=

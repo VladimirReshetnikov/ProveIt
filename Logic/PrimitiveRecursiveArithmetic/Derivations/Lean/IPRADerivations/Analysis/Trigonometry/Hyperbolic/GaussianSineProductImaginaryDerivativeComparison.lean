@@ -16,7 +16,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineProductImaginaryDerivativeComparison
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianBoundedConstantProductName (constantF constant_regular)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -34,9 +34,6 @@ open GaussianSineProductImaginaryExponentialShift (source)
 open GaussianSineProductImaginaryHyperbolic (sinhF sinhData productF productData)
 open GaussianSineProductImaginaryHyperbolicDerivative (derivativeF derivativeData derivative_regular error)
 open GaussianSineProductImaginaryLogDerivative (rationalReal)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Pi" => GaussianGammaHalfPiName.nameF
@@ -56,19 +53,11 @@ def productFamily (F : PR 2) (y A B R x C : PTm n) : Fm PTm n := .all
   (productRate F (Syn.shift y) (Syn.shift A) (Syn.shift B) (scale (Syn.shift x) (var 0))
     (Syn.shift R) (Syn.shift x) (Syn.shift C))
 
-@[simp] theorem subst_scale {m : ℕ} (σ : Fin n → PTm m) (x s : PTm n) :
-    Syn.subst σ (scale x s) = scale (Syn.subst σ x) (Syn.subst σ s) := by simp [scale]
+ipra_subst scale
 
-@[simp] theorem subst_productRate {m : ℕ} (σ : Fin n → PTm m) (F : PR 2) (y A B k R x C : PTm n) :
-    (productRate F y A B k R x C).subst σ =
-      productRate F (Syn.subst σ y) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ k) (Syn.subst σ R)
-        (Syn.subst σ x) (Syn.subst σ C) := by
-  simp [productRate,prodIncrementData,productData,one]
+ipra_subst productRate [prodIncrementData, productData, one]
 
-@[simp] theorem subst_productFamily {m : ℕ} (σ : Fin n → PTm m) (F : PR 2) (y A B R x C : PTm n) :
-    (productFamily F y A B R x C).subst σ =
-      productFamily F (Syn.subst σ y) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ R) (Syn.subst σ x) (Syn.subst σ C) := by
-  simp [productFamily,Syn.subst_shift,Syn.shift_subst]
+ipra_subst productFamily [Syn.subst_shift, Syn.shift_subst]
 
 theorem family_at (F : PR 2) (y A B R x C s : PTm n) (h : Γ ⊢[PRAAx] productFamily F y A B R x C) :
     Γ ⊢[PRAAx] productRate F y A B (scale x s) R x C := by

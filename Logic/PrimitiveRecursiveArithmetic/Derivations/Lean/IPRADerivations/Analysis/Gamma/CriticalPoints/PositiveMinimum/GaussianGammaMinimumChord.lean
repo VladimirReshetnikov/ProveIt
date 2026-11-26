@@ -15,7 +15,7 @@ set_option maxHeartbeats 2000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaMinimumChord
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCompactRiemannName (fraction_congr)
 open GaussianEulerPowerChartTimeOrder (order_trans)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
@@ -40,10 +40,6 @@ open GaussianStirlingGammaFractionalIncrementConvexity (gamma_data_congr pred_po
 open GaussianStirlingGammaLogarithm (logGammaF logGammaData log_gamma_regular)
 open GaussianStirlingMultiplicativeBoundsLog (constant_order fractions_order)
 open RationalArgmin (rationalLE rationalLE_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus num pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -68,28 +64,13 @@ def lowerData (a c b M W : PTm n) : PTm n := addData (margin a c b M) (productDa
 
 def weightedData (a c b W : PTm n) : PTm n := addData (productData G (pred W) (lg a b)) (lg c b)
 
-@[simp] theorem subst_centerNumerator {m : ℕ} (σ : Fin n → PTm m) (a c W : PTm n) :
-    Syn.subst σ (centerNumerator a c W) = centerNumerator (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ W) := by
-  simp [centerNumerator]
-@[simp] theorem subst_centerDenominator {m : ℕ} (σ : Fin n → PTm m) (b W : PTm n) :
-    Syn.subst σ (centerDenominator b W) = centerDenominator (Syn.subst σ b) (Syn.subst σ W) := by
-  simp [centerDenominator]
-@[simp] theorem subst_absDelta {m : ℕ} (σ : Fin n → PTm m) (a c : PTm n) :
-    Syn.subst σ (absDelta a c) = absDelta (Syn.subst σ a) (Syn.subst σ c) := by
-  simp [absDelta]
-@[simp] theorem subst_margin {m : ℕ} (σ : Fin n → PTm m) (a c b M : PTm n) :
-    Syn.subst σ (margin a c b M) = margin (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ b) (Syn.subst σ M) := by
-  simp [margin]
-@[simp] theorem subst_centerData {m : ℕ} (σ : Fin n → PTm m) (a c b W : PTm n) :
-    Syn.subst σ (centerData a c b W) = centerData (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ b) (Syn.subst σ W) := by
-  simp [centerData]
-@[simp] theorem subst_lowerData {m : ℕ} (σ : Fin n → PTm m) (a c b M W : PTm n) :
-    Syn.subst σ (lowerData a c b M W) =
-      lowerData (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ b) (Syn.subst σ M) (Syn.subst σ W) := by
-  simp [lowerData]
-@[simp] theorem subst_weightedData {m : ℕ} (σ : Fin n → PTm m) (a c b W : PTm n) :
-    Syn.subst σ (weightedData a c b W) = weightedData (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ b) (Syn.subst σ W) := by
-  simp [weightedData]
+ipra_subst centerNumerator
+ipra_subst centerDenominator
+ipra_subst absDelta
+ipra_subst margin
+ipra_subst centerData
+ipra_subst lowerData
+ipra_subst weightedData
 
 theorem center_source (a c b W : PTm n) (hc : Γ ⊢[PRAAx] le one c)
     (hb : Γ ⊢[PRAAx] le one b) (hW : Γ ⊢[PRAAx] le two W) :

@@ -16,7 +16,7 @@ set_option maxHeartbeats 1500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalInverseStepQuotient
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaAdjacentCutoff (multiply_cross)
@@ -31,8 +31,6 @@ open GaussianGammaReciprocalInverse (gammaF)
 open GaussianNameArithmetic (multiplyData multiply_fast)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_trans)
 open GaussianNamedConstantCoefficientDifferenceProduct (lhsF lhsData rhsF rhsData product_rule rhs_regular)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "QF" => GaussianNamedDifferenceQuotient.nameF gammaF gammaF
@@ -45,12 +43,7 @@ def finiteData (a b N D : PTm n) : PTm n :=
   rhsData gammaF gammaF (neighborInverse a b N D) (finiteInverseCoefficient a b N D)
     (ND (b+a) b D) (GP (b+a) b) oneCode D
 
-@[simp] theorem subst_finiteData {k : ℕ} (σ : Fin n → PTm k) (a b N D : PTm n) :
-    Syn.subst σ (finiteData a b N D) =
-      finiteData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) (Syn.subst σ D) := by
-  simp [finiteData,neighborInverse,finiteInverseCoefficient,GaussianGammaNegativeIntervalStepCoefficient.finiteCoefficient,
-    denominator,GaussianGammaDigammaStep.neighborData,GaussianGammaDigammaStep.neighborNumerator,
-    GaussianGammaDigammaStep.neighborDenominator]
+ipra_subst finiteData [neighborInverse, finiteInverseCoefficient, GaussianGammaNegativeIntervalStepCoefficient.finiteCoefficient, denominator, GaussianGammaDigammaStep.neighborData, GaussianGammaDigammaStep.neighborNumerator, GaussianGammaDigammaStep.neighborDenominator]
 
 theorem positive_neighbor_regular (a b D : PTm n)
     (h : Γ ⊢[PRAAx] guard a b) (hD : Γ ⊢[PRAAx] le (two*b) D) :

@@ -17,16 +17,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianUnitIntervalInputDecoding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalSupMetric (numeratorOf denominatorOf)
 open RationalGaussianEmbedding (axis embed native)
 open GaussianRationalHorner (represents canonical_unique positive_product)
 open GaussianRationalMetric (distanceBounded)
 open RationalValueBounds (upper)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -39,18 +35,12 @@ def upperPoint (E : PTm n) : PTm n := GaussianEuclideanDistanceName.fraction (mo
 def source (q E : PTm n) : Fm PTm n := axis q ⋏ (le one E ⋏
   (upper (lowerPoint E) (fstT q) zero one ⋏ upper (fstT q) (upperPoint E) zero one))
 
-@[simp] theorem subst_scalarNumerator {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    (scalarNumerator q).subst σ = scalarNumerator (Syn.subst σ q) := by simp [scalarNumerator,numeratorOf,ZT.subst]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    Syn.subst σ (numerator q) = numerator (Syn.subst σ q) := by simp [numerator,scalarNumerator,numeratorOf]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    Syn.subst σ (denominator q) = denominator (Syn.subst σ q) := by simp [denominator,denominatorOf]
-@[simp] theorem subst_lowerPoint {m : ℕ} (σ : Fin n → PTm m) (E : PTm n) :
-    Syn.subst σ (lowerPoint E) = lowerPoint (Syn.subst σ E) := by simp [lowerPoint]
-@[simp] theorem subst_upperPoint {m : ℕ} (σ : Fin n → PTm m) (E : PTm n) :
-    Syn.subst σ (upperPoint E) = upperPoint (Syn.subst σ E) := by simp [upperPoint]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (q E : PTm n) :
-    (source q E).subst σ = source (Syn.subst σ q) (Syn.subst σ E) := by simp [source]
+ipra_subst scalarNumerator [numeratorOf, ZT.subst]
+ipra_subst numerator [scalarNumerator, numeratorOf]
+ipra_subst denominator [denominatorOf]
+ipra_subst lowerPoint
+ipra_subst upperPoint
+ipra_subst source
 
 theorem denominator_positive (q : PTm n) : Γ ⊢[PRAAx] le one (denominator q) := RationalArgmin.denominator_positive _
 
@@ -76,9 +66,8 @@ theorem numerator_order (q E : PTm n) (h : Γ ⊢[PRAAx] source q E) : Γ ⊢[PR
 
 theorem decoded_lower (q E : PTm n) (h : Γ ⊢[PRAAx] source q E) : Γ ⊢[PRAAx]
     le (denominator q) (E*numerator q) := by
-  have e := natEq (eq_add_of_le (numerator_order q E h))
   unfold numerator
-  ipra_le sl (lower_native q E h) with 𝔞(E)*e
+  ipra_le sl (lower_native q E h) with 𝔞(E)*natEq (eq_add_of_le (numerator_order q E h))
 
 theorem decoded_positive (q E : PTm n) (h : Γ ⊢[PRAAx] source q E) : Γ ⊢[PRAAx] le one (numerator q) := by
   have bound := le_trans (denominator_positive q) (decoded_lower q E h)

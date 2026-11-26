@@ -14,16 +14,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedDifferenceQuotientApproximation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedDifferenceQuotient (nameF data inverse raw inverse_bound scale_distance)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator rate_at)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (qsub distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "quotientInput" => GaussianNamedDifferenceQuotient.input
@@ -35,16 +32,9 @@ def input (f g F G : PR 2) (x y u v h D A B C E : PTm n) : Fm PTm n :=
   quotientInput f g x y h D ⋏ (le one B ⋏ (le one E ⋏
     (independentRate f F x u A B ⋏ independentRate g G y v C E)))
 
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (D A B C E p q r : PTm n) :
-    Syn.subst σ (numerator D A B C E p q r) = numerator (Syn.subst σ D) (Syn.subst σ A) (Syn.subst σ B)
-      (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ r) := by simp [numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (B E p q r : PTm n) :
-    Syn.subst σ (denominator B E p q r) = denominator (Syn.subst σ B) (Syn.subst σ E)
-      (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ r) := by simp [denominator]
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (f g F G : PR 2) (x y u v h D A B C E : PTm n) :
-    (input f g F G x y u v h D A B C E).subst σ = input f g F G (Syn.subst σ x) (Syn.subst σ y)
-      (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ h) (Syn.subst σ D) (Syn.subst σ A)
-      (Syn.subst σ B) (Syn.subst σ C) (Syn.subst σ E) := by simp [input]
+ipra_subst numerator
+ipra_subst denominator
+ipra_subst input
 
 theorem denominator_positive (B E p q r : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hE : Γ ⊢[PRAAx] le one E) : Γ ⊢[PRAAx]
     le one (denominator B E p q r) :=

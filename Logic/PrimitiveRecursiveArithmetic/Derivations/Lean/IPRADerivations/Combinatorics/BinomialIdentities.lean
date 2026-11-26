@@ -1,6 +1,5 @@
 import IPRADerivations.Combinatorics.Binomial
 import IPRADerivations.Core.SumLemmas
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Binomial sums, the central binomial coefficient and Catalan numbers
@@ -16,14 +15,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.BinomialIdentities
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (fact_pos)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {m : ℕ} {Γ : List (Fm PTm m)}
 
@@ -52,15 +47,11 @@ theorem inst2_h (k x : PTm m) : inst2 hBody k x = binom x k + binom x (succ k) :
 abbrev binomSumFormula : Fm PTm 1 := ap2 (sumF bBody) (succ (var 0)) (var 0) ≐ pw two (var 0)
 
 theorem binom_sum_open : ([] : List (Fm PTm 1)) ⊢[PRAAx] binomSumFormula := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    refine (sum_succ' bBody zero zero).eqTrans ?_
+  ipra_ind [subst_ap2]
+  · refine (sum_succ' bBody zero zero).eqTrans ?_
     rw [inst2_b]
     exact (congrAdd (sum_zero _ _) (binom_self' _)).eqTrans ((zero_add _).eqTrans (pw_zero _).eqSymm)
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    have q₁ := sum_shift (Γ := [binomSumFormula]) bBody (succ (var 0)) (succ (var 0))
+  · have q₁ := sum_shift (Γ := [binomSumFormula]) bBody (succ (var 0)) (succ (var 0))
     rw [inst2_b] at q₁
     have q₃ : [binomSumFormula] ⊢[PRAAx] ap2 (sumF (shiftBody bBody)) (succ (var 0)) (succ (var 0))
         ≐ ap2 (sumF gBody) (succ (var 0)) (var 0) := by

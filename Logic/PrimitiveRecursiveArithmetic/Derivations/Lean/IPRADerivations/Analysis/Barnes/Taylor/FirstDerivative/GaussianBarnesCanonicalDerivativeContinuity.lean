@@ -18,7 +18,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalDerivativeContinuity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalDerivativeCofinal (nameF sample_at regular)
 open GaussianBarnesCanonicalDerivativeRow (offset offset_bound base_lower inverse_base_bound boundNumerator)
 open GaussianBarnesCanonicalLogCofinal (source data)
@@ -32,10 +32,6 @@ open GaussianRationalMetric (distanceBounded bounded qsub)
 open GaussianRationalPowerDifference (product_difference bounded_sum_same distance_refl_zero)
 open GaussianRationalReciprocal (bounded_product bound_congr reciprocal qone)
 open GaussianReciprocalSquareInterval (denominator denominator_positive)
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

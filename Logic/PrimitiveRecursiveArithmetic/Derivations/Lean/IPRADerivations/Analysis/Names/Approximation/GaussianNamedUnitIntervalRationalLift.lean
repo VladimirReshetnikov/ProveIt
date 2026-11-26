@@ -17,7 +17,7 @@ set_option maxHeartbeats 1400000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedUnitIntervalRationalLift
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianExponentialReference (unit_monotone)
@@ -31,8 +31,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianUnitIntervalInputDecoding (numerator denominator fraction_recode)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -61,20 +59,13 @@ def data (x E N : PTm n) : PTm n := pairT x (pairT E N)
 def nameF (R : RationalMap) (f : PR 2) : PR 2 := PTm.toPR
   (sample R f (var 0) (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))) : PTm 2)
 
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (R : RationalMap) (p E N : PTm n) :
-    Syn.subst σ (clock R p E N) = clock R (Syn.subst σ p) (Syn.subst σ E) (Syn.subst σ N) := by
-  simp [clock, R.subst_gain]
+ipra_subst clock [R.subst_gain]
 
-@[simp] theorem subst_frozen {m : ℕ} (σ : Fin n → PTm m) (R : RationalMap) (f : PR 2) (k x N : PTm n) :
-    Syn.subst σ (frozen R f k x N) = frozen R f (Syn.subst σ k) (Syn.subst σ x) (Syn.subst σ N) := by
-  simp [frozen]
+ipra_subst frozen
 
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (R : RationalMap) (f : PR 2) (p x E N : PTm n) :
-    Syn.subst σ (sample R f p x E N) = sample R f (Syn.subst σ p) (Syn.subst σ x) (Syn.subst σ E) (Syn.subst σ N) := by
-  simp [sample]
+ipra_subst sample
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (x E N : PTm n) :
-    Syn.subst σ (data x E N) = data (Syn.subst σ x) (Syn.subst σ E) (Syn.subst σ N) := by simp [data]
+ipra_subst data
 
 theorem sample_at (R : RationalMap) (f : PR 2) (p x E N : PTm n) :
     Γ ⊢[PRAAx] ap2 (nameF R f) p (data x E N) ≐ sample R f p x E N := by
@@ -88,8 +79,8 @@ theorem sample_at (R : RationalMap) (f : PR 2) (p x E N : PTm n) :
       fin_cases i
       exact .eqRefl _
       exact fst_pair _ _
-      exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-      exact (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))
+      exact (snd_pair _ _).fstE
+      exact (snd_pair _ _).sndE)
   exact raw.eqTrans (by simpa using fields)
 
 theorem frozen_variation (R : RationalMap) (f g : PR 2) (r t x y E N A D : PTm n)

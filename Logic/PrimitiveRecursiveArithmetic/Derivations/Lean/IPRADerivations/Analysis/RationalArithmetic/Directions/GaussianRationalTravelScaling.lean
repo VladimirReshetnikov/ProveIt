@@ -19,16 +19,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalTravelScaling
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qmul canonical positive_product represents_congr)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qone qmul_congr qsub_congr)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qsub bounded)
 open LeanProofs.IPRA.Analysis.GaussianRationalReciprocal (power powerF power_succ power_canonical bound_congr)
 open LeanProofs.IPRA.Analysis.GaussianRationalRelativeNormAlgebra (relative)
 open LeanProofs.IPRA.Analysis.GaussianDominantPairAlgebra (radiusPoint radiusNumerator)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -37,14 +34,10 @@ def inverse (A B : PTm n) : PTm n := radiusPoint B A
 def ratio (A B z : PTm n) : PTm n := qmul (inverse A B) z
 def scaled (A B e c : PTm n) : PTm n := qmul (power (radius A B) e) c
 
-@[simp] theorem subst_radius {m : ℕ} (σ : Fin n → PTm m) (A B : PTm n) :
-    Syn.subst σ (radius A B) = radius (Syn.subst σ A) (Syn.subst σ B) := by simp [radius]
-@[simp] theorem subst_inverse {m : ℕ} (σ : Fin n → PTm m) (A B : PTm n) :
-    Syn.subst σ (inverse A B) = inverse (Syn.subst σ A) (Syn.subst σ B) := by simp [inverse]
-@[simp] theorem subst_ratio {m : ℕ} (σ : Fin n → PTm m) (A B z : PTm n) :
-    Syn.subst σ (ratio A B z) = ratio (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ z) := by simp [ratio]
-@[simp] theorem subst_scaled {m : ℕ} (σ : Fin n → PTm m) (A B e c : PTm n) :
-    Syn.subst σ (scaled A B e c) = scaled (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ e) (Syn.subst σ c) := by simp [scaled]
+ipra_subst radius
+ipra_subst inverse
+ipra_subst ratio
+ipra_subst scaled
 
 theorem diagonal_point (A : PTm n) (hA : Γ ⊢[PRAAx] le one A) : Γ ⊢[PRAAx] radiusPoint A A ≐ qone := by
   apply GaussianRationalHorner.canonical_unique _ _ _ A

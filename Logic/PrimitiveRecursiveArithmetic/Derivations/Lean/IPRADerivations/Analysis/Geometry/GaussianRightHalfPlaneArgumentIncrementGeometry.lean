@@ -20,7 +20,7 @@ set_option maxHeartbeats 400000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRightHalfPlaneArgumentIncrementGeometry
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Foundations.EigenvalueBound (ad_congr)
 open LeanProofs.IPRA.Foundations.GapDecision (zabs zabs_congr zabs_neg zabs_tri)
@@ -38,9 +38,6 @@ open GaussianRightHalfPlaneLogarithmOffset (signedImag)
 open RationalArithmetic (select_zero select_one)
 open RationalCubeMidpoint (fraction)
 open RationalValueBounds (radius)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

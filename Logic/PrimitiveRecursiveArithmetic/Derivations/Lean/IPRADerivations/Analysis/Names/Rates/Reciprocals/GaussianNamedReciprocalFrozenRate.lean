@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedReciprocalFrozenRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNameReciprocal (anchor R modulus tail lower input nameF nameData name_fast tail_lower R_positive)
 open GaussianRationalReciprocal (reciprocal)
 open GaussianRationalHorner (ofGaussian positive_product)
@@ -24,9 +24,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianBoundedConstantProductName (constantF constant_at)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -37,16 +34,11 @@ def numerator (a p k : PTm n) : PTm n := unit k+modulus a*unit p
 def denominator (p k : PTm n) : PTm n := unit p*unit k
 def source (K : PR 2) (a z k : PTm n) : Fm PTm n := input K a z ⋏ le (anchor a) k
 
-@[simp] theorem subst_rawFrozen {m : ℕ} (σ : Fin n → PTm m) (K : PR 2) (z k : PTm n) :
-    Syn.subst σ (rawFrozen K z k) = rawFrozen K (Syn.subst σ z) (Syn.subst σ k) := by simp [rawFrozen]
-@[simp] theorem subst_frozen {m : ℕ} (σ : Fin n → PTm m) (K : PR 2) (z k : PTm n) :
-    Syn.subst σ (frozen K z k) = frozen K (Syn.subst σ z) (Syn.subst σ k) := by simp [frozen]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (a p k : PTm n) :
-    Syn.subst σ (numerator a p k) = numerator (Syn.subst σ a) (Syn.subst σ p) (Syn.subst σ k) := by simp [numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (p k : PTm n) :
-    Syn.subst σ (denominator p k) = denominator (Syn.subst σ p) (Syn.subst σ k) := by simp [denominator]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (K : PR 2) (a z k : PTm n) :
-    (source K a z k).subst σ = source K (Syn.subst σ a) (Syn.subst σ z) (Syn.subst σ k) := by simp [source]
+ipra_subst rawFrozen
+ipra_subst frozen
+ipra_subst numerator
+ipra_subst denominator
+ipra_subst source
 
 theorem late_lower (K : PR 2) (a z k : PTm n) (h : Γ ⊢[PRAAx] input K a z) (hk : Γ ⊢[PRAAx] le (anchor a) k) : Γ ⊢[PRAAx]
     lower (ap2 K k z) (R a) := by

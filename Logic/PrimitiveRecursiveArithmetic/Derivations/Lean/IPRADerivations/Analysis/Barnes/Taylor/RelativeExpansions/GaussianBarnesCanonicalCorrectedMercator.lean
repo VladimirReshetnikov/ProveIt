@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.GaussianBarnesCanonicalDerivativeBinding
 import IPRADerivations.Analysis.Barnes.Taylor.RelativeExpansions.GaussianBarnesCanonicalRelativeMercatorRemainder
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Arbitrary-degree remainder for the original corrected Barnes row
@@ -15,7 +14,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalCorrectedMercator
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Common (pw_two succ_le_succ)
 open ComplexLogarithmRemainder (add)
 open GaussianBarnesCanonicalRelativeStep (source)
@@ -31,10 +30,6 @@ open GaussianRationalHorner (qadd qmul positive_product)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalPowerDifference (distance_refl_zero)
 open GaussianRationalSyntheticDivision (qadd_congr qsub_congr)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Rel" => GaussianBarnesCanonicalRelativeMercatorRemainder.polynomial

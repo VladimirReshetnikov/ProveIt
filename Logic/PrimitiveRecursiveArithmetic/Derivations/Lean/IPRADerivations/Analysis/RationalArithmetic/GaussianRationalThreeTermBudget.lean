@@ -1,8 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.GaussianResidualDecreaseWeights
 import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianRationalRelativeNormAlgebra
 import IPRADerivations.Analysis.Polynomials.Division.GaussianRationalSyntheticDivision
-import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Three actual Gaussian-rational terms in the residual budget
@@ -18,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalThreeTermBudget
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner
   (represents positive_product qadd qadd_represents represents_congr)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qnormSq squaredTolerance)
@@ -28,9 +26,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalRelativeNormAlgebra (relative)
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder (normSq normSq_eval normSq_scale)
 open LeanProofs.IPRA.Analysis.GaussianResidualDecreaseWeights
   (mainWeight errorWeight otherWeight sumWeight rateDen rateNum)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -49,22 +44,14 @@ def numerator2 (u v w base : PTm n) : PTm n :=
 def numeratorBase (u v w base : PTm n) : PTm n :=
   ComplexLogarithmRemainder.scale (rawDen u*rawDen v*rawDen w) (rawGaussian base)
 
-@[simp] theorem subst_sum {m : ℕ} (σ : Fin n → PTm m) (u v w : PTm n) :
-    Syn.subst σ (sum u v w) = sum (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ w) := by simp [sum]
-@[simp] theorem subst_nativeSum {m : ℕ} (σ : Fin n → PTm m) (a b c : PTm n) :
-    Syn.subst σ (nativeSum a b c) = nativeSum (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) := by simp [nativeSum]
-@[simp] theorem subst_budget {m : ℕ} (σ : Fin n → PTm m) (u v w base D : PTm n) :
-    (budget u v w base D).subst σ = budget (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ w) (Syn.subst σ base) (Syn.subst σ D) := by simp [budget]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (u v w base : PTm n) :
-    Syn.subst σ (denominator u v w base) = denominator (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ w) (Syn.subst σ base) := by simp [denominator,GaussianRationalSyntheticDivision.remainingDen]
-@[simp] theorem subst_numerator0 {m : ℕ} (σ : Fin n → PTm m) (u v w base : PTm n) :
-    Syn.subst σ (numerator0 u v w base) = numerator0 (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ w) (Syn.subst σ base) := by simp [numerator0]
-@[simp] theorem subst_numerator1 {m : ℕ} (σ : Fin n → PTm m) (u v w base : PTm n) :
-    Syn.subst σ (numerator1 u v w base) = numerator1 (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ w) (Syn.subst σ base) := by simp [numerator1]
-@[simp] theorem subst_numerator2 {m : ℕ} (σ : Fin n → PTm m) (u v w base : PTm n) :
-    Syn.subst σ (numerator2 u v w base) = numerator2 (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ w) (Syn.subst σ base) := by simp [numerator2]
-@[simp] theorem subst_numeratorBase {m : ℕ} (σ : Fin n → PTm m) (u v w base : PTm n) :
-    Syn.subst σ (numeratorBase u v w base) = numeratorBase (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ w) (Syn.subst σ base) := by simp [numeratorBase]
+ipra_subst sum
+ipra_subst nativeSum
+ipra_subst budget
+ipra_subst denominator [GaussianRationalSyntheticDivision.remainingDen]
+ipra_subst numerator0
+ipra_subst numerator1
+ipra_subst numerator2
+ipra_subst numeratorBase
 
 theorem denominator_positive (u v w base : PTm n) : Γ ⊢[PRAAx] le one (denominator u v w base) :=
   GaussianRationalSyntheticDivision.remaining_den_positive _ _ _ _
@@ -205,16 +192,9 @@ def returnedBudget (u v w base D : PTm n) : Fm PTm n :=
     (RationalArithmetic.multiply
       (squaredTolerance (fstT (sndT (run u v w D))) (sndT (sndT (run u v w D)))) (qnormSq base))
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (u v w D : PTm n) :
-    Syn.subst σ (output u v w D) = output (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ w) (Syn.subst σ D) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (u v w D : PTm n) :
-    Syn.subst σ (run u v w D) = run (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ w) (Syn.subst σ D) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
-@[simp] theorem subst_returnedBudget {m : ℕ} (σ : Fin n → PTm m) (u v w base D : PTm n) :
-    (returnedBudget u v w base D).subst σ = returnedBudget (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ w) (Syn.subst σ base) (Syn.subst σ D) := by simp [returnedBudget]
+ipra_subst output
+ipra_subst run
+ipra_subst returnedBudget
 
 theorem sum_program (u v w : PTm n) : Γ ⊢[PRAAx] ap3 sumF u v w ≐ sum u v w := by
   simpa [sumF,ap3] using toPR_eq (Γ := Γ) (sum (var 0) (var 1) (var 2) : PTm 3) ![u,v,w]
@@ -222,11 +202,11 @@ theorem program_at (u v w D : PTm n) : Γ ⊢[PRAAx] run u v w D ≐ output u v 
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![u,v,w,D]
 
 theorem returned_sum (u v w D : PTm n) : Γ ⊢[PRAAx] fstT (run u v w D) ≐ sum u v w :=
-  (congrFst (program_at u v w D)).eqTrans (fst_pair _ _)
+  (program_at u v w D).fstE
 theorem returned_rate_num (u v w D : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run u v w D)) ≐ rateNum D :=
-  (congrFst ((congrSnd (program_at u v w D)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at u v w D).sndE.fstE
 theorem returned_rate_den (u v w D : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run u v w D)) ≐ rateDen D :=
-  (congrSnd ((congrSnd (program_at u v w D)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at u v w D).sndE.sndE
 
 theorem tolerance_congr {X X' Y Y' : PTm n} (hX : Γ ⊢[PRAAx] X ≐ X') (hY : Γ ⊢[PRAAx] Y ≐ Y') : Γ ⊢[PRAAx]
     squaredTolerance X Y ≐ squaredTolerance X' Y' := by

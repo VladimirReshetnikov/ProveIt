@@ -3,7 +3,6 @@ import IPRADerivations.Topology.StaggeredGrids
 import IPRADerivations.Topology.LeadingBits
 import IPRADerivations.Foundations.BoundedCases
 import IPRADerivations.Foundations.GridSumsPoints
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The occupancy colouring of the dimension obstruction in every dimension (`dimension_invariance_ipra`)
@@ -245,7 +244,7 @@ theorem occ_pos {Γ : List (Fm PTm n)} {b v : PTm n} (hv : GridPt (d' + 1) Γ b 
   have hb : Γ ⊢[PRAAx] sndT (sndT (tl (d' + 1) y)) ≐ b :=
     (congrSnd (congrSnd htl)).eqTrans ((congrSnd (snd_pair _ _)).eqTrans ((snd_pair _ _).eqTrans hv.tl))
   have hc : Γ ⊢[PRAAx] fstT (sndT (tl (d' + 1) y)) ≐ cellsOf d' m F g v :=
-    (congrFst (congrSnd htl)).eqTrans ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
+    (congrFst (congrSnd htl)).eqTrans (snd_pair _ _).fstE
   have hu : Γ ⊢[PRAAx] canon (d' + 1) (sndT (sndT (tl (d' + 1) y))) y ≐ v :=
     (canon_base (d' + 1) y hb).eqTrans ((canon_congr (d' + 1) b hproj).eqTrans hv.canon.eqSymm)
   have hS : Γ ⊢[PRAAx] Syn.subst ![y] (occS d' m F g) ≐ one := by
@@ -403,7 +402,7 @@ theorem cfacts_steps (g : ℕ) : Steps (CFacts d' m F g) 0 (d' + 1) := by
   · cases q with
     | zero =>
       have hN : (ψ :: Δ.map Fm.shift) ⊢[PRAAx] Syn.shift (fstT (tl e x)) ≐ succ (fstT (Syn.shift b)) :=
-        eqL (by rw [shift_fstT, shift_tl]) ((congrFst htl').eqTrans (fst_pair _ _))
+        eqL (by rw [shift_fstT, shift_tl]) htl'.fstE
       exact lt_congr (fst_pair _ _).eqSymm hN Prf.hyp0
     | succ q =>
       have hp : (ψ :: Δ.map Fm.shift) ⊢[PRAAx]
@@ -424,9 +423,9 @@ theorem occ_zero {Γ : List (Fm PTm n)} {g : ℕ} {b v : PTm n}
   have hu : GridPt (d' + 1) Δ b (canon (d' + 1) b y) :=
     gridPt_canon b y (fun q hq' => Foundations.BoundedDecision.le_of_lt_succ (hq q hq'))
   have hb : Δ ⊢[PRAAx] sndT (sndT (tl (d' + 1) y)) ≐ b :=
-    (congrSnd (congrSnd htl)).eqTrans ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))
+    (congrSnd (congrSnd htl)).eqTrans (snd_pair _ _).sndE
   have hc : Δ ⊢[PRAAx] fstT (sndT (tl (d' + 1) y)) ≐ c :=
-    (congrFst (congrSnd htl)).eqTrans ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
+    (congrFst (congrSnd htl)).eqTrans (snd_pair _ _).fstE
   have hcan : Δ ⊢[PRAAx] canon (d' + 1) (sndT (sndT (tl (d' + 1) y))) y ≐ canon (d' + 1) b y :=
     canon_base (d' + 1) y hb
   simp only [occS, StaggeredGrids.cell, subst_ap2, PTm.subst_mul, subst_eqb, subst_fprod, subst_proj, subst_col, subst_canon,

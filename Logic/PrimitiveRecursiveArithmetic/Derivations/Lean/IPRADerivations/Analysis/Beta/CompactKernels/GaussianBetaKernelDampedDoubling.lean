@@ -16,14 +16,10 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaKernelDampedDoubling
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBetaKernelRefinement (value)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (positive_product)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -38,11 +34,10 @@ theorem relative_power_error (P Q G H j : PTm n)
     le_congr (one_mul Q).eqSymm (by ipra_ring) (le_congr (.eqRefl Q) hGap (le_refl Q))
   have term := RationalIntervalArithmeticPrecision.natural_power_perturbation Q P Q G one j
     (le_refl Q) hPQ gapBound
-  have weighted := natEq (GaussianRationalHornerPerturbation.weighted_power (Γ := Γ) Q j)
   have raw : Γ ⊢[PRAAx] le (Q*pw Q j) (Q*pw P j+j*G*pw Q j) := by
     apply le_congr (by ipra_ring)
       (by
-        have e := weighted
+        have e := (natEq (GaussianRationalHornerPerturbation.weighted_power (Γ := Γ) Q j))
         apply deriveNat
         dsimp only [GaussianRationalPowerDifference.budget]
         ipra_simps

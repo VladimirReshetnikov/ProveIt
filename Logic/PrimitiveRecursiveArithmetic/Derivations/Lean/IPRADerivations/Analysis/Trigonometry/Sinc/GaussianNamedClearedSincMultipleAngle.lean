@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedClearedSincMultipleAngle
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedNaturalScale (clock sample_at exponential_input radius)
 open GaussianNameReciprocal (anchor tail_lower)
 open GaussianRationalNaturalScale (naturalPoint natScale_as_product natural_point_represents)
@@ -38,10 +38,6 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (qmul)
 open ComplexLogarithmRemainder (normSq normSq_scale scale oneCode normSq_one)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "scaledF" => GaussianNamedNaturalScale.nameF

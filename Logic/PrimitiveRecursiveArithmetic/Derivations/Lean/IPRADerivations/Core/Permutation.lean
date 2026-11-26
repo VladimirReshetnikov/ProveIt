@@ -134,13 +134,9 @@ def invAll (S τ : PTm 2) (N x : PTm n) : Fm PTm n :=
 def retAll (S τ : PTm 2) (N x : PTm n) : Fm PTm n :=
   Fm.all (lt (var 0) (Syn.shift N) ⟶ (inst2 τ (inst2 S (var 0) (Syn.shift x)) (Syn.shift x) ≐ var 0))
 
-@[simp] theorem subst_invAll {m : ℕ} (σ : Fin n → PTm m) (S τ : PTm 2) (N x : PTm n) :
-    (invAll S τ N x).subst σ = invAll S τ (Syn.subst σ N) (Syn.subst σ x) := by
-  simp [invAll, subst_up_shift', Syn.up]
+ipra_subst invAll [subst_up_shift', Syn.up]
 
-@[simp] theorem subst_retAll {m : ℕ} (σ : Fin n → PTm m) (S τ : PTm 2) (N x : PTm n) :
-    (retAll S τ N x).subst σ = retAll S τ (Syn.subst σ N) (Syn.subst σ x) := by
-  simp [retAll, subst_up_shift', Syn.up]
+ipra_subst retAll [subst_up_shift', Syn.up]
 
 theorem shift_invAll {S τ : PTm 2} {N x : PTm n} (h : Γ ⊢[PRAAx] invAll S τ N x) :
     Γ.map Fm.shift ⊢[PRAAx] invAll S τ (Syn.shift N) (Syn.shift x) := by
@@ -185,11 +181,9 @@ private abbrev prodEqF (F : PTm 2) : Fm PTm 3 :=
   ap3 (prod2F (Syn.subst ![var 0, var 2] F)) (var 0) (var 1) (var 2) ≐ ap2 (prodF F) (var 0) (var 2)
 
 private theorem prod2_eq_prod₀ (F : PTm 2) : ([] : List (Fm PTm 3)) ⊢[PRAAx] prodEqF F := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, subst_ap3, Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two]
-    exact (prod2_zero _ _ _).eqTrans (prod_zero _ _).eqSymm
-  · simp only [Fm.subst_eq, subst_ap2, subst_ap3, Syn.subst_var, Syn.repl_zero, repl_one, repl_two]
-    refine (prod2_succ _ _ _ _).eqTrans (.eqTrans ?_ (prod_succ _ _ _).eqSymm)
+  ipra_ind [subst_ap2, subst_ap3]
+  · exact (prod2_zero _ _ _).eqTrans (prod_zero _ _).eqSymm
+  · refine (prod2_succ _ _ _ _).eqTrans (.eqTrans ?_ (prod_succ _ _ _).eqSymm)
     have e : inst3 (Syn.subst ![var 0, var 2] F) (var 0 : PTm 3) (var 1) (var 2) = Syn.subst ![var 0, var 2] F := by
       simp only [inst3, Syn.subst_subst]
       congr 1; funext k; fin_cases k <;> rfl

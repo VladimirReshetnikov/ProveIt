@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCyclicChordSquare
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCyclicExponentialRoots (sample sampleRadius source rootF rootData root_regular sample_bound angleF angleData angle_input)
 open GaussianCyclicExponentialGroup (productF productData)
 open GaussianCyclicFullHalfAngle (half_source sineSample exponential_square)
@@ -41,9 +41,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_t
 open GaussianRationalPowerDifference (distance_refl_zero)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianApproximateInverseDistance (multiply_distance)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -60,17 +57,11 @@ def unitError : PTm n := two+num 6*sampleRadius
 def squareError : PTm n :=
   (chordRadius+compareRadius)*chordError+sineSquareRadius*unitError
 
-@[simp] theorem subst_realSine {L : ℕ} (σ : Fin n → PTm L) (p r m x : PTm n) :
-    Syn.subst σ (realSine p r m x) = realSine (Syn.subst σ p) (Syn.subst σ r) (Syn.subst σ m) (Syn.subst σ x) := by
-  simp [realSine]
+ipra_subst realSine
 
-@[simp] theorem subst_doubledSine {L : ℕ} (σ : Fin n → PTm L) (p r m x : PTm n) :
-    Syn.subst σ (doubledSine p r m x) = doubledSine (Syn.subst σ p) (Syn.subst σ r) (Syn.subst σ m) (Syn.subst σ x) := by
-  simp [doubledSine]
+ipra_subst doubledSine
 
-@[simp] theorem subst_chord {L : ℕ} (σ : Fin n → PTm L) (p r m x : PTm n) :
-    Syn.subst σ (chord p r m x) = chord (Syn.subst σ p) (Syn.subst σ r) (Syn.subst σ m) (Syn.subst σ x) := by
-  simp [chord]
+ipra_subst chord
 
 private theorem multiplier_bound : Γ ⊢[PRAAx] bounded (multiplier : PTm n) one one := by
   let a := ComplexLogarithmRemainder.neg (GaussianArctangentCayleyValues.imaginaryCode : PTm n)

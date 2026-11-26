@@ -17,17 +17,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalPowerExpansion
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qadd qmul horner hornerF evaluate canonical)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qone qadd_congr qmul_congr)
 open LeanProofs.IPRA.Analysis.GaussianRationalReciprocal (power)
 open LeanProofs.IPRA.Analysis.GaussianOffDominantTerms (term subst_term term_congr)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,27 +37,20 @@ def conservationLeft (C N delta m : PTm n) : PTm n :=
 def conservationLaw (C N delta m : PTm n) : Fm PTm n :=
   le m (succ N) ⟶ conservationLeft C N delta m ≐ evaluate C delta
 
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (C N delta : PTm n) :
-    Syn.subst σ (data C N delta) = data (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ delta) := by simp [data]
-@[simp] theorem subst_terms {l : ℕ} (σ : Fin n → PTm l) (C N delta : PTm n) :
-    Syn.subst σ (terms C N delta) = terms (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ delta) := by simp [terms]
+ipra_subst data
+ipra_subst terms
 @[simp] theorem subst_prefix {l : ℕ} (σ : Fin n → PTm l) (C N delta m : PTm n) :
     Syn.subst σ (partialSum C N delta m) = partialSum (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ delta) (Syn.subst σ m) := by simp [partialSum]
-@[simp] theorem subst_remaining {l : ℕ} (σ : Fin n → PTm l) (N m : PTm n) :
-    Syn.subst σ (remaining N m) = remaining (Syn.subst σ N) (Syn.subst σ m) := by simp [remaining]
-@[simp] theorem subst_conservationLeft {l : ℕ} (σ : Fin n → PTm l) (C N delta m : PTm n) :
-    Syn.subst σ (conservationLeft C N delta m) = conservationLeft (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ delta) (Syn.subst σ m) := by simp [conservationLeft]
-@[simp] theorem subst_conservationLaw {l : ℕ} (σ : Fin n → PTm l) (C N delta m : PTm n) :
-    (conservationLaw C N delta m).subst σ = conservationLaw (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ delta) (Syn.subst σ m) := by simp [conservationLaw]
+ipra_subst remaining
+ipra_subst conservationLeft
+ipra_subst conservationLaw
 
 theorem term_body_at (C N delta i : PTm n) : Γ ⊢[PRAAx]
     inst2 termBody i (data C N delta) ≐ term C N delta i := by
   simp only [termBody,inst2,subst_term,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
   have tail := snd_pair (Γ := Γ) C (pairT N delta)
-  exact term_congr (fst_pair _ _) ((congrFst tail).eqTrans (fst_pair _ _))
-    ((congrSnd tail).eqTrans (snd_pair _ _)) (.eqRefl _)
+  exact term_congr (fst_pair _ _) tail.fstE
+    tail.sndE (.eqRefl _)
 
 theorem terms_length (C N delta : PTm n) : Γ ⊢[PRAAx] length (terms C N delta) ≐ succ N := sequence_length _ _ _
 
@@ -124,11 +113,9 @@ theorem conservation (C N delta m : PTm n) (hLen : Γ ⊢[PRAAx] length C ≐ su
     (hm : Γ ⊢[PRAAx] le m (succ N)) : Γ ⊢[PRAAx]
     conservationLeft C N delta m ≐ evaluate C delta := by
   have all : Γ ⊢[PRAAx] .all (conservationLaw (Syn.shift C) (Syn.shift N) (Syn.shift delta) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_conservationLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (conservation_zero C N delta hLen).wk
-    · simp only [subst_conservationLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_conservationLaw]
+    · exact .impI (conservation_zero C N delta hLen).wk
+    · refine .impI ?_
       let I := conservationLaw (Syn.shift C) (Syn.shift N) (Syn.shift delta) (var 0)
       let Δ := le (succ (var 0)) (succ (Syn.shift N))::I::Γ.map Fm.shift
       have bound : Δ ⊢[PRAAx] le (var 0) (Syn.shift N) := (succ_monus_succ _ _).eqSymm.eqTrans Prf.hyp0
@@ -158,21 +145,19 @@ def output (C N delta : PTm n) : PTm n := pairT (terms C N delta)
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (C N delta : PTm n) : PTm n := ap3 outputF C N delta
 
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (C N delta : PTm n) :
-    Syn.subst σ (output C N delta) = output (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ delta) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (C N delta : PTm n) :
-    Syn.subst σ (run C N delta) = run (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ delta) := by simp [run]
+ipra_subst output
+ipra_subst run
 
 theorem program_at (C N delta : PTm n) : Γ ⊢[PRAAx] run C N delta ≐ output C N delta := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![C,N,delta]
 
 theorem returned_terms (C N delta : PTm n) : Γ ⊢[PRAAx] fstT (run C N delta) ≐ terms C N delta :=
-  (congrFst (program_at C N delta)).eqTrans (fst_pair _ _)
+  (program_at C N delta).fstE
 theorem returned_original (C N delta : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run C N delta)) ≐ evaluate C delta :=
-  (congrFst ((congrSnd (program_at C N delta)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at C N delta).sndE.fstE
 theorem returned_expansion (C N delta : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (run C N delta)) ≐ evaluate (terms C N delta) qone :=
-  (congrSnd ((congrSnd (program_at C N delta)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at C N delta).sndE.sndE
 
 theorem returned_equal (C N delta : PTm n) (hLen : Γ ⊢[PRAAx] length C ≐ succ N) : Γ ⊢[PRAAx]
     fstT (sndT (run C N delta)) ≐ sndT (sndT (run C N delta)) :=

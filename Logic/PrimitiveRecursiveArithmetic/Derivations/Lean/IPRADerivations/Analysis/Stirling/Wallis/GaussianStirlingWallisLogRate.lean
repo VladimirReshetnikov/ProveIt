@@ -17,7 +17,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingWallisLogRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianStirlingWallisGammaRatio (wallisF wallisData ratioF ratioData wallis_cross)
 open GaussianStirlingWallisRatioRate (wallis_rate)
 open GaussianStirlingWallisFactor (ratioFactor even_square_positive)
@@ -38,10 +38,6 @@ open RationalValueBounds (upper upper_congr upper_mono upper_of_radius)
 open RationalSupMetric (numeratorOf denominatorOf)
 open ComplexLogarithmRemainder (oneCode re)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -54,12 +50,9 @@ def margin : PTm n := two*two
 def nameF : PR 2 := GaussianNamedPositiveLogarithm.nameF retimed
 def data (r x : PTm n) : PTm n := GaussianNamedPositiveLogarithm.data (inputData r x) margin
 
-@[simp] theorem subst_inputData {l : ℕ} (σ : Fin n → PTm l) (r x : PTm n) :
-    Syn.subst σ (inputData r x) = inputData (Syn.subst σ r) (Syn.subst σ x) := by simp [inputData,two,one]
-@[simp] theorem subst_margin {l : ℕ} (σ : Fin n → PTm l) :
-    Syn.subst σ (margin : PTm n) = (margin : PTm l) := by simp [margin,two]
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (r x : PTm n) :
-    Syn.subst σ (data r x) = data (Syn.subst σ r) (Syn.subst σ x) := by simp [data]
+ipra_subst inputData [two, one]
+ipra_subst margin [two]
+ipra_subst data
 
 theorem wallis_regular (r x : PTm n) : Γ ⊢[PRAAx] pointCN wallisF (wallisData r x) :=
   multiply_fast _ _ _ _ (GaussianGammaHalfPiName.name_regular x) (constant_regular _)

@@ -15,7 +15,7 @@ set_option maxHeartbeats 550000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingGammaFractionalIncrementAffine
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale oneCode add re)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (represents represents_congr positive_product ofGaussian_represents qmul qadd qmul_represents qadd_represents)
@@ -26,8 +26,6 @@ open GaussianRationalSyntheticDivision (rescale_to)
 open GaussianRootAlgebra (sub re_add re_sub re_scale)
 open RationalRepresentedUpper (left right to_signed from_signed)
 open RationalValueBounds (upper)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

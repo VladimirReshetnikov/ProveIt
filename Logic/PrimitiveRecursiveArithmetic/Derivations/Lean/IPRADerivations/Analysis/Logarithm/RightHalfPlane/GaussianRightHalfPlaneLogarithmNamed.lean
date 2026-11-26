@@ -16,7 +16,7 @@ set_option maxHeartbeats 700000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRightHalfPlaneLogarithmNamed
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCompactCutoffAlignment (cross_data_congr)
@@ -31,9 +31,6 @@ open GaussianRationalL1 (raw_den_positive)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalValueEquality (commonDen)
 open GaussianRightHalfPlaneLogarithmRationalContinuity (local_guard widened_rate)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "G" => GaussianRightHalfPlaneLogarithm.nameF
@@ -49,8 +46,7 @@ def coefficient (R K : PTm n) : PTm n :=
 
 def gain : PR 2 := PTm.toPR (coefficient (var 0) (var 1) : PTm 2)
 
-@[simp] theorem subst_pointData {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    Syn.subst σ (pointData q) = pointData (Syn.subst σ q) := by simp [pointData]
+ipra_subst pointData
 
 theorem rational_data_at (q : PTm n) : Γ ⊢[PRAAx] ap1 rationalData q ≐ pointData q := by
   simpa only [rationalData, ap1, subst_pointData, Syn.subst_var, Matrix.cons_val_zero] using

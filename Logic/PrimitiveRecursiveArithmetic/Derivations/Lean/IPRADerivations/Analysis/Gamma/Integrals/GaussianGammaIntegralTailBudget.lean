@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaIntegralTailBudget
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaIntegralCutoffs (etaDen tailCoefficient height exact_eta_root_power omitted_tail_budget)
 open GaussianEulerIntegrandName (decayF decayData)
 open GaussianEulerDecayFactorBounds (original_integer_decay_bound)
@@ -26,10 +26,6 @@ open GaussianRationalReciprocal (power bounded_product bounded_sum bound_congr)
 open GaussianRationalMetric (bounded)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianRootSchedule (binaryLength)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -20,7 +20,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaFoldedMajorantExponent
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (positive_product qzero)
 open GaussianRationalMetric (bounded qsub)
 open GaussianRationalReciprocal (bound_congr)
@@ -32,16 +32,11 @@ open GaussianNameEquivalence (crossEquivalent)
 open GaussianGammaCanonicalExponentBound (numericalRadius)
 open GaussianFastValueCut (rawEnvelope)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def input (z R B N : PTm n) : Fm PTm n := source z R B ⋏ le (two*R) N
-@[simp] theorem subst_input {l : ℕ} (σ : Fin n → PTm l) (z R B N : PTm n) :
-    (input z R B N).subst σ = input (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [input]
+ipra_subst input
 
 theorem tail_source (z R B N : PTm n) (h : Γ ⊢[PRAAx] input z R B N) :
     Γ ⊢[PRAAx] GaussianGammaCanonicalTailName.source z R B N :=
@@ -91,11 +86,8 @@ def combinedF : PR 2 := GaussianNameArithmetic.addF exponentF (negativeF Gaussia
 def combinedData (z R B N : PTm n) : PTm n := GaussianNameArithmetic.addData (exponentData z R B)
   (negativeData (GaussianGammaCanonicalTailName.data z R B N))
 def combinedPoint (p z R B N : PTm n) : PTm n := ap2 combinedF p (combinedData z R B N)
-@[simp] theorem subst_combinedData {l : ℕ} (σ : Fin n → PTm l) (z R B N : PTm n) :
-    Syn.subst σ (combinedData z R B N) = combinedData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [combinedData]
-@[simp] theorem subst_combinedPoint {l : ℕ} (σ : Fin n → PTm l) (p z R B N : PTm n) :
-    Syn.subst σ (combinedPoint p z R B N) = combinedPoint (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ N) := by simp [combinedPoint]
+ipra_subst combinedData
+ipra_subst combinedPoint
 
 theorem combined_regular (z R B N : PTm n) (h : Γ ⊢[PRAAx] input z R B N) :
     Γ ⊢[PRAAx] pointCN combinedF (combinedData z R B N) :=
@@ -145,8 +137,7 @@ theorem combined_envelope (z R B N : PTm n) (h : Γ ⊢[PRAAx] input z R B N) :
 
 def correctedF : PR 2 := GaussianExactDiskShrinking.nameF combinedF
 def correctedData (z R B N : PTm n) : PTm n := GaussianExactDiskShrinking.data (combinedData z R B N) (numericalRadius R) one one
-@[simp] theorem subst_correctedData {l : ℕ} (σ : Fin n → PTm l) (z R B N : PTm n) :
-    Syn.subst σ (correctedData z R B N) = correctedData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [correctedData]
+ipra_subst correctedData
 
 theorem corrected_regular (z R B N : PTm n) (h : Γ ⊢[PRAAx] input z R B N) :
     Γ ⊢[PRAAx] pointCN correctedF (correctedData z R B N) :=
@@ -177,8 +168,7 @@ def majorantF : PR 2 := GaussianNameArithmetic.multiplyF GaussianGammaCanonicalE
 def majorantData (z R B N : PTm n) : PTm n := GaussianNameArithmetic.multiplyData
   GaussianGammaCanonicalExponent.constantF exponentialF (GaussianGammaEulerHead.run z B (two*R)) (exponentialData z R B N)
 def majorant (R : PTm n) : PTm n := R*pw (one+R) (two*R)*pw (num 3) (numericalRadius R)
-@[simp] theorem subst_exponentialData {l : ℕ} (σ : Fin n → PTm l) (z R B N : PTm n) :
-    Syn.subst σ (exponentialData z R B N) = exponentialData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [exponentialData]
+ipra_subst exponentialData
 @[simp] theorem subst_majorantData {l : ℕ} (σ : Fin n → PTm l) (z R B N : PTm n) :
     Syn.subst σ (majorantData z R B N) = majorantData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by
   simp only [majorantData,GaussianNameArithmetic.subst_multiplyData,subst_exponentialData,
@@ -187,8 +177,7 @@ def majorant (R : PTm n) : PTm n := R*pw (one+R) (two*R)*pw (num 3) (numericalRa
   congr 1
   funext i
   fin_cases i <;> simp
-@[simp] theorem subst_majorant {l : ℕ} (σ : Fin n → PTm l) (R : PTm n) :
-    Syn.subst σ (majorant R) = majorant (Syn.subst σ R) := by simp [majorant]
+ipra_subst majorant
 
 theorem exponential_regular (z R B N : PTm n) (h : Γ ⊢[PRAAx] input z R B N) :
     Γ ⊢[PRAAx] pointCN exponentialF (exponentialData z R B N) :=

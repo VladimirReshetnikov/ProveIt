@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCompletedVandermondeProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero qmul canonical canonical_congr evaluate)
 open GaussianRationalSyntheticDivision (qone qone_canonical qzero_canonical qmul_congr)
 open GaussianTranslatedNonconstant (recode recode_congr recode_eq)
@@ -32,10 +32,6 @@ open GaussianVandermondeCompletionElimination (eliminator eliminated delta_congr
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
 open LeanProofs.IPRA.Foundations.GuardedTotalization (sel sel_one sel_zero)
-open LeanProofs.IPRA.PTm (monus)
-open ConciseIPRA.PTm (zero succ app)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -54,10 +50,8 @@ def deltaRow (A m r : PTm n) : Fm PTm n := .all (lt (var 0) (Syn.shift m) ⟶
   cell (Syn.shift A) (Syn.shift r) (var 0) ≐ delta (Syn.shift r) (var 0))
 def deltaColumn (A m j : PTm n) : Fm PTm n := .all (lt (var 0) (Syn.shift m) ⟶
   cell (Syn.shift A) (var 0) (Syn.shift j) ≐ delta (var 0) (Syn.shift j))
-@[simp] theorem subst_deltaRow {l : ℕ} (σ : Fin n → PTm l) (A m r : PTm n) :
-    (deltaRow A m r).subst σ = deltaRow (Syn.subst σ A) (Syn.subst σ m) (Syn.subst σ r) := by simp [deltaRow,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_deltaColumn {l : ℕ} (σ : Fin n → PTm l) (A m j : PTm n) :
-    (deltaColumn A m j).subst σ = deltaColumn (Syn.subst σ A) (Syn.subst σ m) (Syn.subst σ j) := by simp [deltaColumn,Syn.subst_shift,Syn.shift_subst]
+ipra_subst deltaRow [Syn.subst_shift, Syn.shift_subst]
+ipra_subst deltaColumn [Syn.subst_shift, Syn.shift_subst]
 
 theorem left_delta_dot (A B m r j : PTm n) (hr : Γ ⊢[PRAAx] lt r m) (h : Γ ⊢[PRAAx] deltaRow A m r) : Γ ⊢[PRAAx]
     scalarDot A B m r j ≐ recode (cell B r j) := by
@@ -100,12 +94,9 @@ def extendedWeight (R r j : PTm n) : PTm n := sel (Signum.sg (monus (length R) j
 def extendedBody : PTm 3 := extendedWeight (var 2) (var 0) (var 1)
 def extended (R m : PTm n) : PTm n := table extendedBody m m R
 def completed (R m : PTm n) : PTm n := matrixProduct (eliminated R m) (extended R m) m
-@[simp] theorem subst_extendedWeight {l : ℕ} (σ : Fin n → PTm l) (R r j : PTm n) :
-    Syn.subst σ (extendedWeight R r j) = extendedWeight (Syn.subst σ R) (Syn.subst σ r) (Syn.subst σ j) := by simp [extendedWeight,sel,Signum.sg]
-@[simp] theorem subst_extended {l : ℕ} (σ : Fin n → PTm l) (R m : PTm n) :
-    Syn.subst σ (extended R m) = extended (Syn.subst σ R) (Syn.subst σ m) := by simp [extended]
-@[simp] theorem subst_completed {l : ℕ} (σ : Fin n → PTm l) (R m : PTm n) :
-    Syn.subst σ (completed R m) = completed (Syn.subst σ R) (Syn.subst σ m) := by simp [completed]
+ipra_subst extendedWeight [sel, Signum.sg]
+ipra_subst extended
+ipra_subst completed
 theorem extended_head (R r j : PTm n) (hj : Γ ⊢[PRAAx] lt j (length R)) : Γ ⊢[PRAAx]
     extendedWeight R r j ≐ coefficient R j r := sel_one (AnalyticNumberTheory.Totatives.sg_lt hj)
 theorem extended_tail (R r j : PTm n) (hj : Γ ⊢[PRAAx] le (length R) j) : Γ ⊢[PRAAx]
@@ -299,8 +290,7 @@ theorem determinant_product (R m : PTm n) (htm : Γ ⊢[PRAAx] le (length R) m) 
 
 /-- The SAME existing determinant of the actual original constant-polynomial table WP. -/
 def constantPolynomial (R m : PTm n) : PTm n := GaussianFiberDeterminantNonzero.polynomial R m
-@[simp] theorem subst_constantPolynomial {l : ℕ} (σ : Fin n → PTm l) (R m : PTm n) :
-    Syn.subst σ (constantPolynomial R m) = constantPolynomial (Syn.subst σ R) (Syn.subst σ m) := by simp [constantPolynomial]
+ipra_subst constantPolynomial
 theorem constant_polynomial_product (R m z : PTm n) (htm : Γ ⊢[PRAAx] le (length R) m) : Γ ⊢[PRAAx]
     evaluate (constantPolynomial R m) z ≐ pairProduct R (length R) :=
   (GaussianFiberDeterminantNonzero.polynomial_evaluation _ _ _).eqTrans (determinant_product R m htm)
@@ -319,14 +309,8 @@ def outputF : PR 2 := PTm.toPR (output (var 0) (var 1))
 def run (R m : PTm n) : PTm n := app outputF ![R,m]
 def fields (p : PTm n) : Fin 6 → PTm n := ![fstT p,fstT (sndT p),fstT (sndT (sndT p)),
   fstT (sndT (sndT (sndT p))),fstT (sndT (sndT (sndT (sndT p)))),sndT (sndT (sndT (sndT (sndT p))))]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (R m : PTm n) :
-    Syn.subst σ (output R m) = output (Syn.subst σ R) (Syn.subst σ m) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (R m : PTm n) :
-    Syn.subst σ (run R m) = run (Syn.subst σ R) (Syn.subst σ m) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 @[simp] theorem subst_fields {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) (i : Fin 6) :
     Syn.subst σ (fields p i) = fields (Syn.subst σ p) i := by fin_cases i <;> simp [fields]
 theorem program_at (R m : PTm n) : Γ ⊢[PRAAx] run R m ≐ output R m := by
@@ -334,17 +318,17 @@ theorem program_at (R m : PTm n) : Γ ⊢[PRAAx] run R m ≐ output R m := by
 theorem returned_fields (R m : PTm n) (i : Fin 6) : Γ ⊢[PRAAx] fields (run R m) i ≐
     ![W R m,extended R m,completed R m,scalarDet (W R m) m,pairProduct R (length R),constantPolynomial R m] i := by
   have e0 := program_at (Γ := Γ) R m
-  have e1 := (congrSnd e0).eqTrans (snd_pair _ _)
-  have e2 := (congrSnd e1).eqTrans (snd_pair _ _)
-  have e3 := (congrSnd e2).eqTrans (snd_pair _ _)
-  have e4 := (congrSnd e3).eqTrans (snd_pair _ _)
+  have e1 := e0.sndE
+  have e2 := e1.sndE
+  have e3 := e2.sndE
+  have e4 := e3.sndE
   fin_cases i
-  · exact (congrFst e0).eqTrans (fst_pair _ _)
-  · exact (congrFst e1).eqTrans (fst_pair _ _)
-  · exact (congrFst e2).eqTrans (fst_pair _ _)
-  · exact (congrFst e3).eqTrans (fst_pair _ _)
-  · exact (congrFst e4).eqTrans (fst_pair _ _)
-  · exact (congrSnd e4).eqTrans (snd_pair _ _)
+  · exact e0.fstE
+  · exact e1.fstE
+  · exact e2.fstE
+  · exact e3.fstE
+  · exact e4.fstE
+  · exact e4.sndE
 theorem returned_product (R m : PTm n) (htm : Γ ⊢[PRAAx] le (length R) m) : Γ ⊢[PRAAx]
     fields (run R m) 3 ≐ fields (run R m) 4 :=
   (returned_fields R m 3).eqTrans ((determinant_product R m htm).eqTrans (returned_fields R m 4).eqSymm)

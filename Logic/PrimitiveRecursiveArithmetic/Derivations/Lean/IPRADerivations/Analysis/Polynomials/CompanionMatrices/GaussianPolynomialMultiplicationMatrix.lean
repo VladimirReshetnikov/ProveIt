@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.CompanionMatrices.GaussianPolynomialMonicCompanion
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerExpansion
 import IPRADerivations.Foundations.BoundedSyntaxInduction
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # An actual internally sized polynomial multiplication matrix
@@ -19,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialMultiplicationMatrix
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero qadd qmul canonical evaluate horner hornerF)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision
   (qone qadd_congr qmul_congr canonicalCoefficients canonical_coefficient_at)
@@ -32,10 +31,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalReciprocal (power power_zero power
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
 open LeanProofs.IPRA.Foundations.BoundedSyntax (BFm formula)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
-open LeanProofs.IPRA.PTm (monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -51,19 +46,11 @@ def stepBody : PTm 3 := app advanceF ![fstT (var 2),fstT (sndT (sndT (var 2))),
 def stageF : PR 2 := rec2 initial stepBody
 def stage (F G m a c j : PTm n) : PTm n := ap2 stageF j (data F G m a c)
 
-@[simp] theorem subst_bound {l : ℕ} (σ : Fin n → PTm l) (a c j : PTm n) :
-    Syn.subst σ (bound a c j) = bound (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ j) := by simp [bound]
-@[simp] theorem subst_normalizedRows {l : ℕ} (σ : Fin n → PTm l) (G m : PTm n) :
-    Syn.subst σ (normalizedRows G m) = normalizedRows (Syn.subst σ G) (Syn.subst σ m) := by simp [normalizedRows]
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (F G m a c : PTm n) :
-    Syn.subst σ (data F G m a c) = data (Syn.subst σ F) (Syn.subst σ G)
-      (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by simp [data]
-@[simp] theorem subst_advance {l : ℕ} (σ : Fin n → PTm l) (F m a c j H : PTm n) :
-    Syn.subst σ (advance F m a c j H) = advance (Syn.subst σ F) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ j) (Syn.subst σ H) := by simp [advance]
-@[simp] theorem subst_stage {l : ℕ} (σ : Fin n → PTm l) (F G m a c j : PTm n) :
-    Syn.subst σ (stage F G m a c j) = stage (Syn.subst σ F) (Syn.subst σ G)
-      (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ j) := by simp [stage]
+ipra_subst bound
+ipra_subst normalizedRows
+ipra_subst data
+ipra_subst advance
+ipra_subst stage
 
 theorem bound_zero (a c : PTm n) : Γ ⊢[PRAAx] bound a c zero ≐ a := by unfold bound; ipra_ring
 theorem bound_succ (a c j : PTm n) : Γ ⊢[PRAAx] bound a c (succ j) ≐ bound a c j+c := by unfold bound; ipra_ring
@@ -91,8 +78,8 @@ theorem stage_zero (F G m a c : PTm n) : Γ ⊢[PRAAx]
         (σ := ![fstT (sndT (data F G m a c)),fstT (sndT (sndT (data F G m a c)))])
         (σ' := ![G,m]) (fun i => by
           fin_cases i
-          · exact (congrFst tail).eqTrans (fst_pair _ _)
-          · exact (congrFst rest).eqTrans (fst_pair _ _))
+          · exact tail.fstE
+          · exact rest.fstE)
   exact e.eqTrans h
 
 theorem stage_succ (F G m a c j : PTm n) : Γ ⊢[PRAAx]
@@ -120,9 +107,9 @@ theorem stage_succ (F G m a c j : PTm n) : Γ ⊢[PRAAx]
     intro i
     fin_cases i
     · exact fst_pair _ _
-    · exact (congrFst rest).eqTrans (fst_pair _ _)
-    · exact (congrFst last).eqTrans (fst_pair _ _)
-    · exact (congrSnd last).eqTrans (snd_pair _ _)
+    · exact rest.fstE
+    · exact last.fstE
+    · exact last.sndE
     · exact .eqRefl _
     · exact .eqRefl _
   exact e.eqTrans (h.eqTrans (advance_program _ _ _ _ _ _))
@@ -147,9 +134,7 @@ def stored (H m b : PTm n) : Fm PTm n :=
 theorem formula_stored (H m b : PTm n) : formula (storedSyntax H m b) = stored H m b := by
   simp only [storedSyntax,formula,coefficientsSyntax,scalarSyntax,wellFormedSyntax,
     stored,rowShape,canonicalCoefficients,canonical,RationalNormalForm.wellFormed,Syn.shift,subst_length]
-@[simp] theorem subst_stored {l : ℕ} (σ : Fin n → PTm l) (H m b : PTm n) :
-    (stored H m b).subst σ = stored (Syn.subst σ H) (Syn.subst σ m) (Syn.subst σ b) := by
-  simp [stored,Syn.subst_shift,Syn.shift_subst]
+ipra_subst stored [Syn.subst_shift, Syn.shift_subst]
 
 theorem stored_congr {H H' m m' b b' : PTm n} (hH : Γ ⊢[PRAAx] H ≐ H')
     (hm : Γ ⊢[PRAAx] m ≐ m') (hb : Γ ⊢[PRAAx] b ≐ b') (h : Γ ⊢[PRAAx] stored H m b) : Γ ⊢[PRAAx]
@@ -230,9 +215,7 @@ theorem normalized_values_evaluation (G m x y : PTm n) : Γ ⊢[PRAAx]
 
 def evaluationLaw (F G m a c x y j : PTm n) : Fm PTm n :=
   evaluate (values (stage F G m a c j) m x) y ≐ qmul (evaluate (values G m x) y) (power y j)
-@[simp] theorem subst_evaluationLaw {l : ℕ} (σ : Fin n → PTm l) (F G m a c x y j : PTm n) :
-    (evaluationLaw F G m a c x y j).subst σ = evaluationLaw (Syn.subst σ F) (Syn.subst σ G)
-      (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ j) := by simp [evaluationLaw]
+ipra_subst evaluationLaw
 
 theorem multiply_power_step (v y j : PTm n) : Γ ⊢[PRAAx]
     qmul y (qmul v (power y j)) ≐ qmul v (power y (succ j)) :=
@@ -256,14 +239,12 @@ theorem stage_evaluation (F G m a c x y j : PTm n)
       GaussianRationalHorner.subst_qzero,Syn.shift] using hCurve.shift
   have all : Γ ⊢[PRAAx] .all (evaluationLaw (Syn.shift F) (Syn.shift G) (Syn.shift m) (Syn.shift a) (Syn.shift c)
       (Syn.shift x) (Syn.shift y) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_evaluationLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (evaluation_congr (values_congr (stage_zero F G m a c) (.eqRefl _) (.eqRefl _)) (.eqRefl _)).eqTrans
+    ipra_qfind [subst_evaluationLaw]
+    · exact (evaluation_congr (values_congr (stage_zero F G m a c) (.eqRefl _) (.eqRefl _)) (.eqRefl _)).eqTrans
         ((normalized_values_evaluation G m x y).eqTrans
           ((GaussianReciprocalHorner.qmul_one_right _ (GaussianRationalHorner.horner_canonical _ _ _)).eqSymm.eqTrans
             (qmul_congr (.eqRefl _) (power_zero y).eqSymm)))
-    · simp only [subst_evaluationLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      let Δ := evaluationLaw (Syn.shift F) (Syn.shift G) (Syn.shift m) (Syn.shift a) (Syn.shift c)
+    · let Δ := evaluationLaw (Syn.shift F) (Syn.shift G) (Syn.shift m) (Syn.shift a) (Syn.shift c)
         (Syn.shift x) (Syn.shift y) (var 0) :: Γ.map Fm.shift
       have shape := stage_shape (Γ := Δ) (Syn.shift F) (Syn.shift G) (Syn.shift m)
         (Syn.shift a) (Syn.shift c) (var 0) gs.wk
@@ -280,15 +261,10 @@ def padding (m a c j : PTm n) : PTm n := monus (width m a c) (bound a c j)
 def matrixEntry (F G m a c r j : PTm n) : PTm n :=
   leftPad (entry (stage F G m a c j) (slot m r)) (padding m a c j)
 
-@[simp] theorem subst_slot {l : ℕ} (σ : Fin n → PTm l) (m r : PTm n) :
-    Syn.subst σ (slot m r) = slot (Syn.subst σ m) (Syn.subst σ r) := by simp [slot]
-@[simp] theorem subst_width {l : ℕ} (σ : Fin n → PTm l) (m a c : PTm n) :
-    Syn.subst σ (width m a c) = width (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by simp [width]
-@[simp] theorem subst_padding {l : ℕ} (σ : Fin n → PTm l) (m a c j : PTm n) :
-    Syn.subst σ (padding m a c j) = padding (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ j) := by simp [padding]
-@[simp] theorem subst_matrixEntry {l : ℕ} (σ : Fin n → PTm l) (F G m a c r j : PTm n) :
-    Syn.subst σ (matrixEntry F G m a c r j) = matrixEntry (Syn.subst σ F) (Syn.subst σ G)
-      (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ r) (Syn.subst σ j) := by simp [matrixEntry]
+ipra_subst slot
+ipra_subst width
+ipra_subst padding
+ipra_subst matrixEntry
 
 theorem index_le_pred (m j : PTm n) (hm : Γ ⊢[PRAAx] le one m) (hj : Γ ⊢[PRAAx] lt j m) : Γ ⊢[PRAAx]
     le j (pred m) := (succ_monus_succ _ _).eqSymm.eqTrans
@@ -346,15 +322,9 @@ def matrixRow (F G m a c r : PTm n) : PTm n := sequence entryBody m (pairT r (da
 def rowProgram : PR 6 := PTm.toPR (matrixRow (var 0) (var 1) (var 2) (var 3) (var 4) (var 5))
 def matrix (F G m a c : PTm n) : PTm n := sequence (packedBody rowProgram) m (data F G m a c)
 
-@[simp] theorem subst_columns {l : ℕ} (σ : Fin n → PTm l) (F G m a c : PTm n) :
-    Syn.subst σ (columns F G m a c) = columns (Syn.subst σ F) (Syn.subst σ G)
-      (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by simp [columns]
-@[simp] theorem subst_matrixRow {l : ℕ} (σ : Fin n → PTm l) (F G m a c r : PTm n) :
-    Syn.subst σ (matrixRow F G m a c r) = matrixRow (Syn.subst σ F) (Syn.subst σ G)
-      (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ r) := by simp [matrixRow]
-@[simp] theorem subst_matrix {l : ℕ} (σ : Fin n → PTm l) (F G m a c : PTm n) :
-    Syn.subst σ (matrix F G m a c) = matrix (Syn.subst σ F) (Syn.subst σ G)
-      (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by simp [matrix]
+ipra_subst columns
+ipra_subst matrixRow
+ipra_subst matrix
 
 theorem packed_body_at (f : PR 6) (F G m a c i : PTm n) : Γ ⊢[PRAAx]
     inst2 (packedBody f) i (data F G m a c) ≐ app f ![F,G,m,a,c,i] := by
@@ -376,10 +346,10 @@ theorem packed_body_at (f : PR 6) (F G m a c i : PTm n) : Γ ⊢[PRAAx]
   intro j
   fin_cases j
   · exact fst_pair _ _
-  · exact (congrFst e).eqTrans (fst_pair _ _)
-  · exact (congrFst f').eqTrans (fst_pair _ _)
-  · exact (congrFst g).eqTrans (fst_pair _ _)
-  · exact (congrSnd g).eqTrans (snd_pair _ _)
+  · exact e.fstE
+  · exact f'.fstE
+  · exact g.fstE
+  · exact g.sndE
   · exact .eqRefl _
 
 theorem column_program_at (F G m a c j : PTm n) : Γ ⊢[PRAAx]
@@ -423,11 +393,11 @@ theorem entry_body_at (F G m a c r j : PTm n) : Γ ⊢[PRAAx]
     apply congrApp entryProgram
     intro t
     fin_cases t
-    · exact (congrFst e).eqTrans (fst_pair _ _)
-    · exact (congrFst d).eqTrans (fst_pair _ _)
-    · exact (congrFst f).eqTrans (fst_pair _ _)
-    · exact (congrFst g).eqTrans (fst_pair _ _)
-    · exact (congrSnd g).eqTrans (snd_pair _ _)
+    · exact e.fstE
+    · exact d.fstE
+    · exact f.fstE
+    · exact g.fstE
+    · exact g.sndE
     · exact fst_pair _ _
     · exact .eqRefl _
   exact fields.eqTrans (entry_program_at _ _ _ _ _ _ _)
@@ -473,20 +443,11 @@ def pairingTerms (M m j x y : PTm n) : PTm n := sequence pairingBody m (pairingD
 def pairing (M m j x y : PTm n) : PTm n := evaluate (pairingTerms M m j x y) qone
 def matrixPairing (F G m a c j x y : PTm n) : PTm n := pairing (matrix F G m a c) m j x y
 
-@[simp] theorem subst_pairingData {l : ℕ} (σ : Fin n → PTm l) (M j x y : PTm n) :
-    Syn.subst σ (pairingData M j x y) = pairingData (Syn.subst σ M) (Syn.subst σ j) (Syn.subst σ x) (Syn.subst σ y) := by simp [pairingData]
-@[simp] theorem subst_pairingTerm {l : ℕ} (σ : Fin n → PTm l) (M j x y r : PTm n) :
-    Syn.subst σ (pairingTerm M j x y r) = pairingTerm (Syn.subst σ M) (Syn.subst σ j)
-      (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ r) := by simp [pairingTerm]
-@[simp] theorem subst_pairingTerms {l : ℕ} (σ : Fin n → PTm l) (M m j x y : PTm n) :
-    Syn.subst σ (pairingTerms M m j x y) = pairingTerms (Syn.subst σ M) (Syn.subst σ m)
-      (Syn.subst σ j) (Syn.subst σ x) (Syn.subst σ y) := by simp [pairingTerms]
-@[simp] theorem subst_pairing {l : ℕ} (σ : Fin n → PTm l) (M m j x y : PTm n) :
-    Syn.subst σ (pairing M m j x y) = pairing (Syn.subst σ M) (Syn.subst σ m)
-      (Syn.subst σ j) (Syn.subst σ x) (Syn.subst σ y) := by simp [pairing]
-@[simp] theorem subst_matrixPairing {l : ℕ} (σ : Fin n → PTm l) (F G m a c j x y : PTm n) :
-    Syn.subst σ (matrixPairing F G m a c j x y) = matrixPairing (Syn.subst σ F) (Syn.subst σ G)
-      (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ j) (Syn.subst σ x) (Syn.subst σ y) := by simp [matrixPairing]
+ipra_subst pairingData
+ipra_subst pairingTerm
+ipra_subst pairingTerms
+ipra_subst pairing
+ipra_subst matrixPairing
 
 theorem pairing_body_at (M j x y r : PTm n) : Γ ⊢[PRAAx]
     inst2 pairingBody r (pairingData M j x y) ≐ pairingTerm M j x y r := by
@@ -494,9 +455,9 @@ theorem pairing_body_at (M j x y r : PTm n) : Γ ⊢[PRAAx]
   have e := snd_pair (Γ := Γ) M (pairT j (pairT x y))
   have f := (congrSnd e).eqTrans (snd_pair j (pairT x y))
   exact qmul_congr
-    (congrAp2 GaussianRationalReciprocal.powerF (.eqRefl _) ((congrSnd f).eqTrans (snd_pair _ _)))
-    (evaluation_congr (entry_congr (entry_congr (fst_pair _ _) (.eqRefl _)) ((congrFst e).eqTrans (fst_pair _ _)))
-      ((congrFst f).eqTrans (fst_pair _ _)))
+    (congrAp2 GaussianRationalReciprocal.powerF (.eqRefl _) f.sndE)
+    (evaluation_congr (entry_congr (entry_congr (fst_pair _ _) (.eqRefl _)) e.fstE)
+      f.fstE)
 theorem pairing_length (M m j x y : PTm n) : Γ ⊢[PRAAx] length (pairingTerms M m j x y) ≐ m := sequence_length _ _ _
 theorem pairing_lookup (M m j x y r : PTm n) (hr : Γ ⊢[PRAAx] lt r m) : Γ ⊢[PRAAx]
     entry (pairingTerms M m j x y) r ≐ pairingTerm M j x y r :=
@@ -565,16 +526,8 @@ def matrixF : PR 5 := PTm.toPR (matrix (var 0) (var 1) (var 2) (var 3) (var 4))
 def output (F G m a c : PTm n) : PTm n := pairT (columns F G m a c) (matrix F G m a c)
 def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (F G m a c : PTm n) : PTm n := app outputF ![F,G,m,a,c]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (F G m a c : PTm n) :
-    Syn.subst σ (output F G m a c) = output (Syn.subst σ F) (Syn.subst σ G)
-      (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (F G m a c : PTm n) :
-    Syn.subst σ (run F G m a c) = run (Syn.subst σ F) (Syn.subst σ G)
-      (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 theorem columns_program (F G m a c : PTm n) : Γ ⊢[PRAAx]
     app columnsF ![F,G,m,a,c] ≐ columns F G m a c := by
   simpa [columnsF] using toPR_eq (Γ := Γ) (columns (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![F,G,m,a,c]
@@ -584,9 +537,9 @@ theorem matrix_program (F G m a c : PTm n) : Γ ⊢[PRAAx]
 theorem program_at (F G m a c : PTm n) : Γ ⊢[PRAAx] run F G m a c ≐ output F G m a c := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![F,G,m,a,c]
 theorem returned_columns (F G m a c : PTm n) : Γ ⊢[PRAAx] fstT (run F G m a c) ≐ columns F G m a c :=
-  (congrFst (program_at _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _ _).fstE
 theorem returned_matrix (F G m a c : PTm n) : Γ ⊢[PRAAx] sndT (run F G m a c) ≐ matrix F G m a c :=
-  (congrSnd (program_at _ _ _ _ _)).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _ _).sndE
 theorem returned_columns_length (F G m a c : PTm n) : Γ ⊢[PRAAx] length (fstT (run F G m a c)) ≐ m :=
   (congrFst (returned_columns _ _ _ _ _)).eqTrans (columns_length _ _ _ _ _)
 theorem returned_matrix_length (F G m a c : PTm n) : Γ ⊢[PRAAx] length (sndT (run F G m a c)) ≐ m :=

@@ -18,7 +18,7 @@ set_option maxHeartbeats 1100000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalNamedValueDerivative
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 
 open GaussianBarnesCanonicalNamedDemand (source native_source)
 open GaussianBarnesCanonicalNamedFrozen (source_widen)
@@ -32,10 +32,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalL1 (rawGaussian rawDen)
 open GaussianRationalMetric (distanceBounded)
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (succ zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "V" => GaussianBarnesCanonicalValueDerivative.nameF

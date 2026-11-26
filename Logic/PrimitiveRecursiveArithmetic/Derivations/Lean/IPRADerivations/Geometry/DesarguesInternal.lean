@@ -1,8 +1,6 @@
 import IPRADerivations.Geometry.CevaMenelaus
 import IPRADerivations.Geometry.Projective
 import IPRADerivations.DiophantineNumberTheory.FermatQuartic
-import IPRADerivations.Core.BoundedSums
-import IPRADerivations.Core.Pairing
 
 /-!
 # Internal Desargues: incidence, the common-kernel algorithm and both implications
@@ -53,13 +51,11 @@ theorem zt_dich (x : ZT n) : Γ ⊢[PRAAx] nz x ⋎ (D x ≐ zero) := by
 
 theorem eq0_of_D {x : ZT n} (h : Γ ⊢[PRAAx] D x ≐ zero) : Γ ⊢[PRAAx] ZT.eq x (ZT.natLit 0) := by
   have e := le_antisymm (add_eq_zero_left h) (add_eq_zero_right h)
-  have e' := natEq e
   apply deriveNat; simp only [ZT.natLit, ZT.ofNat]; ipra_simps
-  linear_combination e'
+  linear_combination natEq e
 
 theorem toZ_zero_of {x : ZT n} (h : Γ ⊢[PRAAx] D x ≐ zero) : ZT.toZ Γ x = 0 := by
-  have e := ZT.toZ_eq (eq0_of_D h)
-  simpa using e
+  simpa using ZT.toZ_eq (eq0_of_D h)
 
 theorem D_of_eq0 {x : ZT n} (h : Γ ⊢[PRAAx] ZT.eq x (ZT.natLit 0)) : Γ ⊢[PRAAx] D x ≐ zero := by
   have e : Γ ⊢[PRAAx] x.pos ≐ x.neg := by
@@ -75,8 +71,7 @@ theorem nz_absurd {x : ZT n} (φ : Fm PTm n) (hx : Γ ⊢[PRAAx] nz x) (h : Γ �
 theorem nz_congr {x y : ZT n} (h : Γ ⊢[PRAAx] ZT.eq x y) (hx : Γ ⊢[PRAAx] nz x) : Γ ⊢[PRAAx] nz y := by
   refine .orE (zt_dich y) Prf.hyp0 ?_
   have ey := toZ_zero_of (Γ := (D y ≐ zero) :: Γ) Prf.hyp0
-  have ex := ZT.toZ_eq (Γ := (D y ≐ zero) :: Γ) h.wk
-  exact nz_absurd _ hx.wk (D_of_eq0 (ZT.derive (by rw [ex, ey]; simp)))
+  exact nz_absurd _ hx.wk (D_of_eq0 (ZT.derive (by rw [ZT.toZ_eq (Γ := (D y ≐ zero) :: Γ) h.wk, ey]; simp)))
 
 theorem nz_neg {x : ZT n} (hx : Γ ⊢[PRAAx] nz x) : Γ ⊢[PRAAx] nz (-x) :=
   le_congr (.eqRefl _) (add_comm _ _) hx
@@ -284,9 +279,8 @@ theorem desargues_forward {o : Vec 3 n} (ho : Γ ⊢[PRAAx] nzV o)
     (hX : Γ ⊢[PRAAx] nzV (meet a b A B)) :
     Γ ⊢[PRAAx] kernel (axis (meet a b A B) (meet b c B C) (meet c a C A))
       (meet a b A B) (meet b c B C) (meet c a C A) := by
-  have tj := ZT.toZ_eq (inc_det ho h₁ h₂ h₃)
   refine axis_spec hX (ZT.derive ?_)
-  rw [des_toZ, tj, ZT.toZ_natLit]; simp
+  rw [des_toZ, ZT.toZ_eq (inc_det ho h₁ h₂ h₃), ZT.toZ_natLit]; simp
 
 /-- `thm:des-summary`, reverse: for nondegenerate triangles, a nonzero line `h` through the side
 intersections gives the nonzero centre `axis(j₁, j₂, j₃)` (for `j₁ ≠ 0`). -/

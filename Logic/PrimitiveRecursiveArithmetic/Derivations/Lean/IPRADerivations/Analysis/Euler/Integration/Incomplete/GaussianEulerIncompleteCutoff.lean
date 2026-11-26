@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaCompactCutoffSplit
 import IPRADerivations.Analysis.Beta.Partitions.GaussianBetaRefinedFixedCompactComparison
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Splitting an original Euler cutoff at a positive rational point
@@ -15,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIncompleteCutoff
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaIntegralCutoffs (height etaDen top)
 open GaussianGammaCompactQuadratureBoundary (width exact_right_endpoint)
 open GaussianEulerCompactAdditivity (intervalSource nameF addedData)
@@ -23,10 +22,6 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameEquivalence (crossEquivalent cross_trans)
 open GaussianRationalHorner (positive_product)
 open GaussianExponentialReference (unit_monotone)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

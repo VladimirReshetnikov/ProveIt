@@ -16,7 +16,7 @@ set_option linter.unnecessarySeqFocus false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticRationalCongruence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open QuadraticSignCertificates (first second equal multiply_first multiply_second negative_first negative_second)
 open QuadraticConeOrder (equal_of_values equal_symm add_first add_second)
 open QuadraticRationalClearing (clear denominator represents clear_represents denominator_positive)
@@ -24,9 +24,6 @@ open QuadraticPositiveScaling (scale scale_first scale_second sign_scale)
 open QuadraticRationalPairArithmetic (add negative multiply positive)
 open QuadraticRationalEqualityOrder (difference cross crossOf equivalent less zero_cross positive_cross)
 open LeanProofs.IPRA.Analysis.RationalAlgebra (positive_product)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -140,16 +137,8 @@ def output (d x x' y y' : PTm n) : PTm n := pairT
     (QuadraticRationalClearing.sign d (difference (multiply d x y) (multiply d x' y'))))
 def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (d x x' y y' : PTm n) : PTm n := PTm.app outputF ![d,x,x',y,y']
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (d x x' y y' : PTm n) :
-    Syn.subst σ (output d x x' y y') = output (Syn.subst σ d) (Syn.subst σ x) (Syn.subst σ x')
-      (Syn.subst σ y) (Syn.subst σ y') := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (d x x' y y' : PTm n) :
-    Syn.subst σ (run d x x' y y') = run (Syn.subst σ d) (Syn.subst σ x) (Syn.subst σ x')
-      (Syn.subst σ y) (Syn.subst σ y') := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 theorem program_at (d x x' y y' : PTm n) : Γ ⊢[PRAAx] run d x x' y y' ≐ output d x x' y y' := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![d,x,x',y,y']
 theorem returned_zero_certificate (d x x' y y' : PTm n) (hd : Γ ⊢[PRAAx] le one d)

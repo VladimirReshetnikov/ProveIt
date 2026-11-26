@@ -16,7 +16,7 @@ set_option maxHeartbeats 670000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetSineKernelPrefix
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetArctangentSineUniform (clock count)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianBinetFrozenKernelRectangle (matrix)
@@ -30,10 +30,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalRiemannRefinement (termsDistance sum_distance weight)
 open GaussianRationalSyntheticDivision (qmul_congr)
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (monus num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "L" => GaussianBinetArctangentSineUniform.cutoff

@@ -15,16 +15,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicClientRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLogarithmicCompactName (sample query)
 open GaussianEulerLogarithmicMultiplier (observationCost)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianRationalHorner (positive_product)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -33,13 +30,8 @@ def source (z R S B E T F U a b : PTm n) : Fm PTm n :=
   GaussianEulerLogarithmicMultiplier.source z R B E T a b ⋏
     GaussianEulerLogarithmicMultiplier.source z S B F U a b
 def cost (j R S E T F U : PTm n) : PTm n := observationCost j R E T+observationCost j S F U
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R S B E T F U a b : PTm n) :
-    (source z R S B E T F U a b).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ S)
-      (Syn.subst σ B) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ F) (Syn.subst σ U) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [source]
-@[simp] theorem subst_cost {m : ℕ} (σ : Fin n → PTm m) (j R S E T F U : PTm n) :
-    Syn.subst σ (cost j R S E T F U) = cost (Syn.subst σ j) (Syn.subst σ R) (Syn.subst σ S)
-      (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ F) (Syn.subst σ U) := by simp [cost]
+ipra_subst source
+ipra_subst cost
 
 theorem original_to_raw (p s j z R B E T a b : PTm n)
     (h : Γ ⊢[PRAAx] GaussianEulerLogarithmicMultiplier.source z R B E T a b) : Γ ⊢[PRAAx]

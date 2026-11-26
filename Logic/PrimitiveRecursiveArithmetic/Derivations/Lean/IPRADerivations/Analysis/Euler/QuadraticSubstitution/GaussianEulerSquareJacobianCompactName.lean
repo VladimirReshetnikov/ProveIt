@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Euler.QuadraticSubstitution.GaussianEulerSquareJacobianRate
 import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactAdditivity
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # An actual compact name of the retimed quadratic Euler Jacobian
@@ -15,15 +14,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerSquareJacobianCompactName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerSquareJacobianRate (rawF rawData rawSample query lipschitz)
 open GaussianCompactRiemannName (inside sampledModulus localBody)
 open GaussianCompactLogarithmBounds (domain)
 open GaussianRationalMetric (distanceBounded)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
 open GaussianRationalDistanceOrder (distance_congr)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -36,16 +33,10 @@ def data (z R B c d a C E T : PTm n) : PTm n :=
   GaussianCompactRiemannName.data a C E (lipschitz R E T c d) T (fixedData z B c d T)
 abbrev nameF : PR 2 := GaussianCompactRiemannName.nameF evaluatorF
 
-@[simp] theorem subst_fixedData {m : ℕ} (σ : Fin n → PTm m) (z B c d T : PTm n) :
-    Syn.subst σ (fixedData z B c d T) = fixedData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ c) (Syn.subst σ d) (Syn.subst σ T) := by simp [fixedData]
-@[simp] theorem subst_evaluatorTerm {m : ℕ} (σ : Fin n → PTm m) (p t y : PTm n) :
-    Syn.subst σ (evaluatorTerm p t y) = evaluatorTerm (Syn.subst σ p) (Syn.subst σ t) (Syn.subst σ y) := by simp [evaluatorTerm]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B c d a C E T : PTm n) :
-    (source z R B c d a C E T).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ c) (Syn.subst σ d) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by simp [source]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (z R B c d a C E T : PTm n) :
-    Syn.subst σ (data z R B c d a C E T) = data (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ c) (Syn.subst σ d) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by simp [data]
+ipra_subst fixedData
+ipra_subst evaluatorTerm
+ipra_subst source
+ipra_subst data
 
 theorem evaluator_at (p t z B c d T : PTm n) : Γ ⊢[PRAAx]
     ap3 evaluatorF p t (fixedData z B c d T) ≐ ap3 rawF (query p T c) t (rawData z B c d) := by
@@ -55,7 +46,7 @@ theorem evaluator_at (p t z B c d T : PTm n) : Γ ⊢[PRAAx]
   have qc : Γ ⊢[PRAAx] query p (fstT (fixedData z B c d T)) (fstT (sndT (fixedData z B c d T))) ≐ query p T c := by
     ipra_congr (query (var 0) (var 1) (var 2) : PTm 3) with
       [.eqRefl p, (show _ ⊢[PRAAx] fstT (fixedData z B c d T) ≐ T from fst_pair _ _),
-        (show _ ⊢[PRAAx] fstT (sndT (fixedData z B c d T)) ≐ c from (congrFst tail).eqTrans (fst_pair _ _))]
+        (show _ ⊢[PRAAx] fstT (sndT (fixedData z B c d T)) ≐ c from tail.fstE)]
   exact term.eqTrans (congrAp3 rawF qc (.eqRefl _) tail)
 
 theorem evaluator_decoded_at (p t z B c d T : PTm n) : Γ ⊢[PRAAx]

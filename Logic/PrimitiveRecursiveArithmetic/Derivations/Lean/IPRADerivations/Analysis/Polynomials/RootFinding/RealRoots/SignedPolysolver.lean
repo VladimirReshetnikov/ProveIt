@@ -26,10 +26,8 @@ certificates of `Core/IntCertificates`. (The natural-term feedback theory is `An
 
 namespace LeanProofs.IPRA.Analysis.SignedPolysolver
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Algebra.AdjugateInverse (conjFin_elim toZ_of_eqFm)
-open Syn
-open scoped Fm
 
 variable {n d : ℕ} {Γ : List (Fm PTm n)}
 

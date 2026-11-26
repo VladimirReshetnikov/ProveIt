@@ -1,5 +1,4 @@
 import IPRADerivations.Geometry.TriangleCentres
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The inscribed angle theorem and its companions
@@ -30,10 +29,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Geometry.InscribedAngles
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Geometry.TriangleCentres (dot det nsq)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -11,7 +11,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderCrossedRectangles
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (fraction)
 open GaussianStirlingAllOrderBoxProductGap (sampleAt weightAt boxMargin)
 open GaussianStirlingAllOrderCrossedCells (segmentData bernoulliBody reflectedBody bernoulli_at reflected_at
@@ -21,22 +21,12 @@ open RationalArgmin (rationalLE rationalLE_congr)
 open RationalArithmetic (add multiply)
 open RationalCrossedProductSums (cell rectangleCells productBody rectangle_order)
 open RationalFiniteSum (term sum)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 local notation "qzero" => fraction zero one
 
-@[simp] theorem subst_boxMargin {l : ℕ} (σ : Fin n → PTm l) (m : ℕ) (q A B : PTm n) :
-    Syn.subst σ (boxMargin m q A B) = boxMargin m (Syn.subst σ q) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [boxMargin,GaussianStirlingAllOrderBernoulliMeshMargin.margin,GaussianStirlingAllOrderBernoulliMeshMargin.coarseDen,
-    GaussianStirlingAllOrderPairedRefinement.centerGap,GaussianStirlingAllOrderCenteredBernoulli.denominator,
-    BernoulliBounds.zint,pw,GaussianStirlingAllOrderPairedWeight.gapFraction,
-    GaussianStirlingAllOrderPairedWeight.gapNumerator,GaussianStirlingAllOrderPairedWeight.gapDenominator,
-    GaussianStirlingAllOrderPowerGap.gap]
+ipra_subst boxMargin [GaussianStirlingAllOrderBernoulliMeshMargin.margin, GaussianStirlingAllOrderBernoulliMeshMargin.coarseDen, GaussianStirlingAllOrderPairedRefinement.centerGap, GaussianStirlingAllOrderCenteredBernoulli.denominator, BernoulliBounds.zint, pw, GaussianStirlingAllOrderPairedWeight.gapFraction, GaussianStirlingAllOrderPairedWeight.gapNumerator, GaussianStirlingAllOrderPairedWeight.gapDenominator, GaussianStirlingAllOrderPowerGap.gap]
 
 private theorem cell_readback (m : ℕ) (q A B S left right i j c : PTm n)
     (h : Γ ⊢[PRAAx] cell (sampleAt m S (left+i)) (weightAt q A B S (left+i))

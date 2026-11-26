@@ -15,15 +15,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerCompactPowerMajorant
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerExponentCompactBounds (source)
 open GaussianEulerIntegrandName (coefficient powerClock powerExponentF powerExponentData powerF powerData powerRadius)
 open GaussianCompactLogarithmBounds (domain)
 open GaussianRationalMetric (bounded)
 open GaussianRationalReciprocal (bound_congr bounded_product)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

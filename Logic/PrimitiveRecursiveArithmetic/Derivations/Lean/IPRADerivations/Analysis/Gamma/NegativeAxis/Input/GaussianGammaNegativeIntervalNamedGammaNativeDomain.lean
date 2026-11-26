@@ -16,7 +16,7 @@ set_option maxHeartbeats 1400000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalNamedGammaNativeDomain
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open ComplexLogarithmRemainder (scale oneCode normSq normSq_scale bounded)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -36,10 +36,6 @@ open GaussianRootAlgebra (equal equal_of_values re_add im_add re_sub im_sub re_n
 open GaussianStirlingGammaLogarithm (arg)
 open GaussianUnitIntervalInputDecoding (numerator denominator fraction_recode)
 open GaussianPositiveRationalLogarithm (fraction)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -59,23 +55,12 @@ def shiftSample (f : PR 2) (k x N : PTm n) : PTm n :=
 def shiftData (x N : PTm n) : PTm n := pairT x N
 def shiftF (f : PR 2) : PR 2 := PTm.toPR (shiftSample f (var 0) (fstT (var 1)) (sndT (var 1)))
 
-@[simp] theorem subst_radius {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (radius N) = radius (Syn.subst σ N) := by simp [radius]
-@[simp] theorem subst_encodedNumerator {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (k x N : PTm n) :
-    Syn.subst σ (encodedNumerator f k x N) = encodedNumerator f (Syn.subst σ k) (Syn.subst σ x) (Syn.subst σ N) := by
-  simp [encodedNumerator,argument]
-@[simp] theorem subst_encodedDenominator {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (k x : PTm n) :
-    Syn.subst σ (encodedDenominator f k x) = encodedDenominator f (Syn.subst σ k) (Syn.subst σ x) := by
-  simp [encodedDenominator]
-@[simp] theorem subst_frozenData {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (k x E N : PTm n) :
-    Syn.subst σ (frozenData f k x E N) = frozenData f (Syn.subst σ k) (Syn.subst σ x) (Syn.subst σ E) (Syn.subst σ N) := by
-  simp [frozenData,gammaData,GaussianGammaReciprocalInverse.gammaHeight]
-@[simp] theorem subst_shiftSample {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (k x N : PTm n) :
-    Syn.subst σ (shiftSample f k x N) = shiftSample f (Syn.subst σ k) (Syn.subst σ x) (Syn.subst σ N) := by
-  simp [shiftSample]
-@[simp] theorem subst_shiftData {m : ℕ} (σ : Fin n → PTm m) (x N : PTm n) :
-    Syn.subst σ (shiftData x N) = shiftData (Syn.subst σ x) (Syn.subst σ N) := by
-  simp [shiftData]
+ipra_subst radius
+ipra_subst encodedNumerator [argument]
+ipra_subst encodedDenominator
+ipra_subst frozenData [gammaData, GaussianGammaReciprocalInverse.gammaHeight]
+ipra_subst shiftSample
+ipra_subst shiftData
 
 theorem uniform_margin (a b E : PTm n) (h : Γ ⊢[PRAAx] window a b E) :
     Γ ⊢[PRAAx] localMargin (arg a) b one (monus E one) E := by

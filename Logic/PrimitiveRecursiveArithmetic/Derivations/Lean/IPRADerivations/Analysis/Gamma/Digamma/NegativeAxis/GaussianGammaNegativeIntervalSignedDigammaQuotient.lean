@@ -17,7 +17,7 @@ set_option maxHeartbeats 500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalSignedDigammaQuotient
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaAdjacentCutoff (multiply_cross)
@@ -40,9 +40,6 @@ open GaussianNamedInverseRate (independentRate)
 open GaussianRationalHorner (qzero ofGaussian)
 open GaussianRationalSyntheticDivision (qmul_congr qmul_zero_left qmul_zero_right qzero_canonical)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "P" => GaussianGammaC7Name.nameF

@@ -15,7 +15,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedBoundedSquareRoot
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.SquareRootRelationalCandidates (candidate)
 open GaussianRationalNonnegativeFractions (numerator denominator denominator_positive fraction_at)
 open GaussianRationalNonnegativeProducts (nonnegative)
@@ -27,10 +27,6 @@ open GaussianNameEquivalence (crossEquivalent cross_at cross_symm cross_trans po
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianPositiveRationalLogarithm (fraction)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -38,9 +34,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 def observations (f : PR 2) (x : PTm n) : Fm PTm n := .all
   (canonical (ap2 f (var 0) (Syn.shift x)) ⋏ nonnegative (ap2 f (var 0) (Syn.shift x)))
 
-@[simp] theorem subst_observations {l : ℕ} (σ : Fin n → PTm l) (f : PR 2) (x : PTm n) :
-    (observations f x).subst σ = observations f (Syn.subst σ x) := by
-  simp [observations,Syn.subst_shift,Syn.shift_subst]
+ipra_subst observations [Syn.subst_shift, Syn.shift_subst]
 
 theorem observation_at (f : PR 2) (p x : PTm n) (h : Γ ⊢[PRAAx] observations f x) :
     Γ ⊢[PRAAx] canonical (ap2 f p x) ⋏ nonnegative (ap2 f p x) := by
@@ -53,13 +47,9 @@ def rootPoint (g : PR 2) (p y : PTm n) : PTm n :=
   fraction (candidate (numerator q) (denominator q) p) (unit p)
 def sqrtF (g : PR 2) : PR 2 := PTm.toPR (rootPoint g (rootClock (var 0)) (var 1) : PTm 2)
 
-@[simp] theorem subst_rootClock {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) :
-    Syn.subst σ (rootClock p) = rootClock (Syn.subst σ p) := by simp [rootClock]
-@[simp] theorem subst_radicandClock {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) :
-    Syn.subst σ (radicandClock p) = radicandClock (Syn.subst σ p) := by simp [radicandClock]
-@[simp] theorem subst_rootPoint {l : ℕ} (σ : Fin n → PTm l) (g : PR 2) (p y : PTm n) :
-    Syn.subst σ (rootPoint g p y) = rootPoint g (Syn.subst σ p) (Syn.subst σ y) := by
-  simp [rootPoint]
+ipra_subst rootClock
+ipra_subst radicandClock
+ipra_subst rootPoint
 
 theorem sample_at (g : PR 2) (p y : PTm n) : Γ ⊢[PRAAx] ap2 (sqrtF g) p y ≐ rootPoint g (rootClock p) y := by
   simpa [sqrtF,ap2] using toPR_eq (Γ := Γ) (rootPoint g (rootClock (var 0)) (var 1) : PTm 2) ![p,y]
@@ -144,10 +134,9 @@ theorem square_root_at (f g : PR 2) (p q x y : PTm n)
   have second : Γ ⊢[PRAAx] distanceBounded Y Z (num 3*P) (P*D) :=
     distance_radius_mono _ _ _ _ _ _ hD pd (by ipra_le 0) (scheduled_root f g r x y hf nf ng sq)
   have total := distance_triangle_same X Y Z (P+D) (num 3*P) (P*D) pd first second
-  have e := natEq (root_clock_unit (Γ := Γ) q)
   have narrowed : Γ ⊢[PRAAx] distanceBounded X Z (P+Q) (P*Q) :=
     distance_radius_mono _ _ _ _ _ _ pd (positive_product _ _ hP hQ)
-      (by ipra_le 0 with (𝔞 P)^2*e) total
+      (by ipra_le 0 with (𝔞 P)^2*natEq (root_clock_unit (Γ := Γ) q)) total
   exact distance_congr (.eqRefl _) (sample_at g q y).eqSymm (.eqRefl _) (.eqRefl _) narrowed
 
 theorem square_root_cross (f g : PR 2) (x y : PTm n)

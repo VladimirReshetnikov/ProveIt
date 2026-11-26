@@ -1,8 +1,5 @@
 import IPRADerivations.Core.Gcd
-import IPRADerivations.Core.Order
 import IPRADerivations.Core.SumOrder
-import IPRADerivations.Core.Tactic
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The recursion step of the rational Brunn–Minkowski theorem
@@ -29,11 +26,7 @@ itself.
 
 namespace LeanProofs.IPRA.Geometry.RationalBrunnMinkowski
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

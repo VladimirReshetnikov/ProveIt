@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.FiniteOperations.WeierstrassProduct
 import IPRADerivations.AnalyticNumberTheory.PowerCleared
 import IPRADerivations.AnalyticNumberTheory.PhiLower
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The weighted Cauchy–Schwarz inequality for finite sums
@@ -23,12 +22,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.WeightedCauchySchwarz
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -113,13 +108,9 @@ theorem cs_all {x N : PTm n}
       le (inst2 b (var 0) (Syn.shift x) * inst2 b (var 0) (Syn.shift x))
         (inst2 w (var 0) (Syn.shift x) * inst2 c (var 0) (Syn.shift x)))) :
     Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶ CSF a b w c (var 0) (Syn.shift x)) := by
-  refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-      Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
-    exact .impI (cs_base a b w c x)
-  · simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
-      subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (cs_step a b w c (Prf.impE hb.allOpen.wk.wk Prf.hyp0)
+  ipra_qfind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2]
+  · exact .impI (cs_base a b w c x)
+  · exact .impI (cs_step a b w c (Prf.impE hb.allOpen.wk.wk Prf.hyp0)
       (Prf.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)))
 
 /-- The weighted Cauchy–Schwarz inequality: if `b_i² ≤ w_i c_i` for `i < N`, then

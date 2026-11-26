@@ -16,15 +16,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianDominantRadiusValues
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianBalancedRadiusSyntax (unit unit_positive input)
 open LeanProofs.IPRA.Analysis.GaussianDominantSyntax (exponent four)
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (fraction fraction_represents)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (positive_product)
 open LeanProofs.IPRA.Analysis.GaussianDominantSelector (index)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -34,12 +31,9 @@ def radius (C N h : PTm n) : PTm n :=
 def score (C N h i : PTm n) : PTm n := GaussianDominantSyntax.score C N
   (GaussianBalancedRadiusHeight.E C N) (GaussianBalancedRadiusSearch.radiusIndex C N) h i
 
-@[simp] theorem subst_scaleExponent {m : ℕ} (σ : Fin n → PTm m) (C N h : PTm n) :
-    Syn.subst σ (scaleExponent C N h) = scaleExponent (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ h) := by simp [scaleExponent]
-@[simp] theorem subst_radius {m : ℕ} (σ : Fin n → PTm m) (C N h : PTm n) :
-    Syn.subst σ (radius C N h) = radius (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ h) := by simp [radius]
-@[simp] theorem subst_score {m : ℕ} (σ : Fin n → PTm m) (C N h i : PTm n) :
-    Syn.subst σ (score C N h i) = score (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ i) := by simp [score]
+ipra_subst scaleExponent
+ipra_subst radius
+ipra_subst score
 
 theorem radius_represents (C N h : PTm n) : Γ ⊢[PRAAx]
     RationalArithmetic.represents (radius C N h)
@@ -96,9 +90,7 @@ def dominates (C N h k : PTm n) : Fm PTm n := .all
     RationalArgmin.rationalLE (score (Syn.shift C) (Syn.shift N) (Syn.shift h) (var 0))
       (score (Syn.shift C) (Syn.shift N) (Syn.shift h) (Syn.shift k)))
 
-@[simp] theorem subst_dominates {m : ℕ} (σ : Fin n → PTm m) (C N h k : PTm n) :
-    (dominates C N h k).subst σ = dominates (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ k) := by
-  simp [dominates,Syn.subst_shift,Syn.shift_subst]
+ipra_subst dominates [Syn.subst_shift, Syn.shift_subst]
 
 theorem dominates_at (C N h k i : PTm n) (hDom : Γ ⊢[PRAAx] dominates C N h k)
     (hi : Γ ⊢[PRAAx] le one i) (hiN : Γ ⊢[PRAAx] le i N) : Γ ⊢[PRAAx]

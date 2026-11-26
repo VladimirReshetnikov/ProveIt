@@ -16,16 +16,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticTowerAdditiveComparison
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open QuadraticTowerArrayCodec (arrayHeight normalized)
 open QuadraticTowerCoefficientArithmetic (added negated added_congr)
 open QuadraticTowerMultiplicationHeight (radicandsHeight)
 open QuadraticTowerScalarArrays (zeroArray)
 open QuadraticTowerScalarBudget (amp)
 open QuadraticTowerDifferenceIdentities (difference signDifference equivalent less)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -91,36 +88,28 @@ def output (h b D A C E : PTm n) : PTm n := pairT (signDifference h (amp b) D A 
     (pairT (signDifference h (amp b) D (negated h (added h A E)) (negated h (added h C E))) (amp b)))
 def outputF : PR 6 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5))
 def run (h b D A C E : PTm n) : PTm n := PTm.app outputF ![h,b,D,A,C,E]
-@[simp] theorem subst_output {k : ℕ} (σ : Fin n → PTm k) (h b D A C E : PTm n) :
-    Syn.subst σ (output h b D A C E) = output (Syn.subst σ h) (Syn.subst σ b) (Syn.subst σ D)
-      (Syn.subst σ A) (Syn.subst σ C) (Syn.subst σ E) := by simp [output]
-@[simp] theorem subst_run {k : ℕ} (σ : Fin n → PTm k) (h b D A C E : PTm n) :
-    Syn.subst σ (run h b D A C E) = run (Syn.subst σ h) (Syn.subst σ b) (Syn.subst σ D)
-      (Syn.subst σ A) (Syn.subst σ C) (Syn.subst σ E) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (h b D A C E : PTm n) : Γ ⊢[PRAAx] run h b D A C E ≐ output h b D A C E := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) ![h,b,D,A,C,E]
 theorem returned_original (h b D A C E : PTm n) : Γ ⊢[PRAAx] fstT (run h b D A C E) ≐ signDifference h (amp b) D A C :=
-  (congrFst (program_at _ _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _ _ _).fstE
 theorem returned_tail (h b D A C E : PTm n) : Γ ⊢[PRAAx] sndT (run h b D A C E) ≐
     pairT (signDifference h (amp b) D (added h A E) (added h C E))
       (pairT (signDifference h (amp b) D (negated h (added h A E)) (negated h (added h C E))) (amp b)) :=
-  (congrSnd (program_at _ _ _ _ _ _)).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _ _ _).sndE
 theorem returned_translation (h b D A C E : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run h b D A C E)) ≐
     signDifference h (amp b) D (added h A E) (added h C E) :=
-  (congrFst (returned_tail _ _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_tail _ _ _ _ _ _).fstE
 theorem returned_negative_pair (h b D A C E : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run h b D A C E)) ≐
     pairT (signDifference h (amp b) D (negated h (added h A E)) (negated h (added h C E))) (amp b) :=
-  (congrSnd (returned_tail _ _ _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_tail _ _ _ _ _ _).sndE
 theorem returned_negative (h b D A C E : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run h b D A C E))) ≐
     signDifference h (amp b) D (negated h (added h A E)) (negated h (added h C E)) :=
-  (congrFst (returned_negative_pair _ _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_negative_pair _ _ _ _ _ _).fstE
 theorem returned_cap (h b D A C E : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run h b D A C E))) ≐ amp b :=
-  (congrSnd (returned_negative_pair _ _ _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_negative_pair _ _ _ _ _ _).sndE
 
 theorem returned_translation_equal (h b D A C E : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run h b D A C E)) ≐ fstT (run h b D A C E) :=

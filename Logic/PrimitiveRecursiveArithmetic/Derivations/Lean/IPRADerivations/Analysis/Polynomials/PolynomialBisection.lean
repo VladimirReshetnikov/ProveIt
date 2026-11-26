@@ -3,8 +3,6 @@ import IPRADerivations.Foundations.QuantitativeIdentities
 import IPRADerivations.Foundations.TraceInvariant
 import IPRADerivations.Core.IntOrder
 import IPRADerivations.Core.IntCancel
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Actual dyadic bisection for a fixed-degree rational polynomial
@@ -31,15 +29,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.PolynomialBisection
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.QuantitativeIdentities (zpow toZ_zpow)
 open LeanProofs.IPRA.Foundations.BoundedReflection
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -103,9 +97,7 @@ def evaluate : ℕ → PTm n → ZT n → PTm n → ZT n
   | k + 1, code, a, D =>
       ZT.ofNat D * evaluate k code a D + coefficient code (k + 1) * zpow a (k + 1)
 
-@[simp] theorem subst_coefficient {m : ℕ} (σ : Fin n → PTm m) (code : PTm n) (i : ℕ) :
-    (coefficient code i).subst σ = coefficient (Syn.subst σ code) i := by
-  simp [coefficient, ZT.subst]
+ipra_subst coefficient [ZT.subst]
 
 @[simp] theorem subst_naturalPower {m : ℕ} (σ : Fin n → PTm m) (a : PTm n) (k : ℕ) :
     Syn.subst σ (naturalPower a k) = naturalPower (Syn.subst σ a) k := by
@@ -168,26 +160,17 @@ def left (s : PTm n) : ZT n := unpack (fstT s)
 def right (s : PTm n) : ZT n := unpack (fstT (sndT s))
 def denominator (s : PTm n) : PTm n := sndT (sndT s)
 
-@[simp] theorem subst_pack {m : ℕ} (σ : Fin n → PTm m) (a : ZT n) :
-    Syn.subst σ (pack a) = pack (a.subst σ) := by simp [pack, ZT.subst]
+ipra_subst pack [ZT.subst]
 
-@[simp] theorem subst_unpack {m : ℕ} (σ : Fin n → PTm m) (s : PTm n) :
-    (unpack s).subst σ = unpack (Syn.subst σ s) := by simp [unpack, ZT.subst]
+ipra_subst unpack [ZT.subst]
 
-@[simp] theorem subst_state {m : ℕ} (σ : Fin n → PTm m) (L R : ZT n) (D : PTm n) :
-    Syn.subst σ (state L R D) = state (L.subst σ) (R.subst σ) (Syn.subst σ D) := by
-  simp only [state, subst_pairT, subst_pack]
+ipra_subst state
 
-@[simp] theorem subst_left {m : ℕ} (σ : Fin n → PTm m) (s : PTm n) :
-    (left s).subst σ = left (Syn.subst σ s) := by simp only [left, subst_unpack, subst_fstT]
+ipra_subst left
 
-@[simp] theorem subst_right {m : ℕ} (σ : Fin n → PTm m) (s : PTm n) :
-    (right s).subst σ = right (Syn.subst σ s) := by
-  simp only [right, subst_unpack, subst_fstT, subst_sndT]
+ipra_subst right
 
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (s : PTm n) :
-    Syn.subst σ (denominator s) = denominator (Syn.subst σ s) := by
-  simp only [denominator, subst_sndT]
+ipra_subst denominator
 
 private theorem unpack_congr {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) :
     ZT.toZ Γ (unpack a) = ZT.toZ Γ (unpack b) := by
@@ -415,19 +398,15 @@ def chooseR (b : PTm n) (L R : ZT n) : ZT n :=
 theorem mix_zero {b : PTm n} (u v : ZT n) (hb : Γ ⊢[PRAAx] b ≐ zero) :
     Γ ⊢[PRAAx] ZT.eq (mix b u v) v := by
   apply ZT.derive
-  have B := natEq hb
-  have C := natEq ((congrMonus (.eqRefl one) hb).eqTrans (monus_zero one))
   simp only [mix, ZT.toZ_add, ZT.toZ_mul, ZT.toZ_ofNat]
-  rw [B, C]
+  rw [natEq hb, natEq ((congrMonus (.eqRefl one) hb).eqTrans (monus_zero one))]
   simp
 
 theorem mix_one {b : PTm n} (u v : ZT n) (hb : Γ ⊢[PRAAx] b ≐ one) :
     Γ ⊢[PRAAx] ZT.eq (mix b u v) u := by
   apply ZT.derive
-  have B := natEq hb
-  have C := natEq ((congrMonus (.eqRefl one) hb).eqTrans (monus_self one))
   simp only [mix, ZT.toZ_add, ZT.toZ_mul, ZT.toZ_ofNat]
-  rw [B, C]
+  rw [natEq hb, natEq ((congrMonus (.eqRefl one) hb).eqTrans (monus_self one))]
   simp
 
 theorem chooseL_zero {b : PTm n} (L R : ZT n) (hb : Γ ⊢[PRAAx] b ≐ zero) :
@@ -664,32 +643,17 @@ theorem advance_nested (degree : ℕ) (code s : PTm n) (h : Γ ⊢[PRAAx] zle (l
     Syn.subst σ (two : PTm n) = two := by
   simp only [two, one, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
 
-@[simp] theorem subst_selector {m : ℕ} (σ : Fin n → PTm m) (u : ZT n) :
-    Syn.subst σ (selector u) = selector (u.subst σ) := by
-  simp only [selector, subst_eqb, PTm.subst_monus, ConciseIPRA.PTm.subst_zero, ZT.subst]
+ipra_subst selector [subst_eqb, PTm.subst_monus, ConciseIPRA.PTm.subst_zero, ZT.subst]
 
-@[simp] theorem subst_mix {m : ℕ} (σ : Fin n → PTm m) (b : PTm n) (u v : ZT n) :
-    (mix b u v).subst σ = mix (Syn.subst σ b) (u.subst σ) (v.subst σ) := by
-  simp only [mix, ZT.subst_add, ZT.subst_mul, ZT.subst_ofNat, PTm.subst_monus, subst_one]
+ipra_subst mix
 
-@[simp] theorem subst_chooseL {m : ℕ} (σ : Fin n → PTm m) (b : PTm n) (L R : ZT n) :
-    (chooseL b L R).subst σ = chooseL (Syn.subst σ b) (L.subst σ) (R.subst σ) := by
-  simp only [chooseL, subst_mix, ZT.subst_add, ZT.subst_mul, ZT.subst_ofNat, subst_two]
+ipra_subst chooseL
 
-@[simp] theorem subst_chooseR {m : ℕ} (σ : Fin n → PTm m) (b : PTm n) (L R : ZT n) :
-    (chooseR b L R).subst σ = chooseR (Syn.subst σ b) (L.subst σ) (R.subst σ) := by
-  simp only [chooseR, subst_mix, ZT.subst_add, ZT.subst_mul, ZT.subst_ofNat, subst_two]
+ipra_subst chooseR
 
-@[simp] theorem subst_midpointBit {m : ℕ} (σ : Fin n → PTm m) (degree : ℕ) (code s : PTm n) :
-    Syn.subst σ (midpointBit degree code s) =
-      midpointBit degree (Syn.subst σ code) (Syn.subst σ s) := by
-  simp only [midpointBit, subst_selector, subst_evaluate, ZT.subst_add, subst_left,
-    subst_right, PTm.subst_mul, subst_two, subst_denominator]
+ipra_subst midpointBit
 
-@[simp] theorem subst_advance {m : ℕ} (σ : Fin n → PTm m) (degree : ℕ) (code s : PTm n) :
-    Syn.subst σ (advance degree code s) = advance degree (Syn.subst σ code) (Syn.subst σ s) := by
-  simp only [advance, subst_state, subst_chooseL, subst_chooseR, subst_midpointBit,
-    subst_left, subst_right, PTm.subst_mul, subst_two, subst_denominator]
+ipra_subst advance
 
 @[simp] theorem subst_bracket {m : ℕ} (σ : Fin n → PTm m) (degree : ℕ) (code s : PTm n) :
     (bracket degree code s).subst σ = bracket degree (Syn.subst σ code) (Syn.subst σ s) := by
@@ -713,10 +677,7 @@ def updateTerm (degree : ℕ) : PTm 2 := advance degree (var 1) (var 0)
 def run (degree : ℕ) (k code initial : PTm n) : PTm n :=
   Foundations.TraceInvariant.run (updateTerm degree) k initial code
 
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (degree : ℕ) (k code initial : PTm n) :
-    Syn.subst σ (run degree k code initial) =
-      run degree (Syn.subst σ k) (Syn.subst σ code) (Syn.subst σ initial) := by
-  simp only [run, Foundations.TraceInvariant.run, subst_ap2, subst_pairT]
+ipra_subst run
 
 theorem run_zero (degree : ℕ) (code initial : PTm n) :
     Γ ⊢[PRAAx] run degree zero code initial ≐ initial :=
@@ -738,12 +699,9 @@ theorem run_bracket (degree : ℕ) (k code initial : PTm n)
     Γ ⊢[PRAAx] bracket degree code (run degree k code initial) := by
   have hall : Γ ⊢[PRAAx] .all
       (bracket degree (Syn.shift code) (run degree (var 0) (Syn.shift code) (Syn.shift initial))) := by
-    refine PRA.qfInd _ (bracket_QF _ _ _) ?_ ?_
-    · simp only [subst_bracket, subst_run, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_zero]
-      exact bracket_congr degree code (run_zero degree code initial).eqSymm h
-    · simp only [subst_bracket, subst_run, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      exact bracket_congr degree (Syn.shift code) (run_succ degree _ _ _).eqSymm
+    ipra_qfind (bracket_QF _ _ _) [subst_bracket, subst_run]
+    · exact bracket_congr degree code (run_zero degree code initial).eqSymm h
+    · exact bracket_congr degree (Syn.shift code) (run_succ degree _ _ _).eqSymm
         (advance_bracket degree _ _ Prf.hyp0)
   simpa only [subst_bracket, subst_run, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using Prf.allE k hall
 
@@ -764,15 +722,11 @@ theorem run_width (degree : ℕ) (k code initial : PTm n) :
       (right (run degree (var 0) (Syn.shift code) (Syn.shift initial)) -
         left (run degree (var 0) (Syn.shift code) (Syn.shift initial)))
       (right (Syn.shift initial) - left (Syn.shift initial))) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [ZT.subst_eq, ZT.subst_sub, subst_right, subst_left, subst_run,
-        Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
-      apply ZT.derive
+    ipra_qfind [ZT.subst_eq, ZT.subst_sub, subst_right, subst_left, subst_run]
+    · apply ZT.derive
       simp only [ZT.toZ_sub, left_congr_value (run_zero (Γ := Γ) degree code initial),
         right_congr_value (run_zero (Γ := Γ) degree code initial)]
-    · simp only [ZT.subst_eq, ZT.subst_sub, subst_right, subst_left, subst_run,
-        Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      apply ZT.derive
+    · apply ZT.derive
       let Δ := ZT.eq
         (right (run degree (var 0) (Syn.shift code) (Syn.shift initial)) -
           left (run degree (var 0) (Syn.shift code) (Syn.shift initial)))
@@ -839,12 +793,7 @@ def nestedBound (degree : ℕ) (code initial k : PTm n) : Fm PTm n :=
   zle (ZT.ofNat (pw two k) * left initial) (left (run degree k code initial)) ⋏
     zle (right (run degree k code initial)) (ZT.ofNat (pw two k) * right initial)
 
-@[simp] theorem subst_nestedBound {m : ℕ} (σ : Fin n → PTm m) (degree : ℕ)
-    (code initial k : PTm n) :
-    (nestedBound degree code initial k).subst σ =
-      nestedBound degree (Syn.subst σ code) (Syn.subst σ initial) (Syn.subst σ k) := by
-  simp only [nestedBound, Fm.subst_and, subst_zle, ZT.subst_mul, ZT.subst_ofNat,
-    subst_ap2, subst_two, subst_left, subst_right, subst_run]
+ipra_subst nestedBound
 
 /-- The actual PR intervals are nested; no nesting or trace-correctness premise is used. -/
 theorem run_nested (degree : ℕ) (k code initial : PTm n)
@@ -852,15 +801,13 @@ theorem run_nested (degree : ℕ) (k code initial : PTm n)
     Γ ⊢[PRAAx] nestedBound degree code initial k := by
   have hall : Γ ⊢[PRAAx] .all
       (nestedBound degree (Syn.shift code) (Syn.shift initial) (var 0)) := by
-    refine PRA.qfInd _ ⟨trivial, trivial⟩ ?_ ?_
-    · simp only [subst_nestedBound, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      exact .andI
+    ipra_qfind (⟨trivial, trivial⟩) [subst_nestedBound]
+    · exact .andI
         (zle_congr (scale_pow_zero (Γ := Γ) (left initial)).symm
           (left_congr_value (run_zero degree code initial)).symm (zle_refl _))
         (zle_congr (right_congr_value (run_zero degree code initial)).symm
           (scale_pow_zero (Γ := Γ) (right initial)).symm (zle_refl _))
-    · simp only [subst_nestedBound, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      let Δ := nestedBound degree (Syn.shift code) (Syn.shift initial) (var 0) :: Γ.map Fm.shift
+    · let Δ := nestedBound degree (Syn.shift code) (Syn.shift initial) (var 0) :: Γ.map Fm.shift
       have shifted : Γ.map Fm.shift ⊢[PRAAx] bracket degree (Syn.shift code) (Syn.shift initial) := by
         simpa only [Fm.shift, subst_bracket, Syn.shift] using h.shift
       have current := run_bracket (Γ := Δ) degree (var 0) (Syn.shift code) (Syn.shift initial) shifted.wk

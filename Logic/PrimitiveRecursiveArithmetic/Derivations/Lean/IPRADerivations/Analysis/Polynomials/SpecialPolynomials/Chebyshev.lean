@@ -18,10 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.Chebyshev
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
+open_ipra
 
 /-- Step variables: `0 = n`, `1 = T_n`, `2 = U_{n−1}`, `3 = w`. -/
 abbrev stepT : PTm 4 := succ (var 3) * var 1 + (var 3 * var 3 + succ one * var 3) * var 2

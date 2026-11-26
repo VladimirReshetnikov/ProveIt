@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Series.Basel.BaselFinite
 import IPRADerivations.Analysis.Series.Basel.BaselDiagonal
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Square sums of the Basel packet
@@ -27,7 +26,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.BaselSquares
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (dvd_fact)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd')
@@ -36,10 +35,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.DiophantineNumberTheory.Hurwitz (add_le_add)
 open LeanProofs.IPRA.Analysis.BaselFinite (odd_pos)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -108,16 +103,10 @@ private abbrev runF : Fm PTm 4 :=
   le (var 1 + var 0) (var 2) ⟶ le (S (var 1) (var 3) + var 0 * qq (var 2) (var 3)) (S (var 1 + var 0) (var 3))
 
 private theorem run₀ : ([] : List (Fm PTm 4)) ⊢[PRAAx] runF := by
-  refine ind _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, inst_three, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    refine .impI (le_congr ?_ (congrAp2 (sumF sB) (add_zero _) (.eqRefl _)).eqSymm (le_refl _))
+  ipra_ind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2]
+  · refine .impI (le_congr ?_ (congrAp2 (sumF sB) (add_zero _) (.eqRefl _)).eqSymm (le_refl _))
     ipra_ring
-  · simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul,
-      Syn.subst_var, Syn.repl_zero, repl_one, repl_two, repl_three, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact .impI (run_step Prf.hyp1 Prf.hyp0)
+  · exact .impI (run_step Prf.hyp1 Prf.hyp0)
 
 /-- For `M + d ≤ K`: `S(M) + d q_K² ≤ S(M + d)`. -/
 theorem run {M d K L : PTm n} (h : Γ ⊢[PRAAx] le (M + d) K) :
@@ -157,17 +146,11 @@ private abbrev tailF : Fm PTm 3 :=
       (S (succ (var 1)) (var 2) + fact (var 2) * qf (succ (var 1)) (var 2))
 
 private theorem tail₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] tailF := by
-  refine ind _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    refine .impI (le_congr ?_ (.eqRefl _) (le_refl _))
+  ipra_ind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2]
+  · refine .impI (le_congr ?_ (.eqRefl _) (le_refl _))
     exact congrAdd (congrAp2 (sumF sB) (congrSucc (add_zero _)) (.eqRefl _))
       (congrMul (.eqRefl _) (congrAp2 quoF (.eqRefl _) (congrSucc (add_zero _)))) |>.eqSymm
-  · simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul,
-      Syn.subst_var, Syn.repl_zero, repl_one, repl_two, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact .impI (tail_step Prf.hyp1 Prf.hyp0)
+  · exact .impI (tail_step Prf.hyp1 Prf.hyp0)
 
 /-- `lem:tail` (`eq:tail`), cleared by `F = L!`: for `1 ≤ N ≤ m ≤ L` (`N = N₀ + 1`),
 `S(N) ≤ S(m)` and `S(m) + F q_m ≤ S(N) + F q_N`, i.e. `0 ≤ S_m − S_N ≤ 1/N − 1/m`. -/
@@ -246,13 +229,9 @@ private abbrev oeF : Fm PTm 2 :=
   le (two * var 0) (var 1) ⟶ two * two * O (var 0) (var 1) + S (var 0) (var 1) ≐ two * two * S (two * var 0) (var 1)
 
 private theorem oe₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] oeF := by
-  refine ind _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (oe_zero _)
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul,
-      Syn.subst_var, Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (oe_step Prf.hyp1 Prf.hyp0)
+  ipra_ind (⟨le_QF _ _, trivial⟩) [subst_le, subst_ap2]
+  · exact .impI (oe_zero _)
+  · exact .impI (oe_step Prf.hyp1 Prf.hyp0)
 
 /-- `eq:oddeven`, cleared by `F = L!`: `4 O(N) + S(N) = 4 S(2N)` for `2N ≤ L`, i.e.
 `O_N = S_{2N} − S_N/4`. -/

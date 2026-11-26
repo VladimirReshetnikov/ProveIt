@@ -1,5 +1,4 @@
 import IPRADerivations.Algebra.QuadraticTowerArrayNormalization
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Original rational-value operands of the actual tower table
@@ -17,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticTowerOperandProperness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis
 open QuadraticTowerCoefficients (width singleton)
 open QuadraticTowerArrayCodec (arrayHeight normalized code)
@@ -27,9 +26,6 @@ open QuadraticTowerMultiplicationTable
   (address lookup query table recipe budget)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

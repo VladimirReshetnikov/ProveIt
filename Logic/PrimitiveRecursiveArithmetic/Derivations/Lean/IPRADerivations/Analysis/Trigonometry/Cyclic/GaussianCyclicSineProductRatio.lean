@@ -13,7 +13,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCyclicSineProductRatio
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode scale add mul normSq normSq_eval)
 open GaussianCyclicOriginalSineProduct (originalF doubledF original_at doubled_at budget actual_doubled_product_error)
 open GaussianCyclicSineProductNormalization (clock)
@@ -34,9 +34,6 @@ open GaussianApproximateInverseDistance (multiply_distance)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRootAlgebra (equal equal_of_values equal_refl re_mul im_mul re_one im_one re_scale im_scale re_add im_add)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -44,8 +41,7 @@ def half (k : PTm n) : PTm n := ofGaussian oneCode (unit k)
 def ratio (N : PTm n) : PTm n := ofGaussian (scale (succ N) oneCode) (unit N)
 def halfPoint : PTm n := ofGaussian oneCode two
 
-@[simp] theorem subst_half {L : ℕ} (σ : Fin n → PTm L) (k : PTm n) :
-    Syn.subst σ (half k) = half (Syn.subst σ k) := by simp [half]
+ipra_subst half
 
 private theorem unit_succ (k : PTm n) : Γ ⊢[PRAAx] unit (succ k) ≐ unit k*two :=
   pw_succ _ _
@@ -124,12 +120,10 @@ private def law (p k d : PTm n) : Fm PTm n :=
 theorem unscale_product (p N x k : PTm n) :
     Γ ⊢[PRAAx] qmul (half k) (sample doubledF p k (data N x)) ≐ sample originalF p k (data N x) := by
   have all : Γ ⊢[PRAAx] .all (law (Syn.shift p) (var 0) (Syn.shift (data N x))) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_law,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (qmul_congr half_zero (sample_zero doubledF p (data N x))).eqTrans
+    ipra_qfind [subst_law, GaussianCyclicSineProductSquare.subst_data]
+    · exact (qmul_congr half_zero (sample_zero doubledF p (data N x))).eqTrans
         ((qmul_one_right _ qone_canonical).eqTrans (sample_zero originalF p (data N x)).eqSymm)
-    · simp only [subst_law,Syn.subst_var,Syn.repl_zero,subst_repl_shift,GaussianCyclicSineProductSquare.subst_data]
-      let P := Syn.shift p
+    · let P := Syn.shift p
       let M := Syn.shift N
       let X := Syn.shift x
       let j : PTm (n+1) := var 0

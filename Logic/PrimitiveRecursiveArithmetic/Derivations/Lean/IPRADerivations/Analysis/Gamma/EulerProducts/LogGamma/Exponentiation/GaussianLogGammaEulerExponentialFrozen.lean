@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerExponentialFrozen
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaInputProperness (gamma_source_equal original_Gamma_proper)
 open GaussianGammaRadiusOverlap (original_Gamma_overlap)
 open GaussianGammaReciprocalInverse (gammaF gammaData)
@@ -28,9 +28,6 @@ open GaussianNamedRightHalfPlaneSigned (realNumerator imagNumerator denominator 
 open GaussianRationalL1 (rawGaussian)
 open GaussianRadiusExponentialName (input)
 open GaussianRootAlgebra (equal_symm)
-open LeanProofs.IPRA.PTm (monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -43,8 +40,7 @@ local notation "gammaSource" => GaussianGammaReciprocalInverse.source
 def logData (q : PTm n) : PTm n :=
   canonicalData (realNumerator q) (imagNumerator q) (denominator q) (sign q)
 
-@[simp] theorem subst_logData {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    Syn.subst σ (logData q) = logData (Syn.subst σ q) := by simp [logData]
+ipra_subst logData
 
 private theorem signed_gamma_source (A B D neg : PTm n) (h : Γ ⊢[PRAAx] signedSource A D neg) :
     Γ ⊢[PRAAx] gammaSource (native A B neg) (radius A B) D one D := by

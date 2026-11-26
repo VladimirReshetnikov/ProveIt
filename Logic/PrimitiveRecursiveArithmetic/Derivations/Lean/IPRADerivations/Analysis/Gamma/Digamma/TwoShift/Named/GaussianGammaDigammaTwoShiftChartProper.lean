@@ -12,7 +12,7 @@ set_option maxHeartbeats 1100000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaTwoShiftChartProper
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianGammaDigammaTwoShiftBinding
@@ -20,8 +20,6 @@ open GaussianNameEquivalence (crossEquivalent cross_to_diagonal cross_symm cross
 open GaussianNameRingLaws (negativeF negativeData negative_fast negative_equivalent)
 open GaussianPositiveRationalLogarithm (logF fraction)
 open GaussianStirlingGammaLogarithm (source logGammaF logGammaData log_gamma_regular)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "H" => GaussianHarmonicLogarithmName.nameF

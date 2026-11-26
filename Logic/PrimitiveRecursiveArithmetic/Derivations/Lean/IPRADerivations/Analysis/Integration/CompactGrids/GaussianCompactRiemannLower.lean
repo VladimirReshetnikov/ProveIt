@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCompactRiemannLower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalValueBounds (upper)
 open RationalSupMetric (numeratorOf denominatorOf)
 open GaussianEuclideanDistanceName (fraction fraction_represents)
@@ -25,9 +25,6 @@ open GaussianRationalRiemannRefinement (leftSum weight)
 open GaussianRationalHorner (qmul positive_product)
 open RationalGaussianRealPart (realBody real_sum real_product)
 open PolynomialBisection (slack)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -36,10 +33,7 @@ def rows (t : PTm 2) (N x A B U V : PTm n) : Fm PTm n := .all
   (lt (var 0) (Syn.shift N) ⟶ upper (fraction (Syn.shift A) (Syn.shift B))
     (RationalFiniteSum.term t (var 0) (Syn.shift x)) (Syn.shift U) (Syn.shift V))
 
-@[simp] theorem subst_rows {l : ℕ} (σ : Fin n → PTm l) (t : PTm 2) (N x A B U V : PTm n) :
-    (rows t N x A B U V).subst σ = rows t (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ A)
-      (Syn.subst σ B) (Syn.subst σ U) (Syn.subst σ V) := by
-  simp [rows,GaussianEuclideanDistanceName.fraction,Syn.subst_shift,Syn.shift_subst]
+ipra_subst rows [GaussianEuclideanDistanceName.fraction, Syn.subst_shift, Syn.shift_subst]
 
 private theorem row_at (t : PTm 2) (N x A B U V i : PTm n)
     (h : Γ ⊢[PRAAx] rows t N x A B U V) (hi : Γ ⊢[PRAAx] lt i N) :
@@ -55,10 +49,7 @@ def prefixRight (t : PTm 2) (i x B V : PTm n) : ZT n :=
 def prefixLaw (t : PTm 2) (N i x A B U V : PTm n) : Fm PTm n :=
   le i N ⟶ zle (prefixLeft t i x A B U V) (prefixRight t i x B V)
 
-@[simp] theorem subst_floorNumerator {l : ℕ} (σ : Fin n → PTm l) (A B U V : PTm n) :
-    (floorNumerator A B U V).subst σ =
-      floorNumerator (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ U) (Syn.subst σ V) := by
-  simp [floorNumerator]
+ipra_subst floorNumerator
 @[simp] theorem subst_prefixLaw {l : ℕ} (σ : Fin n → PTm l) (t : PTm 2) (N i x A B U V : PTm n) :
     (prefixLaw t N i x A B U V).subst σ = prefixLaw t (Syn.subst σ N) (Syn.subst σ i)
       (Syn.subst σ x) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ U) (Syn.subst σ V) := by
@@ -85,10 +76,9 @@ private theorem signed_row (t : PTm 2) (i x A B U V : PTm n) (hB : Γ ⊢[PRAAx]
 private theorem prefix_zero (t : PTm 2) (x A B U V : PTm n) : Γ ⊢[PRAAx]
     zle (prefixLeft t zero x A B U V) (prefixRight t zero x B V) := by
   apply zle_of_toZ zero
-  have ep := natEq (RationalFiniteSum.positive_zero (Γ := Γ) t x)
   have en := natEq (RationalFiniteSum.negative_zero (Γ := Γ) t x)
   simp only [prefixLeft,prefixRight,ZT.toZ_mul,ZT.toZ_ofNat,Q.mk_mul,map_mul,Q.mk_zero,map_zero]
-  simp only [RationalFiniteSum.numerator,ZT.toZ,ep,en,sub_self]
+  simp only [RationalFiniteSum.numerator,ZT.toZ,natEq (RationalFiniteSum.positive_zero (Γ := Γ) t x),en,sub_self]
   ring
 
 private theorem prefix_step (t : PTm 2) (i x A B U V : PTm n)
@@ -103,10 +93,9 @@ private theorem prefix_step (t : PTm 2) (i x A B U V : PTm n)
   have pref := zle_toZ ih
   apply zle_of_toZ (F*slack (prefixLeft t i x A B U V) (prefixRight t i x B V) +
     D*slack (floorNumerator A B U V * ZT.ofNat F) (numeratorOf c*ZT.ofNat (B*V)))
-  have ed := natEq (RationalFiniteSum.denominator_succ (Γ := Γ) t i x)
   have en := ZT.toZ_eq (RationalFiniteSum.numerator_succ (Γ := Γ) t i x)
   simp only [prefixLeft,prefixRight,ZT.toZ_mul,ZT.toZ_ofNat,Q.mk_mul,map_mul]
-  rw [ed,en]
+  rw [natEq (RationalFiniteSum.denominator_succ (Γ := Γ) t i x),en]
   dsimp only [F,D,c,slack] at *
   simp only [prefixLeft,prefixRight,ZT.toZ_mul,ZT.toZ_add,ZT.toZ_ofNat,Q.mk_mul,map_mul,
     Q.mk_add,map_add,Q.mk_succ,map_one] at row pref ⊢

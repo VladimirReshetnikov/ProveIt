@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedDampingPowerChart
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianPositiveRationalLogarithm (logF fraction)
 open GaussianCompactLogarithmBounds (domain radius)
 open GaussianNamedMultiplyRate (sampleBound sample_bound_at)
@@ -27,8 +27,6 @@ open GaussianNamedInverseRate (independentRate)
 open GaussianRationalHorner (qmul positive_product qmul_canonical)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr bounded_product)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -48,22 +46,12 @@ def majorant (C R E T : PTm n) : PTm n := C*innerBound (exponentRadius R E T)
 def gain (C R E T D₀ D₁ D₂ : PTm n) : PTm n :=
   innerBound (exponentRadius R E T)*(D₀+C*(radius E T*D₁+R*(E*D₂)))
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (F G : PR 2) (x y C₀ C R₀ R E T a b : PTm n) :
-    (source F G x y C₀ C R₀ R E T a b).subst σ =
-      source F G (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ C₀) (Syn.subst σ C) (Syn.subst σ R₀)
-        (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ a) (Syn.subst σ b) := by simp [source,domain]
+ipra_subst source [domain]
 
-@[simp] theorem subst_exponentData {m : ℕ} (σ : Fin n → PTm m) (G : PR 2) (y a b : PTm n) :
-    Syn.subst σ (exponentData G y a b) = exponentData G (Syn.subst σ y) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [exponentData]
-@[simp] theorem subst_powerData {m : ℕ} (σ : Fin n → PTm m) (G : PR 2) (y a b : PTm n) :
-    Syn.subst σ (powerData G y a b) = powerData G (Syn.subst σ y) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [powerData,innerData,GaussianGammaFiniteApproximantName.exponentialInputData]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (F G : PR 2) (x y a b : PTm n) :
-    Syn.subst σ (data F G x y a b) = data F G (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ a) (Syn.subst σ b) := by simp [data]
-@[simp] theorem subst_exponentRadius {m : ℕ} (σ : Fin n → PTm m) (R E T : PTm n) :
-    Syn.subst σ (exponentRadius R E T) = exponentRadius (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T) := by
-  simp [exponentRadius,radius,one]
+ipra_subst exponentData
+ipra_subst powerData [innerData, GaussianGammaFiniteApproximantName.exponentialInputData]
+ipra_subst data
+ipra_subst exponentRadius [radius, one]
 
 theorem positive_observation_bound (F : PR 2) (p x E T : PTm n)
     (h : Γ ⊢[PRAAx] GaussianNamedPositiveLogarithm.source F x E T) :

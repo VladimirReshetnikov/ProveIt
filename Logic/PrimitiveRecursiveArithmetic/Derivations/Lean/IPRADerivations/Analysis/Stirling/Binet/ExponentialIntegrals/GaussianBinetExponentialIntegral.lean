@@ -17,7 +17,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetExponentialIntegral
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetExponentialPanel (nonpositive sample)
 open GaussianBinetExponentialIntegralGrid (exponent row evaluatorF value cell_at subst_exponent)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -36,10 +36,6 @@ open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalReciprocal (bounded_negative)
 open GaussianRationalSyntheticDivision (qmul_congr qsub_congr qone)
 open GaussianReciprocalHorner (qmul_associative)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -49,18 +45,11 @@ def nonpositiveRows (q T N : PTm n) : Fm PTm n := .all
 def numerator (p R T N : PTm n) : PTm n := num 10*(N*N)+two*((R*T)*(R*T))*unit p
 def rowDen (p N : PTm n) : PTm n := unit p*(N*N)
 
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (p R T N : PTm n) :
-    Syn.subst σ (numerator p R T N) = numerator (Syn.subst σ p) (Syn.subst σ R) (Syn.subst σ T) (Syn.subst σ N) := by
-  simp [numerator,two]
-@[simp] theorem subst_rowDen {m : ℕ} (σ : Fin n → PTm m) (p N : PTm n) :
-    Syn.subst σ (rowDen p N) = rowDen (Syn.subst σ p) (Syn.subst σ N) := by simp [rowDen]
-@[simp] theorem subst_nonpositive {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    (nonpositive q).subst σ = nonpositive (Syn.subst σ q) := by
-  simp [nonpositive]
+ipra_subst numerator [two]
+ipra_subst rowDen
+ipra_subst nonpositive
 
-@[simp] theorem subst_nonpositiveRows {m : ℕ} (σ : Fin n → PTm m) (q T N : PTm n) :
-    (nonpositiveRows q T N).subst σ = nonpositiveRows (Syn.subst σ q) (Syn.subst σ T) (Syn.subst σ N) := by
-  simp [nonpositiveRows,Syn.subst_shift,Syn.shift_subst]
+ipra_subst nonpositiveRows [Syn.subst_shift, Syn.shift_subst]
 
 private theorem row_negative (j q T N : PTm n) (hr : Γ ⊢[PRAAx] nonpositiveRows q T N)
     (hj : Γ ⊢[PRAAx] le j N) : Γ ⊢[PRAAx] nonpositive (exponent q (T*j) N) := by

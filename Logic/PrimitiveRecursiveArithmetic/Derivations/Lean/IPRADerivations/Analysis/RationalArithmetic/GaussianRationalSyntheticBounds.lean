@@ -2,8 +2,6 @@ import IPRADerivations.Analysis.Polynomials.Division.GaussianRationalSyntheticDi
 import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalL1Algebra
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianFactorBudget
 import IPRADerivations.Analysis.RationalArithmetic.RationalAlgebra
-import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Bounds for actual Gaussian-rational synthetic division
@@ -23,7 +21,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalSyntheticBounds
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalL1 (qL1 qL1_guard qL1_nonnegative)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (horner qadd qmul)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (quotient qone quotient_lookup quotient_successor)
@@ -34,9 +32,6 @@ open LeanProofs.IPRA.Analysis.RationalIntegerNormalization (normalize)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -44,13 +39,8 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 def natCode (a : PTm n) : PTm n := normalize (ZT.ofNat a) one
 def majorant (A Z k : PTm n) : PTm n := (A+one)*pw (one+Z) k
 
-@[simp] theorem subst_natCode {m : ℕ} (σ : Fin n → PTm m) (a : PTm n) :
-    Syn.subst σ (natCode a) = natCode (Syn.subst σ a) := by
-  simp only [natCode,RationalIntegerNormalization.subst_normalize,ZT.subst_ofNat,
-    ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero]
-@[simp] theorem subst_majorant {m : ℕ} (σ : Fin n → PTm m) (A Z k : PTm n) :
-    Syn.subst σ (majorant A Z k) = majorant (Syn.subst σ A) (Syn.subst σ Z) (Syn.subst σ k) := by
-  simp only [majorant,PTm.subst_add,PTm.subst_mul,subst_ap2,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero]
+ipra_subst natCode
+ipra_subst majorant
 
 theorem natCode_represents (a : PTm n) : Γ ⊢[PRAAx] RationalArithmetic.represents (natCode a) (ZT.ofNat a) one :=
   RationalIntegerNormalization.normalize_preserves_value _ _ (le_refl one)
@@ -115,10 +105,9 @@ coefficients, rather than a supplied quotient or desired growth estimate. -/
 def coefficientBounds (C A : PTm n) : Fm PTm n :=
   .all (lt (var 0) (length (Syn.shift C)) ⟶ rationalLE (qL1 (entry (Syn.shift C) (var 0))) (natCode (Syn.shift A)))
 
-@[simp] theorem subst_coefficientBounds {m : ℕ} (σ : Fin n → PTm m) (C A : PTm n) :
-    (coefficientBounds C A).subst σ = coefficientBounds (Syn.subst σ C) (Syn.subst σ A) := by
-  simp only [coefficientBounds,Fm.subst_all,Fm.subst_imp,subst_lt,subst_length,RationalArgmin.subst_rationalLE,
-    GaussianRationalL1.subst_qL1,subst_entry,subst_natCode,Syn.subst_var,Syn.up_zero,Syn.up_succ,Syn.subst_shift,Syn.shift_subst]
+ipra_subst coefficientBounds [Fm.subst_all, Fm.subst_imp, subst_lt, subst_length, RationalArgmin.subst_rationalLE,
+    GaussianRationalL1.subst_qL1, subst_entry, subst_natCode, Syn.subst_var, Syn.up_zero, Syn.up_succ,
+    Syn.subst_shift, Syn.shift_subst]
 
 theorem coefficient_at (C A i : PTm n) (h : Γ ⊢[PRAAx] coefficientBounds C A)
     (hi : Γ ⊢[PRAAx] lt i (length C)) : Γ ⊢[PRAAx] rationalLE (qL1 (entry C i)) (natCode A) := by
@@ -179,11 +168,9 @@ theorem quotient_prefix_bound (C z N A Z i : PTm n)
   have all : Γ ⊢[PRAAx] .all (lt (var 0) (Syn.shift N) ⟶
       rationalLE (qL1 (entry (quotient (Syn.shift C) (Syn.shift z) (Syn.shift N)) (var 0)))
         (natCode (majorant (Syn.shift A) (Syn.shift Z) (var 0)))) := by
-    refine PRA.qfInd _ ⟨lt_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp,subst_lt,RationalArgmin.subst_rationalLE,GaussianRationalL1.subst_qL1,
-        subst_entry,GaussianRationalSyntheticDivision.subst_quotient,subst_natCode,subst_majorant,
-        Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      refine .impI ?_
+    ipra_qfind (⟨lt_QF _ _,le_QF _ _⟩) [subst_lt, RationalArgmin.subst_rationalLE, GaussianRationalL1.subst_qL1,
+        subst_entry, GaussianRationalSyntheticDivision.subst_quotient, subst_natCode, subst_majorant]
+    · refine .impI ?_
       have init : (lt zero N :: Γ) ⊢[PRAAx] entry (quotient C z N) zero ≐ qone :=
         Prf.andE₂ (GaussianRationalSyntheticDivision.quotient_monic C z N Prf.hyp0 hmonic.wk)
       have norm := (qL1_congr init).eqTrans qL1_qone
@@ -191,10 +178,7 @@ theorem quotient_prefix_bound (C z N A Z i : PTm n)
         refine le_of_eq_add (d := A) ?_
         exact (congrMul (.eqRefl _) (pw_zero _)).eqTrans (by ipra_ring)
       exact RationalArgmin.rationalLE_congr norm.eqSymm (.eqRefl _) (natCode_order _ _ low).wk
-    · simp only [Fm.subst_imp,subst_lt,RationalArgmin.subst_rationalLE,GaussianRationalL1.subst_qL1,
-        subst_entry,GaussianRationalSyntheticDivision.subst_quotient,subst_natCode,subst_majorant,
-        Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    · refine .impI ?_
       let IH := lt (var 0) (Syn.shift N) ⟶
         rationalLE (qL1 (entry (quotient (Syn.shift C) (Syn.shift z) (Syn.shift N)) (var 0)))
           (natCode (majorant (Syn.shift A) (Syn.shift Z) (var 0)))

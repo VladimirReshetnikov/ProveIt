@@ -59,13 +59,9 @@ private abbrev zeF (body : PTm 2) : Fm PTm 3 :=
   (ap2 (sumF body) (var 0) (var 2) ≐ zero) ⟶ lt (var 1) (var 0) ⟶ (inst2 body (var 1) (var 2) ≐ zero)
 
 private theorem sum_zero_elim₀ (body : PTm 2) : ([] : List (Fm PTm 3)) ⊢[PRAAx] zeF body := by
-  refine ind _ ⟨trivial, lt_QF _ _, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_lt, subst_ap2, subst_inst2, Syn.subst_var,
-      Syn.inst_zero, Syn.inst_succ, inst_two, ConciseIPRA.PTm.subst_zero]
-    exact .impI (.impI (lt_zero_absurd _ Prf.hyp0))
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_lt, subst_ap2, subst_inst2, Syn.subst_var,
-      Syn.repl_zero, repl_one, repl_two, ConciseIPRA.PTm.subst_zero]
-    refine .impI (.impI ?_)
+  ipra_ind (⟨trivial, lt_QF _ _, trivial⟩) [subst_lt, subst_ap2, subst_inst2, Syn.inst_succ]
+  · exact .impI (.impI (lt_zero_absurd _ Prf.hyp0))
+  · refine .impI (.impI ?_)
     have hS := (sum_succ' (Γ := [lt (var 1) (succ (var 0)),
       ap2 (sumF body) (succ (var 0)) (var 2) ≐ zero, zeF body]) body (var 0) (var 2)).eqSymm.eqTrans
       Prf.hyp1
@@ -98,10 +94,6 @@ theorem sum_zero_of_all (body : PTm 2) (x : PTm n)
       refine (congrAdd Prf.hyp0 ?_).eqTrans (add_zero _)
       exact hf.wk
   simpa using Prf.allE N hall
-
-@[simp] theorem subst_repl_shift (s : PTm (n + 1)) (t : PTm n) :
-    Syn.subst (repl s) (Syn.shift t) = Syn.shift t := by
-  rw [Syn.subst_shift]; simp only [Syn.repl_succ]; rfl
 
 /-- `∀ i < N, f(i, x) = 0` gives `S(N, x) = 0`. -/
 theorem sum_zero_of_bounded (body : PTm 2) (x N : PTm n)

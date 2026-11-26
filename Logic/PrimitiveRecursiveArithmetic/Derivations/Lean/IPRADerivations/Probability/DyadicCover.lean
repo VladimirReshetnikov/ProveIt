@@ -1,6 +1,5 @@
 import IPRADerivations.Probability.DyadicAssembly
 import IPRADerivations.AnalyticNumberTheory.RobinLogInterval
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The bad event is covered by the dyadic blocks
@@ -21,7 +20,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.DyadicCover
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.FirstCrossing (ge ge_of_le ge_of_lt)
 open LeanProofs.IPRA.Probability.KolmogorovIid (DB IB)
 open LeanProofs.IPRA.Probability.KolmogorovIidGlue (Cv Cv_at)
@@ -29,10 +28,6 @@ open LeanProofs.IPRA.Probability.DyadicBlock (Cc crossing_witness)
 open LeanProofs.IPRA.Probability.DyadicSLLN (lw aB aB_at Nm sum_lift db_lift monus_le_self)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogInterval (eb eb_spec exp_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,7 +35,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Order facts -/
 
-theorem two_pos : Γ ⊢[PRAAx] (two : PTm n) ≐ succ (pred two) := congrSucc (pred_succ _).eqSymm
+alias two_pos := Common.two_pos
 
 /-- `2^E ≤ a → E ≤ ⌊log₂ a⌋` for `a ≥ 1`. -/
 theorem eb_ge {a E : PTm n} (ha : Γ ⊢[PRAAx] le one a) (hE : Γ ⊢[PRAAx] le (one * pw two E) a) :
@@ -94,11 +89,11 @@ theorem inst2_bd (m t M K e x : PTm n) :
     simp [bdB, inst2]
   rw [h]
   have s1 : Γ ⊢[PRAAx] sndT (Zc t M K e x) ≐ pairT M (pairT (pairT K e) x) := snd_pair _ _
-  have s2 : Γ ⊢[PRAAx] sndT (sndT (Zc t M K e x)) ≐ pairT (pairT K e) x := (congrSnd s1).eqTrans (snd_pair _ _)
-  have hM : Γ ⊢[PRAAx] fstT (sndT (Zc t M K e x)) ≐ M := (congrFst s1).eqTrans (fst_pair _ _)
-  have f2 : Γ ⊢[PRAAx] fstT (sndT (sndT (Zc t M K e x))) ≐ pairT K e := (congrFst s2).eqTrans (fst_pair _ _)
-  have hK : Γ ⊢[PRAAx] fstT (fstT (sndT (sndT (Zc t M K e x)))) ≐ K := (congrFst f2).eqTrans (fst_pair _ _)
-  have he : Γ ⊢[PRAAx] sndT (fstT (sndT (sndT (Zc t M K e x)))) ≐ e := (congrSnd f2).eqTrans (snd_pair _ _)
+  have s2 : Γ ⊢[PRAAx] sndT (sndT (Zc t M K e x)) ≐ pairT (pairT K e) x := s1.sndE
+  have hM : Γ ⊢[PRAAx] fstT (sndT (Zc t M K e x)) ≐ M := s1.fstE
+  have f2 : Γ ⊢[PRAAx] fstT (sndT (sndT (Zc t M K e x))) ≐ pairT K e := s2.fstE
+  have hK : Γ ⊢[PRAAx] fstT (fstT (sndT (sndT (Zc t M K e x)))) ≐ K := f2.fstE
+  have he : Γ ⊢[PRAAx] sndT (fstT (sndT (sndT (Zc t M K e x)))) ≐ e := f2.sndE
   have hW : Γ ⊢[PRAAx] ap2 (sumF (lw w0)) (fstT (sndT (Zc t M K e x))) (sndT (sndT (Zc t M K e x))) ≐ Wk w0 M K e x :=
     congrAp2 _ hM s2
   have hc := congrMul (congrMul (congrMul (.eqRefl two) he) (.eqRefl m)) hW
@@ -129,14 +124,14 @@ theorem inst2_cj (j t H M K e x : PTm n) :
   rw [h]
   have f1 : Γ ⊢[PRAAx] fstT (Yc t H M K e x) ≐ pairT t H := fst_pair _ _
   have s1 : Γ ⊢[PRAAx] sndT (Yc t H M K e x) ≐ pairT M (pairT (pairT K e) x) := snd_pair _ _
-  have s2 : Γ ⊢[PRAAx] sndT (sndT (Yc t H M K e x)) ≐ pairT (pairT K e) x := (congrSnd s1).eqTrans (snd_pair _ _)
-  have f2 : Γ ⊢[PRAAx] fstT (sndT (sndT (Yc t H M K e x))) ≐ pairT K e := (congrFst s2).eqTrans (fst_pair _ _)
-  have ht : Γ ⊢[PRAAx] fstT (fstT (Yc t H M K e x)) ≐ t := (congrFst f1).eqTrans (fst_pair _ _)
-  have hH : Γ ⊢[PRAAx] sndT (fstT (Yc t H M K e x)) ≐ H := (congrSnd f1).eqTrans (snd_pair _ _)
-  have hM : Γ ⊢[PRAAx] fstT (sndT (Yc t H M K e x)) ≐ M := (congrFst s1).eqTrans (fst_pair _ _)
-  have hK : Γ ⊢[PRAAx] fstT (fstT (sndT (sndT (Yc t H M K e x)))) ≐ K := (congrFst f2).eqTrans (fst_pair _ _)
-  have he : Γ ⊢[PRAAx] sndT (fstT (sndT (sndT (Yc t H M K e x)))) ≐ e := (congrSnd f2).eqTrans (snd_pair _ _)
-  have hx : Γ ⊢[PRAAx] sndT (sndT (sndT (Yc t H M K e x))) ≐ x := (congrSnd s2).eqTrans (snd_pair _ _)
+  have s2 : Γ ⊢[PRAAx] sndT (sndT (Yc t H M K e x)) ≐ pairT (pairT K e) x := s1.sndE
+  have f2 : Γ ⊢[PRAAx] fstT (sndT (sndT (Yc t H M K e x))) ≐ pairT K e := s2.fstE
+  have ht : Γ ⊢[PRAAx] fstT (fstT (Yc t H M K e x)) ≐ t := f1.fstE
+  have hH : Γ ⊢[PRAAx] sndT (fstT (Yc t H M K e x)) ≐ H := f1.sndE
+  have hM : Γ ⊢[PRAAx] fstT (sndT (Yc t H M K e x)) ≐ M := s1.fstE
+  have hK : Γ ⊢[PRAAx] fstT (fstT (sndT (sndT (Yc t H M K e x)))) ≐ K := f2.fstE
+  have he : Γ ⊢[PRAAx] sndT (fstT (sndT (sndT (Yc t H M K e x)))) ≐ e := f2.sndE
+  have hx : Γ ⊢[PRAAx] sndT (sndT (sndT (Yc t H M K e x))) ≐ x := s2.sndE
   have hr := congrAdd hK (.eqRefl j)
   exact congrAp2 _ (congrSucc (DyadicAssembly.Nm_congr hr hH))
     (congrPairT ht (congrPairT hM (congrPairT (congrPairT hr he) hx)))

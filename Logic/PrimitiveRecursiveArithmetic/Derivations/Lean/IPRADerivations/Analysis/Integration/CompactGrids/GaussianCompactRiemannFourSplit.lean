@@ -13,16 +13,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCompactRiemannFourSplit
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qadd positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_triangle_same)
 open GaussianCompactRiemannName (quadrature sampledModulus)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -32,14 +28,9 @@ def pieces (F : PR 3) (s a C1 C2 C3 C4 E K x : PTm n) : PTm n :=
     (qadd (quadrature F s (C3*K) (a+(C1+C2)) C3 E x) (quadrature F s (C4*K) ((a+(C1+C2))+C3) C4 E x))
 def input (F : PR 3) (a C1 C2 C3 C4 E K L x : PTm n) : Fm PTm n :=
   le one a ⋏ (le one E ⋏ (le one K ⋏ sampledModulus F a (totalWidth C1 C2 C3 C4) E L x))
-@[simp] theorem subst_totalWidth {m : ℕ} (σ : Fin n → PTm m) (C1 C2 C3 C4 : PTm n) :
-    Syn.subst σ (totalWidth C1 C2 C3 C4) = totalWidth (Syn.subst σ C1) (Syn.subst σ C2) (Syn.subst σ C3) (Syn.subst σ C4) := by simp [totalWidth]
-@[simp] theorem subst_pieces {m : ℕ} (σ : Fin n → PTm m) (F : PR 3) (s a C1 C2 C3 C4 E K x : PTm n) :
-    Syn.subst σ (pieces F s a C1 C2 C3 C4 E K x) = pieces F (Syn.subst σ s) (Syn.subst σ a) (Syn.subst σ C1)
-      (Syn.subst σ C2) (Syn.subst σ C3) (Syn.subst σ C4) (Syn.subst σ E) (Syn.subst σ K) (Syn.subst σ x) := by simp [pieces]
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (F : PR 3) (a C1 C2 C3 C4 E K L x : PTm n) :
-    (input F a C1 C2 C3 C4 E K L x).subst σ = input F (Syn.subst σ a) (Syn.subst σ C1) (Syn.subst σ C2)
-      (Syn.subst σ C3) (Syn.subst σ C4) (Syn.subst σ E) (Syn.subst σ K) (Syn.subst σ L) (Syn.subst σ x) := by simp [input]
+ipra_subst totalWidth
+ipra_subst pieces
+ipra_subst input
 
 /-- The original shared-step split, with every zero-width case included. -/
 theorem original_four_piece_split (F : PR 3) (s a C1 C2 C3 C4 E K L x : PTm n)

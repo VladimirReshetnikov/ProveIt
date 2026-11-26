@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaHalfPositiveRoot
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaHalfSquareLimit (gammaHalf gammaSquareF gammaSquare gamma_source gamma_regular)
 open GaussianGammaReciprocalInverse (gammaF)
 open GaussianGammaRealValues (axisF)
@@ -28,10 +28,6 @@ open GaussianEuclideanDistanceName (fraction pointCN)
 open RationalValueBounds (upper upper_congr upper_mono)
 open ComplexLogarithmRemainder (oneCode im)
 open GaussianRationalHorner (positive_product)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -58,7 +54,7 @@ theorem lower_independent_at (p q : PTm n) : Γ ⊢[PRAAx]
   let x := fraction (one : PTm n) (num 18)
   let y := fstT (ap2 gammaF q gammaHalf)
   have hx : Γ ⊢[PRAAx] fstT (ap2 constantF p positiveMargin) ≐ RationalArithmetic.recode x :=
-    (congrFst (constant_at p positiveMargin)).eqTrans (fst_pair _ _)
+    (constant_at p positiveMargin).fstE
   have hxr : Γ ⊢[PRAAx] RationalArithmetic.recode x ≐ x :=
     RationalNormalForm.normalize_idempotent _ _ (by ipra_le 17)
   have u : Γ ⊢[PRAAx] upper x y (unit p+unit q) (unit p*unit q) :=

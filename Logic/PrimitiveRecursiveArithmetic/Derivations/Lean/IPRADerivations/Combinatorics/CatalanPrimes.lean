@@ -1,7 +1,6 @@
 import IPRADerivations.Combinatorics.CatalanGrowth
 import IPRADerivations.Combinatorics.BellTouchard
 import IPRADerivations.DiophantineNumberTheory.Coprime
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Prime Catalan numbers (`catalan_numbers_ipra_2026-11-16`, Section 5)
@@ -33,17 +32,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.CatalanPrimes
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Catalan
 open LeanProofs.IPRA.Combinatorics.CatalanGrowth (cat_ge)
 open LeanProofs.IPRA.Combinatorics.BellTouchard (not_dvd_fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_mul' dvd_self')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

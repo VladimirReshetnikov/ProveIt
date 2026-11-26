@@ -15,23 +15,19 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianApproximateInverseDistance
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (bounded distanceBounded qsub)
 open GaussianRationalSyntheticDivision (qone qmul_congr)
 open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_radius_mono distance_triangle_same)
 open GaussianRationalL1 (rawGaussian rawDen raw_represents raw_den_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 def errorCost (A K L : PTm n) : PTm n := two*A*A+A*(K+L)
-@[simp] theorem subst_errorCost {m : ℕ} (σ : Fin n → PTm m) (A K L : PTm n) :
-    Syn.subst σ (errorCost A K L) = errorCost (Syn.subst σ A) (Syn.subst σ K) (Syn.subst σ L) := by simp [errorCost]
+ipra_subst errorCost
 
 theorem unit_product_recode (q : PTm n) : Γ ⊢[PRAAx] qmul q qone ≐ GaussianFastValueCut.recode q := by
   have rep := GaussianRationalHorner.qmul_represents q qone (rawGaussian q) ComplexLogarithmRemainder.oneCode

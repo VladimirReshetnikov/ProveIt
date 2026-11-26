@@ -15,7 +15,7 @@ set_option maxHeartbeats 750000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetKernelSinhOddLower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianDominantPairAlgebra (radiusPoint radiusNumerator radius_represents radius_numerator_norm)
 open GaussianPositiveExponentialProduct (positive_coefficient scalar_le_add)
 open GaussianPositiveRealArithmetic (positive positive_sum positiveTerms natural_representation)
@@ -29,9 +29,6 @@ open GaussianRootAlgebra (equal_of_values re_add im_add re_sub im_sub re_mul im_
 open GaussianScalarExponentialOddTaylor (oddSum oddBody odd_sum_succ scalarTerm)
 open RationalArgmin (rationalLE rationalLE_congr transitive)
 open RationalSupMetric (denominatorOf)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

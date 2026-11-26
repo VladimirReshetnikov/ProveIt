@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaTwoShiftLogGap
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaDigammaHarmonicCells (cell chain)
 open GaussianGammaFiniteApproximantName (logF log_sample_at)
 open GaussianHarmonicLogarithmName (sample sample_at clock)
@@ -25,9 +25,6 @@ open GaussianRationalMetric (qsub distanceBounded)
 open GaussianRationalSyntheticDivision (qsub_congr qadd_sub_cancel)
 open RationalGaussianEmbedding (embed embed_canonical)
 open RationalHarmonicInterval (at_common common interval horizon)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

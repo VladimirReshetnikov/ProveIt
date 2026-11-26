@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetStirlingSlopeBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (normSq normSq_one oneCode)
 open GaussianCoefficientNameBounds (bounded_radius_mono unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
@@ -30,10 +30,6 @@ open GaussianRationalPowerDifference (bounded_sum_same distance_refl_zero)
 open GaussianRationalReciprocal (bounded_product reciprocal)
 open GaussianReconstructionRoots (distance_zero_iff)
 open GaussianRightHalfPlaneLogarithm (source)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "L" => GaussianRightHalfPlaneLogarithm.nameF
@@ -47,10 +43,7 @@ def correction (A B D neg : PTm n) : PTm n := qmul (fraction one two) (reciproca
 def nameF : PR 2 := addF F constantF
 def data (A B D neg : PTm n) : PTm n := addData (diffData A B D neg) (correction A B D neg)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (A B D neg : PTm n) :
-    Syn.subst σ (data A B D neg) =
-      data (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ neg) := by
-  simp [data, diffData, correction, one, two, GaussianLogGammaEulerRepresentation.subst_argument]
+ipra_subst data [diffData, correction, one, two, GaussianLogGammaEulerRepresentation.subst_argument]
 
 private theorem diff_regular (A B D neg : PTm n) (h : Γ ⊢[PRAAx] source A D neg) :
     Γ ⊢[PRAAx] pointCN F (diffData A B D neg) :=

@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaHarmonicCells
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (qadd qzero positive_product scalar_congr)
@@ -23,10 +23,6 @@ open Products (fact)
 open RationalArgmin (rationalLE rationalLE_congr)
 open RationalGaussianEmbedding (embed)
 open RationalHarmonicInterval (common common_value numerator)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -34,11 +30,9 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 def cell (a c Q L : PTm n) : PTm n := embed (common a c Q L)
 def halfReciprocal (a b : PTm n) : PTm n := fraction b (two*a)
 
-@[simp] theorem subst_cell {m : ℕ} (σ : Fin n → PTm m) (a c Q L : PTm n) :
-    Syn.subst σ (cell a c Q L) = cell (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ Q) (Syn.subst σ L) := by simp [cell]
+ipra_subst cell
 
-@[simp] theorem subst_halfReciprocal {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (halfReciprocal a b) = halfReciprocal (Syn.subst σ a) (Syn.subst σ b) := by simp [halfReciprocal,two]
+ipra_subst halfReciprocal [two]
 
 theorem point_fraction_represents (a b : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
     Γ ⊢[PRAAx] RationalArithmetic.represents (fstT (fraction a b)) (ZT.ofNat a) b :=

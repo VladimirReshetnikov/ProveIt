@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantError
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianPolynomialDeterminant (summand partialDeterminant determinant width)
 open GaussianCoefficientL1 (coefficientNorm subCoefficients)
 open GaussianCoefficientNormOrder (coefficientNorm_congr subCoefficients_congr)
@@ -27,9 +27,6 @@ open RationalSupMetric (numeratorOf)
 open LeanProofs.IPRA.Foundations.RuntimePermutationWords (count)
 open LeanProofs.IPRA.Foundations.RuntimePermutationFactorialBound (factorial count_factorial_bound)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open ConciseIPRA.PTm (zero succ app)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,18 +40,10 @@ def summandBounds (A B m L K : PTm n) : Fm PTm n :=
 def prefixBound (A B m L K t : PTm n) : Fm PTm n :=
   le t (count m) ⟶ rationalLE (coefficientNorm (difference A B m L t)) (multiply (natCode t) K)
 
-@[simp] theorem subst_termDifference {l : ℕ} (σ : Fin n → PTm l) (A B m L r : PTm n) :
-    Syn.subst σ (termDifference A B m L r) = termDifference (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ r) := by
-  simp [termDifference]
-@[simp] theorem subst_difference {l : ℕ} (σ : Fin n → PTm l) (A B m L t : PTm n) :
-    Syn.subst σ (difference A B m L t) = difference (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ t) := by
-  simp [difference]
-@[simp] theorem subst_summandBounds {l : ℕ} (σ : Fin n → PTm l) (A B m L K : PTm n) :
-    (summandBounds A B m L K).subst σ = summandBounds (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ K) := by
-  simp [summandBounds,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_prefixBound {l : ℕ} (σ : Fin n → PTm l) (A B m L K t : PTm n) :
-    (prefixBound A B m L K t).subst σ = prefixBound (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ K) (Syn.subst σ t) := by
-  simp [prefixBound]
+ipra_subst termDifference
+ipra_subst difference
+ipra_subst summandBounds [Syn.subst_shift, Syn.shift_subst]
+ipra_subst prefixBound
 
 theorem summand_bound_at (A B m L K r : PTm n) (h : Γ ⊢[PRAAx] summandBounds A B m L K)
     (hr : Γ ⊢[PRAAx] lt r (count m)) :
@@ -92,13 +81,11 @@ theorem prefix_error_bound (A B m L K t : PTm n) (h : Γ ⊢[PRAAx] summandBound
     (ht : Γ ⊢[PRAAx] le t (count m)) : Γ ⊢[PRAAx]
     rationalLE (coefficientNorm (difference A B m L t)) (multiply (natCode t) K) := by
   have all : Γ ⊢[PRAAx] .all (prefixBound (Syn.shift A) (Syn.shift B) (Syn.shift m) (Syn.shift L) (Syn.shift K) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [subst_prefixBound,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_prefixBound]
+    · refine .impI ?_
       exact rationalLE_congr (difference_zero_norm A B m L).eqSymm (natural_scale_zero K).eqSymm
         (RationalArgmin.reflexive (natCode zero))
-    · simp only [subst_prefixBound,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    · refine .impI ?_
       let C := Syn.shift A
       let D := Syn.shift B
       let b := Syn.shift m
@@ -136,15 +123,8 @@ def output (A B m L K t : PTm n) : PTm n := pairT (difference A B m L t)
 def outputF : PR 6 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5))
 def run (A B m L K t : PTm n) : PTm n := app outputF ![A,B,m,L,K,t]
 
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (A B m L K t : PTm n) :
-    Syn.subst σ (output A B m L K t) = output (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ K) (Syn.subst σ t) := by
-  simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (A B m L K t : PTm n) :
-    Syn.subst σ (run A B m L K t) = run (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ K) (Syn.subst σ t) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (A B m L K t : PTm n) : Γ ⊢[PRAAx] run A B m L K t ≐ output A B m L K t := by
   simpa [run,outputF,app] using
@@ -152,13 +132,13 @@ theorem program_at (A B m L K t : PTm n) : Γ ⊢[PRAAx] run A B m L K t ≐ out
 
 theorem returned_difference (A B m L K t : PTm n) :
     Γ ⊢[PRAAx] fstT (run A B m L K t) ≐ difference A B m L t :=
-  (congrFst (program_at A B m L K t)).eqTrans (fst_pair _ _)
+  (program_at A B m L K t).fstE
 theorem returned_norm (A B m L K t : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run A B m L K t)) ≐ coefficientNorm (difference A B m L t) :=
-  (congrFst ((congrSnd (program_at A B m L K t)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at A B m L K t).sndE.fstE
 theorem returned_budget (A B m L K t : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (run A B m L K t)) ≐ multiply (natCode t) K :=
-  (congrSnd ((congrSnd (program_at A B m L K t)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at A B m L K t).sndE.sndE
 theorem returned_norm_is_actual (A B m L K t : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run A B m L K t)) ≐ coefficientNorm (fstT (run A B m L K t)) :=
   (returned_norm A B m L K t).eqTrans (coefficientNorm_congr (returned_difference A B m L K t)).eqSymm

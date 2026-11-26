@@ -15,7 +15,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRightHalfPlaneLogarithmRelativeExponential
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianFiniteLogarithmCompositionTail (linearValue)
 open GaussianGammaAdjacentCutoff (multiply_cross)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
@@ -28,9 +28,6 @@ open GaussianRationalHorner (ofGaussian qmul)
 open GaussianRightHalfPlaneLogarithm (source)
 open GaussianRightHalfPlaneLogarithmRelativeStep (numerator denominator radius relative)
 open GaussianRootAlgebra (sub)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "G" => GaussianRightHalfPlaneLogarithm.nameF
@@ -48,14 +45,8 @@ def correctedF : PR 2 := addF G pointF
 def correctedData (A B neg a b sign D H : PTm n) : PTm n :=
   addData (P A B D neg) (correctionData A B neg a b sign H)
 
-@[simp] theorem subst_correctionData {m : ℕ} (σ : Fin n → PTm m) (A B neg a b sign H : PTm n) :
-    Syn.subst σ (correctionData A B neg a b sign H) =
-      correctionData (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ neg)
-        (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ sign) (Syn.subst σ H) := by simp [correctionData]
-@[simp] theorem subst_correctedData {m : ℕ} (σ : Fin n → PTm m) (A B neg a b sign D H : PTm n) :
-    Syn.subst σ (correctedData A B neg a b sign D H) =
-      correctedData (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ neg)
-        (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ sign) (Syn.subst σ D) (Syn.subst σ H) := by simp [correctedData]
+ipra_subst correctionData
+ipra_subst correctedData
 
 private theorem composition_cross (w : PTm n) : Γ ⊢[PRAAx] crossEquivalent MC constantF w (linearValue w) := by
   apply GaussianNameConjugation.equal_samples_cross _ _ _ _

@@ -18,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianLocalLogarithmExponentialIdentity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianRationalHorner (evaluate ofGaussian)
 open GaussianRationalMetric (bounded distanceBounded)
@@ -30,10 +30,6 @@ open GaussianLocalLogarithmName (source pointF data)
 open GaussianUnitDiskExponentialName (shifted index)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (diagonalEquivalent crossEquivalent)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,16 +38,11 @@ def finiteDegree (p : PTm n) : PTm n := DyadicComplexLogarithm.precision (shifte
 def finiteValue (p z N : PTm n) : PTm n := evaluate (composition (finiteDegree p) (index p)) (ofGaussian z N)
 def auxiliary (p : PTm n) : PTm n := GaussianFiniteLogarithmDyadicTail.clock (p+num 4)
 def denominator (p : PTm n) : PTm n := unit (p+num 4)
-@[simp] theorem subst_exponentialPoint {l : ℕ} (σ : Fin n → PTm l) (p z R N : PTm n) :
-    Syn.subst σ (exponentialPoint p z R N) = exponentialPoint (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ N) := by simp [exponentialPoint]
-@[simp] theorem subst_finiteDegree {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) :
-    Syn.subst σ (finiteDegree p) = finiteDegree (Syn.subst σ p) := by simp [finiteDegree,DyadicComplexLogarithm.precision]
-@[simp] theorem subst_finiteValue {l : ℕ} (σ : Fin n → PTm l) (p z N : PTm n) :
-    Syn.subst σ (finiteValue p z N) = finiteValue (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ N) := by simp [finiteValue]
-@[simp] theorem subst_auxiliary {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) :
-    Syn.subst σ (auxiliary p) = auxiliary (Syn.subst σ p) := by simp [auxiliary]
-@[simp] theorem subst_denominator {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) :
-    Syn.subst σ (denominator p) = denominator (Syn.subst σ p) := by simp [denominator]
+ipra_subst exponentialPoint
+ipra_subst finiteDegree [DyadicComplexLogarithm.precision]
+ipra_subst finiteValue
+ipra_subst auxiliary
+ipra_subst denominator
 
 theorem index_exact (p : PTm n) : Γ ⊢[PRAAx] index p ≐ p+num 11 := by
   have e : Γ ⊢[PRAAx] succ (index p) ≐ succ (p+num 11) :=
@@ -185,30 +176,24 @@ def output (p z R N : PTm n) : PTm n := pairT (exponentialPoint p z R N)
   (pairT (linearValue (ofGaussian z N)) (pairT (auxiliary p) (finiteValue (auxiliary p) z N)))
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (p z R N : PTm n) : PTm n := PTm.app outputF ![p,z,R,N]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (p z R N : PTm n) :
-    Syn.subst σ (output p z R N) = output (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ N) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (p z R N : PTm n) :
-    Syn.subst σ (run p z R N) = run (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ N) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (p z R N : PTm n) : Γ ⊢[PRAAx] run p z R N ≐ output p z R N := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![p,z,R,N]
 theorem returned_exponential (p z R N : PTm n) : Γ ⊢[PRAAx] fstT (run p z R N) ≐ exponentialPoint p z R N :=
-  (congrFst (program_at _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _).fstE
 theorem returned_tail (p z R N : PTm n) : Γ ⊢[PRAAx] sndT (run p z R N) ≐
     pairT (linearValue (ofGaussian z N)) (pairT (auxiliary p) (finiteValue (auxiliary p) z N)) :=
-  (congrSnd (program_at _ _ _ _)).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _).sndE
 theorem returned_linear (p z R N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run p z R N)) ≐ linearValue (ofGaussian z N) :=
-  (congrFst (returned_tail _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_tail _ _ _ _).fstE
 theorem returned_pair (p z R N : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run p z R N)) ≐ pairT (auxiliary p) (finiteValue (auxiliary p) z N) :=
-  (congrSnd (returned_tail _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_tail _ _ _ _).sndE
 theorem returned_auxiliary (p z R N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run p z R N))) ≐ auxiliary p :=
-  (congrFst (returned_pair _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_pair _ _ _ _).fstE
 theorem returned_finite_value (p z R N : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run p z R N))) ≐ finiteValue (auxiliary p) z N :=
-  (congrSnd (returned_pair _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_pair _ _ _ _).sndE
 theorem returned_comparison (p z R N : PTm n) (h : Γ ⊢[PRAAx] source z R N) : Γ ⊢[PRAAx]
     distanceBounded (fstT (run p z R N)) (fstT (sndT (run p z R N))) two (unit p) :=
   distance_congr (returned_exponential _ _ _ _).eqSymm (returned_linear _ _ _ _).eqSymm (.eqRefl _) (.eqRefl _) (source_comparison p z R N h)

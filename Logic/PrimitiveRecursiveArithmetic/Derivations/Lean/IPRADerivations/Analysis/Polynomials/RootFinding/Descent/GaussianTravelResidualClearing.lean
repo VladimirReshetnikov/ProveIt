@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Translation.GaussianTranslationCoefficientBound
 import IPRADerivations.Analysis.Inequalities.RationalNonnegativePowerOrder
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Clearing actual residual budgets in the travel estimate
@@ -17,13 +16,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianTravelResidualClearing
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (bounded)
 open LeanProofs.IPRA.Analysis.GaussianRationalL1 (rawDen rawGaussian raw_represents raw_den_positive)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (positive_product)
 open LeanProofs.IPRA.Analysis.GaussianRationalReciprocal (normNumerator)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

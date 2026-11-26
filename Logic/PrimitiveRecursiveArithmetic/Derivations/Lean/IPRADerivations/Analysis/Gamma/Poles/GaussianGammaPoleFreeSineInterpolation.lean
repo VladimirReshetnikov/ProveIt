@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaPoleFreeSineInterpolation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (normSq zeroCode)
 open GaussianArctangentExponentialPeriod (fullTurnF fullTurnData original_full_turn_input)
 open GaussianArctangentNamedPhase (angleF angleData)
@@ -38,18 +38,13 @@ open GaussianRationalReciprocal (qone qone_represents_scaled)
 open GaussianRationalSyntheticDivision (qadd_congr)
 open GaussianRootAlgebra (equal equal_symm equal_trans)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def poleFree (z B : PTm n) : Fm PTm n :=
   .all (equal (translated (Syn.shift z) (Syn.shift B) (var 0)) zeroCode ⟶ .bot)
 
-@[simp] theorem subst_poleFree {m : ℕ} (σ : Fin n → PTm m) (z B : PTm n) :
-    (poleFree z B).subst σ = poleFree (Syn.subst σ z) (Syn.subst σ B) := by
-  simp [poleFree,zeroCode,Syn.subst_shift,Syn.shift_subst]
+ipra_subst poleFree [zeroCode, Syn.subst_shift, Syn.shift_subst]
 
 private theorem no_pole_at (z B k : PTm n) (h : Γ ⊢[PRAAx] poleFree z B) :
     Γ ⊢[PRAAx] equal (translated z B k) zeroCode ⟶ .bot := by

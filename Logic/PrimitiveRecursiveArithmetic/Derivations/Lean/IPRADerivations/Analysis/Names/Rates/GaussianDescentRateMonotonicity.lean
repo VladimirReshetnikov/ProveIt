@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.GaussianDescentClock
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianFactorBudget
 import IPRADerivations.Analysis.Inequalities.RationalNonnegativePowers
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The actual rational descent rate is monotone in the numerical degree
@@ -20,7 +19,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianDescentRateMonotonicity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianDescentClockArithmetic (four descentD rateDenominator rate_positive)
 open LeanProofs.IPRA.Analysis.GaussianDescentClock (contractionSquare)
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (fraction fraction_order)
@@ -29,10 +28,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalL1 (rawGaussian rawDen raw_represe
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (positive_product)
 open LeanProofs.IPRA.Analysis.RationalArgmin (rationalLE)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -98,20 +93,18 @@ theorem weaken_contract (d N u v : PTm n) (hdN : Γ ⊢[PRAAx] le d N)
 def output (d N : PTm n) : PTm n := pairT (descentD d) (pairT (descentD N) (pairT (contractionSquare d) (contractionSquare N)))
 def outputF : PR 2 := PTm.toPR (output (var 0) (var 1))
 def run (d N : PTm n) : PTm n := ap2 outputF d N
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (d N : PTm n) :
-    Syn.subst σ (output d N) = output (Syn.subst σ d) (Syn.subst σ N) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (d N : PTm n) :
-    Syn.subst σ (run d N) = run (Syn.subst σ d) (Syn.subst σ N) := by simp [run]
+ipra_subst output
+ipra_subst run
 theorem program_at (d N : PTm n) : Γ ⊢[PRAAx] run d N ≐ output d N := by
   simpa [run,outputF,ap2] using toPR_eq (Γ := Γ) (output (var 0) (var 1) : PTm 2) ![d,N]
 theorem returned_lower_degree_bound (d N : PTm n) : Γ ⊢[PRAAx] fstT (run d N) ≐ descentD d :=
-  (congrFst (program_at d N)).eqTrans (fst_pair _ _)
+  (program_at d N).fstE
 theorem returned_upper_degree_bound (d N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run d N)) ≐ descentD N :=
-  (congrFst ((congrSnd (program_at d N)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at d N).sndE.fstE
 theorem returned_lower_rate (d N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run d N))) ≐ contractionSquare d :=
-  (congrFst ((congrSnd ((congrSnd (program_at d N)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at d N).sndE.sndE.fstE
 theorem returned_upper_rate (d N : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run d N))) ≐ contractionSquare N :=
-  (congrSnd ((congrSnd ((congrSnd (program_at d N)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at d N).sndE.sndE.sndE
 theorem returned_rate_order (d N : PTm n) (h : Γ ⊢[PRAAx] le d N) : Γ ⊢[PRAAx]
     rationalLE (fstT (sndT (sndT (run d N)))) (sndT (sndT (sndT (run d N)))) :=
   RationalArgmin.rationalLE_congr (returned_lower_rate d N).eqSymm (returned_upper_rate d N).eqSymm (contraction_square_monotone d N h)

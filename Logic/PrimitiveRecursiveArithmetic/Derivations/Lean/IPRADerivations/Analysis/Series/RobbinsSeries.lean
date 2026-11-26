@@ -34,13 +34,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.RobbinsSeries
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.BaselSquares (fact_eq)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -99,15 +95,9 @@ private abbrev lowF : Fm PTm 3 :=
   le (num 3) (var 2) ⟶ le (pw (var 1) (var 0) * fact (var 2)) (num 3 * Tr (var 1) (var 2) (succ (var 0)))
 
 private theorem low₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] lowF := by
-  refine ind _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_imp, subst_le, subst_ap2, subst_pairT, PTm.subst_mul, PTm.subst_num,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact .impI (lower_base Prf.hyp0)
-  · simp only [Fm.subst_imp, subst_le, subst_ap2, subst_pairT, PTm.subst_mul, PTm.subst_num,
-      Syn.subst_var, Syn.repl_zero, repl_one, repl_two, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact .impI (lower_step (Prf.impE Prf.hyp1 Prf.hyp0))
+  ipra_ind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2, subst_pairT]
+  · exact .impI (lower_base Prf.hyp0)
+  · exact .impI (lower_step (Prf.impE Prf.hyp1 Prf.hyp0))
 
 /-- `S_{K+1} ≥ 1/(3w)`: `w^K F ≤ 3 · Tr (K + 1)`, for `3 ≤ L`. -/
 theorem robbins_lower {w L : PTm n} (hL : Γ ⊢[PRAAx] le (num 3) L) (K : PTm n) :
@@ -157,15 +147,9 @@ private abbrev upF : Fm PTm 3 :=
   le (succ (two * succ (succ (var 0)))) (var 2) ⟶ UpInv (var 0) (var 1) (var 2)
 
 private theorem up₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] upF := by
-  refine ind _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_imp, subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, PTm.subst_num,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact .impI (upper_base Prf.hyp0)
-  · simp only [Fm.subst_imp, subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, PTm.subst_num,
-      Syn.subst_var, Syn.repl_zero, repl_one, repl_two, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    refine .impI (upper_step Prf.hyp0 (Prf.impE Prf.hyp1 (le_trans (le_of_eq_add (d := two) ?_) Prf.hyp0)))
+  ipra_ind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2, subst_pairT]
+  · exact .impI (upper_base Prf.hyp0)
+  · refine .impI (upper_step Prf.hyp0 (Prf.impE Prf.hyp1 (le_trans (le_of_eq_add (d := two) ?_) Prf.hyp0)))
     ipra_ring
 
 /-- The upper bound with its tail, for `K = k + 2`, `w = v + 1` and `2K + 1 ≤ L`. -/

@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedDifferenceQuotient
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBoundedConstantProductName (constantF constant_at constant_regular)
 open GaussianNameArithmetic (multiplyF multiplyData multiply_fast multiplyModulus)
 open GaussianRationalHorner (ofGaussian qmul positive_product)
@@ -26,10 +26,6 @@ open GaussianRationalReciprocal (reciprocal bound_congr bounded_product)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -45,23 +41,14 @@ def cost (f g : PR 2) (x y h D : PTm n) : PTm n :=
 def numerator (D p q r : PTm n) : PTm n := unit q*unit r+D*unit p*(unit q+unit r)
 def denominator (p q r : PTm n) : PTm n := unit p*unit q*unit r
 
-@[simp] theorem subst_separated {m : ℕ} (σ : Fin n → PTm m) (h D : PTm n) :
-    (separated h D).subst σ = separated (Syn.subst σ h) (Syn.subst σ D) := by simp [separated]
-@[simp] theorem subst_inverse {m : ℕ} (σ : Fin n → PTm m) (h D : PTm n) :
-    Syn.subst σ (inverse h D) = inverse (Syn.subst σ h) (Syn.subst σ D) := by simp [inverse]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (f g : PR 2) (x y h D : PTm n) :
-    Syn.subst σ (data f g x y h D) = data f g (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ h) (Syn.subst σ D) := by simp [data]
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (f g : PR 2) (x y h D : PTm n) :
-    (input f g x y h D).subst σ = input f g (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ h) (Syn.subst σ D) := by simp [input]
-@[simp] theorem subst_raw {m : ℕ} (σ : Fin n → PTm m) (f g : PR 2) (q r x y h D : PTm n) :
-    Syn.subst σ (raw f g q r x y h D) = raw f g (Syn.subst σ q) (Syn.subst σ r)
-      (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ h) (Syn.subst σ D) := by simp [raw]
-@[simp] theorem subst_cost {m : ℕ} (σ : Fin n → PTm m) (f g : PR 2) (x y h D : PTm n) :
-    Syn.subst σ (cost f g x y h D) = cost f g (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ h) (Syn.subst σ D) := by simp [cost]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (D p q r : PTm n) :
-    Syn.subst σ (numerator D p q r) = numerator (Syn.subst σ D) (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ r) := by simp [numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (p q r : PTm n) :
-    Syn.subst σ (denominator p q r) = denominator (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ r) := by simp [denominator]
+ipra_subst separated
+ipra_subst inverse
+ipra_subst data
+ipra_subst input
+ipra_subst raw
+ipra_subst cost
+ipra_subst numerator
+ipra_subst denominator
 
 theorem parameter_lower (h D : PTm n) (hs : Γ ⊢[PRAAx] separated h D) : Γ ⊢[PRAAx]
     GaussianNameReciprocal.lower (ofGaussian h D) D :=

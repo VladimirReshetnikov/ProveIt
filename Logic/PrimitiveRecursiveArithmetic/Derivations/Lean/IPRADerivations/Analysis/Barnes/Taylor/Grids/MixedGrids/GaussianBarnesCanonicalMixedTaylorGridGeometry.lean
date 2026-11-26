@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalMixedTaylorGridGeometry
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add bounded bounded_add bounded_mono bounded_neg bounded_scale code im re scale)
 open GaussianBarnesCanonicalCofinalTaylorGridObservations (cofinalData)
 open GaussianBarnesCanonicalFiniteTaylorEvenGridComparison (native_negative)
@@ -24,9 +24,6 @@ open GaussianRationalHorner (canonical_unique ofGaussian ofGaussian_canonical of
 open GaussianRationalMetric (qnegative)
 open GaussianRationalNaturalScale (natScale_congr)
 open GaussianRationalSyntheticDivision (qadd_congr)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

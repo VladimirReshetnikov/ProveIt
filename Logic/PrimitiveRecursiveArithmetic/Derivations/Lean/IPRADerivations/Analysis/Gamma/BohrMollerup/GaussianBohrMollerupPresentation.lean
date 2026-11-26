@@ -16,7 +16,7 @@ set_option maxHeartbeats 1950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBohrMollerupPresentation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaEulerRationalHeadConvexity (weight barycenter)
 open GaussianNameArithmetic (addF addData)
@@ -26,9 +26,6 @@ open GaussianNamedPositiveExponentialOrder (realOrder)
 open GaussianNaturalScaleProductName (productF productData)
 open GaussianSignedNameExponentialOrder (realSamples)
 open GaussianStirlingGammaLogarithm (source)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 structure Presentation where
   nameF : PR 2
@@ -73,33 +70,23 @@ def convexity (P : Presentation) : Fm PTm n := .all (convexFromData P (var 0))
 def laws (P : Presentation) : Fm PTm n :=
   normalization P ⋏ (values P ⋏ (recurrence P ⋏ (rescaling P ⋏ convexity P)))
 
-@[simp] theorem subst_argument {m : ℕ} (σ : Fin n → PTm m) (P : Presentation) (a b : PTm n) :
-    Syn.subst σ (argument P a b) = argument P (Syn.subst σ a) (Syn.subst σ b) := by simp [argument,subst_inst2]
-@[simp] theorem subst_scaledData {m : ℕ} (σ : Fin n → PTm m) (P : Presentation) (w a b : PTm n) :
-    Syn.subst σ (scaledData P w a b) = scaledData P (Syn.subst σ w) (Syn.subst σ a) (Syn.subst σ b) := by simp [scaledData]
+ipra_subst argument [subst_inst2]
+ipra_subst scaledData
 @[simp] theorem subst_normalization {m : ℕ} (σ : Fin n → PTm m) (P : Presentation) :
     (normalization (n := n) P).subst σ = normalization (n := m) P := by simp [normalization,one]
-@[simp] theorem subst_valueAt {m : ℕ} (σ : Fin n → PTm m) (P : Presentation) (a b : PTm n) :
-    (valueAt P a b).subst σ = valueAt P (Syn.subst σ a) (Syn.subst σ b) := by simp [valueAt]
-@[simp] theorem subst_recurrenceAt {m : ℕ} (σ : Fin n → PTm m) (P : Presentation) (a b : PTm n) :
-    (recurrenceAt P a b).subst σ = recurrenceAt P (Syn.subst σ a) (Syn.subst σ b) := by simp [recurrenceAt]
-@[simp] theorem subst_rescaleAt {m : ℕ} (σ : Fin n → PTm m) (P : Presentation) (a b k : PTm n) :
-    (rescaleAt P a b k).subst σ = rescaleAt P (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ k) := by simp [rescaleAt]
-@[simp] theorem subst_convexAt {m : ℕ} (σ : Fin n → PTm m) (P : Presentation) (a d b r s : PTm n) :
-    (convexAt P a d b r s).subst σ =
-      convexAt P (Syn.subst σ a) (Syn.subst σ d) (Syn.subst σ b) (Syn.subst σ r) (Syn.subst σ s) := by
-  simp [convexAt,weight,barycenter]
+ipra_subst valueAt
+ipra_subst recurrenceAt
+ipra_subst rescaleAt
+ipra_subst convexAt [weight, barycenter]
 
 @[simp] theorem subst_values {m : ℕ} (σ : Fin n → PTm m) (P : Presentation) :
     (values (n := n) P).subst σ = values (n := m) P := by simp [values]
 @[simp] theorem subst_recurrence {m : ℕ} (σ : Fin n → PTm m) (P : Presentation) :
     (recurrence (n := n) P).subst σ = recurrence (n := m) P := by simp [recurrence]
-@[simp] theorem subst_rescaleFromData {m : ℕ} (σ : Fin n → PTm m) (P : Presentation) (x : PTm n) :
-    (rescaleFromData P x).subst σ = rescaleFromData P (Syn.subst σ x) := by simp [rescaleFromData,one]
+ipra_subst rescaleFromData [one]
 @[simp] theorem subst_rescaling {m : ℕ} (σ : Fin n → PTm m) (P : Presentation) :
     (rescaling (n := n) P).subst σ = rescaling (n := m) P := by simp [rescaling]
-@[simp] theorem subst_convexFromData {m : ℕ} (σ : Fin n → PTm m) (P : Presentation) (x : PTm n) :
-    (convexFromData P x).subst σ = convexFromData P (Syn.subst σ x) := by simp [convexFromData,one]
+ipra_subst convexFromData [one]
 @[simp] theorem subst_convexity {m : ℕ} (σ : Fin n → PTm m) (P : Presentation) :
     (convexity (n := n) P).subst σ = convexity (n := m) P := by simp [convexity]
 @[simp] theorem subst_laws {m : ℕ} (σ : Fin n → PTm m) (P : Presentation) :
@@ -122,8 +109,8 @@ theorem observe_rescale (P : Presentation) (a b k : PTm n) (h : Γ ⊢[PRAAx] re
   let x := pairT a (pairT b k)
   have et : Γ ⊢[PRAAx] sndT x ≐ pairT b k := snd_pair _ _
   have ea : Γ ⊢[PRAAx] fstT x ≐ a := fst_pair _ _
-  have eb : Γ ⊢[PRAAx] fstT (sndT x) ≐ b := (congrFst et).eqTrans (fst_pair _ _)
-  have ek : Γ ⊢[PRAAx] sndT (sndT x) ≐ k := (congrSnd et).eqTrans (snd_pair _ _)
+  have eb : Γ ⊢[PRAAx] fstT (sndT x) ≐ b := et.fstE
+  have ek : Γ ⊢[PRAAx] sndT (sndT x) ≐ k := et.sndE
   let formula : Fm PTm 3 := source (var 0) (var 1) ⋏ le one (var 2) ⟶
     rescaleAt P (var 0) (var 1) (var 2)
   have packed : Γ ⊢[PRAAx] rescaleFromData P x := by simpa [rescaling] using h.allE x
@@ -140,14 +127,14 @@ theorem observe_convex (P : Presentation) (a d b r s : PTm n) (h : Γ ⊢[PRAAx]
   let read (u : PTm n) := sndT u
   have e₁ : Γ ⊢[PRAAx] read x ≐ pairT d (pairT b (pairT r s)) := snd_pair _ _
   have e₂ : Γ ⊢[PRAAx] read (read x) ≐ pairT b (pairT r s) :=
-    (congrSnd e₁).eqTrans (snd_pair _ _)
+    e₁.sndE
   have e₃ : Γ ⊢[PRAAx] read (read (read x)) ≐ pairT r s :=
-    (congrSnd e₂).eqTrans (snd_pair _ _)
+    e₂.sndE
   have ea : Γ ⊢[PRAAx] fstT x ≐ a := fst_pair _ _
-  have ed : Γ ⊢[PRAAx] fstT (read x) ≐ d := (congrFst e₁).eqTrans (fst_pair _ _)
-  have eb : Γ ⊢[PRAAx] fstT (read (read x)) ≐ b := (congrFst e₂).eqTrans (fst_pair _ _)
-  have er : Γ ⊢[PRAAx] fstT (read (read (read x))) ≐ r := (congrFst e₃).eqTrans (fst_pair _ _)
-  have es : Γ ⊢[PRAAx] read (read (read (read x))) ≐ s := (congrSnd e₃).eqTrans (snd_pair _ _)
+  have ed : Γ ⊢[PRAAx] fstT (read x) ≐ d := e₁.fstE
+  have eb : Γ ⊢[PRAAx] fstT (read (read x)) ≐ b := e₂.fstE
+  have er : Γ ⊢[PRAAx] fstT (read (read (read x))) ≐ r := e₃.fstE
+  have es : Γ ⊢[PRAAx] read (read (read (read x))) ≐ s := e₃.sndE
   let formula : Fm PTm 5 := source (var 0) (var 2) ⋏ le one (var 1) ⟶
     convexAt P (var 0) (var 1) (var 2) (var 3) (var 4)
   have packed : Γ ⊢[PRAAx] convexFromData P x := by simpa [convexity] using h.allE x

@@ -1,8 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Representation.RationalPolynomialGaussianEmbedding
 import IPRADerivations.Analysis.Polynomials.Representation.GaussianRationalPolynomialBuffers
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianRationalCoefficientScaling
-import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Original rational coefficient buffers and literal Gaussian transport
@@ -17,15 +15,11 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalPolynomialBuffersGaussianEmbedding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalGaussianEmbedding (embed scalarZero)
 open RationalPolynomialGaussianEmbedding (coefficients coefficient_lookup coefficients_length embed_congr)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,20 +36,13 @@ def padData (C t : PTm n) : PTm n := pairT C t
 def padBody : PTm 2 := padCoefficient (fstT (var 1)) (sndT (var 1)) (var 0)
 def leftPad (C t : PTm n) : PTm n := sequence padBody (t+length C) (padData C t)
 
-@[simp] theorem subst_zeros {l : ℕ} (σ : Fin n → PTm l) (L : PTm n) :
-    Syn.subst σ (zeros L) = zeros (Syn.subst σ L) := by simp [zeros]
-@[simp] theorem subst_padded {l : ℕ} (σ : Fin n → PTm l) (C L i : PTm n) :
-    Syn.subst σ (padded C L i) = padded (Syn.subst σ C) (Syn.subst σ L) (Syn.subst σ i) := by simp [padded,Signum.sg]
-@[simp] theorem subst_added {l : ℕ} (σ : Fin n → PTm l) (C D L : PTm n) :
-    Syn.subst σ (added C D L) = added (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ L) := by simp [added]
-@[simp] theorem subst_scaled {l : ℕ} (σ : Fin n → PTm l) (C s : PTm n) :
-    Syn.subst σ (scaled C s) = scaled (Syn.subst σ C) (Syn.subst σ s) := by simp [scaled]
-@[simp] theorem subst_padCoefficient {l : ℕ} (σ : Fin n → PTm l) (C t i : PTm n) :
-    Syn.subst σ (padCoefficient C t i) = padCoefficient (Syn.subst σ C) (Syn.subst σ t) (Syn.subst σ i) := by simp [padCoefficient,Signum.sg]
-@[simp] theorem subst_padData {l : ℕ} (σ : Fin n → PTm l) (C t : PTm n) :
-    Syn.subst σ (padData C t) = padData (Syn.subst σ C) (Syn.subst σ t) := by simp [padData]
-@[simp] theorem subst_leftPad {l : ℕ} (σ : Fin n → PTm l) (C t : PTm n) :
-    Syn.subst σ (leftPad C t) = leftPad (Syn.subst σ C) (Syn.subst σ t) := by simp [leftPad]
+ipra_subst zeros
+ipra_subst padded [Signum.sg]
+ipra_subst added
+ipra_subst scaled
+ipra_subst padCoefficient [Signum.sg]
+ipra_subst padData
+ipra_subst leftPad
 
 theorem zeros_length (L : PTm n) : Γ ⊢[PRAAx] length (zeros L) ≐ L := sequence_length _ _ _
 theorem zeros_lookup (L i : PTm n) (hi : Γ ⊢[PRAAx] lt i L) : Γ ⊢[PRAAx] entry (zeros L) i ≐ scalarZero := by
@@ -142,9 +129,7 @@ theorem pad_embedding (C t i : PTm n) (hi : Γ ⊢[PRAAx] lt i (t+length C)) : �
 
 def embeddedEntries (C D L : PTm n) : Fm PTm n := .all (lt (var 0) (Syn.shift L) ⟶
   embed (entry (Syn.shift C) (var 0)) ≐ entry (Syn.shift D) (var 0))
-@[simp] theorem subst_embeddedEntries {l : ℕ} (σ : Fin n → PTm l) (C D L : PTm n) :
-    (embeddedEntries C D L).subst σ = embeddedEntries (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ L) := by
-  simp [embeddedEntries,Syn.subst_shift,Syn.shift_subst]
+ipra_subst embeddedEntries [Syn.subst_shift, Syn.shift_subst]
 
 theorem zeros_embedded_entries (L : PTm n) : Γ ⊢[PRAAx]
     embeddedEntries (zeros L) (GaussianRationalPolynomialBuffers.zeros L) L := by

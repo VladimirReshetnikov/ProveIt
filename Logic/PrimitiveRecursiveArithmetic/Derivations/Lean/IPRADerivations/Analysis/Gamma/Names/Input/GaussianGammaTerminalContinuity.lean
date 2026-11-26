@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaTerminalContinuity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaLocalPoleGuards (terminal terminal_native terminal_Gamma_domain)
 open GaussianGammaPoleInverseContinuity (halfDisk)
 open GaussianGammaReciprocalInverse
@@ -31,13 +31,10 @@ open GaussianNameRingLaws (oneF one_at one_fast)
 open GaussianNameEquivalence (crossEquivalent cross_refl)
 open ComplexLogarithmRemainder (scale oneCode normSq normSq_scale)
 open GaussianRootAlgebra (equal equal_of_values normSq_equal)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
-private theorem two_positive : Γ ⊢[PRAAx] le one (two : PTm n) := zero_lt_succ one
+private alias two_positive := Common.one_le_two
 
 def encodedOne (B : PTm n) : PTm n := scale B oneCode
 def inverseBound : PTm n := lambdaDenominator two two

@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianOddMomentIntegrand
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegrandName (powerF powerData decayF decayData)
 open GaussianEulerSquareKernel (doubled kernelF)
 open GaussianEulerIntegerMomentIntegrand (monomial)
@@ -25,9 +25,6 @@ open GaussianRationalHorner (ofGaussian canonical_unique ofGaussian_represents r
 open GaussianRationalMetric (distanceBounded)
 open GaussianCoefficientNameBounds (unit)
 open ComplexLogarithmRemainder (oneCode scale re im)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -35,10 +32,8 @@ def argument (N : PTm n) : PTm n := GaussianGammaShiftTrajectory.point oneCode o
 abbrev radius := @GaussianGammaHalfIntegerDomain.radius
 def degree (N : PTm n) : PTm n := succ (two*N)
 
-@[simp] theorem subst_argument {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (argument N) = argument (Syn.subst σ N) := by simp [argument]
-@[simp] theorem subst_degree {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (degree N) = degree (Syn.subst σ N) := by simp [degree]
+ipra_subst argument
+ipra_subst degree
 
 theorem base_source : Γ ⊢[PRAAx] GaussianEulerIntegralGammaIdentification.source (oneCode : PTm n) one one one := by
   have h := GaussianEulerUnitNormalization.unit_lower_source (Γ := Γ) (n := n)
@@ -91,9 +86,7 @@ def data (N a b c d : PTm n) : PTm n := multiplyData constantF decayF
   (monomial (degree N) a b) (decayData (c*(a*a)) (d*(b*b)))
 def clock (p N a b c d : PTm n) : PTm n := GaussianFastValueCut.exponent
   (GaussianNameArithmetic.multiplyModulus constantF decayF (monomial (degree N) a b) (decayData (c*(a*a)) (d*(b*b)))) p
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (p N a b c d : PTm n) :
-    Syn.subst σ (clock p N a b c d) = clock (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ b)
-      (Syn.subst σ c) (Syn.subst σ d) := by simp [clock]
+ipra_subst clock
 
 theorem original_kernel (N a b E T c d : PTm n) (h : Γ ⊢[PRAAx] source a b E T c d) : Γ ⊢[PRAAx]
     crossEquivalent kernelF nameF (originalData N a b c d) (data N a b c d) := by

@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalHornerLipschitz
 import IPRADerivations.Analysis.RationalArithmetic.Representations.GaussianRationalNormalization
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerDifference
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual coefficient-dependent Horner size and variation budgets
@@ -17,7 +16,7 @@ set_option linter.unnecessarySeqFocus false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalVariableHornerBudget
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (horner evaluate represents positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr bounded_product)
@@ -25,9 +24,6 @@ open GaussianRationalPowerDifference (bounded_sum_same)
 open GaussianRationalNormalization (clearPoint)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,12 +37,12 @@ def stateF : PR 2 := rec2 (pairT zero zero : PTm 1) stepBody
 def state (C U k : PTm n) : PTm n := ap2 stateF k (data C U)
 def size (C U k : PTm n) : PTm n := fstT (state C U k)
 def variation (C U k : PTm n) : PTm n := sndT (state C U k)
-@[simp] theorem subst_denominator {l : ℕ} (σ : Fin n → PTm l) (C : PTm n) : Syn.subst σ (denominator C) = denominator (Syn.subst σ C) := by simp [denominator]
-@[simp] theorem subst_coefficient {l : ℕ} (σ : Fin n → PTm l) (C i : PTm n) : Syn.subst σ (coefficient C i) = coefficient (Syn.subst σ C) (Syn.subst σ i) := by simp [coefficient]
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (C U : PTm n) : Syn.subst σ (data C U) = data (Syn.subst σ C) (Syn.subst σ U) := by simp [data]
-@[simp] theorem subst_state {l : ℕ} (σ : Fin n → PTm l) (C U k : PTm n) : Syn.subst σ (state C U k) = state (Syn.subst σ C) (Syn.subst σ U) (Syn.subst σ k) := by simp [state]
-@[simp] theorem subst_size {l : ℕ} (σ : Fin n → PTm l) (C U k : PTm n) : Syn.subst σ (size C U k) = size (Syn.subst σ C) (Syn.subst σ U) (Syn.subst σ k) := by simp [size]
-@[simp] theorem subst_variation {l : ℕ} (σ : Fin n → PTm l) (C U k : PTm n) : Syn.subst σ (variation C U k) = variation (Syn.subst σ C) (Syn.subst σ U) (Syn.subst σ k) := by simp [variation]
+ipra_subst denominator
+ipra_subst coefficient
+ipra_subst data
+ipra_subst state
+ipra_subst size
+ipra_subst variation
 
 theorem denominator_positive (C : PTm n) : Γ ⊢[PRAAx] le one (denominator C) := GaussianRationalNormalization.denominator_positive C
 theorem coefficient_congr {C D i j : PTm n} (hC : Γ ⊢[PRAAx] C ≐ D) (hi : Γ ⊢[PRAAx] i ≐ j) : Γ ⊢[PRAAx] coefficient C i ≐ coefficient D j := by
@@ -63,13 +59,13 @@ theorem state_succ (C U k : PTm n) : Γ ⊢[PRAAx] state C U (succ k) ≐
     (congrAdd (congrMul (snd_pair _ _) (.eqRefl _)) (coefficient_congr (fst_pair _ _) (.eqRefl _)))
     (congrAdd (congrMul (snd_pair _ _) (.eqRefl _)) (.eqRefl _)))
 theorem size_zero (C U : PTm n) : Γ ⊢[PRAAx] size C U zero ≐ zero :=
-  (congrFst (state_zero C U)).eqTrans (fst_pair _ _)
+  (state_zero C U).fstE
 theorem variation_zero (C U : PTm n) : Γ ⊢[PRAAx] variation C U zero ≐ zero :=
-  (congrSnd (state_zero C U)).eqTrans (snd_pair _ _)
+  (state_zero C U).sndE
 theorem size_succ (C U k : PTm n) : Γ ⊢[PRAAx] size C U (succ k) ≐ U*size C U k+coefficient C k :=
-  (congrFst (state_succ C U k)).eqTrans (fst_pair _ _)
+  (state_succ C U k).fstE
 theorem variation_succ (C U k : PTm n) : Γ ⊢[PRAAx] variation C U (succ k) ≐ U*variation C U k+size C U k :=
-  (congrSnd (state_succ C U k)).eqTrans (snd_pair _ _)
+  (state_succ C U k).sndE
 theorem variation_index_congr (C U : PTm n) {k l : PTm n} (h : Γ ⊢[PRAAx] k ≐ l) : Γ ⊢[PRAAx] variation C U k ≐ variation C U l :=
   congrSnd (congrAp2 stateF h (.eqRefl _))
 
@@ -82,8 +78,7 @@ theorem coefficient_bound (C i : PTm n) (hi : Γ ⊢[PRAAx] lt i (length C)) : �
     (mul_le_mul_right (denominator C*denominator C) (GaussianL1.normSq_le_norm1_square (clearPoint C i)))
 
 def sizeLaw (C U w k : PTm n) : Fm PTm n := le k (length C) ⟶ bounded (horner C w k) (size C U k) (denominator C)
-@[simp] theorem subst_sizeLaw {l : ℕ} (σ : Fin n → PTm l) (C U w k : PTm n) :
-    (sizeLaw C U w k).subst σ = sizeLaw (Syn.subst σ C) (Syn.subst σ U) (Syn.subst σ w) (Syn.subst σ k) := by simp [sizeLaw]
+ipra_subst sizeLaw
 
 theorem size_base (C U w : PTm n) : Γ ⊢[PRAAx] bounded (horner C w zero) (size C U zero) (denominator C) :=
   bound_congr (GaussianRationalHorner.horner_zero C w).eqSymm (size_zero C U).eqSymm (.eqRefl _)
@@ -102,20 +97,16 @@ theorem size_prefix (C U w k : PTm n) (hw : Γ ⊢[PRAAx] bounded w U one) (hk :
     bounded (horner C w k) (size C U k) (denominator C) := by
   have shifted : Γ.map Fm.shift ⊢[PRAAx] bounded (Syn.shift w) (Syn.shift U) one := by simpa [Fm.shift,Syn.shift,one] using hw.shift
   have all : Γ ⊢[PRAAx] .all (sizeLaw (Syn.shift C) (Syn.shift U) (Syn.shift w) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [subst_sizeLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (size_base C U w).wk
-    · simp only [subst_sizeLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_sizeLaw]
+    · exact .impI (size_base C U w).wk
+    · refine .impI ?_
       exact size_step _ _ _ _ shifted.wk.wk Prf.hyp0 (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
   have rule : Γ ⊢[PRAAx] sizeLaw C U w k := by simpa only [subst_sizeLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
   exact .impE rule hk
 
 def variationLaw (C U z w p q k : PTm n) : Fm PTm n := le k (length C) ⟶
   distanceBounded (horner C z k) (horner C w k) (variation C U k*p) (denominator C*q)
-@[simp] theorem subst_variationLaw {l : ℕ} (σ : Fin n → PTm l) (C U z w p q k : PTm n) :
-    (variationLaw C U z w p q k).subst σ = variationLaw (Syn.subst σ C) (Syn.subst σ U) (Syn.subst σ z) (Syn.subst σ w)
-      (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ k) := by simp [variationLaw]
+ipra_subst variationLaw
 
 theorem variation_base (C U z w p q : PTm n) (hq : Γ ⊢[PRAAx] le one q) : Γ ⊢[PRAAx]
     distanceBounded (horner C z zero) (horner C w zero) (variation C U zero*p) (denominator C*q) :=
@@ -146,11 +137,9 @@ theorem variation_prefix (C U z w p q k : PTm n) (hz : Γ ⊢[PRAAx] bounded z U
   have qs : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift q) := by simpa [Fm.shift,Syn.shift,one] using hq.shift
   have zw : Γ.map Fm.shift ⊢[PRAAx] distanceBounded (Syn.shift z) (Syn.shift w) (Syn.shift p) (Syn.shift q) := by simpa [Fm.shift,Syn.shift] using hzw.shift
   have all : Γ ⊢[PRAAx] .all (variationLaw (Syn.shift C) (Syn.shift U) (Syn.shift z) (Syn.shift w) (Syn.shift p) (Syn.shift q) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [subst_variationLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (variation_base C U z w p q hq).wk
-    · simp only [subst_variationLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_variationLaw]
+    · exact .impI (variation_base C U z w p q hq).wk
+    · refine .impI ?_
       exact variation_step _ _ _ _ _ _ _ zs.wk.wk ws.wk.wk qs.wk.wk zw.wk.wk Prf.hyp0
         (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
   have rule : Γ ⊢[PRAAx] variationLaw C U z w p q k := by simpa only [subst_variationLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
@@ -166,18 +155,16 @@ theorem evaluation_bound (C N U z w p q : PTm n) (hLen : Γ ⊢[PRAAx] length C 
 def output (C U k : PTm n) : PTm n := pairT (size C U k) (pairT (variation C U k) (denominator C))
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (C U k : PTm n) : PTm n := ap3 outputF C U k
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (C U k : PTm n) :
-    Syn.subst σ (output C U k) = output (Syn.subst σ C) (Syn.subst σ U) (Syn.subst σ k) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (C U k : PTm n) :
-    Syn.subst σ (run C U k) = run (Syn.subst σ C) (Syn.subst σ U) (Syn.subst σ k) := by simp [run]
+ipra_subst output
+ipra_subst run
 theorem program_at (C U k : PTm n) : Γ ⊢[PRAAx] run C U k ≐ output C U k := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![C,U,k]
 theorem returned_size (C U k : PTm n) : Γ ⊢[PRAAx] fstT (run C U k) ≐ size C U k :=
-  (congrFst (program_at C U k)).eqTrans (fst_pair _ _)
+  (program_at C U k).fstE
 theorem returned_variation (C U k : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run C U k)) ≐ variation C U k :=
-  (congrFst (congrSnd (program_at C U k))).eqTrans ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
+  (congrFst (congrSnd (program_at C U k))).eqTrans (snd_pair _ _).fstE
 theorem returned_denominator (C U k : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run C U k)) ≐ denominator C :=
-  (congrSnd (congrSnd (program_at C U k))).eqTrans ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))
+  (congrSnd (congrSnd (program_at C U k))).eqTrans (snd_pair _ _).sndE
 
 theorem actual_coefficient_bound_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2
     (lt (var 1) (length (var 0)) ⟶ bounded (entry (var 0) (var 1)) (coefficient (var 0) (var 1)) (denominator (var 0))) :=

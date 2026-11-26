@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaEulerDenominator
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale oneCode)
 open GaussianGammaEulerHead (factor head head_zero head_succ run program_at)
 open GaussianGammaEulerHeadLower (translated translated_zero factor_represents)
@@ -27,18 +27,13 @@ open GaussianRationalPowerAlgebra (qmul_commutative qmul_shuffle)
 open GaussianRationalSyntheticDivision (qone qone_canonical qmul_congr)
 open GaussianRootAlgebra (equal_of_values re_scale im_scale)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def linearBody : PTm 2 := linear (fstT (var 1)) (sndT (var 1)) (var 0)
 def denominator (z B K : PTm n) : PTm n := qprod linearBody K (pairT z B)
 
-@[simp] theorem subst_denominator {l : ℕ} (σ : Fin n → PTm l) (z B K : PTm n) :
-    Syn.subst σ (denominator z B K) = denominator (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ K) := by
-  simp [denominator]
+ipra_subst denominator
 
 theorem linear_at (i z B : PTm n) : Γ ⊢[PRAAx] inst2 linearBody i (pairT z B) ≐ linear z B i := by
   simpa [linearBody,inst2,inst3] using
@@ -88,9 +83,7 @@ theorem natural_congr {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) :
 def normalization (z B N : PTm n) : Fm PTm n :=
   denominator z B (succ N) ≐ qmul (naturalPoint (fact N)) (head z B N)
 
-@[simp] theorem subst_normalization {l : ℕ} (σ : Fin n → PTm l) (z B N : PTm n) :
-    (normalization z B N).subst σ = normalization (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by
-  simp [normalization,fact]
+ipra_subst normalization [fact]
 
 theorem normalization_zero (z B : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
     Γ ⊢[PRAAx] normalization z B zero := by

@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Elimination.RowReduction.GaussianRationalRowElimination
 import IPRADerivations.Foundations.BoundedReflection
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual least available Gaussian-rational pivot
@@ -17,17 +16,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalPivotSearch
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero)
 open LeanProofs.IPRA.Analysis.GaussianRationalRowElimination (shape pivot eliminate nullRows)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
 open LeanProofs.IPRA.Foundations.BoundedReflection (allB all_cases all_elim all_intro exB wit ex_cases ex_intro ex_elim ex_none ex_least)
 open LeanProofs.IPRA.Foundations.GuardedTotalization (sel sel_one sel_zero)
-open LeanProofs.IPRA.PTm (monus)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -44,25 +39,16 @@ def selected (A R H c p : PTm n) : PTm n := wit candidateBody R (data A H c p)
 def flag (A R H c p : PTm n) : PTm n := exB candidateBody R (data A H c p)
 def eligible (A H c p r : PTm n) : Fm PTm n := unmarked H c r ⋏ neg (pivot A r p ≐ qzero)
 
-@[simp] theorem subst_markData {k : ℕ} (σ : Fin n → PTm k) (H r : PTm n) :
-    Syn.subst σ (markData H r) = markData (Syn.subst σ H) (Syn.subst σ r) := by simp [markData]
-@[simp] theorem subst_available {k : ℕ} (σ : Fin n → PTm k) (H c r : PTm n) :
-    Syn.subst σ (available H c r) = available (Syn.subst σ H) (Syn.subst σ c) (Syn.subst σ r) := by simp [available]
-@[simp] theorem subst_unmarked {k : ℕ} (σ : Fin n → PTm k) (H c r : PTm n) :
-    (unmarked H c r).subst σ = unmarked (Syn.subst σ H) (Syn.subst σ c) (Syn.subst σ r) := by
-  simp [unmarked,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_candidate {k : ℕ} (σ : Fin n → PTm k) (A H c p r : PTm n) :
-    Syn.subst σ (candidate A H c p r) = candidate (Syn.subst σ A) (Syn.subst σ H) (Syn.subst σ c) (Syn.subst σ p) (Syn.subst σ r) := by simp [candidate]
-@[simp] theorem subst_data {k : ℕ} (σ : Fin n → PTm k) (A H c p : PTm n) :
-    Syn.subst σ (data A H c p) = data (Syn.subst σ A) (Syn.subst σ H) (Syn.subst σ c) (Syn.subst σ p) := by simp [data]
+ipra_subst markData
+ipra_subst available
+ipra_subst unmarked [Syn.subst_shift, Syn.shift_subst]
+ipra_subst candidate
+ipra_subst data
 @[simp] theorem subst_fields {k : ℕ} (σ : Fin n → PTm k) (q : PTm n) (i : Fin 4) :
     Syn.subst σ (fields q i) = fields (Syn.subst σ q) i := by fin_cases i <;> simp [fields]
-@[simp] theorem subst_selected {k : ℕ} (σ : Fin n → PTm k) (A R H c p : PTm n) :
-    Syn.subst σ (selected A R H c p) = selected (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ H) (Syn.subst σ c) (Syn.subst σ p) := by simp [selected]
-@[simp] theorem subst_flag {k : ℕ} (σ : Fin n → PTm k) (A R H c p : PTm n) :
-    Syn.subst σ (flag A R H c p) = flag (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ H) (Syn.subst σ c) (Syn.subst σ p) := by simp [flag,exB]
-@[simp] theorem subst_eligible {k : ℕ} (σ : Fin n → PTm k) (A H c p r : PTm n) :
-    (eligible A H c p r).subst σ = eligible (Syn.subst σ A) (Syn.subst σ H) (Syn.subst σ c) (Syn.subst σ p) (Syn.subst σ r) := by simp [eligible]
+ipra_subst selected
+ipra_subst flag [exB]
+ipra_subst eligible
 
 theorem different_body_at (H r k : PTm n) : Γ ⊢[PRAAx]
     inst2 differentBody k (markData H r) ≐ monus one (eqb (entry H k) (succ r)) := by
@@ -102,9 +88,9 @@ theorem fields_at (A H c p : PTm n) (i : Fin 4) : Γ ⊢[PRAAx] fields (data A H
   have e1 := (congrSnd e0).eqTrans (snd_pair H (pairT c p))
   fin_cases i
   · exact fst_pair _ _
-  · exact (congrFst e0).eqTrans (fst_pair _ _)
-  · exact (congrFst e1).eqTrans (fst_pair _ _)
-  · exact (congrSnd e1).eqTrans (snd_pair _ _)
+  · exact e0.fstE
+  · exact e1.fstE
+  · exact e1.sndE
 theorem candidate_body_at (A H c p r : PTm n) : Γ ⊢[PRAAx]
     inst2 candidateBody r (data A H c p) ≐ candidate A H c p r := by
   simp only [candidateBody,inst2,subst_candidate,subst_fields,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
@@ -158,9 +144,7 @@ theorem selected_le_witness (A R H c p r : PTm n) (hu : Γ ⊢[PRAAx] eligible A
 
 def hasEligible (A R H c p : PTm n) : Fm PTm n := .ex
   (lt (var 0) (Syn.shift R) ⋏ eligible (Syn.shift A) (Syn.shift H) (Syn.shift c) (Syn.shift p) (var 0))
-@[simp] theorem subst_hasEligible {k : ℕ} (σ : Fin n → PTm k) (A R H c p : PTm n) :
-    (hasEligible A R H c p).subst σ = hasEligible (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ H) (Syn.subst σ c) (Syn.subst σ p) := by
-  simp [hasEligible,Syn.subst_shift,Syn.shift_subst]
+ipra_subst hasEligible [Syn.subst_shift, Syn.shift_subst]
 theorem success_exists (A R H c p : PTm n) (hf : Γ ⊢[PRAAx] flag A R H c p ≐ one) : Γ ⊢[PRAAx] hasEligible A R H c p := by
   refine .exI (selected A R H c p) ?_
   simpa only [hasEligible,Fm.subst_and,subst_lt,subst_eligible,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using selected_correct A R H c p hf
@@ -179,10 +163,8 @@ theorem no_rows (A H c p : PTm n) : Γ ⊢[PRAAx] flag A zero H c p ≐ zero := 
 Its semantic input is only original rectangular shape and p<N. -/
 def next (A R N H c p : PTm n) : PTm n := sel (flag A R H c p) (eliminate A R N (selected A R H c p) p) A
 def tag (A R H c p : PTm n) : PTm n := flag A R H c p*succ (selected A R H c p)
-@[simp] theorem subst_next {k : ℕ} (σ : Fin n → PTm k) (A R N H c p : PTm n) :
-    Syn.subst σ (next A R N H c p) = next (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ H) (Syn.subst σ c) (Syn.subst σ p) := by simp [next,sel]
-@[simp] theorem subst_tag {k : ℕ} (σ : Fin n → PTm k) (A R H c p : PTm n) :
-    Syn.subst σ (tag A R H c p) = tag (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ H) (Syn.subst σ c) (Syn.subst σ p) := by simp [tag]
+ipra_subst next [sel]
+ipra_subst tag
 theorem next_success (A R N H c p : PTm n) (hf : Γ ⊢[PRAAx] flag A R H c p ≐ one) : Γ ⊢[PRAAx]
     next A R N H c p ≐ eliminate A R N (selected A R H c p) p := sel_one hf
 theorem next_failure (A R N H c p : PTm n) (hf : Γ ⊢[PRAAx] flag A R H c p ≐ zero) : Γ ⊢[PRAAx]
@@ -231,26 +213,20 @@ def output (A R N H c p : PTm n) : PTm n := pairT (next A R N H c p)
   (pairT (tag A R H c p) (pairT (flag A R H c p) (selected A R H c p)))
 def outputF : PR 6 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5))
 def run (A R N H c p : PTm n) : PTm n := app outputF ![A,R,N,H,c,p]
-@[simp] theorem subst_output {k : ℕ} (σ : Fin n → PTm k) (A R N H c p : PTm n) :
-    Syn.subst σ (output A R N H c p) = output (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ H) (Syn.subst σ c) (Syn.subst σ p) := by simp [output]
-@[simp] theorem subst_run {k : ℕ} (σ : Fin n → PTm k) (A R N H c p : PTm n) :
-    Syn.subst σ (run A R N H c p) = run (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ H) (Syn.subst σ c) (Syn.subst σ p) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 theorem program_at (A R N H c p : PTm n) : Γ ⊢[PRAAx] run A R N H c p ≐ output A R N H c p := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) ![A,R,N,H,c,p]
 theorem returned_fields (A R N H c p : PTm n) (i : Fin 4) : Γ ⊢[PRAAx]
     fields (run A R N H c p) i ≐ ![next A R N H c p,tag A R H c p,flag A R H c p,selected A R H c p] i := by
   have e0 := program_at (Γ := Γ) A R N H c p
-  have e1 := (congrSnd e0).eqTrans (snd_pair _ _)
-  have e2 := (congrSnd e1).eqTrans (snd_pair _ _)
+  have e1 := e0.sndE
+  have e2 := e1.sndE
   fin_cases i
-  · exact (congrFst e0).eqTrans (fst_pair _ _)
-  · exact (congrFst e1).eqTrans (fst_pair _ _)
-  · exact (congrFst e2).eqTrans (fst_pair _ _)
-  · exact (congrSnd e2).eqTrans (snd_pair _ _)
+  · exact e0.fstE
+  · exact e1.fstE
+  · exact e2.fstE
+  · exact e2.sndE
 theorem returned_shape (A R N H c p : PTm n) (hA : Γ ⊢[PRAAx] shape A R N) : Γ ⊢[PRAAx]
     shape (fields (run A R N H c p) 0) R N := shape_congr (returned_fields _ _ _ _ _ _ 0).eqSymm (next_shape _ _ _ _ _ _ hA)
 theorem returned_null_equivalence (A R N H c p l : PTm n) (hA : Γ ⊢[PRAAx] shape A R N)

@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBoundedInverseApartness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (bounded distanceBounded qsub)
 open GaussianRationalLowerBounds (lower lower_congr lower_from_representation lower_to_cleared)
@@ -29,9 +29,6 @@ open GaussianNameEquivalence (crossEquivalent cross_to_diagonal cross_symm cross
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianExponentialSmallPerturbation (smallSamples small_samples_at)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -94,13 +91,9 @@ def productError (f g : PR 2) (x y : PTm n) : PTm n := (multiplyModulus f g x y+
 def height (f g : PR 2) (x y M : PTm n) : PTm n :=
   GaussianRootSchedule.binaryLength (two*productError f g x y+two*M)
 
-@[simp] theorem subst_productError {l : ℕ} (σ : Fin n → PTm l) (f g : PR 2) (x y : PTm n) :
-    Syn.subst σ (productError f g x y) = productError f g (Syn.subst σ x) (Syn.subst σ y) := by
-  simp [productError]
+ipra_subst productError
 
-@[simp] theorem subst_height {l : ℕ} (σ : Fin n → PTm l) (f g : PR 2) (x y M : PTm n) :
-    Syn.subst σ (height f g x y M) = height f g (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ M) := by
-  simp [height]
+ipra_subst height
 
 theorem raw_product_at (f g : PR 2) (x y p : PTm n)
     (hf : Γ ⊢[PRAAx] pointCN f x) (hg : Γ ⊢[PRAAx] pointCN g y)

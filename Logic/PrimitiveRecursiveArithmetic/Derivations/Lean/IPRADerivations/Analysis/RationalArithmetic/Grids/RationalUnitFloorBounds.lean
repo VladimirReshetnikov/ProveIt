@@ -13,15 +13,11 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalUnitFloorBounds
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalNonnegativeFloor (index original_division)
 open RationalConvexSecants (nonnegative naturalNumerator)
 open RationalSupMetric (denominatorOf)
 open RationalArgmin (denominator_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -30,9 +26,7 @@ def source (q G : PTm n) : Fm PTm n := le one G ⋏
   (le (denominatorOf q) (G*naturalNumerator q) ⋏
     le (G*naturalNumerator q+denominatorOf q) (G*denominatorOf q))
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (q G : PTm n) :
-    (source q G).subst σ = source (Syn.subst σ q) (Syn.subst σ G) := by
-  simp [source,naturalNumerator,RationalSupMetric.numeratorOf]
+ipra_subst source [naturalNumerator, RationalSupMetric.numeratorOf]
 
 theorem from_representation (q U D G : PTm n) (hD : Γ ⊢[PRAAx] le one D)
     (hG : Γ ⊢[PRAAx] le one G)
@@ -55,12 +49,10 @@ theorem from_representation (q U D G : PTm n) (hD : Γ ⊢[PRAAx] le one D)
     linear_combination -represented-𝔞 D*signed
   have low : Γ ⊢[PRAAx] le (denominatorOf q) (G*naturalNumerator q) := by
     apply RationalValueBounds.positive_cancel hD
-    have s := natEq same
-    ipra_le 𝔞 (denominatorOf q)*sl hLow with 𝔞 G*s
+    ipra_le 𝔞 (denominatorOf q)*sl hLow with 𝔞 G*natEq same
   have up : Γ ⊢[PRAAx] le (G*naturalNumerator q+denominatorOf q) (G*denominatorOf q) := by
     apply RationalValueBounds.positive_cancel hD
-    have s := natEq same
-    ipra_le 𝔞 (denominatorOf q)*sl hUp with -𝔞 G*s
+    ipra_le 𝔞 (denominatorOf q)*sl hUp with -𝔞 G*natEq same
   exact .andI hG (.andI low up)
 
 theorem cut_positive (q G M : PTm n) (hs : Γ ⊢[PRAAx] source q G)

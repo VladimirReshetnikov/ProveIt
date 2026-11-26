@@ -15,7 +15,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRaabeShiftedUnitFormula
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianCompactRiemannName (grid quadrature sampleBody sampleData sample_body_at)
 open GaussianEuclideanDistanceName (pointCN)
@@ -29,10 +29,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_t
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalSyntheticDivision (qone qsub_congr)
 open GaussianStirlingGammaLogarithm (logGammaF logGammaData)
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "C" => GaussianStirlingConstant.nameF
@@ -46,8 +42,7 @@ def data : PTm n := GaussianRaabeFormula.data one one
 def targetF : PR 2 := GaussianNamedDifference.nameF C constantF
 def targetData (w : PTm n) : PTm n := GaussianNamedDifference.data (cd w) qone
 
-@[simp] theorem subst_targetData {m : ℕ} (σ : Fin n → PTm m) (w : PTm n) :
-    Syn.subst σ (targetData w) = targetData (Syn.subst σ w) := by simp [targetData]
+ipra_subst targetData
 
 theorem tag_at (i p N : PTm n) :
     Γ ⊢[PRAAx] inst2 (sampleBody logGammaEvaluator) i (sampleData p N one one one zero) ≐

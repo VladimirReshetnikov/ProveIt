@@ -18,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianTranslationScaledCoefficients
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qmul canonical)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qsub)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qmul_congr qsub_congr)
@@ -26,18 +26,12 @@ open LeanProofs.IPRA.Analysis.GaussianRationalReciprocal (powerF)
 open LeanProofs.IPRA.Analysis.GaussianRationalTranslationStages (remaining)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def scaledCoefficient (C N z A B j k : PTm n) : PTm n :=
   GaussianRationalTravelScaling.scaled A B (j+k) (GaussianTranslationCoefficientValues.coefficient C N z j k)
-@[simp] theorem subst_scaledCoefficient {m : ℕ} (σ : Fin n → PTm m) (C N z A B j k : PTm n) :
-    Syn.subst σ (scaledCoefficient C N z A B j k) = scaledCoefficient (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ z) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ j) (Syn.subst σ k) := by simp [scaledCoefficient]
+ipra_subst scaledCoefficient
 
 theorem scaled_congr (A B : PTm n) {e f c d : PTm n} (he : Γ ⊢[PRAAx] e ≐ f)
     (hc : Γ ⊢[PRAAx] c ≐ d) : Γ ⊢[PRAAx]
@@ -110,13 +104,7 @@ theorem original_coefficient (C N z A B k : PTm n) : Γ ⊢[PRAAx]
 def scaledCoefficientF : PR 7 := PTm.toPR
   (scaledCoefficient (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6))
 def run (C N z A B j k : PTm n) : PTm n := PTm.app scaledCoefficientF ![C,N,z,A,B,j,k]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (C N z A B j k : PTm n) :
-    Syn.subst σ (run C N z A B j k) = run (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z)
-      (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ j) (Syn.subst σ k) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst run
 
 theorem program_at (C N z A B j k : PTm n) : Γ ⊢[PRAAx]
     run C N z A B j k ≐ scaledCoefficient C N z A B j k := by

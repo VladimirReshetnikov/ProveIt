@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingNamedTelescopeBounds
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianNamedPositiveExponentialOrder (realOrder)
@@ -25,8 +25,6 @@ open GaussianStirlingRationalTelescopers (upperDifference)
 open GaussianStirlingTelescopeName
   (nameF data endpointData name_at name_regular telescope_cross)
 open RationalValueBounds (upper upper_congr upper_mono)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "G" => GaussianNamedDifference.nameF GaussianStirlingNames.nameF GaussianStirlingNames.nameF
@@ -36,11 +34,8 @@ def endpointBounds (N a b : PTm n) : Fm PTm n :=
   realOrder constantF G qzero (endpointData N a b) ⋏
     realOrder G constantF (endpointData N a b) (upperDifference a b N)
 
-@[simp] theorem subst_allRows {l : ℕ} (σ : Fin n → PTm l) (a b : PTm n) :
-    (allRows a b).subst σ = allRows (Syn.subst σ a) (Syn.subst σ b) := by simp [allRows,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_endpointBounds {l : ℕ} (σ : Fin n → PTm l) (N a b : PTm n) :
-    (endpointBounds N a b).subst σ = endpointBounds (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [endpointBounds]
+ipra_subst allRows [Syn.subst_shift, Syn.shift_subst]
+ipra_subst endpointBounds
 
 theorem rows_at (p a b : PTm n) (h : Γ ⊢[PRAAx] allRows a b) : Γ ⊢[PRAAx] rows p a b := by
   simpa only [allRows,GaussianStirlingFiniteTelescopeBounds.subst_rows,Syn.subst_var,

@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.GaussianEulerUnitNormalizationIntegrand
 import IPRADerivations.Analysis.Euler.Integration.Parts.GaussianEulerIntegrationByPartsParameterShiftObservation
 import IPRADerivations.Analysis.Gamma.EulerProducts.Factorials.GaussianGammaFactorialValues
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Original Euler boundary values at the actual positive integer trajectory
@@ -18,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIntegerBoundary
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaFactorialValues (argument)
 open GaussianPositiveRationalLogarithm (source fraction)
 open GaussianEulerIntegrandName (nameF data sample decayF decayData)
@@ -30,9 +29,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_triangle_same distance_symmetric)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameEquivalence (crossEquivalent cross_at)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -48,24 +44,15 @@ def error (i a _b : PTm n) : PTm n := ap2 errorF i a
 def errorLaw (p i a b : PTm n) : Fm PTm n := distanceBounded (point p i a b) (rawProduct p i a b) (error i a b) (unit p)
 def envelope (i a b : PTm n) : PTm n := error i a b+(productModulus i a b+one)
 
-@[simp] theorem subst_integerData {m : ℕ} (σ : Fin n → PTm m) (i a b : PTm n) :
-    Syn.subst σ (integerData i a b) = integerData (Syn.subst σ i) (Syn.subst σ a) (Syn.subst σ b) := by simp [integerData]
-@[simp] theorem subst_point {m : ℕ} (σ : Fin n → PTm m) (p i a b : PTm n) :
-    Syn.subst σ (point p i a b) = point (Syn.subst σ p) (Syn.subst σ i) (Syn.subst σ a) (Syn.subst σ b) := by simp [point]
-@[simp] theorem subst_monomial {m : ℕ} (σ : Fin n → PTm m) (i a b : PTm n) :
-    Syn.subst σ (monomial i a b) = monomial (Syn.subst σ i) (Syn.subst σ a) (Syn.subst σ b) := by simp [monomial]
-@[simp] theorem subst_rawProduct {m : ℕ} (σ : Fin n → PTm m) (p i a b : PTm n) :
-    Syn.subst σ (rawProduct p i a b) = rawProduct (Syn.subst σ p) (Syn.subst σ i) (Syn.subst σ a) (Syn.subst σ b) := by simp [rawProduct]
-@[simp] theorem subst_productData {m : ℕ} (σ : Fin n → PTm m) (i a b : PTm n) :
-    Syn.subst σ (productData i a b) = productData (Syn.subst σ i) (Syn.subst σ a) (Syn.subst σ b) := by simp [productData]
-@[simp] theorem subst_productModulus {m : ℕ} (σ : Fin n → PTm m) (i a b : PTm n) :
-    Syn.subst σ (productModulus i a b) = productModulus (Syn.subst σ i) (Syn.subst σ a) (Syn.subst σ b) := by simp [productModulus]
-@[simp] theorem subst_error {m : ℕ} (σ : Fin n → PTm m) (i a b : PTm n) :
-    Syn.subst σ (error i a b) = error (Syn.subst σ i) (Syn.subst σ a) (Syn.subst σ b) := by simp [error]
-@[simp] theorem subst_errorLaw {m : ℕ} (σ : Fin n → PTm m) (p i a b : PTm n) :
-    (errorLaw p i a b).subst σ = errorLaw (Syn.subst σ p) (Syn.subst σ i) (Syn.subst σ a) (Syn.subst σ b) := by simp [errorLaw]
-@[simp] theorem subst_envelope {m : ℕ} (σ : Fin n → PTm m) (i a b : PTm n) :
-    Syn.subst σ (envelope i a b) = envelope (Syn.subst σ i) (Syn.subst σ a) (Syn.subst σ b) := by simp [envelope]
+ipra_subst integerData
+ipra_subst point
+ipra_subst monomial
+ipra_subst rawProduct
+ipra_subst productData
+ipra_subst productModulus
+ipra_subst error
+ipra_subst errorLaw
+ipra_subst envelope
 
 theorem error_zero (a b : PTm n) : Γ ⊢[PRAAx] error zero a b ≐ zero := by
   simpa [error,errorF] using rec2_zero (Γ := Γ) (zero : PTm 1) ((var 2)*var 1+(var 2+one)) a

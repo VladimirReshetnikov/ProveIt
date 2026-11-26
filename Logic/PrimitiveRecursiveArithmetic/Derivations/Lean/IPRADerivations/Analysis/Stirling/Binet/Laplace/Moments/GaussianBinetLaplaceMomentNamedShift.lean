@@ -16,7 +16,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentNamedShift
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetLaplaceMomentBackwardWindow (lowerNumerator lowerData)
 open GaussianBinetLaplaceMomentForwardMargin (upperRadius upper_source)
 open GaussianBinetLaplaceMomentImproper (data nameF)
@@ -33,10 +33,6 @@ open GaussianNameEquivalence (crossEquivalent)
 open GaussianRationalHorner (ofGaussian ofGaussian_represents scalar_congr positive_product)
 open GaussianRationalL1 (rawGaussian raw_represents)
 open GaussianRationalMetric (bounded bounded_of_cleared)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "baseSource" => GaussianNamedRightHalfPlane.source
@@ -50,13 +46,9 @@ def negativeStep (H : PTm n) : PTm n := ComplexLogarithmRemainder.neg (radiusNum
 def source (f : PR 2) (x M H Q : PTm n) : Fm PTm n :=
   baseSource f x M ⋏ (le one H ⋏ (le one Q ⋏ le ((num 4*M)*H) Q))
 
-@[simp] theorem subst_negativeStep {m : ℕ} (σ : Fin n → PTm m) (H : PTm n) :
-    Syn.subst σ (negativeStep H) = negativeStep (Syn.subst σ H) := by
-  simp [negativeStep]
+ipra_subst negativeStep
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x M H Q : PTm n) :
-    (source f x M H Q).subst σ = source f (Syn.subst σ x) (Syn.subst σ M) (Syn.subst σ H) (Syn.subst σ Q) := by
-  simp [source,one]
+ipra_subst source [one]
 
 theorem shift_sources (f : PR 2) (x M H Q : PTm n) (h : Γ ⊢[PRAAx] source f x M H Q) :
     Γ ⊢[PRAAx] shiftSource f x M (radiusNumerator H) Q ⋏ shiftSource f x M (negativeStep H) Q := by

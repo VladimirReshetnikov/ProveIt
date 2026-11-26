@@ -15,7 +15,7 @@ set_option maxHeartbeats 1300000
 
 namespace LeanProofs.IPRA.Analysis.GaussianHarmonicWeightedQuadraticName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
@@ -35,10 +35,6 @@ open GaussianRationalSyntheticDivision (qadd_congr qmul_congr)
 open GaussianStirlingGammaFractionalIncrementObservations (scalar_upper)
 open GaussianStirlingGlobalBounds (small_join)
 open RationalValueBounds (upper upper_congr upper_mono)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "H" => GaussianHarmonicLogarithmName.nameF
@@ -56,21 +52,10 @@ def observationCost (a d B D r s : PTm n) : PTm n :=
     (scaleCost (succ r) (weight r s*a) D+scaleCost s (weight r s*d) D))))+meshError a d r s)+
     scaleCost (weight r s) (barycenter a d r s) D
 
-@[simp] theorem subst_centerData {m : ℕ} (σ : Fin n → PTm m) (a d D r s : PTm n) :
-    Syn.subst σ (centerData a d D r s) =
-      centerData (Syn.subst σ a) (Syn.subst σ d) (Syn.subst σ D) (Syn.subst σ r) (Syn.subst σ s) := by
-  simp [centerData,weight,barycenter]
-@[simp] theorem subst_weightedData {m : ℕ} (σ : Fin n → PTm m) (a d B D r s : PTm n) :
-    Syn.subst σ (weightedData a d B D r s) =
-      weightedData (Syn.subst σ a) (Syn.subst σ d) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ r) (Syn.subst σ s) := by
-  simp [weightedData,weight]
-@[simp] theorem subst_scaleCost {m : ℕ} (σ : Fin n → PTm m) (t x D : PTm n) :
-    Syn.subst σ (scaleCost t x D) = scaleCost (Syn.subst σ t) (Syn.subst σ x) (Syn.subst σ D) := by
-  simp [scaleCost]
-@[simp] theorem subst_observationCost {m : ℕ} (σ : Fin n → PTm m) (a d B D r s : PTm n) :
-    Syn.subst σ (observationCost a d B D r s) =
-      observationCost (Syn.subst σ a) (Syn.subst σ d) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ r) (Syn.subst σ s) := by
-  simp [observationCost,GaussianNameRingLaws.three,weight,barycenter]
+ipra_subst centerData [weight, barycenter]
+ipra_subst weightedData [weight]
+ipra_subst scaleCost
+ipra_subst observationCost [GaussianNameRingLaws.three, weight, barycenter]
 
 theorem scale_regular (t x D : PTm n) (hx : Γ ⊢[PRAAx] le one x) (hD : Γ ⊢[PRAAx] le one D) :
     Γ ⊢[PRAAx] pointCN G (gd t (hd x D)) :=

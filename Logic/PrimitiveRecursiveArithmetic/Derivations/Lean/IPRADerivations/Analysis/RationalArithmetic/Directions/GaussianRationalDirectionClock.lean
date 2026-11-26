@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.GaussianRootSchedule
 import IPRADerivations.Analysis.Polynomials.RootFinding.DominantTerms.GaussianDominantSyntax
 import IPRADerivations.Analysis.Polynomials.RootFinding.BalancedRadius.GaussianBalancedRadiusArithmetic
-import IPRADerivations.Core.Gcd
 
 /-!
 # Computed dyadic counts for the rational half-angle direction algorithm
@@ -18,15 +17,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalDirectionClock
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianBalancedRadiusSyntax (unit unit_positive)
 open LeanProofs.IPRA.Analysis.GaussianDominantSyntax (four)
 open LeanProofs.IPRA.Analysis.GaussianRootSchedule (binaryLength)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,25 +37,17 @@ def height (k q : PTm n) : PTm n := unit (precision k q)
 def roundedPower (k q : PTm n) : PTm n := quo (period k q) k
 def leftover (k q : PTm n) : PTm n := rem (period k q) k
 
-@[simp] theorem subst_sixteen {m : ℕ} (σ : Fin n → PTm m) : Syn.subst σ (sixteen : PTm n) = (sixteen : PTm m) := by simp [sixteen]
-@[simp] theorem subst_eight {m : ℕ} (σ : Fin n → PTm m) : Syn.subst σ (eight : PTm n) = (eight : PTm m) := by simp [eight]
-@[simp] theorem subst_ten {m : ℕ} (σ : Fin n → PTm m) : Syn.subst σ (ten : PTm n) = (ten : PTm m) := by simp [ten]
-@[simp] theorem subst_logarithm {m : ℕ} (σ : Fin n → PTm m) (k q : PTm n) :
-    Syn.subst σ (logarithm k q) = logarithm (Syn.subst σ k) (Syn.subst σ q) := by simp [logarithm]
-@[simp] theorem subst_steps {m : ℕ} (σ : Fin n → PTm m) (k q : PTm n) :
-    Syn.subst σ (steps k q) = steps (Syn.subst σ k) (Syn.subst σ q) := by simp [steps]
-@[simp] theorem subst_period {m : ℕ} (σ : Fin n → PTm m) (k q : PTm n) :
-    Syn.subst σ (period k q) = period (Syn.subst σ k) (Syn.subst σ q) := by simp [period]
-@[simp] theorem subst_localIndex {m : ℕ} (σ : Fin n → PTm m) (k q : PTm n) :
-    Syn.subst σ (localIndex k q) = localIndex (Syn.subst σ k) (Syn.subst σ q) := by simp [localIndex]
-@[simp] theorem subst_precision {m : ℕ} (σ : Fin n → PTm m) (k q : PTm n) :
-    Syn.subst σ (precision k q) = precision (Syn.subst σ k) (Syn.subst σ q) := by simp [precision]
-@[simp] theorem subst_height {m : ℕ} (σ : Fin n → PTm m) (k q : PTm n) :
-    Syn.subst σ (height k q) = height (Syn.subst σ k) (Syn.subst σ q) := by simp [height]
-@[simp] theorem subst_roundedPower {m : ℕ} (σ : Fin n → PTm m) (k q : PTm n) :
-    Syn.subst σ (roundedPower k q) = roundedPower (Syn.subst σ k) (Syn.subst σ q) := by simp [roundedPower]
-@[simp] theorem subst_leftover {m : ℕ} (σ : Fin n → PTm m) (k q : PTm n) :
-    Syn.subst σ (leftover k q) = leftover (Syn.subst σ k) (Syn.subst σ q) := by simp [leftover]
+ipra_subst sixteen
+ipra_subst eight
+ipra_subst ten
+ipra_subst logarithm
+ipra_subst steps
+ipra_subst period
+ipra_subst localIndex
+ipra_subst precision
+ipra_subst height
+ipra_subst roundedPower
+ipra_subst leftover
 
 theorem period_positive (k q : PTm n) : Γ ⊢[PRAAx] le one (period k q) := unit_positive _
 theorem height_positive (k q : PTm n) : Γ ⊢[PRAAx] le one (height k q) := unit_positive _
@@ -175,34 +162,32 @@ def output (k q : PTm n) : PTm n := pairT (steps k q) (pairT (period k q)
 def outputF : PR 2 := PTm.toPR (output (var 0) (var 1))
 def run (k q : PTm n) : PTm n := ap2 outputF k q
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (k q : PTm n) :
-    Syn.subst σ (output k q) = output (Syn.subst σ k) (Syn.subst σ q) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (k q : PTm n) :
-    Syn.subst σ (run k q) = run (Syn.subst σ k) (Syn.subst σ q) := by simp [run]
+ipra_subst output
+ipra_subst run
 
 theorem program_at (k q : PTm n) : Γ ⊢[PRAAx] run k q ≐ output k q := by
   simpa [run,outputF,ap2] using toPR_eq (Γ := Γ) (output (var 0) (var 1) : PTm 2) ![k,q]
 
 theorem returned_steps (k q : PTm n) : Γ ⊢[PRAAx] fstT (run k q) ≐ steps k q :=
-  (congrFst (program_at k q)).eqTrans (fst_pair _ _)
+  (program_at k q).fstE
 
 theorem returned_period (k q : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run k q)) ≐ period k q :=
-  (congrFst ((congrSnd (program_at k q)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at k q).sndE.fstE
 
 theorem returned_localIndex (k q : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run k q))) ≐ localIndex k q :=
-  (congrFst ((congrSnd ((congrSnd (program_at k q)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at k q).sndE.sndE.fstE
 
 theorem returned_precision (k q : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (run k q)))) ≐ precision k q :=
-  (congrFst ((congrSnd ((congrSnd ((congrSnd (program_at k q)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at k q).sndE.sndE.sndE.fstE
 
 theorem returned_height (k q : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (sndT (run k q))))) ≐ height k q :=
-  (congrFst ((congrSnd ((congrSnd ((congrSnd ((congrSnd (program_at k q)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at k q).sndE.sndE.sndE.sndE.fstE
 
 theorem returned_roundedPower (k q : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (sndT (sndT (run k q)))))) ≐ roundedPower k q :=
-  (congrFst ((congrSnd ((congrSnd ((congrSnd ((congrSnd ((congrSnd (program_at k q)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at k q).sndE.sndE.sndE.sndE.sndE.fstE
 
 theorem returned_leftover (k q : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (sndT (sndT (run k q)))))) ≐ leftover k q :=
-  (congrSnd ((congrSnd ((congrSnd ((congrSnd ((congrSnd ((congrSnd (program_at k q)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at k q).sndE.sndE.sndE.sndE.sndE.sndE
 
 theorem dyadic_direction_budgets_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2
     (le (sixteen*(sixteen*var 0*var 1)*(sixteen*var 0*var 1)) (period (var 0) (var 1)) ⋏

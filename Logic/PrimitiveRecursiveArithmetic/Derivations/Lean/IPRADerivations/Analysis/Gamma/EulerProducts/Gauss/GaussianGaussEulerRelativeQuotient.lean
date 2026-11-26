@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGaussEulerRelativeQuotient
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode scale)
 open GaussianBoundedInverseApartness (bounded_inverse_input height ones_equivalent)
 open GaussianEuclideanDistanceName (pointCN subst_pointCN)
@@ -39,8 +39,6 @@ open GaussianNameBounds (U U_positive sample_bound)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
 open GaussianNameReciprocal (apart input nameF nameData name_fast product_one product_one_left)
 open GaussianNameRingLaws (oneF one_fast multiply_associative multiply_commutative multiply_one)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "needed" => GaussianGammaEulerInverseApproximationName.cutoff

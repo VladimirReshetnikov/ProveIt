@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitSubstitutionImproperName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUnitSubstitutionCompactName (stage)
 open GaussianGammaIntegralCutoffs (etaDen top)
 open GaussianGammaCompactQuadratureBoundary (width exact_right_endpoint)
@@ -26,9 +26,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRationalHorner (positive_product)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -43,15 +40,9 @@ def reader (p d : PTm n) : PTm n := sample p (fstT d) (fstT (sndT d))
   (fstT (sndT (sndT d))) (sndT (sndT (sndT d)))
 def nameF : PR 2 := PTm.toPR (reader (var 0) (var 1))
 
-@[simp] theorem subst_compactData {m : ℕ} (σ : Fin n → PTm m) (j z R B A : PTm n) :
-    Syn.subst σ (compactData j z R B A) = compactData (Syn.subst σ j) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ A) := by
-  simp [compactData,etaDen,top,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (p z R B A : PTm n) :
-    Syn.subst σ (sample p z R B A) = sample (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ A) := by simp [sample]
-@[simp] theorem subst_reader {m : ℕ} (σ : Fin n → PTm m) (p d : PTm n) :
-    Syn.subst σ (reader p d) = reader (Syn.subst σ p) (Syn.subst σ d) := by simp [reader]
+ipra_subst compactData [etaDen, top, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst sample
+ipra_subst reader
 
 theorem name_at (p z R B A : PTm n) : Γ ⊢[PRAAx]
     ap2 nameF p (data z R B A) ≐ sample p z R B A := by
@@ -81,9 +72,8 @@ theorem cutoff_source (j z R B A : PTm n) (hs : Γ ⊢[PRAAx] source z R B A) : 
     le_congr (one_mul two) (mul_comm _ _) (mul_le_mul_right two (GaussianGammaIntegralCutoffs.height_positive j A R))
   have product : Γ ⊢[PRAAx] le two (etaDen j A R*top j A R) := le_trans t2
     (le_congr (one_mul _) (.eqRefl _) (mul_le_mul_right (top j A R) hE))
-  have endpoint := natEq (exact_right_endpoint (Γ := Γ) j A R)
   have positiveWidth : Γ ⊢[PRAAx] le one (width j A R) := by
-    ipra_le sl product with endpoint
+    ipra_le sl product with natEq (exact_right_endpoint (Γ := Γ) j A R)
   exact .andI full positiveWidth
 
 theorem actual_sampler (p z R B A : PTm n) : Γ ⊢[PRAAx]

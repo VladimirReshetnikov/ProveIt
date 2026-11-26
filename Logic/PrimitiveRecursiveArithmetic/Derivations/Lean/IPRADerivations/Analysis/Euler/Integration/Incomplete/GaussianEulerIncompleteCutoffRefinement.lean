@@ -13,12 +13,10 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIncompleteCutoffRefinement
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIncompleteCutoff (clock denominator splitPoint lowerWidth upperWidth source)
 open GaussianGammaIntegralCutoffs (etaDen top)
 open GaussianGammaCompactCutoffGeometry (ratio delta)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

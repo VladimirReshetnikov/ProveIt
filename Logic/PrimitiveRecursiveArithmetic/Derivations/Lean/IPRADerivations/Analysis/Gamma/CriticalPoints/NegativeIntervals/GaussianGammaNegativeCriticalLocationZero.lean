@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeCriticalLocationZero
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianFastValueCut (exponent query_budget)
@@ -27,9 +27,6 @@ open GaussianNameEquivalence (crossEquivalent)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
 open GaussianRationalHorner (qzero positive_product)
 open GaussianRationalMetric (distanceBounded)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -39,12 +36,9 @@ def argument (p N : PTm n) : PTm n := nameData (lower (inner p N) N) (denominato
 def value (p N : PTm n) : PTm n := ap2 nameF (succ p) (argument p N)
 def valueF : PR 2 := PTm.toPR (value (var 0) (var 1))
 
-@[simp] theorem subst_inner {k : ℕ} (σ : Fin n → PTm k) (p N : PTm n) :
-    Syn.subst σ (inner p N) = inner (Syn.subst σ p) (Syn.subst σ N) := by simp [inner]
-@[simp] theorem subst_argument {k : ℕ} (σ : Fin n → PTm k) (p N : PTm n) :
-    Syn.subst σ (argument p N) = argument (Syn.subst σ p) (Syn.subst σ N) := by simp [argument]
-@[simp] theorem subst_value {k : ℕ} (σ : Fin n → PTm k) (p N : PTm n) :
-    Syn.subst σ (value p N) = value (Syn.subst σ p) (Syn.subst σ N) := by simp [value]
+ipra_subst inner
+ipra_subst argument
+ipra_subst value
 
 theorem value_at (p N : PTm n) : Γ ⊢[PRAAx] ap2 valueF p N ≐ value p N := by
   simpa only [valueF,ap2,subst_value,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using

@@ -17,7 +17,7 @@ set_option maxHeartbeats 600000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetKernelTail
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetKernelRows (rowF rowBody rowData inputData row_at row_bound regular_rows)
 open GaussianBinetKernelTailMajorant (eight_positive)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
@@ -35,10 +35,6 @@ open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalSumMajorant (majorized termsMajorized from_representation majorized_congr sum_majorized)
 open GaussianRationalSyntheticDivision (qsub_congr qadd_sub_cancel)
 open RationalSupMetric (denominatorOf)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "eight" => num 8

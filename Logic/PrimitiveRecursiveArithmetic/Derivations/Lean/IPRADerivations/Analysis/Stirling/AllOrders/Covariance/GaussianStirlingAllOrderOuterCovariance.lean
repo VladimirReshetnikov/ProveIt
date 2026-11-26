@@ -16,7 +16,7 @@ set_option maxHeartbeats 2200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderOuterCovariance
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (fraction fraction_order)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalSyntheticBounds (add_monotone)
@@ -35,10 +35,6 @@ open RationalArgmin (rationalLE rationalLE_congr reflexive transitive)
 open RationalArithmetic (add multiply add_guard multiply_guard)
 open RationalFiniteSum (sum term sum_zero sum_succ)
 open RationalReciprocalPowerTail (zero_fraction add_zero_right)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "z" => fraction zero one
@@ -49,10 +45,7 @@ noncomputable def midpointBody (m e : ℕ) : PTm 2 :=
 
 noncomputable def midpointPrefix (m e : ℕ) (A B S L : PTm n) : PTm n := sum (midpointBody m e) L (data A B S)
 
-@[simp] theorem subst_midpointPrefix {l : ℕ} (σ : Fin n → PTm l) (m e : ℕ) (A B S L : PTm n) :
-    Syn.subst σ (midpointPrefix m e A B S L) =
-      midpointPrefix m e (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ S) (Syn.subst σ L) := by
-  simp [midpointPrefix,GaussianStirlingAllOrderPanelPartsOuter.data]
+ipra_subst midpointPrefix [GaussianStirlingAllOrderPanelPartsOuter.data]
 
 theorem midpoint_at (m e : ℕ) (A B S k : PTm n) : Γ ⊢[PRAAx]
     term (midpointBody m e) k (data A B S) ≐ midpointCorrection m (num (e-1)) A B S k := by
@@ -80,18 +73,9 @@ theorem midpoint_succ (m e : ℕ) (A B S L : PTm n) : Γ ⊢[PRAAx]
 noncomputable def firstMargin (m e : ℕ) (A B : PTm n) : PTm n :=
   margin m (num (e-1)) (A+B*zero) B
 
-@[simp] theorem subst_firstMargin {l : ℕ} (σ : Fin n → PTm l) (m e : ℕ) (A B : PTm n) :
-    Syn.subst σ (firstMargin m e A B) = firstMargin m e (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [firstMargin,margin,GaussianStirlingAllOrderBoxProductGap.boxMargin,
-    GaussianStirlingAllOrderBernoulliMeshMargin.margin,GaussianStirlingAllOrderBernoulliMeshMargin.coarseDen,
-    GaussianStirlingAllOrderCenteredBernoulli.denominator,BernoulliBounds.zint,
-    GaussianStirlingAllOrderPairedRefinement.centerGap,GaussianStirlingAllOrderPairedWeight.gapFraction]
+ipra_subst firstMargin [margin, GaussianStirlingAllOrderBoxProductGap.boxMargin, GaussianStirlingAllOrderBernoulliMeshMargin.margin, GaussianStirlingAllOrderBernoulliMeshMargin.coarseDen, GaussianStirlingAllOrderCenteredBernoulli.denominator, BernoulliBounds.zint, GaussianStirlingAllOrderPairedRefinement.centerGap, GaussianStirlingAllOrderPairedWeight.gapFraction]
 
-@[simp] theorem subst_correctedMean {l : ℕ} (σ : Fin n → PTm l) (m : ℕ) (S : PTm n) :
-    Syn.subst σ (correctedMean m S) = correctedMean m (Syn.subst σ S) := by
-  simp [correctedMean,GaussianStirlingAllOrderFullGridMeanRate.meanErrorNumerator,
-    GaussianStirlingAllOrderFullGridMeanRate.meanErrorDenominator,GaussianStirlingAllOrderPanelDerivative.signedMean,
-    GaussianStirlingAllOrderPanelDerivative.meanNumerator,BernoulliBounds.zint]
+ipra_subst correctedMean [GaussianStirlingAllOrderFullGridMeanRate.meanErrorNumerator, GaussianStirlingAllOrderFullGridMeanRate.meanErrorDenominator, GaussianStirlingAllOrderPanelDerivative.signedMean, GaussianStirlingAllOrderPanelDerivative.meanNumerator, BernoulliBounds.zint]
 
 noncomputable def prefixComparison (m e : ℕ) (A B S L : PTm n) : Fm PTm n :=
   let M := S*num 8
@@ -101,10 +85,7 @@ noncomputable def prefixComparison (m e : ℕ) (A B S L : PTm n) : Fm PTm n :=
     (add (multiply (fraction two one) P) (firstMargin m e A B))
     (add (multiply (correctedMean m S) (multiply (fraction two one) W)) (midpointPrefix m e A B S L))
 
-@[simp] theorem subst_prefixComparison {l : ℕ} (σ : Fin n → PTm l) (m e : ℕ) (A B S L : PTm n) :
-    (prefixComparison m e A B S L).subst σ =
-      prefixComparison m e (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ S) (Syn.subst σ L) :=
-  by simp [prefixComparison,two]
+ipra_subst prefixComparison [two]
 
 theorem margin_nonnegative (m : ℕ) (q U B : PTm n) (hU : Γ ⊢[PRAAx] le one U)
     (hB : Γ ⊢[PRAAx] le one B) :

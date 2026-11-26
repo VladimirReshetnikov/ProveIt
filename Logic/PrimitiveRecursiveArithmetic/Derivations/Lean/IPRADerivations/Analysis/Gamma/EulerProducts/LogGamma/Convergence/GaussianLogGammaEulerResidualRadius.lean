@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerResidualRadius
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open ComplexLogarithmRemainder (normSq normSq_code)
 open GaussianLogGammaEulerHead (argument)
@@ -22,17 +22,12 @@ open GaussianRationalHorner (ofGaussian_represents)
 open GaussianRationalMetric (bounded_of_cleared)
 open GaussianRightHalfPlaneLogarithmOffset (signedImag)
 open RationalArithmetic (select select_zero select_one)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def radius (A B : PTm n) : PTm n := A + B
 
-@[simp] theorem subst_radius {m : ℕ} (σ : Fin n → PTm m) (A B : PTm n) :
-    Syn.subst σ (radius A B) = radius (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [radius]
+ipra_subst radius
 
 theorem native_norm (A B neg : PTm n) (h : Γ ⊢[PRAAx] neg ≐ zero ⋎ neg ≐ one) :
     Γ ⊢[PRAAx] normSq (native A B neg) ≐ A * A + B * B := by

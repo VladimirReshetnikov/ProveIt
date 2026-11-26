@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (ofGaussian represents qadd canonical canonical_unique represents_congr positive_product)
 open GaussianRationalSyntheticDivision (rescale_to qadd_congr)
 open GaussianRootAlgebra (equal equal_of_values equal_of_code equal_re equal_im equal_refl)
@@ -26,9 +26,6 @@ open ComplexLogarithmRemainder (re im add mul scale oneCode power)
 open ComplexLogarithmName (finiteNumerator finiteDenominator baseNumerator baseDenominator)
 open LogarithmRemainder (denominator denominator_positive three)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -36,13 +33,9 @@ local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
 def termNumerator (z k : PTm n) : PTm n := ComplexLogarithmRemainder.neg (scale (fact k) (power (ComplexLogarithmRemainder.neg z) (succ k)))
 def termDenominator (N k : PTm n) : PTm n := fact (succ k)*pw N (succ k)
 def sample (z N L : PTm n) : PTm n := ofGaussian (finiteNumerator z N L) (finiteDenominator N L)
-@[simp] theorem subst_termNumerator {m : ℕ} (σ : Fin n → PTm m) (z k : PTm n) :
-    Syn.subst σ (termNumerator z k) = termNumerator (Syn.subst σ z) (Syn.subst σ k) := by simp [termNumerator,fact]
-@[simp] theorem subst_termDenominator {m : ℕ} (σ : Fin n → PTm m) (N k : PTm n) :
-    Syn.subst σ (termDenominator N k) = termDenominator (Syn.subst σ N) (Syn.subst σ k) := by simp [termDenominator,fact]
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (z N L : PTm n) :
-    Syn.subst σ (sample z N L) = sample (Syn.subst σ z) (Syn.subst σ N) (Syn.subst σ L) := by
-  simp [sample,finiteNumerator,finiteDenominator,baseNumerator,baseDenominator,denominator,fact]
+ipra_subst termNumerator [fact]
+ipra_subst termDenominator [fact]
+ipra_subst sample [finiteNumerator, finiteDenominator, baseNumerator, baseDenominator, denominator, fact]
 
 theorem kernel_native (k : PTm n) : Γ ⊢[PRAAx] equal (kernelNumerator k)
     (scale (fact k) (GaussianIntegerFractionPowers.parityScalar k)) := by
@@ -178,9 +171,7 @@ theorem base_represents (z N : PTm n) (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[PRA
 
 def sampleLaw (z N L : PTm n) : Fm PTm n :=
   represents (value (L+two) (ofGaussian z N)) (finiteNumerator z N L) (finiteDenominator N L)
-@[simp] theorem subst_sampleLaw {m : ℕ} (σ : Fin n → PTm m) (z N L : PTm n) :
-    (sampleLaw z N L).subst σ = sampleLaw (Syn.subst σ z) (Syn.subst σ N) (Syn.subst σ L) := by
-  simp [sampleLaw,finiteNumerator,finiteDenominator,baseNumerator,baseDenominator,denominator,fact]
+ipra_subst sampleLaw [finiteNumerator, finiteDenominator, baseNumerator, baseDenominator, denominator, fact]
 
 theorem sample_zero (z N : PTm n) (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[PRAAx] sampleLaw z N zero := by
   have hs := GaussianRationalHorner.represents_rescale _ _ _ (denominator N zero) (base_represents z N hN)
@@ -218,11 +209,9 @@ theorem finite_sample_represents (z N L : PTm n) (hN : Γ ⊢[PRAAx] le one N) :
   have hs : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift N) := by
     simpa only [Fm.shift,Syn.shift,subst_le,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero] using hN.shift
   have all : Γ ⊢[PRAAx] .all (sampleLaw (Syn.shift z) (Syn.shift N) (var 0)) := by
-    refine PRA.qfInd _ ⟨trivial,trivial⟩ ?_ ?_
-    · simp only [subst_sampleLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact sample_zero z N hN
-    · simp only [subst_sampleLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact sample_step _ _ _ hs.wk Prf.hyp0
+    ipra_qfind (⟨trivial,trivial⟩) [subst_sampleLaw]
+    · exact sample_zero z N hN
+    · exact sample_step _ _ _ hs.wk Prf.hyp0
   simpa only [subst_sampleLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE L
 
 theorem value_eq_original_sample (z N L : PTm n) (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[PRAAx]
@@ -249,25 +238,18 @@ def output (z N L K : PTm n) : PTm n := pairT (polynomial (L+two))
   (pairT (GaussianFiniteLogarithmPolynomial.composition (L+two) K) (sample z N L))
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (z N L K : PTm n) : PTm n := PTm.app outputF ![z,N,L,K]
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (z N L K : PTm n) :
-    Syn.subst σ (output z N L K) = output (Syn.subst σ z) (Syn.subst σ N) (Syn.subst σ L) (Syn.subst σ K) := by
-  simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (z N L K : PTm n) :
-    Syn.subst σ (run z N L K) = run (Syn.subst σ z) (Syn.subst σ N) (Syn.subst σ L) (Syn.subst σ K) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (z N L K : PTm n) : Γ ⊢[PRAAx] run z N L K ≐ output z N L K := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![z,N,L,K]
 theorem returned_polynomial (z N L K : PTm n) : Γ ⊢[PRAAx] fstT (run z N L K) ≐ polynomial (L+two) :=
-  (congrFst (program_at z N L K)).eqTrans (fst_pair _ _)
+  (program_at z N L K).fstE
 theorem returned_composition (z N L K : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run z N L K)) ≐ GaussianFiniteLogarithmPolynomial.composition (L+two) K :=
-  (congrFst ((congrSnd (program_at z N L K)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at z N L K).sndE.fstE
 theorem returned_sample (z N L K : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run z N L K)) ≐ sample z N L :=
-  (congrSnd ((congrSnd (program_at z N L K)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at z N L K).sndE.sndE
 theorem returned_polynomial_evaluation (z N L K : PTm n) (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[PRAAx]
     GaussianRationalHorner.evaluate (fstT (run z N L K)) (ofGaussian z N) ≐ sndT (sndT (run z N L K)) :=
   (GaussianRationalMonicReduction.evaluate_congr (returned_polynomial z N L K) (.eqRefl _)).eqTrans

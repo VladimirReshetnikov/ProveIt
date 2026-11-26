@@ -17,7 +17,7 @@ set_option maxHeartbeats 830000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRightHalfPlaneArgumentChartContinuity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianArctangentQuarterExponential (quarterF quarter_regular)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameArithmetic (addF addData add_fast)
@@ -29,10 +29,6 @@ open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalPowerDifference (distance_refl_zero)
 open GaussianRightHalfPlaneArgument (smallF smallData largeF largeData half_bounded small_regular)
 open RationalCubeMidpoint (fraction)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

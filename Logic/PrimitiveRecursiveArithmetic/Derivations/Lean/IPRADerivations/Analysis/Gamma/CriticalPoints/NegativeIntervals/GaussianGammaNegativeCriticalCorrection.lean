@@ -17,7 +17,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeCriticalCorrection
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (qadd qzero ofGaussian_canonical)
 open GaussianRationalMetric (qsub)
@@ -26,10 +26,6 @@ open GaussianStirlingTailComparison (point_add_order point_order_refl)
 open GaussianStirlingMultiplicativeBoundsLog (fractions_order)
 open GaussianGammaRationalWendelBoundary (fraction_zero)
 open RationalArgmin (rationalLE rationalLE_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -41,23 +37,15 @@ def body : PTm 2 := row (fstT (var 1)) (sndT (var 1)) (var 0)
 def positiveSum (a b N : PTm n) : PTm n := GaussianRationalFiniteSum.sum body N (pairT a b)
 def correction (a b N : PTm n) : PTm n := qsub (positiveSum a b (succ N)) (fraction b a)
 
-@[simp] theorem subst_guard {k : ℕ} (σ : Fin n → PTm k) (a b : PTm n) :
-    (guard a b).subst σ = guard (Syn.subst σ a) (Syn.subst σ b) := by simp [guard]
+ipra_subst guard
 
-@[simp] theorem subst_bottomDen {k : ℕ} (σ : Fin n → PTm k) (a b j : PTm n) :
-    Syn.subst σ (bottomDen a b j) = bottomDen (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ j) :=
-  by simp [bottomDen]
+ipra_subst bottomDen
 
-@[simp] theorem subst_row {k : ℕ} (σ : Fin n → PTm k) (a b j : PTm n) :
-    Syn.subst σ (row a b j) = row (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ j) := by simp [row]
+ipra_subst row
 
-@[simp] theorem subst_positiveSum {k : ℕ} (σ : Fin n → PTm k) (a b N : PTm n) :
-    Syn.subst σ (positiveSum a b N) = positiveSum (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) :=
-  by simp [positiveSum]
+ipra_subst positiveSum
 
-@[simp] theorem subst_correction {k : ℕ} (σ : Fin n → PTm k) (a b N : PTm n) :
-    Syn.subst σ (correction a b N) = correction (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) :=
-  by simp [correction]
+ipra_subst correction
 
 theorem row_at (a b j : PTm n) : Γ ⊢[PRAAx] inst2 body j (pairT a b) ≐ row a b j := by
   simp only [inst2,body,subst_row,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,subst_fstT,subst_sndT]
@@ -78,11 +66,7 @@ theorem den_expand (a b j : PTm n) (h : Γ ⊢[PRAAx] lt a b) :
     linear_combination e
   exact (congrMonus expand (.eqRefl _)).eqTrans (add_monus _ _)
 
-theorem separation_positive (a b : PTm n) (h : Γ ⊢[PRAAx] lt a b) :
-    Γ ⊢[PRAAx] le one (monus b a) := by
-  have e := natEq (eq_add_of_le (le_of_lt h))
-  unfold lt at h
-  ipra_le sl h with -e
+alias separation_positive := Common.one_le_monus_of_lt
 
 theorem row_den_positive (a b j : PTm n) (h : Γ ⊢[PRAAx] lt a b) :
     Γ ⊢[PRAAx] le one (bottomDen a b j) :=
@@ -129,9 +113,7 @@ private theorem integer_sum (a b : PTm n) : Γ ⊢[PRAAx] qadd (fraction a one) 
 def prefixUpper (a b K N : PTm n) : Fm PTm n :=
   rationalLE (fstT (positiveSum a b N)) (fstT (fraction (K*N) one))
 
-@[simp] theorem subst_prefixUpper {k : ℕ} (σ : Fin n → PTm k) (a b K N : PTm n) :
-    (prefixUpper a b K N).subst σ = prefixUpper (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ K) (Syn.subst σ N) :=
-  by simp [prefixUpper]
+ipra_subst prefixUpper
 
 private theorem upper_zero (a b K : PTm n) : Γ ⊢[PRAAx] prefixUpper a b K zero :=
   rationalLE_congr (congrFst (GaussianRationalFiniteSum.sum_zero body _)).eqSymm
@@ -164,9 +146,7 @@ theorem prefix_upper (a b K N : PTm n) (h : Γ ⊢[PRAAx] lt a b)
 def firstLower (a b N : PTm n) : Fm PTm n :=
   rationalLE (fstT (row a b zero)) (fstT (positiveSum a b (succ N)))
 
-@[simp] theorem subst_firstLower {k : ℕ} (σ : Fin n → PTm k) (a b N : PTm n) :
-    (firstLower a b N).subst σ = firstLower (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) :=
-  by simp [firstLower]
+ipra_subst firstLower
 
 theorem first_lower (a b N : PTm n) (h : Γ ⊢[PRAAx] lt a b) :
     Γ ⊢[PRAAx] firstLower a b N := by

@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.Translations.GaussianRationalTranslationStages
 import IPRADerivations.Analysis.RationalArithmetic.Translations.GaussianRationalTranslationAlgebra
 import IPRADerivations.Analysis.Polynomials.RootFinding.BalancedRadius.GaussianBalancedRadiusSyntax
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual rational polynomial translation by repeated synthetic division
@@ -20,7 +19,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalTranslation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner
   (qzero qadd qmul canonical evaluate horner hornerF horner_canonical canonical_congr)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision
@@ -29,10 +28,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalTranslationStages (stage subst_sta
 open LeanProofs.IPRA.Foundations.MasterCertificate
   (entry sequence sequence_length sequence_decode subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,15 +37,9 @@ def coefficientBody : PTm 2 := coefficientValue (fstT (var 1)) (fstT (sndT (var 
   (sndT (sndT (var 1))) (var 0)
 def translated (C N z : PTm n) : PTm n := sequence coefficientBody (succ N) (data C N z)
 
-@[simp] theorem subst_coefficientValue {m : ℕ} (σ : Fin n → PTm m) (C N z h : PTm n) :
-    Syn.subst σ (coefficientValue C N z h) =
-      coefficientValue (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z) (Syn.subst σ h) := by
-  simp [coefficientValue]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (C N z : PTm n) :
-    Syn.subst σ (data C N z) = data (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z) := by simp [data]
-@[simp] theorem subst_translated {m : ℕ} (σ : Fin n → PTm m) (C N z : PTm n) :
-    Syn.subst σ (translated C N z) = translated (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z) := by
-  simp [translated]
+ipra_subst coefficientValue
+ipra_subst data
+ipra_subst translated
 
 theorem evaluate_congr {C D y z : PTm n} (hC : Γ ⊢[PRAAx] C ≐ D) (hy : Γ ⊢[PRAAx] y ≐ z) :
     Γ ⊢[PRAAx] evaluate C y ≐ evaluate D z :=
@@ -64,9 +53,9 @@ theorem coefficient_value_at (C N z h : PTm n) : Γ ⊢[PRAAx]
     inst2 coefficientBody h (data C N z) ≐ coefficientValue C N z h := by
   have hC : Γ ⊢[PRAAx] fstT (data C N z) ≐ C := fst_pair _ _
   have hN : Γ ⊢[PRAAx] fstT (sndT (data C N z)) ≐ N :=
-    (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
+    (snd_pair _ _).fstE
   have hz : Γ ⊢[PRAAx] sndT (sndT (data C N z)) ≐ z :=
-    (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
+    (snd_pair _ _).sndE
   ipra_congr (coefficientValue (var 0) (var 1) (var 2) (var 3) : PTm 4) with
     [hC, hN, hz, .eqRefl h] using [coefficientBody, inst2]
 
@@ -161,19 +150,15 @@ theorem backward_prefix_step (C N z w k : PTm n)
 def prefixLaw (C N z w k : PTm n) : Fm PTm n := le k N ⟶
   horner (translated C N z) w (succ k) ≐ evaluate (stage C N z (monus N k)) (qadd z w)
 
-@[simp] theorem subst_prefixLaw {m : ℕ} (σ : Fin n → PTm m) (C N z w k : PTm n) :
-    (prefixLaw C N z w k).subst σ = prefixLaw (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ z) (Syn.subst σ w) (Syn.subst σ k) := by simp [prefixLaw]
+ipra_subst prefixLaw
 
 theorem backward_prefix (C N z w k : PTm n) (hLen : Γ ⊢[PRAAx] length C ≐ succ N)
     (hk : Γ ⊢[PRAAx] le k N) : Γ ⊢[PRAAx]
     horner (translated C N z) w (succ k) ≐ evaluate (stage C N z (monus N k)) (qadd z w) := by
   have all : Γ ⊢[PRAAx] .all (prefixLaw (Syn.shift C) (Syn.shift N) (Syn.shift z) (Syn.shift w) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (backward_prefix_zero C N z w hLen.wk)
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_prefixLaw]
+    · exact .impI (backward_prefix_zero C N z w hLen.wk)
+    · refine .impI ?_
       have hs : Γ.map Fm.shift ⊢[PRAAx] length (Syn.shift C) ≐ succ (Syn.shift N) := by
         simpa only [Fm.shift,Fm.subst_eq,subst_length,ConciseIPRA.PTm.subst_succ,Syn.shift] using hLen.shift
       have hi : (le (succ (var 0)) (Syn.shift N)) ::

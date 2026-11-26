@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLowerTailPartition
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLowerTailRootGrid (rootRatio rootNumerator rootDenominator timeNumerator timeDenominator)
 open GaussianGammaIntegralCutoffs (height)
 open GaussianGammaCompactCutoffGeometry (delta lowerWidth)
@@ -27,10 +27,6 @@ open GaussianRationalHorner (qmul)
 open GaussianRationalRiemannRefinement (weight)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -45,15 +41,9 @@ def cutData (N p q A : PTm n) : PTm n := pairT N (pairT p (pairT q A))
 def cutF : PR 2 := PTm.toPR
   (offset (var 0) (fstT (var 1)) (fstT (sndT (var 1))) (fstT (sndT (sndT (var 1)))) (sndT (sndT (sndT (var 1)))) : PTm 2)
 
-@[simp] theorem subst_rootStep {m : ℕ} (σ : Fin n → PTm m) (p q : PTm n) :
-    Syn.subst σ (rootStep p q) = rootStep (Syn.subst σ p) (Syn.subst σ q) :=
-  by simp [rootStep,rootRatio]
-@[simp] theorem subst_offset {m : ℕ} (σ : Fin n → PTm m) (i N p q A : PTm n) :
-    Syn.subst σ (offset i N p q A) = offset (Syn.subst σ i) (Syn.subst σ N) (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ A) :=
-  by simp [offset,timeNumerator,rootNumerator,rootRatio]
-@[simp] theorem subst_cutData {m : ℕ} (σ : Fin n → PTm m) (N p q A : PTm n) :
-    Syn.subst σ (cutData N p q A) = cutData (Syn.subst σ N) (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ A) :=
-  by simp [cutData]
+ipra_subst rootStep [rootRatio]
+ipra_subst offset [timeNumerator, rootNumerator, rootRatio]
+ipra_subst cutData
 
 theorem offset_at (i N p q A : PTm n) : Γ ⊢[PRAAx] ap2 cutF i (cutData N p q A) ≐ offset i N p q A := by
   let d := cutData N p q A
@@ -69,9 +59,9 @@ theorem offset_at (i N p q A : PTm n) : Γ ⊢[PRAAx] ap2 cutF i (cutData N p q 
       fin_cases k
       · exact .eqRefl _
       · exact fst_pair _ _
-      · exact (congrFst tail).eqTrans (fst_pair _ _)
-      · exact (congrFst tail₂).eqTrans (fst_pair _ _)
-      · exact (congrSnd tail₂).eqTrans (snd_pair _ _))
+      · exact tail.fstE
+      · exact tail₂.fstE
+      · exact tail₂.sndE)
   exact eval.eqTrans (by simpa using value)
 
 theorem offset_zero (N p q A : PTm n) : Γ ⊢[PRAAx] offset zero N p q A ≐ zero :=

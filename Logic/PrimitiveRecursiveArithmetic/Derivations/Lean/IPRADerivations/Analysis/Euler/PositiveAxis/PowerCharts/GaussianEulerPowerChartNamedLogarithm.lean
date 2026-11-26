@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPowerChartNamedLogarithm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPositivePowerChart (source majorant)
 open GaussianEulerPositivePowerChartImage (reciprocalMargin query)
 open GaussianEulerPositivePowerChartLogarithm (logarithmF logarithmData)
@@ -28,8 +28,6 @@ open GaussianRationalHorner (canonical positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "C" => GaussianEulerPositivePowerChart.nameF
@@ -44,19 +42,9 @@ abbrev kernelF : PR 2 := GaussianEulerExponentialSubstitutionNamedKernel.nameF l
 def kernelData (z B e f d h Q S E T a b : PTm n) : PTm n :=
   GaussianEulerExponentialSubstitutionNamedKernel.data logF (scaled z f) (B*e) (logData e f d h Q S E T a b)
 
-@[simp] theorem subst_lateData {m : ℕ} (σ : Fin n → PTm m) (e f d h Q S E T a b : PTm n) :
-    Syn.subst σ (lateData e f d h Q S E T a b) =
-      lateData (Syn.subst σ e) (Syn.subst σ f) (Syn.subst σ d) (Syn.subst σ h)
-        (Syn.subst σ Q) (Syn.subst σ S) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ a) (Syn.subst σ b) := by simp [lateData]
-@[simp] theorem subst_logData {m : ℕ} (σ : Fin n → PTm m) (e f d h Q S E T a b : PTm n) :
-    Syn.subst σ (logData e f d h Q S E T a b) =
-      logData (Syn.subst σ e) (Syn.subst σ f) (Syn.subst σ d) (Syn.subst σ h)
-        (Syn.subst σ Q) (Syn.subst σ S) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ a) (Syn.subst σ b) := by simp [logData]
-@[simp] theorem subst_kernelData {m : ℕ} (σ : Fin n → PTm m) (z B e f d h Q S E T a b : PTm n) :
-    Syn.subst σ (kernelData z B e f d h Q S E T a b) =
-      kernelData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ e) (Syn.subst σ f) (Syn.subst σ d) (Syn.subst σ h)
-        (Syn.subst σ Q) (Syn.subst σ S) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [kernelData,GaussianEulerPowerScalingParameter.scaled,ComplexLogarithmRemainder.scale]
+ipra_subst lateData
+ipra_subst logData
+ipra_subst kernelData [GaussianEulerPowerScalingParameter.scaled, ComplexLogarithmRemainder.scale]
 
 theorem late_at (p e f d h Q S E T a b : PTm n)
     (hf : Γ ⊢[PRAAx] le one f) (hh : Γ ⊢[PRAAx] le one h) :

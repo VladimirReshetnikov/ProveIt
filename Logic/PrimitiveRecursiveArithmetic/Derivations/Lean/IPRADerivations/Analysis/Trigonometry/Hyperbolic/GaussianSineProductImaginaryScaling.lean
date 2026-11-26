@@ -14,7 +14,7 @@ set_option maxHeartbeats 600000
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineProductImaginaryScaling
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open ComplexLogarithmRemainder (eval_im_code eval_re_code)
 open GaussianGammaEulerReflectionHead (body)
@@ -29,9 +29,6 @@ open GaussianSineProductImaginaryLogDerivative
   (axisNumerator factor factor_value logarithmRow logarithmSum logarithm_sum_succ product rationalReal realNumerator
     squareDenominator)
 open GaussianSineProductName (sine_product_succ)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -86,9 +83,7 @@ theorem row_rescale (i A B k : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hk : Γ ⊢
 def invariance (A B k N : PTm n) : Fm PTm n :=
   (product (k*A) (k*B) N ≐ product A B N) ⋏ (logarithmSum (k*A) (k*B) N ≐ logarithmSum A B N)
 
-@[simp] theorem subst_invariance {m : ℕ} (σ : Fin n → PTm m) (A B k N : PTm n) :
-    (invariance A B k N).subst σ = invariance (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ k) (Syn.subst σ N) := by
-  simp [invariance]
+ipra_subst invariance
 
 theorem finite_rescale (A B k N : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hk : Γ ⊢[PRAAx] le one k) :
     Γ ⊢[PRAAx] invariance A B k N := by
@@ -126,9 +121,7 @@ private abbrev rowF := GaussianSineProductImaginaryLogDerivativeTail.nameF
 def sineData (A B R : PTm n) : PTm n := GaussianSineProductName.data (axisNumerator A) R B
 local notation "rowData" => GaussianSineProductImaginaryLogDerivativeTail.data
 
-@[simp] theorem subst_sineData {m : ℕ} (σ : Fin n → PTm m) (A B R : PTm n) :
-    Syn.subst σ (sineData A B R) = sineData (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ R) := by
-  simp [sineData, GaussianSineProductName.data]
+ipra_subst sineData [GaussianSineProductName.data]
 
 theorem product_sample_rescale (A B k R p : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hk : Γ ⊢[PRAAx] le one k) :
     Γ ⊢[PRAAx] ap2 sineF p (sineData (k*A) (k*B) R) ≐ ap2 sineF p (sineData A B R) :=

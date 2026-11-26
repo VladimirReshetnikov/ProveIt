@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedDifferenceRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedDifference (nameF data name_regular sample_error difference_distance)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
@@ -24,10 +24,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -37,13 +33,9 @@ def source (F G H K : PR 2) (x y u v A B C E : PTm n) : Fm PTm n :=
   (le one B ⋏ le one E) ⋏ ((pointCN F x ⋏ pointCN G y) ⋏ ((pointCN H u ⋏ pointCN K v) ⋏
     (independentRate F H x u A B ⋏ independentRate G K y v C E)))
 
-@[simp] theorem subst_leadingNumerator {m : ℕ} (σ : Fin n → PTm m) (A B C E : PTm n) :
-    Syn.subst σ (leadingNumerator A B C E) = leadingNumerator (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ C) (Syn.subst σ E) := by simp [leadingNumerator]
-@[simp] theorem subst_leadingDenominator {m : ℕ} (σ : Fin n → PTm m) (B E : PTm n) :
-    Syn.subst σ (leadingDenominator B E) = leadingDenominator (Syn.subst σ B) (Syn.subst σ E) := by simp [leadingDenominator]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (F G H K : PR 2) (x y u v A B C E : PTm n) :
-    (source F G H K x y u v A B C E).subst σ = source F G H K (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ u)
-      (Syn.subst σ v) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ C) (Syn.subst σ E) := by simp [source]
+ipra_subst leadingNumerator
+ipra_subst leadingDenominator
+ipra_subst source
 
 theorem denominator_positive (B E : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hE : Γ ⊢[PRAAx] le one E) : Γ ⊢[PRAAx]
     le one (leadingDenominator B E) := positive_product _ _ hB hE

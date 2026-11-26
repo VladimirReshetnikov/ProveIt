@@ -17,7 +17,7 @@ set_option maxHeartbeats 500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerTaylorRows
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive subst_unit)
 open GaussianFastValueCut (exponent query_budget)
 open GaussianGammaFiniteValueProperness (fraction_equal)
@@ -35,10 +35,6 @@ open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRightHalfPlaneLogarithmIncrementBound (input subst_input)
 open GaussianRightHalfPlaneLogarithmRelativeStep (relative relative_binding denominator_positive)
 open GaussianRightHalfPlaneRadialContinuity (shifted_displacement)
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerCompactPowerVariation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerExponentCompactBounds (source input)
 open GaussianCompactLogarithmBounds (domain)
 open GaussianEulerIntegrandName (powerF powerData powerExponentF powerExponentData powerClock coefficient)
@@ -25,9 +25,6 @@ open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianNamedInverseRate (independentRate)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -35,12 +32,9 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 def radius (R E T : PTm n) : PTm n := GaussianEulerCompactPowerMajorant.exponentRadius R E T
 def factor (R E : PTm n) : PTm n := (R+one)*E
 def lipschitz (R E T : PTm n) : PTm n := GaussianRadiusExponentialLipschitzRate.factor (radius R E T)*factor R E
-@[simp] theorem subst_radius {m : ℕ} (σ : Fin n → PTm m) (R E T : PTm n) :
-    Syn.subst σ (radius R E T) = radius (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T) := by simp [radius,GaussianEulerCompactPowerMajorant.exponentRadius]
-@[simp] theorem subst_factor {m : ℕ} (σ : Fin n → PTm m) (R E : PTm n) :
-    Syn.subst σ (factor R E) = factor (Syn.subst σ R) (Syn.subst σ E) := by simp [factor]
-@[simp] theorem subst_lipschitz {m : ℕ} (σ : Fin n → PTm m) (R E T : PTm n) :
-    Syn.subst σ (lipschitz R E T) = lipschitz (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T) := by simp [lipschitz]
+ipra_subst radius [GaussianEulerCompactPowerMajorant.exponentRadius]
+ipra_subst factor
+ipra_subst lipschitz
 
 theorem clock_later (p z B a b : PTm n) : Γ ⊢[PRAAx] le p (powerClock p z B a b) := le_add_right _ _
 

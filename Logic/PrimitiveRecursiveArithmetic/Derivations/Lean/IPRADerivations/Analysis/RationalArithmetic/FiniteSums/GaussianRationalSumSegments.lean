@@ -16,14 +16,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalSumSegments
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (horner hornerF evaluate qadd qzero canonical)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qone qadd_congr)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_decode sequence_length)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -35,12 +32,9 @@ def segment (Q a m : PTm n) : PTm n := sequence segmentBody m (data Q a)
 
 @[simp] theorem subst_prefix {l : ℕ} (σ : Fin n → PTm l) (Q r : PTm n) :
     Syn.subst σ (partialSum Q r) = partialSum (Syn.subst σ Q) (Syn.subst σ r) := by simp [partialSum]
-@[simp] theorem subst_sum {l : ℕ} (σ : Fin n → PTm l) (Q : PTm n) :
-    Syn.subst σ (sum Q) = sum (Syn.subst σ Q) := by simp [sum]
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (Q a : PTm n) :
-    Syn.subst σ (data Q a) = data (Syn.subst σ Q) (Syn.subst σ a) := by simp [data]
-@[simp] theorem subst_segment {l : ℕ} (σ : Fin n → PTm l) (Q a m : PTm n) :
-    Syn.subst σ (segment Q a m) = segment (Syn.subst σ Q) (Syn.subst σ a) (Syn.subst σ m) := by simp [segment]
+ipra_subst sum
+ipra_subst data
+ipra_subst segment
 
 theorem prefix_congr {Q R k l : PTm n} (hQ : Γ ⊢[PRAAx] Q ≐ R) (hk : Γ ⊢[PRAAx] k ≐ l) : Γ ⊢[PRAAx]
     partialSum Q k ≐ partialSum R l := congrAp3 hornerF hk hQ (.eqRefl _)
@@ -69,9 +63,7 @@ theorem segment_lookup (Q a m i : PTm n) (hi : Γ ⊢[PRAAx] lt i m) : Γ ⊢[PR
 def entriesEqual (Q R m : PTm n) : Fm PTm n := .all
   (lt (var 0) (Syn.shift m) ⟶ entry (Syn.shift Q) (var 0) ≐ entry (Syn.shift R) (var 0))
 
-@[simp] theorem subst_entriesEqual {l : ℕ} (σ : Fin n → PTm l) (Q R m : PTm n) :
-    (entriesEqual Q R m).subst σ = entriesEqual (Syn.subst σ Q) (Syn.subst σ R) (Syn.subst σ m) := by
-  simp [entriesEqual,Syn.subst_shift,Syn.shift_subst]
+ipra_subst entriesEqual [Syn.subst_shift, Syn.shift_subst]
 
 theorem entry_equal_at (Q R m i : PTm n) (h : Γ ⊢[PRAAx] entriesEqual Q R m)
     (hi : Γ ⊢[PRAAx] lt i m) : Γ ⊢[PRAAx] entry Q i ≐ entry R i := by
@@ -80,9 +72,7 @@ theorem entry_equal_at (Q R m i : PTm n) (h : Γ ⊢[PRAAx] entriesEqual Q R m)
 
 def congruenceLaw (Q R m r : PTm n) : Fm PTm n := le r m ⟶ partialSum Q r ≐ partialSum R r
 
-@[simp] theorem subst_congruenceLaw {l : ℕ} (σ : Fin n → PTm l) (Q R m r : PTm n) :
-    (congruenceLaw Q R m r).subst σ = congruenceLaw (Syn.subst σ Q) (Syn.subst σ R) (Syn.subst σ m) (Syn.subst σ r) := by
-  simp [congruenceLaw]
+ipra_subst congruenceLaw
 
 /-- Actual prefix equality from bounded individual entry CODE equality;
 no equality of the original outer list codes is required. -/
@@ -91,11 +81,9 @@ theorem prefix_entries_congr (Q R m r : PTm n) (h : Γ ⊢[PRAAx] entriesEqual Q
   have hs : Γ.map Fm.shift ⊢[PRAAx] entriesEqual (Syn.shift Q) (Syn.shift R) (Syn.shift m) := by
     simpa only [Fm.shift,subst_entriesEqual,Syn.shift] using h.shift
   have all : Γ ⊢[PRAAx] .all (congruenceLaw (Syn.shift Q) (Syn.shift R) (Syn.shift m) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_congruenceLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI ((prefix_zero Q).eqTrans (prefix_zero R).eqSymm)
-    · simp only [subst_congruenceLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_congruenceLaw]
+    · exact .impI ((prefix_zero Q).eqTrans (prefix_zero R).eqSymm)
+    · refine .impI ?_
       exact (prefix_succ (Syn.shift Q) (var 0)).eqTrans
         ((qadd_congr (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
           (entry_equal_at _ _ _ _ hs.wk.wk Prf.hyp0)).eqTrans (prefix_succ (Syn.shift R) (var 0)).eqSymm)
@@ -106,9 +94,7 @@ theorem prefix_entries_congr (Q R m r : PTm n) (h : Γ ⊢[PRAAx] entriesEqual Q
 def splitLaw (Q a m r : PTm n) : Fm PTm n := le r m ⟶
   partialSum Q (a+r) ≐ qadd (partialSum Q a) (partialSum (segment Q a m) r)
 
-@[simp] theorem subst_splitLaw {l : ℕ} (σ : Fin n → PTm l) (Q a m r : PTm n) :
-    (splitLaw Q a m r).subst σ = splitLaw (Syn.subst σ Q) (Syn.subst σ a) (Syn.subst σ m) (Syn.subst σ r) := by
-  simp [splitLaw]
+ipra_subst splitLaw
 
 theorem split_zero (Q a m : PTm n) : Γ ⊢[PRAAx]
     partialSum Q (a+zero) ≐ qadd (partialSum Q a) (partialSum (segment Q a m) zero) :=
@@ -130,11 +116,9 @@ no outer list-length premise, since every original lookup is total. -/
 theorem prefix_split (Q a m r : PTm n) (hr : Γ ⊢[PRAAx] le r m) : Γ ⊢[PRAAx]
     partialSum Q (a+r) ≐ qadd (partialSum Q a) (partialSum (segment Q a m) r) := by
   have all : Γ ⊢[PRAAx] .all (splitLaw (Syn.shift Q) (Syn.shift a) (Syn.shift m) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_splitLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (split_zero Q a m)
-    · simp only [subst_splitLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_splitLaw]
+    · exact .impI (split_zero Q a m)
+    · refine .impI ?_
       exact split_step _ _ _ _ Prf.hyp0 (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
   have rule : Γ ⊢[PRAAx] splitLaw Q a m r := by
     simpa only [subst_splitLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE r

@@ -24,9 +24,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.PetersenSpectrum
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -186,8 +184,7 @@ theorem petersen_one (x : Fin 10 → ZT n) (hx : Γ ⊢[PRAAx] ZT.eq (ZT.sumFin 
   have ex := ZT.toZ_eq hx
   simp only [ZT.toZ_sumFin, ZT.toZ_natLit, Nat.cast_zero] at ex
   have eC : ∀ j, ∑ v, ((mem v j : ℕ) : Groth (Q Γ)) * ZT.toZ Γ (x v) = 0 := fun j => by
-    have e := ZT.toZ_eq (hC j)
-    simpa only [ZT.toZ_sumFin, ZT.toZ_mul, ZT.toZ_natLit, Nat.cast_zero] using e
+    simpa only [ZT.toZ_sumFin, ZT.toZ_mul, ZT.toZ_natLit, Nat.cast_zero] using ZT.toZ_eq (hC j)
   apply ZT.derive
   simp only [ZT.toZ_sumFin, ZT.toZ_mul, ZT.toZ_natLit]
   exact eigen_one (fun v i => ((mem v i : ℕ) : Groth (Q Γ))) (fun u v => ((kadj u v : ℕ) : Groth (Q Γ)))

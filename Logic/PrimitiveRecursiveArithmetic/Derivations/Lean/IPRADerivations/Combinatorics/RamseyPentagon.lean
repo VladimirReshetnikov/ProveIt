@@ -21,11 +21,7 @@ With `RamseyTriangle.ramsey33` (some indicator is positive on six vertices) this
 
 namespace LeanProofs.IPRA.Combinatorics.RamseyPentagon
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

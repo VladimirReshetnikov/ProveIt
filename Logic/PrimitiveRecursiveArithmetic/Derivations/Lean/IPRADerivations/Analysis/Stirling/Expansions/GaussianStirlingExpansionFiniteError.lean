@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingExpansionFiniteError
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale normSq oneCode)
 open GaussianCoefficientL1 (coefficientNorm)
 open GaussianRationalHorner (evaluate ofGaussian ofGaussian_represents)
@@ -25,11 +25,7 @@ open GaussianRationalPowerExpansion (partialSum)
 open GaussianStirlingExpansionCoefficients (logTable expTable log_table_length)
 open RationalArgmin (rationalLE)
 open RationalSupMetric (numeratorOf denominatorOf)
-open LeanProofs.IPRA.PTm (num)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -3,7 +3,6 @@ import IPRADerivations.Analysis.Names.GaussianNameRingLaws
 import IPRADerivations.Analysis.Exponential.GaussianRadiusExponentialName
 import IPRADerivations.Analysis.RationalArithmetic.RationalClosure
 import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialReference
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual capped natural multiples of Gaussian names
@@ -20,7 +19,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedNaturalScale
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalNaturalScale (natScale naturalPoint)
 open GaussianRationalHorner (canonical qadd qmul ofGaussian positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
@@ -28,9 +27,6 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent point_at)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -43,16 +39,11 @@ def nameF (f : PR 2) : PR 2 := PTm.toPR
   (value f (var 0) (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))))
 def sample (f : PR 2) (p E i x : PTm n) : PTm n := ap2 (nameF f) p (data E i x)
 
-@[simp] theorem subst_clock {l : ℕ} (σ : Fin n → PTm l) (p E : PTm n) :
-    Syn.subst σ (clock p E) = clock (Syn.subst σ p) (Syn.subst σ E) := by simp [clock]
-@[simp] theorem subst_amplification {l : ℕ} (σ : Fin n → PTm l) (E : PTm n) :
-    Syn.subst σ (amplification E) = amplification (Syn.subst σ E) := by simp [amplification]
-@[simp] theorem subst_value {l : ℕ} (σ : Fin n → PTm l) (f : PR 2) (p E i x : PTm n) :
-    Syn.subst σ (value f p E i x) = value f (Syn.subst σ p) (Syn.subst σ E) (Syn.subst σ i) (Syn.subst σ x) := by simp [value]
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (E i x : PTm n) :
-    Syn.subst σ (data E i x) = data (Syn.subst σ E) (Syn.subst σ i) (Syn.subst σ x) := by simp [data]
-@[simp] theorem subst_sample {l : ℕ} (σ : Fin n → PTm l) (f : PR 2) (p E i x : PTm n) :
-    Syn.subst σ (sample f p E i x) = sample f (Syn.subst σ p) (Syn.subst σ E) (Syn.subst σ i) (Syn.subst σ x) := by simp [sample]
+ipra_subst clock
+ipra_subst amplification
+ipra_subst value
+ipra_subst data
+ipra_subst sample
 
 theorem value_congr (f : PR 2) {p E i x q D j y : PTm n} (hp : Γ ⊢[PRAAx] p ≐ q) (hE : Γ ⊢[PRAAx] E ≐ D)
     (hi : Γ ⊢[PRAAx] i ≐ j) (hx : Γ ⊢[PRAAx] x ≐ y) : Γ ⊢[PRAAx] value f p E i x ≐ value f q D j y := by
@@ -61,8 +52,8 @@ theorem sample_at (f : PR 2) (p E i x : PTm n) : Γ ⊢[PRAAx] sample f p E i x 
   have raw : Γ ⊢[PRAAx] sample f p E i x ≐ value f p (fstT (data E i x)) (fstT (sndT (data E i x))) (sndT (sndT (data E i x))) := by
     simpa only [sample,nameF,ap2,subst_value,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.head_cons] using
       toPR_eq (Γ := Γ) (value f (var 0) (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))) : PTm 2) ![p,data E i x]
-  exact raw.eqTrans (value_congr f (.eqRefl _) (fst_pair _ _) ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
-    ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)))
+  exact raw.eqTrans (value_congr f (.eqRefl _) (fst_pair _ _) (snd_pair _ _).fstE
+    (snd_pair _ _).sndE)
 
 theorem clock_later (p E : PTm n) : Γ ⊢[PRAAx] le p (clock p E) := le_trans (le_add_right p E) (le_add_right _ two)
 theorem clock_unit (p E : PTm n) : Γ ⊢[PRAAx] unit (clock p E) ≐ unit p*amplification E :=
@@ -110,8 +101,7 @@ theorem value_regularity (f : PR 2) (p q E i R x : PTm n) (hf : Γ ⊢[PRAAx] Ga
 
 
 def radius (E R : PTm n) : PTm n := E*R+one
-@[simp] theorem subst_radius {l : ℕ} (σ : Fin n → PTm l) (E R : PTm n) :
-    Syn.subst σ (radius E R) = radius (Syn.subst σ E) (Syn.subst σ R) := by simp [radius]
+ipra_subst radius
 theorem sample_canonical (f : PR 2) (p E i x : PTm n) : Γ ⊢[PRAAx] canonical (sample f p E i x) :=
   GaussianRationalHorner.canonical_congr (sample_at f p E i x) (GaussianRationalNaturalScale.natScale_canonical _ _)
 theorem sample_regularity (f : PR 2) (p q E i R x : PTm n) (hf : Γ ⊢[PRAAx] GaussianRadiusExponentialName.input f R x)
@@ -175,8 +165,7 @@ theorem one_cross (f : PR 2) (E R x : PTm n) (hf : Γ ⊢[PRAAx] GaussianRadiusE
     one_observation f (var 1) (var 0) (Syn.shift (Syn.shift E)) (Syn.shift (Syn.shift R)) (Syn.shift (Syn.shift x)) hs
 
 def addData (E i x : PTm n) : PTm n := GaussianNameArithmetic.addData (data E i x) (data E one x)
-@[simp] theorem subst_addData {l : ℕ} (σ : Fin n → PTm l) (E i x : PTm n) :
-    Syn.subst σ (addData E i x) = addData (Syn.subst σ E) (Syn.subst σ i) (Syn.subst σ x) := by simp [addData]
+ipra_subst addData
 
 /-- Literal actual addition uses its own normalizer query, but all stage
 inputs share their fixed-cap original observation clock at that query. -/

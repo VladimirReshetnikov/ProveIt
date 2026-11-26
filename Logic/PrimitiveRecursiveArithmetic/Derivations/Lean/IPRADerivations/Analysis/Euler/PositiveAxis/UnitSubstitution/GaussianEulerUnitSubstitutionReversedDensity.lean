@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitSubstitutionReversedDensity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUnitSubstitutionDensity (source powerEvaluatorF)
 open GaussianEulerUnitSubstitutionImageGrid (node)
 open GaussianEulerIntegrandName (fixedData powerF powerData decayF decayData)
@@ -27,10 +27,6 @@ open GaussianRationalFiniteSum (sum)
 open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (qsub bounded)
 open GaussianRationalSyntheticDivision (qmul_congr qsub_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,13 +37,9 @@ def data (p N z B a C E : PTm n) : PTm n := GaussianRationalFiniteSumReversal.da
 def coarsePowerBody : PTm 2 := GaussianRationalFiniteSumReversal.reverseBody (sampleBody powerEvaluatorF)
 def coarseDensityBody : PTm 2 := GaussianRationalFiniteSumReversal.reverseBody GaussianEulerUnitSubstitutionDensity.densityBody
 
-@[simp] theorem subst_leftIndex {m : ℕ} (σ : Fin n → PTm m) (N i : PTm n) :
-    Syn.subst σ (leftIndex N i) = leftIndex (Syn.subst σ N) (Syn.subst σ i) := by simp [leftIndex]
-@[simp] theorem subst_rightIndex {m : ℕ} (σ : Fin n → PTm m) (N i : PTm n) :
-    Syn.subst σ (rightIndex N i) = rightIndex (Syn.subst σ N) (Syn.subst σ i) := by simp [rightIndex]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (p N z B a C E : PTm n) :
-    Syn.subst σ (data p N z B a C E) = data (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ z)
-      (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) := by simp [data]
+ipra_subst leftIndex
+ipra_subst rightIndex
+ipra_subst data
 
 theorem reverse_successor (N i : PTm n) (hi : Γ ⊢[PRAAx] lt i N) : Γ ⊢[PRAAx]
     succ (leftIndex N i) ≐ rightIndex N i := by

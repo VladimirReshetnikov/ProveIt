@@ -20,9 +20,7 @@ universal closure of an iPRA formula over natural-number variables.
 
 namespace LeanProofs.IPRA.Geometry.TriangleFormulas
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
+open_ipra
 
 /-! ## The two-square identity -/
 

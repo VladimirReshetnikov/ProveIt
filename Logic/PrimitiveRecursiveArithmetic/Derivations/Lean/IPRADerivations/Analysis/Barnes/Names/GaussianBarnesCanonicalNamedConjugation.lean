@@ -14,7 +14,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalNamedConjugation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalNamed (nameF clock name_regular)
 open GaussianBarnesCanonicalNamedDemand (source data frozenData native_source)
 open GaussianBarnesCanonicalNamedFrozen (frozen_rate)
@@ -28,8 +28,6 @@ open GaussianRationalL1 (rawGaussian rawDen raw_den_positive)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalReciprocal (conjugate)
 open GaussianRationalSlackRemoval (slack slack_removal_at)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

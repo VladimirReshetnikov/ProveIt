@@ -19,7 +19,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianDominantResidualEstimates
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianBalancedRadiusSyntax (input)
 open LeanProofs.IPRA.Analysis.GaussianDominantDirectionData (base chosen precision direction P Q)
 open LeanProofs.IPRA.Analysis.GaussianDominantPlateau (winner)
@@ -29,10 +29,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalRelativeNormAlgebra (relative rela
 open LeanProofs.IPRA.Analysis.GaussianRationalReciprocal (power)
 open LeanProofs.IPRA.Analysis.GaussianResidualDecreaseWeights (mainWeight errorWeight otherWeight)
 open LeanProofs.IPRA.Analysis.GaussianDescentClockArithmetic (descentD)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -47,18 +43,12 @@ def error (C N : PTm n) : PTm n := GaussianDominantPairAlgebra.errorTerm
 def other (C N : PTm n) : PTm n := GaussianOffDominantSum.otherSum C N (delta C N)
 def scale (C N : PTm n) : PTm n := GaussianResidualDecreaseWeights.scale (GaussianDominantDirectionData.Q C N)
 
-@[simp] theorem subst_delta {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (delta C N) = delta (Syn.subst σ C) (Syn.subst σ N) := by simp [delta]
-@[simp] theorem subst_radial {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (radial C N) = radial (Syn.subst σ C) (Syn.subst σ N) := by simp [radial]
-@[simp] theorem subst_main {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (main C N) = main (Syn.subst σ C) (Syn.subst σ N) := by simp [main]
-@[simp] theorem subst_error {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (error C N) = error (Syn.subst σ C) (Syn.subst σ N) := by simp [error]
-@[simp] theorem subst_other {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (other C N) = other (Syn.subst σ C) (Syn.subst σ N) := by simp [other]
-@[simp] theorem subst_scale {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (scale C N) = scale (Syn.subst σ C) (Syn.subst σ N) := by simp [scale]
+ipra_subst delta
+ipra_subst radial
+ipra_subst main
+ipra_subst error
+ipra_subst other
+ipra_subst scale
 
 theorem delta_inside (C N : PTm n) : Γ ⊢[PRAAx] GaussianOffDominantTerms.withinRadius C N (delta C N) :=
   GaussianDominantPairAlgebra.actual_within_radius _ _ _ _ _ (GaussianDominantDirectionData.denominator_positive C N)
@@ -156,38 +146,35 @@ def contraction (C N : PTm n) : Fm PTm n := RationalArgmin.rationalLE
   (RationalArithmetic.multiply
     (GaussianRationalMetric.squaredTolerance (GaussianResidualDecreaseWeights.rateNum (descentD N))
       (GaussianResidualDecreaseWeights.rateDen (descentD N))) (GaussianRationalMetric.qnormSq (base C N)))
-@[simp] theorem subst_contraction {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    (contraction C N).subst σ = contraction (Syn.subst σ C) (Syn.subst σ N) := by simp [contraction]
+ipra_subst contraction
 
 def output (C N : PTm n) : PTm n := pairT (delta C N) (pairT (GaussianRationalHorner.evaluate C (delta C N))
   (pairT (main C N) (pairT (error C N) (pairT (other C N) (GaussianDominantDirectionData.run C N)))))
 def outputF : PR 2 := PTm.toPR (output (var 0) (var 1))
 def run (C N : PTm n) : PTm n := ap2 outputF C N
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (output C N) = output (Syn.subst σ C) (Syn.subst σ N) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (run C N) = run (Syn.subst σ C) (Syn.subst σ N) := by simp [run]
+ipra_subst output
+ipra_subst run
 theorem program_at (C N : PTm n) : Γ ⊢[PRAAx] run C N ≐ output C N := by
   simpa [run,outputF,ap2] using toPR_eq (Γ := Γ) (output (var 0) (var 1) : PTm 2) ![C,N]
 
 theorem returned_delta (C N : PTm n) : Γ ⊢[PRAAx] fstT (run C N) ≐ delta C N :=
-  (congrFst (program_at C N)).eqTrans (fst_pair _ _)
+  (program_at C N).fstE
 
 theorem returned_value (C N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run C N)) ≐ GaussianRationalHorner.evaluate C (delta C N) :=
-  (congrFst ((congrSnd (program_at C N)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at C N).sndE.fstE
 
 theorem returned_main (C N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run C N))) ≐ main C N :=
-  (congrFst ((congrSnd ((congrSnd (program_at C N)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at C N).sndE.sndE.fstE
 
 theorem returned_error (C N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (run C N)))) ≐ error C N :=
-  (congrFst ((congrSnd ((congrSnd ((congrSnd (program_at C N)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at C N).sndE.sndE.sndE.fstE
 
 theorem returned_other (C N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (sndT (run C N))))) ≐ other C N :=
-  (congrFst ((congrSnd ((congrSnd ((congrSnd ((congrSnd (program_at C N)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at C N).sndE.sndE.sndE.sndE.fstE
 
 theorem returned_data (C N : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (sndT (run C N))))) ≐ GaussianDominantDirectionData.run C N :=
-  (congrSnd ((congrSnd ((congrSnd ((congrSnd ((congrSnd (program_at C N)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at C N).sndE.sndE.sndE.sndE.sndE
 
 theorem actual_residual_decrease_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2
     (input (var 0) (var 1) ⟶ contraction (var 0) (var 1)) :=

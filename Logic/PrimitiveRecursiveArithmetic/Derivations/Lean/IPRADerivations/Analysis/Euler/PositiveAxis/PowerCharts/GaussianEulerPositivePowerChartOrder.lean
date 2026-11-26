@@ -19,7 +19,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartOrder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPositivePowerChart (argument parameters coefficient_exact)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianEulerIntegrandName (powerF powerData powerExponentF powerExponentData powerRadius coefficient)
@@ -31,8 +31,6 @@ open GaussianNamedPositiveExponentialOrder (positiveSamples realOrder real_order
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianCompactLogarithmBounds (domain)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -44,13 +42,8 @@ def inputData (e f Q a b : PTm n) : PTm n :=
 def source (e f d h Q S E T a b c v : PTm n) : Fm PTm n :=
   GaussianEulerPositivePowerChart.source e f d h Q S E T a b ⋏
     (domain c v E T ⋏ le (a*v) (b*c))
-@[simp] theorem subst_inputData {m : ℕ} (σ : Fin n → PTm m) (e f Q a b : PTm n) :
-    Syn.subst σ (inputData e f Q a b) = inputData (Syn.subst σ e) (Syn.subst σ f)
-      (Syn.subst σ Q) (Syn.subst σ a) (Syn.subst σ b) := by simp [inputData]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (e f d h Q S E T a b c v : PTm n) :
-    (source e f d h Q S E T a b c v).subst σ = source (Syn.subst σ e) (Syn.subst σ f) (Syn.subst σ d)
-      (Syn.subst σ h) (Syn.subst σ Q) (Syn.subst σ S) (Syn.subst σ E) (Syn.subst σ T)
-      (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ v) := by simp [source]
+ipra_subst inputData
+ipra_subst source
 
 theorem fraction_positive (a b : PTm n) (hb : Γ ⊢[PRAAx] le one b) : Γ ⊢[PRAAx]
     GaussianPositiveRealArithmetic.positive (fraction a b) :=

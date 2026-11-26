@@ -1,7 +1,4 @@
 import IPRADerivations.Foundations.FrontierSoundness
-import IPRADerivations.Core.Search
-import IPRADerivations.Core.SumReflect
-import IPRADerivations.Core.OrderCertificates
 
 /-!
 # The median index of a finite weighted law
@@ -29,13 +26,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.MedianIndex
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Search (mu search_minimal search_found)
 open LeanProofs.IPRA.Foundations.FrontierSoundness (rdB inst2_rdB)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

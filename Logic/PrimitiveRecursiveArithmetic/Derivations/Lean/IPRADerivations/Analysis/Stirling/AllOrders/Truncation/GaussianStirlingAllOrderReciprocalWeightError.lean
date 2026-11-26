@@ -16,7 +16,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderReciprocalWeightError
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianStirlingAllOrderDiscreteParts (secondDifference)
 open GaussianStirlingAllOrderReciprocalTaylor (secondCoefficient)
 open GaussianStirlingAllOrderReciprocalTaylorBound (integerDefect integerBound integer_error)
@@ -27,9 +27,6 @@ open RationalConvexFiniteModulus (rescale_natural)
 open RationalArithmetic (multiply represents)
 open RationalRepresentations (represents_add represents_multiply represents_negative)
 open RationalValueBounds (upper radius radius_of_upper)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

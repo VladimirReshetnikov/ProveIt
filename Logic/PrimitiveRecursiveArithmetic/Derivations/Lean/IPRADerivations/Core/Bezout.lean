@@ -1,5 +1,4 @@
 import IPRADerivations.Core.Gcd
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Bézout's identity in iPRA
@@ -164,11 +163,9 @@ theorem active_eq {Δ : List (Fm PTm 3)} {x y r q s s' t t' c d : PTm 3}
   ipra_lc e₁ - e₃ - Groth.ι (Q.mk Δ q) * e₂
 
 theorem invariant_open : ([] : List (Fm PTm 3)) ⊢[PRAAx] inv := by
-  refine ind _ ⟨⟨trivial, trivial, trivial⟩, trivial, trivial, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_or, Fm.subst_and, Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_cur,
-      subst_nxt, subst_eps, subst_ex2, subst_ey2, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      inst_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have z₁ := sim₁_zero (Γ := ([] : List (Fm PTm 2))) one zero cs₁ cs₂ ![var 0, var 1]
+  ipra_ind (⟨⟨trivial, trivial, trivial⟩, trivial, trivial, trivial⟩) [subst_cur, subst_nxt, subst_eps, subst_ex2,
+      subst_ey2]
+  · have z₁ := sim₁_zero (Γ := ([] : List (Fm PTm 2))) one zero cs₁ cs₂ ![var 0, var 1]
     have z₂ := sim₂_zero (Γ := ([] : List (Fm PTm 2))) one zero cs₁ cs₂ ![var 0, var 1]
     have z₃ := sim₁_zero (Γ := ([] : List (Fm PTm 2))) zero one cs₁ cs₂ ![var 0, var 1]
     have z₄ := sim₂_zero (Γ := ([] : List (Fm PTm 2))) zero one cs₁ cs₂ ![var 0, var 1]
@@ -181,10 +178,7 @@ theorem invariant_open : ([] : List (Fm PTm 3)) ⊢[PRAAx] inv := by
     · refine withEq (ey_zero (Γ := ([] : List (Fm PTm 2))) (var 0) (var 1)) fun f₁ => withEq z₂ fun f₂ =>
         withEq z₄ fun f₃ => ?_
       apply deriveNat; ipra_simps; rw [f₁, f₂, f₃]; ring
-  · simp only [Fm.subst_or, Fm.subst_and, Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_cur,
-      subst_nxt, subst_eps, subst_ex2, subst_ey2, Syn.subst_var, Syn.repl_zero, repl_one, repl_two,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have hSc := cur_succ (Γ := [inv]) one zero (var 0) (var 1) (var 2)
+  · have hSc := cur_succ (Γ := [inv]) one zero (var 0) (var 1) (var 2)
     have hSn := nxt_succ (Γ := [inv]) one zero (var 0) (var 1) (var 2)
     have hTc := cur_succ (Γ := [inv]) zero one (var 0) (var 1) (var 2)
     have hTn := nxt_succ (Γ := [inv]) zero one (var 0) (var 1) (var 2)

@@ -2,9 +2,7 @@ import IPRADerivations.Analysis.RationalArithmetic.PowerIncrement
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.AnalyticNumberTheory.LocalFactor
 import IPRADerivations.AnalyticNumberTheory.Valuation
-import IPRADerivations.Core.Gcd
 import IPRADerivations.AnalyticNumberTheory.PowerCleared
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The weighted arithmetic–geometric mean inequality for two values
@@ -33,15 +31,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.WeightedAMGM
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Algebra.PowerDifference (gd power_diff gd_le)
 open LeanProofs.IPRA.Analysis.PowerIncrement (power_inc_lower)
 open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -152,13 +146,9 @@ theorem g_step {b a₀ u v : PTm n} (ih : Γ ⊢[PRAAx] GInv b a₀ u v) : Γ �
 private abbrev gF : Fm PTm 4 := GInv (var 0) (var 1) (var 2) (var 3)
 
 private theorem g₀ : ([] : List (Fm PTm 4)) ⊢[PRAAx] gF := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      inst_two, inst_three, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact g_base _ _ _
-  · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, repl_one,
-      repl_two, repl_three, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact g_step Prf.hyp0
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2]
+  · exact g_base _ _ _
+  · exact g_step Prf.hyp0
 
 /-- The weighted AM–GM inequality for two values with integer weights `a = a₀ + 1` and `b`:
 `(a + b)^{a+b} u^a v^b ≤ (a u + b v)^{a+b}`. -/

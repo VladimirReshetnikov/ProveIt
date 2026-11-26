@@ -17,7 +17,7 @@ set_option maxHeartbeats 700000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBohrMollerupLiteralUniqueness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBohrMollerupBlockChord (source)
 open GaussianBohrMollerupBracketEndpoints (bracketF lowerData upperData widthF widthData endpoint_regular)
 open GaussianBohrMollerupBracketEnclosure (enclosure)
@@ -40,10 +40,6 @@ open GaussianRationalHorner (positive_product qzero)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalReciprocal (bound_congr)
 open RationalValueBounds (upper upper_congr upper_of_radius upper_triangle upper_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -1,5 +1,4 @@
 import IPRADerivations.Core.SumLemmas
-import IPRADerivations.Core.Pairing
 import IPRADerivations.Core.LinearCombination
 
 /-!
@@ -21,11 +20,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Geometry.PappusSegment
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -54,13 +49,9 @@ private abbrev afF : Fm PTm 3 :=
   ap2 (sumF afB) (var 0) (pairT (var 1) (var 2)) ≐ var 0 * var 1 + var 0 * var 0 * var 2
 
 private theorem af₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] afF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_ap2, subst_pairT, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact af_base _ _
-  · simp only [Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_ap2, subst_pairT, Syn.subst_var, Syn.repl_zero,
-      repl_one, repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact af_step Prf.hyp0
+  ipra_ind [subst_ap2, subst_pairT]
+  · exact af_base _ _
+  · exact af_step Prf.hyp0
 
 /-- `∑_{j<N} (c + (2j + 1) δ) = N c + N² δ`. -/
 theorem affine_sum (N c δ : PTm n) : Γ ⊢[PRAAx] ap2 (sumF afB) N (pairT c δ) ≐ N * c + N * N * δ := by

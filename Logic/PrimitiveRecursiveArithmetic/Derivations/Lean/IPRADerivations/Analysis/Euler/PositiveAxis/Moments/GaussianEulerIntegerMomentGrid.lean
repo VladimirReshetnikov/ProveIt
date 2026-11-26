@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIntegerMomentGrid
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCompactRiemannName (evaluatorName nameData inside grid sampleBody sampleData quadrature)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianRationalDistanceOrder (distance_congr)
@@ -25,8 +25,6 @@ open GaussianRationalHorner (qmul)
 open GaussianCoefficientNameBounds (unit)
 open GaussianGammaShiftTrajectory (point)
 open GaussianEulerIntegerMomentIntegrand (monomial)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "U" => GaussianEulerIntegerMomentUniform.nameF
@@ -39,12 +37,9 @@ def evaluatorTerm (p t x : PTm n) : PTm n := ap2 U p
   (GaussianEulerIntegerMomentUniform.nameData (fstT (fstT x)) (sndT (fstT x)) (fstT (sndT x))
     (fstT t) (sndT t) (sndT (sndT x)))
 def evaluatorF : PR 3 := PTm.toPR (evaluatorTerm (var 0) (var 1) (var 2))
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (B a C E T : PTm n) :
-    (source B a C E T).subst σ = source (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by simp [source]
-@[simp] theorem subst_fixedData {m : ℕ} (σ : Fin n → PTm m) (z B N T : PTm n) :
-    Syn.subst σ (fixedData z B N T) = fixedData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) (Syn.subst σ T) := by simp [fixedData]
-@[simp] theorem subst_evaluatorTerm {m : ℕ} (σ : Fin n → PTm m) (p t x : PTm n) :
-    Syn.subst σ (evaluatorTerm p t x) = evaluatorTerm (Syn.subst σ p) (Syn.subst σ t) (Syn.subst σ x) := by simp [evaluatorTerm]
+ipra_subst source
+ipra_subst fixedData
+ipra_subst evaluatorTerm
 
 private theorem row_data_congr (z B N a b T z' B' N' T' : PTm n)
     (hz : Γ ⊢[PRAAx] z ≐ z') (hB : Γ ⊢[PRAAx] B ≐ B')
@@ -73,8 +68,8 @@ theorem evaluator_at (p t z B N T : PTm n) : Γ ⊢[PRAAx]
   have l := fst_pair (Γ := Γ) (pairT z B) (pairT N T)
   have r := snd_pair (Γ := Γ) (pairT z B) (pairT N T)
   exact raw.eqTrans (congrAp2 U (.eqRefl _) (row_data_congr _ _ _ _ _ _ _ _ _ _
-    ((congrFst l).eqTrans (fst_pair _ _)) ((congrSnd l).eqTrans (snd_pair _ _))
-    ((congrFst r).eqTrans (fst_pair _ _)) ((congrSnd r).eqTrans (snd_pair _ _))))
+    l.fstE l.sndE
+    r.fstE r.sndE))
 
 theorem wrapped_at (p t z B N T : PTm n) : Γ ⊢[PRAAx]
     ap2 (evaluatorName evaluatorF) p (nameData t (fixedData z B N T)) ≐ ap2 U p

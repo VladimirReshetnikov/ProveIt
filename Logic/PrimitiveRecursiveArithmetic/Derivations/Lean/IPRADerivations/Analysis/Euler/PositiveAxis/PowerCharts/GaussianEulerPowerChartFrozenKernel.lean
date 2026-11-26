@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPowerChartFrozenKernel
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPositivePowerChart (source majorant)
 open GaussianEulerPositivePowerChartImage (reciprocalMargin numerator denominator)
 open GaussianEulerPowerChartNamedLogarithm (lateF lateData late_at logF logData kernelF kernelData)
@@ -24,8 +24,6 @@ open GaussianNamedInverseRate (independentRate)
 open GaussianCompactLogarithmBounds (radius)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEulerExponentialNamedKernelRate (gain)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "K" => GaussianEulerExponentialSubstitutionIntegrand.productF

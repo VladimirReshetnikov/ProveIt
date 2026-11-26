@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianOddMomentAbsoluteMetric
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.GapDecision (zabs zabs_congr zabs_neg zabs_sq zabs_tri)
 open LeanProofs.IPRA.Probability.MedianWeighted (ad_le_of)
 open RationalGaussianEmbedding (embed native)
@@ -24,15 +24,12 @@ open GaussianRationalHorner (represents canonical canonical_unique positive_prod
 open GaussianPositiveRealArithmetic (positive)
 open GaussianRationalMetric (distanceBounded qnegative)
 open ComplexLogarithmRemainder (re normSq scale)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def absolute (q : PTm n) : PTm n := embed (scalarAbs (fstT q))
 
-@[simp] theorem subst_absolute {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    Syn.subst σ (absolute q) = absolute (Syn.subst σ q) := by simp [absolute]
+ipra_subst absolute
 
 theorem absolute_congr {q r : PTm n} (h : Γ ⊢[PRAAx] q ≐ r) :
     Γ ⊢[PRAAx] absolute q ≐ absolute r := by

@@ -2,7 +2,6 @@ import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayAdditi
 import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayOrder
 import IPRADerivations.Analysis.Names.GaussianNameRingLaws
 import IPRADerivations.Analysis.Optimization.Convexity.RationalConvexClockRescale
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The two actual half-decay factors in the Euler integrand
@@ -17,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerHalfDecayProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegrandName (decayF decayData decayPoint)
 open GaussianEulerDecayOrder (signedTime signed_time_embedding)
 open GaussianEuclideanDistanceName (fraction)
@@ -28,17 +27,13 @@ open GaussianNameEquivalence (crossEquivalent cross_at cross_trans cross_refl)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianCoefficientNameBounds (unit)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def halfProductData (a b : PTm n) : PTm n :=
   multiplyData decayF decayF (decayData a (two*b)) (decayData a (two*b))
 
-@[simp] theorem subst_halfProductData {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (halfProductData a b) = halfProductData (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [halfProductData,decayData,exponentialInputData]
+ipra_subst halfProductData [decayData, exponentialInputData]
 
 theorem doubled_time_fraction (a b : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
     Γ ⊢[PRAAx] fraction (a*(two*b)+a*(two*b)) ((two*b)*(two*b)) ≐ fraction a b := by
@@ -94,15 +89,9 @@ def halfIntegrandF : PR 2 := multiplyF halfWeightedF decayF
 def halfIntegrandData (z B a b : PTm n) : PTm n :=
   multiplyData halfWeightedF decayF (halfWeightedData z B a b) (decayData a (two*b))
 
-@[simp] theorem subst_halfWeightedData {m : ℕ} (σ : Fin n → PTm m) (z B a b : PTm n) :
-    Syn.subst σ (halfWeightedData z B a b) =
-      halfWeightedData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [halfWeightedData,decayData,exponentialInputData]
+ipra_subst halfWeightedData [decayData, exponentialInputData]
 
-@[simp] theorem subst_halfIntegrandData {m : ℕ} (σ : Fin n → PTm m) (z B a b : PTm n) :
-    Syn.subst σ (halfIntegrandData z B a b) =
-      halfIntegrandData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [halfIntegrandData,decayData,exponentialInputData]
+ipra_subst halfIntegrandData [decayData, exponentialInputData]
 
 theorem decay_regular (a b : PTm n) : Γ ⊢[PRAAx] GaussianEuclideanDistanceName.pointCN decayF (decayData a b) := by
   exact GaussianRadiusExponentialName.name_regular _ _ _

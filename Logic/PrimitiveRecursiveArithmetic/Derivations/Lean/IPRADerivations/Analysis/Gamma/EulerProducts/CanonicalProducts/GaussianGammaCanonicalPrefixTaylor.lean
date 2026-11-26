@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaCanonicalPrefixTaylor
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaOriginalC19Prefix (buffer totalDegree degree_dominates)
 open GaussianGammaOriginalPrefixCoefficientNames (reader original_reader_to_canonical)
 open GaussianGammaOriginalPrefixCoefficientVariation (cap)
@@ -30,9 +30,6 @@ open GaussianRationalHorner (qmul qzero positive_product evaluate)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -51,36 +48,18 @@ def numerator (q r R d a b : PTm n) : PTm n :=
     pw b (succ d)*(succ d*rowNumerator q r R d)
 def denominator (q r d b : PTm n) : PTm n := pw b (succ d)*(unit q*unit r)
 
-@[simp] theorem subst_canonicalTerm {m : ℕ} (σ : Fin n → PTm m) (r w e : PTm n) :
-    Syn.subst σ (canonicalTerm r w e) = canonicalTerm (Syn.subst σ r) (Syn.subst σ w) (Syn.subst σ e) := by simp [canonicalTerm]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (r w : PTm n) :
-    Syn.subst σ (data r w) = data (Syn.subst σ r) (Syn.subst σ w) := by simp [data]
+ipra_subst canonicalTerm
+ipra_subst data
 @[simp] theorem subst_prefix {m : ℕ} (σ : Fin n → PTm m) (r w k : PTm n) :
     Syn.subst σ (canonicalPrefix r w k) = canonicalPrefix (Syn.subst σ r) (Syn.subst σ w) (Syn.subst σ k) := by simp [canonicalPrefix]
-@[simp] theorem subst_taylor {m : ℕ} (σ : Fin n → PTm m) (r d w : PTm n) :
-    Syn.subst σ (taylor r d w) = taylor (Syn.subst σ r) (Syn.subst σ d) (Syn.subst σ w) := by simp [taylor]
-@[simp] theorem subst_rowNumerator {m : ℕ} (σ : Fin n → PTm m) (q r R d : PTm n) :
-    Syn.subst σ (rowNumerator q r R d) = rowNumerator (Syn.subst σ q) (Syn.subst σ r) (Syn.subst σ R) (Syn.subst σ d) := by simp [rowNumerator]
-@[simp] theorem subst_rowDenominator {m : ℕ} (σ : Fin n → PTm m) (q r : PTm n) :
-    Syn.subst σ (rowDenominator q r) = rowDenominator (Syn.subst σ q) (Syn.subst σ r) := by simp [rowDenominator]
-@[simp] theorem subst_buffer {m : ℕ} (σ : Fin n → PTm m) (q R d : PTm n) :
-    Syn.subst σ (buffer q R d) = buffer (Syn.subst σ q) (Syn.subst σ R) (Syn.subst σ d) := by
-  simp [buffer,GaussianGammaOriginalC19Prefix.stage,GaussianGammaCofinalCoefficientName.coefficientPrecision,
-    GaussianGammaCofinalCoefficientName.degreeCutoff,GaussianGammaCofinalCoefficientName.exponentialCutoff,
-    GaussianGammaCofinalCoefficientName.exponentClock,GaussianGammaCofinalCoefficientName.inputClock,GaussianGammaCofinalCoefficientName.outerClock]
-@[simp] theorem subst_totalDegree {m : ℕ} (σ : Fin n → PTm m) (q R d : PTm n) :
-    Syn.subst σ (totalDegree q R d) = totalDegree (Syn.subst σ q) (Syn.subst σ R) (Syn.subst σ d) := by
-  simp [totalDegree,GaussianGammaOriginalC19Prefix.stage,
-    GaussianGammaCofinalCoefficientName.degreeCutoff,GaussianGammaCofinalCoefficientName.exponentialCutoff,
-    GaussianGammaCofinalCoefficientName.exponentClock,GaussianGammaCofinalCoefficientName.inputClock,GaussianGammaCofinalCoefficientName.outerClock]
-@[simp] theorem subst_prefixLaw {m : ℕ} (σ : Fin n → PTm m) (q r R d w k : PTm n) :
-    (prefixLaw q r R d w k).subst σ = prefixLaw (Syn.subst σ q) (Syn.subst σ r) (Syn.subst σ R)
-      (Syn.subst σ d) (Syn.subst σ w) (Syn.subst σ k) := by simp [prefixLaw]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (q r R d a b : PTm n) :
-    Syn.subst σ (numerator q r R d a b) = numerator (Syn.subst σ q) (Syn.subst σ r) (Syn.subst σ R)
-      (Syn.subst σ d) (Syn.subst σ a) (Syn.subst σ b) := by simp [numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (q r d b : PTm n) :
-    Syn.subst σ (denominator q r d b) = denominator (Syn.subst σ q) (Syn.subst σ r) (Syn.subst σ d) (Syn.subst σ b) := by simp [denominator]
+ipra_subst taylor
+ipra_subst rowNumerator
+ipra_subst rowDenominator
+ipra_subst buffer [GaussianGammaOriginalC19Prefix.stage, GaussianGammaCofinalCoefficientName.coefficientPrecision, GaussianGammaCofinalCoefficientName.degreeCutoff, GaussianGammaCofinalCoefficientName.exponentialCutoff, GaussianGammaCofinalCoefficientName.exponentClock, GaussianGammaCofinalCoefficientName.inputClock, GaussianGammaCofinalCoefficientName.outerClock]
+ipra_subst totalDegree [GaussianGammaOriginalC19Prefix.stage, GaussianGammaCofinalCoefficientName.degreeCutoff, GaussianGammaCofinalCoefficientName.exponentialCutoff, GaussianGammaCofinalCoefficientName.exponentClock, GaussianGammaCofinalCoefficientName.inputClock, GaussianGammaCofinalCoefficientName.outerClock]
+ipra_subst prefixLaw
+ipra_subst numerator
+ipra_subst denominator
 
 theorem body_at (r w e : PTm n) : Γ ⊢[PRAAx] inst2 body e (data r w) ≐ canonicalTerm r w e := by
   simp only [body,inst2,subst_canonicalTerm,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
@@ -129,13 +108,11 @@ theorem original_prefix_error (q r R d w : PTm n) (hR : Γ ⊢[PRAAx] le one R)
   have rs : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift R) := by simpa [Fm.shift,Syn.shift] using hR.shift
   have ws : Γ.map Fm.shift ⊢[PRAAx] bounded (Syn.shift w) one one := by simpa [Fm.shift,Syn.shift] using hw.shift
   have all : Γ ⊢[PRAAx] .all (prefixLaw (Syn.shift q) (Syn.shift r) (Syn.shift R) (Syn.shift d) (Syn.shift w) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (distance_congr (prefix_zero _ _ _).eqSymm (GaussianRationalFiniteSum.sum_zero body (data r w)).eqSymm
+    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_prefixLaw]
+    · exact .impI (distance_congr (prefix_zero _ _ _).eqSymm (GaussianRationalFiniteSum.sum_zero body (data r w)).eqSymm
         (zero_mul _).eqSymm (.eqRefl _) (GaussianRationalPowerDifference.distance_refl_zero qzero _
           (positive_product _ _ (unit_positive q) (unit_positive r))))
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    · refine .impI ?_
       exact prefix_step _ _ _ _ _ _ rs.wk.wk ws.wk.wk ((succ_monus_succ _ _).eqSymm.eqTrans Prf.hyp0)
         (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
   have done : Γ ⊢[PRAAx] prefixLaw q r R d w (succ d) := by

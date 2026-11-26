@@ -1,6 +1,5 @@
 import IPRADerivations.Algebra.QuadraticTowerFirstExtensionIdeal
 import IPRADerivations.Algebra.QuadraticTowerDifferenceIdentities
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual first-extension equivalence and order
@@ -17,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticTowerFirstExtensionOrder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis
 open QuadraticTowerArrayCodec (arrayHeight)
 open QuadraticTowerScalarBudget (amp)
@@ -27,9 +26,6 @@ open QuadraticTowerFirstExtensionSign (coefficients radicand)
 open QuadraticTowerFirstExtensionIdeal (left_head right_head query_sign_original native_sign_code_congr)
 open QuadraticTowerDifferenceIdentities (difference signDifference equivalent less)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -173,36 +169,30 @@ def output (b D A C : PTm n) : PTm n := pairT (difference one A C)
     (pairT (signDifference one (amp b) D C A) (amp b))))
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (b D A C : PTm n) : PTm n := PTm.app outputF ![b,D,A,C]
-@[simp] theorem subst_output {k : ℕ} (σ : Fin n → PTm k) (b D A C : PTm n) :
-    Syn.subst σ (output b D A C) = output (Syn.subst σ b) (Syn.subst σ D) (Syn.subst σ A) (Syn.subst σ C) := by simp [output]
-@[simp] theorem subst_run {k : ℕ} (σ : Fin n → PTm k) (b D A C : PTm n) :
-    Syn.subst σ (run b D A C) = run (Syn.subst σ b) (Syn.subst σ D) (Syn.subst σ A) (Syn.subst σ C) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (b D A C : PTm n) : Γ ⊢[PRAAx] run b D A C ≐ output b D A C := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![b,D,A,C]
 theorem returned_difference (b D A C : PTm n) : Γ ⊢[PRAAx] fstT (run b D A C) ≐ difference one A C :=
-  (congrFst (program_at _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _).fstE
 theorem returned_tail (b D A C : PTm n) : Γ ⊢[PRAAx] sndT (run b D A C) ≐
     pairT (difference one C A) (pairT (signDifference one (amp b) D A C) (pairT (signDifference one (amp b) D C A) (amp b))) :=
-  (congrSnd (program_at _ _ _ _)).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _).sndE
 theorem returned_reverse (b D A C : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run b D A C)) ≐ difference one C A :=
-  (congrFst (returned_tail _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_tail _ _ _ _).fstE
 theorem returned_tags (b D A C : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run b D A C)) ≐
     pairT (signDifference one (amp b) D A C) (pairT (signDifference one (amp b) D C A) (amp b)) :=
-  (congrSnd (returned_tail _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_tail _ _ _ _).sndE
 theorem returned_tag (b D A C : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run b D A C))) ≐ signDifference one (amp b) D A C :=
-  (congrFst (returned_tags _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_tags _ _ _ _).fstE
 theorem returned_reverse_pair (b D A C : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run b D A C))) ≐
     pairT (signDifference one (amp b) D C A) (amp b) :=
-  (congrSnd (returned_tags _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_tags _ _ _ _).sndE
 theorem returned_reverse_tag (b D A C : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (run b D A C)))) ≐ signDifference one (amp b) D C A :=
-  (congrFst (returned_reverse_pair _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_reverse_pair _ _ _ _).fstE
 theorem returned_cap (b D A C : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (run b D A C)))) ≐ amp b :=
-  (congrSnd (returned_reverse_pair _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_reverse_pair _ _ _ _).sndE
 
 theorem returned_trichotomy (b D A C : PTm n)
     (h : Γ ⊢[PRAAx] QuadraticTowerFirstExtensionIdeal.source D A C b) : Γ ⊢[PRAAx]

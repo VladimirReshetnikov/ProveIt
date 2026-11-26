@@ -18,7 +18,7 @@ set_option autoImplicit false
 set_option linter.unusedSimpArgs false
 namespace LeanProofs.IPRA.Analysis.GaussianRepresentedFTA
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianGeneralPolynomialSamples (sourceInput subst_sourceInput)
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (pointCN)
 open LeanProofs.IPRA.Analysis.GaussianRootApproximationWitness (pointBounds)
@@ -26,9 +26,6 @@ open LeanProofs.IPRA.Analysis.GaussianNameEquivalence (crossEquivalent)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (bounded distanceBounded)
 open LeanProofs.IPRA.Analysis.GaussianCoefficientNameBounds (unit unit_positive)
 open LeanProofs.IPRA.Analysis.GaussianGeneralPolynomialValueName (programZero)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -60,25 +57,14 @@ def certificate (a : PR 3) (N h x : PTm n) : Fm PTm n :=
     (programZero (prefixF a) (valueData a N h x) ⋏
       crossEquivalent (prefixF a) GaussianNameRingLaws.zeroF (valueData a N h x) zero))))))
 
-@[simp] theorem subst_rootData {m : ℕ} (σ : Fin n → PTm m) (N h x : PTm n) :
-    Syn.subst σ (rootData N h x) = rootData (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) := by simp [rootData]
-@[simp] theorem subst_radius {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x : PTm n) :
-    Syn.subst σ (radius a N h x) = radius a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) := by simp [radius]
-@[simp] theorem subst_prefixData {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x j : PTm n) :
-    Syn.subst σ (prefixData a N h x j) = prefixData a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) (Syn.subst σ j) := by
-  simp [prefixData]
-@[simp] theorem subst_valueData {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x : PTm n) :
-    Syn.subst σ (valueData a N h x) = valueData a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) := by simp [valueData]
-@[simp] theorem subst_stepData {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x j : PTm n) :
-    Syn.subst σ (stepData a N h x j) = stepData a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) (Syn.subst σ j) := by simp [stepData]
-@[simp] theorem subst_properPrefixes {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x : PTm n) :
-    (properPrefixes a N h x).subst σ = properPrefixes a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) := by
-  simp [properPrefixes,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_hornerSteps {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x : PTm n) :
-    (hornerSteps a N h x).subst σ = hornerSteps a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) := by
-  simp [hornerSteps,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_certificate {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x : PTm n) :
-    (certificate a N h x).subst σ = certificate a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) := by simp [certificate]
+ipra_subst rootData
+ipra_subst radius
+ipra_subst prefixData
+ipra_subst valueData
+ipra_subst stepData
+ipra_subst properPrefixes [Syn.subst_shift, Syn.shift_subst]
+ipra_subst hornerSteps [Syn.subst_shift, Syn.shift_subst]
+ipra_subst certificate
 
 theorem root_at (a : PR 3) (N h x t : PTm n) : Γ ⊢[PRAAx]
     ap2 (rootF a) t (rootData N h x) ≐ GaussianGeneralFTATrajectory.alpha a N h x t :=
@@ -179,25 +165,20 @@ def output (a : PR 3) (N h x t : PTm n) : PTm n :=
   pairT (ap2 (rootF a) t (rootData N h x)) (pairT (ap2 (prefixF a) t (valueData a N h x)) (radius a N h x))
 def outputF (a : PR 3) : PR 4 := PTm.toPR (output a (var 0) (var 1) (var 2) (var 3))
 def run (a : PR 3) (N h x t : PTm n) : PTm n := PTm.app (outputF a) ![N,h,x,t]
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x t : PTm n) :
-    Syn.subst σ (output a N h x t) = output a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) (Syn.subst σ t) := by
-  simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x t : PTm n) :
-    Syn.subst σ (run a N h x t) = run a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) (Syn.subst σ t) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1; funext j; fin_cases j <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem output_at (a : PR 3) (N h x t : PTm n) : Γ ⊢[PRAAx] run a N h x t ≐ output a N h x t := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output a (var 0) (var 1) (var 2) (var 3) : PTm 4) ![N,h,x,t]
 theorem returned_root (a : PR 3) (N h x t : PTm n) : Γ ⊢[PRAAx]
     fstT (run a N h x t) ≐ ap2 (rootF a) t (rootData N h x) :=
-  (congrFst (output_at a N h x t)).eqTrans (fst_pair _ _)
+  (output_at a N h x t).fstE
 theorem returned_value (a : PR 3) (N h x t : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run a N h x t)) ≐ ap2 (prefixF a) t (valueData a N h x) :=
-  (congrFst ((congrSnd (output_at a N h x t)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (output_at a N h x t).sndE.fstE
 theorem returned_radius (a : PR 3) (N h x t : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (run a N h x t)) ≐ radius a N h x :=
-  (congrSnd ((congrSnd (output_at a N h x t)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (output_at a N h x t).sndE.sndE
 theorem returned_root_at (a : PR 3) (N h x t : PTm n) : Γ ⊢[PRAAx]
     fstT (run a N h x t) ≐ GaussianGeneralFTATrajectory.alpha a N h x t :=
   (returned_root a N h x t).eqTrans (root_at a N h x t)

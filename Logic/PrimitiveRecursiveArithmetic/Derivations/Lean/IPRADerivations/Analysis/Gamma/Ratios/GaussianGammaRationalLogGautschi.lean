@@ -16,7 +16,7 @@ set_option maxHeartbeats 1500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaRationalLogGautschi
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_regular constant_at)
 open GaussianGammaRationalFractionalChord (harmonicF harmonicData)
@@ -33,8 +33,6 @@ open GaussianRationalSyntheticDivision (qone)
 open GaussianSignedNameExponentialOrder (realSamples)
 open GaussianStirlingGammaLogarithm (source logGammaF logGammaData log_gamma_regular)
 open GaussianStirlingMultiplicativeBoundsStrictOrder (strictOrder strict_transport)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "H" => GaussianHarmonicLogarithmName.nameF

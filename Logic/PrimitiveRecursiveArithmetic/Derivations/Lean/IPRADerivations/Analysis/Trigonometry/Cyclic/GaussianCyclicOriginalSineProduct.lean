@@ -14,7 +14,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianCyclicOriginalSineProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCyclicExponentialRoots (source sampleRadius)
 open GaussianCyclicFullHalfAngle (sineSample)
 open GaussianCyclicChordSquare (realSine doubledSine real_sine_bound doubled_sine_bound sine_error twiceSineRadius)
@@ -31,10 +31,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_t
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianNameArithmetic (sum_distance)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

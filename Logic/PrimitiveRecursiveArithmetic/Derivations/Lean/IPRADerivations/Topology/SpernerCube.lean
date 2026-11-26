@@ -114,9 +114,7 @@ theorem eqb_zero_one {Γ : List (Fm PTm n)} : Γ ⊢[PRAAx] eqb (zero : PTm n) o
 /-- The colour of the point `v`. -/
 def col (L : PTm 1) (v : PTm n) : PTm n := Syn.subst ![v] L
 
-@[simp] theorem subst_col {m : ℕ} (σ : Fin n → PTm m) (L : PTm 1) (v : PTm n) :
-    Syn.subst σ (col L v) = col L (Syn.subst σ v) := by
-  simp only [col, Syn.subst_subst]; congr 1; funext i; fin_cases i; rfl
+ipra_subst col [Syn.subst_subst]
 
 theorem congrCol {Γ : List (Fm PTm n)} (L : PTm 1) {v v' : PTm n} (h : Γ ⊢[PRAAx] v ≐ v') :
     Γ ⊢[PRAAx] col L v ≐ col L v' := Foundations.GridSums.congr1 L h

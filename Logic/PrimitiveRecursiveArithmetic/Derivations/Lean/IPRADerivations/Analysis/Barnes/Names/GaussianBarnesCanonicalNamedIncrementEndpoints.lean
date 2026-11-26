@@ -16,7 +16,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalNamedIncrementEndpoints
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add bounded_mono)
 open GaussianBarnesCanonicalNamedDemand (source data frozenData native_source)
 open GaussianNamedIncrementChart (denominator baseNumerator stepNumerator denominator_positive)
@@ -28,8 +28,6 @@ open GaussianNamedInverseRate (independentRate)
 open GaussianRationalHorner (ofGaussian)
 open GaussianRationalL1 (rawGaussian rawDen)
 open GaussianRootApproximationWitness (point_at)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

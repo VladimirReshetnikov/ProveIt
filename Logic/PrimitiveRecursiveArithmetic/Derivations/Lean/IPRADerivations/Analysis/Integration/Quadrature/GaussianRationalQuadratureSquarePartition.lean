@@ -16,15 +16,11 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalQuadratureSquarePartition
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCompactRiemannName (grid value fraction_congr)
 open GaussianRationalQuadratureSquareCells (node cellWidth)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (positive_product)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -42,28 +38,17 @@ def cutF : PR 2 := PTm.toPR (cutTerm (var 0) (var 1))
 def cutGap (i N c a C : PTm n) : PTm n := monus (ap2 cutF (succ i) (cutData N c a C)) (ap2 cutF i (cutData N c a C))
 def source (c d a C E N : PTm n) : Fm PTm n := le one c ⋏ (le one a ⋏ (le one C ⋏ GaussianRationalQuadratureSquareCells.source d E N))
 
-@[simp] theorem subst_lowerNumerator {m : ℕ} (σ : Fin n → PTm m) (c a : PTm n) :
-    Syn.subst σ (lowerNumerator c a) = lowerNumerator (Syn.subst σ c) (Syn.subst σ a) := by simp [lowerNumerator]
-@[simp] theorem subst_widthNumerator {m : ℕ} (σ : Fin n → PTm m) (c a C : PTm n) :
-    Syn.subst σ (widthNumerator c a C) = widthNumerator (Syn.subst σ c) (Syn.subst σ a) (Syn.subst σ C) := by simp [widthNumerator]
-@[simp] theorem subst_intervalDenominator {m : ℕ} (σ : Fin n → PTm m) (d E : PTm n) :
-    Syn.subst σ (intervalDenominator d E) = intervalDenominator (Syn.subst σ d) (Syn.subst σ E) := by simp [intervalDenominator]
-@[simp] theorem subst_fineCount {m : ℕ} (σ : Fin n → PTm m) (N c a C : PTm n) :
-    Syn.subst σ (fineCount N c a C) = fineCount (Syn.subst σ N) (Syn.subst σ c) (Syn.subst σ a) (Syn.subst σ C) := by simp [fineCount]
-@[simp] theorem subst_cellCap {m : ℕ} (σ : Fin n → PTm m) (c a C : PTm n) :
-    Syn.subst σ (cellCap c a C) = cellCap (Syn.subst σ c) (Syn.subst σ a) (Syn.subst σ C) := by simp [cellCap]
-@[simp] theorem subst_cutValue {m : ℕ} (σ : Fin n → PTm m) (i N c a C : PTm n) :
-    Syn.subst σ (cutValue i N c a C) = cutValue (Syn.subst σ i) (Syn.subst σ N) (Syn.subst σ c) (Syn.subst σ a) (Syn.subst σ C) := by simp [cutValue]
-@[simp] theorem subst_increment {m : ℕ} (σ : Fin n → PTm m) (i N c a C : PTm n) :
-    Syn.subst σ (increment i N c a C) = increment (Syn.subst σ i) (Syn.subst σ N) (Syn.subst σ c) (Syn.subst σ a) (Syn.subst σ C) := by simp [increment]
-@[simp] theorem subst_cutData {m : ℕ} (σ : Fin n → PTm m) (N c a C : PTm n) :
-    Syn.subst σ (cutData N c a C) = cutData (Syn.subst σ N) (Syn.subst σ c) (Syn.subst σ a) (Syn.subst σ C) := by simp [cutData]
-@[simp] theorem subst_cutTerm {m : ℕ} (σ : Fin n → PTm m) (i x : PTm n) :
-    Syn.subst σ (cutTerm i x) = cutTerm (Syn.subst σ i) (Syn.subst σ x) := by simp [cutTerm]
-@[simp] theorem subst_cutGap {m : ℕ} (σ : Fin n → PTm m) (i N c a C : PTm n) :
-    Syn.subst σ (cutGap i N c a C) = cutGap (Syn.subst σ i) (Syn.subst σ N) (Syn.subst σ c) (Syn.subst σ a) (Syn.subst σ C) := by simp [cutGap]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (c d a C E N : PTm n) :
-    (source c d a C E N).subst σ = source (Syn.subst σ c) (Syn.subst σ d) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ N) := by simp [source]
+ipra_subst lowerNumerator
+ipra_subst widthNumerator
+ipra_subst intervalDenominator
+ipra_subst fineCount
+ipra_subst cellCap
+ipra_subst cutValue
+ipra_subst increment
+ipra_subst cutData
+ipra_subst cutTerm
+ipra_subst cutGap
+ipra_subst source
 
 theorem cut_at (i N c a C : PTm n) : Γ ⊢[PRAAx] ap2 cutF i (cutData N c a C) ≐ cutValue i N c a C := by
   have program : Γ ⊢[PRAAx] ap2 cutF i (cutData N c a C) ≐ cutTerm i (cutData N c a C) := by

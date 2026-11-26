@@ -14,7 +14,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaGaussReflectionPowerConstant
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale oneCode mul)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
@@ -29,9 +29,6 @@ open GaussianRationalHorner (qmul qmul_canonical qmul_represents represents_cong
 open GaussianRationalNaturalScale (naturalPoint natural_point_represents natural_product_value)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRootAlgebra (equal equal_of_values equal_trans re_scale im_scale re_mul im_mul re_one im_one)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "FProd" => GaussianNamedFiniteProductName.nameF
@@ -67,12 +64,10 @@ private def powerLaw (p N x : PTm n) : Fm PTm n :=
 theorem product_at (p N x : PTm n) :
     Γ ⊢[PRAAx] sample familyF p N x ≐ naturalPoint (unit N) := by
   have all : Γ ⊢[PRAAx] .all (powerLaw (Syn.shift p) (var 0) (Syn.shift x)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_powerLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (sample_zero familyF p x).eqTrans
+    ipra_qfind [subst_powerLaw]
+    · exact (sample_zero familyF p x).eqTrans
         (((natural_congr (pw_zero two)).eqTrans natural_one).eqSymm)
-    · simp only [subst_powerLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      let P := Syn.shift p
+    · let P := Syn.shift p
       let X := Syn.shift x
       let i : PTm (n+1) := var 0
       let Δ := powerLaw P i X :: Γ.map Fm.shift

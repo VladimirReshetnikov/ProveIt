@@ -18,16 +18,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianMonicApplications
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianMonicRD (step)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (evaluate)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qone)
 open LeanProofs.IPRA.Analysis.GaussianCoefficientL1 (coefficientNorm subCoefficients)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,35 +39,13 @@ def output (C N p q : PTm n) : PTm n := GaussianApproximateFactorization.output 
 def outputF : PR 4 := GaussianApproximateFactorization.outputF step
 def run (C N p q : PTm n) : PTm n := GaussianApproximateFactorization.run step C N p q
 
-@[simp] theorem subst_approximateRoot {m : ℕ} (σ : Fin n → PTm m) (C N p q : PTm n) :
-    Syn.subst σ (approximateRoot C N p q) = approximateRoot (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ p) (Syn.subst σ q) := by simp [approximateRoot]
-@[simp] theorem subst_rootRun {m : ℕ} (σ : Fin n → PTm m) (C N p q : PTm n) :
-    Syn.subst σ (rootRun C N p q) = rootRun (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ p) (Syn.subst σ q) := by
-  simp only [rootRun,GaussianDescentClock.run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
-@[simp] theorem subst_rootList {m : ℕ} (σ : Fin n → PTm m) (C N p q : PTm n) :
-    Syn.subst σ (rootList C N p q) = rootList (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ p) (Syn.subst σ q) := by simp [rootList]
-@[simp] theorem subst_productPolynomial {m : ℕ} (σ : Fin n → PTm m) (C N p q : PTm n) :
-    Syn.subst σ (productPolynomial C N p q) = productPolynomial (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ p) (Syn.subst σ q) := by simp [productPolynomial]
-@[simp] theorem subst_coefficientError {m : ℕ} (σ : Fin n → PTm m) (C N p q : PTm n) :
-    Syn.subst σ (coefficientError C N p q) = coefficientError (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ p) (Syn.subst σ q) := by simp [coefficientError]
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (C N p q : PTm n) :
-    Syn.subst σ (output C N p q) = output (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ p) (Syn.subst σ q) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (C N p q : PTm n) :
-    Syn.subst σ (run C N p q) = run (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ p) (Syn.subst σ q) := by
-  simp only [run,GaussianApproximateFactorization.run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst approximateRoot
+ipra_subst rootRun [GaussianDescentClock.run]
+ipra_subst rootList
+ipra_subst productPolynomial
+ipra_subst coefficientError
+ipra_subst output
+ipra_subst run [GaussianApproximateFactorization.run]
 
 theorem local_rd (C N : PTm n) (hN : Γ ⊢[PRAAx] le one N)
     (hC : Γ ⊢[PRAAx] length C ≐ succ N) (hm : Γ ⊢[PRAAx] entry C zero ≐ qone) : Γ ⊢[PRAAx]

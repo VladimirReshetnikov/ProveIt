@@ -20,7 +20,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGaussMultiplication
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaGaussShiftedProduct (source)
 open GaussianGaussEulerFiniteIdentity (cleared_Gauss_multiplication)
 open GaussianGaussMultiplicationCofinalProducts (leftF leftData)
@@ -29,10 +29,6 @@ open GaussianGaussMultiplicationQuotient
   (leftQuotientF rightQuotientF leftQuotientData rightQuotientData quotient_from_cleared)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianGammaCompactCutoffAlignment (cross_data_congr)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (pred)
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

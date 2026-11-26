@@ -16,7 +16,7 @@ set_option maxHeartbeats 600000
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineProductImaginaryFirstOrderBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianCoefficientNameBounds (bounded_radius_mono unit)
 open GaussianGammaEulerReflectionHead (body square_factor_at)
@@ -35,10 +35,6 @@ open GaussianSineProductImaginaryFirstOrder
 open GaussianSineProductImaginaryLogDerivative
   (axisNumerator derivative factor factorDerivative finite_logarithmic_derivative product squareDenominator)
 open GaussianSineProductImaginaryLogDerivativeTail (axis_norm rational_real_bound)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

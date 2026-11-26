@@ -17,7 +17,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetFirstFormulaPinning
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetFirstFormulaDecay
   (laplaceData subst_laplaceData laplace_regular family family_at parameters family_regular decay_envelope)
 open GaussianGammaCompactCutoffAlignment (cross_data_congr)
@@ -28,10 +28,6 @@ open GaussianNamedDifference (name_regular)
 open GaussianNamedDifferenceZero (cross_of_zero difference_zero)
 open GaussianNamedFiniteEqualityChain (allSteps)
 open GaussianRightHalfPlaneLogarithm (source)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "S" => GaussianBinetStirlingRemainder.nameF
@@ -51,13 +47,9 @@ def stepLaw (A B D sign : PTm n) : Fm PTm n :=
     (laplaceStepData (Syn.shift A+var 0*Syn.shift D) (Syn.shift B) (Syn.shift D) (Syn.shift sign))
     (wd (Syn.shift A+var 0*Syn.shift D) (Syn.shift B) (Syn.shift D) (Syn.shift sign)))
 
-@[simp] theorem subst_laplaceStepData {m : ℕ} (σ : Fin n → PTm m) (A B D sign : PTm n) :
-    Syn.subst σ (laplaceStepData A B D sign) =
-      laplaceStepData (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ sign) := by simp [laplaceStepData]
+ipra_subst laplaceStepData
 
-@[simp] theorem subst_stepLaw {m : ℕ} (σ : Fin n → PTm m) (A B D sign : PTm n) :
-    (stepLaw A B D sign).subst σ = stepLaw (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ sign) := by
-  simp [stepLaw, Syn.subst_shift, Syn.shift_subst]
+ipra_subst stepLaw [Syn.subst_shift, Syn.shift_subst]
 
 theorem step_at (A B D sign j : PTm n) (h : Γ ⊢[PRAAx] stepLaw A B D sign) :
     Γ ⊢[PRAAx] crossEquivalent (F J J) W

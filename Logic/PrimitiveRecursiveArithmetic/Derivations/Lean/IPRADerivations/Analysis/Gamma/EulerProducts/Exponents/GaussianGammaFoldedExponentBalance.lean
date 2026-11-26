@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaLogHarmonicName
 import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaExponentStep
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The correction between the folded Gamma exponents
@@ -16,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaFoldedExponentBalance
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNameArithmetic (addF addData multiplyF multiplyData multiplyModulus)
 open GaussianRationalHorner (qadd qmul ofGaussian represents represents_congr qadd_represents qmul_represents
   canonical_unique positive_product)
@@ -35,9 +34,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -96,15 +92,9 @@ def correctionData (z B N : PTm n) : PTm n :=
 def sumF : PR 2 := addF productF correctionF
 def sumData (z B N : PTm n) : PTm n := addData (productData z B N) (correctionData z B N)
 
-@[simp] theorem subst_correctionDifferenceData {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (correctionDifferenceData N) = correctionDifferenceData (Syn.subst σ N) := by
-  simp [correctionDifferenceData]
-@[simp] theorem subst_correctionData {m : ℕ} (σ : Fin n → PTm m) (z B N : PTm n) :
-    Syn.subst σ (correctionData z B N) = correctionData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by
-  simp [correctionData]
-@[simp] theorem subst_sumData {m : ℕ} (σ : Fin n → PTm m) (z B N : PTm n) :
-    Syn.subst σ (sumData z B N) = sumData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by
-  simp [sumData]
+ipra_subst correctionDifferenceData
+ipra_subst correctionData
+ipra_subst sumData
 
 theorem raw_regular (N : PTm n) (h : Γ ⊢[PRAAx] le one N) :
     Γ ⊢[PRAAx] GaussianFastValueCut.regular differenceRawF (one+one) N :=
@@ -139,17 +129,10 @@ def qBudget (z B N : PTm n) : PTm n :=
   multiplyModulus logF constantF N (qnegative (ofGaussian z B))+one
 def sumBudget (z B N : PTm n) : PTm n := ((three+pBudget z B N)+correctionBudget z B N)+qBudget z B N
 
-@[simp] theorem subst_qBudget {m : ℕ} (σ : Fin n → PTm m) (z B N : PTm n) :
-    Syn.subst σ (qBudget z B N) = qBudget (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by simp [qBudget]
-@[simp] theorem subst_pBudget {m : ℕ} (σ : Fin n → PTm m) (z B N : PTm n) :
-    Syn.subst σ (pBudget z B N) = pBudget (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by
-  simp [pBudget, three]
-@[simp] theorem subst_correctionBudget {m : ℕ} (σ : Fin n → PTm m) (z B N : PTm n) :
-    Syn.subst σ (correctionBudget z B N) = correctionBudget (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by
-  simp [correctionBudget, three]
-@[simp] theorem subst_sumBudget {m : ℕ} (σ : Fin n → PTm m) (z B N : PTm n) :
-    Syn.subst σ (sumBudget z B N) = sumBudget (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by
-  simp [sumBudget, three]
+ipra_subst qBudget
+ipra_subst pBudget [three]
+ipra_subst correctionBudget [three]
+ipra_subst sumBudget [three]
 
 theorem p_error (p z B N : PTm n) : Γ ⊢[PRAAx]
     distanceBounded (ap2 productF p (productData z B N)) (pCore p z B N) (pBudget z B N) (unit p) := by
@@ -199,9 +182,7 @@ theorem balance_at (p z B N : PTm n) (hN : Γ ⊢[PRAAx] le one N) :
       (distance_triangle_same _ _ _ _ _ _ u h (sum_left_error _ _ _ _ _ u (p_error p z B N)))
       (sum_right_error _ _ _ _ _ u (correction_error p z B N hN))) (q_error p z B N hN) (core_balance p z B N hN)
 
-@[simp] theorem subst_logExponentData {m : ℕ} (σ : Fin n → PTm m) (z B N : PTm n) :
-    Syn.subst σ (logExponentData z B N) = logExponentData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by
-  simp [logExponentData]
+ipra_subst logExponentData
 
 theorem balanced_exponents (z B N : PTm n) (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[PRAAx]
     crossEquivalent sumF logExponentF (sumData z B N) (logExponentData z B N) := by

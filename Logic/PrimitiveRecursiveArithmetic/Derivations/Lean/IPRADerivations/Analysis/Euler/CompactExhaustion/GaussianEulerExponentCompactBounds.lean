@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerExponentCompactBounds
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (positive_product qadd qmul)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
@@ -23,10 +23,6 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianCompactLogarithmBounds (domain)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianEulerIntegrandName (coefficient decayPoint exponentF exponentData exponent_at)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -35,15 +31,10 @@ def source (z R B E : PTm n) : Fm PTm n := le one B ⋏ (le one E ⋏ ComplexLog
 def radius (R E T : PTm n) : PTm n := (R+one)*GaussianCompactLogarithmBounds.radius E T+T
 def factor (R E : PTm n) : PTm n := (R+one)*E+one
 def clock (p z B a b : PTm n) : PTm n := GaussianEulerIntegrandName.powerClock (GaussianFastValueCut.exponent two p) z B a b
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B E : PTm n) :
-    (source z R B E).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ E) := by
-  simp [source,ComplexLogarithmRemainder.bounded]
-@[simp] theorem subst_radius {m : ℕ} (σ : Fin n → PTm m) (R E T : PTm n) :
-    Syn.subst σ (radius R E T) = radius (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T) := by simp [radius]
-@[simp] theorem subst_factor {m : ℕ} (σ : Fin n → PTm m) (R E : PTm n) :
-    Syn.subst σ (factor R E) = factor (Syn.subst σ R) (Syn.subst σ E) := by simp [factor]
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (p z B a b : PTm n) :
-    Syn.subst σ (clock p z B a b) = clock (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by simp [clock]
+ipra_subst source [ComplexLogarithmRemainder.bounded]
+ipra_subst radius
+ipra_subst factor
+ipra_subst clock
 
 theorem fraction_bound (a b T : PTm n) (hb : Γ ⊢[PRAAx] le one b) (h : Γ ⊢[PRAAx] le a (T*b)) : Γ ⊢[PRAAx]
     bounded (fraction a b) T one := by
@@ -110,9 +101,7 @@ theorem exponent_diagonal (p z R B E T a b c d A D : PTm n)
 
 def input (z R B E T a b c d A D : PTm n) : Fm PTm n := source z R B E ⋏
   (domain a b E T ⋏ (domain c d E T ⋏ (le one D ⋏ distanceBounded (fraction a b) (fraction c d) A D)))
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (z R B E T a b c d A D : PTm n) :
-    (input z R B E T a b c d A D).subst σ = input (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ E)
-      (Syn.subst σ T) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d) (Syn.subst σ A) (Syn.subst σ D) := by simp [input]
+ipra_subst input
 
 theorem exponent_envelope (z R B E T a b c d A D : PTm n) (h : Γ ⊢[PRAAx] input z R B E T a b c d A D) : Γ ⊢[PRAAx]
     GaussianNamedLipschitzRate.diagonalEnvelope exponentF exponentF (exponentData z B a b) (exponentData z B c d)
@@ -148,19 +137,17 @@ theorem common_exponential_input (z R B E T a b : PTm n) (hz : Γ ⊢[PRAAx] sou
 def output (p z R B E T a b : PTm n) : PTm n := pairT (ap2 exponentF p (exponentData z B a b)) (pairT (radius R E T) (factor R E))
 def outputF : PR 8 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) (var 7))
 def run (p z R B E T a b : PTm n) : PTm n := PTm.app outputF ![p,z,R,B,E,T,a,b]
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (p z R B E T a b : PTm n) :
-    Syn.subst σ (output p z R B E T a b) = output (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ a) (Syn.subst σ b) := by simp [output]
+ipra_subst output
 theorem program_at (p z R B E T a b : PTm n) : Γ ⊢[PRAAx] run p z R B E T a b ≐ output p z R B E T a b := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) (var 7) : PTm 8) ![p,z,R,B,E,T,a,b]
 theorem returned_sample (p z R B E T a b : PTm n) : Γ ⊢[PRAAx] fstT (run p z R B E T a b) ≐ ap2 exponentF p (exponentData z B a b) :=
-  (congrFst (program_at p z R B E T a b)).eqTrans (fst_pair _ _)
+  (program_at p z R B E T a b).fstE
 theorem returned_tail (p z R B E T a b : PTm n) : Γ ⊢[PRAAx] sndT (run p z R B E T a b) ≐ pairT (radius R E T) (factor R E) :=
-  (congrSnd (program_at p z R B E T a b)).eqTrans (snd_pair _ _)
+  (program_at p z R B E T a b).sndE
 theorem returned_radius (p z R B E T a b : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run p z R B E T a b)) ≐ radius R E T :=
-  (congrFst (returned_tail p z R B E T a b)).eqTrans (fst_pair _ _)
+  (returned_tail p z R B E T a b).fstE
 theorem returned_factor (p z R B E T a b : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run p z R B E T a b)) ≐ factor R E :=
-  (congrSnd (returned_tail p z R B E T a b)).eqTrans (snd_pair _ _)
+  (returned_tail p z R B E T a b).sndE
 
 theorem actual_original_compact_Euler_exponent_disk_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 8
     (source (var 1) (var 2) (var 3) (var 4) ⟶ domain (var 6) (var 7) (var 4) (var 5) ⟶

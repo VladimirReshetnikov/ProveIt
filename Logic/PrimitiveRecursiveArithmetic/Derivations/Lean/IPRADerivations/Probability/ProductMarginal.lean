@@ -20,7 +20,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.ProductMarginal
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Expectation (Ew Wt inst2_mul' inst2_add')
 open LeanProofs.IPRA.Probability.Independence (sum_scale shift_sum)
 open LeanProofs.IPRA.Probability.ProductPower (Pr TB TB_at Tt wdB)
@@ -29,10 +29,6 @@ open LeanProofs.IPRA.Probability.KolmogorovIid (rp inst2_rp ρk Yp rpk_at)
 open LeanProofs.IPRA.Probability.KolmogorovIidGlue (shift_pw shift_mulpw shift_Pr)
 open LeanProofs.IPRA.BlockSum (blk_at block_sum blkB qr_block)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -48,8 +44,8 @@ theorem rpn_at (f : PTm 2) (j k m M x : PTm n) :
       pairT (fstT (Yp k m M x) + fstT (sndT (Yp k m M x))) (sndT (sndT (Yp k m M x))) := by simp [inst2]
   rw [e]
   exact congrInst2 f (.eqRefl _) (congrPairT
-    (congrAdd (fst_pair _ _) ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)))
-    ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)))
+    (congrAdd (fst_pair _ _) (snd_pair _ _).fstE)
+    (snd_pair _ _).sndE)
 
 /-- The observable `h(t mod M^k, ⟨k, ⟨M, x⟩⟩)` over `(t, ⟨k, ⟨m, ⟨M, x⟩⟩⟩)`. -/
 def hr (h : PTm 2) : PTm 2 :=
@@ -64,9 +60,9 @@ theorem hr_at (h : PTm 2) (t k m M x : PTm n) :
     congr 1; funext i; fin_cases i <;> simp
   rw [e]
   have hM : Γ ⊢[PRAAx] fstT (sndT (sndT (Yp k m M x))) ≐ M :=
-    (congrFst ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+    (snd_pair _ _).sndE.fstE
   exact congrInst2 h (congrAp2 remF (.eqRefl t) (Combinatorics.BinomialTheorem.congrPw hM (fst_pair _ _)))
-    (congrPairT (fst_pair _ _) ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)))
+    (congrPairT (fst_pair _ _) (snd_pair _ _).sndE)
 
 section Marginal
 

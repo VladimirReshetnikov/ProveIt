@@ -15,16 +15,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaDyadicMesh
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive subst_unit)
 open GaussianEulerSharpScheduledApproximation (two_bit_identity four_bit_identity)
 open GaussianGammaDigammaDyadicCrossing (sample)
 open GaussianNamedInverseRate (rateNumerator rateDenominator denominator_positive)
 open RationalValueBounds (upper upper_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -32,8 +28,7 @@ local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
 def clock (p : PTm n) : PTm n := p+num 6
 def grid (p : PTm n) : PTm n := unit (clock p)
 
-@[simp] theorem subst_clock {k : ℕ} (σ : Fin n → PTm k) (p : PTm n) :
-    Syn.subst σ (clock p) = clock (Syn.subst σ p) := by simp [clock]
+ipra_subst clock
 
 @[simp] theorem subst_grid {k : ℕ} (σ : Fin n → PTm k) (p : PTm n) :
     Syn.subst σ (grid p) = grid (Syn.subst σ p) := by simp only [grid, subst_unit, subst_clock]

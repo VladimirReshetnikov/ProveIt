@@ -1,6 +1,5 @@
 import IPRADerivations.Topology.DimensionObstruction
 import IPRADerivations.Foundations.RationalFloors
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The finite dimension obstruction for rational tables (`dimension_invariance_ipra`, `thm:finite`)
@@ -136,7 +135,7 @@ theorem offset_ge {Γ : List (Fm PTm n)} {b u : PTm n} (hu : GridPt (d' + 1) Γ 
     refine (proj_pk (d' + 1) is _ q hq).eqTrans ?_
     simp only [is]; rw [show d' - (d' + 1 - 1 - q) = q by omega]; exact .eqRefl _
   have htl : Γ ⊢[PRAAx] tl (d' + 1) y ≐ sb := tl_pk _ _ _
-  have hb : Γ ⊢[PRAAx] sndT (tl (d' + 1) y) ≐ b := (congrSnd htl).eqTrans (snd_pair _ _)
+  have hb : Γ ⊢[PRAAx] sndT (tl (d' + 1) y) ≐ b := htl.sndE
   have hcan : Γ ⊢[PRAAx] canon (d' + 1) (sndT (tl (d' + 1) y)) y ≐ u :=
     (canon_base (d' + 1) y hb).eqTrans ((canon_congr (d' + 1) b hproj).eqTrans hu.canon.eqSymm)
   have hS : Γ ⊢[PRAAx] Syn.subst ![y] (offS d' m Q) ≐ fsum m (fun j => col (Q j) u) := by

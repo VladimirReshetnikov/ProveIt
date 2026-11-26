@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaAllDegreeCoefficientVariation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaAllDegreeCoefficientStability (paddedHead headDegree)
 open GaussianGammaFixedCoefficientVariation (exponential exponentialFactor rowFactor modulus headBudget exponential_error_norm subst_exponential subst_rowFactor)
 open GaussianGammaFiniteCoefficientStability (fixedCoefficient)
@@ -35,9 +35,6 @@ open RationalArithmetic (multiply)
 open RationalArgmin (rationalLE)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -16,16 +16,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicParameterIncrement
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLogarithmicMultiplier (sample majorant logRadius)
 open GaussianPositiveRationalLogarithm (sample)
 open GaussianRationalHorner (qadd qmul ofGaussian canonical positive_product)
 open GaussianRationalSyntheticDivision (qone qadd_congr qmul_congr)
 open GaussianRationalReciprocal (power bound_congr bounded_product)
 open GaussianRationalMetric (distanceBounded bounded)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,20 +39,11 @@ def source (z R B E T a b h D X Y : PTm n) : Fm PTm n :=
   GaussianEulerLogarithmicMultiplier.source z R B E T a b ⋏
     (le one D ⋏ (le one Y ⋏ (le (logRadius E T*X) Y ⋏ bounded (ofGaussian h D) X Y)))
 
-@[simp] theorem subst_increment {m : ℕ} (σ : Fin n → PTm m) (s h D a b : PTm n) :
-    Syn.subst σ (increment s h D a b) = increment (Syn.subst σ s) (Syn.subst σ h) (Syn.subst σ D) (Syn.subst σ a) (Syn.subst σ b) := by simp [increment]
-@[simp] theorem subst_linearModel {m : ℕ} (σ : Fin n → PTm m) (s j z B h D a b : PTm n) :
-    Syn.subst σ (linearModel s j z B h D a b) = linearModel (Syn.subst σ s) (Syn.subst σ j) (Syn.subst σ z)
-      (Syn.subst σ B) (Syn.subst σ h) (Syn.subst σ D) (Syn.subst σ a) (Syn.subst σ b) := by simp [linearModel]
-@[simp] theorem subst_finiteModel {m : ℕ} (σ : Fin n → PTm m) (s K j z B h D a b : PTm n) :
-    Syn.subst σ (finiteModel s K j z B h D a b) = finiteModel (Syn.subst σ s) (Syn.subst σ K) (Syn.subst σ j)
-      (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ h) (Syn.subst σ D) (Syn.subst σ a) (Syn.subst σ b) := by simp [finiteModel]
-@[simp] theorem subst_curvature {m : ℕ} (σ : Fin n → PTm m) (j R E T : PTm n) :
-    Syn.subst σ (curvature j R E T) = curvature (Syn.subst σ j) (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T) := by simp [curvature]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B E T a b h D X Y : PTm n) :
-    (source z R B E T a b h D X Y).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ h)
-      (Syn.subst σ D) (Syn.subst σ X) (Syn.subst σ Y) := by simp [source]
+ipra_subst increment
+ipra_subst linearModel
+ipra_subst finiteModel
+ipra_subst curvature
+ipra_subst source
 
 /-- The order successor is the actual numerical power successor. -/
 theorem original_order_increment (s j z B h D a b : PTm n) : Γ ⊢[PRAAx]

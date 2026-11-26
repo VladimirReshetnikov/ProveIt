@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingDuplicationLogs
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameArithmetic (addF addData)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
@@ -29,8 +29,6 @@ open RationalHarmonicInterval (interval common horizon numerator common_value co
 open RationalRepresentations (represents_negative)
 open Products (fact)
 open GammaEulerMesh (factorial_positive)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "H" => GaussianHarmonicLogarithmName.nameF

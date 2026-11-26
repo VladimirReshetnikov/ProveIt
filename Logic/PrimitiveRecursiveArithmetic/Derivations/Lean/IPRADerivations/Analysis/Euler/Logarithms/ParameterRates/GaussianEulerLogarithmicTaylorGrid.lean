@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicTaylorGrid
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerParameterExponentialIncrement (shifted)
 open GaussianEulerLogarithmicParameterIncrement (curvature)
 open GaussianEulerLogarithmicCompactName (evaluatorF fixedData raw_evaluator_at)
@@ -28,10 +28,6 @@ open GaussianRationalHorner (qadd qmul qzero ofGaussian positive_product)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -44,23 +40,12 @@ def linearClient (j z R B E T : PTm n) : PTm n := fixedData (succ j) R E T z B
 def rowNumerator (p j R E T X Y : PTm n) : PTm n := curvature j R E T*X*X*unit p+num 3*(Y*Y)
 def rowDenominator (p Y : PTm n) : PTm n := (Y*Y)*unit p
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B a C E T h D X Y : PTm n) :
-    (source z R B a C E T h D X Y).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ a)
-      (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ h) (Syn.subst σ D) (Syn.subst σ X) (Syn.subst σ Y) := by simp [source]
-@[simp] theorem subst_perturbedClient {m : ℕ} (σ : Fin n → PTm m) (j z R B E T h D : PTm n) :
-    Syn.subst σ (perturbedClient j z R B E T h D) = perturbedClient (Syn.subst σ j) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ h) (Syn.subst σ D) := by simp [perturbedClient]
-@[simp] theorem subst_baseClient {m : ℕ} (σ : Fin n → PTm m) (j z R B E T : PTm n) :
-    Syn.subst σ (baseClient j z R B E T) = baseClient (Syn.subst σ j) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ E) (Syn.subst σ T) := by simp [baseClient]
-@[simp] theorem subst_linearClient {m : ℕ} (σ : Fin n → PTm m) (j z R B E T : PTm n) :
-    Syn.subst σ (linearClient j z R B E T) = linearClient (Syn.subst σ j) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ E) (Syn.subst σ T) := by simp [linearClient]
-@[simp] theorem subst_rowNumerator {m : ℕ} (σ : Fin n → PTm m) (p j R E T X Y : PTm n) :
-    Syn.subst σ (rowNumerator p j R E T X Y) = rowNumerator (Syn.subst σ p) (Syn.subst σ j) (Syn.subst σ R)
-      (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ X) (Syn.subst σ Y) := by simp [rowNumerator]
-@[simp] theorem subst_rowDenominator {m : ℕ} (σ : Fin n → PTm m) (p Y : PTm n) :
-    Syn.subst σ (rowDenominator p Y) = rowDenominator (Syn.subst σ p) (Syn.subst σ Y) := by simp [rowDenominator]
+ipra_subst source
+ipra_subst perturbedClient
+ipra_subst baseClient
+ipra_subst linearClient
+ipra_subst rowNumerator
+ipra_subst rowDenominator
 
 private abbrev body := sampleBody evaluatorF
 private def bodyData (p N a C E T j z R B h D : PTm n) : PTm n :=

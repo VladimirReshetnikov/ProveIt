@@ -18,7 +18,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaDirichletProductParameterRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianEulerIntegralGammaIdentification (source)
 open GaussianEulerIntegralUpperTransfer (paperConstant)
@@ -31,9 +31,6 @@ open GaussianNamedMultiplyRate (sampleBound)
 open GaussianRationalDistanceOrder (distance_radius_mono)
 open GaussianRationalHorner (ofGaussian)
 open GaussianRationalMetric (bounded distanceBounded)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Z" => GaussianGammaZetaDirichletCofinal.nameF
@@ -51,13 +48,9 @@ def pay (s R A : PTm n) : PTm n := exponent (gammaCap R A+zetaCap A) s
 def demand (s R A : PTm n) : PTm n :=
   zetaDemand (pay s R A) R A+gammaDemand (pay s R A) (R+one) A
 
-@[simp] theorem subst_gammaCap {m : ℕ} (σ : Fin n → PTm m) (R A : PTm n) :
-    Syn.subst σ (gammaCap R A) = gammaCap (Syn.subst σ R) (Syn.subst σ A) := by
-  simp [gammaCap,one]
+ipra_subst gammaCap [one]
 
-@[simp] theorem subst_demand {m : ℕ} (σ : Fin n → PTm m) (s R A : PTm n) :
-    Syn.subst σ (demand s R A) = demand (Syn.subst σ s) (Syn.subst σ R) (Syn.subst σ A) := by
-  simp [demand,pay,one]
+ipra_subst demand [pay, one]
 
 private theorem gamma_bound (p z R B A : PTm n) (hz : Γ ⊢[PRAAx] source z R B A) :
     Γ ⊢[PRAAx] bounded (ap2 gammaF p (actualGammaData z R B A)) (gammaCap R A) one := by

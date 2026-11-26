@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.Powers.RationalReciprocalPowerTail
 import IPRADerivations.Analysis.Optimization.CubeInfimum.RationalCubeInfimumName
 import IPRADerivations.Analysis.RationalArithmetic.RationalClosure
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual cofinal reciprocal-power names
@@ -19,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.RationalReciprocalPowerName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalReciprocalPowerTail (reciprocalPower potential tail tail_zero tail_succ tail_canonical
   add_zero_right finite_conservation sharp_tail tail_nonnegative potential_denominator_positive predecessor_positive)
 open GaussianEuclideanDistanceName (fraction fraction_represents)
@@ -27,10 +26,6 @@ open RationalArgmin (rationalLE)
 open RationalArithmetic (add)
 open RationalSupMetric (numeratorOf denominatorOf)
 open RationalValueBounds (upper radius upper_mono upper_order_left upper_order_right upper_of_order radius_of_upper)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred monus num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -128,12 +123,9 @@ theorem any_upper (m N r s : PTm n) (hm : Γ ⊢[PRAAx] le two m)
 def unit (p : PTm n) : PTm n := pw two p
 def cutoff (p : PTm n) : PTm n := num 4*unit p
 def observation (p m N : PTm n) : PTm n := tail m N (cutoff p)
-@[simp] theorem subst_unit {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) :
-    Syn.subst σ (unit p) = unit (Syn.subst σ p) := by simp [unit]
-@[simp] theorem subst_cutoff {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) :
-    Syn.subst σ (cutoff p) = cutoff (Syn.subst σ p) := by simp [cutoff]
-@[simp] theorem subst_observation {l : ℕ} (σ : Fin n → PTm l) (p m N : PTm n) :
-    Syn.subst σ (observation p m N) = observation (Syn.subst σ p) (Syn.subst σ m) (Syn.subst σ N) := by simp [observation]
+ipra_subst unit
+ipra_subst cutoff
+ipra_subst observation
 theorem unit_positive (p : PTm n) : Γ ⊢[PRAAx] le one (unit p) :=
   GaussianFactorBudget.power_positive two p (le_succ_self one)
 theorem cutoff_positive (p : PTm n) : Γ ⊢[PRAAx] le one (cutoff p) := by
@@ -163,18 +155,11 @@ def reconstructedSample (p m N : PTm n) : PTm n := ap2 reconstructionF p (tailDa
 
 @[simp] theorem subst_prefix {l : ℕ} (σ : Fin n → PTm l) (m N : PTm n) :
     Syn.subst σ (harmonicPrefix m N) = harmonicPrefix (Syn.subst σ m) (Syn.subst σ N) := by simp [harmonicPrefix]
-@[simp] theorem subst_zetaSample {l : ℕ} (σ : Fin n → PTm l) (p m : PTm n) :
-    Syn.subst σ (zetaSample p m) = zetaSample (Syn.subst σ p) (Syn.subst σ m) := by simp [zetaSample]
-@[simp] theorem subst_tailData {l : ℕ} (σ : Fin n → PTm l) (m N : PTm n) :
-    Syn.subst σ (tailData m N) = tailData (Syn.subst σ m) (Syn.subst σ N) := by simp [tailData]
-@[simp] theorem subst_tailSample {l : ℕ} (σ : Fin n → PTm l) (p m N : PTm n) :
-    Syn.subst σ (tailSample p m N) = tailSample (Syn.subst σ p) (Syn.subst σ m) (Syn.subst σ N) := by simp [tailSample]
-@[simp] theorem subst_reconstruction {l : ℕ} (σ : Fin n → PTm l) (p m N : PTm n) :
-    Syn.subst σ (reconstruction p m N) = reconstruction (Syn.subst σ p) (Syn.subst σ m) (Syn.subst σ N) := by
-  simp [reconstruction]
-@[simp] theorem subst_reconstructedSample {l : ℕ} (σ : Fin n → PTm l) (p m N : PTm n) :
-    Syn.subst σ (reconstructedSample p m N) = reconstructedSample (Syn.subst σ p) (Syn.subst σ m) (Syn.subst σ N) := by
-  simp [reconstructedSample]
+ipra_subst zetaSample
+ipra_subst tailData
+ipra_subst tailSample
+ipra_subst reconstruction
+ipra_subst reconstructedSample
 
 theorem observation_congr {p m N q a B : PTm n} (hp : Γ ⊢[PRAAx] p ≐ q)
     (hm : Γ ⊢[PRAAx] m ≐ a) (hN : Γ ⊢[PRAAx] N ≐ B) :

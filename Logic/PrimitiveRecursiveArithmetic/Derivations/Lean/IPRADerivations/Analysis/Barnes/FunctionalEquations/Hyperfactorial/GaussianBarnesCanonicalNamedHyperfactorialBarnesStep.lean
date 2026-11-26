@@ -9,7 +9,7 @@ set_option maxHeartbeats 1500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalNamedHyperfactorialBarnesStep
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalNamedHyperfactorial (barnes_source barnes_regular)
 open GaussianBarnesCanonicalNamedHyperfactorialExponentStep (shifted_center_is_input restored_center)
 open GaussianBarnesCanonicalNamedHyperfactorialPowerStep (gammaPowerF gammaPowerData)
@@ -21,8 +21,6 @@ open GaussianGammaCanonicalExponent (constantF)
 open GaussianLogGammaEulerNamed (source)
 open GaussianGammaAdjacentCutoff (multiply_cross)
 open ComplexLogarithmRemainder (bounded normSq_neg normSq_one oneCode)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

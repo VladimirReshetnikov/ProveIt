@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedDiagonalRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent point_at)
@@ -20,18 +20,13 @@ open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalDistanceOrder (distance_radius_mono)
 open GaussianRationalSlackRemoval (precision slack_removal_at)
 open GaussianRationalHorner (positive_product)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def diagonalRate (f g : PR 2) (x y K : PTm n) : Fm PTm n :=
   .all (distanceBounded (ap2 f (var 0) (Syn.shift x)) (ap2 g (var 0) (Syn.shift y)) (Syn.shift K) (unit (var 0)))
 
-@[simp] theorem subst_diagonalRate {m : ℕ} (σ : Fin n → PTm m) (f g : PR 2) (x y K : PTm n) :
-    (diagonalRate f g x y K).subst σ = diagonalRate f g (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ K) := by
-  simp [diagonalRate,Syn.subst_shift,Syn.shift_subst]
+ipra_subst diagonalRate [Syn.subst_shift, Syn.shift_subst]
 
 theorem cross_at (f g : PR 2) (x y K p q : PTm n)
     (hf : Γ ⊢[PRAAx] pointCN f x) (hg : Γ ⊢[PRAAx] pointCN g y)

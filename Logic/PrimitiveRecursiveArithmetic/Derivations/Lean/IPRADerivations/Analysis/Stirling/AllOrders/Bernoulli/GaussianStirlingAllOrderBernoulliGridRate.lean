@@ -14,8 +14,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliGridRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open LeanProofs.IPRA.PTm (num)
+open_ipra
 open BernoulliBounds (bden bden_pos bint bint_eq toZ_zint)
 open BernoulliCoefficients (bc bc_mean)
 open GaussianStirlingAllOrderBernoulliGridMean (coefficients)
@@ -25,8 +24,6 @@ open RationalPolynomialGridMeanError (meanNumerator radius weight weight_mul)
 open RationalIntegerNormalization (normalize_preserves_value)
 open RationalNormalForm (normalize_well_formed)
 open RationalValueBounds (upper upper_congr)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

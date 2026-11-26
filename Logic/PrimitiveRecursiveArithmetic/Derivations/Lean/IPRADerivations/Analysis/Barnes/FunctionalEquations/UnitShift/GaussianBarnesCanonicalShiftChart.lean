@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalShiftChart
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale oneCode bounded bounded_add bounded_mono bounded_scale normSq_scale normSq_one)
 open GaussianBarnesCanonicalCorrectionShift (halfShift)
 open GaussianGammaEulerHeadLower (translated)
@@ -24,8 +24,6 @@ open GaussianRationalHorner (qadd qmul positive_product ofGaussian ofGaussian_ca
 open GaussianRationalMetric (qsub qnegative qnegative_represents qnegative_canonical)
 open GaussianRationalReciprocal (qone qone_represents_scaled)
 open GaussianRootAlgebra (equal equal_of_values re_add im_add re_mul im_mul re_neg im_neg re_scale im_scale re_one im_one)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

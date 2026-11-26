@@ -13,7 +13,7 @@ set_option maxHeartbeats 720000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinOriginGrid
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianCompactRiemannName
   (sampleData field0 field1 field2 field3 field4 field0_at field1_at field2_at field3_at field4_at)
@@ -25,10 +25,6 @@ open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalRiemannRefinement (constantBody constant_entry constant_sum termsDistance sum_distance)
 open GaussianReconstructionRoots (distance_zero_iff)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -41,9 +37,7 @@ def body : PTm 2 :=
 
 def gridValue (p z D k b N : PTm n) : PTm n := GaussianRationalFiniteSum.sum body N (data p z D k b)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (p z D k b : PTm n) :
-    Syn.subst σ (data p z D k b) = data (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ D)
-      (Syn.subst σ k) (Syn.subst σ b) := by simp [data]
+ipra_subst data
 
 theorem cell_at (i p z D k b : PTm n) :
     Γ ⊢[PRAAx] inst2 body i (data p z D k b) ≐ value p z D k i (succ i) b := by

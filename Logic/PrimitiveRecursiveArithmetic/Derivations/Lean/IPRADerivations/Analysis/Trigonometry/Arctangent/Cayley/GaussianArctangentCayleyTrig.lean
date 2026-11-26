@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentCayleyTrig
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (code oneCode scale normSq_eval eval_re_code eval_im_code)
 open GaussianArctangentCayleyValues (numerator denominator denominator_positive value imaginaryCode exact_square_norm)
 open GaussianArctangentCayleyStep (conjugateValue)
@@ -24,9 +24,6 @@ open GaussianRationalMetric (qsub qsub_represents)
 open GaussianRationalReciprocal (qone qone_represents_scaled conjugate re_conjugate im_conjugate)
 open GaussianRootAlgebra (equal equal_of_values equal_refl re_add im_add re_sub im_sub re_mul im_mul
   re_scale im_scale re_one im_one re_neg im_neg)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -36,16 +33,11 @@ def sinePoint (M j : PTm n) : PTm n := ofGaussian (sineCode M j) (denominator M 
 def cosinePoint (M j : PTm n) : PTm n := ofGaussian (cosineCode M j) (denominator M j)
 def cosineMultiplier : PTm n := ofGaussian oneCode two
 
-@[simp] theorem subst_sinePoint {m : ℕ} (σ : Fin n → PTm m) (M j : PTm n) :
-    Syn.subst σ (sinePoint M j) = sinePoint (Syn.subst σ M) (Syn.subst σ j) := by
-  simp [sinePoint, sineCode, denominator]
+ipra_subst sinePoint [sineCode, denominator]
 
-@[simp] theorem subst_cosinePoint {m : ℕ} (σ : Fin n → PTm m) (M j : PTm n) :
-    Syn.subst σ (cosinePoint M j) = cosinePoint (Syn.subst σ M) (Syn.subst σ j) := by
-  simp [cosinePoint, cosineCode, denominator]
+ipra_subst cosinePoint [cosineCode, denominator]
 
-@[simp] theorem subst_cosineMultiplier {m : ℕ} (σ : Fin n → PTm m) :
-    Syn.subst σ (cosineMultiplier : PTm n) = cosineMultiplier := by simp [cosineMultiplier]
+ipra_subst cosineMultiplier
 
 theorem conjugate_inverse (M j : PTm n) (hM : Γ ⊢[PRAAx] le one M) :
     Γ ⊢[PRAAx] qmul (conjugateValue M j) (value M j) ≐ qone := by

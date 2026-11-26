@@ -1,6 +1,4 @@
 import IPRADerivations.Combinatorics.LucasIdentities
-import IPRADerivations.Core.SumLemmas
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The alternating sum of Fibonacci numbers
@@ -21,13 +19,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.FibonacciAltSum
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Fibonacci
 open LeanProofs.IPRA.Combinatorics.LucasIdentities (evfB odfB alt_sum)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

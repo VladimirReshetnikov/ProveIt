@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingGammaLogShift
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianGammaEulerHeadLower (translated)
 open GaussianGammaEulerHeadShift (shifted)
@@ -29,8 +29,6 @@ open GaussianPositiveRationalLogarithm (logF fraction)
 open GaussianRootAlgebra (equal equal_of_values equal_symm re_add im_add re_scale im_scale re_one im_one)
 open GaussianStirlingGammaLogarithm (arg source gammaData gamma_source gamma_source_at_radius source_shift
   gamma_regular gammaRetimedF gammaRetimedData gamma_retimed_cross log_input log_gamma_regular logGammaF logGammaData)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

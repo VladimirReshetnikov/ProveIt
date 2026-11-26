@@ -13,16 +13,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitSubstitutionLatticeSchedule
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUnitSubstitutionLatticeRate (meshCoefficient queryCoefficient latticeCoefficient)
 open GaussianEulerUnitSubstitutionLatticeGeometry (disk start count)
 open GaussianEulerUnitDecayInput (clock compactDenominator)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalMetric (distanceBounded)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -35,11 +31,7 @@ def source (s k q N z R B a C E T M : PTm n) : Fm PTm n :=
     (le (minimumCount s R C E T) N ⋏ (le (minimumChart s N R E T) k ⋏
       (le (minimumLattice s N R E T) M ⋏ le s q)))
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (s k q N z R B a C E T M : PTm n) :
-    (source s k q N z R B a C E T M).subst σ = source (Syn.subst σ s) (Syn.subst σ k) (Syn.subst σ q)
-      (Syn.subst σ N) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ a)
-      (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ M) := by
-  simp [source,minimumCount,minimumChart,minimumLattice]
+ipra_subst source [minimumCount, minimumChart, minimumLattice]
 
 theorem chart_budget (s k N R E T : PTm n) (h : Γ ⊢[PRAAx] le (minimumChart s N R E T) k) : Γ ⊢[PRAAx]
     le ((queryCoefficient N R E T+num 4*N)*unit s) (unit k) :=

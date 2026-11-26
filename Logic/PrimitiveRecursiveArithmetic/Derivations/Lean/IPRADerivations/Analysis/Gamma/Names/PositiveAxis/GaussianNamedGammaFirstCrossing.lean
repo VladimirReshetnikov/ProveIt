@@ -15,7 +15,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedGammaFirstCrossing
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedGammaHalfShift (source threeHalves minusF minusData plusF plusData minus_source
   minus_half_reflects_one three_halves_gives_minus_one)
 open GaussianNamedGamma (nameF data name_regular)
@@ -33,10 +33,6 @@ open ComplexLogarithmRemainder (oneCode re normSq scale)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNamedRightHalfPlane (marginPoint)
 open RationalValueBounds (upper_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

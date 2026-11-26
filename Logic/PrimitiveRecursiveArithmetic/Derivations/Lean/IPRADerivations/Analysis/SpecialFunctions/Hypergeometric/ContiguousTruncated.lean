@@ -25,13 +25,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.ContiguousTruncated
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.Pochhammer (poch)
 open LeanProofs.IPRA.Analysis.ContiguousRelations (Tn contig_a_plus contig_b_plus)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -59,11 +55,11 @@ theorem congrTn {a a' b b' k : PTm n} (ha : Γ ⊢[PRAAx] a ≐ a') (hb : Γ ⊢
 
 theorem wB_at (k a b y : PTm n) : Γ ⊢[PRAAx] inst2 (wB w) k (pairT a (pairT b y)) ≐ inst2 w k y := by
   rw [inst2_wB]
-  exact congrInst2 w (.eqRefl k) ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))
+  exact congrInst2 w (.eqRefl k) (snd_pair _ _).sndE
 
 theorem fa (a b y : PTm n) : Γ ⊢[PRAAx] fstT (pairT a (pairT b y)) ≐ a := fst_pair _ _
 theorem fb (a b y : PTm n) : Γ ⊢[PRAAx] fstT (sndT (pairT a (pairT b y))) ≐ b :=
-  (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
+  (snd_pair _ _).fstE
 
 theorem TA_at (k a b y : PTm n) :
     Γ ⊢[PRAAx] inst2 (TAB w) k (pairT a (pairT b y)) ≐ inst2 w k y * Tn (succ a) b k := by

@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentDivisionAngleGaps
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale eval_im_code)
 open GaussianArctangentCayleyValues (imaginaryCode)
 open GaussianArctangentDivisionAngles (nameF data clock modulus odd_reserve sample_represents quarter_represents
@@ -32,10 +32,6 @@ open RationalCubeMidpoint (fraction fraction_represents)
 open RationalValueBounds (positive_cancel)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

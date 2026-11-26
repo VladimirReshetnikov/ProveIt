@@ -1,5 +1,4 @@
 import IPRADerivations.Algebra.QuadraticTowerSignEmbedding
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Actual numerical-tower difference and order-translation identities
@@ -16,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticTowerDifferenceIdentities
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis
 open RationalSupMetric (numeratorOf denominatorOf)
 open QuadraticTowerCoefficients (width)
@@ -24,9 +23,6 @@ open QuadraticTowerCoefficientArithmetic (added negated)
 open QuadraticTowerScalarArrays (zeroArray zeroScalar)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceEquality (sequence_equal)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -36,19 +32,11 @@ def difference (h A B : PTm n) : PTm n := added h A (negated h B)
 def signDifference (h B D A C : PTm n) : PTm n := QuadraticTowerSignTable.query h B D (difference h A C)
 def equivalent (h B D A C : PTm n) : Fm PTm n := signDifference h B D A C ≐ zero
 def less (h B D A C : PTm n) : Fm PTm n := signDifference h B D C A ≐ one
-@[simp] theorem subst_scalarDifference {k : ℕ} (σ : Fin n → PTm k) (a b : PTm n) :
-    Syn.subst σ (scalarDifference a b) = scalarDifference (Syn.subst σ a) (Syn.subst σ b) := by simp [scalarDifference]
-@[simp] theorem subst_difference {k : ℕ} (σ : Fin n → PTm k) (h A B : PTm n) :
-    Syn.subst σ (difference h A B) = difference (Syn.subst σ h) (Syn.subst σ A) (Syn.subst σ B) := by simp [difference]
-@[simp] theorem subst_signDifference {k : ℕ} (σ : Fin n → PTm k) (h B D A C : PTm n) :
-    Syn.subst σ (signDifference h B D A C) = signDifference (Syn.subst σ h) (Syn.subst σ B)
-      (Syn.subst σ D) (Syn.subst σ A) (Syn.subst σ C) := by simp [signDifference]
-@[simp] theorem subst_equivalent {k : ℕ} (σ : Fin n → PTm k) (h B D A C : PTm n) :
-    (equivalent h B D A C).subst σ = equivalent (Syn.subst σ h) (Syn.subst σ B)
-      (Syn.subst σ D) (Syn.subst σ A) (Syn.subst σ C) := by simp [equivalent]
-@[simp] theorem subst_less {k : ℕ} (σ : Fin n → PTm k) (h B D A C : PTm n) :
-    (less h B D A C).subst σ = less (Syn.subst σ h) (Syn.subst σ B)
-      (Syn.subst σ D) (Syn.subst σ A) (Syn.subst σ C) := by simp [less]
+ipra_subst scalarDifference
+ipra_subst difference
+ipra_subst signDifference
+ipra_subst equivalent
+ipra_subst less
 
 theorem scalar_difference_congr {a b c d : PTm n} (ha : Γ ⊢[PRAAx] a ≐ c) (hb : Γ ⊢[PRAAx] b ≐ d) : Γ ⊢[PRAAx]
     scalarDifference a b ≐ scalarDifference c d := RationalAlgebra.add_congr ha (RationalAlgebra.negative_congr hb)
@@ -160,35 +148,27 @@ def output (h B D A C E : PTm n) : PTm n := pairT (difference h A C)
     (pairT (signDifference h B D A C) (signDifference h B D (added h A E) (added h C E))))
 def outputF : PR 6 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5))
 def run (h B D A C E : PTm n) : PTm n := PTm.app outputF ![h,B,D,A,C,E]
-@[simp] theorem subst_output {k : ℕ} (σ : Fin n → PTm k) (h B D A C E : PTm n) :
-    Syn.subst σ (output h B D A C E) = output (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D)
-      (Syn.subst σ A) (Syn.subst σ C) (Syn.subst σ E) := by simp [output]
-@[simp] theorem subst_run {k : ℕ} (σ : Fin n → PTm k) (h B D A C E : PTm n) :
-    Syn.subst σ (run h B D A C E) = run (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D)
-      (Syn.subst σ A) (Syn.subst σ C) (Syn.subst σ E) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 theorem program_at (h B D A C E : PTm n) : Γ ⊢[PRAAx] run h B D A C E ≐ output h B D A C E := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) ![h,B,D,A,C,E]
 theorem returned_original (h B D A C E : PTm n) : Γ ⊢[PRAAx] fstT (run h B D A C E) ≐ difference h A C :=
-  (congrFst (program_at h B D A C E)).eqTrans (fst_pair _ _)
+  (program_at h B D A C E).fstE
 theorem returned_tail (h B D A C E : PTm n) : Γ ⊢[PRAAx] sndT (run h B D A C E) ≐
     pairT (difference h (added h A E) (added h C E))
       (pairT (signDifference h B D A C) (signDifference h B D (added h A E) (added h C E))) :=
-  (congrSnd (program_at h B D A C E)).eqTrans (snd_pair _ _)
+  (program_at h B D A C E).sndE
 theorem returned_translated (h B D A C E : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run h B D A C E)) ≐ difference h (added h A E) (added h C E) :=
-  (congrFst (returned_tail h B D A C E)).eqTrans (fst_pair _ _)
+  (returned_tail h B D A C E).fstE
 theorem returned_signs (h B D A C E : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run h B D A C E)) ≐
     pairT (signDifference h B D A C) (signDifference h B D (added h A E) (added h C E)) :=
-  (congrSnd (returned_tail h B D A C E)).eqTrans (snd_pair _ _)
+  (returned_tail h B D A C E).sndE
 theorem returned_arrays_equal (h B D A C E : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run h B D A C E)) ≐ fstT (run h B D A C E) :=
   (returned_translated h B D A C E).eqTrans ((difference_translation h A C E).eqTrans (returned_original h B D A C E).eqSymm)
 theorem returned_signs_equal (h B D A C E : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (run h B D A C E))) ≐ sndT (sndT (sndT (run h B D A C E))) :=
-  ((congrFst (returned_signs h B D A C E)).eqTrans (fst_pair _ _)).eqTrans
-    ((sign_translation h B D A C E).eqSymm.eqTrans ((congrSnd (returned_signs h B D A C E)).eqTrans (snd_pair _ _)).eqSymm)
+  (returned_signs h B D A C E).fstE.eqTrans
+    ((sign_translation h B D A C E).eqSymm.eqTrans (returned_signs h B D A C E).sndE.eqSymm)
 
 theorem actual_tower_difference_self_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2
     (difference (var 0) (var 1) (var 1) ≐ zeroArray (var 0)) := closeUniv 2 (difference_self _ _)

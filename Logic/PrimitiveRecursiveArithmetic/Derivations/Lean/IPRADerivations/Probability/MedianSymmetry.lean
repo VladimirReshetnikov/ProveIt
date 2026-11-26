@@ -1,6 +1,5 @@
 import IPRADerivations.Probability.MedianWeighted
 import IPRADerivations.Probability.Lotus
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The CDF characterization and the symmetry centre of a finite law
@@ -24,17 +23,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.MedianSymmetry
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Algebra.CubeRootTwo (sg)
 open LeanProofs.IPRA.Probability.Expectation (Ew Wt inst2_mul')
 open LeanProofs.IPRA.Probability.Lotus (cmB inst2_cmB sum_const_mul)
 open LeanProofs.IPRA.Probability.MedianCounts
 open LeanProofs.IPRA.Probability.MedianWeighted
 open LeanProofs.IPRA.Geometry.HypercubeSplit (le_cancel_pos two_pos)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

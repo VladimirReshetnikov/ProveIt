@@ -1,5 +1,4 @@
 import IPRADerivations.Core.IntCancel
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Power of a point (`docs/proofs/geometry/mollweide_circle_ipra`, Section 7–8)
@@ -23,9 +22,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Geometry.PowerOfPoint
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

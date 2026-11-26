@@ -1,5 +1,4 @@
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Gauss–Bonnet: the incidence polynomial and the residual bounds
@@ -20,11 +19,7 @@ identity, the triangle turning and the quantitative Gauss–Bonnet theorem of th
 set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Geometry.GaussBonnetBridge
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

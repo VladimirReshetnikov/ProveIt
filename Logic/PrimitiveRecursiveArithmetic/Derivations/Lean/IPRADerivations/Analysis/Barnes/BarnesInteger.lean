@@ -4,7 +4,6 @@ import IPRADerivations.Combinatorics.Binomial
 import IPRADerivations.AnalyticNumberTheory.Euler
 import IPRADerivations.Core.ProdLemmas
 import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The Barnes G-function at positive integers
@@ -29,17 +28,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.BarnesInteger
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (fact_pos)
 open LeanProofs.IPRA.DiophantineNumberTheory.FLTMultiples (pw_pos)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul quo_of_eq)
 open LeanProofs.IPRA.AnalyticNumberTheory.Euler (prod_mul1)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -118,13 +113,9 @@ theorem hc_step {m : PTm n} (ih : Γ ⊢[PRAAx] barnes m * hyp m ≐ pw (fact m)
 private abbrev hcF : Fm PTm 1 := barnes (var 0) * hyp (var 0) ≐ pw (fact (var 0)) (var 0)
 
 private theorem hc₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] hcF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, PTm.subst_mul, subst_ap2, Syn.subst_var, Syn.inst_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact hc_base
-  · simp only [Fm.subst_eq, PTm.subst_mul, subst_ap2, Syn.subst_var, Syn.repl_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact hc_step Prf.hyp0
+  ipra_ind [subst_ap2]
+  · exact hc_base
+  · exact hc_step Prf.hyp0
 
 /-- `eq:hyper-cross`: `G(m + 1) H(m) = (m!)^m`. -/
 theorem hyper_cross (m : PTm n) : Γ ⊢[PRAAx] barnes m * hyp m ≐ pw (fact m) m := by
@@ -133,7 +124,7 @@ theorem hyper_cross (m : PTm n) : Γ ⊢[PRAAx] barnes m * hyp m ≐ pw (fact m)
 
 /-! ## Positivity and the quotient form -/
 
-theorem one_pos : Γ ⊢[PRAAx] (one : PTm n) ≐ succ (pred one) := congrSucc (pred_succ zero).eqSymm
+alias one_pos := Common.one_pos
 
 /-- Variables: `0 = m`. -/
 private abbrev bposF : Fm PTm 1 := barnes (var 0) ≐ succ (pred (barnes (var 0)))
@@ -146,22 +137,14 @@ theorem pos_congr {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) (hb : Γ ⊢[PRAAx] 
   exact h.eqTrans (hb.eqTrans (congrSucc e.eqSymm))
 
 private theorem bpos₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] bposF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, PTm.subst_pred, subst_ap2, Syn.subst_var, Syn.inst_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact pos_congr barnes_zero one_pos
-  · simp only [Fm.subst_eq, PTm.subst_pred, subst_ap2, Syn.subst_var, Syn.repl_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact pos_congr (barnes_succ _) (pos_mul Prf.hyp0 (fact_pos _))
+  ipra_ind [subst_ap2]
+  · exact pos_congr barnes_zero one_pos
+  · exact pos_congr (barnes_succ _) (pos_mul Prf.hyp0 (fact_pos _))
 
 private theorem hpos₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] hposF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, PTm.subst_pred, subst_ap2, Syn.subst_var, Syn.inst_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact pos_congr hyp_zero one_pos
-  · simp only [Fm.subst_eq, PTm.subst_pred, subst_ap2, Syn.subst_var, Syn.repl_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact pos_congr (hyp_succ _) (pos_mul Prf.hyp0 (pw_pos _ _))
+  ipra_ind [subst_ap2]
+  · exact pos_congr hyp_zero one_pos
+  · exact pos_congr (hyp_succ _) (pos_mul Prf.hyp0 (pw_pos _ _))
 
 /-- `G(m + 1) > 0`. -/
 theorem barnes_pos (m : PTm n) : Γ ⊢[PRAAx] barnes m ≐ succ (pred (barnes m)) := by
@@ -228,13 +211,9 @@ theorem pf_step {m : PTm n} (ih : Γ ⊢[PRAAx] ap2 (prodF epB) m m ≐ barnes (
 private abbrev pfF : Fm PTm 1 := ap2 (prodF epB) (var 0) (var 0) ≐ barnes (succ (var 0))
 
 private theorem pf₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] pfF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact (prod_zero _ _).eqTrans barnes_one.eqSymm
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact pf_step Prf.hyp0
+  ipra_ind [subst_ap2]
+  · exact (prod_zero _ _).eqTrans barnes_one.eqSymm
+  · exact pf_step Prf.hyp0
 
 /-- `G(m + 2) = ∏_{i<m} (i + 1)^{m−i}`. -/
 theorem barnes_power_form (m : PTm n) : Γ ⊢[PRAAx] ap2 (prodF epB) m m ≐ barnes (succ m) := by

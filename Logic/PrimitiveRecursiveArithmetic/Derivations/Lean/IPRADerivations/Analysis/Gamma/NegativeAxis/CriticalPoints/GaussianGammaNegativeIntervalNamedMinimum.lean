@@ -18,7 +18,7 @@ set_option maxHeartbeats 1500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalNamedMinimum
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaCanonicalExponent (constantF)
 open GaussianGammaNegativeCriticalEndpoints (mesh)
@@ -40,10 +40,6 @@ open GaussianRationalHorner (qadd qzero positive_product)
 open GaussianStirlingMultiplicativeBoundsLog (fractions_order)
 open GaussianStirlingTailComparison (point_add_order point_order_refl)
 open RationalArgmin (rationalLE rationalLE_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -64,19 +60,11 @@ def marginAt (f : PR 2) (p x E N T m : PTm n) : Fm PTm n :=
 def marginAvailable (f : PR 2) (x E N T m : PTm n) : Fm PTm n :=
   .all (marginAt f (var 0) (Syn.shift x) (Syn.shift E) (Syn.shift N) (Syn.shift T) (Syn.shift m))
 
-@[simp] theorem subst_index {l : ℕ} (σ : Fin n → PTm l) (p E N T : PTm n) :
-    Syn.subst σ (index p E N T) = index (Syn.subst σ p) (Syn.subst σ E) (Syn.subst σ N) (Syn.subst σ T) := by
-  simp [index]
+ipra_subst index
 
-@[simp] theorem subst_marginAt {l : ℕ} (σ : Fin n → PTm l) (f : PR 2) (p x E N T m : PTm n) :
-    (marginAt f p x E N T m).subst σ =
-      marginAt f (Syn.subst σ p) (Syn.subst σ x) (Syn.subst σ E) (Syn.subst σ N) (Syn.subst σ T) (Syn.subst σ m) := by
-  simp [marginAt,gapAt,rationalLE]
+ipra_subst marginAt [gapAt, rationalLE]
 
-@[simp] theorem subst_marginAvailable {l : ℕ} (σ : Fin n → PTm l) (f : PR 2) (x E N T m : PTm n) :
-    (marginAvailable f x E N T m).subst σ =
-      marginAvailable f (Syn.subst σ x) (Syn.subst σ E) (Syn.subst σ N) (Syn.subst σ T) (Syn.subst σ m) := by
-  simp [marginAvailable,Syn.subst_shift,Syn.shift_subst]
+ipra_subst marginAvailable [Syn.subst_shift, Syn.shift_subst]
 
 theorem index_bounds (p E N T : PTm n) : Γ ⊢[PRAAx]
     le p (index p E N T) ⋏ (le T (index p E N T) ⋏

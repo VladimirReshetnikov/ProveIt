@@ -1,5 +1,4 @@
 import IPRADerivations.Probability.MedianTransport
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The finite Jensen inequality for medians
@@ -27,17 +26,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.MedianJensen
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Algebra.CubeRootTwo (sg)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totatives (sg_lt sg_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Probability.MedianCounts
 open LeanProofs.IPRA.Probability.MedianSymmetry (shift_pairT')
 open LeanProofs.IPRA.Probability.MedianTransport (shift_inst2)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

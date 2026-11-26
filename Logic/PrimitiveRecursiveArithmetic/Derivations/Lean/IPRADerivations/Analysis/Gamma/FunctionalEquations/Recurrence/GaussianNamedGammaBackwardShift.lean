@@ -16,7 +16,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedGammaBackwardShift
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qadd qzero)
 open GaussianRationalMetric (qsub)
 open GaussianRationalReciprocal (qone)
@@ -27,8 +27,6 @@ open GaussianGammaAdjacentCutoff (multiply_cross)
 open GaussianNameEquivalence (crossEquivalent cross_symm cross_trans cross_refl)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameReciprocal (apart)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -46,14 +44,11 @@ abbrev nameF (f : PR 2) : PR 2 := multiplyF (reciprocalF f) (GaussianNamedGamma.
 def data (f : PR 2) (x A a : PTm n) : PTm n :=
   multiplyData (reciprocalF f) (GaussianNamedGamma.nameF f) (reciprocalData x a) (GaussianNamedGamma.data x A)
 
-@[simp] theorem subst_minusOneData {m : ℕ} (σ : Fin n → PTm m) (x : PTm n) :
-    Syn.subst σ (minusOneData x) = minusOneData (Syn.subst σ x) := by simp [minusOneData,negativeOne]
+ipra_subst minusOneData [negativeOne]
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x A a : PTm n) :
-    (source f x A a).subst σ = source f (Syn.subst σ x) (Syn.subst σ A) (Syn.subst σ a) := by simp [source]
+ipra_subst source
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x A a : PTm n) :
-    Syn.subst σ (data f x A a) = data f (Syn.subst σ x) (Syn.subst σ A) (Syn.subst σ a) := by simp [data,reciprocalData]
+ipra_subst data [reciprocalData]
 
 theorem minus_one_at (f : PR 2) (p x : PTm n) : Γ ⊢[PRAAx]
     ap2 (minusOneF f) p (minusOneData x) ≐

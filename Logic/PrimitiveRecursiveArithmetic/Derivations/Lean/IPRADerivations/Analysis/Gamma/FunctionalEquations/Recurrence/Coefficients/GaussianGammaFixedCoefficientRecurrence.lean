@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.Coefficients.GaussianGammaFiniteCoefficientRecurrence
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.Coefficients.GaussianGammaRecurrenceWeights
 import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaAllDegreeCoefficientStability
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The exact recurrence on the original fixed Gamma coefficient samples
@@ -19,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaFixedCoefficientRecurrence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRationalCoefficientRecursion (priorTerm priorBody)
@@ -28,10 +27,6 @@ open GaussianRationalNaturalScale (natScale natScale_congr)
 open GaussianGammaReciprocalDegreeCells (degree)
 open GaussianGammaFiniteCoefficientStability (fixedCoefficient)
 open GaussianGammaRecurrenceWeights (weight)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -39,12 +34,9 @@ def term (q R e j : PTm n) : PTm n := qmul (fixedCoefficient q R j) (weight q (t
 def sumData (q R e : PTm n) : PTm n := pairT q (pairT R e)
 def body : PTm 2 := term (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))) (var 0)
 def weightedSum (q R e : PTm n) : PTm n := GaussianRationalFiniteSum.sum body e (sumData q R e)
-@[simp] theorem subst_term {l : ℕ} (σ : Fin n → PTm l) (q R e j : PTm n) :
-    Syn.subst σ (term q R e j) = term (Syn.subst σ q) (Syn.subst σ R) (Syn.subst σ e) (Syn.subst σ j) := by simp [term]
-@[simp] theorem subst_sumData {l : ℕ} (σ : Fin n → PTm l) (q R e : PTm n) :
-    Syn.subst σ (sumData q R e) = sumData (Syn.subst σ q) (Syn.subst σ R) (Syn.subst σ e) := by simp [sumData]
-@[simp] theorem subst_weightedSum {l : ℕ} (σ : Fin n → PTm l) (q R e : PTm n) :
-    Syn.subst σ (weightedSum q R e) = weightedSum (Syn.subst σ q) (Syn.subst σ R) (Syn.subst σ e) := by simp [weightedSum]
+ipra_subst term
+ipra_subst sumData
+ipra_subst weightedSum
 
 theorem term_congr {q p R S e f j k : PTm n} (hq : Γ ⊢[PRAAx] q ≐ p) (hR : Γ ⊢[PRAAx] R ≐ S)
     (he : Γ ⊢[PRAAx] e ≐ f) (hj : Γ ⊢[PRAAx] j ≐ k) : Γ ⊢[PRAAx] term q R e j ≐ term p S f k := by
@@ -53,8 +45,8 @@ theorem term_congr {q p R S e f j k : PTm n} (hq : Γ ⊢[PRAAx] q ≐ p) (hR : 
 theorem term_at (q R e j : PTm n) : Γ ⊢[PRAAx] inst2 body j (sumData q R e) ≐ term q R e j := by
   have tail := snd_pair (Γ := Γ) q (pairT R e)
   simp only [body,inst2,subst_term,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
-  exact term_congr (fst_pair _ _) ((congrFst tail).eqTrans (fst_pair _ _))
-    ((congrSnd tail).eqTrans (snd_pair _ _)) (.eqRefl _)
+  exact term_congr (fst_pair _ _) tail.fstE
+    tail.sndE (.eqRefl _)
 
 theorem horizon_dominates (e : PTm n) : Γ ⊢[PRAAx] le e (degree e) :=
   le_of_eq_add (d := two) (by unfold degree; ipra_ring)

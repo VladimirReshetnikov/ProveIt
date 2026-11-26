@@ -14,15 +14,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalGaussianEmbedding (embed embedF embed_at scalarZero axis embed_axis embed_zero)
 open GaussianRationalHorner (qzero qadd qmul canonical canonical_congr)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr canonicalCoefficients)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -34,12 +31,9 @@ def hornerF : PR 3 := recDef (scalarZero : PTm 2) hornerStep
 def horner (C z j : PTm n) : PTm n := ap3 hornerF j C z
 def evaluate (C z : PTm n) : PTm n := horner C z (length C)
 
-@[simp] theorem subst_coefficients {l : ℕ} (σ : Fin n → PTm l) (C N : PTm n) :
-    Syn.subst σ (coefficients C N) = coefficients (Syn.subst σ C) (Syn.subst σ N) := by simp [coefficients]
-@[simp] theorem subst_horner {l : ℕ} (σ : Fin n → PTm l) (C z j : PTm n) :
-    Syn.subst σ (horner C z j) = horner (Syn.subst σ C) (Syn.subst σ z) (Syn.subst σ j) := by simp [horner]
-@[simp] theorem subst_evaluate {l : ℕ} (σ : Fin n → PTm l) (C z : PTm n) :
-    Syn.subst σ (evaluate C z) = evaluate (Syn.subst σ C) (Syn.subst σ z) := by simp [evaluate]
+ipra_subst coefficients
+ipra_subst horner
+ipra_subst evaluate
 
 theorem embed_congr {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) : Γ ⊢[PRAAx] embed a ≐ embed b :=
   (embed_at a).eqSymm.eqTrans ((congrAp1 embedF h).eqTrans (embed_at b))
@@ -92,9 +86,7 @@ theorem horner_canonical (C z j : PTm n) : Γ ⊢[PRAAx] RationalNormalForm.well
 
 def prefixLaw (C z N j : PTm n) : Fm PTm n := le j N ⟶
   embed (horner C z j) ≐ GaussianRationalHorner.horner (coefficients C N) (embed z) j
-@[simp] theorem subst_prefixLaw {l : ℕ} (σ : Fin n → PTm l) (C z N j : PTm n) :
-    (prefixLaw C z N j).subst σ = prefixLaw (Syn.subst σ C) (Syn.subst σ z) (Syn.subst σ N) (Syn.subst σ j) := by
-  simp [prefixLaw]
+ipra_subst prefixLaw
 
 theorem prefix_step (C z N j : PTm n) (hj : Γ ⊢[PRAAx] lt j N)
     (ih : Γ ⊢[PRAAx] embed (horner C z j) ≐ GaussianRationalHorner.horner (coefficients C N) (embed z) j) :
@@ -109,12 +101,10 @@ theorem prefix_step (C z N j : PTm n) (hj : Γ ⊢[PRAAx] lt j N)
 theorem horner_conjugacy (C z N j : PTm n) (hj : Γ ⊢[PRAAx] le j N) :
     Γ ⊢[PRAAx] embed (horner C z j) ≐ GaussianRationalHorner.horner (coefficients C N) (embed z) j := by
   have all : Γ ⊢[PRAAx] .all (prefixLaw (Syn.shift C) (Syn.shift z) (Syn.shift N) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI ((embed_congr (horner_zero C z)).eqTrans
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_prefixLaw]
+    · exact .impI ((embed_congr (horner_zero C z)).eqTrans
         (embed_zero.eqTrans (GaussianRationalHorner.horner_zero _ _).eqSymm))
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    · refine .impI ?_
       let Δ := le (succ (var 0)) (Syn.shift N) :: prefixLaw (Syn.shift C) (Syn.shift z) (Syn.shift N) (var 0) :: Γ.map Fm.shift
       have ih : Δ ⊢[PRAAx] embed (horner (Syn.shift C) (Syn.shift z) (var 0)) ≐
           GaussianRationalHorner.horner (coefficients (Syn.shift C) (Syn.shift N)) (embed (Syn.shift z)) (var 0) :=

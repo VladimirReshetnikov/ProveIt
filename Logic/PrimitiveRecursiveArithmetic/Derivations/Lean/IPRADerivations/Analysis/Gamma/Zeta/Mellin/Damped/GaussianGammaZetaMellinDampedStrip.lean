@@ -13,7 +13,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinDampedStrip
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianCompactRiemannName (sampleBody sampleData sample_body_at quadrature
@@ -31,9 +31,6 @@ open GaussianRationalFubini (rowBody)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalRiemannRefinement (termsDistance sum_distance)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -53,20 +50,11 @@ def dampedValue (q z D M N A C E : PTm n) : PTm n := sum dampedBody N (stripData
 def totalNumerator (h H N R T C : PTm n) : PTm n :=
   C*(majorant R H T*((H*H)*unit h)+(majorant R H T+cost R H T)*(H+N))
 
-@[simp] theorem subst_dampedRow {m : ℕ} (σ : Fin n → PTm m) (j q z D M A C E : PTm n) :
-    Syn.subst σ (dampedRow j q z D M A C E) =
-      dampedRow (Syn.subst σ j) (Syn.subst σ q) (Syn.subst σ z) (Syn.subst σ D)
-        (Syn.subst σ M) (Syn.subst σ A) (Syn.subst σ C) (Syn.subst σ E) := by simp [dampedRow,one]
+ipra_subst dampedRow [one]
 
-@[simp] theorem subst_dampedValue {m : ℕ} (σ : Fin n → PTm m) (q z D M N A C E : PTm n) :
-    Syn.subst σ (dampedValue q z D M N A C E) =
-      dampedValue (Syn.subst σ q) (Syn.subst σ z) (Syn.subst σ D) (Syn.subst σ M) (Syn.subst σ N)
-        (Syn.subst σ A) (Syn.subst σ C) (Syn.subst σ E) := by simp [dampedValue]
+ipra_subst dampedValue
 
-@[simp] theorem subst_totalNumerator {m : ℕ} (σ : Fin n → PTm m) (h H N R T C : PTm n) :
-    Syn.subst σ (totalNumerator h H N R T C) =
-      totalNumerator (Syn.subst σ h) (Syn.subst σ H) (Syn.subst σ N) (Syn.subst σ R) (Syn.subst σ T) (Syn.subst σ C) := by
-  simp [totalNumerator,majorant,GaussianEulerCompactPowerMajorant.exponentRadius,one]
+ipra_subst totalNumerator [majorant, GaussianEulerCompactPowerMajorant.exponentRadius, one]
 
 theorem damped_index_at (j q z D M N A C E : PTm n) :
     Γ ⊢[PRAAx] inst2 dampedBody j (stripData q z D M N A C E) ≐ dampedRow j q z D M A C E := by

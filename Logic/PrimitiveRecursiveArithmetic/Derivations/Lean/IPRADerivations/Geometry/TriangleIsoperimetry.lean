@@ -1,6 +1,5 @@
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Geometry.HypercubeSplit
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Triangle isoperimetry, with exact polynomial cores
@@ -25,14 +24,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Geometry.TriangleIsoperimetry
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Probability.Variance (ad ad_sq)
 open LeanProofs.IPRA.Geometry.HypercubeSplit (le_cancel_pos two_pos)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalReducedSpanMembership
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul qzero)
 open GaussianRationalRowElimination (shape)
 open GaussianPolynomialDeterminantTerms (cell)
@@ -34,9 +34,6 @@ open GaussianTranslatedNonconstant (recode recode_eq recode_congr)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
 open LeanProofs.IPRA.Foundations.BoundedReflection (allB all_elim all_intro all_cases eq_of_eqb eqb_cases one_ne_zero)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -148,17 +145,11 @@ def checkBody : PTm 2 := checkCoordinate (fstT (var 1)) (fstT (sndT (var 1)))
 def test (A R N v : PTm n) : PTm n :=
   allB checkBody N (checkData (finalMatrix A R N) R (weights A R N v) v)
 
-@[simp] theorem subst_checkCoordinate {k : ℕ} (σ : Fin n → PTm k) (E R C v j : PTm n) :
-    Syn.subst σ (checkCoordinate E R C v j) = checkCoordinate (Syn.subst σ E) (Syn.subst σ R)
-      (Syn.subst σ C) (Syn.subst σ v) (Syn.subst σ j) := by simp [checkCoordinate]
+ipra_subst checkCoordinate
 
-@[simp] theorem subst_checkData {k : ℕ} (σ : Fin n → PTm k) (E R C v : PTm n) :
-    Syn.subst σ (checkData E R C v) =
-      checkData (Syn.subst σ E) (Syn.subst σ R) (Syn.subst σ C) (Syn.subst σ v) := by simp [checkData]
+ipra_subst checkData
 
-@[simp] theorem subst_test {k : ℕ} (σ : Fin n → PTm k) (A R N v : PTm n) :
-    Syn.subst σ (test A R N v) = test (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ v) := by
-  simp [test]
+ipra_subst test
 
 theorem check_body_at (E R C v j : PTm n) :
     Γ ⊢[PRAAx] inst2 checkBody j (checkData E R C v) ≐ checkCoordinate E R C v j := by
@@ -174,9 +165,9 @@ theorem check_body_at (E R C v j : PTm n) :
       (σ' := ![E, R, C, v, j]) (fun i => by
         fin_cases i
         · exact fst_pair _ _
-        · exact (congrFst tail).eqTrans (fst_pair _ _)
-        · exact (congrFst last).eqTrans (fst_pair _ _)
-        · exact (congrSnd last).eqTrans (snd_pair _ _)
+        · exact tail.fstE
+        · exact last.fstE
+        · exact last.sndE
         · exact .eqRefl _)
 
 theorem test_cases (A R N v : PTm n) :

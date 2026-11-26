@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Geometry.HalfAngles.GaussianRationalHalfAngle
 import IPRADerivations.Foundations.RealizerComposition
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Finite rational transfer to the direction certificate
@@ -15,17 +14,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalPhaseCertificate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder (re im code normSq normSq_eval scale)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (positive_product represents)
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (fraction fraction_represents)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Analysis.RationalIntegerNormalization (positivePart)
 open LeanProofs.IPRA.Foundations.RealizerComposition (ap4)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -39,21 +34,14 @@ def slack (p q : PTm n) : PTm n := monus (multiplier q) (p*p)
 def coefficientNumerator (p q : PTm n) : PTm n := monus (two*q*q) (p*p)
 def middle (g a S p q : PTm n) : PTm n := slack p q*S*S+multiplier q*a*a*normSq g
 
-@[simp] theorem subst_four {m : ℕ} (σ : Fin n → PTm m) : Syn.subst σ (four : PTm n) = (four : PTm m) := by simp [four]
-@[simp] theorem subst_cross {m : ℕ} (σ : Fin n → PTm m) (h g V a S : PTm n) :
-    Syn.subst σ (cross h g V a S) = cross (Syn.subst σ h) (Syn.subst σ g) (Syn.subst σ V) (Syn.subst σ a) (Syn.subst σ S) := by simp [cross]
-@[simp] theorem subst_dot {m : ℕ} (σ : Fin n → PTm m) (h g : PTm n) :
-    (dot h g).subst σ = dot (Syn.subst σ h) (Syn.subst σ g) := by simp [dot]
-@[simp] theorem subst_dotNatural {m : ℕ} (σ : Fin n → PTm m) (h g : PTm n) :
-    Syn.subst σ (dotNatural h g) = dotNatural (Syn.subst σ h) (Syn.subst σ g) := by simp [dotNatural]
-@[simp] theorem subst_multiplier {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    Syn.subst σ (multiplier q) = multiplier (Syn.subst σ q) := by simp [multiplier]
-@[simp] theorem subst_slack {m : ℕ} (σ : Fin n → PTm m) (p q : PTm n) :
-    Syn.subst σ (slack p q) = slack (Syn.subst σ p) (Syn.subst σ q) := by simp [slack]
-@[simp] theorem subst_coefficientNumerator {m : ℕ} (σ : Fin n → PTm m) (p q : PTm n) :
-    Syn.subst σ (coefficientNumerator p q) = coefficientNumerator (Syn.subst σ p) (Syn.subst σ q) := by simp [coefficientNumerator]
-@[simp] theorem subst_middle {m : ℕ} (σ : Fin n → PTm m) (g a S p q : PTm n) :
-    Syn.subst σ (middle g a S p q) = middle (Syn.subst σ g) (Syn.subst σ a) (Syn.subst σ S) (Syn.subst σ p) (Syn.subst σ q) := by simp [middle]
+ipra_subst four
+ipra_subst cross
+ipra_subst dot
+ipra_subst dotNatural
+ipra_subst multiplier
+ipra_subst slack
+ipra_subst coefficientNumerator
+ipra_subst middle
 
 theorem multiplier_positive (q : PTm n) (hq : Γ ⊢[PRAAx] le one q) : Γ ⊢[PRAAx] le one (multiplier q) :=
   positive_product _ _ (positive_product _ _
@@ -212,18 +200,12 @@ def certificate (c v p q : PTm n) : Fm PTm n :=
 def target (c a S : PTm n) : PTm n := GaussianRationalHorner.ofGaussian
   (scale a (GaussianRationalL1.rawGaussian c)) S
 
-@[simp] theorem subst_conjugatePoint {m : ℕ} (σ : Fin n → PTm m) (c : PTm n) :
-    Syn.subst σ (conjugatePoint c) = conjugatePoint (Syn.subst σ c) := by simp [conjugatePoint]
-@[simp] theorem subst_directionDot {m : ℕ} (σ : Fin n → PTm m) (c v : PTm n) :
-    Syn.subst σ (directionDot c v) = directionDot (Syn.subst σ c) (Syn.subst σ v) := by simp [directionDot]
-@[simp] theorem subst_directionCoefficient {m : ℕ} (σ : Fin n → PTm m) (v p q : PTm n) :
-    Syn.subst σ (directionCoefficient v p q) = directionCoefficient (Syn.subst σ v) (Syn.subst σ p) (Syn.subst σ q) := by simp [directionCoefficient]
-@[simp] theorem subst_square {m : ℕ} (σ : Fin n → PTm m) (c : PTm n) :
-    Syn.subst σ (square c) = square (Syn.subst σ c) := by simp [square]
-@[simp] theorem subst_certificate {m : ℕ} (σ : Fin n → PTm m) (c v p q : PTm n) :
-    (certificate c v p q).subst σ = certificate (Syn.subst σ c) (Syn.subst σ v) (Syn.subst σ p) (Syn.subst σ q) := by simp [certificate]
-@[simp] theorem subst_target {m : ℕ} (σ : Fin n → PTm m) (c a S : PTm n) :
-    Syn.subst σ (target c a S) = target (Syn.subst σ c) (Syn.subst σ a) (Syn.subst σ S) := by simp [target]
+ipra_subst conjugatePoint
+ipra_subst directionDot
+ipra_subst directionCoefficient
+ipra_subst square
+ipra_subst certificate
+ipra_subst target
 
 theorem conjugate_represents (c g E : PTm n) (hc : Γ ⊢[PRAAx] represents c g E) : Γ ⊢[PRAAx]
     represents (conjugatePoint c) (GaussianRationalReciprocal.conjugate g) E := by
@@ -390,28 +372,23 @@ def returnedCertificate (c v p q : PTm n) : Fm PTm n :=
   RationalArgmin.rationalLE (fraction zero one) (fstT (run c v p q)) ⋏
     RationalArgmin.rationalLE (fstT (sndT (sndT (run c v p q)))) (sndT (sndT (sndT (run c v p q))))
 
-@[simp] theorem subst_leftSide {m : ℕ} (σ : Fin n → PTm m) (c v p q : PTm n) :
-    Syn.subst σ (leftSide c v p q) = leftSide (Syn.subst σ c) (Syn.subst σ v) (Syn.subst σ p) (Syn.subst σ q) := by simp [leftSide]
-@[simp] theorem subst_rightSide {m : ℕ} (σ : Fin n → PTm m) (c v : PTm n) :
-    Syn.subst σ (rightSide c v) = rightSide (Syn.subst σ c) (Syn.subst σ v) := by simp [rightSide]
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (c v p q : PTm n) :
-    Syn.subst σ (output c v p q) = output (Syn.subst σ c) (Syn.subst σ v) (Syn.subst σ p) (Syn.subst σ q) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (c v p q : PTm n) :
-    Syn.subst σ (run c v p q) = run (Syn.subst σ c) (Syn.subst σ v) (Syn.subst σ p) (Syn.subst σ q) := by simp [run]
-@[simp] theorem subst_returnedCertificate {m : ℕ} (σ : Fin n → PTm m) (c v p q : PTm n) :
-    (returnedCertificate c v p q).subst σ = returnedCertificate (Syn.subst σ c) (Syn.subst σ v) (Syn.subst σ p) (Syn.subst σ q) := by simp [returnedCertificate]
+ipra_subst leftSide
+ipra_subst rightSide
+ipra_subst output
+ipra_subst run
+ipra_subst returnedCertificate
 
 theorem program_at (c v p q : PTm n) : Γ ⊢[PRAAx] run c v p q ≐ output c v p q := by
   simpa [run,outputF,ap4] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![c,v,p,q]
 
 theorem returned_dot (c v p q : PTm n) : Γ ⊢[PRAAx] fstT (run c v p q) ≐ directionDot c v :=
-  (congrFst (program_at c v p q)).eqTrans (fst_pair _ _)
+  (program_at c v p q).fstE
 theorem returned_coefficient (c v p q : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run c v p q)) ≐ directionCoefficient v p q :=
-  (congrFst ((congrSnd (program_at c v p q)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at c v p q).sndE.fstE
 theorem returned_left (c v p q : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run c v p q))) ≐ leftSide c v p q :=
-  (congrFst ((congrSnd ((congrSnd (program_at c v p q)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at c v p q).sndE.sndE.fstE
 theorem returned_right (c v p q : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run c v p q))) ≐ rightSide c v :=
-  (congrSnd ((congrSnd ((congrSnd (program_at c v p q)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at c v p q).sndE.sndE.sndE
 
 theorem returned_certificate (c v a S p q : PTm n)
     (ha : Γ ⊢[PRAAx] le one a) (hS : Γ ⊢[PRAAx] le one S)

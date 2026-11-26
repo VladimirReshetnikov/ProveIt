@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPositiveRationalLogarithmSign
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianPositiveRationalLogarithm (source sample logF data name_regular)
 open RationalHarmonicInterval (interval horizon numerator common_value)
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S)
@@ -26,10 +26,6 @@ open GaussianNamedPositiveExponentialOrder (scalar_coordinate_distance)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open RationalValueBounds (upper upper_of_radius upper_triangle)
 open RationalArgmin (rationalLE)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

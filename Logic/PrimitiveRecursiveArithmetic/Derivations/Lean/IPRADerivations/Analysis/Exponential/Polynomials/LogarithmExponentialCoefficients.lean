@@ -1,10 +1,7 @@
 import IPRADerivations.Combinatorics.Bell
 import IPRADerivations.Combinatorics.BinomialIdentities
 import IPRADerivations.Probability.Independence
-import IPRADerivations.Core.Integers
 import IPRADerivations.AnalyticNumberTheory.Mobius
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Actual Bell coefficients for the local logarithmic exponential
@@ -27,17 +24,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.LogarithmExponentialCoefficients
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Bell (nth iS iS_zero nth_pair_zero nth_pair_succ)
 open LeanProofs.IPRA.Combinatorics.Binomial (binom pos_mul)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (binom_eq mul_cancel)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (fact_pos)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -46,10 +39,8 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 def value (c : PTm n) : ZT n := ⟨fstT c,sndT c⟩
 def code (a : ZT n) : PTm n := pairT a.pos a.neg
 
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (c : PTm n) :
-    (value c).subst σ = value (Syn.subst σ c) := by simp [value, ZT.subst]
-@[simp] theorem subst_code {m : ℕ} (σ : Fin n → PTm m) (a : ZT n) :
-    Syn.subst σ (code a) = code (a.subst σ) := by simp [code, ZT.subst]
+ipra_subst value [ZT.subst]
+ipra_subst code [ZT.subst]
 
 theorem eval_value_code (a : ZT n) : ZT.toZ Γ (value (code a)) = ZT.toZ Γ a := by
   change 𝔞(fstT (pairT a.pos a.neg)) - 𝔞(sndT (pairT a.pos a.neg)) = _
@@ -68,10 +59,8 @@ def kernelF : PR 1 := rec1 (pairT one zero) kernelStep
 def kernelCode (k : PTm n) : PTm n := ap1 kernelF k
 def kernel (k : PTm n) : ZT n := value (kernelCode k)
 
-@[simp] theorem subst_kernelCode {m : ℕ} (σ : Fin n → PTm m) (k : PTm n) :
-    Syn.subst σ (kernelCode k) = kernelCode (Syn.subst σ k) := by simp [kernelCode]
-@[simp] theorem subst_kernel {m : ℕ} (σ : Fin n → PTm m) (k : PTm n) :
-    (kernel k).subst σ = kernel (Syn.subst σ k) := by simp [kernel]
+ipra_subst kernelCode
+ipra_subst kernel
 
 theorem kernel_zero : Γ ⊢[PRAAx] kernelCode (zero : PTm n) ≐ pairT one zero := by
   simpa [kernelCode, kernelF] using rec1_zero (Γ := Γ) (pairT one zero) kernelStep
@@ -82,10 +71,10 @@ theorem kernel_succ (k : PTm n) : Γ ⊢[PRAAx] kernelCode (succ k) ≐
 
 theorem kernel_pos_succ (k : PTm n) :
     Γ ⊢[PRAAx] (kernel (succ k)).pos ≐ succ k*(kernel k).neg :=
-  (congrFst (kernel_succ k)).eqTrans (fst_pair _ _)
+  (kernel_succ k).fstE
 theorem kernel_neg_succ (k : PTm n) :
     Γ ⊢[PRAAx] (kernel (succ k)).neg ≐ succ k*(kernel k).pos :=
-  (congrSnd (kernel_succ k)).eqTrans (snd_pair _ _)
+  (kernel_succ k).sndE
 
 theorem kernel_differential (k : PTm n) :
     Γ ⊢[PRAAx] ZT.eq (kernel (succ k) + ZT.ofNat (succ k)*kernel k) (ZT.natLit 0) := by
@@ -106,12 +95,8 @@ def termM (j N L : PTm n) : PTm n :=
   binom N j * ((kernel (monus N j)).pos*(value (nth L (monus N j))).neg +
     (kernel (monus N j)).neg*(value (nth L (monus N j))).pos)
 
-@[simp] theorem subst_termP {m : ℕ} (σ : Fin n → PTm m) (j N L : PTm n) :
-    Syn.subst σ (termP j N L) = termP (Syn.subst σ j) (Syn.subst σ N) (Syn.subst σ L) := by
-  simp [termP, kernel, value, nth]
-@[simp] theorem subst_termM {m : ℕ} (σ : Fin n → PTm m) (j N L : PTm n) :
-    Syn.subst σ (termM j N L) = termM (Syn.subst σ j) (Syn.subst σ N) (Syn.subst σ L) := by
-  simp [termM, kernel, value, nth]
+ipra_subst termP [kernel, value, nth]
+ipra_subst termM [kernel, value, nth]
 
 def posBody : PTm 2 := termP (var 0) (fstT (var 1)) (sndT (var 1))
 def negBody : PTm 2 := termM (var 0) (fstT (var 1)) (sndT (var 1))
@@ -124,18 +109,12 @@ def table (N : PTm n) : PTm n := ap1 tableF N
 def coefficientCode (N : PTm n) : PTm n := fstT (table N)
 def coefficient (N : PTm n) : ZT n := value (coefficientCode N)
 
-@[simp] theorem subst_sumP {m : ℕ} (σ : Fin n → PTm m) (r N L : PTm n) :
-    Syn.subst σ (sumP r N L) = sumP (Syn.subst σ r) (Syn.subst σ N) (Syn.subst σ L) := by simp [sumP]
-@[simp] theorem subst_sumM {m : ℕ} (σ : Fin n → PTm m) (r N L : PTm n) :
-    Syn.subst σ (sumM r N L) = sumM (Syn.subst σ r) (Syn.subst σ N) (Syn.subst σ L) := by simp [sumM]
-@[simp] theorem subst_convolution {m : ℕ} (σ : Fin n → PTm m) (N L : PTm n) :
-    (convolution N L).subst σ = convolution (Syn.subst σ N) (Syn.subst σ L) := by simp [convolution, ZT.subst]
-@[simp] theorem subst_table {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (table N) = table (Syn.subst σ N) := by simp [table]
-@[simp] theorem subst_coefficientCode {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (coefficientCode N) = coefficientCode (Syn.subst σ N) := by simp [coefficientCode]
-@[simp] theorem subst_coefficient {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    (coefficient N).subst σ = coefficient (Syn.subst σ N) := by simp [coefficient]
+ipra_subst sumP
+ipra_subst sumM
+ipra_subst convolution [ZT.subst]
+ipra_subst table
+ipra_subst coefficientCode
+ipra_subst coefficient
 
 theorem table_zero : Γ ⊢[PRAAx] table (zero : PTm n) ≐ pairT (pairT one zero) zero := by
   simpa [table, tableF] using rec1_zero (Γ := Γ) (pairT (pairT one zero) zero) tableStep
@@ -145,10 +124,10 @@ theorem table_succ (N : PTm n) : Γ ⊢[PRAAx] table (succ N) ≐
   simpa [table, tableF, tableStep] using rec1_succ (Γ := Γ) (pairT (pairT one zero) zero) tableStep N
 
 theorem coefficientCode_zero : Γ ⊢[PRAAx] coefficientCode (zero : PTm n) ≐ pairT one zero :=
-  (congrFst table_zero).eqTrans (fst_pair _ _)
+  table_zero.fstE
 theorem coefficientCode_succ (N : PTm n) :
     Γ ⊢[PRAAx] coefficientCode (succ N) ≐ code (convolution N (table N)) :=
-  (congrFst (table_succ N)).eqTrans (fst_pair _ _)
+  (table_succ N).fstE
 
 theorem coefficient_zero : Γ ⊢[PRAAx] ZT.eq (coefficient (zero : PTm n)) (ZT.natLit 1) := by
   apply ZT.derive
@@ -304,10 +283,10 @@ theorem prefixM (N : PTm n) : Γ ⊢[PRAAx] sumM (succ N) (succ N) (table (succ 
 
 theorem coefficient_pos_succ (N : PTm n) :
     Γ ⊢[PRAAx] (coefficient (succ N)).pos ≐ sumP (succ N) N (table N) :=
-  (congrFst (coefficientCode_succ N)).eqTrans (fst_pair _ _)
+  (coefficientCode_succ N).fstE
 theorem coefficient_neg_succ (N : PTm n) :
     Γ ⊢[PRAAx] (coefficient (succ N)).neg ≐ sumM (succ N) N (table N) :=
-  (congrSnd (coefficientCode_succ N)).eqTrans (snd_pair _ _)
+  (coefficientCode_succ N).sndE
 
 theorem coefficient_split_pos (N : PTm n) :
     Γ ⊢[PRAAx] (coefficient (succ N)).pos ≐ sumP N N (table N)+(coefficient N).pos :=
@@ -332,10 +311,7 @@ theorem coefficient_second_neg (N : PTm n) :
 def differentialFormula (N : PTm n) : Fm PTm n :=
   ZT.eq (coefficient (succ N)+ZT.ofNat N*coefficient N) (coefficient N)
 
-@[simp] theorem subst_differentialFormula {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    (differentialFormula N).subst σ = differentialFormula (Syn.subst σ N) := by
-  simp only [differentialFormula, ZT.subst_eq, ZT.subst_add, ZT.subst_mul, ZT.subst_ofNat,
-    subst_coefficient, ConciseIPRA.PTm.subst_succ]
+ipra_subst differentialFormula
 
 theorem coefficient_one : Γ ⊢[PRAAx] ZT.eq (coefficient (one : PTm n)) (ZT.natLit 1) := by
   have p := natEq (coefficient_split_pos (Γ := Γ) zero)
@@ -364,12 +340,10 @@ theorem differential_succ (N : PTm n) : Γ ⊢[PRAAx] differentialFormula (succ 
   linear_combination p-q
 
 theorem differential_zero : Γ ⊢[PRAAx] differentialFormula (zero : PTm n) := by
-  have initial := ZT.toZ_eq (coefficient_zero (Γ := Γ) (n := n))
-  have first := ZT.toZ_eq (coefficient_one (Γ := Γ) (n := n))
   apply ZT.derive
   rw [ZT.toZ_add,ZT.toZ_mul,ZT.toZ_ofNat]
   ipra_simps
-  linear_combination first-initial
+  linear_combination ZT.toZ_eq (coefficient_one (Γ := Γ) (n := n))-ZT.toZ_eq (coefficient_zero (Γ := Γ) (n := n))
 
 theorem differential_congr {N M : PTm n} (h : Γ ⊢[PRAAx] N ≐ M)
     (d : Γ ⊢[PRAAx] differentialFormula N) : Γ ⊢[PRAAx] differentialFormula M := by
@@ -389,17 +363,13 @@ theorem differential (N : PTm n) : Γ ⊢[PRAAx] differentialFormula N := by
 theorem coefficient_vanish (N : PTm n) :
     Γ ⊢[PRAAx] ZT.eq (coefficient (succ (succ N))) (ZT.natLit 0) := by
   have all : Γ ⊢[PRAAx] .all (ZT.eq (coefficient (succ (succ (var 0)))) (ZT.natLit 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [ZT.subst_eq, subst_coefficient, ZT.subst_natLit,
-        ConciseIPRA.PTm.subst_succ, Syn.subst_var, Syn.inst_zero]
-      have e := ZT.toZ_eq (differential_succ (Γ := Γ) (zero : PTm n))
+    ipra_qfind [ZT.subst_eq, subst_coefficient, ZT.subst_natLit]
+    · have e := ZT.toZ_eq (differential_succ (Γ := Γ) (zero : PTm n))
       apply ZT.derive
       rw [ZT.toZ_add,ZT.toZ_mul,ZT.toZ_ofNat] at e
       ipra_simps
       linear_combination e
-    · simp only [ZT.subst_eq, subst_coefficient, ZT.subst_natLit,
-        ConciseIPRA.PTm.subst_succ, Syn.subst_var, Syn.repl_zero]
-      let Δ : List (Fm PTm (n+1)) := ZT.eq (coefficient (succ (succ (var 0)))) (ZT.natLit 0) :: Γ.map Fm.shift
+    · let Δ : List (Fm PTm (n+1)) := ZT.eq (coefficient (succ (succ (var 0)))) (ZT.natLit 0) :: Γ.map Fm.shift
       have h := ZT.toZ_eq (Prf.hyp0 : Δ ⊢[PRAAx] ZT.eq (coefficient (succ (succ (var 0)))) (ZT.natLit 0))
       have e := ZT.toZ_eq (differential_succ (Γ := Δ) (succ (var 0)))
       apply ZT.derive
@@ -420,8 +390,7 @@ formal-exponential coefficient `f_n=B_n/n!` without integer division. -/
 def rationalCoefficient (N : PTm n) : PTm n := pairT (coefficientCode N) (fact N)
 def rationalCoefficientF : PR 1 := PTm.toPR (rationalCoefficient (var 0))
 
-@[simp] theorem subst_rationalCoefficient {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (rationalCoefficient N) = rationalCoefficient (Syn.subst σ N) := by simp [rationalCoefficient, fact]
+ipra_subst rationalCoefficient [fact]
 
 theorem rationalCoefficient_at (N : PTm n) :
     Γ ⊢[PRAAx] ap1 rationalCoefficientF N ≐ rationalCoefficient N := by
@@ -451,13 +420,9 @@ def oddBit (k : PTm n) : PTm n := eqb (rem k two) one
 def kernelParity (k : PTm n) : Fm PTm n :=
   ((kernel k).pos ≐ evenBit k*fact k) ⋏ ((kernel k).neg ≐ oddBit k*fact k)
 
-@[simp] theorem subst_evenBit {m : ℕ} (σ : Fin n → PTm m) (k : PTm n) :
-    Syn.subst σ (evenBit k) = evenBit (Syn.subst σ k) := by simp [evenBit, two, one]
-@[simp] theorem subst_oddBit {m : ℕ} (σ : Fin n → PTm m) (k : PTm n) :
-    Syn.subst σ (oddBit k) = oddBit (Syn.subst σ k) := by simp [oddBit, two, one]
-@[simp] theorem subst_kernelParity {m : ℕ} (σ : Fin n → PTm m) (k : PTm n) :
-    (kernelParity k).subst σ = kernelParity (Syn.subst σ k) := by
-  simp [kernelParity, kernel, value, fact, ZT.subst]
+ipra_subst evenBit [two, one]
+ipra_subst oddBit [two, one]
+ipra_subst kernelParity [kernel, value, fact, ZT.subst]
 
 theorem evenBit_zero : Γ ⊢[PRAAx] evenBit (zero : PTm n) ≐ one :=
   (AnalyticNumberTheory.Mobius.congrEqb' (rem_zero two) (.eqRefl _)).eqTrans (eqb_of_eq (.eqRefl _))
@@ -467,15 +432,13 @@ theorem oddBit_zero : Γ ⊢[PRAAx] oddBit (zero : PTm n) ≐ zero :=
 
 theorem kernel_parity (k : PTm n) : Γ ⊢[PRAAx] kernelParity k := by
   have all : Γ ⊢[PRAAx] .all (kernelParity (var 0)) := by
-    refine PRA.qfInd _ ⟨trivial,trivial⟩ ?_ ?_
-    · simp only [subst_kernelParity,Syn.subst_var,Syn.inst_zero]
-      exact .andI
-        (((congrFst kernel_zero).eqTrans (fst_pair _ _)).eqTrans
+    ipra_qfind (⟨trivial,trivial⟩) [subst_kernelParity]
+    · exact .andI
+        (kernel_zero.fstE.eqTrans
           ((congrMul evenBit_zero (fact_zero zero)).eqTrans (one_mul one)).eqSymm)
-        (((congrSnd kernel_zero).eqTrans (snd_pair _ _)).eqTrans
+        (kernel_zero.sndE.eqTrans
           ((congrMul oddBit_zero (fact_zero zero)).eqTrans (zero_mul one)).eqSymm)
-    · simp only [subst_kernelParity,Syn.subst_var,Syn.repl_zero]
-      let Δ : List (Fm PTm (n+1)) := kernelParity (var 0) :: Γ.map Fm.shift
+    · let Δ : List (Fm PTm (n+1)) := kernelParity (var 0) :: Γ.map Fm.shift
       have ep : Δ ⊢[PRAAx] evenBit (succ (var 0)) ≐ oddBit (var 0) :=
         Prf.andE₁ (AnalyticNumberTheory.Mobius.par_succ _)
       have op : Δ ⊢[PRAAx] oddBit (succ (var 0)) ≐ evenBit (var 0) :=
@@ -515,13 +478,9 @@ an already correct course-of-values oracle. -/
 theorem history_add (N j : PTm n) :
     Γ ⊢[PRAAx] nth (table (N+j)) j ≐ coefficientCode N := by
   have all : Γ ⊢[PRAAx] .all (nth (table (Syn.shift N+var 0)) (var 0) ≐ coefficientCode (Syn.shift N)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,subst_history,subst_table,subst_coefficientCode,PTm.subst_add,
-        Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (congrFst (congrAp2 iS (.eqRefl _) (congrAp1 tableF (add_zero N)))).eqTrans (congrFst (iS_zero _))
-    · simp only [Fm.subst_eq,subst_history,subst_table,subst_coefficientCode,PTm.subst_add,
-        Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact (congrFst (congrAp2 iS (.eqRefl _) (congrAp1 tableF (add_succ _ _)))).eqTrans
+    ipra_qfind [subst_history, subst_table, subst_coefficientCode]
+    · exact (congrFst (congrAp2 iS (.eqRefl _) (congrAp1 tableF (add_zero N)))).eqTrans (congrFst (iS_zero _))
+    · exact (congrFst (congrAp2 iS (.eqRefl _) (congrAp1 tableF (add_succ _ _)))).eqTrans
         ((history_succ _ _).eqTrans Prf.hyp0)
   simpa only [Fm.subst_eq,subst_history,subst_table,subst_coefficientCode,PTm.subst_add,
     Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using Prf.allE j all

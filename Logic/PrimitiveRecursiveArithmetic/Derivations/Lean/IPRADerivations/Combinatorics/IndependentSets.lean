@@ -1,6 +1,5 @@
 import IPRADerivations.Combinatorics.FibonacciSeries
 import IPRADerivations.Combinatorics.BellPascalInversion
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Independent sets of a path and tilings by squares and dominoes
@@ -33,17 +32,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.IndependentSets
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Fibonacci
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
 open LeanProofs.IPRA.Combinatorics.BellPascalInversion (ev ev_zero)
 open LeanProofs.IPRA.DiophantineNumberTheory.Pythagoras (two_pos)
 open LeanProofs.IPRA.DiophantineNumberTheory.FermatQuartic (congrPair)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -87,9 +82,9 @@ theorem st_succ (N b : PTm n) :
 
 theorem front_step {N b : PTm n} (ih : Γ ⊢[PRAAx] st (succ N) b ≐ pairT (fstT (st N (half b))) (okp b * sndT (st N (half b)))) :
     Γ ⊢[PRAAx] st (succ (succ N)) b ≐ pairT (fstT (st (succ N) (half b))) (okp b * sndT (st (succ N) (half b))) := by
-  have f := (congrFst ih).eqTrans (fst_pair _ _); have s := (congrSnd ih).eqTrans (snd_pair _ _)
-  refine (st_succ _ _).eqTrans (.eqTrans ?_ (congrPair ((congrFst (st_succ _ _)).eqTrans (fst_pair _ _))
-    (congrMul (.eqRefl _) ((congrSnd (st_succ _ _)).eqTrans (snd_pair _ _)))).eqSymm)
+  have f := ih.fstE; have s := ih.sndE
+  refine (st_succ _ _).eqTrans (.eqTrans ?_ (congrPair (st_succ _ _).fstE
+    (congrMul (.eqRefl _) (st_succ _ _).sndE)).eqSymm)
   refine congrPair (congrAp1 halfF f) ?_
   exact (congrMul s (congrMonus (.eqRefl _) (congrMul (congrAp1 parF f) (congrAp1 parF (congrAp1 halfF f))))).eqTrans
     (mul_assoc _ _ _)
@@ -97,24 +92,20 @@ theorem front_step {N b : PTm n} (ih : Γ ⊢[PRAAx] st (succ N) b ≐ pairT (fs
 theorem front_base (b : PTm n) :
     Γ ⊢[PRAAx] st (succ zero) b ≐ pairT (fstT (st zero (half b))) (okp b * sndT (st zero (half b))) := by
   have z := st_zero (Γ := Γ) b; have z' := st_zero (Γ := Γ) (half b)
-  have f := (congrFst z).eqTrans (fst_pair _ _); have s := (congrSnd z).eqTrans (snd_pair _ _)
-  refine (st_succ _ _).eqTrans (congrPair ((congrAp1 halfF f).eqTrans ((congrFst z').eqTrans (fst_pair _ _)).eqSymm) ?_)
+  have f := z.fstE; have s := z.sndE
+  refine (st_succ _ _).eqTrans (congrPair ((congrAp1 halfF f).eqTrans z'.fstE.eqSymm) ?_)
   refine (congrMul s (congrMonus (.eqRefl _) (congrMul (congrAp1 parF f) (congrAp1 parF (congrAp1 halfF f))))).eqTrans ?_
   exact (one_mul _).eqTrans (((one_mul _).eqSymm.eqTrans (mul_comm _ _)).eqTrans
-    (congrMul (.eqRefl _) ((congrSnd z').eqTrans (snd_pair _ _)).eqSymm))
+    (congrMul (.eqRefl _) z'.sndE.eqSymm))
 
 /-- Variables: `0 = N`, `1 = b`. -/
 private abbrev frontF : Fm PTm 2 :=
   st (succ (var 0)) (var 1) ≐ pairT (fstT (st (var 0) (half (var 1)))) (okp (var 1) * sndT (st (var 0) (half (var 1))))
 
 private theorem front₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] frontF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, subst_ap1, subst_pairT, subst_fstT, subst_sndT, PTm.subst_mul, PTm.subst_monus, Syn.subst_var,
-      Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact front_base _
-  · simp only [Fm.subst_eq, subst_ap2, subst_ap1, subst_pairT, subst_fstT, subst_sndT, PTm.subst_mul, PTm.subst_monus, Syn.subst_var,
-      Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact front_step Prf.hyp0
+  ipra_ind [subst_ap2, subst_ap1, subst_pairT, subst_fstT, subst_sndT]
+  · exact front_base _
+  · exact front_step Prf.hyp0
 
 theorem st_front (N b : PTm n) :
     Γ ⊢[PRAAx] st (succ N) b ≐ pairT (fstT (st N (half b))) (okp b * sndT (st N (half b))) := by
@@ -123,9 +114,9 @@ theorem st_front (N b : PTm n) :
 
 /-- `ok(N + 1, b) = [¬(bit₀ ∧ bit₁)] · ok(N, ⌊b/2⌋)`. -/
 theorem ok_succ (N b : PTm n) : Γ ⊢[PRAAx] ok (succ N) b ≐ okp b * ok N (half b) :=
-  (congrSnd (st_front N b)).eqTrans (snd_pair _ _)
+  (st_front N b).sndE
 
-theorem ok_zero (b : PTm n) : Γ ⊢[PRAAx] ok zero b ≐ one := (congrSnd (st_zero b)).eqTrans (snd_pair _ _)
+theorem ok_zero (b : PTm n) : Γ ⊢[PRAAx] ok zero b ≐ one := (st_zero b).sndE
 
 theorem okp_even (c : PTm n) : Γ ⊢[PRAAx] okp (two * c) ≐ one :=
   (congrMonus (.eqRefl _) ((congrMul (par_double c) (.eqRefl _)).eqTrans (zero_mul _))).eqTrans (monus_zero _)
@@ -164,13 +155,9 @@ theorem pairs_step (f : PTm 2) {M x : PTm n}
 private abbrev pairsF (f : PTm 2) : Fm PTm 2 := ap2 (sumF f) (two * var 0) (var 1) ≐ ap2 (sumF (pairB f)) (var 0) (var 1)
 
 private theorem pairs₀ (f : PTm 2) : ([] : List (Fm PTm 2)) ⊢[PRAAx] pairsF f := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact (congrAp2 (sumF f) (mul_zero _) (.eqRefl _)).eqTrans ((sum_zero _ _).eqTrans (sum_zero _ _).eqSymm)
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact pairs_step f Prf.hyp0
+  ipra_ind [subst_ap2]
+  · exact (congrAp2 (sumF f) (mul_zero _) (.eqRefl _)).eqTrans ((sum_zero _ _).eqTrans (sum_zero _ _).eqSymm)
+  · exact pairs_step f Prf.hyp0
 
 /-- `∑_{b < 2M} f(b) = ∑_{c < M} (f(2c) + f(2c + 1))`. -/
 theorem sum_pairs (f : PTm 2) (M x : PTm n) : Γ ⊢[PRAAx] ap2 (sumF f) (two * M) x ≐ ap2 (sumF (pairB f)) M x := by
@@ -247,26 +234,22 @@ theorem ind_base : Γ ⊢[PRAAx] pairT (C (zero : PTm n)) (C (succ zero)) ≐ pa
 
 theorem ind_step {N : PTm n} (ih : Γ ⊢[PRAAx] pairT (C N) (C (succ N)) ≐ pairT (fibS (succ N)) (fibS (succ (succ N)))) :
     Γ ⊢[PRAAx] pairT (C (succ N)) (C (succ (succ N))) ≐ pairT (fibS (succ (succ N))) (fibS (succ (succ (succ N)))) := by
-  have i₁ := (fst_pair _ _).eqSymm.eqTrans ((congrFst ih).eqTrans (fst_pair _ _))
-  have i₂ := (snd_pair _ _).eqSymm.eqTrans ((congrSnd ih).eqTrans (snd_pair _ _))
+  have i₁ := (fst_pair _ _).eqSymm.eqTrans ih.fstE
+  have i₂ := (snd_pair _ _).eqSymm.eqTrans ih.sndE
   refine congrPair i₂ ((C_rec N).eqTrans ((congrAdd i₂ i₁).eqTrans ?_))
   exact ((congrAdd (.eqRefl _) (fib_succ _).eqSymm).eqTrans (fibS_succ _).eqSymm)
 
 private theorem ind₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] indF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, subst_fibS, Syn.subst_var, Syn.inst_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact ind_base
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, subst_fibS, Syn.subst_var, Syn.repl_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact ind_step Prf.hyp0
+  ipra_ind [subst_ap2, subst_pairT, subst_fibS]
+  · exact ind_base
+  · exact ind_step Prf.hyp0
 
 /-- The number of subsets of `{0, …, N − 1}` with no two adjacent elements is `F_{N+2}`; equivalently
 the tilings of a row of length `N + 1` by squares and dominoes number `F_{N+2}`. -/
 theorem independent_sets (N : PTm n) : Γ ⊢[PRAAx] C N ≐ fibS (succ N) := by
   have h := inst (Γ := Γ) ind₀ (![N] : Fin 1 → PTm n)
   have h' : Γ ⊢[PRAAx] pairT (C N) (C (succ N)) ≐ pairT (fibS (succ N)) (fibS (succ (succ N))) := by simpa using h
-  exact (fst_pair _ _).eqSymm.eqTrans ((congrFst h').eqTrans (fst_pair _ _))
+  exact (fst_pair _ _).eqSymm.eqTrans h'.fstE
 
 /-! ## A leading zero does not change the scan -/
 
@@ -314,13 +297,9 @@ theorem ext_step {N : PTm n} (ih : Γ ⊢[PRAAx] ap2 (sumF vB) (pw two N) N ≐ 
 private abbrev extF : Fm PTm 1 := ap2 (sumF vB) (pw two (var 0)) (var 0) ≐ zero
 
 private theorem ext₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] extF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact ext_base
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact ext_step Prf.hyp0
+  ipra_ind [subst_ap2]
+  · exact ext_base
+  · exact ext_step Prf.hyp0
 
 /-- `ok(N + 1, d) = ok(N, d)` for `d < 2^N`. -/
 theorem ok_ext {N d : PTm n} (h : Γ ⊢[PRAAx] lt d (pw two N)) : Γ ⊢[PRAAx] ok (succ N) d ≐ ok N d := by
@@ -401,9 +380,8 @@ theorem H_sum (M : PTm n) :
       refine (congrMonus (.eqRefl _) (congrMonus (congrPw (.eqRefl _) (snd_pair _ _))
         (congrAdd (congrMul (.eqRefl _) (congrAdd (fst_pair _ _) (.eqRefl _))) (.eqRefl _)))).eqTrans ?_
       refine LeanProofs.IPRA.Combinatorics.Stirling.gle_of_le ?_
-      have p := natEq (pw_two_succ (Γ := Γ.map Fm.shift) (succ (Syn.shift M)))
       refine le_of_eq_add (d := two * var 0 + one) ?_
-      ipra_lc -p
+      ipra_lc -natEq (pw_two_succ (Γ := Γ.map Fm.shift) (succ (Syn.shift M)))
     exact (congrMul (.eqRefl _) ((congrMonus (.eqRefl _) g.wk).eqTrans (monus_self _))).eqTrans (mul_zero _)
 
 /-- The independent sets of the `n`-cycle number `L_n`, for `n ≥ 3`. -/

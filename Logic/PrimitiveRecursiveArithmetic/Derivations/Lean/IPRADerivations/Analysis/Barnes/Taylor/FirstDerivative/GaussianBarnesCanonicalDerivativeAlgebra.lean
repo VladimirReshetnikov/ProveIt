@@ -16,7 +16,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalDerivativeAlgebra
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add mul scale normSq_eval)
 open ComplexLogarithmName (baseNumerator baseDenominator base_positive)
 open GaussianBarnesCanonicalFactor (correction)
@@ -33,8 +33,6 @@ open GaussianRationalReciprocal (reciprocal reciprocal_identity qone qone_repres
   conjugate scaled_conjugate_product re_conjugate im_conjugate)
 open GaussianRationalSyntheticDivision (rescale_to qmul_congr qone_canonical)
 open GaussianRootAlgebra (sub equal_of_values re_sub im_sub re_add im_add re_mul im_mul re_scale im_scale re_neg im_neg re_one im_one)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "base" => GaussianBarnesCanonicalFactor.base

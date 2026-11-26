@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Gamma.Zeta.Mellin.EndpointBounds.GaussianGammaZetaMellinDecayRows
-import IPRADerivations.Core.SumLemmas
 
 /-!
 # Actual Euler decay prefix of the Mellin integrand
@@ -14,7 +13,7 @@ set_option maxHeartbeats 740000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinDecayPrefix
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEulerIntegrandName (decayF decayData powerF powerData source)
 open GaussianGammaZetaMellinDecayRows (clock rowCost prefix_row_error)
@@ -26,9 +25,6 @@ open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalRiemannRefinement (termsDistance sum_distance)
 open GaussianRationalSyntheticDivision (qmul_congr)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -49,30 +45,15 @@ def weightedValue (p z D a b N : PTm n) : PTm n :=
 def errorNumerator (h H N P : PTm n) : PTm n := P*((H*H)*unit h+(H+N))
 def errorDenominator (h H N : PTm n) : PTm n := (H+N)*unit h
 
-@[simp] theorem subst_parameters {m : ℕ} (σ : Fin n → PTm m) (p a b : PTm n) :
-    Syn.subst σ (parameters p a b) = parameters (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ b) := by simp [parameters]
-@[simp] theorem subst_term {m : ℕ} (σ : Fin n → PTm m) (j p a b : PTm n) :
-    Syn.subst σ (term j p a b) = term (Syn.subst σ j) (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ b) := by simp [term]
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (p N a b : PTm n) :
-    Syn.subst σ (value p N a b) = value (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ b) := by simp [value]
-@[simp] theorem subst_rowBudget {m : ℕ} (σ : Fin n → PTm m) (N a b : PTm n) :
-    Syn.subst σ (rowBudget N a b) = rowBudget (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ b) := by simp [rowBudget]
-@[simp] theorem subst_roundingCost {m : ℕ} (σ : Fin n → PTm m) (N a b : PTm n) :
-    Syn.subst σ (roundingCost N a b) = roundingCost (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ b) := by simp [roundingCost]
-@[simp] theorem subst_powerSample {m : ℕ} (σ : Fin n → PTm m) (p z D a b : PTm n) :
-    Syn.subst σ (powerSample p z D a b) =
-      powerSample (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ D) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [powerSample,factorClock]
-@[simp] theorem subst_weightedValue {m : ℕ} (σ : Fin n → PTm m) (p z D a b N : PTm n) :
-    Syn.subst σ (weightedValue p z D a b N) =
-      weightedValue (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ D) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by
-  simp [weightedValue,factorClock]
-@[simp] theorem subst_errorNumerator {m : ℕ} (σ : Fin n → PTm m) (h H N P : PTm n) :
-    Syn.subst σ (errorNumerator h H N P) = errorNumerator (Syn.subst σ h) (Syn.subst σ H) (Syn.subst σ N) (Syn.subst σ P) := by
-  simp [errorNumerator]
-@[simp] theorem subst_errorDenominator {m : ℕ} (σ : Fin n → PTm m) (h H N : PTm n) :
-    Syn.subst σ (errorDenominator h H N) = errorDenominator (Syn.subst σ h) (Syn.subst σ H) (Syn.subst σ N) := by
-  simp [errorDenominator]
+ipra_subst parameters
+ipra_subst term
+ipra_subst value
+ipra_subst rowBudget
+ipra_subst roundingCost
+ipra_subst powerSample [factorClock]
+ipra_subst weightedValue [factorClock]
+ipra_subst errorNumerator
+ipra_subst errorDenominator
 
 private theorem decode (q : Fin 4 → PTm n) (j p a b : PTm n) (x : PTm 4)
     (h : q = ![j,fstT (parameters p a b),fstT (sndT (parameters p a b)),sndT (sndT (parameters p a b))]) :

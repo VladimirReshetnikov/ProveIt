@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaPrimitiveEndpointEncoding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLowerPowerCoefficients (source)
 open GaussianGammaIntegralCutoffs (height etaDen eta_den_positive)
 open GaussianBetaPrimitiveLowerEndpoint (rootDen budget numerator denominator eta_factorization root_den_positive precision)
@@ -32,10 +32,6 @@ open GaussianRationalNaturalScale (naturalPoint)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open ComplexLogarithmRemainder (oneCode scale)
 open GaussianRootAlgebra (equal equal_of_values re_scale im_scale re_one im_one)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -45,17 +41,9 @@ def scaledEndpoint (p z B k A R N J : PTm n) : PTm n := qmul (naturalPoint N) (e
 def clockScaledEndpoint (p z B k A R N J : PTm n) : PTm n :=
   scaledEndpoint (clock p z B J (etaDen k A R*J)) z B k A R N J
 
-@[simp] theorem subst_endpoint {m : ℕ} (σ : Fin n → PTm m) (p z B k A R N J : PTm n) :
-    Syn.subst σ (endpoint p z B k A R N J) = endpoint (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B)
-      (Syn.subst σ k) (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ J) := by
-  simp [endpoint,GaussianBetaPrimitiveLinearStep.sample,argument,point,value,etaDen,height,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_scaledEndpoint {m : ℕ} (σ : Fin n → PTm m) (p z B k A R N J : PTm n) :
-    Syn.subst σ (scaledEndpoint p z B k A R N J) = scaledEndpoint (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B)
-      (Syn.subst σ k) (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ J) := by simp [scaledEndpoint]
-@[simp] theorem subst_clockScaledEndpoint {m : ℕ} (σ : Fin n → PTm m) (p z B k A R N J : PTm n) :
-    Syn.subst σ (clockScaledEndpoint p z B k A R N J) = clockScaledEndpoint (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B)
-      (Syn.subst σ k) (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ J) := by
-  simp [clockScaledEndpoint,etaDen,height,GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst endpoint [GaussianBetaPrimitiveLinearStep.sample, argument, point, value, etaDen, height, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst scaledEndpoint
+ipra_subst clockScaledEndpoint [etaDen, height, GaussianGammaIntegralCutoffs.tailCoefficient]
 
 theorem encoded_power_slack (p s z R B A k J : PTm n) (h : Γ ⊢[PRAAx] source z R B A)
     (hJ : Γ ⊢[PRAAx] le one J) : Γ ⊢[PRAAx]

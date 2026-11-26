@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerCompactAdditivity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerCompactModulus (lipschitz)
 open GaussianCompactRiemannName (inside sampledModulus localBody)
 open GaussianRationalMetric (distanceBounded)
@@ -24,9 +24,6 @@ open GaussianRationalDistanceOrder (distance_congr)
 open GaussianCompactLogarithmBounds (domain)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianCoefficientNameBounds (unit)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,18 +37,10 @@ def nameF : PR 2 := GaussianCompactRiemannName.nameF GaussianEulerIntegrandName.
 def addedData (z R B a C1 C2 E T : PTm n) : PTm n :=
   GaussianNameArithmetic.addData (data z R B a C1 E T) (data z R B (a+C1) C2 E T)
 
-@[simp] theorem subst_intervalSource {m : ℕ} (σ : Fin n → PTm m) (z R B a C E T : PTm n) :
-    (intervalSource z R B a C E T).subst σ = intervalSource (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by simp [intervalSource]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B a C1 C2 E T : PTm n) :
-    (source z R B a C1 C2 E T).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ C1) (Syn.subst σ C2) (Syn.subst σ E) (Syn.subst σ T) := by simp [source]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (z R B a C E T : PTm n) :
-    Syn.subst σ (data z R B a C E T) = data (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by simp [data]
-@[simp] theorem subst_addedData {m : ℕ} (σ : Fin n → PTm m) (z R B a C1 C2 E T : PTm n) :
-    Syn.subst σ (addedData z R B a C1 C2 E T) = addedData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ C1) (Syn.subst σ C2) (Syn.subst σ E) (Syn.subst σ T) := by simp [addedData]
+ipra_subst intervalSource
+ipra_subst source
+ipra_subst data
+ipra_subst addedData
 
 /-- Genuine original cross-multiplied interval guards, allowing arbitrary
 raw time codes and any positive numerical starting numerator. -/
@@ -120,31 +109,29 @@ def output (p q z R B a C1 C2 E T : PTm n) : PTm n := pairT (ap2 nameF p (data z
   (pairT (ap2 (GaussianNameArithmetic.addF nameF nameF) q (addedData z R B a C1 C2 E T)) (pairT (unit p+unit q) (unit p*unit q)))
 def outputF : PR 10 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) (var 7) (var 8) (var 9))
 def run (p q z R B a C1 C2 E T : PTm n) : PTm n := PTm.app outputF ![p,q,z,R,B,a,C1,C2,E,T]
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (p q z R B a C1 C2 E T : PTm n) :
-    Syn.subst σ (output p q z R B a C1 C2 E T) = output (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ C1) (Syn.subst σ C2) (Syn.subst σ E) (Syn.subst σ T) := by simp [output]
+ipra_subst output
 theorem program_at (p q z R B a C1 C2 E T : PTm n) : Γ ⊢[PRAAx]
     run p q z R B a C1 C2 E T ≐ output p q z R B a C1 C2 E T := by
   simpa [run,outputF] using toPR_eq (Γ := Γ)
     (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) (var 7) (var 8) (var 9) : PTm 10) ![p,q,z,R,B,a,C1,C2,E,T]
 theorem returned_full (p q z R B a C1 C2 E T : PTm n) : Γ ⊢[PRAAx]
     fstT (run p q z R B a C1 C2 E T) ≐ ap2 nameF p (data z R B a (C1+C2) E T) :=
-  (congrFst (program_at p q z R B a C1 C2 E T)).eqTrans (fst_pair _ _)
+  (program_at p q z R B a C1 C2 E T).fstE
 theorem returned_tail (p q z R B a C1 C2 E T : PTm n) : Γ ⊢[PRAAx]
     sndT (run p q z R B a C1 C2 E T) ≐ pairT (ap2 (GaussianNameArithmetic.addF nameF nameF) q (addedData z R B a C1 C2 E T))
-      (pairT (unit p+unit q) (unit p*unit q)) := (congrSnd (program_at p q z R B a C1 C2 E T)).eqTrans (snd_pair _ _)
+      (pairT (unit p+unit q) (unit p*unit q)) := (program_at p q z R B a C1 C2 E T).sndE
 theorem returned_sum (p q z R B a C1 C2 E T : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run p q z R B a C1 C2 E T)) ≐ ap2 (GaussianNameArithmetic.addF nameF nameF) q (addedData z R B a C1 C2 E T) :=
-  (congrFst (returned_tail p q z R B a C1 C2 E T)).eqTrans (fst_pair _ _)
+  (returned_tail p q z R B a C1 C2 E T).fstE
 theorem returned_budget (p q z R B a C1 C2 E T : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (run p q z R B a C1 C2 E T)) ≐ pairT (unit p+unit q) (unit p*unit q) :=
-  (congrSnd (returned_tail p q z R B a C1 C2 E T)).eqTrans (snd_pair _ _)
+  (returned_tail p q z R B a C1 C2 E T).sndE
 theorem returned_numerator (p q z R B a C1 C2 E T : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (run p q z R B a C1 C2 E T))) ≐ unit p+unit q :=
-  (congrFst (returned_budget p q z R B a C1 C2 E T)).eqTrans (fst_pair _ _)
+  (returned_budget p q z R B a C1 C2 E T).fstE
 theorem returned_denominator (p q z R B a C1 C2 E T : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (sndT (run p q z R B a C1 C2 E T))) ≐ unit p*unit q :=
-  (congrSnd (returned_budget p q z R B a C1 C2 E T)).eqTrans (snd_pair _ _)
+  (returned_budget p q z R B a C1 C2 E T).sndE
 theorem returned_distance (p q z R B a C1 C2 E T : PTm n) (h : Γ ⊢[PRAAx] source z R B a C1 C2 E T) : Γ ⊢[PRAAx]
     distanceBounded (fstT (run p q z R B a C1 C2 E T)) (fstT (sndT (run p q z R B a C1 C2 E T)))
       (fstT (sndT (sndT (run p q z R B a C1 C2 E T)))) (sndT (sndT (sndT (run p q z R B a C1 C2 E T)))) :=

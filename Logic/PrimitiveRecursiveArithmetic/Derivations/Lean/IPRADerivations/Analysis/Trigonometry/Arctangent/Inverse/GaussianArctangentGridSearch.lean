@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentSlope
-import IPRADerivations.Core.Search
 
 /-!
 # Exact finite crossing of an arctangent grid target
@@ -14,15 +13,11 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentGridSearch
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianArctangentExponentialPrefix (source total subst_total)
 open BaselQuadrature (Qb)
 open Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -37,8 +32,8 @@ private theorem test_at (i T M L : PTm n) :
     Γ ⊢[PRAAx] inst2 testBody i (searchData T M L) ≐ monus T (total i M L) := by
   let x := searchData T M L
   have hT : Γ ⊢[PRAAx] fstT x ≐ T := fst_pair _ _
-  have hM : Γ ⊢[PRAAx] fstT (sndT x) ≐ M := (congrFst (snd_pair T (pairT M L))).eqTrans (fst_pair _ _)
-  have hL : Γ ⊢[PRAAx] sndT (sndT x) ≐ L := (congrSnd (snd_pair T (pairT M L))).eqTrans (snd_pair _ _)
+  have hM : Γ ⊢[PRAAx] fstT (sndT x) ≐ M := (snd_pair T (pairT M L)).fstE
+  have hL : Γ ⊢[PRAAx] sndT (sndT x) ≐ L := (snd_pair T (pairT M L)).sndE
   simpa [testBody,inst2,x] using Prf.eqCongr (Ax := PRAAx) (Γ := Γ)
     (monus (var 0) (total (var 1) (var 2) (var 3)) : PTm 4)
     (σ := ![fstT x,i,fstT (sndT x),sndT (sndT x)]) (σ' := ![T,i,M,L])

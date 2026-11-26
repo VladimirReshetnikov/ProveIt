@@ -14,7 +14,7 @@ set_option maxHeartbeats 780000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetFrozenKernelRectangle
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetExponentialIntegralGrid (row subst_row)
 open GaussianBinetOscillatoryColumns (damping subst_damping)
 open GaussianBinetKernelFrozenPrefix (dampedBody dampedData damped_term damped_sum)
@@ -28,10 +28,6 @@ open GaussianRationalHorner (qmul)
 open GaussianRationalMetric (qnegative)
 open GaussianRationalRiemannRefinement (weight)
 open GaussianRationalSyntheticDivision (qmul_congr)
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -49,16 +45,9 @@ def matrix : PTm 3 :=
 def value (p k I N S cut X Y D sign R : PTm n) : PTm n :=
   qmul (weight S one N) (GaussianRationalFubini.rowFirst matrix I (monus N cut) (data p k N S cut X Y D sign R))
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (p k N S cut X Y D sign R : PTm n) :
-    Syn.subst σ (data p k N S cut X Y D sign R) =
-      data (Syn.subst σ p) (Syn.subst σ k) (Syn.subst σ N) (Syn.subst σ S) (Syn.subst σ cut)
-        (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ R) := by
-  simp [data,GaussianLogGammaEulerRepresentation.subst_argument]
+ipra_subst data [GaussianLogGammaEulerRepresentation.subst_argument]
 
-@[simp] theorem subst_term {m : ℕ} (σ : Fin n → PTm m) (i j r N S cut k x : PTm n) :
-    Syn.subst σ (term i j r N S cut k x) =
-      term (Syn.subst σ i) (Syn.subst σ j) (Syn.subst σ r) (Syn.subst σ N)
-        (Syn.subst σ S) (Syn.subst σ cut) (Syn.subst σ k) (Syn.subst σ x) := by simp [term]
+ipra_subst term
 
 @[simp] theorem matrix_at (i j d : PTm n) :
     inst3 matrix i j d = term i j (field0 d) (field1 d) (field2 d) (field3 d) (field4 d) (field5 d) := by

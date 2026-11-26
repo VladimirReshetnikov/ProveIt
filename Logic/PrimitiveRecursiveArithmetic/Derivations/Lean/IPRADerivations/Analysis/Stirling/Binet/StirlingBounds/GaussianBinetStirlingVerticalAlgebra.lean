@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetStirlingVerticalAlgebra
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetLogVerticalStep (step native_displacement)
 open GaussianBinetStirlingRemainder (offset)
 open GaussianBinetStirlingUnitDifferenceAlgebra (rawCore rawRemainder)
@@ -35,9 +35,6 @@ open GaussianRationalSumAlgebra (qadd_associative)
 open GaussianRationalSyntheticDivision (qadd_congr qadd_sub_cancel qmul_congr qone qsub_congr)
 open GaussianReciprocalHorner (qadd_commutative qadd_zero_right qmul_associative qmul_one_right)
 open GaussianRightHalfPlaneLogarithm (source)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

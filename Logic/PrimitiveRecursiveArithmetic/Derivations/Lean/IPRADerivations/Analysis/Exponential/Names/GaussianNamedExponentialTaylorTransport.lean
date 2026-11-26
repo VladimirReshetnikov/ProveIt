@@ -18,7 +18,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedExponentialTaylorTransport
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCyclicExponentialSamples (sampleBound exponential_bound)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianExponentialRadiusIndependence (independent_radii_proper input_widen same_input_cross)
@@ -31,9 +31,6 @@ open GaussianNamedInverseRate (independentRate)
 open GaussianRadiusExponentialName (nameF data input name_regular)
 open GaussianRationalHorner (positive_product)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

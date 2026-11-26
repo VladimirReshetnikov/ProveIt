@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerDecayFactorBounds
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegrandName (decayF decayData decayPoint)
 open GaussianPositiveRationalExponentialDecay
   (expF negF negData inverseData inverseQuery inverse_sample_at degree_in_cutoff
@@ -36,9 +36,6 @@ open GaussianRationalNaturalScale (naturalPoint)
 open GaussianRootAlgebra (equal_of_values)
 open Products (fact)
 open ComplexLogarithmRemainder (scale oneCode)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

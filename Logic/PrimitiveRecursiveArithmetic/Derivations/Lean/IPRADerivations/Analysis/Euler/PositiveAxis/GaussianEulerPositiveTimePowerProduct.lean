@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPositiveTimePowerProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianPositiveRationalLogarithm (logF)
 open GaussianEulerIntegrandName (coefficient powerExponentF powerExponentData powerRadius powerF powerData power_input)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
@@ -24,8 +24,6 @@ open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans 
 open GaussianCoefficientNameBounds (unit)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalHorner (qmul)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,16 +36,10 @@ def productData (z B a b c d : PTm n) : PTm n := multiplyData powerF powerF (pow
 def productClock (p z B a b c d : PTm n) : PTm n := GaussianFastValueCut.exponent
   (GaussianNameArithmetic.multiplyModulus powerF powerF (powerData z B a b) (powerData z B c d)) p
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (B a b c d : PTm n) :
-    (source B a b c d).subst σ = source (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d) := by simp [source]
-@[simp] theorem subst_logSumData {m : ℕ} (σ : Fin n → PTm m) (a b c d : PTm n) :
-    Syn.subst σ (logSumData a b c d) = logSumData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d) := by simp [logSumData]
-@[simp] theorem subst_productData {m : ℕ} (σ : Fin n → PTm m) (z B a b c d : PTm n) :
-    Syn.subst σ (productData z B a b c d) = productData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a)
-      (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d) := by simp [productData]
-@[simp] theorem subst_productClock {m : ℕ} (σ : Fin n → PTm m) (p z B a b c d : PTm n) :
-    Syn.subst σ (productClock p z B a b c d) = productClock (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d) := by simp [productClock]
+ipra_subst source
+ipra_subst logSumData
+ipra_subst productData
+ipra_subst productClock
 
 /-- The actual original logarithm has the product identity, independently
 of the ordered harmonic representative used to prove it. -/

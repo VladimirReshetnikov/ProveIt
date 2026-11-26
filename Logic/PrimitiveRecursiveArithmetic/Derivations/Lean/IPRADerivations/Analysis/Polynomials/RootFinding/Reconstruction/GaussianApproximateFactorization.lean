@@ -21,7 +21,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianApproximateFactorization
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianFactorParameters (initialA toleranceDenominator roots monicRD)
 open LeanProofs.IPRA.Analysis.GaussianFactorErrorStep (error subst_error)
 open LeanProofs.IPRA.Analysis.GaussianWeightedErrorBudget (weight cap)
@@ -31,9 +31,6 @@ open LeanProofs.IPRA.Analysis.GaussianCoefficientL1 (coefficientNorm subCoeffici
 open LeanProofs.IPRA.Analysis.RationalArgmin (rationalLE)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,9 +38,7 @@ def errorBound (step : PR 3) (C N p q j : PTm n) : Fm PTm n :=
   rationalLE (weight N (initialA C) j (error step C N p q j))
     (cap N (initialA C) p (toleranceDenominator C N q) j)
 
-@[simp] theorem subst_errorBound {m : ℕ} (σ : Fin n → PTm m) (step : PR 3) (C N p q j : PTm n) :
-    (errorBound step C N p q j).subst σ = errorBound step (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ j) := by simp [errorBound]
+ipra_subst errorBound
 
 theorem errorBound_congr (step : PR 3) (C N p q : PTm n) {i j : PTm n}
     (hij : Γ ⊢[PRAAx] i ≐ j) (h : Γ ⊢[PRAAx] errorBound step C N p q i) :
@@ -83,9 +78,7 @@ theorem backward_error_step (step : PR 3) (C N p q k : PTm n)
 
 def backwardInvariant (step : PR 3) (C N p q k : PTm n) : Fm PTm n :=
   le k N ⟶ errorBound step C N p q (remaining N k)
-@[simp] theorem subst_backwardInvariant {m : ℕ} (σ : Fin n → PTm m) (step : PR 3) (C N p q k : PTm n) :
-    (backwardInvariant step C N p q k).subst σ = backwardInvariant step (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ k) := by simp [backwardInvariant]
+ipra_subst backwardInvariant
 
 theorem backward_error_bound (step : PR 3) (C N p q k : PTm n)
     (hRD : Γ ⊢[PRAAx] monicRD step) (hC : Γ ⊢[PRAAx] length C ≐ succ N)
@@ -106,12 +99,10 @@ theorem backward_error_bound (step : PR 3) (C N p q k : PTm n)
   have hpq' : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift p) (Syn.shift q) := by
     simpa only [Fm.shift,subst_le,Syn.shift] using hpq.shift
   have all : Γ ⊢[PRAAx] .all (backwardInvariant step (Syn.shift C) (Syn.shift N) (Syn.shift p) (Syn.shift q) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [subst_backwardInvariant,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (errorBound_congr step C N p q (monus_zero N).eqSymm
+    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_backwardInvariant]
+    · exact .impI (errorBound_congr step C N p q (monus_zero N).eqSymm
         (terminal_error_bound step C N p q hC hm hN (le_trans hp hpq))).wk
-    · simp only [subst_backwardInvariant,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    · refine .impI ?_
       let I := backwardInvariant step (Syn.shift C) (Syn.shift N) (Syn.shift p) (Syn.shift q) (var 0)
       exact backward_error_step _ _ _ _ _ _ hRD'.wk.wk hC'.wk.wk hm'.wk.wk hN'.wk.wk hp'.wk.wk hpq'.wk.wk
         Prf.hyp0 (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
@@ -138,15 +129,9 @@ def productPolynomial (step : PR 3) (C N p q : PTm n) : PTm n :=
 def coefficientError (step : PR 3) (C N p q : PTm n) : PTm n :=
   coefficientNorm (subCoefficients C (productPolynomial step C N p q) (succ N))
 
-@[simp] theorem subst_rootList {m : ℕ} (σ : Fin n → PTm m) (step : PR 3) (C N p q : PTm n) :
-    Syn.subst σ (rootList step C N p q) = rootList step (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ p) (Syn.subst σ q) := by simp [rootList]
-@[simp] theorem subst_productPolynomial {m : ℕ} (σ : Fin n → PTm m) (step : PR 3) (C N p q : PTm n) :
-    Syn.subst σ (productPolynomial step C N p q) = productPolynomial step (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ p) (Syn.subst σ q) := by simp [productPolynomial]
-@[simp] theorem subst_coefficientError {m : ℕ} (σ : Fin n → PTm m) (step : PR 3) (C N p q : PTm n) :
-    Syn.subst σ (coefficientError step C N p q) = coefficientError step (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ p) (Syn.subst σ q) := by simp [coefficientError]
+ipra_subst rootList
+ipra_subst productPolynomial
+ipra_subst coefficientError
 
 theorem rootList_length (step : PR 3) (C N p q : PTm n) : Γ ⊢[PRAAx] length (rootList step C N p q) ≐ N :=
   GaussianRationalDeflation.roots_length _ _ _ _ _ _
@@ -170,9 +155,7 @@ theorem approximate_factorization (step : PR 3) (C N p q : PTm n)
 def output (step : PR 3) (C N p q : PTm n) : PTm n :=
   pairT (rootList step C N p q) (productPolynomial step C N p q)
 def outputF (step : PR 3) : PR 4 := PTm.toPR (output step (var 0) (var 1) (var 2) (var 3))
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (step : PR 3) (C N p q : PTm n) :
-    Syn.subst σ (output step C N p q) = output step (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ p) (Syn.subst σ q) := by simp [output]
+ipra_subst output
 theorem program_at (step : PR 3) (C N p q : PTm n) : Γ ⊢[PRAAx]
     PTm.app (outputF step) ![C,N,p,q] ≐ output step C N p q := by
   simpa [outputF] using toPR_eq (Γ := Γ) (output step (var 0) (var 1) (var 2) (var 3) : PTm 4) ![C,N,p,q]
@@ -181,10 +164,10 @@ def run (step : PR 3) (C N p q : PTm n) : PTm n := PTm.app (outputF step) ![C,N,
 
 theorem returned_roots (step : PR 3) (C N p q : PTm n) : Γ ⊢[PRAAx]
     fstT (run step C N p q) ≐ rootList step C N p q :=
-  (congrFst (program_at _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _ _).fstE
 theorem returned_polynomial (step : PR 3) (C N p q : PTm n) : Γ ⊢[PRAAx]
     sndT (run step C N p q) ≐ productPolynomial step C N p q :=
-  (congrSnd (program_at _ _ _ _ _)).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _ _).sndE
 
 theorem returned_product_evaluation (step : PR 3) (C N p q y : PTm n) : Γ ⊢[PRAAx]
     GaussianRationalHorner.evaluate (sndT (run step C N p q)) y ≐

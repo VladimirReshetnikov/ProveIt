@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaMinimumQuotientReadback
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNamedDifferenceQuotient
   (nameF data input raw inverse numerator denominator denominator_positive independent_readback actual_inverse)
@@ -28,18 +28,13 @@ open GaussianRationalMetric (qsub bounded distanceBounded qsub_canonical)
 open GaussianRationalReciprocal (bounded_product bound_congr)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
 open GaussianReconstructionRoots (norm_from_distance)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" u:max => Groth.ι (Q.mk Γ u)
 
 def diagonalCost (A D : PTm n) : PTm n := A*(num 3+two*D)
 
-@[simp] theorem subst_diagonalCost {k : ℕ} (σ : Fin n → PTm k) (A D : PTm n) :
-    Syn.subst σ (diagonalCost A D) = diagonalCost (Syn.subst σ A) (Syn.subst σ D) := by
-  simp [diagonalCost, two]
+ipra_subst diagonalCost [two]
 
 private theorem raw_norm (F G : PR 2) (x y h D z C N t : PTm n)
     (hQ : Γ ⊢[PRAAx] input F G x y h D) (hN : Γ ⊢[PRAAx] le one N)

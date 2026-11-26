@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIncompleteFactorialCombination
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIncompleteFactorialPolynomial (value value_zero value_succ)
 open GaussianGammaFactorialValues (argument)
 open GaussianRationalHorner (qadd qmul ofGaussian canonical canonical_unique)
@@ -25,9 +25,6 @@ open GaussianRationalSyntheticDivision (qone qadd_congr qmul_congr)
 open GaussianRationalNaturalScale (natScale naturalPoint)
 open GaussianRationalReciprocal (power)
 open GaussianPositiveRationalLogarithm (fraction)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

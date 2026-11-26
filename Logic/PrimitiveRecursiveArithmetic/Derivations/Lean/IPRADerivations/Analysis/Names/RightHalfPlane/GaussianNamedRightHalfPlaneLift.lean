@@ -15,7 +15,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedRightHalfPlaneLift
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
@@ -28,9 +28,6 @@ open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator rat
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -63,14 +60,9 @@ def data (x M R : PTm n) : PTm n := pairT x (pairT M R)
 def nameF (map : RationalMap) (f : PR 2) : PR 2 := PTm.toPR
   (sample map f (var 0) (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))) : PTm 2)
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x M R : PTm n) :
-    (source f x M R).subst σ = source f (Syn.subst σ x) (Syn.subst σ M) (Syn.subst σ R) := by
-  simp [source, GaussianNamedRightHalfPlane.source, GaussianNamedRightHalfPlane.certificate,
-    GaussianNamedRightHalfPlane.marginPoint, GaussianNamedRightHalfPlane.radius]
+ipra_subst source [GaussianNamedRightHalfPlane.source, GaussianNamedRightHalfPlane.certificate, GaussianNamedRightHalfPlane.marginPoint, GaussianNamedRightHalfPlane.radius]
 
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (map : RationalMap) (p M R : PTm n) :
-    Syn.subst σ (clock map p M R) = clock map (Syn.subst σ p) (Syn.subst σ M) (Syn.subst σ R) := by
-  simp [clock, GaussianNamedRightHalfPlane.precision, two]
+ipra_subst clock [GaussianNamedRightHalfPlane.precision, two]
 
 @[simp] theorem subst_frozenData {m : ℕ} (σ : Fin n → PTm m) (map : RationalMap) (f : PR 2) (k x : PTm n) :
     Syn.subst σ (frozenData map f k x) = frozenData map f (Syn.subst σ k) (Syn.subst σ x) := by
@@ -79,14 +71,9 @@ def nameF (map : RationalMap) (f : PR 2) : PR 2 := PTm.toPR
   fin_cases i
   rfl
 
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (map : RationalMap) (f : PR 2) (p x M R : PTm n) :
-    Syn.subst σ (sample map f p x M R) =
-      sample map f (Syn.subst σ p) (Syn.subst σ x) (Syn.subst σ M) (Syn.subst σ R) := by
-  simp [sample]
+ipra_subst sample
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (x M R : PTm n) :
-    Syn.subst σ (data x M R) = data (Syn.subst σ x) (Syn.subst σ M) (Syn.subst σ R) := by
-  simp [data]
+ipra_subst data
 
 theorem sample_at (map : RationalMap) (f : PR 2) (p x M R : PTm n) :
     Γ ⊢[PRAAx] ap2 (nameF map f) p (data x M R) ≐ sample map f p x M R := by

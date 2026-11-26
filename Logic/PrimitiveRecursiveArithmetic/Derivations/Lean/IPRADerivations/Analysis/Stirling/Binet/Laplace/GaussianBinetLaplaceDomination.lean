@@ -17,7 +17,7 @@ set_option maxHeartbeats 600000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceDomination
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open ComplexLogarithmRemainder (normSq normSq_code)
 open GaussianBinetKernelRows (inputData)
@@ -32,10 +32,6 @@ open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianRealExponentialPositiveRepresentative (positiveF positiveData sample_canonical sample_nonnegative)
 open RationalGaussianEmbedding (native canonical_axis_roundtrip embed_from_representation)
 open RationalSupMetric (denominatorOf)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "ExpF" => GaussianBinetLaplaceExponential.nameF

@@ -1,10 +1,8 @@
 import IPRADerivations.Probability.Expectation
 import IPRADerivations.Analysis.Optimization.WeightedAMGM
 import IPRADerivations.AnalyticNumberTheory.RSA
-import IPRADerivations.Core.ProdLemmas
 import IPRADerivations.DiophantineNumberTheory.SuperellipticFamily
 import IPRADerivations.Geometry.HypercubeSplit
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Finite Hölder and Lyapunov inequalities with rational exponents
@@ -36,7 +34,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.FiniteHolder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Expectation (Ew Wt inst2_mul' le_zero_of)
 open LeanProofs.IPRA.Analysis.WeightedAMGM (mult_convex)
 open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
@@ -45,10 +43,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.DiophantineNumberTheory.Hurwitz (add_le_add)
 open LeanProofs.IPRA.Geometry.HypercubeSplit (le_cancel_pos)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -78,13 +72,9 @@ theorem lin3_le {f g h : PTm 2} {c₀ c₁ c₂ N x : PTm n}
     Γ ⊢[PRAAx] LinF f g h c₀ c₁ c₂ N x := by
   have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
       LinF f g h (Syn.shift c₀) (Syn.shift c₁) (Syn.shift c₂) (var 0) (Syn.shift x)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      exact .impI (lin_base f g h c₀ c₁ c₂ x)
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      exact .impI (lin_step (Prf.impE hb.allOpen.wk.wk Prf.hyp0)
+    ipra_qfind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2]
+    · exact .impI (lin_base f g h c₀ c₁ c₂ x)
+    · exact .impI (lin_step (Prf.impE hb.allOpen.wk.wk Prf.hyp0)
         (Prf.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)))
   have h := Prf.allE N hall
   simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,

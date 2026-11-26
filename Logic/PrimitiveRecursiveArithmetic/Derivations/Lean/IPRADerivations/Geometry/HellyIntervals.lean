@@ -18,11 +18,8 @@ The case of three supplied points with the median as witness is `Geometry/HellyL
 
 namespace LeanProofs.IPRA.Geometry.HellyIntervals
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Geometry.Hyperbox.Optimization (minBudget argmin attained_minimum)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,8 +38,7 @@ theorem helly_intervals {C N x : PTm n} (hC : ∀ i : PTm n, Γ ⊢[PRAAx] lt i 
   have he := Prf.andE₁ (Prf.andE₂ m)
   have hle := Prf.andE₂ (Prf.andE₂ m)
   have h1 := Prf.impE (Prf.impE (hpair k (argmin r C N x)) hk) ha
-  have e := natEq he
   refine .andI ?_ hle
-  ipra_le sl h1 with e
+  ipra_le sl h1 with natEq he
 
 end LeanProofs.IPRA.Geometry.HellyIntervals

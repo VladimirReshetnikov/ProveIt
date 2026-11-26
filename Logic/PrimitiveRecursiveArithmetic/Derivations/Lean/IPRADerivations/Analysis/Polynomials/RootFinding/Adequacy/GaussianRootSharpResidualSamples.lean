@@ -4,7 +4,6 @@ import IPRADerivations.Analysis.Geometry.Distances.GaussianEuclideanDistanceName
 import IPRADerivations.Analysis.Names.Approximation.GaussianRepresentedPointBounds
 import IPRADerivations.Analysis.Names.Order.GaussianFastValueCut
 import IPRADerivations.Analysis.Polynomials.Evaluation.GaussianPolynomialValueName
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Sharp M_Z residual estimates from actual finite root hits
@@ -22,7 +21,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRootSharpResidualSamples
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianCoefficientNameBounds (A R CN unit unit_positive subst_unit)
 open LeanProofs.IPRA.Analysis.GaussianFactorParameters (monicRD)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (bounded distanceBounded)
@@ -34,9 +33,6 @@ open LeanProofs.IPRA.Analysis.GaussianRepresentedPointBounds (normLE)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -55,29 +51,16 @@ def baseDenominator (a : PR 3) (N t x b : PTm n) : PTm n := b*D a N t x
 def observation (a : PR 3) (point : PR 2) (N x s : PTm n) : PTm n :=
   GaussianPolynomialValueName.observation a point N x s
 
-@[simp] theorem subst_M {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N Z x : PTm n) :
-    Syn.subst σ (M a N Z x) = M a (Syn.subst σ N) (Syn.subst σ Z) (Syn.subst σ x) := by simp [M]
-@[simp] theorem subst_c {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N x : PTm n) :
-    Syn.subst σ (c a N x) = c a (Syn.subst σ N) (Syn.subst σ x) := by simp [c]
-@[simp] theorem subst_D {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N t x : PTm n) :
-    Syn.subst σ (D a N t x) = D a (Syn.subst σ N) (Syn.subst σ t) (Syn.subst σ x) := by simp [D]
-@[simp] theorem subst_hitCost {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N Z x J : PTm n) :
-    Syn.subst σ (hitCost a N Z x J) = hitCost a (Syn.subst σ N) (Syn.subst σ Z) (Syn.subst σ x) (Syn.subst σ J) := by simp [hitCost]
-@[simp] theorem subst_hitNumerator {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N Z t s x p q J : PTm n) :
-    Syn.subst σ (hitNumerator a N Z t s x p q J) = hitNumerator a (Syn.subst σ N) (Syn.subst σ Z)
-      (Syn.subst σ t) (Syn.subst σ s) (Syn.subst σ x) (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ J) := by simp [hitNumerator]
-@[simp] theorem subst_hitDenominator {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N t s x q : PTm n) :
-    Syn.subst σ (hitDenominator a N t s x q) = hitDenominator a (Syn.subst σ N) (Syn.subst σ t)
-      (Syn.subst σ s) (Syn.subst σ x) (Syn.subst σ q) := by simp [hitDenominator]
-@[simp] theorem subst_cutCost {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N Z x r : PTm n) :
-    Syn.subst σ (cutCost a N Z x r) = cutCost a (Syn.subst σ N) (Syn.subst σ Z) (Syn.subst σ x) (Syn.subst σ r) := by simp [cutCost]
-@[simp] theorem subst_baseNumerator {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N Z t x r b : PTm n) :
-    Syn.subst σ (baseNumerator a N Z t x r b) = baseNumerator a (Syn.subst σ N) (Syn.subst σ Z)
-      (Syn.subst σ t) (Syn.subst σ x) (Syn.subst σ r) (Syn.subst σ b) := by simp [baseNumerator]
-@[simp] theorem subst_baseDenominator {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N t x b : PTm n) :
-    Syn.subst σ (baseDenominator a N t x b) = baseDenominator a (Syn.subst σ N) (Syn.subst σ t) (Syn.subst σ x) (Syn.subst σ b) := by simp [baseDenominator]
-@[simp] theorem subst_observation {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (point : PR 2) (N x s : PTm n) :
-    Syn.subst σ (observation a point N x s) = observation a point (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ s) := by simp [observation]
+ipra_subst M
+ipra_subst c
+ipra_subst D
+ipra_subst hitCost
+ipra_subst hitNumerator
+ipra_subst hitDenominator
+ipra_subst cutCost
+ipra_subst baseNumerator
+ipra_subst baseDenominator
+ipra_subst observation
 
 /-- The rational weighted constant keeps M_Z unchanged. A genuine finite
 distance cap absorbs its O(1/H) enlargement into computed slack. -/
@@ -242,8 +225,7 @@ def data (N x : PTm n) : PTm n := pairT N x
 def body (a : PR 3) (point : PR 2) : PTm 2 := observation a point (fstT (var 1)) (sndT (var 1)) (var 0)
 def observationF (a : PR 3) (point : PR 2) : PR 2 := PTm.toPR (body a point)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (N x : PTm n) :
-    Syn.subst σ (data N x) = data (Syn.subst σ N) (Syn.subst σ x) := by simp [data]
+ipra_subst data
 
 theorem observation_congr (a : PR 3) (point : PR 2) {N N' x x' s s' : PTm n}
     (hN : Γ ⊢[PRAAx] N ≐ N') (hx : Γ ⊢[PRAAx] x ≐ x') (hs : Γ ⊢[PRAAx] s ≐ s') : Γ ⊢[PRAAx]

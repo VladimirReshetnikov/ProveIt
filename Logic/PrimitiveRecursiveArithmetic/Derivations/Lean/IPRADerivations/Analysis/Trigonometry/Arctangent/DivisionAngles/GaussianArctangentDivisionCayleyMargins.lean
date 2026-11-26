@@ -16,7 +16,7 @@ set_option maxHeartbeats 200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentDivisionCayleyMargins
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianArctangentCayleyProjections (sine_projection)
 open GaussianArctangentCayleySineMargin (lower_of_grid_margin)
 open GaussianArctangentCayleySquareGap (squareValue separationDenominator rational_gap marginSource)
@@ -35,10 +35,6 @@ open RationalArithmetic (add add_at addF)
 open RationalArgmin (rationalLE rationalLE_congr)
 open RationalCubeMidpoint (fraction)
 open RationalGaussianRealPart (embed_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

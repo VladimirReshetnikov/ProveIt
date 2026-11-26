@@ -16,7 +16,7 @@ set_option maxHeartbeats 1700000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeProductDerivativeInverseRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaDigammaTwoShiftFiniteRate (fraction_bound)
 open GaussianGammaNegativeCriticalCorrection (correction guard)
 open GaussianGammaNegativeProductDerivative (dividedDifference firstCoefficient original_product_gap prefixDifference)
@@ -36,9 +36,6 @@ open GaussianRationalSyntheticDivision (qmul_congr qone)
 open GaussianReciprocalHorner (qmul_associative qmul_one_right)
 open GaussianReconstructionRoots (distance_zero_iff norm_from_distance)
 open GaussianStirlingGammaLogarithm (arg)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -51,19 +48,13 @@ def inverseGapCost (j H : PTm n) : PTm n := H*H*dividedCap j
 def inverseRateCost (j H : PTm n) : PTm n :=
   H*H*derivativeCost j+firstCap j*(H*inverseGapCost j H)
 
-@[simp] theorem subst_firstCap {m : ℕ} (σ : Fin n → PTm m) (j : PTm n) :
-    Syn.subst σ (firstCap j) = firstCap (Syn.subst σ j) := by simp [firstCap]
+ipra_subst firstCap
 
-@[simp] theorem subst_dividedCap {m : ℕ} (σ : Fin n → PTm m) (j : PTm n) :
-    Syn.subst σ (dividedCap j) = dividedCap (Syn.subst σ j) := by simp [dividedCap,two]
+ipra_subst dividedCap [two]
 
-@[simp] theorem subst_inverseGapCost {m : ℕ} (σ : Fin n → PTm m) (j H : PTm n) :
-    Syn.subst σ (inverseGapCost j H) = inverseGapCost (Syn.subst σ j) (Syn.subst σ H) := by
-  simp [inverseGapCost]
+ipra_subst inverseGapCost
 
-@[simp] theorem subst_inverseRateCost {m : ℕ} (σ : Fin n → PTm m) (j H : PTm n) :
-    Syn.subst σ (inverseRateCost j H) = inverseRateCost (Syn.subst σ j) (Syn.subst σ H) := by
-  simp [inverseRateCost]
+ipra_subst inverseRateCost
 
 private theorem endpoint_bound (a b : PTm n) (ha : Γ ⊢[PRAAx] guard a b) : Γ ⊢[PRAAx]
     bounded (fraction a b) one one :=

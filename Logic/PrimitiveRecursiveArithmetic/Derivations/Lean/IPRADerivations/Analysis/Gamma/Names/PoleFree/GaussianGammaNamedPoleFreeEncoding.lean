@@ -14,7 +14,7 @@ set_option maxHeartbeats 1400000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNamedPoleFreeEncoding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale oneCode)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaEulerHeadLower (translated poleAt poleGuard pole_at)
@@ -29,10 +29,6 @@ open GaussianRationalL1 (rawGaussian rawDen raw_den_positive raw_represents)
 open GaussianRationalMetric (bounded distanceBounded bounded_iff)
 open GaussianRationalNaturalScale (naturalPoint natural_point_represents)
 open GaussianRootAlgebra (equal equal_of_values equal_refl re_scale im_scale re_one im_one)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

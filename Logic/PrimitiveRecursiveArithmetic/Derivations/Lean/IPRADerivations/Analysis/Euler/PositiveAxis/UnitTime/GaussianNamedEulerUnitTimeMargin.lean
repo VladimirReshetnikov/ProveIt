@@ -13,17 +13,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedEulerUnitTimeMargin
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedEulerUnitTime (source source_at)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianStirlingMultiplicativeBoundsLog (fractions_order)
 open GaussianStirlingMultiplicativeBoundsOrder (fraction_real_part)
 open GaussianUnitIntervalInputDecoding (lowerPoint upperPoint)
 open RationalValueBounds (upper upper_congr upper_of_order upper_triangle)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -42,10 +38,8 @@ theorem observation_widen (q E D : PTm n) (hs : Γ ⊢[PRAAx] GaussianUnitInterv
   have lo : Γ ⊢[PRAAx] upper (lowerPoint D) (lowerPoint E) zero one :=
     rational_order one D one E hD hE (by ipra_le sl hED)
   have hi : Γ ⊢[PRAAx] upper (upperPoint E) (upperPoint D) zero one := by
-    have e := natEq (eq_add_of_le hE)
-    have d := natEq (eq_add_of_le hD)
     exact rational_order (monus E one) E (monus D one) D hE hD
-      (by ipra_le sl hED with 𝔞(D)*e-𝔞(E)*d)
+      (by ipra_le sl hED with 𝔞(D)*natEq (eq_add_of_le hE)-𝔞(E)*natEq (eq_add_of_le hD))
   have lower := upper_triangle (lowerPoint D) (lowerPoint E) (fstT q) zero one zero one lo hs.andE₂.andE₂.andE₁
   have upper' := upper_triangle (fstT q) (upperPoint E) (upperPoint D) zero one zero one hs.andE₂.andE₂.andE₂ hi
   exact .andI hs.andE₁ (.andI hD (.andI

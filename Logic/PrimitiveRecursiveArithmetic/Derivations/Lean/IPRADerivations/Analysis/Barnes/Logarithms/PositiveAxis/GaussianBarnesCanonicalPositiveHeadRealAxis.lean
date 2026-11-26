@@ -10,16 +10,13 @@ set_option maxHeartbeats 500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalPositiveHeadRealAxis
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalPositiveHeadLogarithm (body parameters rowData row_at nameF data)
 open GaussianBarnesCanonicalThirdLogarithmRows (shiftedNumerator)
 open GaussianHarmonicIntegerExponential (originalExponentF)
 open GaussianRealNameExponentialInjectivity (axisSamples)
 open GaussianRationalFiniteSumAxis (rowAxes sum_axis)
 open RationalGaussianEmbedding (axis axis_congr axis_multiply)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "F" => originalExponentF

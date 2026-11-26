@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitNormalizationCompact
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode)
 open GaussianEulerIntegrandName (evaluatorF fixedData decayF decayData decayPoint)
 open GaussianEulerDecayQuadraturePrecision (endpointDifference)
@@ -28,9 +28,6 @@ open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRationalSyntheticDivision (qone)
 open GaussianRationalHorner (positive_product)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

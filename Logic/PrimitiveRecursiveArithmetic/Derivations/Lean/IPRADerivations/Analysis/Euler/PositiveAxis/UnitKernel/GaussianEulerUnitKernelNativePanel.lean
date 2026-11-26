@@ -13,17 +13,14 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelNativePanel
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUnitKernelCompactName (source start_positive)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def proper (a C E : PTm n) : Fm PTm n := le one a ⋏ lt (a+C) E
 
-@[simp] theorem subst_proper {m : ℕ} (σ : Fin n → PTm m) (a C E : PTm n) :
-    (proper a C E).subst σ = proper (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) := by simp [proper]
+ipra_subst proper
 
 theorem denominator_positive (a C E : PTm n) (h : Γ ⊢[PRAAx] proper a C E) : Γ ⊢[PRAAx] le one E :=
   le_trans h.andE₁ (le_trans (le_add_right a C) (le_of_lt h.andE₂))

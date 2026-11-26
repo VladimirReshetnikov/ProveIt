@@ -18,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRootResidualFromHit
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianCoefficientNameBounds (CN A R unit unit_positive bounded_radius_mono)
 open LeanProofs.IPRA.Analysis.GaussianFactorParameters (monicRD)
 open LeanProofs.IPRA.Analysis.GaussianRootRadius (roots product)
@@ -30,9 +30,6 @@ open LeanProofs.IPRA.Analysis.GaussianRootFiniteEvaluation (coefficientNumerator
 open LeanProofs.IPRA.Analysis.GaussianRationalCover (hit)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,17 +38,8 @@ def numerator (a : PR 3) (N U t s x p q : PTm n) : PTm n :=
     GaussianRootSchedule.coefficientConstant N (R a N x)*coefficientNumerator a N t s x*q
 def denominator (a : PR 3) (N t s x q : PTm n) : PTm n := q*coefficientDenominator a N t s x
 
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N U t s x p q : PTm n) :
-    Syn.subst σ (numerator a N U t s x p q) = numerator a (Syn.subst σ N) (Syn.subst σ U)
-      (Syn.subst σ t) (Syn.subst σ s) (Syn.subst σ x) (Syn.subst σ p) (Syn.subst σ q) := by
-  simp only [numerator,PTm.subst_add,PTm.subst_mul,GaussianRationalHornerLipschitz.subst_constant,
-    GaussianCoefficientNameBounds.subst_A,GaussianCoefficientNameBounds.subst_R,
-    GaussianRootFiniteEvaluation.subst_coefficientDenominator,GaussianRootFiniteEvaluation.subst_coefficientNumerator,
-    GaussianRootSchedule.subst_coefficientConstant]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N t s x q : PTm n) :
-    Syn.subst σ (denominator a N t s x q) = denominator a (Syn.subst σ N) (Syn.subst σ t)
-      (Syn.subst σ s) (Syn.subst σ x) (Syn.subst σ q) := by
-  simp only [denominator,PTm.subst_mul,GaussianRootFiniteEvaluation.subst_coefficientDenominator]
+ipra_subst numerator
+ipra_subst denominator
 
 theorem radius_positive (a : PR 3) (N x : PTm n) : Γ ⊢[PRAAx] le one (R a N x) :=
   le_trans (GaussianRootRadius.A_positive a N x) (le_add_right _ two)
@@ -179,17 +167,8 @@ def outputF (a : PR 3) : PR 8 := PTm.toPR
   (output a (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) (var 7))
 def run (a : PR 3) (N U t s x z p q : PTm n) : PTm n := PTm.app (outputF a) ![N,U,t,s,x,z,p,q]
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N U t s x z p q : PTm n) :
-    Syn.subst σ (output a N U t s x z p q) = output a (Syn.subst σ N) (Syn.subst σ U)
-      (Syn.subst σ t) (Syn.subst σ s) (Syn.subst σ x) (Syn.subst σ z) (Syn.subst σ p) (Syn.subst σ q) := by
-  simp only [output,subst_pairT,GaussianRationalHorner.subst_evaluate,GaussianRootSamples.subst_sample,subst_numerator,subst_denominator]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N U t s x z p q : PTm n) :
-    Syn.subst σ (run a N U t s x z p q) = run a (Syn.subst σ N) (Syn.subst σ U)
-      (Syn.subst σ t) (Syn.subst σ s) (Syn.subst σ x) (Syn.subst σ z) (Syn.subst σ p) (Syn.subst σ q) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (a : PR 3) (N U t s x z p q : PTm n) : Γ ⊢[PRAAx]
     run a N U t s x z p q ≐ output a N U t s x z p q := by
@@ -198,13 +177,13 @@ theorem program_at (a : PR 3) (N U t s x z p q : PTm n) : Γ ⊢[PRAAx]
 
 theorem output_value (a : PR 3) (N U t s x z p q : PTm n) : Γ ⊢[PRAAx]
     fstT (run a N U t s x z p q) ≐ evaluate (GaussianRootSamples.sample a N s x) z :=
-  (congrFst (program_at a N U t s x z p q)).eqTrans (fst_pair _ _)
+  (program_at a N U t s x z p q).fstE
 theorem output_numerator (a : PR 3) (N U t s x z p q : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run a N U t s x z p q)) ≐ numerator a N U t s x p q :=
-  (congrFst ((congrSnd (program_at a N U t s x z p q)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at a N U t s x z p q).sndE.fstE
 theorem output_denominator (a : PR 3) (N U t s x z p q : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (run a N U t s x z p q)) ≐ denominator a N t s x q :=
-  (congrSnd ((congrSnd (program_at a N U t s x z p q)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at a N U t s x z p q).sndE.sndE
 
 theorem program_certificate (step a : PR 3) (N U t s x z p q : PTm n)
     (hRD : Γ ⊢[PRAAx] monicRD step) (hCN : Γ ⊢[PRAAx] CN a N x)

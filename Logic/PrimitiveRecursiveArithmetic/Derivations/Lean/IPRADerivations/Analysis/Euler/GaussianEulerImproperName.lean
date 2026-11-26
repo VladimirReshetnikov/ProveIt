@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerImproperName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegrandName (evaluatorF fixedData)
 open GaussianGammaIntegralCutoffs (etaDen top)
 open GaussianGammaCompactQuadratureBoundary (width)
@@ -25,10 +25,6 @@ open GaussianEulerVaryingCutoffName (cells evaluationPrecision)
 open GaussianRationalMetric (distanceBounded)
 open GaussianCoefficientNameBounds (unit)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -39,12 +35,9 @@ def nameF : PR 2 := GaussianEulerVaryingCutoffName.nameF
 def output (p z R B A : PTm n) : PTm n := GaussianEulerVaryingCutoffName.output p z R B A
 def outputF : PR 5 := GaussianEulerVaryingCutoffName.outputF
 def run (p z R B A : PTm n) : PTm n := PTm.app outputF ![p,z,R,B,A]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B A : PTm n) :
-    (source z R B A).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) := by simp [source]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (z R B A : PTm n) :
-    Syn.subst σ (data z R B A) = data (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) := by simp [data]
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (p z R B A : PTm n) :
-    Syn.subst σ (output p z R B A) = output (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) := by simp [output]
+ipra_subst source
+ipra_subst data
+ipra_subst output
 
 /-- The actual checked lowerData theorem discharges the sole former
 tail predicate; no lower-tail or Cauchy premise is left in source. -/

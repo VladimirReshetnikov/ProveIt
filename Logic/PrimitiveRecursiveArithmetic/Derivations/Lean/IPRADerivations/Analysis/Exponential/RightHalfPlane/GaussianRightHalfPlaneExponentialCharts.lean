@@ -16,7 +16,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRightHalfPlaneExponentialCharts
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (code eval_re_code eval_im_code mul)
 open GaussianArctangentCayleyValues (imaginaryCode imaginaryPoint)
 open GaussianEuclideanDistanceName (pointCN)
@@ -32,9 +32,6 @@ open GaussianRightHalfPlaneArgumentExponential (smallExpData)
 open GaussianRightHalfPlaneArgumentExponentialBranches (unsignedExpData signedExpData wideProductF wideProductData)
 open GaussianRightHalfPlaneExponentialMargin (productF productData point)
 open GaussianRightHalfPlaneRadialLogarithm (normNum normDen log_source)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

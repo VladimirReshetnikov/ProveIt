@@ -15,7 +15,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRightHalfPlaneLogarithmExponential
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaCanonicalExponent (constantF)
 open GaussianGammaFiniteApproximantName (exponentialInputData)
 open GaussianNameEquivalence (crossEquivalent cross_trans)
@@ -26,9 +26,6 @@ open GaussianLogGammaEulerHead (argument)
 open RationalArithmetic (select select_zero select_one)
 open ComplexLogarithmRemainder (code)
 open GaussianRationalHorner (ofGaussian)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "E" => GaussianRadiusExponentialName.nameF

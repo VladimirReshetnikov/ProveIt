@@ -1,8 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Elimination.Superelliptic.GaussianSuperellipticMatrixCoefficients
 import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalPaddedProductDegree
 import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalFiniteProduct
-import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Computed first indices and leading values of the original cells
@@ -19,8 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSuperellipticMatrixLeading
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open LeanProofs.IPRA.PTm (monus)
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero qmul)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qone qmul_congr qzero_canonical)
 open LeanProofs.IPRA.Analysis.GaussianTranslatedNonconstant
@@ -42,9 +39,6 @@ open LeanProofs.IPRA.Analysis.GaussianSuperellipticMatrixCoefficients
 open LeanProofs.IPRA.Foundations.RuntimeCyclicPermutation (inverseIndex wrap)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -52,9 +46,7 @@ local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
 /-- Only individual bounded recoded observations are compared. -/
 def recodedEntries (C D N : PTm n) : Fm PTm n := .all (le (var 0) (Syn.shift N) ⟶
   recode (entry (Syn.shift C) (var 0)) ≐ recode (entry (Syn.shift D) (var 0)))
-@[simp] theorem subst_recodedEntries {l : ℕ} (σ : Fin n → PTm l) (C D N : PTm n) :
-    (recodedEntries C D N).subst σ = recodedEntries (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ N) := by
-  simp [recodedEntries,Syn.subst_shift,Syn.shift_subst]
+ipra_subst recodedEntries [Syn.subst_shift, Syn.shift_subst]
 theorem recoded_at (C D N i : PTm n) (h : Γ ⊢[PRAAx] recodedEntries C D N)
     (hi : Γ ⊢[PRAAx] le i N) : Γ ⊢[PRAAx] recode (entry C i) ≐ recode (entry D i) := by
   have rule : Γ ⊢[PRAAx] le i N ⟶ recode (entry C i) ≐ recode (entry D i) := by
@@ -160,9 +152,7 @@ theorem padded_leading (C N p : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ succ N)
       (lt_congr (.eqRefl _) hC.eqSymm (found_of_flag_one C N (flag_one_of_nonzero C N h)))))
 
 def selectedRow (G m r j : PTm n) : PTm n := entry G (slot m (inverseIndex m j r))
-@[simp] theorem subst_selectedRow {l : ℕ} (σ : Fin n → PTm l) (G m r j : PTm n) :
-    Syn.subst σ (selectedRow G m r j) = selectedRow (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ r) (Syn.subst σ j) := by
-  simp [selectedRow]
+ipra_subst selectedRow
 theorem selected_length (f G m a c r j : PTm n) (h : Γ ⊢[PRAAx] input f G m a c r j) : Γ ⊢[PRAAx]
     length (selectedRow G m r j) ≐ succ a :=
   (normalized_length _).eqSymm.eqTrans (GaussianSuperellipticMatrixCoefficients.A_length _ _ _ _ _
@@ -354,21 +344,11 @@ def certificate (f G m a c r j : PTm n) : Fm PTm n :=
           ((leading (entryPolynomial f G m a c r j) (width m a c) ≐ expectedLeading f G m a c r j) ⋏
             (m*degree (entryPolynomial f G m a c r j) (width m a c)+degree f c*r ≐
               (m*degree (selectedRow G m r j) a+degree f c*inverseIndex m j r)+degree f c*j)))))
-@[simp] theorem subst_sourceInput {l : ℕ} (σ : Fin n → PTm l) (f G m a c r j : PTm n) :
-    (sourceInput f G m a c r j).subst σ = sourceInput (Syn.subst σ f) (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ r) (Syn.subst σ j) := by simp [sourceInput]
-@[simp] theorem subst_expectedFirst {l : ℕ} (σ : Fin n → PTm l) (f G m a c r j : PTm n) :
-    Syn.subst σ (expectedFirst f G m a c r j) = expectedFirst (Syn.subst σ f) (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ r) (Syn.subst σ j) := by simp [expectedFirst]
-@[simp] theorem subst_expectedDegree {l : ℕ} (σ : Fin n → PTm l) (f G m a c r j : PTm n) :
-    Syn.subst σ (expectedDegree f G m a c r j) = expectedDegree (Syn.subst σ f) (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ r) (Syn.subst σ j) := by simp [expectedDegree]
-@[simp] theorem subst_expectedLeading {l : ℕ} (σ : Fin n → PTm l) (f G m a c r j : PTm n) :
-    Syn.subst σ (expectedLeading f G m a c r j) = expectedLeading (Syn.subst σ f) (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ r) (Syn.subst σ j) := by simp [expectedLeading]
-@[simp] theorem subst_certificate {l : ℕ} (σ : Fin n → PTm l) (f G m a c r j : PTm n) :
-    (certificate f G m a c r j).subst σ = certificate (Syn.subst σ f) (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ r) (Syn.subst σ j) := by simp [certificate]
+ipra_subst sourceInput
+ipra_subst expectedFirst
+ipra_subst expectedDegree
+ipra_subst expectedLeading
+ipra_subst certificate
 theorem matrix_leading (f G m a c r j : PTm n) (h : Γ ⊢[PRAAx] sourceInput f G m a c r j) : Γ ⊢[PRAAx]
     certificate f G m a c r j :=
   .andI (cell_flag _ _ _ _ _ _ _ (.andE₁ h) (.andE₂ h)) (.impI
@@ -390,16 +370,8 @@ def fields (p : PTm n) (i : Fin 7) : PTm n :=
   ![fstT p,fstT (sndT p),fstT (sndT (sndT p)),fstT (sndT (sndT (sndT p))),
     fstT (sndT (sndT (sndT (sndT p)))),fstT (sndT (sndT (sndT (sndT (sndT p))))),
       sndT (sndT (sndT (sndT (sndT (sndT p)))))] i
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (f G m a c r j : PTm n) :
-    Syn.subst σ (output f G m a c r j) = output (Syn.subst σ f) (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ r) (Syn.subst σ j) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (f G m a c r j : PTm n) :
-    Syn.subst σ (run f G m a c r j) = run (Syn.subst σ f) (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ r) (Syn.subst σ j) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 @[simp] theorem subst_fields {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) (i : Fin 7) :
     Syn.subst σ (fields p i) = fields (Syn.subst σ p) i := by fin_cases i <;> simp [fields]
 theorem program_at (f G m a c r j : PTm n) : Γ ⊢[PRAAx] run f G m a c r j ≐ output f G m a c r j := by
@@ -411,19 +383,19 @@ theorem returned_fields (f G m a c r j : PTm n) (i : Fin 7) : Γ ⊢[PRAAx]
         degree (entryPolynomial f G m a c r j) (width m a c),expectedDegree f G m a c r j,
           leading (entryPolynomial f G m a c r j) (width m a c),expectedLeading f G m a c r j] i := by
   have e0 := program_at (Γ := Γ) f G m a c r j
-  have e1 := (congrSnd e0).eqTrans (snd_pair _ _)
-  have e2 := (congrSnd e1).eqTrans (snd_pair _ _)
-  have e3 := (congrSnd e2).eqTrans (snd_pair _ _)
-  have e4 := (congrSnd e3).eqTrans (snd_pair _ _)
-  have e5 := (congrSnd e4).eqTrans (snd_pair _ _)
-  have e6 := (congrSnd e5).eqTrans (snd_pair _ _)
+  have e1 := e0.sndE
+  have e2 := e1.sndE
+  have e3 := e2.sndE
+  have e4 := e3.sndE
+  have e5 := e4.sndE
+  have e6 := e5.sndE
   fin_cases i
-  · exact (congrFst e0).eqTrans (fst_pair _ _)
-  · exact (congrFst e1).eqTrans (fst_pair _ _)
-  · exact (congrFst e2).eqTrans (fst_pair _ _)
-  · exact (congrFst e3).eqTrans (fst_pair _ _)
-  · exact (congrFst e4).eqTrans (fst_pair _ _)
-  · exact (congrFst e5).eqTrans (fst_pair _ _)
+  · exact e0.fstE
+  · exact e1.fstE
+  · exact e2.fstE
+  · exact e3.fstE
+  · exact e4.fstE
+  · exact e5.fstE
   · exact e6
 theorem returned_degree (f G m a c r j : PTm n) (h : Γ ⊢[PRAAx] sourceInput f G m a c r j)
     (hA : Γ ⊢[PRAAx] nonzeroCoefficients (selectedRow G m r j) a) : Γ ⊢[PRAAx]

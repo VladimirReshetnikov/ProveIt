@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalPositiveSecondDerivativeInterval
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalThirdDerivativePositiveMargin (source step)
 open GaussianBarnesCanonicalPositiveFirstDerivativeRow (gain)
 open GaussianBarnesCanonicalThirdLogarithmRows (center)
@@ -25,9 +25,6 @@ open GaussianRationalMetric (bounded distanceBounded qsub)
 open GaussianRationalQuadratureDifference (differenceBody difference_body_at finite_sum_difference)
 open GaussianRationalReciprocal (bound_congr bounded_sum)
 open GaussianRationalSyntheticDivision (qsub_congr qmul_congr)
-open ConciseIPRA.PTm (succ zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -14,7 +14,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinUpperPoint
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianDominantPairAlgebra (radiusPoint)
 open GaussianEulerIntegrandName (powerF powerData)
@@ -37,10 +37,6 @@ open GaussianRationalSyntheticDivision (qone qsub_congr qadd_congr qadd_sub_canc
 open GaussianScalarExponentialDiagonal (coefficient)
 open Products (fact)
 open RationalArgmin (rationalLE rationalLE_congr transitive)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -48,11 +44,9 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 def degree (R : PTm n) : PTm n := R+two
 def coefficientBound (R : PTm n) : PTm n := two*fact (degree R)
 
-@[simp] theorem subst_degree {m : ℕ} (σ : Fin n → PTm m) (R : PTm n) :
-    Syn.subst σ (degree R) = degree (Syn.subst σ R) := by simp [degree,two]
+ipra_subst degree [two]
 
-@[simp] theorem subst_coefficientBound {m : ℕ} (σ : Fin n → PTm m) (R : PTm n) :
-    Syn.subst σ (coefficientBound R) = coefficientBound (Syn.subst σ R) := by simp [coefficientBound,two]
+ipra_subst coefficientBound [two]
 
 private theorem gap_parts (q j K : PTm n)
     (hj : Γ ⊢[PRAAx] le one j) (hK : Γ ⊢[PRAAx] le j K) :

@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Polynomials.Products.GaussianRationalPolynomialPowerSupport
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual finite exponential coefficients stabilize at their exponent
@@ -17,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalPolynomialExponentialStability
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qmul_zero_right canonical_coefficient_at)
 open GaussianRationalPolynomialExponential (stage stage_congr stage_length stage_canonical stage_coefficient_succ inverseFactorial)
@@ -26,17 +25,11 @@ open GaussianRationalLowCoefficientConvolution (exponentCoefficient exponent_ins
 open GaussianRationalPolynomialPowerSupport (min_product low_power_zero)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (entry_congr length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def coefficient (C N K j e : PTm n) : PTm n := exponentCoefficient (stage C N K j) (j*N) e
-@[simp] theorem subst_coefficient {l : ℕ} (σ : Fin n → PTm l) (C N K j e : PTm n) :
-    Syn.subst σ (coefficient C N K j e) = coefficient (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ K)
-      (Syn.subst σ j) (Syn.subst σ e) := by simp [coefficient]
+ipra_subst coefficient
 
 theorem exponent_congr {C D N M e f : PTm n} (hC : Γ ⊢[PRAAx] C ≐ D)
     (hN : Γ ⊢[PRAAx] N ≐ M) (he : Γ ⊢[PRAAx] e ≐ f) : Γ ⊢[PRAAx]
@@ -81,9 +74,7 @@ theorem coefficient_successor (C N K j e : PTm n) (hC : Γ ⊢[PRAAx] entry C N 
 
 def stabilityLaw (C N K e r : PTm n) : Fm PTm n := le (e+r) K ⟶
   coefficient C N K (e+r) e ≐ coefficient C N K e e
-@[simp] theorem subst_stabilityLaw {l : ℕ} (σ : Fin n → PTm l) (C N K e r : PTm n) :
-    (stabilityLaw C N K e r).subst σ = stabilityLaw (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ K)
-      (Syn.subst σ e) (Syn.subst σ r) := by simp [stabilityLaw]
+ipra_subst stabilityLaw
 
 theorem stability_zero (C N K e : PTm n) : Γ ⊢[PRAAx] stabilityLaw C N K e zero :=
   .impI (coefficient_index_congr C N K e (add_zero e))
@@ -105,11 +96,9 @@ theorem coefficient_stability (C N K e r : PTm n) (hC : Γ ⊢[PRAAx] entry C N 
   have hn : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift e) (Syn.shift N) := by
     simpa only [Fm.shift,subst_le,Syn.shift] using he.shift
   have all : Γ ⊢[PRAAx] .all (stabilityLaw (Syn.shift C) (Syn.shift N) (Syn.shift K) (Syn.shift e) (var 0)) := by
-    refine PRA.qfInd _ (by trivial) ?_ ?_
-    · simp only [subst_stabilityLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact stability_zero C N K e
-    · simp only [subst_stabilityLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact stability_step _ _ _ _ _ hc.wk hn.wk Prf.hyp0
+    ipra_qfind (by trivial) [subst_stabilityLaw]
+    · exact stability_zero C N K e
+    · exact stability_step _ _ _ _ _ hc.wk hn.wk Prf.hyp0
   have gate : Γ ⊢[PRAAx] stabilityLaw C N K e r := by
     simpa only [subst_stabilityLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE r
   exact .impE gate hr
@@ -130,21 +119,15 @@ theorem logarithm_exponential_cutoff (d K e : PTm n) (he : Γ ⊢[PRAAx] le e d)
 def output (C N K e : PTm n) : PTm n := pairT (coefficient C N K K e) (coefficient C N K e e)
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (C N K e : PTm n) : PTm n := PTm.app outputF ![C,N,K,e]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (C N K e : PTm n) :
-    Syn.subst σ (output C N K e) = output (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ K) (Syn.subst σ e) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (C N K e : PTm n) :
-    Syn.subst σ (run C N K e) = run (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ K) (Syn.subst σ e) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (C N K e : PTm n) : Γ ⊢[PRAAx] run C N K e ≐ output C N K e := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![C,N,K,e]
 theorem returned_final (C N K e : PTm n) : Γ ⊢[PRAAx] fstT (run C N K e) ≐ coefficient C N K K e :=
-  (congrFst (program_at C N K e)).eqTrans (fst_pair _ _)
+  (program_at C N K e).fstE
 theorem returned_initial (C N K e : PTm n) : Γ ⊢[PRAAx] sndT (run C N K e) ≐ coefficient C N K e e :=
-  (congrSnd (program_at C N K e)).eqTrans (snd_pair _ _)
+  (program_at C N K e).sndE
 theorem returned_agreement (C N K e : PTm n) (hC : Γ ⊢[PRAAx] entry C N ≐ qzero)
     (he : Γ ⊢[PRAAx] le e N) (hK : Γ ⊢[PRAAx] le e K) : Γ ⊢[PRAAx]
     fstT (run C N K e) ≐ sndT (run C N K e) :=

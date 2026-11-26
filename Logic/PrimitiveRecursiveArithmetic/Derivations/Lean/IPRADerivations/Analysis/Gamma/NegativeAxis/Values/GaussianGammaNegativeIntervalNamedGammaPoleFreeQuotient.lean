@@ -16,7 +16,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalNamedGammaPoleFreeQuotient
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaNegativeIntervalNamedGamma (actualF actualData actual_regular)
 open GaussianGammaNegativeIntervalNamedGammaNativeDomain (input radius shiftF shiftData shift_at shift_regular
@@ -29,9 +29,6 @@ open GaussianRationalNaturalScale (naturalPoint)
 open GaussianRationalSumAlgebra (qadd_associative)
 open GaussianRationalSyntheticDivision (qadd_congr qsub_congr)
 open GaussianReciprocalHorner (qadd_commutative)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

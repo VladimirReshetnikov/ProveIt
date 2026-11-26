@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsNamedEndpoints
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegralGammaIdentification (source)
 open GaussianEulerIntegrationByPartsLinear (primitive)
 open GaussianEulerIntegrationByPartsParameterShiftObservation (primitiveCost)
@@ -32,10 +32,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianNameEquivalence (point_at)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianRationalSlackRemoval (slack slack_removal_at precision)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -48,12 +44,8 @@ def sampleCost (R A k : PTm n) : PTm n := num 6*top k A R+primitiveCost R (etaDe
 def cost (R A k : PTm n) : PTm n := one+sampleCost R A k
 def clock (m t R A k : PTm n) : PTm n := minimumObservation t k A R+GaussianFastValueCut.exponent (cost R A k) m
 
-@[simp] theorem subst_lowerData {l : ℕ} (σ : Fin n → PTm l) (z R B A k : PTm n) :
-    Syn.subst σ (lowerData z R B A k) = lowerData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ k) := by
-  simp [lowerData,etaDen,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_upperData {l : ℕ} (σ : Fin n → PTm l) (z R B A k : PTm n) :
-    Syn.subst σ (upperData z R B A k) = upperData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ k) := by
-  simp [upperData,top,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst lowerData [etaDen, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst upperData [top, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient]
 
 theorem endpoint_regular (z R B A k : PTm n) (h : Γ ⊢[PRAAx] source z R B A) : Γ ⊢[PRAAx]
     GaussianEuclideanDistanceName.pointCN nameF (lowerData z R B A k) ⋏

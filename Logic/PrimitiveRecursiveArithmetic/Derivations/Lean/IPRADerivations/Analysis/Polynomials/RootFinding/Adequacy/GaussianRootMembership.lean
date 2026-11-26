@@ -21,7 +21,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRootMembership
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianCoefficientNameBounds (R CN unit unit_positive)
 open LeanProofs.IPRA.Analysis.GaussianFactorParameters (monicRD)
 open LeanProofs.IPRA.Analysis.GaussianRootRadius (roots)
@@ -30,9 +30,6 @@ open LeanProofs.IPRA.Analysis.GaussianRootApproximationWitness (T pointBounds no
 open LeanProofs.IPRA.Analysis.GaussianRootMembershipHit (residual slack)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (bounded)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -45,17 +42,10 @@ def atPrecision (step a : PR 3) (point : PR 2) (N x k : PTm n) : Fm PTm n :=
 def member (step a : PR 3) (point : PR 2) (N x : PTm n) : Fm PTm n :=
   .all (atPrecision step a point (Syn.shift N) (Syn.shift x) (var 0))
 
-@[simp] theorem subst_inputContract {m : ℕ} (σ : Fin n → PTm m) (step a : PR 3) (point : PR 2) (N U x : PTm n) :
-    (inputContract step a point N U x).subst σ = inputContract step a point (Syn.subst σ N) (Syn.subst σ U) (Syn.subst σ x) := by simp [inputContract]
-@[simp] theorem subst_stageCondition {m : ℕ} (σ : Fin n → PTm m) (step a : PR 3) (point : PR 2) (N x k t : PTm n) :
-    (stageCondition step a point N x k t).subst σ = stageCondition step a point
-      (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ k) (Syn.subst σ t) := by simp [stageCondition]
-@[simp] theorem subst_atPrecision {m : ℕ} (σ : Fin n → PTm m) (step a : PR 3) (point : PR 2) (N x k : PTm n) :
-    (atPrecision step a point N x k).subst σ = atPrecision step a point (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ k) := by
-  simp [atPrecision,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_member {m : ℕ} (σ : Fin n → PTm m) (step a : PR 3) (point : PR 2) (N x : PTm n) :
-    (member step a point N x).subst σ = member step a point (Syn.subst σ N) (Syn.subst σ x) := by
-  simp [member,Syn.subst_shift,Syn.shift_subst]
+ipra_subst inputContract
+ipra_subst stageCondition
+ipra_subst atPrecision [Syn.subst_shift, Syn.shift_subst]
+ipra_subst member [Syn.subst_shift, Syn.shift_subst]
 
 theorem member_at (step a : PR 3) (point : PR 2) (N x k : PTm n)
     (h : Γ ⊢[PRAAx] member step a point N x) : Γ ⊢[PRAAx] atPrecision step a point N x k := by

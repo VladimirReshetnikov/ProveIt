@@ -15,7 +15,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinFiniteDampedEvaluator
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEulerCompactPowerMajorant (majorant original_power_observation)
@@ -27,9 +27,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_r
 open GaussianRationalFiniteSum (sum multiplyBody)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalRiemannRefinement (termsDistance sum_distance)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -53,14 +50,10 @@ def evaluatorF : PR 3 := PTm.toPR (evaluatorTerm (var 0) (var 1) (var 2))
 
 def budget (R H T N : PTm n) : PTm n := N*(cost R H T+one)
 
-@[simp] theorem subst_rawData {m : ℕ} (σ : Fin n → PTm m) (p t z B : PTm n) :
-    Syn.subst σ (rawData p t z B) = rawData (Syn.subst σ p) (Syn.subst σ t) (Syn.subst σ z) (Syn.subst σ B) := by simp [rawData]
-@[simp] theorem subst_raw {m : ℕ} (σ : Fin n → PTm m) (p t z B N : PTm n) :
-    Syn.subst σ (raw p t z B N) = raw (Syn.subst σ p) (Syn.subst σ t) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by simp [raw]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (z B N Q : PTm n) :
-    Syn.subst σ (data z B N Q) = data (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) (Syn.subst σ Q) := by simp [data]
-@[simp] theorem subst_budget {m : ℕ} (σ : Fin n → PTm m) (R H T N : PTm n) :
-    Syn.subst σ (budget R H T N) = budget (Syn.subst σ R) (Syn.subst σ H) (Syn.subst σ T) (Syn.subst σ N) := by simp [budget,one]
+ipra_subst rawData
+ipra_subst raw
+ipra_subst data
+ipra_subst budget [one]
 
 theorem raw_term_at (j p t z B : PTm n) :
     Γ ⊢[PRAAx] inst2 rawBody j (rawData p t z B) ≐ ap3 Damped p t (dampData z B (succ j) one) := by

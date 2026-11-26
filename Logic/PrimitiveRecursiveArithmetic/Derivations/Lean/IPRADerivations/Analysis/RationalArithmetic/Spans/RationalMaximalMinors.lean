@@ -3,7 +3,6 @@ import IPRADerivations.Probability.UnionUtility
 import IPRADerivations.AnalyticNumberTheory.Multiplicative
 import IPRADerivations.DiophantineNumberTheory.FLTMultiples
 import IPRADerivations.Foundations.RuntimeWordAppend
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # A maximum nonzero minor selected by an actual bounded scan
@@ -18,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalMaximalMinors
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open RationalSelectedMinors (count subst_count original normalized)
 open RationalSubtupleSpan (bit bitBody bit_body_at)
@@ -28,10 +27,6 @@ open RationalPolynomialGaussianEmbedding (embed_congr)
 open GaussianRationalHorner (qzero)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length add_lt_left)
 open LeanProofs.IPRA.Foundations.BoundedReflection (eq_of_eqb)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -44,16 +39,10 @@ def score (P d R C : PTm n) : PTm n :=
   RationalArithmetic.select (eqb (rowSize P R) (columnSize d C)) zero
     (RationalArithmetic.select (eqb (value P d R C) qzero) (succ (rowSize P R)) zero)
 
-@[simp] theorem subst_rowSize {k : ℕ} (σ : Fin n → PTm k) (P R : PTm n) :
-    Syn.subst σ (rowSize P R) = rowSize (Syn.subst σ P) (Syn.subst σ R) := by simp [rowSize]
-@[simp] theorem subst_columnSize {k : ℕ} (σ : Fin n → PTm k) (d C : PTm n) :
-    Syn.subst σ (columnSize d C) = columnSize (Syn.subst σ d) (Syn.subst σ C) := by simp [columnSize]
-@[simp] theorem subst_value {k : ℕ} (σ : Fin n → PTm k) (P d R C : PTm n) :
-    Syn.subst σ (value P d R C) = value (Syn.subst σ P) (Syn.subst σ d) (Syn.subst σ R) (Syn.subst σ C) := by
-  simp [value]
-@[simp] theorem subst_score {k : ℕ} (σ : Fin n → PTm k) (P d R C : PTm n) :
-    Syn.subst σ (score P d R C) = score (Syn.subst σ P) (Syn.subst σ d) (Syn.subst σ R) (Syn.subst σ C) := by
-  simp [score]
+ipra_subst rowSize
+ipra_subst columnSize
+ipra_subst value
+ipra_subst score
 
 theorem score_valid (P d R C : PTm n) (h : Γ ⊢[PRAAx] valid P d R C) :
     Γ ⊢[PRAAx] score P d R C ≐ succ (rowSize P R) :=
@@ -78,11 +67,9 @@ theorem positive_score_valid (P d R C : PTm n) (hp : Γ ⊢[PRAAx] le one (score
 
 theorem zero_mask_count (N : PTm n) : Γ ⊢[PRAAx] count N zero ≐ zero := by
   have all : Γ ⊢[PRAAx] .all (count (var 0) zero ≐ zero) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,subst_count,Syn.subst_var,Syn.inst_zero,ConciseIPRA.PTm.subst_zero]
-      exact Foundations.FilteredEnumeration.rank_zero bitBody zero
-    · simp only [Fm.subst_eq,subst_count,Syn.subst_var,Syn.repl_zero,ConciseIPRA.PTm.subst_zero]
-      let Δ := (count (var 0) zero ≐ zero) :: Γ.map Fm.shift
+    ipra_qfind [subst_count]
+    · exact Foundations.FilteredEnumeration.rank_zero bitBody zero
+    · let Δ := (count (var 0) zero ≐ zero) :: Γ.map Fm.shift
       have b : Δ ⊢[PRAAx] bit zero (var 0) ≐ zero :=
         (congrAp2 remF (quo_zero _) (.eqRefl two)).eqTrans (rem_zero two)
       have be : Δ ⊢[PRAAx] inst2 bitBody (var 0) zero ≐ zero := by rw [bit_body_at]; exact b
@@ -136,15 +123,10 @@ theorem address_decode (d R C : PTm n) (hc : Γ ⊢[PRAAx] lt C (maskLimit d)) :
     rowMask d (address d R C) ≐ R ⋏ columnMask d (address d R C) ≐ C :=
   Foundations.RuntimeWordAppend.divide_unique _ _ _ _ (limit_one_le d) (.eqRefl _) hc
 
-@[simp] theorem subst_maskLimit {k : ℕ} (σ : Fin n → PTm k) (d : PTm n) :
-    Syn.subst σ (maskLimit d) = maskLimit (Syn.subst σ d) := by simp [maskLimit,two,one]
-@[simp] theorem subst_rowMask {k : ℕ} (σ : Fin n → PTm k) (d z : PTm n) :
-    Syn.subst σ (rowMask d z) = rowMask (Syn.subst σ d) (Syn.subst σ z) := by simp [rowMask,quo]
-@[simp] theorem subst_columnMask {k : ℕ} (σ : Fin n → PTm k) (d z : PTm n) :
-    Syn.subst σ (columnMask d z) = columnMask (Syn.subst σ d) (Syn.subst σ z) := by simp [columnMask,rem]
-@[simp] theorem subst_candidateScore {k : ℕ} (σ : Fin n → PTm k) (P d z : PTm n) :
-    Syn.subst σ (candidateScore P d z) = candidateScore (Syn.subst σ P) (Syn.subst σ d) (Syn.subst σ z) := by
-  simp [candidateScore]
+ipra_subst maskLimit [two, one]
+ipra_subst rowMask [quo]
+ipra_subst columnMask [rem]
+ipra_subst candidateScore
 
 theorem score_congr (P d : PTm n) {R R' C C' : PTm n} (hR : Γ ⊢[PRAAx] R ≐ R') (hC : Γ ⊢[PRAAx] C ≐ C') :
     Γ ⊢[PRAAx] score P d R C ≐ score P d R' C' := by
@@ -213,22 +195,13 @@ def output (P d : PTm n) : PTm n := pairT (bestRow P d) (pairT (bestColumn P d) 
 def outputF : PR 2 := PTm.toPR (output (var 0) (var 1))
 def run (P d : PTm n) : PTm n := ap2 outputF P d
 
-@[simp] theorem subst_horizon {k : ℕ} (σ : Fin n → PTm k) (P d : PTm n) :
-    Syn.subst σ (horizon P d) = horizon (Syn.subst σ P) (Syn.subst σ d) := by simp [horizon]
-@[simp] theorem subst_bestAddress {k : ℕ} (σ : Fin n → PTm k) (P d : PTm n) :
-    Syn.subst σ (bestAddress P d) = bestAddress (Syn.subst σ P) (Syn.subst σ d) := by
-  simp [bestAddress,Probability.UnionUtility.Ag]
-@[simp] theorem subst_bestRow {k : ℕ} (σ : Fin n → PTm k) (P d : PTm n) :
-    Syn.subst σ (bestRow P d) = bestRow (Syn.subst σ P) (Syn.subst σ d) := by simp [bestRow]
-@[simp] theorem subst_bestColumn {k : ℕ} (σ : Fin n → PTm k) (P d : PTm n) :
-    Syn.subst σ (bestColumn P d) = bestColumn (Syn.subst σ P) (Syn.subst σ d) := by simp [bestColumn]
-@[simp] theorem subst_rank {k : ℕ} (σ : Fin n → PTm k) (P d : PTm n) :
-    Syn.subst σ (rank P d) = rank (Syn.subst σ P) (Syn.subst σ d) := by simp [rank]
-@[simp] theorem subst_valid {k : ℕ} (σ : Fin n → PTm k) (P d R C : PTm n) :
-    (valid P d R C).subst σ = valid (Syn.subst σ P) (Syn.subst σ d) (Syn.subst σ R) (Syn.subst σ C) := by simp [valid]
-@[simp] theorem subst_clearedValue {k : ℕ} (σ : Fin n → PTm k) (P d R C : PTm n) :
-    Syn.subst σ (clearedValue P d R C) = clearedValue (Syn.subst σ P) (Syn.subst σ d) (Syn.subst σ R) (Syn.subst σ C) := by
-  simp [clearedValue]
+ipra_subst horizon
+ipra_subst bestAddress [Probability.UnionUtility.Ag]
+ipra_subst bestRow
+ipra_subst bestColumn
+ipra_subst rank
+ipra_subst valid
+ipra_subst clearedValue
 
 theorem program_at (P d : PTm n) : Γ ⊢[PRAAx] run P d ≐ output P d := by
   simpa [run,outputF,output,ap2] using toPR_eq (Γ := Γ) (output (var 0) (var 1) : PTm 2) ![P,d]

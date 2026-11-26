@@ -1,5 +1,3 @@
-import IPRADerivations.Core.BoundedSums
-import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.DiophantineNumberTheory.SimultaneousGrid
 
 /-!
@@ -24,12 +22,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.MarkovChainErrors
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.SimultaneousGrid (one_le_pw_of)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -47,15 +41,11 @@ theorem error_prop (e : PTm 2) {C R δ x : PTm n} (j : PTm n) (hC : Γ ⊢[PRAAx
       (Syn.shift C * inst2 e (var 0) (Syn.shift x) + Syn.shift δ))) :
     Γ ⊢[PRAAx] eInv e C R δ x j := by
   have hall : Γ ⊢[PRAAx] Fm.all (eInv e (Syn.shift C) (Syn.shift R) (Syn.shift δ) (Syn.shift x) (var 0)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [eInv, subst_le, PTm.subst_add, PTm.subst_mul, subst_ap2, subst_inst2, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      have p0 := natEq (pw_zero (Γ := Γ) C)
+    ipra_qfind (le_QF _ _) [eInv, subst_le, subst_ap2, subst_inst2]
+    · have p0 := natEq (pw_zero (Γ := Γ) C)
       ipra_le sl h0 using
         rw [p0]; ring
-    · simp only [eInv, subst_le, PTm.subst_add, PTm.subst_mul, subst_ap2, subst_inst2, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      let C' := Syn.shift C
+    · let C' := Syn.shift C
       let R' := Syn.shift R
       let δ' := Syn.shift δ
       let x' := Syn.shift x

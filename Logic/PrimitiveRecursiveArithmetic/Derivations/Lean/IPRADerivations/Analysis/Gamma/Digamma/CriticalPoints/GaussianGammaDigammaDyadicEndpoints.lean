@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaDyadicEndpoints
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianGammaCompactCutoffAlignment (cross_data_congr)
 open GaussianGammaDigammaCriticalSigns (quarter negativeQuarter one_upper two_lower)
@@ -30,10 +30,6 @@ open GaussianRationalSyntheticDivision (qzero_add)
 open GaussianStirlingGammaLogarithm (source)
 open RationalArithmetic (represents)
 open RationalValueBounds (upper_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "DF" => GaussianGammaDigammaNative.nameF

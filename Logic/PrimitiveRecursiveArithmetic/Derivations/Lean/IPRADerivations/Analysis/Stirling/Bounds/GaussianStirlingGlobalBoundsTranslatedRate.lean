@@ -17,7 +17,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsTranslatedRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameEquivalence (cross_to_diagonal diagonal_at)
@@ -35,10 +35,6 @@ open GaussianStirlingGlobalBoundsShiftCorrection (correctionF correctionData cor
 open GaussianStirlingGlobalBoundsShiftAlgebra
   (differenceF differenceData slopeResidualF slopeResidualData slope_residual_regular splitF splitData exact_split)
 open GaussianStirlingNames (source nameData name_regular)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -50,9 +46,7 @@ local notation "C" => GaussianStirlingConstant.nameF
 def incrementRate (i r b : PTm n) : Fm PTm n :=
   independentRate deltaF slopeF (deltaData i r b) (slopeData i r b) one (pred i)
 
-@[simp] theorem subst_incrementRate {l : ℕ} (σ : Fin n → PTm l) (i r b : PTm n) :
-    (incrementRate i r b).subst σ = incrementRate (Syn.subst σ i) (Syn.subst σ r) (Syn.subst σ b) := by
-  simp [incrementRate]
+ipra_subst incrementRate
 
 theorem shift_bound (i r b p : PTm n) (hi : Γ ⊢[PRAAx] le one i) (hb : Γ ⊢[PRAAx] le one b)
     (hr : Γ ⊢[PRAAx] le r b) (hp : Γ ⊢[PRAAx] le (unit p) (pred i))

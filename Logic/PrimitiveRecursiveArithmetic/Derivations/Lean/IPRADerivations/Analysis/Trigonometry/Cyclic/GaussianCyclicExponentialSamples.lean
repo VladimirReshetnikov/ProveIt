@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCyclicExponentialSamples
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNamedSincSamples (common_late_distance)
 open GaussianNameArithmetic (multiplyF multiplyData product_distance)
@@ -32,10 +32,6 @@ open GaussianRationalL1 (rawDen rawGaussian raw_den_positive raw_represents)
 open GaussianRationalReciprocal (qone bound_congr)
 open ComplexLogarithmRemainder (scale normSq)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -56,10 +52,8 @@ theorem product_error (f g : PR 2) (x y p A B : PTm n)
 def sampleBound (R : PTm n) : PTm n := pw (num 3) R
 def inverseBudget (R : PTm n) : PTm n := num 4*sampleBound R+two
 
-@[simp] theorem subst_sampleBound {l : ℕ} (σ : Fin n → PTm l) (R : PTm n) :
-    Syn.subst σ (sampleBound R) = sampleBound (Syn.subst σ R) := by simp [sampleBound]
-@[simp] theorem subst_inverseBudget {l : ℕ} (σ : Fin n → PTm l) (R : PTm n) :
-    Syn.subst σ (inverseBudget R) = inverseBudget (Syn.subst σ R) := by simp [inverseBudget]
+ipra_subst sampleBound
+ipra_subst inverseBudget
 
 theorem exponential_bound (f : PR 2) (R x p : PTm n) (h : Γ ⊢[PRAAx] input f R x) :
     Γ ⊢[PRAAx] bounded (ap2 (nameF f) p (data R x)) (sampleBound R) one :=

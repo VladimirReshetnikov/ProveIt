@@ -1,7 +1,4 @@
 import IPRADerivations.Analysis.RationalArithmetic.Distances.RationalSupMetric
-import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Actual least minimization of independently denominated signed rationals
@@ -18,14 +15,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.RationalArgmin
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.RationalSupMetric (numeratorOf denominatorOf)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totatives (sg_lt sg_le)
 open LeanProofs.IPRA.Signum (sg)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -36,15 +29,9 @@ def left (a b : PTm n) : PTm n :=
 def rationalLE (a b : PTm n) : Fm PTm n := le (left a b) (left b a)
 def rationalEq (a b : PTm n) : Fm PTm n := left a b ≐ left b a
 
-@[simp] theorem subst_left {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (left a b) = left (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [left, numeratorOf, denominatorOf]
-@[simp] theorem subst_rationalLE {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    (rationalLE a b).subst σ = rationalLE (Syn.subst σ a) (Syn.subst σ b) := by
-  simp only [rationalLE, subst_le, subst_left]
-@[simp] theorem subst_rationalEq {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    (rationalEq a b).subst σ = rationalEq (Syn.subst σ a) (Syn.subst σ b) := by
-  simp only [rationalEq, Fm.subst_eq, subst_left]
+ipra_subst left [numeratorOf, denominatorOf]
+ipra_subst rationalLE
+ipra_subst rationalEq
 
 theorem denominator_positive (a : PTm n) : Γ ⊢[PRAAx] le one (denominatorOf a) :=
   (succ_monus_succ zero _).eqTrans (zero_le _)
@@ -102,20 +89,15 @@ theorem rationalEq_congr {a a' b b' : PTm n} (ha : Γ ⊢[PRAAx] a ≐ a')
     Γ ⊢[PRAAx] rationalEq a' b' := (left_congr ha hb).eqSymm.eqTrans (h.eqTrans (left_congr hb ha))
 
 def value (v : PR 2) (i x : PTm n) : PTm n := ap2 v i x
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (v : PR 2) (i x : PTm n) :
-    Syn.subst σ (value v i x) = value v (Syn.subst σ i) (Syn.subst σ x) := by simp [value]
+ipra_subst value
 
 def better (v : PR 2) (i j x : PTm n) : PTm n :=
   sg (monus (left (value v i x) (value v j x)) (left (value v j x) (value v i x)))
 def choose (v : PR 2) (i j x : PTm n) : PTm n :=
   better v i j x*j+monus one (better v i j x)*i
 
-@[simp] theorem subst_better {m : ℕ} (σ : Fin n → PTm m) (v : PR 2) (i j x : PTm n) :
-    Syn.subst σ (better v i j x) = better v (Syn.subst σ i) (Syn.subst σ j) (Syn.subst σ x) := by
-  simp [better, sg]
-@[simp] theorem subst_choose {m : ℕ} (σ : Fin n → PTm m) (v : PR 2) (i j x : PTm n) :
-    Syn.subst σ (choose v i j x) = choose v (Syn.subst σ i) (Syn.subst σ j) (Syn.subst σ x) := by
-  simp [choose]
+ipra_subst better [sg]
+ipra_subst choose
 
 theorem choose_old (v : PR 2) (i j x : PTm n) (h : Γ ⊢[PRAAx] rationalLE (value v i x) (value v j x)) :
     Γ ⊢[PRAAx] choose v i j x ≐ i := by
@@ -159,8 +141,7 @@ def selectedStep (v : PR 2) : PTm 3 := choose v (var 1) (succ (var 0)) (var 2)
 def selectedF (v : PR 2) : PR 2 := rec2 zero (selectedStep v)
 def selected (v : PR 2) (K x : PTm n) : PTm n := ap2 (selectedF v) K x
 
-@[simp] theorem subst_selected {m : ℕ} (σ : Fin n → PTm m) (v : PR 2) (K x : PTm n) :
-    Syn.subst σ (selected v K x) = selected v (Syn.subst σ K) (Syn.subst σ x) := by simp [selected]
+ipra_subst selected
 
 theorem selected_zero (v : PR 2) (x : PTm n) : Γ ⊢[PRAAx] selected v zero x ≐ zero := by
   simpa [selected, selectedF] using rec2_zero (Γ := Γ) zero (selectedStep v) x
@@ -172,11 +153,9 @@ theorem selected_succ (v : PR 2) (K x : PTm n) :
 
 theorem selected_spec (v : PR 2) (K x : PTm n) : Γ ⊢[PRAAx] le (selected v K x) K := by
   have all : Γ ⊢[PRAAx] .all (le (selected v (var 0) (Syn.shift x)) (var 0)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le, subst_selected, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      exact le_congr (selected_zero v x).eqSymm (.eqRefl _) (le_refl zero)
-    · simp only [subst_le, subst_selected, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      exact le_congr (selected_succ v (var 0) (Syn.shift x)).eqSymm (.eqRefl _)
+    ipra_qfind (le_QF _ _) [subst_le, subst_selected]
+    · exact le_congr (selected_zero v x).eqSymm (.eqRefl _) (le_refl zero)
+    · exact le_congr (selected_succ v (var 0) (Syn.shift x)).eqSymm (.eqRefl _)
         (choice_bound v _ _ _ _ (le_trans Prf.hyp0 (le_succ_self _)) (le_refl _))
   simpa only [subst_le, subst_selected, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using Prf.allE K all
 
@@ -193,16 +172,12 @@ theorem selected_minimal (v : PR 2) (K i x : PTm n) (hi : Γ ⊢[PRAAx] le i K) 
     Γ ⊢[PRAAx] rationalLE (value v (selected v K x) x) (value v i x) := by
   have all : Γ ⊢[PRAAx] .all (le (Syn.shift i) (var 0) ⟶
       rationalLE (value v (selected v (var 0) (Syn.shift x)) (Syn.shift x)) (value v (Syn.shift i) (Syn.shift x))) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, subst_rationalLE, subst_value, subst_selected,
-        Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_rationalLE, subst_value, subst_selected]
+    · refine .impI ?_
       have i0 : (le i zero :: Γ) ⊢[PRAAx] i ≐ zero := le_antisymm Prf.hyp0 (zero_le i)
       exact rationalLE_congr (congrAp2 v (selected_zero v x).eqSymm (.eqRefl _))
         (congrAp2 v i0.eqSymm (.eqRefl _)) (reflexive (value v zero x))
-    · simp only [Fm.subst_imp, subst_le, subst_rationalLE, subst_value, subst_selected,
-        Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      refine .impI (.orE (lt_or_eq_of_le Prf.hyp0) ?_ ?_)
+    · refine .impI (.orE (lt_or_eq_of_le Prf.hyp0) ?_ ?_)
       · exact transitive (selected_le_old v (var 0) (Syn.shift x))
           (Prf.impE Prf.hyp1.wk ((succ_monus_succ _ _).eqSymm.eqTrans Prf.hyp0))
       · exact rationalLE_congr (.eqRefl _) (congrAp2 v Prf.hyp0.eqSymm (.eqRefl _))
@@ -231,13 +206,9 @@ theorem earlier_distinct (v : PR 2) (K i x : PTm n)
   have all : Γ ⊢[PRAAx] .all (lt (Syn.shift i) (selected v (var 0) (Syn.shift x)) ⟶
       neg (rationalEq (value v (Syn.shift i) (Syn.shift x))
         (value v (selected v (var 0) (Syn.shift x)) (Syn.shift x)))) := by
-    refine PRA.qfInd _ ⟨lt_QF _ _, trivial, trivial⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_lt, subst_neg, subst_rationalEq, subst_value, subst_selected,
-        Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      exact .impI (lt_zero_absurd _ (lt_congr (.eqRefl _) (selected_zero v x) Prf.hyp0))
-    · simp only [Fm.subst_imp, subst_lt, subst_neg, subst_rationalEq, subst_value, subst_selected,
-        Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      refine .impI (.orE (lt_or_le
+    ipra_qfind (⟨lt_QF _ _, trivial, trivial⟩) [subst_lt, subst_neg, subst_rationalEq, subst_value, subst_selected]
+    · exact .impI (lt_zero_absurd _ (lt_congr (.eqRefl _) (selected_zero v x) Prf.hyp0))
+    · refine .impI (.orE (lt_or_le
         (left (value v (succ (var 0)) (Syn.shift x)) (value v (selected v (var 0) (Syn.shift x)) (Syn.shift x)))
         (left (value v (selected v (var 0) (Syn.shift x)) (Syn.shift x)) (value v (succ (var 0)) (Syn.shift x)))) ?_ ?_)
       · let I : Fm PTm (n+1) := lt (Syn.shift i) (selected v (var 0) (Syn.shift x)) ⟶

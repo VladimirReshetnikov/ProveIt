@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalRescale
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale)
 open GaussianGammaEncodingRescaling (rescaled_source original_C7_rescale fraction_rescale)
 open GaussianGammaEulerHeadLower (translated)
@@ -26,9 +26,6 @@ open GaussianNameEquivalence (crossEquivalent cross_symm cross_trans cross_to_di
 open GaussianRationalHorner (positive_product)
 open GaussianRootAlgebra (equal equal_of_values re_add im_add re_neg im_neg re_scale im_scale re_one im_one)
 open GaussianStirlingGammaLogarithm (arg)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

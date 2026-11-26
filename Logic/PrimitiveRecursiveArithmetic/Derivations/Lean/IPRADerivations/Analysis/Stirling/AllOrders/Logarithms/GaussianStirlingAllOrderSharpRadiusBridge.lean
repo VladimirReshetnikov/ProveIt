@@ -14,7 +14,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderSharpRadiusBridge
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianStirlingAllOrderSharpRadius (absoluteCoefficient radiusNumerator radiusDenominator oriented_cap_radius)
 open GaussianStirlingAllOrderLogRateTransport (upperPoint)
 open GaussianStirlingAllOrderSignedBoundsTransport (orientedCap)
@@ -29,10 +29,6 @@ open GaussianNameEquivalence (cross_refl)
 open GaussianSignedNameExponentialOrder (constant_equal_cross)
 open GaussianRationalHorner (qzero)
 open BernoulliBounds (bden bden_pos)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

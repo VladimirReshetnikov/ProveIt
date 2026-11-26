@@ -2,7 +2,6 @@ import IPRADerivations.Foundations.RuntimeAdjacentPermutationSwap
 import IPRADerivations.Analysis.Polynomials.Determinants.GaussianPolynomialDeterminantTerms
 import IPRADerivations.Analysis.Polynomials.Translation.GaussianInverseBinomialRows
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianCoefficientNormOrder
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual Gaussian sign transport for numerical permutation words
@@ -19,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianDeterminantSignTransport
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner
   (canonical qzero qadd qmul canonical_unique represents_congr)
@@ -31,10 +30,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalL1
   (rawGaussian rawDen raw_represents raw_den_positive)
 open LeanProofs.IPRA.Analysis.GaussianInverseBinomialRows (negative_congr negative_product)
 open LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantTerms (signPoint sign_even sign_odd)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -100,12 +95,9 @@ def oldSigned (m t u : PTm n) : PTm n := qmul (signPoint m (entry (Foundations.R
 def newSigned (m j t u : PTm n) : PTm n := qmul
   (signPoint m (entry (Foundations.RuntimePermutationWords.words m) (Foundations.RuntimeAdjacentPermutationSwap.rankSwap m j t))) u
 def pairSum (m j t u : PTm n) : PTm n := qadd (oldSigned m t u) (newSigned m j t u)
-@[simp] theorem subst_oldSigned {l : ℕ} (σ : Fin n → PTm l) (m t u : PTm n) :
-    Syn.subst σ (oldSigned m t u) = oldSigned (Syn.subst σ m) (Syn.subst σ t) (Syn.subst σ u) := by simp [oldSigned]
-@[simp] theorem subst_newSigned {l : ℕ} (σ : Fin n → PTm l) (m j t u : PTm n) :
-    Syn.subst σ (newSigned m j t u) = newSigned (Syn.subst σ m) (Syn.subst σ j) (Syn.subst σ t) (Syn.subst σ u) := by simp [newSigned]
-@[simp] theorem subst_pairSum {l : ℕ} (σ : Fin n → PTm l) (m j t u : PTm n) :
-    Syn.subst σ (pairSum m j t u) = pairSum (Syn.subst σ m) (Syn.subst σ j) (Syn.subst σ t) (Syn.subst σ u) := by simp [pairSum]
+ipra_subst oldSigned
+ipra_subst newSigned
+ipra_subst pairSum
 theorem old_signed_canonical (m t u : PTm n) : Γ ⊢[PRAAx] canonical (oldSigned m t u) :=
   GaussianRationalHorner.qmul_canonical _ _
 theorem new_signed_canonical (m j t u : PTm n) : Γ ⊢[PRAAx] canonical (newSigned m j t u) :=
@@ -130,33 +122,27 @@ def output (m j t u : PTm n) : PTm n := pairT (Foundations.RuntimeAdjacentPermut
     (pairT (oldSigned m t u) (pairT (newSigned m j t u) (pairSum m j t u))))
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (m j t u : PTm n) : PTm n := app outputF ![m,j,t,u]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (m j t u : PTm n) :
-    Syn.subst σ (output m j t u) = output (Syn.subst σ m) (Syn.subst σ j) (Syn.subst σ t) (Syn.subst σ u) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (m j t u : PTm n) :
-    Syn.subst σ (run m j t u) = run (Syn.subst σ m) (Syn.subst σ j) (Syn.subst σ t) (Syn.subst σ u) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 theorem program_at (m j t u : PTm n) : Γ ⊢[PRAAx] run m j t u ≐ output m j t u := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3)) ![m,j,t,u]
 theorem returned_rank (m j t u : PTm n) : Γ ⊢[PRAAx]
     fstT (run m j t u) ≐ Foundations.RuntimeAdjacentPermutationSwap.rankSwap m j t :=
-  (congrFst (program_at _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _).fstE
 theorem returned_word (m j t u : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run m j t u)) ≐ entry (Foundations.RuntimePermutationWords.words m)
       (Foundations.RuntimeAdjacentPermutationSwap.rankSwap m j t) :=
-  (congrFst ((congrSnd (program_at _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _).sndE.fstE
 theorem returned_old_signed (m j t u : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (run m j t u))) ≐ oldSigned m t u :=
-  (congrFst ((congrSnd ((congrSnd (program_at _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _).sndE.sndE.fstE
 theorem returned_new_signed (m j t u : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (sndT (run m j t u)))) ≐ newSigned m j t u :=
-  (congrFst ((congrSnd ((congrSnd ((congrSnd (program_at _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans
+  (congrFst ((congrSnd ((congrSnd (program_at _ _ _ _).sndE).eqTrans
     (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
 theorem returned_sum (m j t u : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (sndT (sndT (run m j t u)))) ≐ pairSum m j t u :=
-  (congrSnd ((congrSnd ((congrSnd ((congrSnd (program_at _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans
+  (congrSnd ((congrSnd ((congrSnd (program_at _ _ _ _).sndE).eqTrans
     (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
 theorem returned_sum_zero (m j t u : PTm n)
     (ht : Γ ⊢[PRAAx] lt t (Foundations.RuntimePermutationWords.count m))

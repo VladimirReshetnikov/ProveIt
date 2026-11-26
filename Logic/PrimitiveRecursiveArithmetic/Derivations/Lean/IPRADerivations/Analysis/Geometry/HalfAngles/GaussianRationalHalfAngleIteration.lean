@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Geometry.HalfAngles.GaussianRationalHalfAngle
 import IPRADerivations.Analysis.Polynomials.RootFinding.BalancedRadius.GaussianBalancedRadiusArithmetic
 import IPRADerivations.Analysis.Inequalities.RationalNonnegativePowers
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual repeated rational half-angles
@@ -19,17 +18,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalHalfAngleIteration
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qnormSq qsub)
 open LeanProofs.IPRA.Analysis.GaussianRationalL1 (rawDen raw_den_positive)
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (fraction fraction_represents)
 open LeanProofs.IPRA.Analysis.GaussianBalancedRadiusSyntax (unit unit_positive)
 open LeanProofs.IPRA.Analysis.GaussianRationalCircleParametrization (four)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (positive_product)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,14 +35,9 @@ def distance (q : PTm n) : PTm n := qnormSq (qsub q GaussianRationalReciprocal.q
 def nearOne (q H j : PTm n) : Fm PTm n :=
   RationalArgmin.rationalLE (distance (iterate q H j)) (fraction four (unit j))
 
-@[simp] theorem subst_iterate {m : ℕ} (σ : Fin n → PTm m) (q H j : PTm n) :
-    Syn.subst σ (iterate q H j) = iterate (Syn.subst σ q) (Syn.subst σ H) (Syn.subst σ j) := by
-  simp [iterate]
-@[simp] theorem subst_distance {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    Syn.subst σ (distance q) = distance (Syn.subst σ q) := by simp [distance]
-@[simp] theorem subst_nearOne {m : ℕ} (σ : Fin n → PTm m) (q H j : PTm n) :
-    (nearOne q H j).subst σ = nearOne (Syn.subst σ q) (Syn.subst σ H) (Syn.subst σ j) := by
-  simp [nearOne]
+ipra_subst iterate
+ipra_subst distance
+ipra_subst nearOne
 
 theorem iterate_zero (q H : PTm n) : Γ ⊢[PRAAx] iterate q H zero ≐ q := by
   have h := rec_zero (Γ := Γ) (var 0 : PTm 2) step ![q,H]
@@ -134,12 +124,10 @@ theorem iterate_near_one (q H j : PTm n) (hH : Γ ⊢[PRAAx] le one H)
   have qshift : Γ.map Fm.shift ⊢[PRAAx] GaussianRationalHalfAngle.unit (Syn.shift q) := by
     simpa only [Fm.shift,GaussianRationalHalfAngle.subst_unit,Syn.shift] using hq.shift
   have all : Γ ⊢[PRAAx] .all (nearOne (Syn.shift q) (Syn.shift H) (var 0)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_nearOne,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact RationalArgmin.rationalLE_congr (distance_congr (iterate_zero q H)).eqSymm
+    ipra_qfind (le_QF _ _) [subst_nearOne]
+    · exact RationalArgmin.rationalLE_congr (distance_congr (iterate_zero q H)).eqSymm
         (RationalNonnegativePowers.fraction_congr (.eqRefl _) (pw_zero two)).eqSymm (initial_distance q hq)
-    · simp only [subst_nearOne,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      let Δ := nearOne (Syn.shift q) (Syn.shift H) (var 0) :: Γ.map Fm.shift
+    · let Δ := nearOne (Syn.shift q) (Syn.shift H) (var 0) :: Γ.map Fm.shift
       have previousUnit := iterate_unit (Γ := Δ) (Syn.shift q) (Syn.shift H) (var 0) Hshift.wk qshift.wk
       have next := half_budget (iterate (Syn.shift q) (Syn.shift H) (var 0)) (Syn.shift H) four (unit (var 0))
         Hshift.wk (unit_positive _) previousUnit (Prf.hyp0 : Δ ⊢[PRAAx] nearOne (Syn.shift q) (Syn.shift H) (var 0))
@@ -152,22 +140,20 @@ def output (q H j : PTm n) : PTm n := pairT (iterate q H j) (pairT (unit j) (pai
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (q H j : PTm n) : PTm n := ap3 outputF q H j
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (q H j : PTm n) :
-    Syn.subst σ (output q H j) = output (Syn.subst σ q) (Syn.subst σ H) (Syn.subst σ j) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (q H j : PTm n) :
-    Syn.subst σ (run q H j) = run (Syn.subst σ q) (Syn.subst σ H) (Syn.subst σ j) := by simp [run]
+ipra_subst output
+ipra_subst run
 
 theorem program_at (q H j : PTm n) : Γ ⊢[PRAAx] run q H j ≐ output q H j := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![q,H,j]
 
 theorem returned_point (q H j : PTm n) : Γ ⊢[PRAAx] fstT (run q H j) ≐ iterate q H j :=
-  (congrFst (program_at q H j)).eqTrans (fst_pair _ _)
+  (program_at q H j).fstE
 theorem returned_denominator (q H j : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run q H j)) ≐ unit j :=
-  (congrFst ((congrSnd (program_at q H j)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at q H j).sndE.fstE
 theorem returned_grid (q H j : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run q H j))) ≐ H :=
-  (congrFst ((congrSnd ((congrSnd (program_at q H j)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at q H j).sndE.sndE.fstE
 theorem returned_count (q H j : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run q H j))) ≐ j :=
-  (congrSnd ((congrSnd ((congrSnd (program_at q H j)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at q H j).sndE.sndE.sndE
 
 theorem returned_bound (q H j : PTm n) (hH : Γ ⊢[PRAAx] le one H)
     (hq : Γ ⊢[PRAAx] GaussianRationalHalfAngle.unit q) : Γ ⊢[PRAAx]

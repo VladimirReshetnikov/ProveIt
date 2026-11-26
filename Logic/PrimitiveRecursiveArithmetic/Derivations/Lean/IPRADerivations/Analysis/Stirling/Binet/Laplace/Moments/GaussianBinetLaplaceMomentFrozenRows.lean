@@ -17,7 +17,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentFrozenRows
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetKernelRows (inputData)
 open GaussianBinetLaplaceDomination (realDecay realNumerator realDenominator complexClock clock_later nonnegative_real_radius)
 open GaussianBinetLaplaceIntegrand (input product_at)
@@ -37,10 +37,6 @@ open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianReciprocalHorner (qmul_associative)
 open ComplexLogarithmRemainder (normSq normSq_code)
 open RationalGaussianEmbedding (native embed_from_representation canonical_axis_roundtrip)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -54,14 +50,9 @@ def weightedKernel (p j A B : PTm n) : PTm n :=
 def frozen (p j X D A B : PTm n) : PTm n :=
   qmul (realDecay p (X*A) (D*B)) (weightedKernel p j A B)
 
-@[simp] theorem subst_weightedKernel {m : ℕ} (σ : Fin n → PTm m) (p j A B : PTm n) :
-    Syn.subst σ (weightedKernel p j A B) =
-      weightedKernel (Syn.subst σ p) (Syn.subst σ j) (Syn.subst σ A) (Syn.subst σ B) := by simp [weightedKernel]
+ipra_subst weightedKernel
 
-@[simp] theorem subst_frozen {m : ℕ} (σ : Fin n → PTm m) (p j X D A B : PTm n) :
-    Syn.subst σ (frozen p j X D A B) =
-      frozen (Syn.subst σ p) (Syn.subst σ j) (Syn.subst σ X) (Syn.subst σ D) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [frozen,realDecay,GaussianEulerDecayOrder.signedTime]
+ipra_subst frozen [realDecay, GaussianEulerDecayOrder.signedTime]
 
 theorem kernel_bound (p A B : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
     Γ ⊢[PRAAx] bounded (ap2 K p (inputData A B)) one one :=

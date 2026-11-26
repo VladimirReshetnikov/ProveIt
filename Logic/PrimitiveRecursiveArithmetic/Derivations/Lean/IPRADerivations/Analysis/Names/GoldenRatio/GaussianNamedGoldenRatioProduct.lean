@@ -14,7 +14,7 @@ set_option maxHeartbeats 1500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatioProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNameArithmetic (addF addData add_fast multiplyF multiplyData multiply_fast)
 open GaussianNameRingLaws (negativeF negativeData negative_fast zeroF zero_fast zero_at oneF one_fast one_at)
 open GaussianGammaCanonicalExponent (constantF constant_regular constant_at)
@@ -27,8 +27,6 @@ open GaussianRationalReciprocal (qone)
 open GaussianRationalMetric (qsub)
 open GaussianEuclideanDistanceName (pointCN)
 open ComplexLogarithmRemainder (scale oneCode)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

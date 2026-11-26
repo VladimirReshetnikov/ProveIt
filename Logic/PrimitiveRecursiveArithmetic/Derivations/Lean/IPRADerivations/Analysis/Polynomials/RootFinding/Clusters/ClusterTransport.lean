@@ -23,11 +23,7 @@ supplied as derived inequalities between the distance terms):
 
 namespace LeanProofs.IPRA.Analysis.ClusterTransport
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

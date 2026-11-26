@@ -18,7 +18,7 @@ set_option maxHeartbeats 1050000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesVignerasLogQuotient
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalHyperfactorial (logarithm_source specialLogData)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaFiniteApproximantName (exponential_input)
@@ -27,9 +27,6 @@ open GaussianNameBounds (U)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
 open GaussianNamedDifferenceQuotientProperness (difference_proper)
 open GaussianRealNameExponentialInjectivity (axisSamples difference_real_samples independent_radii_injective)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerExponentialNumerator
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaAdjacentCutoff (multiply_cross)
@@ -30,8 +30,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_triangle_same)
 open GaussianRationalHorner (qmul qzero)
 open GaussianRationalMetric (qnegative qnegative_canonical qsub distanceBounded)
 open GaussianRationalSyntheticDivision (qmul_congr qzero_add)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "E" => GaussianRadiusExponentialName.nameF

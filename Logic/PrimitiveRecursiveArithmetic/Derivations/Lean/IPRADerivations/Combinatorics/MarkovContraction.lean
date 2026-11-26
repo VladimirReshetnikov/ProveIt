@@ -23,9 +23,7 @@ tree formula, the estimate `(1 − x)^D (1 + D x) ≤ 1`, and the eventual perio
 
 namespace LeanProofs.IPRA.Combinatorics.MarkovContraction
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
+open_ipra
 
 variable {n N : ℕ} {Γ : List (Fm PTm n)}
 
@@ -68,8 +66,7 @@ theorem column_upper (w : Fin N → Fin N → ZT n) (a z t : Fin N → ZT n)
     (ha : ∀ i j, Γ ⊢[PRAAx] zle (a j) (w i j)) (j : Fin N) :
     Γ ⊢[PRAAx] zle (ZT.sumFin fun i => z i * w i j) (ZT.sumFin fun i => t i * (w i j - a j)) := by
   have h : ∑ i, ZT.toZ Γ (z i) = 0 := by
-    have e := ZT.toZ_eq hz
-    simpa only [ZT.toZ_sumFin, ZT.toZ_natLit, Nat.cast_zero] using e
+    simpa only [ZT.toZ_sumFin, ZT.toZ_natLit, Nat.cast_zero] using ZT.toZ_eq hz
   have L := col_upper_identity (fun i => ZT.toZ Γ (z i)) (fun i => ZT.toZ Γ (t i))
     (fun i => ZT.toZ Γ (w i j)) (ZT.toZ Γ (a j)) h
   beta_reduce at L
@@ -84,8 +81,7 @@ theorem column_lower (w : Fin N → Fin N → ZT n) (a z t : Fin N → ZT n)
     (ha : ∀ i j, Γ ⊢[PRAAx] zle (a j) (w i j)) (j : Fin N) :
     Γ ⊢[PRAAx] zle (-ZT.sumFin fun i => t i * (w i j - a j)) (ZT.sumFin fun i => z i * w i j) := by
   have h : ∑ i, ZT.toZ Γ (z i) = 0 := by
-    have e := ZT.toZ_eq hz
-    simpa only [ZT.toZ_sumFin, ZT.toZ_natLit, Nat.cast_zero] using e
+    simpa only [ZT.toZ_sumFin, ZT.toZ_natLit, Nat.cast_zero] using ZT.toZ_eq hz
   have L := col_lower_identity (fun i => ZT.toZ Γ (z i)) (fun i => ZT.toZ Γ (t i))
     (fun i => ZT.toZ Γ (w i j)) (ZT.toZ Γ (a j)) h
   beta_reduce at L
@@ -100,8 +96,7 @@ theorem total (w : Fin N → Fin N → ZT n) (a t : Fin N → ZT n) (D : ZT n)
     Γ ⊢[PRAAx] ZT.eq (ZT.sumFin fun j => ZT.sumFin fun i => t i * (w i j - a j))
       ((D - ZT.sumFin a) * ZT.sumFin t) := by
   have hD1 : ∀ i, ∑ j, ZT.toZ Γ (w i j) = ZT.toZ Γ D := fun i => by
-    have e := ZT.toZ_eq (hD i)
-    simpa only [ZT.toZ_sumFin] using e
+    simpa only [ZT.toZ_sumFin] using ZT.toZ_eq (hD i)
   have L := total_identity (fun i j => ZT.toZ Γ (w i j)) (fun j => ZT.toZ Γ (a j))
     (fun i => ZT.toZ Γ (t i)) (ZT.toZ Γ D) hD1
   beta_reduce at L

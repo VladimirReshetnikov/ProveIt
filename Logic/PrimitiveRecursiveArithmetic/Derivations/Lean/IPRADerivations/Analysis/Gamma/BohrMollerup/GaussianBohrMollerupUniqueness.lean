@@ -15,7 +15,7 @@ set_option maxHeartbeats 1850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBohrMollerupUniqueness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBohrMollerupPeriod (differenceF differenceData difference_regular)
 open GaussianBohrMollerupPresentation (Presentation argument observe_value laws native)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -33,9 +33,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianStirlingGammaLogarithm (source)
 open RationalValueBounds (upper upper_congr upper_of_radius upper_mono upper_triangle)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "C" => constantF

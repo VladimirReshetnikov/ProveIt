@@ -18,7 +18,7 @@ set_option maxHeartbeats 300000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalHyperfactorialIntegers
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open BarnesInteger (barnes hyp hyper_cross)
 open ComplexLogarithmRemainder (oneCode scale)
 open GaussianBarnesCanonicalHyperfactorial
@@ -36,9 +36,6 @@ open GaussianRationalReciprocal (power power_canonical)
 open GaussianRootAlgebra (equal equal_of_values equal_symm equal_trans re_add im_add re_sub im_sub re_scale im_scale
   re_one im_one)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

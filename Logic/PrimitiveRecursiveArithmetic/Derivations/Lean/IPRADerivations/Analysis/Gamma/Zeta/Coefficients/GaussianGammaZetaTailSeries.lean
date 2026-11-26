@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Gamma.Zeta.Coefficients.GaussianGammaZetaDegreeName
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Original C16 as an actual cofinal zeta-coefficient series name
@@ -17,27 +16,21 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaTailSeries
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaCanonicalTailName (source point)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
 open GaussianNamedInverseRate (rateNumerator rateDenominator denominator_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 
 def cutoff (p R : PTm n) : PTm n := p+R*R
 def observation (p z R B N : PTm n) : PTm n := GaussianGammaZetaDegreeName.sample (succ p) z R B N (cutoff p R)
-@[simp] theorem subst_cutoff {m : ℕ} (σ : Fin n → PTm m) (p R : PTm n) :
-    Syn.subst σ (cutoff p R) = cutoff (Syn.subst σ p) (Syn.subst σ R) := by simp [cutoff]
-@[simp] theorem subst_observation {m : ℕ} (σ : Fin n → PTm m) (p z R B N : PTm n) :
-    Syn.subst σ (observation p z R B N) = observation (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ N) := by simp [observation,GaussianGammaZetaDegreeName.sample]
+ipra_subst cutoff
+ipra_subst observation [GaussianGammaZetaDegreeName.sample]
 
 theorem cutoff_cofinal (p R : PTm n) : Γ ⊢[PRAAx] le p (cutoff p R) := le_add_right p (R*R)
 theorem degree_budget (p R N : PTm n) (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[PRAAx]
@@ -77,8 +70,7 @@ def data (z R B N : PTm n) : PTm n := GaussianGammaCanonicalTailName.data z R B 
 def nameF : PR 2 := PTm.toPR (observation (var 0) (fstT (var 1)) (fstT (sndT (var 1)))
   (fstT (sndT (sndT (var 1)))) (sndT (sndT (sndT (var 1)))) : PTm 2)
 def sample (p z R B N : PTm n) : PTm n := ap2 nameF p (data z R B N)
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (z R B N : PTm n) :
-    Syn.subst σ (data z R B N) = data (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [data]
+ipra_subst data
 theorem observation_congr {p p' z z' R R' B B' N N' : PTm n}
     (hp : Γ ⊢[PRAAx] p ≐ p') (hz : Γ ⊢[PRAAx] z ≐ z') (hR : Γ ⊢[PRAAx] R ≐ R')
     (hB : Γ ⊢[PRAAx] B ≐ B') (hN : Γ ⊢[PRAAx] N ≐ N') : Γ ⊢[PRAAx]
@@ -93,8 +85,8 @@ theorem sample_at (p z R B N : PTm n) : Γ ⊢[PRAAx] sample p z R B N ≐ obser
       Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.head_cons] using raw
   have t₁ := snd_pair (Γ := Γ) z (pairT R (pairT B N))
   have t₂ := (congrSnd t₁).eqTrans (snd_pair R (pairT B N))
-  exact e.eqTrans (observation_congr (.eqRefl _) (fst_pair _ _) ((congrFst t₁).eqTrans (fst_pair _ _))
-    ((congrFst t₂).eqTrans (fst_pair _ _)) ((congrSnd t₂).eqTrans (snd_pair _ _)))
+  exact e.eqTrans (observation_congr (.eqRefl _) (fst_pair _ _) t₁.fstE
+    t₂.fstE t₂.sndE)
 theorem sample_canonical (p z R B N : PTm n) : Γ ⊢[PRAAx] GaussianRationalHorner.canonical (sample p z R B N) :=
   GaussianRationalHorner.canonical_congr (sample_at p z R B N) (GaussianGammaZetaDegreeName.sample_canonical _ _ _ _ _ _)
 theorem sample_bound (p z R B N : PTm n) (h : Γ ⊢[PRAAx] source z R B N) : Γ ⊢[PRAAx]

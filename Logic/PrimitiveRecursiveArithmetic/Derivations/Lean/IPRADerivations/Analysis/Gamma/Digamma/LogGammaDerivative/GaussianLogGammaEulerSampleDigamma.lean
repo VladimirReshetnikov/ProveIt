@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerSampleDigamma
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianLogGammaEulerCommonDenominator
   (admissionBudget commonImag commonReal displacement punctured quotientData radius_from_distance rateBudget sizeBound uniform_source)
@@ -23,10 +23,6 @@ open GaussianNamedInverseRate (independentRate rate_at rateDenominator rateNumer
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalValueEquality (commonDen common_den_positive)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

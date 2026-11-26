@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalHeadUniformMass
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalCenteredHead (linear factor polynomial polynomial_length polynomial_zero polynomial_succ factor_length)
 open GaussianBarnesCanonicalFactor (base base_bound)
 open GaussianBarnesCanonicalHeadPolynomial (degree degree_zero degree_succ subst_degree)
@@ -41,10 +41,6 @@ open GaussianRationalSyntheticDivision (qone)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
 open RationalArgmin (rationalLE rationalLE_congr subst_rationalLE)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

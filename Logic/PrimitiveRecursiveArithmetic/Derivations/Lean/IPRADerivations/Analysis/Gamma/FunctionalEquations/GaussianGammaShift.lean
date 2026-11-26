@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaShift
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaEulerHeadShift (shifted)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianGammaReciprocalInverse (gammaF gammaData gammaHeight gamma_regular gamma_product)
@@ -29,9 +29,6 @@ open GaussianEuclideanDistanceName (pointCN)
 open GaussianRationalHorner (ofGaussian)
 open GaussianRationalMetric (distanceBounded)
 open GaussianCoefficientNameBounds (unit)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,12 +39,8 @@ def input (z R B a d e f : PTm n) : Fm PTm n := GaussianGammaReciprocalInverse.s
 
 def shiftF : PR 2 := multiplyF constantF gammaF
 def shiftData (z R B d : PTm n) : PTm n := multiplyData constantF gammaF (ofGaussian z B) (gammaData z R B d)
-@[simp] theorem subst_input {l : ℕ} (σ : Fin n → PTm l) (z R B a d e f : PTm n) :
-    (input z R B a d e f).subst σ = input (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ d) (Syn.subst σ e) (Syn.subst σ f) := by simp [input]
-@[simp] theorem subst_shiftData {l : ℕ} (σ : Fin n → PTm l) (z R B d : PTm n) :
-    Syn.subst σ (shiftData z R B d) = shiftData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ d) := by
-  simp [shiftData,gammaData,gammaHeight]
+ipra_subst input
+ipra_subst shiftData [gammaData, gammaHeight]
 
 theorem shifted_source (z R B a d e f : PTm n) (h : Γ ⊢[PRAAx] input z R B a d e f) : Γ ⊢[PRAAx]
     GaussianGammaReciprocalInverse.source (shifted z B) (R+one) B e f :=
@@ -112,27 +105,18 @@ def output (p q z R B d f : PTm n) : PTm n :=
   pairT (ap2 gammaF p (gammaData (shifted z B) (R+one) B f)) (ap2 shiftF q (shiftData z R B d))
 def outputF : PR 7 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6))
 def run (p q z R B d f : PTm n) : PTm n := PTm.app outputF ![p,q,z,R,B,d,f]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (p q z R B d f : PTm n) :
-    Syn.subst σ (output p q z R B d f) = output (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ z)
-      (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ d) (Syn.subst σ f) := by
-  simp [output,gammaData,gammaHeight]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (p q z R B d f : PTm n) :
-    Syn.subst σ (run p q z R B d f) = run (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ z)
-      (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ d) (Syn.subst σ f) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output [gammaData, gammaHeight]
+ipra_subst run
 
 theorem program_at (p q z R B d f : PTm n) : Γ ⊢[PRAAx] run p q z R B d f ≐ output p q z R B d f := by
   simpa [run,outputF] using
     toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) : PTm 7) ![p,q,z,R,B,d,f]
 theorem returned_shifted_Gamma (p q z R B d f : PTm n) : Γ ⊢[PRAAx]
     fstT (run p q z R B d f) ≐ ap2 gammaF p (gammaData (shifted z B) (R+one) B f) :=
-  (congrFst (program_at p q z R B d f)).eqTrans (fst_pair _ _)
+  (program_at p q z R B d f).fstE
 theorem returned_original_product (p q z R B d f : PTm n) : Γ ⊢[PRAAx]
     sndT (run p q z R B d f) ≐ ap2 shiftF q (shiftData z R B d) :=
-  (congrSnd (program_at p q z R B d f)).eqTrans (snd_pair _ _)
+  (program_at p q z R B d f).sndE
 theorem returned_distance (p q z R B a d e f : PTm n) (h : Γ ⊢[PRAAx] input z R B a d e f) : Γ ⊢[PRAAx]
     distanceBounded (fstT (run p q z R B d f)) (sndT (run p q z R B d f)) (unit p+unit q) (unit p*unit q) :=
   GaussianRationalDistanceOrder.distance_congr (returned_shifted_Gamma p q z R B d f).eqSymm

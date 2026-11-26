@@ -15,17 +15,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLowerTailFiniteBudget
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaIntegralCutoffs (height)
 open GaussianEulerLowerTailRootGrid (rootRatio rootDenominator)
 open GaussianEulerLowerTailPartition (rootStep)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,24 +34,14 @@ def nativeDenominator (H V : PTm n) : PTm n := H*V
 def numerator (t p q k R L : PTm n) : PTm n := nativeNumerator (succ k) (unit (height p (succ k) R)) (scale p q k) L (unit t)
 def denominator (t p k R : PTm n) : PTm n := unit (height p (succ k) R)*unit t
 
-@[simp] theorem subst_scale {m : ℕ} (σ : Fin n → PTm m) (p q k : PTm n) :
-    Syn.subst σ (scale p q k) = scale (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ k) := by simp [scale]
-@[simp] theorem subst_oldNumerator {m : ℕ} (σ : Fin n → PTm m) (N D S L P : PTm n) :
-    Syn.subst σ (oldNumerator N D S L P) = oldNumerator (Syn.subst σ N) (Syn.subst σ D) (Syn.subst σ S) (Syn.subst σ L) (Syn.subst σ P) := by simp [oldNumerator]
-@[simp] theorem subst_oldDenominator {m : ℕ} (σ : Fin n → PTm m) (D P : PTm n) :
-    Syn.subst σ (oldDenominator D P) = oldDenominator (Syn.subst σ D) (Syn.subst σ P) := by simp [oldDenominator]
-@[simp] theorem subst_residual {m : ℕ} (σ : Fin n → PTm m) (S L : PTm n) :
-    Syn.subst σ (residual S L) = residual (Syn.subst σ S) (Syn.subst σ L) := by simp [residual]
-@[simp] theorem subst_nativeNumerator {m : ℕ} (σ : Fin n → PTm m) (K H S L V : PTm n) :
-    Syn.subst σ (nativeNumerator K H S L V) = nativeNumerator (Syn.subst σ K) (Syn.subst σ H) (Syn.subst σ S) (Syn.subst σ L) (Syn.subst σ V) := by simp [nativeNumerator]
-@[simp] theorem subst_nativeDenominator {m : ℕ} (σ : Fin n → PTm m) (H V : PTm n) :
-    Syn.subst σ (nativeDenominator H V) = nativeDenominator (Syn.subst σ H) (Syn.subst σ V) := by simp [nativeDenominator]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (t p q k R L : PTm n) :
-    Syn.subst σ (numerator t p q k R L) = numerator (Syn.subst σ t) (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ k) (Syn.subst σ R) (Syn.subst σ L) := by
-  simp [numerator,height,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (t p k R : PTm n) :
-    Syn.subst σ (denominator t p k R) = denominator (Syn.subst σ t) (Syn.subst σ p) (Syn.subst σ k) (Syn.subst σ R) := by
-  simp [denominator,height,GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst scale
+ipra_subst oldNumerator
+ipra_subst oldDenominator
+ipra_subst residual
+ipra_subst nativeNumerator
+ipra_subst nativeDenominator
+ipra_subst numerator [height, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst denominator [height, GaussianGammaIntegralCutoffs.tailCoefficient]
 
 /-- Each of the three original radius terms is compared separately;
 no division or raw rational cancellation is used. -/
@@ -122,18 +108,17 @@ def output (t p q k R L : PTm n) : PTm n := pairT (numerator t p q k R L)
   (pairT (denominator t p k R) (residual (scale p q k) L))
 def outputF : PR 6 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5))
 def run (t p q k R L : PTm n) : PTm n := PTm.app outputF ![t,p,q,k,R,L]
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (t p q k R L : PTm n) :
-    Syn.subst σ (output t p q k R L) = output (Syn.subst σ t) (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ k) (Syn.subst σ R) (Syn.subst σ L) := by simp [output]
+ipra_subst output
 theorem program_at (t p q k R L : PTm n) : Γ ⊢[PRAAx] run t p q k R L ≐ output t p q k R L := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) ![t,p,q,k,R,L]
 theorem returned_numerator (t p q k R L : PTm n) : Γ ⊢[PRAAx] fstT (run t p q k R L) ≐ numerator t p q k R L :=
-  (congrFst (program_at t p q k R L)).eqTrans (fst_pair _ _)
+  (program_at t p q k R L).fstE
 theorem returned_tail (t p q k R L : PTm n) : Γ ⊢[PRAAx] sndT (run t p q k R L) ≐ pairT (denominator t p k R) (residual (scale p q k) L) :=
-  (congrSnd (program_at t p q k R L)).eqTrans (snd_pair _ _)
+  (program_at t p q k R L).sndE
 theorem returned_denominator (t p q k R L : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run t p q k R L)) ≐ denominator t p k R :=
-  (congrFst (returned_tail t p q k R L)).eqTrans (fst_pair _ _)
+  (returned_tail t p q k R L).fstE
 theorem returned_residual (t p q k R L : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run t p q k R L)) ≐ residual (scale p q k) L :=
-  (congrSnd (returned_tail t p q k R L)).eqTrans (snd_pair _ _)
+  (returned_tail t p q k R L).sndE
 
 theorem exact_native_lower_radius_clearing_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 8
     (le (var 0*var 2*var 6) (var 5*var 1) ⟶ le (var 0*var 7) (var 1*var 1) ⟶ le (var 0*var 7) (var 1*var 4) ⟶

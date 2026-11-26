@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianPositiveRationalLogarithm
 import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianPositiveExponentialMajorant
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual positive-time complex powers and Euler integrand observations
@@ -20,7 +19,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIntegrandName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianNameArithmetic (addF addData add_fast multiplyF multiplyData multiply_fast)
 open GaussianNameEquivalence (crossEquivalent cross_refl)
@@ -28,9 +27,6 @@ open GaussianRationalHorner (ofGaussian qmul qadd)
 open GaussianRationalMetric (qsub qnegative bounded)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianCoefficientNameBounds (unit)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -58,26 +54,16 @@ def productData (z B a b : PTm n) : PTm n := multiplyData powerF decayF (powerDa
 def powerClock (p z B a b : PTm n) : PTm n := GaussianFastValueCut.exponent
   (GaussianNameArithmetic.multiplyModulus constantF logarithmF (coefficient z B) (GaussianPositiveRationalLogarithm.data a b)) p
 
-@[simp] theorem subst_coefficient {m : ℕ} (σ : Fin n → PTm m) (z B : PTm n) :
-    Syn.subst σ (coefficient z B) = coefficient (Syn.subst σ z) (Syn.subst σ B) := by simp [coefficient]
-@[simp] theorem subst_powerExponentData {m : ℕ} (σ : Fin n → PTm m) (z B a b : PTm n) :
-    Syn.subst σ (powerExponentData z B a b) = powerExponentData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by simp [powerExponentData]
-@[simp] theorem subst_powerRadius {m : ℕ} (σ : Fin n → PTm m) (z B a b : PTm n) :
-    Syn.subst σ (powerRadius z B a b) = powerRadius (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by simp [powerRadius]
-@[simp] theorem subst_powerData {m : ℕ} (σ : Fin n → PTm m) (z B a b : PTm n) :
-    Syn.subst σ (powerData z B a b) = powerData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by simp [powerData]
-@[simp] theorem subst_decayPoint {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (decayPoint a b) = decayPoint (Syn.subst σ a) (Syn.subst σ b) := by simp [decayPoint]
-@[simp] theorem subst_exponentData {m : ℕ} (σ : Fin n → PTm m) (z B a b : PTm n) :
-    Syn.subst σ (exponentData z B a b) = exponentData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by simp [exponentData]
-@[simp] theorem subst_radius {m : ℕ} (σ : Fin n → PTm m) (z B a b : PTm n) :
-    Syn.subst σ (radius z B a b) = radius (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by simp [radius]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (z B a b : PTm n) :
-    Syn.subst σ (data z B a b) = data (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by simp [data]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z B a b : PTm n) :
-    (source z B a b).subst σ = source (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by simp [source]
-@[simp] theorem subst_powerClock {m : ℕ} (σ : Fin n → PTm m) (p z B a b : PTm n) :
-    Syn.subst σ (powerClock p z B a b) = powerClock (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by simp [powerClock]
+ipra_subst coefficient
+ipra_subst powerExponentData
+ipra_subst powerRadius
+ipra_subst powerData
+ipra_subst decayPoint
+ipra_subst exponentData
+ipra_subst radius
+ipra_subst data
+ipra_subst source
+ipra_subst powerClock
 
 theorem power_exponent_regular (z B a b : PTm n) (h : Γ ⊢[PRAAx] source z B a b) :
     Γ ⊢[PRAAx] pointCN powerExponentF (powerExponentData z B a b) :=
@@ -127,14 +113,10 @@ def fixedData (z B : PTm n) : PTm n := pairT z B
 def evaluatorTerm (p t x : PTm n) : PTm n := ap2 nameF p (data (fstT x) (sndT x) (fstT t) (sndT t))
 def evaluatorF : PR 3 := PTm.toPR (evaluatorTerm (var 0) (var 1) (var 2))
 def sample (p z B a b : PTm n) : PTm n := ap3 evaluatorF p (timeData a b) (fixedData z B)
-@[simp] theorem subst_evaluatorTerm {m : ℕ} (σ : Fin n → PTm m) (p t x : PTm n) :
-    Syn.subst σ (evaluatorTerm p t x) = evaluatorTerm (Syn.subst σ p) (Syn.subst σ t) (Syn.subst σ x) := by simp [evaluatorTerm]
-@[simp] theorem subst_timeData {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (timeData a b) = timeData (Syn.subst σ a) (Syn.subst σ b) := by simp [timeData]
-@[simp] theorem subst_fixedData {m : ℕ} (σ : Fin n → PTm m) (z B : PTm n) :
-    Syn.subst σ (fixedData z B) = fixedData (Syn.subst σ z) (Syn.subst σ B) := by simp [fixedData]
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (p z B a b : PTm n) :
-    Syn.subst σ (sample p z B a b) = sample (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by simp [sample]
+ipra_subst evaluatorTerm
+ipra_subst timeData
+ipra_subst fixedData
+ipra_subst sample
 
 theorem evaluator_at (p t x : PTm n) : Γ ⊢[PRAAx] ap3 evaluatorF p t x ≐ evaluatorTerm p t x := by
   simpa [evaluatorF,ap3] using toPR_eq (Γ := Γ) (evaluatorTerm (var 0) (var 1) (var 2) : PTm 3) ![p,t,x]

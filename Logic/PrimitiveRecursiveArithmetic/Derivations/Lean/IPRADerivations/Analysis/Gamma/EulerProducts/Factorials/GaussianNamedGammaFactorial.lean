@@ -17,7 +17,7 @@ set_option maxRecDepth 2048
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedGammaFactorial
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
@@ -35,9 +35,6 @@ open GaussianRationalNaturalScale (naturalPoint natural_point_represents)
 open GaussianRootAlgebra (equal equal_refl re_one re_scale)
 open RationalIntegerNormalization (normalize normalize_integer)
 open RationalSupMetric (denominatorOf)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

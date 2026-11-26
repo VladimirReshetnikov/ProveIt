@@ -14,16 +14,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedHalfPlaneCorrection
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedRightHalfPlane (source radius numerator denominator actual_sample_disk actual_sample_upper)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (ofGaussian positive_product)
 open GaussianRationalMetric (distanceBounded)
 open ComplexLogarithmRemainder (scale oneCode re im normSq)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -33,14 +29,10 @@ def correctedNumerator (f : PR 2) (r x : PTm n) : PTm n := ComplexLogarithmRemai
   (scale (weight r) (numerator f r x)) (scale (denominator f r x*radius f x) oneCode)
 def correctedDenominator (f : PR 2) (r x : PTm n) : PTm n := unit r*denominator f r x
 def point (f : PR 2) (r x : PTm n) : PTm n := ofGaussian (correctedNumerator f r x) (correctedDenominator f r x)
-@[simp] theorem subst_weight {m : ℕ} (σ : Fin n → PTm m) (r : PTm n) :
-    Syn.subst σ (weight r) = weight (Syn.subst σ r) := by simp [weight]
-@[simp] theorem subst_correctedNumerator {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (r x : PTm n) :
-    Syn.subst σ (correctedNumerator f r x) = correctedNumerator f (Syn.subst σ r) (Syn.subst σ x) := by simp [correctedNumerator]
-@[simp] theorem subst_correctedDenominator {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (r x : PTm n) :
-    Syn.subst σ (correctedDenominator f r x) = correctedDenominator f (Syn.subst σ r) (Syn.subst σ x) := by simp [correctedDenominator]
-@[simp] theorem subst_point {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (r x : PTm n) :
-    Syn.subst σ (point f r x) = point f (Syn.subst σ r) (Syn.subst σ x) := by simp [point]
+ipra_subst weight
+ipra_subst correctedNumerator
+ipra_subst correctedDenominator
+ipra_subst point
 
 theorem weight_split (r : PTm n) : Γ ⊢[PRAAx] weight r+one ≐ unit r :=
   (add_comm _ _).eqTrans (eq_add_of_le (unit_positive r)).eqSymm

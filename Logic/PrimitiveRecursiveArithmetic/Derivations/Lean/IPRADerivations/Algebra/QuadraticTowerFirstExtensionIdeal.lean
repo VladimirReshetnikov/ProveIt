@@ -1,6 +1,5 @@
 import IPRADerivations.Algebra.QuadraticTowerMultiplicationRecurrence
 import IPRADerivations.Algebra.QuadraticTowerFirstExtensionSign
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Semantic sign-zero products of the actual first extension
@@ -16,7 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticTowerFirstExtensionIdeal
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis
 open QuadraticTowerArrayCodec (arrayHeight normalized)
 open QuadraticTowerScalarBudget (height growth)
@@ -26,9 +25,6 @@ open QuadraticTowerMultiplicationHeight (radicandsHeight)
 open QuadraticTowerFirstExtensionSign (coefficients radicand)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length append entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -151,8 +147,7 @@ theorem native_zero_multiply (d x y : PTm n)
           ((QuadraticRationalNonnegativeRadicand.zero_branch d x hz).eqSymm.eqTrans hx.wk)))
 
 def productBound (b : PTm n) : PTm n := growth (QuadraticTowerGrowth.path one) b
-@[simp] theorem subst_productBound {k : ℕ} (σ : Fin n → PTm k) (b : PTm n) :
-    Syn.subst σ (productBound b) = productBound (Syn.subst σ b) := by simp [productBound]
+ipra_subst productBound
 
 theorem source_input_sign (S D A b : PTm n) (hS : Γ ⊢[PRAAx] le (productBound b) S)
     (hD : Γ ⊢[PRAAx] radicandsHeight D one b) (ha : Γ ⊢[PRAAx] arrayHeight one A b)
@@ -237,10 +232,8 @@ theorem positive_multiply (M S D A C b : PTm n) (hM : Γ ⊢[PRAAx] le b M)
 def source (D A C b : PTm n) : Fm PTm n := radicandsHeight D one b ⋏
   (arrayHeight one A b ⋏ (arrayHeight one C b ⋏ QuadraticRationalNonnegativeRadicand.nonnegative (radicand D)))
 def input (M S D A C b : PTm n) : Fm PTm n := le b M ⋏ (le (productBound b) S ⋏ source D A C b)
-@[simp] theorem subst_source {k : ℕ} (σ : Fin n → PTm k) (D A C b : PTm n) :
-    (source D A C b).subst σ = source (Syn.subst σ D) (Syn.subst σ A) (Syn.subst σ C) (Syn.subst σ b) := by simp [source,QuadraticRationalNonnegativeRadicand.nonnegative,radicand]
-@[simp] theorem subst_input {k : ℕ} (σ : Fin n → PTm k) (M S D A C b : PTm n) :
-    (input M S D A C b).subst σ = input (Syn.subst σ M) (Syn.subst σ S) (Syn.subst σ D) (Syn.subst σ A) (Syn.subst σ C) (Syn.subst σ b) := by simp [input]
+ipra_subst source [QuadraticRationalNonnegativeRadicand.nonnegative, radicand]
+ipra_subst input
 
 def output (b D A C : PTm n) : PTm n := pairT (query one b D A C)
   (pairT (QuadraticTowerSignTable.query one (productBound b) D (query one b D A C))
@@ -248,40 +241,34 @@ def output (b D A C : PTm n) : PTm n := pairT (query one b D A C)
       (pairT (QuadraticTowerSignTable.query one (productBound b) D C) (productBound b))))
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (b D A C : PTm n) : PTm n := PTm.app outputF ![b,D,A,C]
-@[simp] theorem subst_output {k : ℕ} (σ : Fin n → PTm k) (b D A C : PTm n) :
-    Syn.subst σ (output b D A C) = output (Syn.subst σ b) (Syn.subst σ D) (Syn.subst σ A) (Syn.subst σ C) := by simp [output]
-@[simp] theorem subst_run {k : ℕ} (σ : Fin n → PTm k) (b D A C : PTm n) :
-    Syn.subst σ (run b D A C) = run (Syn.subst σ b) (Syn.subst σ D) (Syn.subst σ A) (Syn.subst σ C) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (b D A C : PTm n) : Γ ⊢[PRAAx] run b D A C ≐ output b D A C := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![b,D,A,C]
 theorem returned_product (b D A C : PTm n) : Γ ⊢[PRAAx] fstT (run b D A C) ≐ query one b D A C :=
-  (congrFst (program_at _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _).fstE
 theorem returned_tail (b D A C : PTm n) : Γ ⊢[PRAAx] sndT (run b D A C) ≐
     pairT (QuadraticTowerSignTable.query one (productBound b) D (query one b D A C))
       (pairT (QuadraticTowerSignTable.query one (productBound b) D A) (pairT (QuadraticTowerSignTable.query one (productBound b) D C) (productBound b))) :=
-  (congrSnd (program_at _ _ _ _)).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _).sndE
 theorem returned_product_tag (b D A C : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run b D A C)) ≐
     QuadraticTowerSignTable.query one (productBound b) D (query one b D A C) :=
-  (congrFst (returned_tail _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_tail _ _ _ _).fstE
 theorem returned_inputs (b D A C : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run b D A C)) ≐
     pairT (QuadraticTowerSignTable.query one (productBound b) D A) (pairT (QuadraticTowerSignTable.query one (productBound b) D C) (productBound b)) :=
-  (congrSnd (returned_tail _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_tail _ _ _ _).sndE
 theorem returned_left_tag (b D A C : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run b D A C))) ≐
     QuadraticTowerSignTable.query one (productBound b) D A :=
-  (congrFst (returned_inputs _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_inputs _ _ _ _).fstE
 theorem returned_right_pair (b D A C : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run b D A C))) ≐
     pairT (QuadraticTowerSignTable.query one (productBound b) D C) (productBound b) :=
-  (congrSnd (returned_inputs _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_inputs _ _ _ _).sndE
 theorem returned_right_tag (b D A C : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (run b D A C)))) ≐
     QuadraticTowerSignTable.query one (productBound b) D C :=
-  (congrFst (returned_right_pair _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_right_pair _ _ _ _).fstE
 theorem returned_cap (b D A C : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (run b D A C)))) ≐ productBound b :=
-  (congrSnd (returned_right_pair _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_right_pair _ _ _ _).sndE
 
 theorem returned_zero_iff (b D A C : PTm n) (h : Γ ⊢[PRAAx] source D A C b) : Γ ⊢[PRAAx]
     Fm.iff (fstT (sndT (run b D A C)) ≐ zero)

@@ -16,24 +16,19 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.RationalPointDistance
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.RationalHausdorff
   (grid parameter pointRadius subst_pointRadius originalHit source minimum_bound_of_original_hit metric_to_point_radius)
 open LeanProofs.IPRA.Analysis.RationalSupMetric (metricF)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
 open LeanProofs.IPRA.Foundations.FiniteHausdorff (distanceTo subst_distanceTo)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def singleton (z : PTm n) : PTm n := sequence (var 1 : PTm 2) one z
 
-@[simp] theorem subst_singleton {m : ℕ} (σ : Fin n → PTm m) (z : PTm n) :
-    Syn.subst σ (singleton z) = singleton (Syn.subst σ z) := by simp [singleton, one]
+ipra_subst singleton [one]
 
 theorem singleton_length (z : PTm n) : Γ ⊢[PRAAx] length (singleton z) ≐ one := sequence_length _ _ _
 theorem singleton_zero (z : PTm n) : Γ ⊢[PRAAx] entry (singleton z) zero ≐ z := by
@@ -48,14 +43,10 @@ def denominator (z T d : PTm n) : PTm n := RationalHausdorff.denominator (single
 def rationalDistance (z T d : PTm n) : PTm n := pairT (numerator z T d) (denominator z T d)
 def selected (z T d : PTm n) : PTm n := RationalNearest.selected (singleton z) T d zero
 
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (z T d : PTm n) :
-    Syn.subst σ (numerator z T d) = numerator (Syn.subst σ z) (Syn.subst σ T) (Syn.subst σ d) := by simp [numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (z T d : PTm n) :
-    Syn.subst σ (denominator z T d) = denominator (Syn.subst σ z) (Syn.subst σ T) (Syn.subst σ d) := by simp [denominator]
-@[simp] theorem subst_rationalDistance {m : ℕ} (σ : Fin n → PTm m) (z T d : PTm n) :
-    Syn.subst σ (rationalDistance z T d) = rationalDistance (Syn.subst σ z) (Syn.subst σ T) (Syn.subst σ d) := by simp [rationalDistance]
-@[simp] theorem subst_selected {m : ℕ} (σ : Fin n → PTm m) (z T d : PTm n) :
-    Syn.subst σ (selected z T d) = selected (Syn.subst σ z) (Syn.subst σ T) (Syn.subst σ d) := by simp [selected]
+ipra_subst numerator
+ipra_subst denominator
+ipra_subst rationalDistance
+ipra_subst selected
 
 theorem denominator_positive (z T d : PTm n) : Γ ⊢[PRAAx] le one (denominator z T d) :=
   RationalSupMetric.commonDenominator_one_le _ _
@@ -65,12 +56,9 @@ def pointHit (z T d A B : PTm n) : Fm PTm n :=
   .ex (lt (var 0) (length (Syn.shift T)) ⋏
     pointRadius (Syn.shift z) (entry (Syn.shift T) (var 0)) (Syn.shift d) (Syn.shift A) (Syn.shift B))
 
-@[simp] theorem subst_pointHit {m : ℕ} (σ : Fin n → PTm m) (z T d A B : PTm n) :
-    (pointHit z T d A B).subst σ = pointHit (Syn.subst σ z) (Syn.subst σ T) (Syn.subst σ d)
-      (Syn.subst σ A) (Syn.subst σ B) := by
-  simp only [pointHit,Fm.subst_ex,Fm.subst_and,subst_lt,Foundations.SequenceComposition.subst_length,
-    Foundations.MasterCertificate.subst_entry,subst_pointRadius,Syn.subst_var,Syn.up_zero,Syn.up_succ,
-    Syn.subst_shift,Syn.shift_subst]
+ipra_subst pointHit [Fm.subst_ex, Fm.subst_and, subst_lt, Foundations.SequenceComposition.subst_length,
+    Foundations.MasterCertificate.subst_entry, subst_pointRadius, Syn.subst_var, Syn.up_zero, Syn.up_succ,
+    Syn.subst_shift, Syn.shift_subst]
 
 theorem pointHit_point_congr {z z' : PTm n} (T d A B : PTm n) (hz : Γ ⊢[PRAAx] z ≐ z')
     (h : Γ ⊢[PRAAx] pointHit z T d A B) : Γ ⊢[PRAAx] pointHit z' T d A B := by
@@ -144,9 +132,9 @@ theorem selected_at (z T d : PTm n) : Γ ⊢[PRAAx] ap3 selectedF z T d ≐ sele
   simpa [selectedF,ap3] using toPR_eq (Γ := Γ) (selected (var 0) (var 1) (var 2) : PTm 3) ![z,T,d]
 
 theorem code_numerator (z T d : PTm n) : Γ ⊢[PRAAx] fstT (ap3 codeF z T d) ≐ numerator z T d :=
-  (congrFst (code_at z T d)).eqTrans (fst_pair _ _)
+  (code_at z T d).fstE
 theorem code_denominator (z T d : PTm n) : Γ ⊢[PRAAx] sndT (ap3 codeF z T d) ≐ denominator z T d :=
-  (congrSnd (code_at z T d)).eqTrans (snd_pair _ _)
+  (code_at z T d).sndE
 theorem code_positive (z T d : PTm n) : Γ ⊢[PRAAx] le one (sndT (ap3 codeF z T d)) :=
   le_congr (.eqRefl _) (code_denominator z T d).eqSymm (denominator_positive z T d)
 
@@ -163,9 +151,7 @@ def checkerTerm (z T d A B : PTm n) : PTm n :=
   eqb (monus (B*fstT (ap3 codeF z T d)) (A*sndT (ap3 codeF z T d))) zero
 def checkerF : PR 5 := PTm.toPR (checkerTerm (var 0) (var 1) (var 2) (var 3) (var 4))
 
-@[simp] theorem subst_checkerTerm {m : ℕ} (σ : Fin n → PTm m) (z T d A B : PTm n) :
-    Syn.subst σ (checkerTerm z T d A B) = checkerTerm (Syn.subst σ z) (Syn.subst σ T) (Syn.subst σ d)
-      (Syn.subst σ A) (Syn.subst σ B) := by simp [checkerTerm]
+ipra_subst checkerTerm
 
 theorem checker_at (z T d A B : PTm n) :
     Γ ⊢[PRAAx] RationalHausdorff.apply5 checkerF z T d A B ≐ checkerTerm z T d A B := by

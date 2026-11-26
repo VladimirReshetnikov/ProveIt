@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Gamma.GaussianGammaRealValues
 import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.GaussianEulerLowerPowerCoefficients
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Original native real arguments for the vertical Euler comparison
@@ -15,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerVerticalNativeProjection
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalGaussianEmbedding (native)
 open GaussianGammaRealValues (projection projection_represents)
 open GaussianEulerIntegrandName (coefficient coefficient_represents)
@@ -23,15 +22,11 @@ open GaussianRationalHorner (ofGaussian ofGaussian_canonical ofGaussian_represen
 open GaussianEulerLowerPowerCoefficients (realLower source)
 open ComplexLogarithmRemainder (re im normSq scale oneCode)
 open GaussianRootAlgebra (sub equal equal_of_values)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def argument (z : PTm n) : PTm n := native (re z)
-@[simp] theorem subst_argument {m : ℕ} (σ : Fin n → PTm m) (z : PTm n) :
-    Syn.subst σ (argument z) = argument (Syn.subst σ z) := by simp [argument]
+ipra_subst argument
 
 theorem real_coordinate (z : PTm n) : Γ ⊢[PRAAx] ZT.eq (re (argument z)) (re z) := by
   apply ZT.derive

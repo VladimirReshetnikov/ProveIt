@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIncompleteRecurrenceResidual
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIncompleteCofinalRate (source)
 open GaussianEulerIncompleteName (lowerF upperF data)
 open GaussianEulerIncompleteCutoff (clock lowerWidth upperWidth splitPoint denominator)
@@ -31,9 +31,6 @@ open GaussianRationalHorner (ofGaussian qmul)
 open GaussianRationalMetric (bounded distanceBounded qsub qnegative)
 open GaussianRationalDistanceOrder (distance_congr distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

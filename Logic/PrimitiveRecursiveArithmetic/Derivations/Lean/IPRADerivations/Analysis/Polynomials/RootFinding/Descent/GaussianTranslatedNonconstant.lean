@@ -2,7 +2,6 @@ import IPRADerivations.Analysis.RationalArithmetic.Translations.GaussianRational
 import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalL1
 import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.GaussianMonicNonconstant
 import IPRADerivations.Foundations.BoundedSyntaxInduction
-import IPRADerivations.Core.Search
 
 /-!
 # Actual preservation of nonconstant Gaussian-rational coefficients
@@ -19,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianTranslatedNonconstant
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner
   (qzero qadd qmul horner evaluate represents canonical positive_product)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (quotient)
@@ -30,10 +29,6 @@ open LeanProofs.IPRA.Analysis.GaussianRootAlgebra (equal equal_of_values re_add 
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
 open LeanProofs.IPRA.Foundations.BoundedSyntax (BFm formula)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -41,10 +36,8 @@ local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
 def recode (q : PTm n) : PTm n := qadd qzero q
 def rawNorm (q : PTm n) : PTm n := normSq (rawGaussian q)
 
-@[simp] theorem subst_recode {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    Syn.subst σ (recode q) = recode (Syn.subst σ q) := by simp [recode]
-@[simp] theorem subst_rawNorm {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    Syn.subst σ (rawNorm q) = rawNorm (Syn.subst σ q) := by simp [rawNorm]
+ipra_subst recode
+ipra_subst rawNorm
 
 theorem recode_canonical (q : PTm n) : Γ ⊢[PRAAx] canonical (recode q) :=
   GaussianRationalHorner.qadd_canonical _ _
@@ -91,9 +84,7 @@ to arbitrary raw stored input fractions. -/
 def zeroPrefix (C e : PTm n) : Fm PTm n :=
   .all (lt (var 0) (Syn.shift e) ⟶ recode (entry (Syn.shift C) (var 0)) ≐ qzero)
 
-@[simp] theorem subst_zeroPrefix {m : ℕ} (σ : Fin n → PTm m) (C e : PTm n) :
-    (zeroPrefix C e).subst σ = zeroPrefix (Syn.subst σ C) (Syn.subst σ e) := by
-  simp [zeroPrefix,Syn.subst_shift,Syn.shift_subst]
+ipra_subst zeroPrefix [Syn.subst_shift, Syn.shift_subst]
 
 theorem zero_prefix_at (C e i : PTm n) (h : Γ ⊢[PRAAx] zeroPrefix C e)
     (hi : Γ ⊢[PRAAx] lt i e) : Γ ⊢[PRAAx] recode (entry C i) ≐ qzero := by
@@ -104,18 +95,14 @@ theorem zero_prefix_at (C e i : PTm n) (h : Γ ⊢[PRAAx] zeroPrefix C e)
 
 def hornerZeroLaw (C z e k : PTm n) : Fm PTm n :=
   le k e ⟶ horner C z k ≐ qzero
-@[simp] theorem subst_hornerZeroLaw {m : ℕ} (σ : Fin n → PTm m) (C z e k : PTm n) :
-    (hornerZeroLaw C z e k).subst σ = hornerZeroLaw (Syn.subst σ C) (Syn.subst σ z)
-      (Syn.subst σ e) (Syn.subst σ k) := by simp [hornerZeroLaw]
+ipra_subst hornerZeroLaw
 
 theorem zero_prefix_horner (C z e k : PTm n) (h : Γ ⊢[PRAAx] zeroPrefix C e)
     (hk : Γ ⊢[PRAAx] le k e) : Γ ⊢[PRAAx] horner C z k ≐ qzero := by
   have all : Γ ⊢[PRAAx] .all (hornerZeroLaw (Syn.shift C) (Syn.shift z) (Syn.shift e) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_hornerZeroLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (GaussianRationalHorner.horner_zero C z)
-    · simp only [subst_hornerZeroLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_hornerZeroLaw]
+    · exact .impI (GaussianRationalHorner.horner_zero C z)
+    · refine .impI ?_
       let I := hornerZeroLaw (Syn.shift C) (Syn.shift z) (Syn.shift e) (var 0)
       let Δ := le (succ (var 0)) (Syn.shift e) :: I :: Γ.map Fm.shift
       have hp : Δ ⊢[PRAAx] zeroPrefix (Syn.shift C) (Syn.shift e) := by
@@ -139,8 +126,7 @@ theorem boundary_horner (C z e : PTm n) (h : Γ ⊢[PRAAx] zeroPrefix C e) : Γ 
         (GaussianRationalSyntheticDivision.qmul_zero_left _)) (.eqRefl _))
 
 def flat (C e a : PTm n) : Fm PTm n := zeroPrefix C e ⋏ recode (entry C e) ≐ a
-@[simp] theorem subst_flat {m : ℕ} (σ : Fin n → PTm m) (C e a : PTm n) :
-    (flat C e a).subst σ = flat (Syn.subst σ C) (Syn.subst σ e) (Syn.subst σ a) := by simp [flat]
+ipra_subst flat
 
 theorem flat_congr {C D e a : PTm n} (h : Γ ⊢[PRAAx] C ≐ D)
     (hf : Γ ⊢[PRAAx] flat C e a) : Γ ⊢[PRAAx] flat D e a := by
@@ -172,9 +158,7 @@ theorem flat_formula (C e a : PTm n) : formula (flatSyntax C e a) = flat C e a :
 
 def stageLaw (C N z e a j : PTm n) : Fm PTm n :=
   le (j+e) N ⟶ flat (stage C N z j) e a
-@[simp] theorem subst_stageLaw {m : ℕ} (σ : Fin n → PTm m) (C N z e a j : PTm n) :
-    (stageLaw C N z e a j).subst σ = stageLaw (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ z) (Syn.subst σ e) (Syn.subst σ a) (Syn.subst σ j) := by simp [stageLaw]
+ipra_subst stageLaw
 def stageSyntax (C N z e a j : PTm n) : BFm n :=
   .imp (.le (j+e) N) (flatSyntax (stage C N z j) e a)
 theorem stage_formula (C N z e a j : PTm n) : formula (stageSyntax C N z e a j) = stageLaw C N z e a j := rfl
@@ -254,10 +238,8 @@ positive-degree coefficient range 0,...,N-1. -/
 def searchBody : PTm 2 := eqb (rawNorm (entry (var 1) (var 0))) zero
 def first (C N : PTm n) : PTm n := Search.mu searchBody N C
 def degree (C N : PTm n) : PTm n := monus N (first C N)
-@[simp] theorem subst_first {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (first C N) = first (Syn.subst σ C) (Syn.subst σ N) := by simp [first,Search.mu,subst_ap2]
-@[simp] theorem subst_degree {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (degree C N) = degree (Syn.subst σ C) (Syn.subst σ N) := by simp [degree]
+ipra_subst first [Search.mu, subst_ap2]
+ipra_subst degree
 
 theorem search_at (C i : PTm n) : inst2 searchBody i C = eqb (rawNorm (entry C i)) zero := by
   simp [inst2,searchBody]
@@ -356,15 +338,13 @@ def output (C N z : PTm n) : PTm n := pairT (first C N)
     (entry (GaussianRationalTranslation.translated C N z) (first C N))))
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (C N z : PTm n) : PTm n := ap3 outputF C N z
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (C N z : PTm n) :
-    Syn.subst σ (output C N z) = output (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (C N z : PTm n) :
-    Syn.subst σ (run C N z) = run (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z) := by simp [run]
+ipra_subst output
+ipra_subst run
 
 theorem program_at (C N z : PTm n) : Γ ⊢[PRAAx] run C N z ≐ output C N z := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![C,N,z]
 theorem returned_first (C N z : PTm n) : Γ ⊢[PRAAx] fstT (run C N z) ≐ first C N :=
-  (congrFst (program_at C N z)).eqTrans (fst_pair _ _)
+  (program_at C N z).fstE
 theorem returned_degree (C N z : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run C N z)) ≐ degree C N :=
   ((congrFst (congrSnd (program_at C N z))).eqTrans (congrFst (snd_pair _ _))).eqTrans (fst_pair _ _)
 theorem returned_original (C N z : PTm n) : Γ ⊢[PRAAx]

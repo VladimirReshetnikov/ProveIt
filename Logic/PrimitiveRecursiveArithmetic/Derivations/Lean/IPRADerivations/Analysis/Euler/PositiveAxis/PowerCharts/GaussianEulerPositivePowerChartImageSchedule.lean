@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartImageSchedule
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPowerScalingGridSchedule (count precision imagePrecision meshFactor mesh_factor_le_count)
 open GaussianEulerPositivePowerChartImageBudget (meshBudget tiltBudget observationBudget rowBudget)
 open GaussianEulerPositivePowerChartImageName (panelTop observation)
@@ -24,8 +24,6 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalMetric (distanceBounded)
 open GaussianExponentialReference (unit_monotone)
 open GaussianFastValueCut (exponent)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

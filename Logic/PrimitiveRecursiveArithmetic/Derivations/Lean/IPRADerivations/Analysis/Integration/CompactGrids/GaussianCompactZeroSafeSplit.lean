@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCompactZeroSafeSplit
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCompactRiemannName (quadrature sampledModulus)
 open GaussianBetaIntegralThreeSplit (quadrature_congr)
 open GaussianRationalHorner (qadd qmul qzero canonical)
@@ -24,10 +24,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRationalRiemannRefinement (weight)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -64,9 +60,7 @@ def splitLaw (F : PR 3) (s a C1 C2 E K x : PTm n) : Fm PTm n :=
   distanceBounded (quadrature F s ((C1+C2)*K) a (C1+C2) E x)
     (qadd (quadrature F s (C1*K) a C1 E x) (quadrature F s (C2*K) (a+C1) C2 E x))
     (two*(C1+C2)) (E*unit s)
-@[simp] theorem subst_splitLaw {m : ℕ} (σ : Fin n → PTm m) (F : PR 3) (s a C1 C2 E K x : PTm n) :
-    (splitLaw F s a C1 C2 E K x).subst σ = splitLaw F (Syn.subst σ s) (Syn.subst σ a)
-      (Syn.subst σ C1) (Syn.subst σ C2) (Syn.subst σ E) (Syn.subst σ K) (Syn.subst σ x) := by simp [splitLaw]
+ipra_subst splitLaw
 
 theorem split_transport (F : PR 3) (s a E K x C1 C2 D1 D2 : PTm n)
     (h1 : Γ ⊢[PRAAx] C1 ≐ D1) (h2 : Γ ⊢[PRAAx] C2 ≐ D2)
@@ -87,9 +81,7 @@ theorem distance_of_identity (x y A D : PTm n) (hD : Γ ⊢[PRAAx] le one D) (h 
 
 def input (F : PR 3) (a C1 C2 E K L x : PTm n) : Fm PTm n :=
   le one a ⋏ (le one E ⋏ (le one K ⋏ sampledModulus F a (C1+C2) E L x))
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (F : PR 3) (a C1 C2 E K L x : PTm n) :
-    (input F a C1 C2 E K L x).subst σ = input F (Syn.subst σ a) (Syn.subst σ C1) (Syn.subst σ C2)
-      (Syn.subst σ E) (Syn.subst σ K) (Syn.subst σ L) (Syn.subst σ x) := by simp [input]
+ipra_subst input
 
 /-- The existing genuine metric split, now allowing either width zero. -/
 theorem shared_step_additivity (F : PR 3) (s a C1 C2 E K L x : PTm n)

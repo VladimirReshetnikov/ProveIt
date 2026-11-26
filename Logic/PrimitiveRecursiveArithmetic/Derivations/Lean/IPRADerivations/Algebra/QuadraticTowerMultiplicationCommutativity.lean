@@ -14,7 +14,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationCommutativity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis
 open QuadraticTowerCoefficients (width)
 open QuadraticTowerArrayCodec (arrayHeight horizon code)
@@ -24,9 +24,6 @@ open QuadraticTowerMultiplicationHeight (radicandsHeight word cap state)
 open LeanProofs.IPRA.Foundations.BoundedSyntax (BFm formula)
 open LeanProofs.IPRA.Foundations.SequenceEquality (sequence_equal)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -53,9 +50,7 @@ def atHeight (h B D T b : PTm n) : Fm PTm n := .all
 def localLaw (h B D T : PTm n) : Fm PTm n := .all
   (lt (var 0) (succ (Syn.shift B)) ⟶ atHeight (Syn.shift h) (Syn.shift B)
     (Syn.shift D) (Syn.shift T) (var 0))
-@[simp] theorem subst_rowLaw {k : ℕ} (σ : Fin n → PTm k) (h B D T b u v : PTm n) :
-    (rowLaw h B D T b u v).subst σ = rowLaw (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D)
-      (Syn.subst σ T) (Syn.subst σ b) (Syn.subst σ u) (Syn.subst σ v) := by simp [rowLaw]
+ipra_subst rowLaw
 @[simp] theorem subst_atWord {k : ℕ} (σ : Fin n → PTm k) (h B D T b u : PTm n) :
     (atWord h B D T b u).subst σ = atWord (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D)
       (Syn.subst σ T) (Syn.subst σ b) (Syn.subst σ u) := by
@@ -66,9 +61,7 @@ def localLaw (h B D T : PTm n) : Fm PTm n := .all
       (Syn.subst σ T) (Syn.subst σ b) := by
   simp [atHeight,Syn.subst_shift,Syn.shift_subst]
   simp only [Syn.shift,QuadraticTowerArrayCodec.subst_horizon,Syn.subst_subst]
-@[simp] theorem subst_localLaw {k : ℕ} (σ : Fin n → PTm k) (h B D T : PTm n) :
-    (localLaw h B D T).subst σ = localLaw (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ T) := by
-  simp [localLaw,Syn.subst_shift,Syn.shift_subst]
+ipra_subst localLaw [Syn.subst_shift, Syn.shift_subst]
 
 def rowSyntax (h B D T b u v : PTm n) : BFm n :=
   .imp (QuadraticTowerMultiplicationHeight.radicandsSyntax D h b)
@@ -214,9 +207,7 @@ theorem local_congr {h h' B B' D D' T T' : PTm n} (hh : Γ ⊢[PRAAx] h ≐ h')
 def forwardLaw (H B D t : PTm n) : Fm PTm n := le t H ⟶ localLaw t (cap H B t D) D (state H B t D)
 def forwardSyntax (H B D t : PTm n) : BFm n := .imp (.le t H)
   (localSyntax t (cap H B t D) D (state H B t D))
-@[simp] theorem subst_forwardLaw {k : ℕ} (σ : Fin n → PTm k) (H B D t : PTm n) :
-    (forwardLaw H B D t).subst σ = forwardLaw (Syn.subst σ H) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ t) := by
-  simp [forwardLaw]
+ipra_subst forwardLaw
 theorem forward_formula (H B D t : PTm n) : formula (forwardSyntax H B D t) = forwardLaw H B D t := by
   simp [forwardSyntax,forwardLaw,formula,local_formula,BFm.le,le]
 
@@ -277,28 +268,22 @@ def output (h B D A C : PTm n) : PTm n := pairT
     (pairT (QuadraticTowerMultiplicationTable.query h B D C A) (pairT A C))
 def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (h B D A C : PTm n) : PTm n := PTm.app outputF ![h,B,D,A,C]
-@[simp] theorem subst_output {k : ℕ} (σ : Fin n → PTm k) (h B D A C : PTm n) :
-    Syn.subst σ (output h B D A C) = output (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ A) (Syn.subst σ C) := by simp [output]
-@[simp] theorem subst_run {k : ℕ} (σ : Fin n → PTm k) (h B D A C : PTm n) :
-    Syn.subst σ (run h B D A C) = run (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ A) (Syn.subst σ C) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (h B D A C : PTm n) : Γ ⊢[PRAAx] run h B D A C ≐ output h B D A C := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![h,B,D,A,C]
 theorem returned_forward (h B D A C : PTm n) : Γ ⊢[PRAAx] fstT (run h B D A C) ≐
     QuadraticTowerMultiplicationTable.query h B D A C :=
-  (congrFst (program_at _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _ _).fstE
 theorem returned_tail (h B D A C : PTm n) : Γ ⊢[PRAAx] sndT (run h B D A C) ≐
     pairT (QuadraticTowerMultiplicationTable.query h B D C A) (pairT A C) :=
-  (congrSnd (program_at _ _ _ _ _)).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _ _).sndE
 theorem returned_reverse (h B D A C : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run h B D A C)) ≐
     QuadraticTowerMultiplicationTable.query h B D C A :=
-  (congrFst (returned_tail _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_tail _ _ _ _ _).fstE
 theorem returned_originals (h B D A C : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run h B D A C)) ≐ pairT A C :=
-  (congrSnd (returned_tail _ _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_tail _ _ _ _ _).sndE
 theorem returned_equality (h B D A C b : PTm n) (hb : Γ ⊢[PRAAx] le b B)
     (hD : Γ ⊢[PRAAx] radicandsHeight D h b) (ha : Γ ⊢[PRAAx] arrayHeight h A b)
     (hc : Γ ⊢[PRAAx] arrayHeight h C b) : Γ ⊢[PRAAx]

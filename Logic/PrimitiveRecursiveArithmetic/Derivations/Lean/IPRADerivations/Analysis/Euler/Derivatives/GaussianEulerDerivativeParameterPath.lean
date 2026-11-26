@@ -15,17 +15,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerDerivativeParameterPath
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale add neg normSq re im)
 open GaussianRationalHorner (ofGaussian qadd positive_product canonical_unique represents_congr)
 open GaussianRationalMetric (bounded bounded_to_cleared bounded_of_cleared)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianCoefficientNameBounds (bounded_radius_mono)
 open GaussianEulerLowerPowerCoefficients (realLower)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -38,19 +34,11 @@ def source (z R B A h D : PTm n) : Fm PTm n :=
   GaussianEulerLowerPowerCoefficients.source z R B A ⋏
     (le one D ⋏ bounded (ofGaussian h D) one (num 4*A))
 
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (z B h D N i : PTm n) :
-    Syn.subst σ (numerator z B h D N i) = numerator (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ h)
-      (Syn.subst σ D) (Syn.subst σ N) (Syn.subst σ i) := by simp [numerator,add,scale]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (B D N : PTm n) :
-    Syn.subst σ (denominator B D N) = denominator (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ N) := by simp [denominator]
-@[simp] theorem subst_point {m : ℕ} (σ : Fin n → PTm m) (z B h D N i : PTm n) :
-    Syn.subst σ (point z B h D N i) = point (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ h)
-      (Syn.subst σ D) (Syn.subst σ N) (Syn.subst σ i) := by simp [point]
-@[simp] theorem subst_increment {m : ℕ} (σ : Fin n → PTm m) (h D N : PTm n) :
-    Syn.subst σ (increment h D N) = increment (Syn.subst σ h) (Syn.subst σ D) (Syn.subst σ N) := by simp [increment]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B A h D : PTm n) :
-    (source z R B A h D).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ A) (Syn.subst σ h) (Syn.subst σ D) := by simp [source]
+ipra_subst numerator [add, scale]
+ipra_subst denominator
+ipra_subst point
+ipra_subst increment
+ipra_subst source
 
 theorem denominator_positive (B D N : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hD : Γ ⊢[PRAAx] le one D) (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[PRAAx] le one (denominator B D N) :=

@@ -1,7 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Spans.RationalMinorFreeColumn
 import IPRADerivations.Analysis.RationalArithmetic.Covers.RationalFiniteSpanCover
-import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Extending a selected minor by an actual new row or column
@@ -16,17 +14,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalMinorMaskExtension
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open LeanProofs.IPRA.PTm (monus)
+open_ipra
 open RationalSubtupleSpan (bit bitBody bit_body_at)
 open RationalSelectedMinors (count indices index index_bound index_selected selected_listed)
 open RationalMinorFreeColumn (bit_cases)
 open RationalArithmetic (select select_zero select_one)
 open LeanProofs.IPRA.Foundations.BoundedReflection (sgB inst2_sgB)
 open LeanProofs.IPRA.Foundations.MixedRadix (Cd Pl dP)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -34,11 +28,8 @@ def insertedBit (M c i : PTm n) : PTm n := select (eqb i c) (bit M i) one
 def digitBody : PTm 2 := insertedBit (sndT (var 1)) (fstT (var 1)) (var 0)
 def insert (N M c : PTm n) : PTm n := Cd (two : PTm 2) digitBody N (pairT c M)
 
-@[simp] theorem subst_insertedBit {k : ℕ} (σ : Fin n → PTm k) (M c i : PTm n) :
-    Syn.subst σ (insertedBit M c i) = insertedBit (Syn.subst σ M) (Syn.subst σ c) (Syn.subst σ i) := by
-  simp [insertedBit,one]
-@[simp] theorem subst_insert {k : ℕ} (σ : Fin n → PTm k) (N M c : PTm n) :
-    Syn.subst σ (insert N M c) = insert (Syn.subst σ N) (Syn.subst σ M) (Syn.subst σ c) := by simp [insert]
+ipra_subst insertedBit [one]
+ipra_subst insert
 
 theorem digit_body_at (M c i : PTm n) : Γ ⊢[PRAAx] inst2 digitBody i (pairT c M) ≐ insertedBit M c i := by
   ipra_congr (insertedBit (var 0) (var 1) (var 2) : PTm 3) with

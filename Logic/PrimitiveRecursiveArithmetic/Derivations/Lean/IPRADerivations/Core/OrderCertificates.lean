@@ -1,5 +1,5 @@
 import IPRADerivations.Core.Order
-import IPRADerivations.Core.Tactic
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Certificates for inequalities
@@ -114,7 +114,7 @@ macro "ipra_nonneg" : tactic =>
 /-- `ipra_le z` derives `Γ ⊢ le a b` from the certificate `z`, a combination of slacks `sl h` of derived
 inequalities with coefficients that are values of terms, such that `ι b − ι a = z` is a ring identity.
 `ipra_le z with e` checks that identity by `linear_combination e` instead, so that derived equations
-can be used as well. -/
+can be used as well; `e` may contain facts written in place, such as `natEq h`. -/
 syntax "ipra_le " term (" with " term)? : tactic
 
 /-- `ipra_le z using tac` checks `ι b − ι a = z` by the tactic `tac`, after the slacks have been unfolded
@@ -129,7 +129,9 @@ macro_rules
   | `(tactic| ipra_le $z with $e) => `(tactic| (
       refine LeanProofs.IPRA.le_of_comb $z ?_ ?_
       · (try simp only [LeanProofs.IPRA.sl_def]); (try ipra_simps)
-        first | linear_combination ($e) | linear_combination -($e)
+        first
+          | linear_combination ($e) | linear_combination -($e)
+          | linear_combination (norm := ipra_close) ($e) | linear_combination (norm := ipra_close) -($e)
       · ipra_nonneg))
   | `(tactic| ipra_le $z using $tac) => `(tactic| (
       refine LeanProofs.IPRA.le_of_comb $z ?_ ?_
@@ -155,7 +157,6 @@ example {a b c d : PTm n} (h₁ : Γ ⊢[PRAAx] le a b) (h₂ : Γ ⊢[PRAAx] le
 
 example {a b c : PTm n} (h : Γ ⊢[PRAAx] le a b) (e : Γ ⊢[PRAAx] c ≐ b + b) :
     Γ ⊢[PRAAx] le (PTm.num 2 * a) c := by
-  have e' := natEq e
-  ipra_le 2 * sl h with e'
+  ipra_le 2 * sl h with natEq e
 
 end LeanProofs.IPRA

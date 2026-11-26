@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.RationalArithmetic.Grids.RationalCubeMinimum
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual numerical cube midpoints
@@ -14,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalCubeMidpoint
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalSupMetric (numeratorOf denominatorOf)
 open RationalCubeGrid (interval cube)
 open RationalCubeMinimum (presentedCube)
@@ -22,10 +21,6 @@ open RationalIntegerNormalization (normalize positivePart)
 open LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiCenters (midpoint)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -37,16 +32,11 @@ def coordinate (q r : PTm n) : PTm n := fraction (numerator q r) (denominator q 
 def body : PTm 2 := coordinate (entry (fstT (var 1)) (var 0)) (entry (sndT (var 1)) (var 0))
 def point (d y z : PTm n) : PTm n := sequence body d (pairT y z)
 
-@[simp] theorem subst_fraction {l : ℕ} (σ : Fin n → PTm l) (P D : PTm n) :
-    Syn.subst σ (fraction P D) = fraction (Syn.subst σ P) (Syn.subst σ D) := by simp [fraction]
-@[simp] theorem subst_numerator {l : ℕ} (σ : Fin n → PTm l) (q r : PTm n) :
-    Syn.subst σ (numerator q r) = numerator (Syn.subst σ q) (Syn.subst σ r) := by simp [numerator]
-@[simp] theorem subst_denominator {l : ℕ} (σ : Fin n → PTm l) (q r : PTm n) :
-    Syn.subst σ (denominator q r) = denominator (Syn.subst σ q) (Syn.subst σ r) := by simp [denominator,two,one]
-@[simp] theorem subst_coordinate {l : ℕ} (σ : Fin n → PTm l) (q r : PTm n) :
-    Syn.subst σ (coordinate q r) = coordinate (Syn.subst σ q) (Syn.subst σ r) := by simp [coordinate]
-@[simp] theorem subst_point {l : ℕ} (σ : Fin n → PTm l) (d y z : PTm n) :
-    Syn.subst σ (point d y z) = point (Syn.subst σ d) (Syn.subst σ y) (Syn.subst σ z) := by simp [point]
+ipra_subst fraction
+ipra_subst numerator
+ipra_subst denominator [two, one]
+ipra_subst coordinate
+ipra_subst point
 
 theorem fraction_represents (P D : PTm n) (hD : Γ ⊢[PRAAx] le one D) : Γ ⊢[PRAAx]
     RationalArithmetic.represents (fraction P D) (ZT.ofNat P) D := RationalIntegerNormalization.normalize_preserves_value _ _ hD
@@ -145,12 +135,7 @@ theorem point_midpoint_at (d y z i : PTm n) (hy : Γ ⊢[PRAAx] cube y d) (hz : 
 
 def outputF : PR 3 := PTm.toPR (point (var 0) (var 1) (var 2))
 def run (d y z : PTm n) : PTm n := app outputF ![d,y,z]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (d y z : PTm n) :
-    Syn.subst σ (run d y z) = run (Syn.subst σ d) (Syn.subst σ y) (Syn.subst σ z) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst run
 
 theorem program_at (d y z : PTm n) : Γ ⊢[PRAAx] run d y z ≐ point d y z := by
   simpa [run,outputF,Matrix.cons_val_succ',Matrix.cons_val_zero'] using toPR_eq (Γ := Γ) (point (var 0) (var 1) (var 2) : PTm 3) ![d,y,z]

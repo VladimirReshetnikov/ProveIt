@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitSubstitutionOrdinaryImproper
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUnitSubstitutionCompactName (stage stage_budget)
 open GaussianGammaCompactQuadratureBoundary (width)
 open GaussianGammaIntegralCutoffs (etaDen top)
@@ -26,10 +26,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianNameEquivalence (crossEquivalent cross_at cross_trans cross_symm)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -43,17 +39,10 @@ def sample (p z R B A : PTm n) : PTm n := laterSample p (resolution p) z R B A
 def reader (p x : PTm n) : PTm n := sample p (fstT x) (fstT (sndT x)) (fstT (sndT (sndT x))) (sndT (sndT (sndT x)))
 def nameF : PR 2 := PTm.toPR (reader (var 0) (var 1))
 
-@[simp] theorem subst_resolution {m : ℕ} (σ : Fin n → PTm m) (p : PTm n) :
-    Syn.subst σ (resolution p) = resolution (Syn.subst σ p) := by simp [resolution]
-@[simp] theorem subst_laterSample {m : ℕ} (σ : Fin n → PTm m) (p j z R B A : PTm n) :
-    Syn.subst σ (laterSample p j z R B A) =
-      laterSample (Syn.subst σ p) (Syn.subst σ j) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) := by
-  simp [laterSample,width,etaDen,top,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (p z R B A : PTm n) :
-    Syn.subst σ (sample p z R B A) = sample (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) :=
-  by simp [sample]
-@[simp] theorem subst_reader {m : ℕ} (σ : Fin n → PTm m) (p x : PTm n) :
-    Syn.subst σ (reader p x) = reader (Syn.subst σ p) (Syn.subst σ x) := by simp [reader]
+ipra_subst resolution
+ipra_subst laterSample [width, etaDen, top, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst sample
+ipra_subst reader
 
 theorem name_at (p z R B A : PTm n) : Γ ⊢[PRAAx] ap2 nameF p (data z R B A) ≐ sample p z R B A := by
   let x := data z R B A

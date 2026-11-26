@@ -12,25 +12,19 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianWeightedPanelRowDistance
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (bounded distanceBounded qsub)
 open GaussianRationalReciprocal (bounded_product bounded_sum bound_congr)
 open GaussianRationalDistanceOrder (distance_radius_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def numerator (L K A M U V : PTm n) : PTm n := (L+two*K)*A*U*V+M*(U+V)
 def denominator (H M U V : PTm n) : PTm n := H*(M*U*V)
 
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (L K A M U V : PTm n) :
-    Syn.subst σ (numerator L K A M U V) = numerator (Syn.subst σ L) (Syn.subst σ K) (Syn.subst σ A)
-      (Syn.subst σ M) (Syn.subst σ U) (Syn.subst σ V) := by simp [numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (H M U V : PTm n) :
-    Syn.subst σ (denominator H M U V) = denominator (Syn.subst σ H) (Syn.subst σ M) (Syn.subst σ U) (Syn.subst σ V) := by simp [denominator]
+ipra_subst numerator
+ipra_subst denominator
 
 theorem original_row_distance (x y u v L K A M H U V : PTm n)
     (hM : Γ ⊢[PRAAx] le one M) (hH : Γ ⊢[PRAAx] le one H)

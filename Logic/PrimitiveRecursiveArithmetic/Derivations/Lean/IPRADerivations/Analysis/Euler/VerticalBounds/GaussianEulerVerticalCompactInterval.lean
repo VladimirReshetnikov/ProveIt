@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerVerticalCompactInterval
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerVerticalNativeProjection (argument)
 open GaussianEulerCompactAdditivity (data intervalSource nameF)
 open GaussianEulerCompactModulus (lipschitz)
@@ -26,9 +26,6 @@ open GaussianRationalHorner (positive_product qadd qzero)
 open GaussianRationalSyntheticDivision (qadd_congr)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open RationalValueBounds (upper upper_of_radius)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

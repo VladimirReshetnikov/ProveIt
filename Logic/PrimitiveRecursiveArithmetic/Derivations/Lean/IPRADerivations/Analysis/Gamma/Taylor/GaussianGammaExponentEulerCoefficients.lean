@@ -18,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaExponentEulerCoefficients
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero qmul)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRationalLowCoefficientConvolution (exponentCoefficient exponent_inside)
@@ -27,9 +27,6 @@ open GaussianRationalEulerCoefficients (euler parityPoint)
 open GaussianGammaExponentCoefficientPolynomial (polynomial)
 open GaussianGammaReciprocalDegreeCells (degree)
 open RationalGaussianEmbedding (embed)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

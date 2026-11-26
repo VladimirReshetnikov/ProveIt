@@ -18,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaMinimumSignedStep
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Probability.Variance (ad ad_sq)
 open ComplexLogarithmRemainder (code scale normSq eval_re_code eval_im_code normSq_eval)
@@ -34,10 +34,6 @@ open GaussianRationalHorner (ofGaussian ofGaussian_represents positive_product)
 open GaussianRationalMetric (bounded bounded_iff)
 open GaussianRootAlgebra (equal equal_of_values re_add im_add re_scale im_scale re_one im_one)
 open GaussianStirlingGammaLogarithm (arg gammaData gamma_regular euler_real_source)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -58,29 +54,17 @@ def quotientData (a c b W : PTm n) : PTm n :=
     (gammaData (centerNumerator a c W) (centerDenominator b W))
     (gammaData a b) (increment a c) (centerDenominator b W)
 
-@[simp] theorem subst_increment {k : ℕ} (σ : Fin n → PTm k) (a c : PTm n) :
-    Syn.subst σ (increment a c) = increment (Syn.subst σ a) (Syn.subst σ c) := by
-  simp [increment, code, ZT.ofNat]
+ipra_subst increment [code, ZT.ofNat]
 
-@[simp] theorem subst_centerNumerator {k : ℕ} (σ : Fin n → PTm k) (a c W : PTm n) :
-    Syn.subst σ (centerNumerator a c W) = centerNumerator (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ W) := by
-  simp [centerNumerator]
+ipra_subst centerNumerator
 
-@[simp] theorem subst_centerDenominator {k : ℕ} (σ : Fin n → PTm k) (b W : PTm n) :
-    Syn.subst σ (centerDenominator b W) = centerDenominator (Syn.subst σ b) (Syn.subst σ W) := by
-  simp [centerDenominator]
+ipra_subst centerDenominator
 
-@[simp] theorem subst_weight {k : ℕ} (σ : Fin n → PTm k) (p a b M : PTm n) :
-    Syn.subst σ (weight p a b M) = weight (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ M) := by
-  simp [weight, one, two]
+ipra_subst weight [one, two]
 
-@[simp] theorem subst_domain {k : ℕ} (σ : Fin n → PTm k) (a c b M : PTm n) :
-    (domain a c b M).subst σ = domain (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ b) (Syn.subst σ M) := by
-  simp [domain, one]
+ipra_subst domain [one]
 
-@[simp] theorem subst_quotientData {k : ℕ} (σ : Fin n → PTm k) (a c b W : PTm n) :
-    Syn.subst σ (quotientData a c b W) = quotientData (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ b) (Syn.subst σ W) := by
-  simp [quotientData]
+ipra_subst quotientData
 
 theorem increment_norm (a c : PTm n) : Γ ⊢[PRAAx] normSq (increment a c) ≐ ad c a*ad c a := by
   have e := natEq (ad_sq (Γ := Γ) c a)

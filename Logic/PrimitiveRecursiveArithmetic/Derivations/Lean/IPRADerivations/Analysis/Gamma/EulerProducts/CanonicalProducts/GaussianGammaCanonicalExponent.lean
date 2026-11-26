@@ -19,15 +19,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaCanonicalExponent
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (ofGaussian qadd qmul positive_product)
 open GaussianRationalMetric (qsub qnegative distanceBounded)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -47,20 +44,13 @@ def exponentData (z R B : PTm n) : PTm n := GaussianNameArithmetic.addData
   (productData z B (two*R)) (GaussianGammaCanonicalTailName.data z R B (two*R))
 def exponentPoint (p z R B : PTm n) : PTm n := ap2 exponentF p (exponentData z R B)
 def source (z R B : PTm n) : Fm PTm n := le one R ⋏ (le one B ⋏ ComplexLogarithmRemainder.bounded z (R*B))
-@[simp] theorem subst_harmonic {l : ℕ} (σ : Fin n → PTm l) (K : PTm n) :
-    Syn.subst σ (harmonic K) = harmonic (Syn.subst σ K) := by simp [harmonic,AnalyticNumberTheory.Harmonic.S,Products.fact]
-@[simp] theorem subst_harmonicPoint {l : ℕ} (σ : Fin n → PTm l) (K : PTm n) :
-    Syn.subst σ (harmonicPoint K) = harmonicPoint (Syn.subst σ K) := by simp [harmonicPoint]
-@[simp] theorem subst_differenceData {l : ℕ} (σ : Fin n → PTm l) (K : PTm n) :
-    Syn.subst σ (differenceData K) = differenceData (Syn.subst σ K) := by simp [differenceData]
-@[simp] theorem subst_productData {l : ℕ} (σ : Fin n → PTm l) (z B K : PTm n) :
-    Syn.subst σ (productData z B K) = productData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ K) := by simp [productData]
-@[simp] theorem subst_exponentData {l : ℕ} (σ : Fin n → PTm l) (z R B : PTm n) :
-    Syn.subst σ (exponentData z R B) = exponentData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) := by simp [exponentData]
-@[simp] theorem subst_exponentPoint {l : ℕ} (σ : Fin n → PTm l) (p z R B : PTm n) :
-    Syn.subst σ (exponentPoint p z R B) = exponentPoint (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) := by simp [exponentPoint]
-@[simp] theorem subst_source {l : ℕ} (σ : Fin n → PTm l) (z R B : PTm n) :
-    (source z R B).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) := by simp [source]
+ipra_subst harmonic [AnalyticNumberTheory.Harmonic.S, Products.fact]
+ipra_subst harmonicPoint
+ipra_subst differenceData
+ipra_subst productData
+ipra_subst exponentData
+ipra_subst exponentPoint
+ipra_subst source
 
 theorem harmonic_represents (K : PTm n) : Γ ⊢[PRAAx] RationalArithmetic.represents (harmonic K)
     (ZT.ofNat (AnalyticNumberTheory.Harmonic.S K (Products.fact K))) (Products.fact K) :=
@@ -97,16 +87,11 @@ def productValue (p z B K : PTm n) : PTm n := GaussianFastValueCut.recode
 def exponentValue (p z R B : PTm n) : PTm n := GaussianFastValueCut.recode
   (qadd (productValue (addPrecision p) z B (two*R))
     (GaussianGammaCanonicalTailName.value (addPrecision p) z R B (two*R)))
-@[simp] theorem subst_addPrecision {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) :
-    Syn.subst σ (addPrecision p) = addPrecision (Syn.subst σ p) := by simp [addPrecision]
-@[simp] theorem subst_productPrecision {l : ℕ} (σ : Fin n → PTm l) (z B K p : PTm n) :
-    Syn.subst σ (productPrecision z B K p) = productPrecision (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ K) (Syn.subst σ p) := by simp [productPrecision]
-@[simp] theorem subst_differenceValue {l : ℕ} (σ : Fin n → PTm l) (p K : PTm n) :
-    Syn.subst σ (differenceValue p K) = differenceValue (Syn.subst σ p) (Syn.subst σ K) := by simp [differenceValue]
-@[simp] theorem subst_productValue {l : ℕ} (σ : Fin n → PTm l) (p z B K : PTm n) :
-    Syn.subst σ (productValue p z B K) = productValue (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ K) := by simp [productValue]
-@[simp] theorem subst_exponentValue {l : ℕ} (σ : Fin n → PTm l) (p z R B : PTm n) :
-    Syn.subst σ (exponentValue p z R B) = exponentValue (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) := by simp [exponentValue]
+ipra_subst addPrecision
+ipra_subst productPrecision
+ipra_subst differenceValue
+ipra_subst productValue
+ipra_subst exponentValue
 
 theorem difference_sample_at (p K : PTm n) : Γ ⊢[PRAAx] ap2 differenceF p (differenceData K) ≐ differenceValue p K :=
   (GaussianNameArithmetic.add_at gammaF constantF zero (qnegative (harmonicPoint K)) p).eqTrans
@@ -139,12 +124,9 @@ def exponentRadius (z R B : PTm n) : PTm n := GaussianNameBounds.U exponentF (ex
 def exponentialF : PR 2 := GaussianRadiusExponentialName.nameF exponentF
 def exponentialData (z R B : PTm n) : PTm n := GaussianRadiusExponentialName.data (exponentRadius z R B) (exponentData z R B)
 def exponentialPoint (p z R B : PTm n) : PTm n := ap2 exponentialF p (exponentialData z R B)
-@[simp] theorem subst_exponentRadius {l : ℕ} (σ : Fin n → PTm l) (z R B : PTm n) :
-    Syn.subst σ (exponentRadius z R B) = exponentRadius (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) := by simp [exponentRadius]
-@[simp] theorem subst_exponentialData {l : ℕ} (σ : Fin n → PTm l) (z R B : PTm n) :
-    Syn.subst σ (exponentialData z R B) = exponentialData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) := by simp [exponentialData]
-@[simp] theorem subst_exponentialPoint {l : ℕ} (σ : Fin n → PTm l) (p z R B : PTm n) :
-    Syn.subst σ (exponentialPoint p z R B) = exponentialPoint (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) := by simp [exponentialPoint]
+ipra_subst exponentRadius
+ipra_subst exponentialData
+ipra_subst exponentialPoint
 
 theorem exponent_sample_bound (p z R B : PTm n) (h : Γ ⊢[PRAAx] source z R B) : Γ ⊢[PRAAx]
     GaussianRationalMetric.bounded (exponentPoint p z R B) (exponentRadius z R B) one :=
@@ -168,18 +150,16 @@ def output (z R B : PTm n) : PTm n := pairT (exponentData z R B)
   (pairT (exponentialData z R B) (pairT (two*R) (exponentRadius z R B)))
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (z R B : PTm n) : PTm n := ap3 outputF z R B
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (z R B : PTm n) :
-    Syn.subst σ (output z R B) = output (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (z R B : PTm n) :
-    Syn.subst σ (run z R B) = run (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) := by simp [run]
+ipra_subst output
+ipra_subst run
 theorem program_at (z R B : PTm n) : Γ ⊢[PRAAx] run z R B ≐ output z R B := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![z,R,B]
 theorem returned_exponent_data (z R B : PTm n) : Γ ⊢[PRAAx] fstT (run z R B) ≐ exponentData z R B :=
-  (congrFst (program_at _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _).fstE
 theorem returned_exponential_data (z R B : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run z R B)) ≐ exponentialData z R B :=
-  (congrFst ((congrSnd (program_at _ _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _).sndE.fstE
 theorem returned_parameters (z R B : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run z R B)) ≐ pairT (two*R) (exponentRadius z R B) :=
-  (congrSnd ((congrSnd (program_at _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at _ _ _).sndE.sndE
 
 theorem actual_original_harmonic_representation_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 1
     (RationalArithmetic.represents (harmonic (var 0))

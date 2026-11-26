@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaReciprocalInverse
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNameArithmetic (multiplyF multiplyData multiply_fast multiply_equivalent)
 open GaussianNameRingLaws (oneF one_at one_fast multiply_associative multiply_commutative negativeF negativeData)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_to_diagonal cross_symm cross_trans cross_at diagonal_refl)
@@ -31,10 +31,6 @@ open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianExponentialSmallPerturbation (smallSamples)
 open GaussianBoundedInverseApartness (ones_equivalent)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -125,17 +121,10 @@ def negExpData (z R B : PTm n) : PTm n :=
 def inverseF : PR 2 := multiplyF constantF negExpF
 def inverseData (z R B : PTm n) : PTm n := multiplyData constantF negExpF (headInverse z R B) (negExpData z R B)
 
-@[simp] theorem subst_source {l : ℕ} (σ : Fin n → PTm l) (z R B a d : PTm n) :
-    (source z R B a d).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ d) := by
-  simp [source]
-@[simp] theorem subst_lambdaNumerator {l : ℕ} (σ : Fin n → PTm l) (R a : PTm n) :
-    Syn.subst σ (lambdaNumerator R a) = lambdaNumerator (Syn.subst σ R) (Syn.subst σ a) := by simp [lambdaNumerator]
-@[simp] theorem subst_lambdaDenominator {l : ℕ} (σ : Fin n → PTm l) (R d : PTm n) :
-    Syn.subst σ (lambdaDenominator R d) = lambdaDenominator (Syn.subst σ R) (Syn.subst σ d) := by
-  simp [lambdaDenominator,Products.fact]
-@[simp] theorem subst_inverseData {l : ℕ} (σ : Fin n → PTm l) (z R B : PTm n) :
-    Syn.subst σ (inverseData z R B) = inverseData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) := by
-  simp [inverseData,headInverse,negExpData]
+ipra_subst source
+ipra_subst lambdaNumerator
+ipra_subst lambdaDenominator [Products.fact]
+ipra_subst inverseData [headInverse, negExpData]
 
 theorem lambda_positive (R a d : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hd : Γ ⊢[PRAAx] le one d) :
     Γ ⊢[PRAAx] le one (lambdaNumerator R a) ⋏ le one (lambdaDenominator R d) :=

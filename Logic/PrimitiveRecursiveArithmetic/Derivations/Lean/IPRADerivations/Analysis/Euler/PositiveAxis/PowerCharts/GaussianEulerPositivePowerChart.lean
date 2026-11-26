@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChart
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale oneCode normSq)
 open GaussianRootAlgebra (equal equal_of_values re_sub im_sub re_scale im_scale re_one im_one)
 open GaussianEulerIntegrandName (powerF powerData coefficient)
@@ -29,8 +29,6 @@ open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianCompactLogarithmBounds (domain)
 open GaussianCoefficientNameBounds (unit)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -49,27 +47,14 @@ def lipschitz (Q S E T : PTm n) : PTm n := S*GaussianEulerCompactPowerVariation.
 def input (e f d h Q S E T a b c v X D : PTm n) : Fm PTm n :=
   source e f d h Q S E T a b ⋏ (domain c v E T ⋏ (le one D ⋏ distanceBounded (fraction a b) (fraction c v) X D))
 
-@[simp] theorem subst_argument {m : ℕ} (σ : Fin n → PTm m) (e f : PTm n) :
-    Syn.subst σ (argument e f) = argument (Syn.subst σ e) (Syn.subst σ f) := by simp [argument]
-@[simp] theorem subst_parameters {m : ℕ} (σ : Fin n → PTm m) (e f d h Q S : PTm n) :
-    (parameters e f d h Q S).subst σ = parameters (Syn.subst σ e) (Syn.subst σ f) (Syn.subst σ d)
-      (Syn.subst σ h) (Syn.subst σ Q) (Syn.subst σ S) := by simp [parameters]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (e f d h Q S E T a b : PTm n) :
-    (source e f d h Q S E T a b).subst σ = source (Syn.subst σ e) (Syn.subst σ f) (Syn.subst σ d)
-      (Syn.subst σ h) (Syn.subst σ Q) (Syn.subst σ S) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ a) (Syn.subst σ b) := by simp [source]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (e f d h S a b : PTm n) :
-    Syn.subst σ (data e f d h S a b) = data (Syn.subst σ e) (Syn.subst σ f) (Syn.subst σ d) (Syn.subst σ h)
-      (Syn.subst σ S) (Syn.subst σ a) (Syn.subst σ b) := by simp [data]
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (p S : PTm n) :
-    Syn.subst σ (clock p S) = clock (Syn.subst σ p) (Syn.subst σ S) := by simp [clock]
-@[simp] theorem subst_majorant {m : ℕ} (σ : Fin n → PTm m) (Q S E T : PTm n) :
-    Syn.subst σ (majorant Q S E T) = majorant (Syn.subst σ Q) (Syn.subst σ S) (Syn.subst σ E) (Syn.subst σ T) := by simp [majorant,GaussianEulerCompactPowerMajorant.majorant,GaussianEulerCompactPowerMajorant.exponentRadius,GaussianCompactLogarithmBounds.radius]
-@[simp] theorem subst_lipschitz {m : ℕ} (σ : Fin n → PTm m) (Q S E T : PTm n) :
-    Syn.subst σ (lipschitz Q S E T) = lipschitz (Syn.subst σ Q) (Syn.subst σ S) (Syn.subst σ E) (Syn.subst σ T) := by simp [lipschitz]
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (e f d h Q S E T a b c v X D : PTm n) :
-    (input e f d h Q S E T a b c v X D).subst σ = input (Syn.subst σ e) (Syn.subst σ f) (Syn.subst σ d)
-      (Syn.subst σ h) (Syn.subst σ Q) (Syn.subst σ S) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ a) (Syn.subst σ b)
-      (Syn.subst σ c) (Syn.subst σ v) (Syn.subst σ X) (Syn.subst σ D) := by simp [input]
+ipra_subst argument
+ipra_subst parameters
+ipra_subst source
+ipra_subst data
+ipra_subst clock
+ipra_subst majorant [GaussianEulerCompactPowerMajorant.majorant, GaussianEulerCompactPowerMajorant.exponentRadius, GaussianCompactLogarithmBounds.radius]
+ipra_subst lipschitz
+ipra_subst input
 
 /-- Exact cancellation of the native +f and the original -1 coefficient. -/
 theorem coefficient_exact (e f : PTm n) (hf : Γ ⊢[PRAAx] le one f) : Γ ⊢[PRAAx]

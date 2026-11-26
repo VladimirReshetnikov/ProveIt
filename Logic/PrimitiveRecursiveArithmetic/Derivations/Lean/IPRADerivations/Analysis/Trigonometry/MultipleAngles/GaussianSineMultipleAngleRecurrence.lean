@@ -19,7 +19,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineMultipleAngleRecurrence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalCoefficientScaling (qmul_add)
 open GaussianRationalHorner (qzero qadd qmul canonical canonical_congr qmul_canonical)
 open GaussianRationalMetric (qsub qsub_canonical)
@@ -30,9 +30,6 @@ open GaussianRationalInverseQuadraticAlgebra (subtract_sum)
 open GaussianRationalSumAlgebra (qadd_associative)
 open GaussianRationalSyntheticDivision (qadd_congr qsub_congr qmul_congr qmul_zero_right)
 open GaussianReciprocalHorner (qmul_associative qmul_one_right qadd_commutative qsub_add_cancel)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -45,15 +42,10 @@ def previous (S k : PTm n) : PTm n := fstT (state S k)
 def value (S k : PTm n) : PTm n := sndT (state S k)
 def difference (A B k : PTm n) : PTm n := qsub (power A k) (power B k)
 
-@[simp] theorem subst_state {m : ℕ} (σ : Fin n → PTm m) (S k : PTm n) :
-    Syn.subst σ (state S k) = state (Syn.subst σ S) (Syn.subst σ k) := by simp [state]
-@[simp] theorem subst_previous {m : ℕ} (σ : Fin n → PTm m) (S k : PTm n) :
-    Syn.subst σ (previous S k) = previous (Syn.subst σ S) (Syn.subst σ k) := by simp [previous]
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (S k : PTm n) :
-    Syn.subst σ (value S k) = value (Syn.subst σ S) (Syn.subst σ k) := by simp [value]
-@[simp] theorem subst_difference {m : ℕ} (σ : Fin n → PTm m) (A B k : PTm n) :
-    Syn.subst σ (difference A B k) = difference (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ k) := by
-  simp [difference]
+ipra_subst state
+ipra_subst previous
+ipra_subst value
+ipra_subst difference
 
 theorem state_zero (S : PTm n) : Γ ⊢[PRAAx] state S zero ≐ pairT qzero qone := by
   simpa [state,stateF,baseBody] using rec2_zero (Γ := Γ) baseBody stepBody S
@@ -66,17 +58,17 @@ theorem state_succ (S k : PTm n) :
     rec2_succ (Γ := Γ) baseBody stepBody k S
 
 theorem previous_zero (S : PTm n) : Γ ⊢[PRAAx] previous S zero ≐ qzero :=
-  (congrFst (state_zero S)).eqTrans (fst_pair _ _)
+  (state_zero S).fstE
 
 theorem value_zero (S : PTm n) : Γ ⊢[PRAAx] value S zero ≐ qone :=
-  (congrSnd (state_zero S)).eqTrans (snd_pair _ _)
+  (state_zero S).sndE
 
 theorem previous_succ (S k : PTm n) : Γ ⊢[PRAAx] previous S (succ k) ≐ value S k :=
-  (congrFst (state_succ S k)).eqTrans (fst_pair _ _)
+  (state_succ S k).fstE
 
 theorem value_succ (S k : PTm n) :
     Γ ⊢[PRAAx] value S (succ k) ≐ qsub (qmul S (value S k)) (previous S k) :=
-  (congrSnd (state_succ S k)).eqTrans (snd_pair _ _)
+  (state_succ S k).sndE
 
 theorem value_one (S : PTm n) (hS : Γ ⊢[PRAAx] canonical S) : Γ ⊢[PRAAx] value S one ≐ S :=
   (value_succ S zero).eqTrans
@@ -122,9 +114,7 @@ def invariant (A B k : PTm n) : Fm PTm n :=
   (qmul (qsub A B) (previous (qadd A B) k) ≐ difference A B k) ⋏
     (qmul (qsub A B) (value (qadd A B) k) ≐ difference A B (succ k))
 
-@[simp] theorem subst_invariant {m : ℕ} (σ : Fin n → PTm m) (A B k : PTm n) :
-    (invariant A B k).subst σ = invariant (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ k) := by
-  simp [invariant]
+ipra_subst invariant
 
 private theorem invariant_zero (A B : PTm n) (hA : Γ ⊢[PRAAx] canonical A)
     (hB : Γ ⊢[PRAAx] canonical B) : Γ ⊢[PRAAx] invariant A B zero := by
@@ -159,11 +149,9 @@ private theorem invariant_succ (A B k : PTm n) (hAB : Γ ⊢[PRAAx] qmul A B ≐
 theorem invariant_all (A B k : PTm n) (hA : Γ ⊢[PRAAx] canonical A) (hB : Γ ⊢[PRAAx] canonical B)
     (hAB : Γ ⊢[PRAAx] qmul A B ≐ qone) : Γ ⊢[PRAAx] invariant A B k := by
   have all : Γ ⊢[PRAAx] .all (invariant (Syn.shift A) (Syn.shift B) (var 0)) := by
-    refine PRA.qfInd _ ⟨trivial,trivial⟩ ?_ ?_
-    · simp only [subst_invariant,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact invariant_zero A B hA hB
-    · simp only [subst_invariant,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      have hs : Γ.map Fm.shift ⊢[PRAAx] qmul (Syn.shift A) (Syn.shift B) ≐ qone := by
+    ipra_qfind (⟨trivial,trivial⟩) [subst_invariant]
+    · exact invariant_zero A B hA hB
+    · have hs : Γ.map Fm.shift ⊢[PRAAx] qmul (Syn.shift A) (Syn.shift B) ≐ qone := by
         simpa only [Fm.shift,Fm.subst_eq,GaussianRationalHorner.subst_qmul,
           GaussianRationalReciprocal.subst_qone,Syn.shift] using hAB.shift
       exact invariant_succ _ _ _ hs.wk Prf.hyp0

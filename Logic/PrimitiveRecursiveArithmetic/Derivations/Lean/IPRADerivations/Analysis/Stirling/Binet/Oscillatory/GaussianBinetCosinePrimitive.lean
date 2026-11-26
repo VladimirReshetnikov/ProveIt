@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetCosinePrimitive
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetArctangentCosineLaplace (mean mean_distance)
 open GaussianBinetExponentialIntegral (numerator)
 open GaussianBinetExponentialIntegralGrid (row value)
@@ -30,9 +30,6 @@ open GaussianRationalMetric (distanceBounded qsub qnegative qsub_canonical)
 open GaussianRationalQuadratureMean (mean_product)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qone)
 open GaussianScalarColumnSelection (negative_both_product)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

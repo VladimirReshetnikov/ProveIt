@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Series.Basel.BaselCore
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The uniform finite Basel estimate
@@ -25,16 +24,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.BaselUniform
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.BaselCore (Ap Am core)
 open LeanProofs.IPRA.Analysis.BaselSquares (S O compare)
 open LeanProofs.IPRA.Analysis.BaselAverages (H)
 open LeanProofs.IPRA.Analysis.BaselFinite (tB T harmonic_up growth)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

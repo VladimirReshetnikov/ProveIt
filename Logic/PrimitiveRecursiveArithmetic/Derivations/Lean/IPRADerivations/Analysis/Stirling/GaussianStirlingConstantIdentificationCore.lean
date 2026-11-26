@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingConstantIdentificationCore
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameArithmetic (add_fast sum_distance)
@@ -28,10 +28,6 @@ open GaussianRationalSyntheticDivision (qadd_sub_cancel)
 open GaussianStirlingNames (nameData name_regular source)
 open GaussianStirlingNativeDuplication (halfNumerator halfDenominator half_source double_source)
 open GaussianStirlingOriginalIntegerLimit (integer_tail_contract limit_regular)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

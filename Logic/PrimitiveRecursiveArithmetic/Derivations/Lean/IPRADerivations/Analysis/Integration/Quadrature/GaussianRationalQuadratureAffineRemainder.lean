@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalQuadratureAffineRemainder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalFiniteSum (multiplyBody multiply_body_at sum sum_multiply)
 open GaussianRationalQuadratureDifference (differenceBody difference_body_at weighted_difference)
 open GaussianRationalRiemannRefinement (leftSum weight termsDistance constantBody)
@@ -24,17 +24,13 @@ open GaussianRationalHorner (qzero qadd qmul positive_product)
 open GaussianRationalSyntheticDivision (qmul_congr qsub_congr)
 open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianEulerPowerShiftRate (displaced_difference)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def rowBody (f g h : PTm 2) : PTm 2 := differenceBody (differenceBody f g) (multiplyBody h)
 def rowData (c x y z : PTm n) : PTm n := pairT (pairT x y) (pairT c z)
 
-@[simp] theorem subst_rowData {m : ℕ} (σ : Fin n → PTm m) (c x y z : PTm n) :
-    Syn.subst σ (rowData c x y z) = rowData (Syn.subst σ c) (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ z) := by
-  simp [rowData]
+ipra_subst rowData
 
 theorem row_at (f g h : PTm 2) (i c x y z : PTm n) : Γ ⊢[PRAAx]
     inst2 (rowBody f g h) i (rowData c x y z) ≐ qsub (inst2 f i x) (qadd (inst2 g i y) (qmul c (inst2 h i z))) :=

@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.Spans.RationalOriginalSpanMembership
 import IPRADerivations.Analysis.Polynomials.Elimination.Superelliptic.RationalSuperellipticSubspace
 import IPRADerivations.Foundations.FiniteCoverAssignment
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # First-cover counting for original rational superelliptic points
@@ -16,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalSuperellipticCover
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianWeightedMonomialBasis (count)
 open RationalSuperellipticNormDegree (d pointPowers point_power_at subst_pointPowers)
 open RationalSuperellipticSubspace (curveInput curvePoints properSpan pointMembership)
@@ -29,9 +28,6 @@ open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
 open LeanProofs.IPRA.Foundations.FiniteCoverAssignment
   (hasCover cover groupBounds group_length index_bound indices_increasing group_lookup group_test)
-open ConciseIPRA.PTm (zero app)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -58,28 +54,17 @@ def covered (m e L P D : PTm n) : Fm PTm n := .all (lt (var 0) (length (Syn.shif
 def group (m e L P D g : PTm n) : PTm n :=
   Foundations.FiniteCoverAssignment.group testBody P (length D) (data m e L D) g
 
-@[simp] theorem subst_candidate {q : ℕ} (σ : Fin n → PTm q) (m e L D g v : PTm n) :
-    Syn.subst σ (candidate m e L D g v) = candidate (Syn.subst σ m) (Syn.subst σ e) (Syn.subst σ L)
-      (Syn.subst σ D) (Syn.subst σ g) (Syn.subst σ v) := by simp [candidate]
+ipra_subst candidate
 
-@[simp] theorem subst_data {q : ℕ} (σ : Fin n → PTm q) (m e L D : PTm n) :
-    Syn.subst σ (data m e L D) = data (Syn.subst σ m) (Syn.subst σ e) (Syn.subst σ L) (Syn.subst σ D) := by simp [data]
+ipra_subst data
 
-@[simp] theorem subst_family {q : ℕ} (σ : Fin n → PTm q) (m e L D : PTm n) :
-    (family m e L D).subst σ = family (Syn.subst σ m) (Syn.subst σ e) (Syn.subst σ L) (Syn.subst σ D) := by
-  simp [family,Syn.subst_shift,Syn.shift_subst]
+ipra_subst family [Syn.subst_shift, Syn.shift_subst]
 
-@[simp] theorem subst_coveredAt {q : ℕ} (σ : Fin n → PTm q) (m e L D v : PTm n) :
-    (coveredAt m e L D v).subst σ = coveredAt (Syn.subst σ m) (Syn.subst σ e) (Syn.subst σ L)
-      (Syn.subst σ D) (Syn.subst σ v) := by simp [coveredAt,Syn.subst_shift,Syn.shift_subst]
+ipra_subst coveredAt [Syn.subst_shift, Syn.shift_subst]
 
-@[simp] theorem subst_covered {q : ℕ} (σ : Fin n → PTm q) (m e L P D : PTm n) :
-    (covered m e L P D).subst σ = covered (Syn.subst σ m) (Syn.subst σ e) (Syn.subst σ L)
-      (Syn.subst σ P) (Syn.subst σ D) := by simp [covered,Syn.subst_shift,Syn.shift_subst]
+ipra_subst covered [Syn.subst_shift, Syn.shift_subst]
 
-@[simp] theorem subst_group {q : ℕ} (σ : Fin n → PTm q) (m e L P D g : PTm n) :
-    Syn.subst σ (group m e L P D g) = group (Syn.subst σ m) (Syn.subst σ e) (Syn.subst σ L)
-      (Syn.subst σ P) (Syn.subst σ D) (Syn.subst σ g) := by simp [group]
+ipra_subst group
 
 private theorem candidate_congr {m m' e e' L L' D D' : PTm n} (g v : PTm n)
     (hm : Γ ⊢[PRAAx] m ≐ m') (he : Γ ⊢[PRAAx] e ≐ e') (hL : Γ ⊢[PRAAx] L ≐ L') (hD : Γ ⊢[PRAAx] D ≐ D') :
@@ -92,8 +77,8 @@ theorem test_body_at (m e L D g v : PTm n) : Γ ⊢[PRAAx]
   have firstTail := snd_pair (Γ := Γ) m (pairT e (pairT L D))
   have lastTail := (congrSnd firstTail).eqTrans (snd_pair e (pairT L D))
   have h := candidate_congr g v (fst_pair m (pairT e (pairT L D)))
-    ((congrFst firstTail).eqTrans (fst_pair _ _)) ((congrFst lastTail).eqTrans (fst_pair _ _))
-    ((congrSnd lastTail).eqTrans (snd_pair _ _))
+    firstTail.fstE lastTail.fstE
+    lastTail.sndE
   simpa only [testBody,inst3,subst_eqb,subst_candidate,subst_fstT,subst_sndT,Syn.subst_var,
     Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,one,ConciseIPRA.PTm.subst_succ,
     ConciseIPRA.PTm.subst_zero,Matrix.head_cons,Matrix.tail_cons,data] using

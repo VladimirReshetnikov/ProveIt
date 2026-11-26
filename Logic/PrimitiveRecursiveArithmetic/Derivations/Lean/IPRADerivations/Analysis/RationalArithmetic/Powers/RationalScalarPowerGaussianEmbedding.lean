@@ -12,12 +12,9 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalScalarPowerGaussianEmbedding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalGaussianEmbedding (embed scalarOne)
 open RationalPolynomialGaussianEmbedding (embed_congr)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -25,8 +22,7 @@ def step : PTm 3 := RationalArithmetic.multiply (var 1) (var 2)
 def powerF : PR 2 := rec2 (scalarOne : PTm 1) step
 def power (z k : PTm n) : PTm n := ap2 powerF k z
 
-@[simp] theorem subst_power {l : ℕ} (σ : Fin n → PTm l) (z k : PTm n) :
-    Syn.subst σ (power z k) = power (Syn.subst σ z) (Syn.subst σ k) := by simp [power]
+ipra_subst power
 
 theorem power_zero (z : PTm n) : Γ ⊢[PRAAx] power z zero ≐ scalarOne := by
   simpa only [power,powerF,RationalGaussianEmbedding.subst_scalarOne] using
@@ -48,17 +44,14 @@ theorem power_canonical (z k : PTm n) : Γ ⊢[PRAAx] RationalNormalForm.wellFor
 
 def law (z k : PTm n) : Fm PTm n := embed (power z k) ≐ GaussianRationalReciprocal.power (embed z) k
 
-@[simp] theorem subst_law {l : ℕ} (σ : Fin n → PTm l) (z k : PTm n) :
-    (law z k).subst σ = law (Syn.subst σ z) (Syn.subst σ k) := by simp [law]
+ipra_subst law
 
 theorem power_embedding (z k : PTm n) : Γ ⊢[PRAAx] law z k := by
   have all : Γ ⊢[PRAAx] .all (law (Syn.shift z) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_law,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (embed_congr (power_zero z)).eqTrans
+    ipra_qfind [subst_law]
+    · exact (embed_congr (power_zero z)).eqTrans
         (RationalGaussianEmbedding.embed_one.eqTrans (GaussianRationalReciprocal.power_zero _).eqSymm)
-    · simp only [subst_law,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact (embed_congr (power_succ _ _)).eqTrans ((RationalGaussianEmbedding.embed_multiply _ _).eqTrans
+    · exact (embed_congr (power_succ _ _)).eqTrans ((RationalGaussianEmbedding.embed_multiply _ _).eqTrans
         ((GaussianRationalSyntheticDivision.qmul_congr Prf.hyp0 (.eqRefl _)).eqTrans
           (GaussianRationalReciprocal.power_succ _ _).eqSymm))
   simpa only [subst_law,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k

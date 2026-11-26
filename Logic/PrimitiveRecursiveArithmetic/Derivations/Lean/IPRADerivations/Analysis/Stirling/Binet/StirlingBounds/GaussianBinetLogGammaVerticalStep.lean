@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLogGammaVerticalStep
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (normSq)
 open GaussianBinetLogVerticalStep (step native_step_bound)
 open GaussianBinetStirlingVerticalAlgebra (displacement)
@@ -34,10 +34,6 @@ open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRightHalfPlaneLogarithm (source)
 open GaussianRightHalfPlaneLogarithmIncrementMargin (admitted smallStep)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "G" => GaussianLogGammaEulerCofinal.nameF

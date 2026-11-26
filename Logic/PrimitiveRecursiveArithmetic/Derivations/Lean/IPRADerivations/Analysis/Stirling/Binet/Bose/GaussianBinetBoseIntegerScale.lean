@@ -17,7 +17,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetBoseIntegerScale
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale eval_re_code eval_im_code)
 open GaussianBinetBoseExponential (scaleF scaleData scaleBudget exp_input piClock)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -31,9 +31,6 @@ open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRootAlgebra (equal_of_values re_scale im_scale re_neg im_neg)
 open GaussianSineProductImaginaryLogDerivative (realNumerator)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Pi" => GaussianGammaHalfPiName.nameF
@@ -69,9 +66,7 @@ theorem stage_at (s : Bool) (p E i A B : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
 
 def comparisonCost (i A : PTm n) : PTm n := (two*(i*A))*(two+two)
 
-@[simp] theorem subst_comparisonCost {m : ℕ} (σ : Fin n → PTm m) (i A : PTm n) :
-    Syn.subst σ (comparisonCost i A) = comparisonCost (Syn.subst σ i) (Syn.subst σ A) := by
-  simp [comparisonCost,two]
+ipra_subst comparisonCost [two]
 
 theorem raw_error (s : Bool) (p E i A B : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
     Γ ⊢[PRAAx] distanceBounded (ap2 SF p (sd E i (scaleData s A B)))

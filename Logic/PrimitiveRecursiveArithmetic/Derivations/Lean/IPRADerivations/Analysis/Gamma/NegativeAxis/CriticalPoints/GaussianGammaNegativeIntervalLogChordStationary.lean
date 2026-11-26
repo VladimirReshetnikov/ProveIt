@@ -14,7 +14,7 @@ set_option maxHeartbeats 2000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalLogChordStationary
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianGammaNegativeCriticalCorrection (guard)
 open GaussianGammaNegativeIntervalLogAbsolute (nameF nameData name_regular name_real)
@@ -35,10 +35,6 @@ open GaussianReciprocalHorner (qadd_commutative qadd_zero_right)
 open GaussianReconstructionRoots (distance_zero_iff)
 open GaussianStirlingTailComparison (point_add_upper_same point_order_refl)
 open RationalValueBounds (upper upper_congr upper_mono upper_of_order upper_of_radius upper_triangle)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "G" => nameF
@@ -46,10 +42,7 @@ local notation "lg" => nameData
 
 def observationCost (a c b N W : PTm n) : PTm n := two*W+budget a c b N W
 
-@[simp] theorem subst_observationCost {m : ℕ} (σ : Fin n → PTm m) (a c b N W : PTm n) :
-    Syn.subst σ (observationCost a c b N W) =
-      observationCost (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ b) (Syn.subst σ N) (Syn.subst σ W) := by
-  simp [observationCost,two]
+ipra_subst observationCost [two]
 
 private theorem center_displacement (t a c b N W K E : PTm n) (hW : Γ ⊢[PRAAx] le two W)
     (hE : Γ ⊢[PRAAx] le one E) (h : Γ ⊢[PRAAx] independentRate G G (centerData a c b N W) (lg a b N) K (W*E)) :

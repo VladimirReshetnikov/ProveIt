@@ -14,7 +14,7 @@ set_option maxHeartbeats 670000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetSecondWeightedSineTransposedPrefix
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetArctangentSineUniform (clock cutoff count)
 open GaussianBinetBoseFrozenMatrix (subst_frozenPiNumerator subst_piDenominator)
 open GaussianBinetSecondDecayPointwise (frozenPiNumerator)
@@ -31,10 +31,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalRiemannRefinement (termsDistance sum_distance weight)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianStirlingConstant (piDenominator)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Weighted" => GaussianBinetSecondWeightedSinePrefix.value
@@ -70,16 +66,9 @@ def body : PTm 2 := term (var 0) (var 1)
 def transposedPrefix (q k I M T X Y D sign R K cut : PTm n) : PTm n :=
   sum body I (data q k M T X Y D sign R K cut)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (q k M T X Y D sign R K cut : PTm n) :
-    Syn.subst σ (data q k M T X Y D sign R K cut) =
-      data (Syn.subst σ q) (Syn.subst σ k) (Syn.subst σ M) (Syn.subst σ T) (Syn.subst σ X) (Syn.subst σ Y)
-        (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ R) (Syn.subst σ K) (Syn.subst σ cut) := by simp [data,one]
+ipra_subst data [one]
 
-@[simp] theorem subst_transposedPrefix {m : ℕ} (σ : Fin n → PTm m) (q k I M T X Y D sign R K cut : PTm n) :
-    Syn.subst σ (transposedPrefix q k I M T X Y D sign R K cut) =
-      transposedPrefix (Syn.subst σ q) (Syn.subst σ k) (Syn.subst σ I) (Syn.subst σ M) (Syn.subst σ T)
-        (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ R) (Syn.subst σ K)
-        (Syn.subst σ cut) := by simp [transposedPrefix]
+ipra_subst transposedPrefix
 
 private theorem replace_at (H p M T J X Y D sign R L N cut : PTm n) :
     Γ ⊢[PRAAx] replaceNumerator H (MatrixData p M T zero J X Y D sign R L N cut) ≐

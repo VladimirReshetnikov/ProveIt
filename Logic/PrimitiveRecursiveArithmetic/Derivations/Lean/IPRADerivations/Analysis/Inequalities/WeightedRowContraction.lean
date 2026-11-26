@@ -20,13 +20,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.WeightedRowContraction
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.EventAlgebraMetric (wsum wsum_le)
 open LeanProofs.IPRA.Probability.BayesEvents (wsum_mul wsum_zero)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -39,9 +35,7 @@ theorem row_domination {r : PTm n} (h : ∀ j ∈ L, Γ ⊢[PRAAx] le (z j) (r *
     Γ ⊢[PRAAx] le (wsum a z L) (r * wsum a w L) := by
   have s := wsum_le (Γ := Γ) a z (fun j => r * w j) (fun _ => zero) L
     fun j hj => le_congr (.eqRefl _) (add_zero _).eqSymm (h j hj)
-  have e := natEq (wsum_mul (Γ := Γ) a w r L)
-  have z0 := natEq (wsum_zero (Γ := Γ) a L)
-  ipra_le sl s with e + z0
+  ipra_le sl s with natEq (wsum_mul (Γ := Γ) a w r L) + natEq (wsum_zero (Γ := Γ) a L)
 
 /-- The half-contraction of one coordinate: `2 g ≤ r w_i`. -/
 theorem half_contract_row {r wi g : PTm n} (h : ∀ j ∈ L, Γ ⊢[PRAAx] le (z j) (r * w j))

@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCompactLogarithmBounds
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianPositiveRationalLogarithm (fraction source sample logF data name_regular)
 open GaussianPositiveRationalLogarithmVariation (native crossNumerator cross_norm)
 open RationalHarmonicIntervalVariation (gap)
@@ -23,20 +23,14 @@ open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open ComplexLogarithmRemainder (scale oneCode)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 
 def domain (a b E T : PTm n) : Fm PTm n := source a b ⋏ (le b (E*a) ⋏ le a (T*b))
 def radius (E T : PTm n) : PTm n := E*(T+one)+num 25
-@[simp] theorem subst_domain {m : ℕ} (σ : Fin n → PTm m) (a b E T : PTm n) :
-    (domain a b E T).subst σ = domain (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ E) (Syn.subst σ T) := by simp [domain]
-@[simp] theorem subst_radius {m : ℕ} (σ : Fin n → PTm m) (E T : PTm n) :
-    Syn.subst σ (radius E T) = radius (Syn.subst σ E) (Syn.subst σ T) := by simp [radius]
+ipra_subst domain
+ipra_subst radius
 
 theorem natural_native (a : PTm n) : Γ ⊢[PRAAx] GaussianRootAlgebra.equal (scale a oneCode) (native a) := by
   apply GaussianRootAlgebra.equal_of_values <;>
@@ -124,18 +118,17 @@ def rateInput (a b c d E A D : PTm n) : Fm PTm n := source a b ⋏ (source c d �
 def output (p a b E T : PTm n) : PTm n := pairT (sample p a b) (pairT (radius E T) (fraction a b))
 def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (p a b E T : PTm n) : PTm n := PTm.app outputF ![p,a,b,E,T]
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (p a b E T : PTm n) :
-    Syn.subst σ (output p a b E T) = output (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ E) (Syn.subst σ T) := by simp [output]
+ipra_subst output
 theorem program_at (p a b E T : PTm n) : Γ ⊢[PRAAx] run p a b E T ≐ output p a b E T := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![p,a,b,E,T]
 theorem returned_sample (p a b E T : PTm n) : Γ ⊢[PRAAx] fstT (run p a b E T) ≐ sample p a b :=
-  (congrFst (program_at p a b E T)).eqTrans (fst_pair _ _)
+  (program_at p a b E T).fstE
 theorem returned_tail (p a b E T : PTm n) : Γ ⊢[PRAAx] sndT (run p a b E T) ≐ pairT (radius E T) (fraction a b) :=
-  (congrSnd (program_at p a b E T)).eqTrans (snd_pair _ _)
+  (program_at p a b E T).sndE
 theorem returned_radius (p a b E T : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run p a b E T)) ≐ radius E T :=
-  (congrFst (returned_tail p a b E T)).eqTrans (fst_pair _ _)
+  (returned_tail p a b E T).fstE
 theorem returned_time (p a b E T : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run p a b E T)) ≐ fraction a b :=
-  (congrSnd (returned_tail p a b E T)).eqTrans (snd_pair _ _)
+  (returned_tail p a b E T).sndE
 theorem returned_bound (p a b E T : PTm n) (hE : Γ ⊢[PRAAx] le one E) (h : Γ ⊢[PRAAx] domain a b E T) : Γ ⊢[PRAAx]
     bounded (fstT (run p a b E T)) (fstT (sndT (run p a b E T))) one :=
   GaussianRationalReciprocal.bound_congr (returned_sample p a b E T).eqSymm (returned_radius p a b E T).eqSymm (.eqRefl _)

@@ -19,7 +19,7 @@ set_option maxHeartbeats 700000
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerPositiveAxis
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (eval_re_code eval_im_code)
 open GaussianGammaCanonicalExponent (constantF)
 open GaussianGammaInputProperness (code_data_cross original_Gamma_proper)
@@ -39,9 +39,6 @@ open GaussianRootAlgebra (equal equal_of_values equal_symm re_scale im_scale re_
 open GaussianSignedNameExponentialOrder (realSamples real_sample_at)
 open GaussianStirlingNames (add_real multiply_real constant_real)
 open RationalGaussianEmbedding (axis axis_add axis_congr axis_zero subst_axis)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "G" => GaussianRightHalfPlaneLogarithm.nameF

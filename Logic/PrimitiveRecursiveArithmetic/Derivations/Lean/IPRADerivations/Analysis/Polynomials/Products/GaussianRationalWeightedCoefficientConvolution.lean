@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalWeightedCoefficientConvolution
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul qadd)
 open GaussianRationalSyntheticDivision (qmul_congr qadd_congr)
 open GaussianRationalNaturalScale (natScale natScale_congr natScale_as_product natScale_add natScale_product naturalPoint)
@@ -23,10 +23,6 @@ open GaussianRationalLowCoefficientConvolution (exponentCoefficient data getP ge
 open GaussianRationalFiniteSum (sum)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,18 +34,10 @@ def leftBody : PTm 2 := leftTerm (getP (var 1)) (getQ (var 1)) (getN (var 1)) (g
 def rightBody : PTm 2 := rightTerm (getP (var 1)) (getQ (var 1)) (getN (var 1)) (getM (var 1)) (getE (var 1)) (var 0)
 def leftSum (P Q N M e : PTm n) : PTm n := sum leftBody (succ e) (data P Q N M e)
 def rightSum (P Q N M e : PTm n) : PTm n := sum rightBody (succ e) (data P Q N M e)
-@[simp] theorem subst_leftTerm {l : ℕ} (σ : Fin n → PTm l) (P Q N M e i : PTm n) :
-    Syn.subst σ (leftTerm P Q N M e i) = leftTerm (Syn.subst σ P) (Syn.subst σ Q) (Syn.subst σ N)
-      (Syn.subst σ M) (Syn.subst σ e) (Syn.subst σ i) := by simp [leftTerm]
-@[simp] theorem subst_rightTerm {l : ℕ} (σ : Fin n → PTm l) (P Q N M e i : PTm n) :
-    Syn.subst σ (rightTerm P Q N M e i) = rightTerm (Syn.subst σ P) (Syn.subst σ Q) (Syn.subst σ N)
-      (Syn.subst σ M) (Syn.subst σ e) (Syn.subst σ i) := by simp [rightTerm]
-@[simp] theorem subst_leftSum {l : ℕ} (σ : Fin n → PTm l) (P Q N M e : PTm n) :
-    Syn.subst σ (leftSum P Q N M e) = leftSum (Syn.subst σ P) (Syn.subst σ Q) (Syn.subst σ N) (Syn.subst σ M) (Syn.subst σ e) := by
-  simp [leftSum]
-@[simp] theorem subst_rightSum {l : ℕ} (σ : Fin n → PTm l) (P Q N M e : PTm n) :
-    Syn.subst σ (rightSum P Q N M e) = rightSum (Syn.subst σ P) (Syn.subst σ Q) (Syn.subst σ N) (Syn.subst σ M) (Syn.subst σ e) := by
-  simp [rightSum]
+ipra_subst leftTerm
+ipra_subst rightTerm
+ipra_subst leftSum
+ipra_subst rightSum
 
 theorem left_at (P Q N M e i : PTm n) : Γ ⊢[PRAAx]
     inst2 leftBody i (data P Q N M e) ≐ leftTerm P Q N M e i := by
@@ -122,25 +110,18 @@ def output (P Q N M e : PTm n) : PTm n := pairT
   (pairT (leftSum P Q N M e) (rightSum P Q N M e))
 def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (P Q N M e : PTm n) : PTm n := PTm.app outputF ![P,Q,N,M,e]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (P Q N M e : PTm n) :
-    Syn.subst σ (output P Q N M e) = output (Syn.subst σ P) (Syn.subst σ Q) (Syn.subst σ N) (Syn.subst σ M) (Syn.subst σ e) := by
-  simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (P Q N M e : PTm n) :
-    Syn.subst σ (run P Q N M e) = run (Syn.subst σ P) (Syn.subst σ Q) (Syn.subst σ N) (Syn.subst σ M) (Syn.subst σ e) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (P Q N M e : PTm n) : Γ ⊢[PRAAx] run P Q N M e ≐ output P Q N M e := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![P,Q,N,M,e]
 theorem returned_weighted_coefficient (P Q N M e : PTm n) : Γ ⊢[PRAAx]
     fstT (run P Q N M e) ≐ natScale e (exponentCoefficient (GaussianRationalPolynomialProduct.product P Q N M) (N+M) e) :=
-  (congrFst (program_at P Q N M e)).eqTrans (fst_pair _ _)
+  (program_at P Q N M e).fstE
 theorem returned_left (P Q N M e : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run P Q N M e)) ≐ leftSum P Q N M e :=
-  (congrFst ((congrSnd (program_at P Q N M e)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at P Q N M e).sndE.fstE
 theorem returned_right (P Q N M e : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run P Q N M e)) ≐ rightSum P Q N M e :=
-  (congrSnd ((congrSnd (program_at P Q N M e)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at P Q N M e).sndE.sndE
 theorem returned_agreement (P Q N M e : PTm n) (hN : Γ ⊢[PRAAx] le e N)
     (hM : Γ ⊢[PRAAx] le e M) : Γ ⊢[PRAAx]
     fstT (run P Q N M e) ≐ qadd (fstT (sndT (run P Q N M e))) (sndT (sndT (run P Q N M e))) :=

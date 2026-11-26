@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingFiniteSubstitution
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPowerScalingCell (scaleSample scaleBound)
 open GaussianEulerPowerScalingImageQuadrature (original_quadrature_to_image)
 open GaussianEulerPowerScalingCorrectedQuadrature (correctedSum original_quadrature_to_corrected)
@@ -27,8 +27,6 @@ open GaussianCompactRiemannName (quadrature)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalHorner (qmul positive_product)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -17,7 +17,7 @@ set_option maxHeartbeats 550000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetArctangentTimeRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetArctangentQuadrature (nameF data evaluatorF fixedData evaluator_at)
 open GaussianBinetLaplaceStrip (tagNumerator)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -31,10 +31,6 @@ open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalRiemannRefinement (leftSum termsDistance constantBody constant_entry)
 open GaussianRationalSyntheticDivision (qmul_congr qmul_zero_right)
 open GaussianRightHalfPlaneLogarithm (source)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -45,11 +41,8 @@ def gridData (p M X Y D sign A B : PTm n) : PTm n :=
 def average (p M X Y D sign A B : PTm n) : PTm n :=
   leftSum (sampleBody evaluatorF) M (gridData p M X Y D sign A B) one one
 
-@[simp] theorem subst_gain {m : ℕ} (σ : Fin n → PTm m) (D T : PTm n) :
-    Syn.subst σ (gain D T) = gain (Syn.subst σ D) (Syn.subst σ T) := by simp [gain]
-@[simp] theorem subst_gridData {m : ℕ} (σ : Fin n → PTm m) (p M X Y D sign A B : PTm n) :
-    Syn.subst σ (gridData p M X Y D sign A B) = gridData (Syn.subst σ p) (Syn.subst σ M) (Syn.subst σ X)
-      (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ A) (Syn.subst σ B) := by simp [gridData]
+ipra_subst gain
+ipra_subst gridData
 
 private theorem factor (p M X Y D sign A B : PTm n) (hM : Γ ⊢[PRAAx] le one M) (hB : Γ ⊢[PRAAx] le one B) :
     Γ ⊢[PRAAx] quadrature evaluatorF p M (B+zero) A B (fixedData X Y D sign) ≐

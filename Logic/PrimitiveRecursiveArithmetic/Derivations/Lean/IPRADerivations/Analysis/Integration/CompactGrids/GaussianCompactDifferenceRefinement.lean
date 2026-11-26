@@ -13,15 +13,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCompactDifferenceRefinement
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCompactRiemannName (data input mesh name_at name_regular precision quadrature quadrature_index_congr)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNamedDifference (difference_distance sample_error)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_symmetric)
 open GaussianRationalMetric (distanceBounded qsub)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Q" => GaussianCompactRiemannName.nameF

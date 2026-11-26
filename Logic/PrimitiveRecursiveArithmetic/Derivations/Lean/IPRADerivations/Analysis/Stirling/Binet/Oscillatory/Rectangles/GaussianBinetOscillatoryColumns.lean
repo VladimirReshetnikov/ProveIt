@@ -16,7 +16,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetOscillatoryColumns
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetArctangentCosineLaplace (mean)
 open GaussianBinetCosinePrimitive (cosineValue)
 open GaussianBinetExponentialIntegralGrid (row exponent)
@@ -40,10 +40,6 @@ open GaussianRationalRiemannRefinement (termsDistance sum_distance weight weight
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr)
 open GaussianReciprocalHorner (qadd_commutative qmul_associative)
 open GaussianRationalPowerAlgebra (qmul_commutative)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "F" => GaussianBinetExponentialIntegralGrid.evaluatorF
@@ -66,10 +62,7 @@ def columnTarget (j p M X Y D sign A B R U L N : PTm n) : PTm n :=
     Syn.subst σ (imaginaryData s p M A B T j N U) = imaginaryData s (Syn.subst σ p) (Syn.subst σ M)
       (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ T) (Syn.subst σ j) (Syn.subst σ N) (Syn.subst σ U) := by
   simp [imaginaryData,one]
-@[simp] theorem subst_damping {m : ℕ} (σ : Fin n → PTm m) (p X Y D sign T j N R : PTm n) :
-    Syn.subst σ (damping p X Y D sign T j N R) = damping (Syn.subst σ p) (Syn.subst σ X) (Syn.subst σ Y)
-      (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ T) (Syn.subst σ j) (Syn.subst σ N) (Syn.subst σ R) := by
-  simp [damping,GaussianLogGammaEulerRepresentation.subst_argument]
+ipra_subst damping [GaussianLogGammaEulerRepresentation.subst_argument]
 
 private theorem frequency_numerator (i M A B : PTm n) : Γ ⊢[PRAAx]
     tagNumerator (grid i M (B+zero) A B) ≐ A*i := by

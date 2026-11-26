@@ -4,7 +4,6 @@ import IPRADerivations.Analysis.Gamma.EulerProducts.FiniteHeads.GaussianGammaEul
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerHeadLower
 import IPRADerivations.Analysis.Polynomials.Translation.GaussianInverseBinomialRows
 import IPRADerivations.Analysis.Polynomials.Products.GaussianPolynomialLinearFactorCoefficients
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # A literal finite Beta primitive for arbitrary complex rational exponents
@@ -26,7 +25,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerBetaPolynomialPrimitive
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul qadd canonical evaluate represents positive_product)
 open GaussianRationalMetric (qnegative qsub)
 open GaussianRationalSyntheticDivision (qmul_congr qadd_congr canonicalCoefficients)
@@ -35,10 +34,6 @@ open GaussianGammaEulerHeadShift (linear)
 open GaussianGammaEulerHeadLower (poleGuard pole_at translated)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -57,19 +52,14 @@ def weightedRow : PTm 2 := weightedCoefficient (fstT (var 1)) (fstT (sndT (var 1
 def weighted (z B N : PTm n) : PTm n := sequence weightedRow (succ N) (data z B N)
 def source (z B A N : PTm n) : Fm PTm n := le one B ⋏ (le one A ⋏ poleGuard z B one A N)
 
-@[simp] theorem subst_base {m : ℕ} (σ : Fin n → PTm m) : Syn.subst σ (base : PTm n) = (base : PTm m) := by simp [base]
-@[simp] theorem subst_kernel {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) : Syn.subst σ (kernel N) = kernel (Syn.subst σ N) := by simp [kernel]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (z B N : PTm n) : Syn.subst σ (data z B N) = data (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by simp [data]
-@[simp] theorem subst_coefficient {m : ℕ} (σ : Fin n → PTm m) (z B N i : PTm n) :
-    Syn.subst σ (coefficient z B N i) = coefficient (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) (Syn.subst σ i) := by simp [coefficient]
-@[simp] theorem subst_primitive {m : ℕ} (σ : Fin n → PTm m) (z B N : PTm n) :
-    Syn.subst σ (primitive z B N) = primitive (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by simp [primitive]
-@[simp] theorem subst_weightedCoefficient {m : ℕ} (σ : Fin n → PTm m) (z B N i : PTm n) :
-    Syn.subst σ (weightedCoefficient z B N i) = weightedCoefficient (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) (Syn.subst σ i) := by simp [weightedCoefficient]
-@[simp] theorem subst_weighted {m : ℕ} (σ : Fin n → PTm m) (z B N : PTm n) :
-    Syn.subst σ (weighted z B N) = weighted (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by simp [weighted]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z B A N : PTm n) :
-    (source z B A N).subst σ = source (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ N) := by simp [source]
+ipra_subst base
+ipra_subst kernel
+ipra_subst data
+ipra_subst coefficient
+ipra_subst primitive
+ipra_subst weightedCoefficient
+ipra_subst weighted
+ipra_subst source
 
 theorem base_length : Γ ⊢[PRAAx] length (base : PTm n) ≐ two := GaussianRationalPolynomialBuffers.added_length _ _ _
 theorem kernel_length (N : PTm n) : Γ ⊢[PRAAx] length (kernel N) ≐ succ N :=
@@ -98,7 +88,7 @@ theorem coefficient_congr {z z' B B' N N' i i' : PTm n} (hz : Γ ⊢[PRAAx] z �
 
 theorem row_at (z B N i : PTm n) : Γ ⊢[PRAAx] inst2 rowBody i (data z B N) ≐ coefficient z B N i := by
   simp only [rowBody,inst2,subst_coefficient,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
-  exact coefficient_congr (fst_pair _ _) ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)) ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)) (.eqRefl _)
+  exact coefficient_congr (fst_pair _ _) (snd_pair _ _).fstE (snd_pair _ _).sndE (.eqRefl _)
 theorem primitive_length (z B N : PTm n) : Γ ⊢[PRAAx] length (primitive z B N) ≐ succ N := sequence_length _ _ _
 theorem primitive_lookup (z B N i : PTm n) (hi : Γ ⊢[PRAAx] le i N) : Γ ⊢[PRAAx] entry (primitive z B N) i ≐ coefficient z B N i :=
   (sequence_decode rowBody ((succ_monus_succ _ _).eqTrans hi)).eqTrans (row_at z B N i)
@@ -129,8 +119,8 @@ theorem weighted_row_at (z B N i : PTm n) : Γ ⊢[PRAAx] inst2 weightedRow i (d
     (fun k => by
       fin_cases k
       · exact fst_pair _ _
-      · exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-      · exact (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
+      · exact (snd_pair _ _).fstE
+      · exact (snd_pair _ _).sndE
       · exact .eqRefl _)
 theorem weighted_length (z B N : PTm n) : Γ ⊢[PRAAx] length (weighted z B N) ≐ succ N := sequence_length _ _ _
 theorem weighted_lookup (z B N i : PTm n) (hi : Γ ⊢[PRAAx] le i N) : Γ ⊢[PRAAx]
@@ -184,8 +174,7 @@ the actual coefficient buffer (z/B+X*d/dX)P. -/
 def eulerOperator (z B N : PTm n) : PTm n := GaussianRationalPolynomialBuffers.added
   (GaussianRationalPolynomialProduct.product (GaussianRationalMonicReduction.singleton (GaussianRationalHorner.ofGaussian z B)) (primitive z B N) zero N)
   (GaussianRationalEulerCoefficients.euler (primitive z B N) N) (succ N)
-@[simp] theorem subst_eulerOperator {m : ℕ} (σ : Fin n → PTm m) (z B N : PTm n) :
-    Syn.subst σ (eulerOperator z B N) = eulerOperator (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by simp [eulerOperator]
+ipra_subst eulerOperator
 theorem operator_length (z B N : PTm n) : Γ ⊢[PRAAx] length (eulerOperator z B N) ≐ succ N := GaussianRationalPolynomialBuffers.added_length _ _ _
 theorem operator_lookup (z B A N i : PTm n) (h : Γ ⊢[PRAAx] source z B A N) (hi : Γ ⊢[PRAAx] le i N) : Γ ⊢[PRAAx]
     entry (eulerOperator z B N) i ≐ entry (kernel N) i :=

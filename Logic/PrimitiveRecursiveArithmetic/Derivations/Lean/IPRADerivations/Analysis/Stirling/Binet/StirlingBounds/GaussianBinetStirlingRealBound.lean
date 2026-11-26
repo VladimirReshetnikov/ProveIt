@@ -14,7 +14,7 @@ set_option maxHeartbeats 500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetStirlingRealBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaCanonicalExponent (constantF)
 open GaussianNameEquivalence (cross_symm)
 open GaussianNamedInverseRate (independentRate)
@@ -23,10 +23,6 @@ open GaussianRightHalfPlaneLogarithm (source)
 open GaussianSignedNameExponentialOrder (constant_equal_cross)
 open GaussianStirlingAllOrderSharpRadius (absoluteCoefficient radiusNumerator radiusDenominator radius_denominator_positive)
 open GaussianStirlingExpansionFiniteError (logPolynomial)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "R" => GaussianBinetStirlingRemainder.nameF

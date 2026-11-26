@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRootSharpEvaluation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRootAdequacy (inputContract)
 open LeanProofs.IPRA.Analysis.GaussianRootSharpErrorSamples (observation cost)
 open LeanProofs.IPRA.Analysis.GaussianCoefficientNameBounds (A R unit unit_positive)
@@ -25,9 +25,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalHorner (evaluate positive_product)
 open LeanProofs.IPRA.Analysis.GaussianRationalDistanceOrder (distance_congr)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (distanceBounded)
 open LeanProofs.IPRA.Analysis.GaussianRootSchedule (coefficientConstant)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,10 +35,8 @@ def rawF (step a : PR 3) (point : PR 2) : PR 2 := PTm.toPR (rawBody step a point
 def modulus (a : PR 3) (N Z x : PTm n) : PTm n :=
   GaussianRationalHornerLipschitz.constant N (Z+one) (A a N x)+GaussianRootApproximationWitness.T a N (Z+one) x
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (N t x : PTm n) :
-    Syn.subst σ (data N t x) = data (Syn.subst σ N) (Syn.subst σ t) (Syn.subst σ x) := by simp [data]
-@[simp] theorem subst_modulus {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N Z x : PTm n) :
-    Syn.subst σ (modulus a N Z x) = modulus a (Syn.subst σ N) (Syn.subst σ Z) (Syn.subst σ x) := by simp [modulus]
+ipra_subst data
+ipra_subst modulus
 
 theorem raw_at (step a : PR 3) (point : PR 2) (N t x s : PTm n) : Γ ⊢[PRAAx]
     ap2 (rawF step a point) s (data N t x) ≐ observation step a point N t x s := by
@@ -51,8 +46,8 @@ theorem raw_at (step a : PR 3) (point : PR 2) (N t x s : PTm n) : Γ ⊢[PRAAx]
     (σ' := ![N,t,x,s]) (fun j => by
       fin_cases j
       · exact fst_pair _ _
-      · exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-      · exact (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
+      · exact (snd_pair _ _).fstE
+      · exact (snd_pair _ _).sndE
       · exact .eqRefl _)
   exact (toPR_eq (rawBody step a point) ![s,data N t x]).eqTrans (by
     simpa only [rawBody,GaussianRootSharpErrorSamples.subst_observation,subst_fstT,subst_sndT,Syn.subst_var,

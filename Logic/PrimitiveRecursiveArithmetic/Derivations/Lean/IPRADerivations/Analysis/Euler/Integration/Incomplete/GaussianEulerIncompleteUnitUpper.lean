@@ -18,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIncompleteUnitUpper
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode)
 open GaussianEulerIntegrandName (decayF decayData)
 open GaussianEulerDecayMesh (observation observation_rescale)
@@ -31,19 +31,13 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameEquivalence (crossEquivalent point_at)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def source (a b : PTm n) : Fm PTm n := le one a ⋏ le one b
 def data (a b : PTm n) : PTm n := GaussianEulerIncompleteName.data oneCode one one one a b
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    (source a b).subst σ = source (Syn.subst σ a) (Syn.subst σ b) := by simp [source]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (data a b) = data (Syn.subst σ a) (Syn.subst σ b) := by simp [data]
+ipra_subst source
+ipra_subst data
 
 private theorem subst_decayData {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
     Syn.subst σ (decayData a b) = decayData (Syn.subst σ a) (Syn.subst σ b) := by

@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.FundamentalTheorem.GaussianGeneralFTAConstants
 import IPRADerivations.Algebra.FTABounds
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Exact computed rates of the general coefficient-name FTA
@@ -18,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGeneralFTARates
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianGeneralFTAConstants
   (D qDen qNum q QDen QNum K rhoNum rho qDen_positive QDen_positive QDen_lower K_positive K_lower)
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (fraction fraction_represents fraction_order)
@@ -26,10 +25,6 @@ open LeanProofs.IPRA.Analysis.RationalNonnegativePowers (power denominator_posit
 open LeanProofs.IPRA.Analysis.RationalArgmin (rationalLE)
 open LeanProofs.IPRA.Analysis.GaussianDescentClockArithmetic (positive_product)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -138,18 +133,16 @@ theorem q_plus_drift (N : PTm n) : Γ ⊢[PRAAx]
 def output (N : PTm n) : PTm n := pairT (q N) (pairT (GaussianGeneralFTAConstants.Q N) (rho N))
 def outputF : PR 1 := PTm.toPR (output (var 0))
 def run (N : PTm n) : PTm n := ap1 outputF N
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (output N) = output (Syn.subst σ N) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (run N) = run (Syn.subst σ N) := by simp [run]
+ipra_subst output
+ipra_subst run
 theorem program_at (N : PTm n) : Γ ⊢[PRAAx] run N ≐ output N := by
   simpa [run,outputF,ap1] using toPR_eq (Γ := Γ) (output (var 0) : PTm 1) ![N]
 theorem returned_q (N : PTm n) : Γ ⊢[PRAAx] fstT (run N) ≐ q N :=
-  (congrFst (program_at N)).eqTrans (fst_pair _ _)
+  (program_at N).fstE
 theorem returned_Q (N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run N)) ≐ GaussianGeneralFTAConstants.Q N :=
-  (congrFst ((congrSnd (program_at N)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at N).sndE.fstE
 theorem returned_rho (N : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run N)) ≐ rho N :=
-  (congrSnd ((congrSnd (program_at N)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at N).sndE.sndE
 
 theorem computed_general_fta_rate_guards_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 1
     (le one (var 0) ⟶

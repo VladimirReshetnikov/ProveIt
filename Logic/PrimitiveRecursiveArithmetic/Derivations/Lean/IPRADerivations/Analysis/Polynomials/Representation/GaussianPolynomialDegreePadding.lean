@@ -2,7 +2,6 @@ import IPRADerivations.Analysis.Polynomials.Evaluation.GaussianGeneralPolynomial
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerDifference
 import IPRADerivations.Analysis.RationalArithmetic.RationalArithmetic
 import IPRADerivations.AnalyticNumberTheory.Totatives
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Actual leading-zero degree padding of general coefficient names
@@ -23,8 +22,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialDegreePadding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open LeanProofs.IPRA.PTm (monus)
+open_ipra
 open LeanProofs.IPRA.Signum (sg)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero horner hornerF evaluate positive_product)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (distanceBounded)
@@ -34,9 +32,6 @@ open LeanProofs.IPRA.Analysis.GaussianCoefficientNameBounds (unit unit_positive 
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qadd_congr qmul_congr qzero_canonical)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -50,16 +45,10 @@ def padding (N P : PTm n) : PTm n := monus P N
 def paddedSample (a : PR 3) (N P s x : PTm n) : PTm n :=
   GaussianGeneralPolynomialSamples.sample (extensionF a) P s (data N x)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (N x : PTm n) :
-    Syn.subst σ (data N x) = data (Syn.subst σ N) (Syn.subst σ x) := by simp [data]
-@[simp] theorem subst_extension {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (i s N x : PTm n) :
-    Syn.subst σ (extension a i s N x) = extension a (Syn.subst σ i) (Syn.subst σ s)
-      (Syn.subst σ N) (Syn.subst σ x) := by simp [extension,sg]
-@[simp] theorem subst_padding {m : ℕ} (σ : Fin n → PTm m) (N P : PTm n) :
-    Syn.subst σ (padding N P) = padding (Syn.subst σ N) (Syn.subst σ P) := by simp [padding]
-@[simp] theorem subst_paddedSample {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N P s x : PTm n) :
-    Syn.subst σ (paddedSample a N P s x) = paddedSample a (Syn.subst σ N)
-      (Syn.subst σ P) (Syn.subst σ s) (Syn.subst σ x) := by simp [paddedSample]
+ipra_subst data
+ipra_subst extension [sg]
+ipra_subst padding
+ipra_subst paddedSample
 
 theorem extension_at (a : PR 3) (i s N x : PTm n) : Γ ⊢[PRAAx]
     ap3 (extensionF a) i s (data N x) ≐ extension a i s N x := by
@@ -158,12 +147,8 @@ def tailLaw (a : PR 3) (N P s x z r : PTm n) : Fm PTm n :=
   le r (succ N) ⟶ horner (paddedSample a N P s x) z (padding N P+r) ≐
     horner (GaussianGeneralPolynomialSamples.sample a N s x) z r
 
-@[simp] theorem subst_leadingLaw {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N P s x z r : PTm n) :
-    (leadingLaw a N P s x z r).subst σ = leadingLaw a (Syn.subst σ N) (Syn.subst σ P)
-      (Syn.subst σ s) (Syn.subst σ x) (Syn.subst σ z) (Syn.subst σ r) := by simp [leadingLaw]
-@[simp] theorem subst_tailLaw {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N P s x z r : PTm n) :
-    (tailLaw a N P s x z r).subst σ = tailLaw a (Syn.subst σ N) (Syn.subst σ P)
-      (Syn.subst σ s) (Syn.subst σ x) (Syn.subst σ z) (Syn.subst σ r) := by simp [tailLaw]
+ipra_subst leadingLaw
+ipra_subst tailLaw
 
 theorem leading_prefix_step (a : PR 3) (N P s x z r : PTm n) (hNP : Γ ⊢[PRAAx] le N P)
     (hr : Γ ⊢[PRAAx] lt r (padding N P))
@@ -181,11 +166,9 @@ theorem leading_prefix (a : PR 3) (N P s x z r : PTm n) (hNP : Γ ⊢[PRAAx] le 
     simpa only [Fm.shift,subst_le,Syn.shift] using hNP.shift
   have all : Γ ⊢[PRAAx] .all (leadingLaw a (Syn.shift N) (Syn.shift P) (Syn.shift s)
       (Syn.shift x) (Syn.shift z) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_leadingLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (GaussianRationalHorner.horner_zero _ _)
-    · simp only [subst_leadingLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_leadingLaw]
+    · exact .impI (GaussianRationalHorner.horner_zero _ _)
+    · refine .impI ?_
       exact leading_prefix_step a _ _ _ _ _ _ hn.wk.wk Prf.hyp0
         (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
   have rule : Γ ⊢[PRAAx] leadingLaw a N P s x z r := by
@@ -212,13 +195,11 @@ theorem padded_prefix (a : PR 3) (N P s x z r : PTm n) (hNP : Γ ⊢[PRAAx] le N
     simpa only [Fm.shift,subst_le,Syn.shift] using hNP.shift
   have all : Γ ⊢[PRAAx] .all (tailLaw a (Syn.shift N) (Syn.shift P) (Syn.shift s)
       (Syn.shift x) (Syn.shift z) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_tailLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI ((congrAp3 hornerF (add_zero _) (.eqRefl _) (.eqRefl _)).eqTrans
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_tailLaw]
+    · exact .impI ((congrAp3 hornerF (add_zero _) (.eqRefl _) (.eqRefl _)).eqTrans
         ((leading_prefix a N P s x z (padding N P) hNP (le_refl _)).eqTrans
           (GaussianRationalHorner.horner_zero _ _).eqSymm)).wk
-    · simp only [subst_tailLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    · refine .impI ?_
       exact tail_prefix_step a _ _ _ _ _ _ hn.wk.wk
         ((succ_monus_succ _ _).eqSymm.eqTrans Prf.hyp0)
         (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))

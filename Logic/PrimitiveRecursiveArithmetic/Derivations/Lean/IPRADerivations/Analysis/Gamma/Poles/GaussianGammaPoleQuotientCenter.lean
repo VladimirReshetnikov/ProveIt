@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaPoleQuotientCenter
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaPoleCenterValue (inverse_product_at_zero terminal_at_zero center_terminal_source zero_scaled_bound)
 open GaussianGammaPoleFiniteFactors (factorProduct signedFactorial)
 open GaussianGammaPoleReciprocalFactor (quotientF quotientData)
@@ -26,9 +26,6 @@ open GaussianRationalHorner (qmul)
 open GaussianRationalSyntheticDivision (qone qmul_congr)
 open GaussianNameEquivalence (crossEquivalent cross_trans)
 open ComplexLogarithmRemainder (zeroCode oneCode)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -44,10 +41,8 @@ theorem original_factor_product_at_zero (B j : PTm n) (hB : Γ ⊢[PRAAx] le one
 
 def centerMultiplier (j : PTm n) : PTm n := qmul (signedFactorial j) (factorProduct zeroCode one j)
 def centerData (j : PTm n) : PTm n := quotientData zeroCode one j
-@[simp] theorem subst_centerMultiplier {l : ℕ} (σ : Fin n → PTm l) (j : PTm n) :
-    Syn.subst σ (centerMultiplier j) = centerMultiplier (Syn.subst σ j) := by simp [centerMultiplier]
-@[simp] theorem subst_centerData {l : ℕ} (σ : Fin n → PTm l) (j : PTm n) :
-    Syn.subst σ (centerData j) = centerData (Syn.subst σ j) := by simp [centerData,quotientData,terminal]
+ipra_subst centerMultiplier
+ipra_subst centerData [quotientData, terminal]
 
 theorem center_multiplier_code (j : PTm n) : Γ ⊢[PRAAx] centerMultiplier j ≐ signedFactorial j :=
   (qmul_congr (.eqRefl _) (original_factor_product_at_zero one j (le_refl one))).eqTrans
@@ -83,25 +78,19 @@ def output (p q j : PTm n) : PTm n := pairT (ap2 quotientF p (centerData j))
   (pairT (signedFactorial j) (ap2 constantF q (signedFactorial j)))
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (p q j : PTm n) : PTm n := PTm.app outputF ![p,q,j]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (p q j : PTm n) :
-    Syn.subst σ (output p q j) = output (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ j) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (p q j : PTm n) :
-    Syn.subst σ (run p q j) = run (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ j) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext k
-  fin_cases k <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (p q j : PTm n) : Γ ⊢[PRAAx] run p q j ≐ output p q j := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![p,q,j]
 theorem returned_quotient (p q j : PTm n) : Γ ⊢[PRAAx]
-    fstT (run p q j) ≐ ap2 quotientF p (centerData j) := (congrFst (program_at p q j)).eqTrans (fst_pair _ _)
+    fstT (run p q j) ≐ ap2 quotientF p (centerData j) := (program_at p q j).fstE
 theorem returned_coefficient (p q j : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run p q j)) ≐ signedFactorial j :=
-  (congrFst ((congrSnd (program_at p q j)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at p q j).sndE.fstE
 theorem returned_constant (p q j : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (run p q j)) ≐ ap2 constantF q (signedFactorial j) :=
-  (congrSnd ((congrSnd (program_at p q j)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at p q j).sndE.sndE
 theorem returned_center_distance (p q j : PTm n) : Γ ⊢[PRAAx]
     GaussianRationalMetric.distanceBounded (fstT (run p q j)) (sndT (sndT (run p q j)))
       (GaussianCoefficientNameBounds.unit p+GaussianCoefficientNameBounds.unit q)

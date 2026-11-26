@@ -1,6 +1,5 @@
 import IPRADerivations.Combinatorics.LucasIdentities
 import IPRADerivations.Core.ParityArith
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Further Fibonacci and Lucas identities (`fibonacci_lucas_ipra`, (11), (17), (25))
@@ -24,14 +23,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.FibonacciLucasMore
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Fibonacci
 open LeanProofs.IPRA.Combinatorics.FibonacciGcd (fibS_pos)
 open LeanProofs.IPRA.Combinatorics.LucasIdentities (fib_parity fib_parity_one fib_parity_two)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

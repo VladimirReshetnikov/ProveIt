@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingImproper
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPowerChartCofinalSchedule (source)
 open GaussianEulerPowerScalingCofinalObservation (observation grid)
 open GaussianEulerCompactExhaustionNormalization (referenceClock)
@@ -25,8 +25,6 @@ open GaussianCoefficientNameBounds (unit)
 open GaussianGammaCanonicalExponent (constantF)
 open GaussianNameArithmetic (multiplyF multiplyData)
 open GaussianPositiveRationalLogarithm (fraction)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -50,17 +48,10 @@ def data (z R B A e f d h L Q S : PTm n) : PTm n :=
   funext i
   fin_cases i <;> rfl
 
-@[simp] theorem subst_resultData {m : ℕ} (σ : Fin n → PTm m) (z R B A e f d h L Q : PTm n) :
-    Syn.subst σ (resultData z R B A e f d h L Q) = resultData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ A) (Syn.subst σ e) (Syn.subst σ f) (Syn.subst σ d) (Syn.subst σ h) (Syn.subst σ L) (Syn.subst σ Q) := by
-  simp [resultData,GaussianEulerCompactExhaustionNormalization.data,GaussianEulerCompactExhaustionScaled.referenceData,
-    GaussianEulerPowerScalingParameter.scaled]
+ipra_subst resultData [GaussianEulerCompactExhaustionNormalization.data,
+    GaussianEulerCompactExhaustionScaled.referenceData, GaussianEulerPowerScalingParameter.scaled]
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B A e f d h L Q S : PTm n) :
-    (source z R B A e f d h L Q S).subst σ = source (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ e) (Syn.subst σ f) (Syn.subst σ d)
-      (Syn.subst σ h) (Syn.subst σ L) (Syn.subst σ Q) (Syn.subst σ S) := by
-  simp [source,GaussianEulerPowerScalingParameter.source]
+ipra_subst source [GaussianEulerPowerScalingParameter.source]
 
 private theorem subst_grid_span_clock {m : ℕ} (σ : Fin n → PTm m) (s z R B A e f d h L Q S : PTm n) :
     let G := grid s z R B A e f d h L Q S

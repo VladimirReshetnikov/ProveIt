@@ -14,16 +14,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentAdditivity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetLaplaceMomentCompact (data sampled_modulus)
 open GaussianBinetLaplaceMomentFloor (nameF evaluatorF fixedData gain)
 open GaussianBinetLaplaceStrip (source)
 open GaussianGammaCompactCutoffAlignment (cross_data_congr)
 open GaussianNameArithmetic (addF addData)
 open GaussianNameEquivalence (crossEquivalent)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

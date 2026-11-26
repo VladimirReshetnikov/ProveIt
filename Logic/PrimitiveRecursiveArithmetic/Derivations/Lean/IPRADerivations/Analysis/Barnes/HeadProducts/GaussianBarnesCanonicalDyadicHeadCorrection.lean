@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalDyadicHeadCorrection
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (bounded_mono)
 open GaussianBarnesCanonicalCorrectionShift (total)
 open GaussianBarnesCanonicalHeadCorrectionDerivative (halfSquare total_formula)
@@ -29,10 +29,6 @@ open GaussianRationalNaturalScale (naturalPoint)
 open GaussianRationalReciprocal (bound_congr bounded_difference bounded_product)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S)
-open LeanProofs.IPRA.PTm (monus)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

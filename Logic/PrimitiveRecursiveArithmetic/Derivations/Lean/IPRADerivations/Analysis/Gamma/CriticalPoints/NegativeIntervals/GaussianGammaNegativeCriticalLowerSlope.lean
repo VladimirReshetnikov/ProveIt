@@ -15,7 +15,7 @@ set_option maxHeartbeats 1500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeCriticalLowerSlope
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianGammaEulerRationalLogOrder (add_order)
@@ -35,9 +35,6 @@ open GaussianRationalSyntheticDivision (qadd_congr)
 open GaussianStirlingGammaFractionalIncrementObservations (scalar_upper)
 open GaussianStirlingMultiplicativeBoundsLog (constant_order)
 open RationalValueBounds (upper upper_congr upper_mono upper_triangle)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (monus num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "DF" => GaussianGammaDigammaNative.nameF
@@ -48,12 +45,8 @@ def lowerF : PR 2 := addF nameF CF
 def margin (a c b : PTm n) : PTm n := fraction (monus c a) (num 4*b)
 def lowerData (a c b N : PTm n) : PTm n := addData (nameData a b N) (margin a c b)
 
-@[simp] theorem subst_margin {k : ℕ} (σ : Fin n → PTm k) (a c b : PTm n) :
-    Syn.subst σ (margin a c b) = margin (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ b) :=
-  by simp [margin]
-@[simp] theorem subst_lowerData {k : ℕ} (σ : Fin n → PTm k) (a c b N : PTm n) :
-    Syn.subst σ (lowerData a c b N) = lowerData (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ b) (Syn.subst σ N) :=
-  by simp [lowerData]
+ipra_subst margin
+ipra_subst lowerData
 
 private theorem positive_domain (a c b : PTm n) (h : Γ ⊢[PRAAx] ordered a c b) :
     Γ ⊢[PRAAx] GaussianGammaDigammaSlopeLowerFinite.domain (b+a) (b+c) b :=

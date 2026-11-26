@@ -15,7 +15,7 @@ set_option maxHeartbeats 750000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalDeflatedHead
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalFactor (source)
 open GaussianBarnesCanonicalHeadApartness (allNonzero)
 open GaussianGammaEulerHeadLower (translated poleAt)
@@ -28,10 +28,6 @@ open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameReciprocal (apart)
 open GaussianNameArithmetic (multiplyF multiplyData multiply_fast)
 open GaussianRationalHorner (positive_product)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

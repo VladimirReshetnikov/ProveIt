@@ -16,7 +16,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineProductImaginaryExponentialShift
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameArithmetic (addF addData multiplyF multiplyData)
 open GaussianNameBounds (U U_positive)
@@ -27,8 +27,6 @@ open GaussianNamedGammaHalfShift (add_cross)
 open GaussianNamedInverseRate (independentRate)
 open GaussianRationalHorner (positive_product)
 open GaussianSineProductImaginaryHyperbolic (expF expData)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Scale" => GaussianPiRationalScale.nameF

@@ -16,7 +16,7 @@ set_option maxHeartbeats 550000
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineProductImaginaryLogDerivative
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (code eval_im_code eval_re_code im mul re scale)
 open GaussianGammaEulerReflectionHead (sineProduct squareFactor)
 open GaussianRationalFiniteProduct (product_zero)
@@ -29,9 +29,6 @@ open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qmul_zero_right qm
 open GaussianReciprocalHorner (qadd_zero_right qmul_associative)
 open GaussianRootAlgebra (equal_of_values im_mul im_scale im_sub re_mul re_scale re_sub)
 open GaussianSineProductName (sine_product_succ)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -64,44 +61,25 @@ private def derivativeBody : PTm 3 :=
 def derivativeF : PR 2 := rec2 (qzero : PTm 1) derivativeBody
 def derivative (A B N : PTm n) : PTm n := ap2 derivativeF N (pairT A B)
 
-@[simp] theorem subst_axisNumerator {m : ℕ} (σ : Fin n → PTm m) (A : PTm n) :
-    Syn.subst σ (axisNumerator A) = axisNumerator (Syn.subst σ A) := by
-  simp [axisNumerator, ZT.subst, ZT.ofNat]
+ipra_subst axisNumerator [ZT.subst, ZT.ofNat]
 
-@[simp] theorem subst_realNumerator {m : ℕ} (σ : Fin n → PTm m) (A : PTm n) :
-    Syn.subst σ (realNumerator A) = realNumerator (Syn.subst σ A) := by
-  simp [realNumerator, ZT.subst, ZT.ofNat]
+ipra_subst realNumerator [ZT.subst, ZT.ofNat]
 
-@[simp] theorem subst_rationalReal {m : ℕ} (σ : Fin n → PTm m) (A B : PTm n) :
-    Syn.subst σ (rationalReal A B) = rationalReal (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [rationalReal]
+ipra_subst rationalReal
 
-@[simp] theorem subst_squareDenominator {m : ℕ} (σ : Fin n → PTm m) (i B : PTm n) :
-    Syn.subst σ (squareDenominator i B) = squareDenominator (Syn.subst σ i) (Syn.subst σ B) := by
-  simp [squareDenominator]
+ipra_subst squareDenominator
 
-@[simp] theorem subst_factor {m : ℕ} (σ : Fin n → PTm m) (i A B : PTm n) :
-    Syn.subst σ (factor i A B) = factor (Syn.subst σ i) (Syn.subst σ A) (Syn.subst σ B) := by simp [factor]
+ipra_subst factor
 
-@[simp] theorem subst_product {m : ℕ} (σ : Fin n → PTm m) (A B N : PTm n) :
-    Syn.subst σ (product A B N) = product (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ N) := by
-  simp [product, sineProduct]
+ipra_subst product [sineProduct]
 
-@[simp] theorem subst_factorDerivative {m : ℕ} (σ : Fin n → PTm m) (i A B : PTm n) :
-    Syn.subst σ (factorDerivative i A B) = factorDerivative (Syn.subst σ i) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [factorDerivative, two]
+ipra_subst factorDerivative [two]
 
-@[simp] theorem subst_logarithmRow {m : ℕ} (σ : Fin n → PTm m) (i A B : PTm n) :
-    Syn.subst σ (logarithmRow i A B) = logarithmRow (Syn.subst σ i) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [logarithmRow, two]
+ipra_subst logarithmRow [two]
 
-@[simp] theorem subst_logarithmSum {m : ℕ} (σ : Fin n → PTm m) (A B N : PTm n) :
-    Syn.subst σ (logarithmSum A B N) = logarithmSum (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ N) := by
-  simp [logarithmSum]
+ipra_subst logarithmSum
 
-@[simp] theorem subst_derivative {m : ℕ} (σ : Fin n → PTm m) (A B N : PTm n) :
-    Syn.subst σ (derivative A B N) = derivative (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ N) := by
-  simp [derivative]
+ipra_subst derivative
 
 theorem factor_value (i A B : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
     Γ ⊢[PRAAx] factor i A B ≐ rationalReal (squareDenominator i B+A*A) (squareDenominator i B) := by

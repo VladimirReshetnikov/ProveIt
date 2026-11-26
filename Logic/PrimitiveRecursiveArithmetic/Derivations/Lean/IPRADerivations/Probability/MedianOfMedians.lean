@@ -1,7 +1,6 @@
 import IPRADerivations.Probability.MedianCounts
 import IPRADerivations.Probability.MedianSymmetry
 import IPRADerivations.Geometry.HypercubeSplit
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Strong induction, and the linear cost of median-of-medians selection
@@ -28,15 +27,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.MedianOfMedians
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Probability.MedianCounts (subst_data)
 open LeanProofs.IPRA.Probability.MedianSymmetry (shift_pairT')
 open LeanProofs.IPRA.Geometry.HypercubeSplit (le_cancel_pos)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -18,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaPositiveNamedDigammaRecurrenceInput
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode normSq)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEulerNamedShiftInput (shiftF shiftData clock)
@@ -33,9 +33,6 @@ open GaussianRationalHorner (ofGaussian_canonical ofGaussian_represents positive
 open GaussianRationalL1 (rawGaussian rawDen raw_den_positive raw_represents)
 open GaussianRationalReciprocal (qone reciprocal)
 open RationalSupMetric (denominatorOf)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "N" => GaussianGammaDigammaNative.nameF

@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.GaussianEulerUnitNormalizationCompact
 import IPRADerivations.Analysis.Gamma.Integrals.GaussianEulerIntegralGammaIdentification
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Unit normalization derived from the original Euler integral
@@ -17,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitNormalization
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode)
 open GaussianEulerIntegrandName (evaluatorF fixedData decayF decayData)
 open GaussianGammaIntegralCutoffs (height etaDen top)
@@ -30,10 +29,6 @@ open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianGammaCanonicalExponent (constantF constant_at)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -42,8 +37,8 @@ def integralData : PTm n := GaussianEulerImproperName.data oneCode one one one
 def integral (p : PTm n) : PTm n := ap2 GaussianEulerImproperName.nameF p integralData
 def compact (p k : PTm n) : PTm n := ap2 GaussianGammaEulerCompactQuadrature.nameF p
   (GaussianGammaEulerCompactQuadrature.data oneCode one one k one)
-@[simp] theorem subst_integralData {m : ℕ} (σ : Fin n → PTm m) : Syn.subst σ (integralData : PTm n) = (integralData : PTm m) := by simp [integralData]
-@[simp] theorem subst_integral {m : ℕ} (σ : Fin n → PTm m) (p : PTm n) : Syn.subst σ (integral p) = integral (Syn.subst σ p) := by simp [integral]
+ipra_subst integralData
+ipra_subst integral
 
 theorem unit_lower_source : Γ ⊢[PRAAx] GaussianEulerLowerPowerCoefficients.source (oneCode : PTm n) one one one := by
   have disk : Γ ⊢[PRAAx] ComplexLogarithmRemainder.bounded (oneCode : PTm n) (one*one) :=

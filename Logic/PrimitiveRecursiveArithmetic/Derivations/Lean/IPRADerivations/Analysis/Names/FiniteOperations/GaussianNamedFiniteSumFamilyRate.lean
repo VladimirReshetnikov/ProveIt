@@ -14,7 +14,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedFiniteSumFamilyRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit)
 open GaussianFastValueCut (exponent query_budget)
 open GaussianNamedFiniteSumFamily (body data finite nameF sample_at term_at)
@@ -22,8 +22,6 @@ open GaussianNamedInverseRate (independentRate rate_at rateNumerator rateDenomin
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalRiemannRefinement (termsDistance sum_distance)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -32,10 +30,7 @@ def rows (f g : PR 2) (t u : PTm 2) (N x y H D : PTm n) : Fm PTm n := .all
   (lt (var 0) (Syn.shift N) ⟶ independentRate f g (inst2 t (var 0) (Syn.shift x))
     (inst2 u (var 0) (Syn.shift y)) (Syn.shift H) (Syn.shift D))
 
-@[simp] theorem subst_rows {m : ℕ} (σ : Fin n → PTm m) (f g : PR 2) (t u : PTm 2) (N x y H D : PTm n) :
-    (rows f g t u N x y H D).subst σ =
-      rows f g t u (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ H) (Syn.subst σ D) := by
-  simp [rows,Syn.subst_shift,Syn.shift_subst]
+ipra_subst rows [Syn.subst_shift, Syn.shift_subst]
 
 theorem row_at (f g : PR 2) (t u : PTm 2) (N x y H D i : PTm n)
     (h : Γ ⊢[PRAAx] rows f g t u N x y H D) (hi : Γ ⊢[PRAAx] lt i N) :

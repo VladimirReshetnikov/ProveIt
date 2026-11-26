@@ -13,13 +13,10 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalSuffixMask
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalBlockSums (maskBody mask_zero mask_kept)
 open GaussianRationalFiniteSum (sum termsEqual sum_canonical)
 open GaussianRationalHorner (qzero)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

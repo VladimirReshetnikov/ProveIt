@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalWeightedTaylorBallCoverCertificate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalHigherRows (previous)
 open GaussianBarnesCanonicalWeightedTaylorBallCover (center centers center_listed center_source chartDen index step)
 open GaussianBarnesCanonicalWeightedTaylorBallDyadic (denominator numerator)
@@ -24,8 +24,6 @@ open GaussianRationalL1 (rawDen rawGaussian)
 open GaussianRationalMetric (bounded)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

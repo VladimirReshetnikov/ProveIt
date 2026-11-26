@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianScalarExponentialOddTaylor
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qadd qmul qzero)
 open GaussianRationalMetric (qsub qnegative)
 open GaussianRationalReciprocal (power)
@@ -23,9 +23,6 @@ open GaussianRationalPolynomialExponential (scalarSum scalarBody scalar_sum_zero
 open GaussianRationalFiniteSum (sum sum_index_congr sum_canonical add_shuffle)
 open GaussianMomentReflection (negative_even_power negative_odd_power negative_right_product)
 open GaussianCoefficientNormOrder (qsub_self)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -33,8 +30,7 @@ def scalarTerm (q j : PTm n) : PTm n := qmul (inverseFactorial j) (power q j)
 def oddBody : PTm 2 := scalarTerm (var 1) (succ (two*var 0))
 def oddSum (q K : PTm n) : PTm n := sum oddBody K q
 
-@[simp] theorem subst_oddSum {m : ℕ} (σ : Fin n → PTm m) (q K : PTm n) :
-    Syn.subst σ (oddSum q K) = oddSum (Syn.subst σ q) (Syn.subst σ K) := by simp [oddSum]
+ipra_subst oddSum
 
 theorem odd_body_at (q j : PTm n) : inst2 oddBody j q = scalarTerm q (succ (two*j)) := by
   simp [oddBody, scalarTerm, inst2]
@@ -73,8 +69,7 @@ private theorem odd_difference (q K : PTm n) :
 def oddLaw (q K : PTm n) : Fm PTm n :=
   qsub (scalarSum q (two*K)) (scalarSum (qnegative q) (two*K)) ≐ qadd (oddSum q K) (oddSum q K)
 
-@[simp] theorem subst_oddLaw {m : ℕ} (σ : Fin n → PTm m) (q K : PTm n) :
-    (oddLaw q K).subst σ = oddLaw (Syn.subst σ q) (Syn.subst σ K) := by simp [oddLaw]
+ipra_subst oddLaw
 
 private theorem odd_law_zero (q : PTm n) : Γ ⊢[PRAAx] oddLaw q zero := by
   have idx : Γ ⊢[PRAAx] two*(zero : PTm n) ≐ zero := by ipra_ring
@@ -108,11 +103,9 @@ private theorem odd_law_step (q K : PTm n) (ih : Γ ⊢[PRAAx] oddLaw q K) :
 
 theorem odd_taylor_identity (q K : PTm n) : Γ ⊢[PRAAx] oddLaw q K := by
   have hall : Γ ⊢[PRAAx] .all (oddLaw (Syn.shift q) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_oddLaw, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      exact odd_law_zero q
-    · simp only [subst_oddLaw, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      exact odd_law_step _ _ Prf.hyp0
+    ipra_qfind [subst_oddLaw]
+    · exact odd_law_zero q
+    · exact odd_law_step _ _ Prf.hyp0
   simpa only [subst_oddLaw, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using hall.allE K
 
 theorem actual_scalar_exponential_odd_taylor_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2

@@ -15,7 +15,7 @@ set_option maxHeartbeats 220000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetBoseLinearApproximation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetBoseDenominator (nameF data sampleClock)
 open GaussianBinetBoseExponential (expF expRadius expData piClock scaleF scaleData scale_readback scale_positive)
 open GaussianBinetKernelPi (sample sample_fraction sample_margins sample_distance denominator_positive)
@@ -28,10 +28,6 @@ open GaussianRationalLowerBounds (lower lower_congr lower_from_representation)
 open GaussianRationalMetric (bounded distanceBounded qnegative)
 open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianRationalSyntheticDivision (qone qadd_sub_cancel qmul_congr qsub_congr)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)

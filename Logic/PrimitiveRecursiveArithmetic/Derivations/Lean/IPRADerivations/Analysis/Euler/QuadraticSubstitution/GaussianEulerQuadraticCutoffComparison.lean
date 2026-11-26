@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerQuadraticCutoffComparison
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerQuadraticCutoffGeometry (source width lowerDenominator imageWidth imageData leftData)
 open GaussianEulerQuadraticLowerEndpoint (minimumIndex)
 open GaussianEulerQuadraticUpperEndpoint (preimage imageIndex)
@@ -28,9 +28,6 @@ open GaussianNamedInverseRate (independentRate)
 open GaussianNamedRateComposition (leadingNumerator leadingDenominator)
 open GaussianRationalHorner (positive_product)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -39,10 +36,7 @@ def jacobianData (j z R B A c d : PTm n) : PTm n :=
 def gain (k j A R : PTm n) : PTm n := leadingNumerator A (unit (height k A R)) one (unit (j+num 6))
 def denominator (k j A R : PTm n) : PTm n := leadingDenominator (unit (height k A R)) (unit (j+num 6))
 
-@[simp] theorem subst_jacobianData {m : ℕ} (σ : Fin n → PTm m) (j z R B A c d : PTm n) :
-    Syn.subst σ (jacobianData j z R B A c d) = jacobianData (Syn.subst σ j) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ c) (Syn.subst σ d) := by
-  simp [jacobianData,etaDen,height,GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst jacobianData [etaDen, height, GaussianGammaIntegralCutoffs.tailCoefficient]
 
 theorem original_image_rate (k j z R B A c d : PTm n) (hs : Γ ⊢[PRAAx] source z R B A c d)
     (hj : Γ ⊢[PRAAx] le (minimumIndex k c d) j) : Γ ⊢[PRAAx]

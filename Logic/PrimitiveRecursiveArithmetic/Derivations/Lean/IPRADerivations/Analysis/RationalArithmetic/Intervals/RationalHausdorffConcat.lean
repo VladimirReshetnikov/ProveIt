@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.RationalHausdorffConcat
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.RationalHausdorff
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition
@@ -25,10 +25,6 @@ open LeanProofs.IPRA.Foundations.SequenceComposition
 open LeanProofs.IPRA.Foundations.FiniteHausdorffConcat (suffix_range left_range right_range)
 open LeanProofs.IPRA.Foundations.DemandClosure (maximum maximum_left maximum_right maximum_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -162,15 +158,9 @@ def maximumDenominator (_A B _C D : PTm n) : PTm n := B*D
 def maximumCode (A B C D : PTm n) : PTm n := pairT (maximumNumerator A B C D) (maximumDenominator A B C D)
 def maximumF : PR 4 := PTm.toPR (maximumCode (var 0) (var 1) (var 2) (var 3))
 
-@[simp] theorem subst_maximumNumerator {m : ℕ} (σ : Fin n → PTm m) (A B C D : PTm n) :
-    Syn.subst σ (maximumNumerator A B C D) = maximumNumerator (Syn.subst σ A) (Syn.subst σ B)
-      (Syn.subst σ C) (Syn.subst σ D) := by simp [maximumNumerator]
-@[simp] theorem subst_maximumDenominator {m : ℕ} (σ : Fin n → PTm m) (A B C D : PTm n) :
-    Syn.subst σ (maximumDenominator A B C D) = maximumDenominator (Syn.subst σ A) (Syn.subst σ B)
-      (Syn.subst σ C) (Syn.subst σ D) := by simp [maximumDenominator]
-@[simp] theorem subst_maximumCode {m : ℕ} (σ : Fin n → PTm m) (A B C D : PTm n) :
-    Syn.subst σ (maximumCode A B C D) = maximumCode (Syn.subst σ A) (Syn.subst σ B)
-      (Syn.subst σ C) (Syn.subst σ D) := by simp [maximumCode]
+ipra_subst maximumNumerator
+ipra_subst maximumDenominator
+ipra_subst maximumCode
 
 theorem maximum_program (A B C D : PTm n) : Γ ⊢[PRAAx]
     ConciseIPRA.PTm.app maximumF ![A,B,C,D] ≐ maximumCode A B C D := by
@@ -214,23 +204,19 @@ theorem maximum_upper_bound (A B C D U V : PTm n)
 
 theorem maximum_code_numerator (A B C D : PTm n) : Γ ⊢[PRAAx]
     fstT (ConciseIPRA.PTm.app maximumF ![A,B,C,D]) ≐ maximumNumerator A B C D :=
-  (congrFst (maximum_program A B C D)).eqTrans (fst_pair _ _)
+  (maximum_program A B C D).fstE
 
 theorem maximum_code_denominator (A B C D : PTm n) : Γ ⊢[PRAAx]
     sndT (ConciseIPRA.PTm.app maximumF ![A,B,C,D]) ≐ maximumDenominator A B C D :=
-  (congrSnd (maximum_program A B C D)).eqTrans (snd_pair _ _)
+  (maximum_program A B C D).sndE
 
 def radiusNumerator (S S' T T' d : PTm n) : PTm n :=
   maximumNumerator (numerator S T d) (denominator S T d) (numerator S' T' d) (denominator S' T' d)
 def radiusDenominator (S S' T T' d : PTm n) : PTm n :=
   maximumDenominator (numerator S T d) (denominator S T d) (numerator S' T' d) (denominator S' T' d)
 
-@[simp] theorem subst_radiusNumerator {m : ℕ} (σ : Fin n → PTm m) (S S' T T' d : PTm n) :
-    Syn.subst σ (radiusNumerator S S' T T' d) = radiusNumerator (Syn.subst σ S) (Syn.subst σ S')
-      (Syn.subst σ T) (Syn.subst σ T') (Syn.subst σ d) := by simp [radiusNumerator]
-@[simp] theorem subst_radiusDenominator {m : ℕ} (σ : Fin n → PTm m) (S S' T T' d : PTm n) :
-    Syn.subst σ (radiusDenominator S S' T T' d) = radiusDenominator (Syn.subst σ S) (Syn.subst σ S')
-      (Syn.subst σ T) (Syn.subst σ T') (Syn.subst σ d) := by simp [radiusDenominator]
+ipra_subst radiusNumerator
+ipra_subst radiusDenominator
 
 theorem maximum_own_covers (S S' T T' d : PTm n)
     (hS : Γ ⊢[PRAAx] le one (length S)) (hS' : Γ ⊢[PRAAx] le one (length S'))

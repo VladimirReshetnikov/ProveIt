@@ -15,7 +15,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaDirichletSquareCofinal
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode)
 open GaussianBinetBaselBinding (literalSum)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -33,10 +33,6 @@ open GaussianRationalMetric (distanceBounded)
 open RationalGaussianEmbedding (embed_at embedF)
 open RationalReciprocalPowerTail (tail)
 open RationalValueBounds (radius_of_upper upper_of_order)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

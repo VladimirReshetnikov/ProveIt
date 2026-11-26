@@ -18,7 +18,7 @@ set_option maxHeartbeats 1600000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBohrMollerupNativeNormalization
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode)
 open GaussianBohrMollerupPresentation (native normalization laws)
 open GaussianGammaFiniteApproximantName (exponential_input exponentialInputData)
@@ -26,9 +26,6 @@ open GaussianNameBounds (U)
 open GaussianNameEquivalence (cross_trans cross_symm)
 open GaussianNameRingLaws (zeroF)
 open GaussianStirlingGammaLogarithm (source arg logGammaF logGammaData log_gamma_axis log_gamma_regular)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

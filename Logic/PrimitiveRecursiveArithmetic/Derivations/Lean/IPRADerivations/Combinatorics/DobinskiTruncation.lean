@@ -1,7 +1,6 @@
 import IPRADerivations.Combinatorics.BellDobinski
 import IPRADerivations.Combinatorics.BellTouchardPower
 import IPRADerivations.Probability.Lotus
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The exact truncation identity of Dobinski's formula (`bell_numbers_ipra`, `thm:dobinski`, `eq:finite-dobinski`)
@@ -33,7 +32,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.DobinskiTruncation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Stirling (stir)
 open LeanProofs.IPRA.Combinatorics.StirlingPowers (ff ff_zero_above congrFF congrStir tB tB_at Am
   stirling_powers)
@@ -44,10 +43,6 @@ open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.Combinatorics.BellTouchardPower (shift_pair shift_succ shift_monus
   le_of_lt_succ)
 open LeanProofs.IPRA.Probability.Lotus (cmB inst2_cmB sum_const_mul)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -121,9 +116,8 @@ theorem row_eval (k N M : PTm n) :
         ff (Syn.shift M) (monus (Syn.shift M) (Syn.shift k)) := by simp [Syn.shift]
     simp only [shift_pair]
     exact row_cm (by rw [e]; exact .eqRefl _)
-  · have e := natEq (stirling_powers (Γ := Γ) N k)
-    apply deriveNat; ipra_simps
-    linear_combination 𝔞 (ff M (monus M k)) * e
+  · apply deriveNat; ipra_simps
+    linear_combination 𝔞 (ff M (monus M k)) * natEq (stirling_powers (Γ := Γ) N k)
 
 /-! ## Columns: `(k)_j (M)_{M−k} = (M)_{M−(k−j)}` -/
 

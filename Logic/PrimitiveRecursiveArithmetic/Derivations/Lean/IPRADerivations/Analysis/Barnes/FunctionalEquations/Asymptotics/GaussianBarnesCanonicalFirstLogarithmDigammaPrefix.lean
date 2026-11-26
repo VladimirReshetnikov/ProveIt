@@ -16,7 +16,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalFirstLogarithmDigammaPrefix
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale oneCode)
 open GaussianBarnesCanonicalThirdLogarithmRows (center shiftedNumerator shifted_positive base_at)
 open GaussianBarnesCanonicalDerivativeRow (value offset)
@@ -33,9 +33,6 @@ open GaussianRationalReciprocal (reciprocal reciprocal_canonical reciprocal_iden
 open GaussianRationalSyntheticDivision (rescale_to qmul_congr qsub_congr)
 open GaussianRootAlgebra (equal equal_of_values equal_refl re_scale im_scale re_one im_one
   re_mul im_mul re_sub im_sub)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

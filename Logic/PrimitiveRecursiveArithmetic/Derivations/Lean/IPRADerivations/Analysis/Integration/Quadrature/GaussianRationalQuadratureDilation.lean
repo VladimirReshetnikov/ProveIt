@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalQuadratureDilation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCompactRiemannName (quadrature sampleBody sampleData sample_body_at)
 open GaussianRationalRiemannRefinement (weight)
 open GaussianRationalFiniteSum (sum termsEqual)
@@ -22,8 +22,6 @@ open GaussianPositiveRationalLogarithm (fraction)
 open GaussianEulerDecayFactorBounds (fraction_is_radius_point)
 open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalSyntheticDivision (qmul_congr)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -34,14 +32,10 @@ def pullTerm (F : PR 3) (p t y : PTm n) : PTm n :=
 def pullF (F : PR 3) : PR 3 := PTm.toPR (pullTerm F (var 0) (var 1) (var 2))
 def source (c d E N : PTm n) : Fm PTm n := le one c ⋏ (le one d ⋏ (le one E ⋏ le one N))
 
-@[simp] theorem subst_timeMap {m : ℕ} (σ : Fin n → PTm m) (c d t : PTm n) :
-    Syn.subst σ (timeMap c d t) = timeMap (Syn.subst σ c) (Syn.subst σ d) (Syn.subst σ t) := by simp [timeMap]
-@[simp] theorem subst_pullData {m : ℕ} (σ : Fin n → PTm m) (c d x : PTm n) :
-    Syn.subst σ (pullData c d x) = pullData (Syn.subst σ c) (Syn.subst σ d) (Syn.subst σ x) := by simp [pullData]
-@[simp] theorem subst_pullTerm {m : ℕ} (σ : Fin n → PTm m) (F : PR 3) (p t y : PTm n) :
-    Syn.subst σ (pullTerm F p t y) = pullTerm F (Syn.subst σ p) (Syn.subst σ t) (Syn.subst σ y) := by simp [pullTerm]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (c d E N : PTm n) :
-    (source c d E N).subst σ = source (Syn.subst σ c) (Syn.subst σ d) (Syn.subst σ E) (Syn.subst σ N) := by simp [source]
+ipra_subst timeMap
+ipra_subst pullData
+ipra_subst pullTerm
+ipra_subst source
 
 theorem pull_at (F : PR 3) (p t c d x : PTm n) : Γ ⊢[PRAAx]
     ap3 (pullF F) p t (pullData c d x) ≐ ap3 F p (timeMap c d t) x := by
@@ -50,8 +44,8 @@ theorem pull_at (F : PR 3) (p t c d x : PTm n) : Γ ⊢[PRAAx]
   have tail := snd_pair (Γ := Γ) c (pairT d x)
   exact program.eqTrans (congrAp3 F (.eqRefl _)
     (congrPairT (congrMul (fst_pair _ _) (.eqRefl _))
-      (congrMul ((congrFst tail).eqTrans (fst_pair _ _)) (.eqRefl _)))
-    ((congrSnd tail).eqTrans (snd_pair _ _)))
+      (congrMul tail.fstE (.eqRefl _)))
+    tail.sndE)
 
 theorem pull_fraction_at (F : PR 3) (p a b c d x : PTm n) : Γ ⊢[PRAAx]
     ap3 (pullF F) p (pairT a b) (pullData c d x) ≐ ap3 F p (pairT (c*a) (d*b)) x :=

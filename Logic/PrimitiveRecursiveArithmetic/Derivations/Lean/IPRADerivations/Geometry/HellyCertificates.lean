@@ -27,9 +27,7 @@ a time):
 
 namespace LeanProofs.IPRA.Geometry.HellyCertificates
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
+open_ipra
 
 variable {n s t : ℕ} {Γ : List (Fm PTm n)}
 
@@ -135,8 +133,7 @@ theorem glue_mass (a : Fin s → ZT n) (w : Fin s → Fin t → ZT n) (m M : ZT 
     (hw : ∀ j, Γ ⊢[PRAAx] ZT.eq (ZT.sumFin (w j)) m) (ha : Γ ⊢[PRAAx] ZT.eq (ZT.sumFin a) M) :
     Γ ⊢[PRAAx] ZT.eq (ZT.sumFin fun T => ZT.sumFin fun j => a j * w j T) (M * m) := by
   have hw' : ∀ j, ∑ T, ZT.toZ Γ (w j T) = ZT.toZ Γ m := fun j => by
-    have h := ZT.toZ_eq (hw j)
-    simpa only [ZT.toZ_sumFin] using h
+    simpa only [ZT.toZ_sumFin] using ZT.toZ_eq (hw j)
   have ha' := ZT.toZ_eq ha
   simp only [ZT.toZ_sumFin] at ha'
   apply ZT.derive
@@ -152,8 +149,7 @@ theorem glue_bary (a x : Fin s → ZT n) (w : Fin s → Fin t → ZT n) (p : Fin
     Γ ⊢[PRAAx] ZT.eq (ZT.sumFin fun T => (ZT.sumFin fun j => a j * w j T) * p T)
       (m * ZT.sumFin fun j => a j * x j) := by
   have hb' : ∀ j, ∑ T, ZT.toZ Γ (w j T) * ZT.toZ Γ (p T) = ZT.toZ Γ m * ZT.toZ Γ (x j) := fun j => by
-    have h := ZT.toZ_eq (hb j)
-    simpa only [ZT.toZ_sumFin, ZT.toZ_mul] using h
+    simpa only [ZT.toZ_sumFin, ZT.toZ_mul] using ZT.toZ_eq (hb j)
   apply ZT.derive
   simp only [ZT.toZ_sumFin, ZT.toZ_mul, Finset.sum_mul, Finset.mul_sum]
   rw [Finset.sum_comm]

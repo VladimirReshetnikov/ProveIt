@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelNamedLatticeBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUnitKernelCompactName (source lipschitz nameF data)
 open GaussianCompactRiemannName (mesh precision)
 open GaussianCompactSafeGridComparison (safeCount)
@@ -23,20 +23,14 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_radius_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 
 def numerator (s q L M : PTm n) : PTm n := L*unit s*unit q+num 3*M*unit q+num 4*M*unit s
 def denominator (s q M : PTm n) : PTm n := M*unit s*unit q
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (s q L M : PTm n) :
-    Syn.subst σ (numerator s q L M) = numerator (Syn.subst σ s) (Syn.subst σ q) (Syn.subst σ L) (Syn.subst σ M) := by simp [numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (s q M : PTm n) :
-    Syn.subst σ (denominator s q M) = denominator (Syn.subst σ s) (Syn.subst σ q) (Syn.subst σ M) := by simp [denominator]
+ipra_subst numerator
+ipra_subst denominator
 
 theorem denominator_positive (s q M : PTm n) (hM : Γ ⊢[PRAAx] le one M) : Γ ⊢[PRAAx] le one (denominator s q M) :=
   positive_product _ _ (positive_product _ _ hM (unit_positive s)) (unit_positive q)

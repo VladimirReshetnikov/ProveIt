@@ -13,15 +13,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingExpansionErrorProgram
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalMetric (distanceBounded)
 open GaussianStirlingExpansionConditionalError (logRate radius budget numerator original_approximation)
 open GaussianStirlingExpansionExponentialError (logBudget TaylorBudget expansionDenominator)
 open GaussianStirlingExpansionFiniteError (query approximation)
 open GaussianStirlingMultiplicative (quotientF quotientData)
 open GaussianStirlingNames (source)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -31,9 +29,7 @@ def output (m : ℕ) (p a b C : PTm n) : PTm n :=
 def outputF (m : ℕ) : PR 4 := PTm.toPR (output m (var 0) (var 1) (var 2) (var 3))
 def run (m : ℕ) (p a b C : PTm n) : PTm n := ConciseIPRA.PTm.app (outputF m) ![p,a,b,C]
 
-@[simp] theorem subst_output {k : ℕ} (σ : Fin n → PTm k) (m : ℕ) (p a b C : PTm n) :
-    Syn.subst σ (output m p a b C) = output m (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ C) := by
-  simp [output,approximation,query,numerator,budget,radius,logBudget,TaylorBudget,expansionDenominator,RationalSupMetric.numeratorOf]
+ipra_subst output [approximation, query, numerator, budget, radius, logBudget, TaylorBudget, expansionDenominator, RationalSupMetric.numeratorOf]
 
 theorem program_at (m : ℕ) (p a b C : PTm n) : Γ ⊢[PRAAx] run m p a b C ≐ output m p a b C := by
   simpa only [run,outputF,subst_output,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
@@ -46,10 +42,10 @@ theorem returned_approximation_bound (m : ℕ) (p a b x C : PTm n) (hs : Γ ⊢[
     Γ ⊢[PRAAx] distanceBounded (ap2 quotientF p (quotientData a b x)) (fstT (run m p a b C))
       (fstT (sndT (run m p a b C))) (sndT (sndT (run m p a b C))) := by
   have read := program_at (Γ := Γ) m p a b C
-  have aRead := (congrFst read).eqTrans (fst_pair _ _)
-  have eRead := (congrSnd read).eqTrans (snd_pair _ _)
+  have aRead := read.fstE
+  have eRead := read.sndE
   exact GaussianRationalDistanceOrder.distance_congr (.eqRefl _) aRead.eqSymm
-    ((congrFst eRead).eqTrans (fst_pair _ _)).eqSymm ((congrSnd eRead).eqTrans (snd_pair _ _)).eqSymm
+    eRead.fstE.eqSymm eRead.sndE.eqSymm
     (original_approximation m p a b x C hs hab hsmall h)
 
 theorem actual_Stirling_multiplicative_error_program_closed (m : ℕ) :

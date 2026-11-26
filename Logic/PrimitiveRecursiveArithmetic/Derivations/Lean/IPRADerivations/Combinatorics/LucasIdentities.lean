@@ -1,7 +1,5 @@
 import IPRADerivations.Combinatorics.FibonacciGcd
-import IPRADerivations.Core.Powers
 import IPRADerivations.DiophantineNumberTheory.Hurwitz
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Lucas-number identities
@@ -39,14 +37,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.LucasIdentities
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Fibonacci
 open LeanProofs.IPRA.Combinatorics.FibonacciGcd (docagne)
 open LeanProofs.IPRA.DiophantineNumberTheory.Hurwitz (add_le_add)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 open LeanProofs.IPRA (par par_succ par_cases par_zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -142,13 +136,9 @@ private abbrev sumLsqF : Fm PTm 1 :=
   ap2 (sumF lsqB) (succ (var 0)) zero ≐ luc (var 0) * luc (succ (var 0)) + two
 
 private theorem sumLsq₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] sumLsqF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, subst_ap2, subst_fibS, subst_fib,
-      Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact sum_lsq_base
-  · simp only [Fm.subst_eq, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, subst_ap2, subst_fibS, subst_fib,
-      Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact sum_lsq_step Prf.hyp0
+  ipra_ind [subst_ap2, subst_fibS, subst_fib]
+  · exact sum_lsq_base
+  · exact sum_lsq_step Prf.hyp0
 
 /-- `∑_{j≤N} L_j² = L_N L_{N+1} + 2`. -/
 theorem sum_luc_sq (N : PTm n) :
@@ -167,13 +157,9 @@ theorem fibS_pow_step {k : PTm n} (ih : Γ ⊢[PRAAx] le (fibS k) (pw two k)) :
 private abbrev fpowF : Fm PTm 1 := le (fibS (var 0)) (pw two (var 0))
 
 private theorem fpow₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] fpowF := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, subst_fibS, subst_ap2, Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact le_congr fibS_zero.eqSymm (pw_zero two).eqSymm (le_refl one)
-  · simp only [subst_le, subst_fibS, subst_ap2, Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact fibS_pow_step Prf.hyp0
+  ipra_ind (le_QF _ _) [subst_le, subst_fibS, subst_ap2]
+  · exact le_congr fibS_zero.eqSymm (pw_zero two).eqSymm (le_refl one)
+  · exact fibS_pow_step Prf.hyp0
 
 /-- `F_{k+1} ≤ 2^k`. -/
 theorem fibS_le_pow (k : PTm n) : Γ ⊢[PRAAx] le (fibS k) (pw two k) := by
@@ -258,13 +244,9 @@ private abbrev altF : Fm PTm 1 :=
     ap2 (sumF odfB) (succ (var 0)) zero + one + monus one (par (var 0)) * fib (var 0)
 
 private theorem alt₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] altF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, subst_ap2, subst_ap1, subst_fibS,
-      subst_fib, Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact alt_base
-  · simp only [Fm.subst_eq, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, subst_ap2, subst_ap1, subst_fibS,
-      subst_fib, Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact alt_step Prf.hyp0
+  ipra_ind [subst_ap2, subst_ap1, subst_fibS, subst_fib]
+  · exact alt_base
+  · exact alt_step Prf.hyp0
 
 /-- `∑_{j≤N} (−1)^j F_{j+1} = 1 + (−1)^N F_N`, with the even and odd parts separated:
 `∑_{j≤N} [j even] F_{j+1} + [N odd] F_N = ∑_{j≤N} [j odd] F_{j+1} + 1 + [N even] F_N`. -/
@@ -301,17 +283,13 @@ private abbrev parF3 : Fm PTm 1 :=
   (par (fib (var 0 + var 0 + var 0)) ≐ zero) ⋏ (par (fibS (var 0 + var 0 + var 0)) ≐ one)
 
 private theorem par₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] parF3 := by
-  refine ind _ ⟨trivial, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_and, Fm.subst_eq, PTm.subst_add, subst_ap1, subst_fibS, subst_fib, Syn.subst_var,
-      Syn.inst_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have z : ([] : List (Fm PTm 0)) ⊢[PRAAx] (zero : PTm 0) + zero + zero ≐ zero := by
+  ipra_ind (⟨trivial, trivial⟩) [subst_ap1, subst_fibS, subst_fib]
+  · have z : ([] : List (Fm PTm 0)) ⊢[PRAAx] (zero : PTm 0) + zero + zero ≐ zero := by
       ipra_ring
     exact .andI ((congrAp1 parF ((congrFib z).eqTrans fib_zero)).eqTrans par_zero)
       ((congrAp1 parF ((congrFibS z).eqTrans fibS_zero)).eqTrans
         ((par_succ zero).eqTrans ((congrMonus (.eqRefl _) par_zero).eqTrans (monus_zero _))))
-  · simp only [Fm.subst_and, Fm.subst_eq, PTm.subst_add, subst_ap1, subst_fibS, subst_fib, Syn.subst_var,
-      Syn.repl_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine par_step ?_ (Prf.andE₁ Prf.hyp0) (Prf.andE₂ Prf.hyp0)
+  · refine par_step ?_ (Prf.andE₁ Prf.hyp0) (Prf.andE₂ Prf.hyp0)
     ipra_ring
 
 /-- `F_{3k}` is even and `F_{3k+1}` is odd. -/

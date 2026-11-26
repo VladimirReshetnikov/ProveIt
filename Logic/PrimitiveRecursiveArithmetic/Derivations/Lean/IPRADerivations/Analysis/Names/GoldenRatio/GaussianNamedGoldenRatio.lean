@@ -16,7 +16,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatio
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedSqrtFive (clock root)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianGammaCanonicalExponent (constantF constant_regular constant_at)
@@ -31,10 +31,6 @@ open GaussianEuclideanDistanceName (pointCN)
 open GaussianNamedDiagonalRate (diagonalRate cross_of_diagonal_rate)
 open GaussianNameEquivalence (crossEquivalent)
 open LeanProofs.IPRA.Geometry.IsoperimetricDyadicSquareRoot (index_bracket)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

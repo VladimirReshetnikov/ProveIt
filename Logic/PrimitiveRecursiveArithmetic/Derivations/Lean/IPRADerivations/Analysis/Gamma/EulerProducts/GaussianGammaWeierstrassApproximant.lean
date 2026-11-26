@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaWeierstrassApproximant
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaCanonicalExponent
   (source gammaF gamma_regular constantF constant_at constant_regular differenceF differenceData difference_regular
     harmonicPoint productF productData product_regular)
@@ -30,9 +30,6 @@ open GaussianRationalHorner (canonical ofGaussian qmul qzero)
 open GaussianRationalMetric (qsub qnegative)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianGammaWeierstrassFactors (width harmonicArgument)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

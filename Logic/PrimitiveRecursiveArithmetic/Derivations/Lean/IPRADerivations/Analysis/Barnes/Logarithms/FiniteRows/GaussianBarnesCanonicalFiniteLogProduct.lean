@@ -15,16 +15,13 @@ set_option maxHeartbeats 700000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalFiniteLogProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalHead (parameters subst_parameters)
 open GaussianBarnesCanonicalLogTail (source row_source)
 open GaussianGammaFiniteApproximantName (exponentialInputData exponential_input)
 open GaussianNameEquivalence (crossEquivalent cross_symm cross_trans)
 open GaussianNamedFiniteExponentialFold (exponentialBody)
 open GaussianNamedFiniteProductFamilyCongruence (equalRows family_product_cross)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Row" => GaussianBarnesCanonicalLogFactor.nameF

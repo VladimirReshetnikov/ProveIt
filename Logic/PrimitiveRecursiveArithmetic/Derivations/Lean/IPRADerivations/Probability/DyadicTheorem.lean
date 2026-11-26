@@ -1,5 +1,4 @@
 import IPRADerivations.Probability.DyadicCover
-import IPRADerivations.Core.Fubini
 import IPRADerivations.Analysis.RationalArithmetic.PowerSums
 
 /-!
@@ -25,7 +24,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.DyadicTheorem
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.ProductPower (Pr Tt wdB)
 open LeanProofs.IPRA.Probability.DyadicBlock (pcB Cc inst2_pcB)
 open LeanProofs.IPRA.Probability.DyadicSLLN (lw inst2_lw Nm Pblk pr_lift)
@@ -33,10 +32,6 @@ open LeanProofs.IPRA.Probability.DyadicAssembly (pjB Yb inst2_pjB union_bound)
 open LeanProofs.IPRA.Probability.DyadicCover (bdB Zc Yc cjB inst2_cj Jb cover_pt)
 open LeanProofs.IPRA.Analysis.PowerSums (mulParam inst2_mulParam sum_mul_param sum_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -67,10 +62,10 @@ theorem bad_at (t H M K e x : PTm n) :
     simp [badB, inst2]
   rw [h]
   have s1 : Γ ⊢[PRAAx] sndT (Ya H M K e x) ≐ pairT M (pairT (pairT K e) x) := snd_pair _ _
-  have s2 : Γ ⊢[PRAAx] sndT (sndT (Ya H M K e x)) ≐ pairT (pairT K e) x := (congrSnd s1).eqTrans (snd_pair _ _)
+  have s2 : Γ ⊢[PRAAx] sndT (sndT (Ya H M K e x)) ≐ pairT (pairT K e) x := s1.sndE
   have hH : Γ ⊢[PRAAx] fstT (Ya H M K e x) ≐ H := fst_pair _ _
-  have hM : Γ ⊢[PRAAx] fstT (sndT (Ya H M K e x)) ≐ M := (congrFst s1).eqTrans (fst_pair _ _)
-  have hx : Γ ⊢[PRAAx] sndT (sndT (sndT (Ya H M K e x))) ≐ x := (congrSnd s2).eqTrans (snd_pair _ _)
+  have hM : Γ ⊢[PRAAx] fstT (sndT (Ya H M K e x)) ≐ M := s1.fstE
+  have hx : Γ ⊢[PRAAx] sndT (sndT (sndT (Ya H M K e x))) ≐ x := s2.sndE
   exact congrMul (congrAp2 _ hH (congrPairT (.eqRefl _) (congrPairT hM hx)))
     (congrMonus (.eqRefl _) (congrAp2 _ (congrSucc hH) (congrPairT (.eqRefl _) s1)))
 
@@ -91,10 +86,10 @@ theorem cP_at (t H M K e x : PTm n) :
   rw [h]
   have f1 : Γ ⊢[PRAAx] fstT (Yc t H M K e x) ≐ pairT t H := fst_pair _ _
   have s1 : Γ ⊢[PRAAx] sndT (Yc t H M K e x) ≐ pairT M (pairT (pairT K e) x) := snd_pair _ _
-  have s2 : Γ ⊢[PRAAx] sndT (sndT (Yc t H M K e x)) ≐ pairT (pairT K e) x := (congrSnd s1).eqTrans (snd_pair _ _)
-  exact congrAp2 _ ((congrSnd f1).eqTrans (snd_pair _ _))
-    (congrPairT ((congrFst f1).eqTrans (fst_pair _ _))
-      (congrPairT ((congrFst s1).eqTrans (fst_pair _ _)) ((congrSnd s2).eqTrans (snd_pair _ _))))
+  have s2 : Γ ⊢[PRAAx] sndT (sndT (Yc t H M K e x)) ≐ pairT (pairT K e) x := s1.sndE
+  exact congrAp2 _ f1.sndE
+    (congrPairT f1.fstE
+      (congrPairT s1.fstE s2.sndE))
 
 /-- `a(t, j, y) = P_H(t) · C_j(t)` with `y = ⟨H, ⟨M, ⟨⟨K, e⟩, x⟩⟩⟩`. -/
 def aB : PTm 3 := Syn.subst ![var 1, pairT (pairT (var 0) (fstT (var 2))) (sndT (var 2))] (mulParam (cP w0) (cjB w0 X0))

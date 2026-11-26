@@ -17,15 +17,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerDerivativeSubdivisionBudget
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (ofGaussian qmul positive_product)
 open GaussianRationalMetric (bounded)
 open GaussianRationalReciprocal (reciprocal bound_congr bounded_product)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianNameReciprocal (lower)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -39,22 +36,12 @@ def readQuery (p N C D : PTm n) : PTm n := GaussianFastValueCut.exponent (C*N*D)
 def compactCount (p j R E T D : PTm n) : PTm n := count p (GaussianEulerLogarithmicMultiplier.logRadius E T)
   (T*GaussianEulerLogarithmicParameterIncrement.curvature j R E T) D
 
-@[simp] theorem subst_separated {m : ℕ} (σ : Fin n → PTm m) (h D : PTm n) :
-    (separated h D).subst σ = separated (Syn.subst σ h) (Syn.subst σ D) := by simp [separated]
-@[simp] theorem subst_count {m : ℕ} (σ : Fin n → PTm m) (p J K D : PTm n) :
-    Syn.subst σ (count p J K D) = count (Syn.subst σ p) (Syn.subst σ J) (Syn.subst σ K) (Syn.subst σ D) := by simp [count]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (p J K D : PTm n) :
-    Syn.subst σ (run p J K D) = run (Syn.subst σ p) (Syn.subst σ J) (Syn.subst σ K) (Syn.subst σ D) := by
-  simp [run]
-  funext i
-  fin_cases i <;> rfl
-@[simp] theorem subst_tailQuery {m : ℕ} (σ : Fin n → PTm m) (p D : PTm n) :
-    Syn.subst σ (tailQuery p D) = tailQuery (Syn.subst σ p) (Syn.subst σ D) := by simp [tailQuery]
-@[simp] theorem subst_readQuery {m : ℕ} (σ : Fin n → PTm m) (p N C D : PTm n) :
-    Syn.subst σ (readQuery p N C D) = readQuery (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ C) (Syn.subst σ D) := by simp [readQuery]
-@[simp] theorem subst_compactCount {m : ℕ} (σ : Fin n → PTm m) (p j R E T D : PTm n) :
-    Syn.subst σ (compactCount p j R E T D) = compactCount (Syn.subst σ p) (Syn.subst σ j) (Syn.subst σ R)
-      (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ D) := by simp [compactCount]
+ipra_subst separated
+ipra_subst count
+ipra_subst run
+ipra_subst tailQuery
+ipra_subst readQuery
+ipra_subst compactCount
 
 theorem program_at (p J K D : PTm n) : Γ ⊢[PRAAx] run p J K D ≐ count p J K D := by
   simpa [run,countF] using toPR_eq (Γ := Γ) (count (var 0) (var 1) (var 2) (var 3) : PTm 4) ![p,J,K,D]

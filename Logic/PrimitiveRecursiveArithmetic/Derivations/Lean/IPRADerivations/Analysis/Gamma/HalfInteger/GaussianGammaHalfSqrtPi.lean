@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaHalfSqrtPi
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.SquareRootRelationalCandidates (candidate)
 open GaussianGammaHalfSquareLimit (gammaHalf gamma_regular)
 open GaussianGammaHalfPiName (meshAt clearing unit_mono)
@@ -31,10 +31,6 @@ open GaussianEuclideanDistanceName (pointCN)
 open RationalSupMetric (denominatorOf numeratorOf)
 open GaussianPositiveRealArithmetic (sign numerator)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -201,10 +197,9 @@ theorem axis_to_sqrt_at (p q x : PTm n) :
   have second : Γ ⊢[PRAAx] distanceBounded Y Z (num 3*P) (P*D) :=
     distance_radius_mono _ _ _ _ _ _ hD pd (by ipra_le 0) (scheduled_axis_to_root r)
   have total := distance_triangle_same X Y Z (P+D) (num 3*P) (P*D) pd first second
-  have e := natEq (unit_root_clock (Γ := Γ) q)
   have narrowed : Γ ⊢[PRAAx] distanceBounded X Z (P+Q) (P*Q) :=
     distance_radius_mono _ _ _ _ _ _ pd (positive_product _ _ hP hQ)
-      (by ipra_le 0 with (𝔞 P)^2*e) total
+      (by ipra_le 0 with (𝔞 P)^2*natEq (unit_root_clock (Γ := Γ) q)) total
   exact distance_congr (.eqRefl _) (sample_at q x).eqSymm (.eqRefl _) (.eqRefl _) narrowed
 
 private theorem shift_half : Syn.shift (gammaHalf : PTm n) = (gammaHalf : PTm (n+1)) := by

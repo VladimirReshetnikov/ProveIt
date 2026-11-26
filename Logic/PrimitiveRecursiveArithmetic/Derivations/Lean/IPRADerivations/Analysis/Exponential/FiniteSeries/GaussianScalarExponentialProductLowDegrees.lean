@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianScalarExponentialProductLowDegrees
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qadd qmul evaluate canonical)
 open GaussianRationalSyntheticDivision (qone qmul_congr)
 open GaussianReciprocalHorner (qmul_one_right)
@@ -27,18 +27,13 @@ open GaussianScalarExponentialDiagonal (coefficient coefficient_congr coefficien
 open GaussianRationalLowCoefficientConvolution (exponentCoefficient exponent_inside product_exponent)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def bufferBody : PTm 2 := coefficient (fstT (var 1)) (monus (sndT (var 1)) (var 0))
 def buffer (q K : PTm n) : PTm n := sequence bufferBody (succ K) (pairT q K)
 
-@[simp] theorem subst_buffer {m : ℕ} (σ : Fin n → PTm m) (q K : PTm n) :
-    Syn.subst σ (buffer q K) = buffer (Syn.subst σ q) (Syn.subst σ K) := by simp [buffer]
+ipra_subst buffer
 
 theorem buffer_length (q K : PTm n) : Γ ⊢[PRAAx] length (buffer q K) ≐ succ K :=
   sequence_length _ _ _
@@ -83,8 +78,7 @@ theorem buffer_at_one (q K : PTm n) : Γ ⊢[PRAAx] evaluate (buffer q K) qone �
 def product (u v K : PTm n) : PTm n :=
   GaussianRationalPolynomialProduct.product (buffer u K) (buffer v K) K K
 
-@[simp] theorem subst_product {m : ℕ} (σ : Fin n → PTm m) (u v K : PTm n) :
-    Syn.subst σ (product u v K) = product (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ K) := by simp [product]
+ipra_subst product
 
 theorem product_length (u v K : PTm n) : Γ ⊢[PRAAx] length (product u v K) ≐ succ (K+K) :=
   GaussianRationalPolynomialProduct.product_length _ _ _ _
@@ -121,13 +115,9 @@ def evaluationData (u v K : PTm n) : PTm n :=
 def highPart (u v K : PTm n) : PTm n := GaussianRationalFiniteSum.sum (offB GaussianRationalPowerExpansion.termBody)
   K (pairT (succ K) (evaluationData u v K))
 
-@[simp] theorem subst_evaluationData {m : ℕ} (σ : Fin n → PTm m) (u v K : PTm n) :
-    Syn.subst σ (evaluationData u v K) = evaluationData (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ K) := by
-  simp [evaluationData]
+ipra_subst evaluationData
 
-@[simp] theorem subst_highPart {m : ℕ} (σ : Fin n → PTm m) (u v K : PTm n) :
-    Syn.subst σ (highPart u v K) = highPart (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ K) := by
-  simp [highPart]
+ipra_subst highPart
 
 theorem original_low_part (u v K : PTm n) :
     Γ ⊢[PRAAx] GaussianRationalFiniteSum.sum GaussianRationalPowerExpansion.termBody (succ K) (evaluationData u v K) ≐

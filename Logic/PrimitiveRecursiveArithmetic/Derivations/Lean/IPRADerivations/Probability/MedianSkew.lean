@@ -1,5 +1,4 @@
 import IPRADerivations.Probability.MedianCounts
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # A skewed sample whose median exceeds its mean
@@ -21,13 +20,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.MedianSkew
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.MedianCounts (belowB aboveB Bc Ac isMed below_pt above_pt congrSg)
 open LeanProofs.IPRA.Algebra.CubeRootTwo (sg sg_zero sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

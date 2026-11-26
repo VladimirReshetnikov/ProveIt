@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaEulerHeadRescaling
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale)
 open GaussianGammaEulerHead (factor factor_at factorBody data product run program_at)
 open GaussianRationalFiniteProduct (product_congr_bounded)
@@ -21,9 +21,6 @@ open GaussianRationalHorner (ofGaussian ofGaussian_canonical ofGaussian_represen
   canonical_unique represents_rescale represents_congr positive_product)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr)
 open GaussianRootAlgebra (equal_refl)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -15,7 +15,7 @@ set_option maxHeartbeats 580000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetSecondWeightedSinePoint
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetArctangentSineUniform (clock cutoff count roundingCost)
 open GaussianBinetSecondDecayPointwise (angle row fullDecay)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
@@ -26,9 +26,6 @@ open GaussianLogGammaEulerResidualDomain (source)
 open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_triangle_same)
 open GaussianRationalHorner (positive_product qmul)
 open GaussianRationalMetric (bounded distanceBounded)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -41,14 +38,9 @@ def point (q X Y D sign a b R T K H J : PTm n) : PTm n :=
   qmul (GaussianBinetOscillatorySineRectangle.value p X Y D sign a b R T (cutoff q T K) N)
     (fullDecay (p+N) a b H J)
 
-@[simp] theorem subst_cost {m : ℕ} (σ : Fin n → PTm m) (K T : PTm n) :
-    Syn.subst σ (cost K T) = cost (Syn.subst σ K) (Syn.subst σ T) := by simp [cost,two]
+ipra_subst cost [two]
 
-@[simp] theorem subst_point {m : ℕ} (σ : Fin n → PTm m) (q X Y D sign a b R T K H J : PTm n) :
-    Syn.subst σ (point q X Y D sign a b R T K H J) =
-      point (Syn.subst σ q) (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign)
-        (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ R) (Syn.subst σ T) (Syn.subst σ K) (Syn.subst σ H) (Syn.subst σ J) := by
-  simp [point,fullDecay,two]
+ipra_subst point [fullDecay, two]
 
 theorem clock_later (q D R T K : PTm n) :
     Γ ⊢[PRAAx] le q (clock q D R T K+count q D R T K) := by

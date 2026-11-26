@@ -22,7 +22,7 @@ set_option maxHeartbeats 700000
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerResidualInterval
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive subst_unit bounded_radius_mono)
 open GaussianEuclideanDistanceName (pointCN fraction fraction_represents)
 open GaussianFastValueCut (exponent query_budget)
@@ -44,10 +44,6 @@ open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalSumMajorant
   (termsMajorized majorized majorized_congr from_representation sum_majorized)
 open RationalSupMetric (denominatorOf)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "G" => GaussianRightHalfPlaneLogarithm.nameF
@@ -58,9 +54,7 @@ def intervalData (p N x : PTm n) : PTm n := pairT p (pairT N x)
 def interval (p A B D neg N r : PTm n) : PTm n :=
   finite G (rangeBody residualBody) p r (pairT N (rowData A B D neg))
 
-@[simp] theorem subst_intervalData {m : ℕ} (σ : Fin n → PTm m) (p N x : PTm n) :
-    Syn.subst σ (intervalData p N x) =
-      intervalData (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ x) := by simp [intervalData]
+ipra_subst intervalData
 
 theorem interval_entry (p A B D neg N i : PTm n) :
     Γ ⊢[PRAAx] inst2 intervalBody i (intervalData p N (rowData A B D neg)) ≐

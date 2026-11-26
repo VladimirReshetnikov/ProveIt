@@ -14,7 +14,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaTwoShiftExactCofinalRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianGammaDigammaHarmonicCells (point_fraction_represents)
@@ -30,9 +30,6 @@ open GaussianStirlingGammaFractionalIncrementObservations (scalar_upper)
 open GaussianStirlingGammaLogarithm (source)
 open RationalRepresentedUpper (to_signed from_signed left right)
 open RationalValueBounds (upper upper_congr upper_mono upper_triangle)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,10 +39,7 @@ def finiteRate (a b c d K D B : PTm n) : Fm PTm n := .all
    (upper (fstT (rawSample (var 0) (Syn.shift a) (Syn.shift b) (Syn.shift c) (Syn.shift d))) (fstT qzero)
       (Syn.shift K*unit (var 0)+Syn.shift B*Syn.shift D) (Syn.shift D*unit (var 0))))
 
-@[simp] theorem subst_finiteRate {m : ℕ} (σ : Fin n → PTm m) (a b c d K D B : PTm n) :
-    (finiteRate a b c d K D B).subst σ = finiteRate (Syn.subst σ a) (Syn.subst σ b)
-      (Syn.subst σ c) (Syn.subst σ d) (Syn.subst σ K) (Syn.subst σ D) (Syn.subst σ B) := by
-  simp [finiteRate,Syn.subst_shift,Syn.shift_subst]
+ipra_subst finiteRate [Syn.subst_shift, Syn.shift_subst]
 
 private theorem finite_at (p a b c d K D B : PTm n) (h : Γ ⊢[PRAAx] finiteRate a b c d K D B) :
     Γ ⊢[PRAAx] (upper (fstT qzero) (fstT (rawSample p a b c d)) (K*unit p+B*D) (D*unit p) ⋏

@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLowerLogarithmPower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianPositiveRationalLogarithm (source)
 open GaussianHarmonicLogarithmName (sample)
 open GaussianRationalReciprocal (power bounded_product bound_congr)
@@ -27,10 +27,6 @@ open GaussianRationalNaturalScale (natScale naturalPoint)
 open GaussianRationalDistanceOrder (distance_symmetric)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -44,20 +40,13 @@ def numerator (p j m a b : PTm n) : PTm n := fact j*pw m j*b*unit p+gain j m a b
 def denominator (p a : PTm n) : PTm n := a*unit p
 def auxiliaryCost (j m a b : PTm n) : PTm n := pw m j*GaussianUpperTimeLogarithmPower.gain j b+gain j m a b
 
-@[simp] theorem subst_targetRadius {k : ℕ} (σ : Fin n → PTm k) (m a b : PTm n) :
-    Syn.subst σ (targetRadius m a b) = targetRadius (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ b) := by simp [targetRadius]
-@[simp] theorem subst_commonRadius {k : ℕ} (σ : Fin n → PTm k) (m a b : PTm n) :
-    Syn.subst σ (commonRadius m a b) = commonRadius (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ b) := by simp [commonRadius]
-@[simp] theorem subst_gain {k : ℕ} (σ : Fin n → PTm k) (j m a b : PTm n) :
-    Syn.subst σ (gain j m a b) = gain (Syn.subst σ j) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ b) := by simp [gain]
-@[simp] theorem subst_rawPower {k : ℕ} (σ : Fin n → PTm k) (p j m a b : PTm n) :
-    Syn.subst σ (rawPower p j m a b) = rawPower (Syn.subst σ p) (Syn.subst σ j) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ b) := by simp [rawPower]
-@[simp] theorem subst_numerator {k : ℕ} (σ : Fin n → PTm k) (p j m a b : PTm n) :
-    Syn.subst σ (numerator p j m a b) = numerator (Syn.subst σ p) (Syn.subst σ j) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ b) := by simp [numerator,fact]
-@[simp] theorem subst_denominator {k : ℕ} (σ : Fin n → PTm k) (p a : PTm n) :
-    Syn.subst σ (denominator p a) = denominator (Syn.subst σ p) (Syn.subst σ a) := by simp [denominator]
-@[simp] theorem subst_auxiliaryCost {k : ℕ} (σ : Fin n → PTm k) (j m a b : PTm n) :
-    Syn.subst σ (auxiliaryCost j m a b) = auxiliaryCost (Syn.subst σ j) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ b) := by simp [auxiliaryCost]
+ipra_subst targetRadius
+ipra_subst commonRadius
+ipra_subst gain
+ipra_subst rawPower
+ipra_subst numerator [fact]
+ipra_subst denominator
+ipra_subst auxiliaryCost
 
 theorem harmonic_power_slack (p t j a b : PTm n) (hs : Γ ⊢[PRAAx] source a b)
     (hba : Γ ⊢[PRAAx] le b a) : Γ ⊢[PRAAx]

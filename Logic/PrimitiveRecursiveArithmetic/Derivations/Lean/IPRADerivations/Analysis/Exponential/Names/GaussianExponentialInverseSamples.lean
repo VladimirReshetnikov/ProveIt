@@ -17,7 +17,7 @@ set_option maxHeartbeats 220000
 
 namespace LeanProofs.IPRA.Analysis.GaussianExponentialInverseSamples
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianApproximateInverseDistance (multiply_distance)
 open GaussianBoundedIntegerExponentialSample (prefix_error sampleBudget stage_input one_cross)
 open GaussianBoundedIntegerExponentialStages (scaledF stageData radius point majorant power_bound)
@@ -36,10 +36,6 @@ open GaussianRationalReciprocal (power qone bound_congr power_canonical reciproc
 open GaussianRationalRoundedPower (qone_power)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianReciprocalHorner (qmul_associative qmul_one_right)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -50,18 +46,11 @@ def positive (f : PR 2) (p R x : PTm n) : PTm n := GaussianNameReciprocal.tail (
 def negative (f : PR 2) (p R x : PTm n) : PTm n := GaussianNameReciprocal.raw (nameF f) (height f R x) (data R x) p
 def inverseDisk (f : PR 2) (R x : PTm n) : PTm n := GaussianNameReciprocal.R (height f R x)
 
-@[simp] theorem subst_disk {m : ℕ} (σ : Fin n → PTm m) (R : PTm n) :
-    Syn.subst σ (disk R) = disk (Syn.subst σ R) := by simp [disk]
-@[simp] theorem subst_height {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (R x : PTm n) :
-    Syn.subst σ (height f R x) = height f (Syn.subst σ R) (Syn.subst σ x) := by simp [height]
-@[simp] theorem subst_positive {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p R x : PTm n) :
-    Syn.subst σ (positive f p R x) = positive f (Syn.subst σ p) (Syn.subst σ R) (Syn.subst σ x) := by
-  simp [positive, GaussianNameReciprocal.tail]
-@[simp] theorem subst_negative {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p R x : PTm n) :
-    Syn.subst σ (negative f p R x) = negative f (Syn.subst σ p) (Syn.subst σ R) (Syn.subst σ x) := by
-  simp [negative, GaussianNameReciprocal.raw, GaussianNameReciprocal.tail]
-@[simp] theorem subst_inverseDisk {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (R x : PTm n) :
-    Syn.subst σ (inverseDisk f R x) = inverseDisk f (Syn.subst σ R) (Syn.subst σ x) := by simp [inverseDisk]
+ipra_subst disk
+ipra_subst height
+ipra_subst positive [GaussianNameReciprocal.tail]
+ipra_subst negative [GaussianNameReciprocal.raw, GaussianNameReciprocal.tail]
+ipra_subst inverseDisk
 
 theorem disk_positive (R : PTm n) : Γ ⊢[PRAAx] le one (disk R) :=
   AnalyticNumberTheory.BlockChain.one_le_pw' (le_of_eq_add (d := two) (by ipra_ring)) R
@@ -143,9 +132,7 @@ theorem inverse_error (P N a b C D E K U : PTm n) (hU : Γ ⊢[PRAAx] le one U)
 def baseNegativeRadius (f : PR 2) (R x : PTm n) : PTm n := inverseDisk f R x*
   (disk R*two+productError (nameF f) (nameF (negativeF f)) (data R x) (data R (negativeData x)))
 
-@[simp] theorem subst_baseNegativeRadius {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (R x : PTm n) :
-    Syn.subst σ (baseNegativeRadius f R x) = baseNegativeRadius f (Syn.subst σ R) (Syn.subst σ x) := by
-  simp [baseNegativeRadius,two,one]
+ipra_subst baseNegativeRadius [two, one]
 
 theorem negative_sample (f : PR 2) (p R x : PTm n) (h : Γ ⊢[PRAAx] input f R x) :
     Γ ⊢[PRAAx] distanceBounded (ap2 (nameF (negativeF f)) p (data R (negativeData x)))
@@ -165,13 +152,9 @@ def negativeRadius (f : PR 2) (E i R x : PTm n) : PTm n :=
       productError (nameF (scaledF f)) (nameF (negativeF (scaledF f))) (data (radius E R) (stageData E i x))
         (data (radius E R) (negativeData (stageData E i x))))
 
-@[simp] theorem subst_positiveRadius {m : ℕ} (σ : Fin n → PTm m) (E i R : PTm n) :
-    Syn.subst σ (positiveRadius E i R) = positiveRadius (Syn.subst σ E) (Syn.subst σ i) (Syn.subst σ R) := by
-  simp [positiveRadius]
+ipra_subst positiveRadius
 
-@[simp] theorem subst_negativeRadius {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (E i R x : PTm n) :
-    Syn.subst σ (negativeRadius f E i R x) = negativeRadius f (Syn.subst σ E) (Syn.subst σ i) (Syn.subst σ R) (Syn.subst σ x) := by
-  simp [negativeRadius]
+ipra_subst negativeRadius
 
 theorem positive_power (f : PR 2) (p E i R x : PTm n) (h : Γ ⊢[PRAAx] input f R x) (hi : Γ ⊢[PRAAx] le i E)
     (hE : Γ ⊢[PRAAx] le one E) :

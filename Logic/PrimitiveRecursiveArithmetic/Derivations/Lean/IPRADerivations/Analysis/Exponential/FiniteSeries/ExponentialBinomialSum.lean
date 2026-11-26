@@ -4,7 +4,6 @@ import IPRADerivations.Analysis.Gamma.BohrMollerup.BohrMollerupUniqueness
 import IPRADerivations.Combinatorics.BinomialTheorem
 import IPRADerivations.Combinatorics.BellTriangle
 import IPRADerivations.Probability.Independence
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The exponential sums against `(1 + 1/m)^m`, summed
@@ -32,7 +31,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.ExponentialBinomialSum
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.StirlingPowers (ffB ff ff_zero ff_succ ff_zero_above congrFF)
 open LeanProofs.IPRA.Combinatorics.FallingFactorial (ff_add ff_fact ff_binom)
 open LeanProofs.IPRA.Combinatorics.Binomial (binom)
@@ -44,10 +43,6 @@ open LeanProofs.IPRA.Analysis.BinomialExponentialGap (GapInv binomial_exponentia
 open LeanProofs.IPRA.Analysis.BohrMollerupUniqueness (bernoulli)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.Analysis.PowerSums (sum_le)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -131,13 +126,9 @@ theorem en_step {m : PTm n} (ih : Γ ⊢[PRAAx] ap2 (sumF fB) (succ m) m ≐ en 
 private abbrev enSumF : Fm PTm 1 := ap2 (sumF fB) (succ (var 0)) (var 0) ≐ en (var 0)
 
 private theorem en_sum₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] enSumF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [enSumF, Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact en_base
-  · simp only [enSumF, Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact en_step Prf.hyp0
+  ipra_ind [enSumF, subst_ap2]
+  · exact en_base
+  · exact en_step Prf.hyp0
 
 /-- `∑_{k≤m} (m)_k = en m = m! E_m`. -/
 theorem en_sum (m : PTm n) : Γ ⊢[PRAAx] ap2 (sumF fB) (succ m) m ≐ en m := by
@@ -186,20 +177,17 @@ theorem shifted_ff_sum (m : PTm n) :
   rw [inst2_fB] at t₁'
   have t₀' := sum_succ' (Γ := Γ) fB zero m
   rw [inst2_fB] at t₀'
-  have t₁ := natEq t₁'
   have t₀ := natEq t₀'
   have b : Γ ⊢[PRAAx] succ (succ zero) + succ m ≐ succ (succ (succ m)) := by ipra_ring
   have u₂' := sum_succ' (Γ := Γ) fB (succ (succ m)) m
   rw [inst2_fB] at u₂'
   have u₁' := sum_succ' (Γ := Γ) fB (succ m) m
   rw [inst2_fB] at u₁'
-  have u₂ := natEq u₂'
-  have u₁ := natEq u₁'
   have h₁ : Γ ⊢[PRAAx] lt m (succ m) := by ipra_le 0
   have h₂ : Γ ⊢[PRAAx] lt m (succ (succ m)) := by ipra_le 1
-  ipra_lc natEq (en_sum (Γ := Γ) m) + natEq (ff_zero_above h₁) + u₁ + natEq (ff_zero_above h₂) + u₂ +
+  ipra_lc natEq (en_sum (Γ := Γ) m) + natEq (ff_zero_above h₁) + natEq u₁' + natEq (ff_zero_above h₂) + natEq u₂' +
     natEq (congrAp2 (Γ := Γ) (sumF fB) b (.eqRefl m)) - natEq (ff_one (Γ := Γ) m) - natEq (ff_zero (Γ := Γ) m) -
-    natEq (sum_zero (Γ := Γ) fB m) - t₀ - t₁ - natEq (sum_split (Γ := Γ) fB (succ (succ zero)) (succ m) m) - cv
+    natEq (sum_zero (Γ := Γ) fB m) - t₀ - natEq t₁' - natEq (sum_split (Γ := Γ) fB (succ (succ zero)) (succ m) m) - cv
 
 /-! ## Summing -/
 

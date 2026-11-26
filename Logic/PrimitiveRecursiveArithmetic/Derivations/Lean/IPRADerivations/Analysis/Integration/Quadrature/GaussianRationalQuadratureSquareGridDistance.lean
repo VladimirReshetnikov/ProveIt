@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalQuadratureSquareGridDistance
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalQuadratureSquarePartition
   (source lowerNumerator widthNumerator intervalDenominator fineCount cellCap cutValue cutData cutF cutGap)
 open GaussianRationalQuadratureSquareCells (nodeNumerator denominator node)
@@ -23,9 +23,6 @@ open GaussianRationalHorner (positive_product qadd)
 open GaussianRationalSyntheticDivision (qadd_congr qsub_congr)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -35,12 +32,8 @@ def mappedTime (i N c d a C E : PTm n) : PTm n :=
 def targetGrid (j N c d a C E : PTm n) : PTm n :=
   grid j (fineCount N c a C) (lowerNumerator c a) (widthNumerator c a C) (intervalDenominator d E)
 
-@[simp] theorem subst_mappedTime {m : ℕ} (σ : Fin n → PTm m) (i N c d a C E : PTm n) :
-    Syn.subst σ (mappedTime i N c d a C E) = mappedTime (Syn.subst σ i) (Syn.subst σ N) (Syn.subst σ c)
-      (Syn.subst σ d) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) := by simp [mappedTime]
-@[simp] theorem subst_targetGrid {m : ℕ} (σ : Fin n → PTm m) (j N c d a C E : PTm n) :
-    Syn.subst σ (targetGrid j N c d a C E) = targetGrid (Syn.subst σ j) (Syn.subst σ N) (Syn.subst σ c)
-      (Syn.subst σ d) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) := by simp [targetGrid]
+ipra_subst mappedTime
+ipra_subst targetGrid
 
 theorem target_denominator_positive (c d a C E N : PTm n) (hs : Γ ⊢[PRAAx] source c d a C E N) : Γ ⊢[PRAAx]
     le one (intervalDenominator d E) := positive_product _ _
