@@ -3329,3 +3329,6 @@ The actual named Barnes and log-Gamma samplers give the cleared hyperfactorial r
 
 The literal original cubic logarithm series on positive rationals has a primitive-recursive cutoff and a regular name at independent observation precisions. Every sample retains a positive first-row floor. A dyadic lower threshold on the input yields any requested upper precision.
 [GaussianBarnesCanonicalThirdLogarithmCauchy](Lean/IPRADerivations/Analysis/Barnes/Logarithms/GaussianBarnesCanonicalThirdLogarithmCauchy.lean), [GaussianBarnesCanonicalThirdLogarithmCofinal](Lean/IPRADerivations/Analysis/Barnes/Logarithms/GaussianBarnesCanonicalThirdLogarithmCofinal.lean), [GaussianBarnesCanonicalThirdLogarithmOrder](Lean/IPRADerivations/Analysis/Barnes/Logarithms/GaussianBarnesCanonicalThirdLogarithmOrder.lean)
+
+Equivalent positive rational encodings give equivalent original hyperfactorial names at independent observation precisions. The proof preserves the original log-Gamma, Barnes, and reciprocal data up to their checked chart equivalences.
+[GaussianBarnesCanonicalHyperfactorialProperness](Lean/IPRADerivations/Analysis/Barnes/FunctionalEquations/GaussianBarnesCanonicalHyperfactorialProperness.lean)
