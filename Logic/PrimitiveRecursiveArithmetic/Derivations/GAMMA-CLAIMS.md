@@ -2949,7 +2949,7 @@ On each common rational disk, an explicit input clock certifies a dyadic value b
 On each admitted half-unit neighborhood of a negative integer, the actual Barnes value equals the exact power of the shifted input times a regular coefficient with explicit apartness. The original prefactor, remaining finite ranges and cofinal tail supply that coefficient. The analytic multiplicity theorem still requires the analytic contracts.
 [GaussianBarnesCanonicalDeflatedValue](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDeflatedValue.lean)
 
-The exact sums of the literal first-derivative rows give a regular sampler with an explicit cofinal length and tail modulus. Analytic identification with difference quotients remains open.
+The exact sums of the literal first-derivative rows give a regular sampler with an explicit cofinal length and tail modulus. The original tail logarithm’s divided differences converge to this sampler at the rate given in the cofinal logarithm derivative entry.
 [GaussianBarnesCanonicalDerivativeCofinal](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDerivativeCofinal.lean)
 
 The original rational evaluator, applied to an explicit late original input observation, gives a regular Barnes name. On a common certified disk it respects equivalent input names and agrees with the original rational value on constant inputs. The disk can be computed from the input name.
@@ -2985,7 +2985,7 @@ The relative-argument expansion has explicit summable quadratic and cubic error 
 Exact original factor conjugation folds through each finite segment, preserving both original normalization clocks and allowing both empty segments and vanishing factors.
 [GaussianNamedFiniteProductConjugation](Lean/IPRADerivations/Analysis/GaussianNamedFiniteProductConjugation.lean), [GaussianBarnesCanonicalHeadConjugation](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadConjugation.lean)
 
-The actual relative quadratic term and direct exponent correction cancel to the literal first-derivative expression times the input increment plus the original controlled quadratic remainder. Transfer to derivative observations of the named row and its cofinal limit remains open.
+The actual relative quadratic term and direct exponent correction cancel to the literal first-derivative expression times the input increment plus the original controlled quadratic remainder. The named row binding and cofinal first-order estimate below carry this remainder into the original observations.
 [GaussianBarnesCanonicalDerivativeAlgebra](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDerivativeAlgebra.lean)
 
 The actual prefactor preserves conjugation through its real constants and original exponentials. The exact Gaussian rational isometry also preserves independent observation rates for any original pair of conjugated names.
