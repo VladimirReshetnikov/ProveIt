@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceDomination
-import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.GaussianBinetSineDampedAxis
+import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.SineTransforms.GaussianBinetSineDampedAxis
 import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayCompactLower
 
 /-!

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Trigonometry.MultipleAngles.GaussianNamedSineMultipleAngle
-import IPRADerivations.Analysis.Trigonometry.SineProducts.GaussianSineNormalizedSampleName
+import IPRADerivations.Analysis.Trigonometry.SineProducts.SampleProducts.GaussianSineNormalizedSampleName
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.ReciprocalGamma.GaussianGammaAdjacentCutoff
 
 /-!

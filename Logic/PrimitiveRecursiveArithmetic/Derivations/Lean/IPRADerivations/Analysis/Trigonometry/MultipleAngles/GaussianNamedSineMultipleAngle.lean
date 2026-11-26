@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Trigonometry.MultipleAngles.GaussianNamedSineMultipleAngleSamples
-import IPRADerivations.Analysis.Trigonometry.SineProducts.GaussianSineTraceName
+import IPRADerivations.Analysis.Trigonometry.SineProducts.Roots.GaussianSineTraceName
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedDiagonalRate
 
 /-!

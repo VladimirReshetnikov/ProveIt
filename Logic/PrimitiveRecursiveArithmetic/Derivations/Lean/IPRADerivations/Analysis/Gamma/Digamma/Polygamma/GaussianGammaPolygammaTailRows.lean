@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Trigonometry.SineProducts.GaussianSineReflectionLower
+import IPRADerivations.Analysis.Trigonometry.SineProducts.Bounds.GaussianSineReflectionLower
 import IPRADerivations.Analysis.Polynomials.RootFinding.DominantTerms.GaussianDominantPairAlgebra
 import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianRationalInvertibleNorm
 

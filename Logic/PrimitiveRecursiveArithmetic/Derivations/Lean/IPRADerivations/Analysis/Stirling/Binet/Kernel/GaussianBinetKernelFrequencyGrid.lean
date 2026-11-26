@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetKernelFrozenIndependent
-import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.GaussianBinetOscillatoryColumns
+import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.Rectangles.GaussianBinetOscillatoryColumns
 
 /-!
 # Binet kernel observations on the original frequency grid

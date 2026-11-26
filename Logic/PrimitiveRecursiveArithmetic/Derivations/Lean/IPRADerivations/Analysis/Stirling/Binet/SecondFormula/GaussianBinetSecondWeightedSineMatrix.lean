@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.GaussianBinetSecondWeightedSineGrid
-import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.GaussianBinetOscillatorySineSmallStrip
+import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.Rectangles.GaussianBinetOscillatorySineSmallStrip
 
 /-!
 # The original weighted sine cells on a positive frequency suffix

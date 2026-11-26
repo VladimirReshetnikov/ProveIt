@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Barnes.Logarithms.GaussianBarnesCanonicalLogObservation
+import IPRADerivations.Analysis.Barnes.Logarithms.CofinalTails.GaussianBarnesCanonicalLogObservation
 import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialReference
 import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalExponent
 

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Reflection.GaussianGammaReflectionSineTransfer
-import IPRADerivations.Analysis.Trigonometry.SineProducts.GaussianSineReflectionLower
+import IPRADerivations.Analysis.Trigonometry.SineProducts.Bounds.GaussianSineReflectionLower
 
 /-!
 # The quotient form of the original Gamma reflection identity

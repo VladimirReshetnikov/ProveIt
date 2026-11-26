@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.Barnes.Taylor.GaussianBarnesCanonicalFiniteCentralChart
+import IPRADerivations.Analysis.Barnes.Taylor.CenteredCharts.GaussianBarnesCanonicalFiniteCentralChart
 import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.GaussianBarnesCanonicalTaylorCoefficientChart
-import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.GaussianBarnesCanonicalFixedTaylorDerivativeUniformConvergence
+import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.FixedCoefficients.GaussianBarnesCanonicalFixedTaylorDerivativeUniformConvergence
 
 /-!
 # Chart independence of the original Barnes factorial Taylor names

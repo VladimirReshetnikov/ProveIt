@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.Moments.GaussianBinetLaplaceMomentCompact
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceRealFloor
 import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayGlobalIncrement
-import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.GaussianBinetSineDampedAxis
+import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.SineTransforms.GaussianBinetSineDampedAxis
 
 /-!
 # A common positive decay and kernel read for the original Binet moment rows

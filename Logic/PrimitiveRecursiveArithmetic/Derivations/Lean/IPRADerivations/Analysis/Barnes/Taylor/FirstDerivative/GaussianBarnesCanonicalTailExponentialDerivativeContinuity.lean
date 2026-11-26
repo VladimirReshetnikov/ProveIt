@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.GaussianBarnesCanonicalDerivativeContinuity
 import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.GaussianBarnesCanonicalTailExponentialDerivative
-import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalTailContinuity
+import IPRADerivations.Analysis.Barnes.TailControl.GaussianBarnesCanonicalTailContinuity
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedBoundedProductObservation
 
 /-!

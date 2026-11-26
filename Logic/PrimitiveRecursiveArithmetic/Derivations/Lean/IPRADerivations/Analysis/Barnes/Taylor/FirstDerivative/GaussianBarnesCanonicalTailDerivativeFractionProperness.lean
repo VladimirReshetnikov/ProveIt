@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.GaussianBarnesCanonicalDerivativeFractionProperness
-import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalTailContinuity
+import IPRADerivations.Analysis.Barnes.TailControl.GaussianBarnesCanonicalTailContinuity
 import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.GaussianBarnesCanonicalTailExponentialDerivative
 
 /-!

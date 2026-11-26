@@ -3,7 +3,7 @@ import IPRADerivations.Analysis.Stirling.Binet.Bose.GaussianBinetBoseLateSchedul
 import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.GaussianBinetSecondDecayRetiming
 import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.GaussianBinetSecondFrequencySchedule
 import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.GaussianBinetSecondErrorBudget
-import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.GaussianBinetSineKernelPrefix
+import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.SineKernels.GaussianBinetSineKernelPrefix
 import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.GaussianBinetFrozenKernelLaplace
 
 /-!

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Taylor.RelativeExpansions.GaussianBarnesCanonicalCorrectedMercatorInterval
-import IPRADerivations.Analysis.Barnes.Logarithms.GaussianBarnesCanonicalLogCofinalRate
+import IPRADerivations.Analysis.Barnes.Logarithms.CofinalTails.GaussianBarnesCanonicalLogCofinalRate
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateComposition
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
 

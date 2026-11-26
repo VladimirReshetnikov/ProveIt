@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Reflection.GaussianGammaReflectionProduct
-import IPRADerivations.Analysis.Trigonometry.SineProducts.GaussianSineProductReflectionLower
+import IPRADerivations.Analysis.Trigonometry.SineProducts.Bounds.GaussianSineProductReflectionLower
 
 /-!
 # The R3 sine margin on the original complementary Gamma domain

@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Gamma.Names.PoleFree.GaussianGammaNamedPoleFreeP
 import IPRADerivations.Analysis.Gamma.Names.Derivatives.GaussianNamedGammaSmallIncrementInput
 import IPRADerivations.Analysis.Beta.EulerProducts.GaussianEulerBetaPolynomialPrimitive
 import IPRADerivations.Analysis.Polynomials.Division.GaussianRationalSyntheticCoefficientValues
-import IPRADerivations.Analysis.Trigonometry.SineProducts.GaussianSineReflectionLower
+import IPRADerivations.Analysis.Trigonometry.SineProducts.Bounds.GaussianSineReflectionLower
 
 /-!
 # Pole separation under a small named increment

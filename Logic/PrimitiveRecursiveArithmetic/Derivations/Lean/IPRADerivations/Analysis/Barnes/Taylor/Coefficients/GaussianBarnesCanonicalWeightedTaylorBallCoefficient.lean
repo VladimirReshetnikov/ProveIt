@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.Barnes.Taylor.GaussianBarnesCanonicalWeightedTaylorBall
-import IPRADerivations.Analysis.Barnes.Taylor.GaussianBarnesCanonicalCentralUniformBound
-import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.GaussianBarnesCanonicalTaylorProductDerivativeName
+import IPRADerivations.Analysis.Barnes.Taylor.TaylorBalls.GaussianBarnesCanonicalWeightedTaylorBall
+import IPRADerivations.Analysis.Barnes.Taylor.CenteredCharts.GaussianBarnesCanonicalCentralUniformBound
+import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.ProductCoefficients.GaussianBarnesCanonicalTaylorProductDerivativeName
 
 /-!
 # Factorial derivative readback of the stored weighted Barnes polynomial

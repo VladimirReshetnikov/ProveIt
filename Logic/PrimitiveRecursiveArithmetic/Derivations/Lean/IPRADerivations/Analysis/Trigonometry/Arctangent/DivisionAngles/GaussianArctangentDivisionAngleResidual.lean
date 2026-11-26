@@ -4,7 +4,7 @@ import IPRADerivations.Analysis.Trigonometry.Arctangent.Cayley.GaussianArctangen
 import IPRADerivations.Analysis.Trigonometry.Arctangent.Cayley.GaussianArctangentCayleyTrig
 import IPRADerivations.Analysis.Trigonometry.Arctangent.Cayley.GaussianArctangentCayleyExponentialStep
 import IPRADerivations.Analysis.Exponential.IntegerPowers.GaussianBoundedIntegerExponentialSample
-import IPRADerivations.Analysis.Trigonometry.SineProducts.GaussianSineSquaredResidual
+import IPRADerivations.Analysis.Trigonometry.SineProducts.Roots.GaussianSineSquaredResidual
 
 /-!
 # Polynomial residual at the sampled divided-angle Cayley roots

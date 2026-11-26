@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Trigonometry.Hyperbolic.GaussianSineProductImagi
 import IPRADerivations.Analysis.Trigonometry.Hyperbolic.GaussianSineProductImaginaryDerivativeComparison
 import IPRADerivations.Analysis.Trigonometry.Hyperbolic.GaussianSineProductImaginaryHyperbolicProductRule
 import IPRADerivations.Analysis.Gamma.Names.PositiveAxis.GaussianNamedGammaFirstCrossing
-import IPRADerivations.Analysis.Trigonometry.SineProducts.GaussianSineReflectionLower
+import IPRADerivations.Analysis.Trigonometry.SineProducts.Bounds.GaussianSineReflectionLower
 
 /-!
 # Exact cofinal logarithmic derivative of the imaginary-axis sine product

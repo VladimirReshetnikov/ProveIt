@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalFiniteGaussRate
-import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalShiftChart
+import IPRADerivations.Analysis.Barnes.FunctionalEquations.UnitShift.GaussianBarnesCanonicalFiniteGaussRate
+import IPRADerivations.Analysis.Barnes.FunctionalEquations.UnitShift.GaussianBarnesCanonicalShiftChart
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateComposition
 
 /-!

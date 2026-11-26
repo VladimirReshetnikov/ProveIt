@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalValue
 import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalHeadApartness
 import IPRADerivations.Analysis.Barnes.Prefactors.GaussianBarnesCanonicalPrefactorInverse
-import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalTailApartness
+import IPRADerivations.Analysis.Barnes.TailControl.GaussianBarnesCanonicalTailApartness
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedProductApartness
 import IPRADerivations.Analysis.Gamma.Poles.GaussianGammaPoleSearch
 

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Trigonometry.SineProducts.GaussianSineProductSynchronizedRow
+import IPRADerivations.Analysis.Trigonometry.SineProducts.SampleProducts.GaussianSineProductSynchronizedRow
 
 /-!
 # Slack in the synchronized sine head-row estimate

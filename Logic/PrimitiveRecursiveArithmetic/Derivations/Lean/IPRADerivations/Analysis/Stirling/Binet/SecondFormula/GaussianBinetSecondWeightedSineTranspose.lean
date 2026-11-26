@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.GaussianBinetSecondWeightedSineMatrix
 import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.GaussianBinetSecondRowCell
-import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.GaussianBinetSineDampedQuadrature
+import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.SineTransforms.GaussianBinetSineDampedQuadrature
 import IPRADerivations.Analysis.Stirling.Binet.Bose.GaussianBinetBoseFrozenMatrix
 
 /-!

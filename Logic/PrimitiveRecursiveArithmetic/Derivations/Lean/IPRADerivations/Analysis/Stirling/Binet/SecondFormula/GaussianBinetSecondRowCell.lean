@@ -1,7 +1,7 @@
-import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.GaussianBinetOscillatorySineRectangle
-import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.GaussianBinetSineRealDampedPanels
+import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.Rectangles.GaussianBinetOscillatorySineRectangle
+import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.SineTransforms.GaussianBinetSineRealDampedPanels
 import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.GaussianBinetSecondDecayPointwise
-import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.GaussianBinetSineFrozenPiTerm
+import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.SineTransforms.GaussianBinetSineFrozenPiTerm
 
 /-!
 # Shared exact cells of the arctangent and frozen sine quadratures

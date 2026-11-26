@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.Barnes.Taylor.GaussianBarnesCanonicalFiniteCentralDiskBound
+import IPRADerivations.Analysis.Barnes.Taylor.CenteredCharts.GaussianBarnesCanonicalFiniteCentralDiskBound
 import IPRADerivations.Analysis.Barnes.Taylor.GaussianBarnesCanonicalFiniteWeightedTaylorValue
-import IPRADerivations.Analysis.Barnes.Taylor.GaussianBarnesCanonicalHeadUniformMass
+import IPRADerivations.Analysis.Barnes.Taylor.CenteredCharts.GaussianBarnesCanonicalHeadUniformMass
 
 /-!
 # Weighted Taylor comparison of the original finite Barnes name on a disk

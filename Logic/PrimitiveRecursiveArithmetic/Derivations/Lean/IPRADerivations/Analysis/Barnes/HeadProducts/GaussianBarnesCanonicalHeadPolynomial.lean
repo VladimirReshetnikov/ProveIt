@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalBaseProductShift
+import IPRADerivations.Analysis.Barnes.FunctionalEquations.UnitShift.GaussianBarnesCanonicalBaseProductShift
 import IPRADerivations.Analysis.Gamma.EulerProducts.FiniteHeads.GaussianGammaEulerFactorPolynomial
 import IPRADerivations.Analysis.Polynomials.Products.GaussianRationalPolynomialPowers
 

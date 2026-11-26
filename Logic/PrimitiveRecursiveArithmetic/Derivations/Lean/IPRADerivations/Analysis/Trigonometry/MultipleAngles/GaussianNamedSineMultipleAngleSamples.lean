@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialInverseSamples
-import IPRADerivations.Analysis.Trigonometry.SineProducts.GaussianSineSquaredResidual
+import IPRADerivations.Analysis.Trigonometry.SineProducts.Roots.GaussianSineSquaredResidual
 
 /-!
 # Numerical readback of the original named multiple-angle sine

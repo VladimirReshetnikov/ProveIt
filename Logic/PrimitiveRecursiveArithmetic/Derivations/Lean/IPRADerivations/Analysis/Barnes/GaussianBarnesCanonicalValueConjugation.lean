@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalPrefixConjugation
-import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalUniformCutoff
+import IPRADerivations.Analysis.Barnes.TailControl.GaussianBarnesCanonicalUniformCutoff
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateConjugation
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateComposition
 

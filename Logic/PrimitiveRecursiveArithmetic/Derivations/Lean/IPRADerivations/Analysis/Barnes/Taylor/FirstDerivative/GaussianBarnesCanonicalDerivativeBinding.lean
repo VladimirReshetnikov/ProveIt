@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.GaussianBarnesCanonicalDerivativeAlgebra
-import IPRADerivations.Analysis.Barnes.Logarithms.GaussianBarnesCanonicalLogFactor
+import IPRADerivations.Analysis.Barnes.Logarithms.FiniteRows.GaussianBarnesCanonicalLogFactor
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedConstantRateFromSlack
 
 /-!

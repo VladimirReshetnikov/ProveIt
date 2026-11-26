@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.GaussianBinetArctangentSineUniform
+import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.Arctangent.GaussianBinetArctangentSineUniform
 import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.GaussianBinetSecondDecayPointwise
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedProductObservationBound
 

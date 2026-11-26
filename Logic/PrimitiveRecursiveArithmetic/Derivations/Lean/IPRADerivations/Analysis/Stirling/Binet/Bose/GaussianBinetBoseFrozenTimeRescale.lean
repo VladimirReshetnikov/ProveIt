@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.Bose.GaussianBinetBoseFrozenMatrix
-import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.GaussianBinetArctangentTimeRate
+import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.Arctangent.GaussianBinetArctangentTimeRate
 import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactRiemannSplit
 
 /-!

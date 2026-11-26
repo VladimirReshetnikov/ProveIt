@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Trigonometry.SineProducts.GaussianSineNormalizedSampleReconstruction
+import IPRADerivations.Analysis.Trigonometry.SineProducts.SampleProducts.GaussianSineNormalizedSampleReconstruction
 import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalHornerLipschitz
 
 /-!

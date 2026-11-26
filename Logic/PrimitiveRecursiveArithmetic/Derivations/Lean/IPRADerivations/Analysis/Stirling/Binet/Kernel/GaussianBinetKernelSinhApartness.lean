@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetKernelFrozenH
 import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetKernelSinhOddLower
 import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianPositiveExponentialSeparation
 import IPRADerivations.Analysis.RationalArithmetic.GaussianScalarColumnSelection
-import IPRADerivations.Analysis.Trigonometry.SineProducts.GaussianSineReflectionLower
+import IPRADerivations.Analysis.Trigonometry.SineProducts.Bounds.GaussianSineReflectionLower
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteProductApartness
 
 /-!

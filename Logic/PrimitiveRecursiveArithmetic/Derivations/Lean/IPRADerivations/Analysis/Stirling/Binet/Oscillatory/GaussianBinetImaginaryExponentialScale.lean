@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.GaussianBinetOscillatoryPanelFactor
+import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.Rectangles.GaussianBinetOscillatoryPanelFactor
 
 /-!
 # Rational rescaling and reversal of actual imaginary exponents

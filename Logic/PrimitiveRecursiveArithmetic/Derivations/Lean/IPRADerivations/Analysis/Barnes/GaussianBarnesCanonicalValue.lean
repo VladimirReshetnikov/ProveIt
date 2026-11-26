@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Prefactors.GaussianBarnesCanonicalPrefactor
 import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalHead
-import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalTailExponential
+import IPRADerivations.Analysis.Barnes.TailControl.GaussianBarnesCanonicalTailExponential
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedDifferenceRate
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
 

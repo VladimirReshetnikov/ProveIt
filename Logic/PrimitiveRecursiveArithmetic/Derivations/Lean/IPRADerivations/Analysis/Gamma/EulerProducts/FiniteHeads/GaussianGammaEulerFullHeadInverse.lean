@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerReciprocalInverse
-import IPRADerivations.Analysis.Trigonometry.SineProducts.GaussianSineProductReflectionLower
+import IPRADerivations.Analysis.Trigonometry.SineProducts.Bounds.GaussianSineProductReflectionLower
 
 /-!
 # The original finite Euler inverse with its full rational head

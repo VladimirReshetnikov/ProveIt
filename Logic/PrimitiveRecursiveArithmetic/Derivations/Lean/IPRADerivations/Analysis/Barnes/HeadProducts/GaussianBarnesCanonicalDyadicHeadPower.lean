@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalHeadExponentialFactors
-import IPRADerivations.Analysis.Barnes.Logarithms.GaussianBarnesCanonicalLogSchedule
+import IPRADerivations.Analysis.Barnes.Logarithms.CofinalTails.GaussianBarnesCanonicalLogSchedule
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerDifference
 import IPRADerivations.AnalyticNumberTheory.RSA
 

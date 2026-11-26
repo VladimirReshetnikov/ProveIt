@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.GaussianBinetArctangentQuadratureBound
+import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.Arctangent.GaussianBinetArctangentQuadratureBound
 import IPRADerivations.Analysis.Stirling.Binet.Bose.GaussianBinetBoseDenominator
 
 /-!

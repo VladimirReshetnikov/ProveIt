@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Bose.GaussianBinetBoseLinearApproximation
 import IPRADerivations.Analysis.Stirling.Binet.Bose.GaussianBinetBoseIntegrandBound
-import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.GaussianBinetArctangentLinearApproximation
+import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.Arctangent.GaussianBinetArctangentLinearApproximation
 
 /-!
 # The continuous endpoint of the original second Binet integrand
