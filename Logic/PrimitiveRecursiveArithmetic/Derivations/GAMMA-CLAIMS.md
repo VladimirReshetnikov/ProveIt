@@ -3116,3 +3116,6 @@ A uniform Lipschitz bound and all-sample cap for the original kept-prefix deriva
 
 Given a checked primitive-recursive disk modulus, the genuine lifted sampler evaluates the original rational derivative at a late original input observation. It has closed iPRA regularity, common-disk properness, and an explicit late-readback bound.
 [GaussianNamedDiskDemandLift](Lean/IPRADerivations/Analysis/GaussianNamedDiskDemandLift.lean), [GaussianNamedDiskDemandReadback](Lean/IPRADerivations/Analysis/GaussianNamedDiskDemandReadback.lean), [GaussianBarnesCanonicalNamedDerivative](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNamedDerivative.lean)
+
+The original full rational derivative has a primitive-recursive uniform disk modulus. It gives the actual derivative sampler on regular Gaussian names, with regularity, properness across separately certified radii, explicit late readback, and the original quotient rate on exact rational configurations.
+[GaussianBarnesCanonicalValueDerivativeContinuity](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalValueDerivativeContinuity.lean), [GaussianBarnesCanonicalNamedValueDerivative](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNamedValueDerivative.lean)
