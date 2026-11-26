@@ -3407,3 +3407,6 @@ The three coded fine derivative rates yield a coarse signed third-difference bou
 
 The signed cyclic range, literal wrap errors, and exact cubic scale yield the projected metric distance between original Gaussian samples at subsampled indices.
 [GaussianDiscretePeriodicGridReadback](Lean/IPRADerivations/Analysis/FiniteOperations/PeriodicGrids/GaussianDiscretePeriodicGridReadback.lean), [GaussianDiscretePeriodicThirdDerivative](Lean/IPRADerivations/Analysis/FiniteOperations/PeriodicGrids/GaussianDiscretePeriodicThirdDerivative.lean)
+
+A dyadic tolerance is selected before the fine refinement. A later signed lattice absorbs the rounding costs and gives distance at most 2⁻ᵖ from the explicit derivative, floor, and wrap certificate.
+[GaussianDiscretePeriodicDerivativeSchedule](Lean/IPRADerivations/Analysis/FiniteOperations/PeriodicGrids/GaussianDiscretePeriodicDerivativeSchedule.lean)
