@@ -131,27 +131,31 @@ theorem wrapped_observations (p q t N c d E T : PTm n)
   exact distance_congr left.eqSymm right.eqSymm (.eqRefl _) (.eqRefl _)
     (GaussianEvenMomentIntegrand.original_observations p q N (fstT t) (sndT t) E T c d h)
 
-theorem local_agreement (N a C E T c d : PTm n) (h : Γ ⊢[PRAAx] source a C E T c d) : Γ ⊢[PRAAx]
-    GaussianCompactClientIndependence.localAgreement GaussianEulerQuadraticKernelCompactName.evaluatorF
-      (evaluatorF false) a C E (fixedData (argument N) two c d) (momentData N c d) := by
+/-- Recover the pointwise moment input under the time and two precision binders. -/
+theorem shifted_point_source (a C E T c d : PTm n) (h : Γ ⊢[PRAAx] source a C E T c d) :
+    ((inside (Syn.shift a) (Syn.shift C) (Syn.shift E) (var 0) :: Γ.map Fm.shift).map Fm.shift).map Fm.shift ⊢[PRAAx]
+    GaussianEvenMomentIntegrand.source (fstT (var 2)) (sndT (var 2))
+      (Syn.shift (Syn.shift (Syn.shift E))) (Syn.shift (Syn.shift (Syn.shift T)))
+      (Syn.shift (Syn.shift (Syn.shift c))) (Syn.shift (Syn.shift (Syn.shift d))) := by
   have hs : Γ.map Fm.shift ⊢[PRAAx] source (Syn.shift a) (Syn.shift C) (Syn.shift E) (Syn.shift T) (Syn.shift c) (Syn.shift d) :=
-    by simpa only [Fm.shift,subst_source,Syn.shift] using h.shift
-  refine .allI (.impI (.allI (.allI ?_)))
-  let Δ := (inside (Syn.shift a) (Syn.shift C) (Syn.shift E) (var 0) :: Γ.map Fm.shift).map Fm.shift
+    by simpa only [Fm.shift, subst_source, Syn.shift] using h.shift
   have dom : (inside (Syn.shift a) (Syn.shift C) (Syn.shift E) (var 0) :: Γ.map Fm.shift) ⊢[PRAAx]
       GaussianEvenMomentIntegrand.source (fstT (var 0)) (sndT (var 0)) (Syn.shift E) (Syn.shift T) (Syn.shift c) (Syn.shift d) :=
     .andI (.andI hs.andE₁.andE₁.wk (GaussianEulerCompactAdditivity.domain_of_inside (var 0) (Syn.shift a)
       (Syn.shift C) (Syn.shift E) (Syn.shift T) hs.andE₁.andE₂.andE₁.wk hs.andE₁.andE₁.wk
       hs.andE₁.andE₂.andE₂.wk Prf.hyp0)) hs.andE₂.wk
-  have moved : Δ.map Fm.shift ⊢[PRAAx] GaussianEvenMomentIntegrand.source (fstT (var 2)) (sndT (var 2))
-      (Syn.shift (Syn.shift (Syn.shift E))) (Syn.shift (Syn.shift (Syn.shift T)))
-      (Syn.shift (Syn.shift (Syn.shift c))) (Syn.shift (Syn.shift (Syn.shift d))) := by
-    simpa [Δ,Fm.shift,Syn.shift] using dom.shift.shift
-  simpa [Δ,GaussianCompactClientIndependence.localAgreement,GaussianCompactClientIndependence.agreementBody,
-    crossEquivalent,Syn.shift,two,List.map_map] using
-    wrapped_observations (Γ := Δ.map Fm.shift) (var 1) (var 0) (var 2) (Syn.shift (Syn.shift (Syn.shift N)))
+  simpa [Fm.shift, Syn.shift] using dom.shift.shift
+
+theorem local_agreement (N a C E T c d : PTm n) (h : Γ ⊢[PRAAx] source a C E T c d) : Γ ⊢[PRAAx]
+    GaussianCompactClientIndependence.localAgreement GaussianEulerQuadraticKernelCompactName.evaluatorF
+      (evaluatorF false) a C E (fixedData (argument N) two c d) (momentData N c d) := by
+  refine .allI (.impI (.allI (.allI ?_)))
+  simpa [GaussianCompactClientIndependence.localAgreement, GaussianCompactClientIndependence.agreementBody,
+    crossEquivalent, Syn.shift, two, List.map_map] using
+    wrapped_observations (var 1) (var 0) (var 2) (Syn.shift (Syn.shift (Syn.shift N)))
       (Syn.shift (Syn.shift (Syn.shift c))) (Syn.shift (Syn.shift (Syn.shift d)))
-      (Syn.shift (Syn.shift (Syn.shift E))) (Syn.shift (Syn.shift (Syn.shift T))) moved
+      (Syn.shift (Syn.shift (Syn.shift E))) (Syn.shift (Syn.shift (Syn.shift T)))
+      (shifted_point_source a C E T c d h)
 
 theorem original_grid_distance (p q M a C E T N c d : PTm n) (h : Γ ⊢[PRAAx] source a C E T c d)
     (hM : Γ ⊢[PRAAx] le one M) : Γ ⊢[PRAAx]
