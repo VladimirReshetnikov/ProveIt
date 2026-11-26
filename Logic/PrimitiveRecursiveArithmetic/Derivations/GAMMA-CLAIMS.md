@@ -3062,3 +3062,6 @@ The actual full Barnes divided difference has a uniform rate once the original f
 
 The exponential of the actual combined logarithmic remainder approaches the exact constant one at independent precisions and uniform leading rate `factor(radius R M)*(R²+M+1)/K`. The translated input and midpoint have uniformly certified rational disk bounds.
 [GaussianBarnesCanonicalCombinedRemainderRate](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalCombinedRemainderRate.lean), [GaussianBarnesCanonicalShiftChart](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalShiftChart.lean)
+
+The actual named prefactor exponent difference is exactly `S−1/2−(1+γ)*(z+1/2)`, with the original Stirling and Euler constants and their certified arithmetic.
+[GaussianBarnesCanonicalPrefactorShiftAlgebra](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefactorShiftAlgebra.lean), [GaussianBarnesCanonicalPrefactorShiftBinding](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefactorShiftBinding.lean)
