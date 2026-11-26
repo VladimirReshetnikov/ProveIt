@@ -3302,3 +3302,6 @@ At every encoded integer m at least one, the original integer superfactorial seq
 
 The original Barnes sampler at every encoded nonnegative integer n equals the constant superfactorial value G(n+1) at independent observation clocks. A quantifier-free induction controls the finite approximation error of the original recurrence and exact factorial factors.
 [GaussianBarnesCanonicalIntegerRecurrence](Lean/IPRADerivations/Analysis/Barnes/FunctionalEquations/GaussianBarnesCanonicalIntegerRecurrence.lean), [GaussianBarnesCanonicalIntegerValues](Lean/IPRADerivations/Analysis/Barnes/FunctionalEquations/GaussianBarnesCanonicalIntegerValues.lean)
+
+The exact integer value and the finite observation estimates supply a dyadic lower witness inside the prescribed disk. A primitive-recursive choice of the scale yields arbitrarily large quadratic type bounds for the actual canonical observations.
+[GaussianBarnesCanonicalIntegerSampleLower](Lean/IPRADerivations/Analysis/Barnes/FunctionalEquations/GaussianBarnesCanonicalIntegerSampleLower.lean), [GaussianBarnesCanonicalDyadicLowerGrowth](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalDyadicLowerGrowth.lean)
