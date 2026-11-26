@@ -2948,3 +2948,6 @@ On each common rational disk, an explicit input clock certifies a dyadic value b
 
 On each admitted half-unit neighborhood of a negative integer, the actual Barnes value equals the exact power of the shifted input times a regular coefficient with explicit apartness. The original prefactor, remaining finite ranges and cofinal tail supply that coefficient. The analytic multiplicity theorem still requires the analytic contracts.
 [GaussianBarnesCanonicalDeflatedValue](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDeflatedValue.lean)
+
+The exact sums of the literal first-derivative rows give a regular sampler with an explicit cofinal length and tail modulus. Analytic identification with difference quotients remains open.
+[GaussianBarnesCanonicalDerivativeCofinal](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDerivativeCofinal.lean)
