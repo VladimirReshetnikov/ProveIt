@@ -3038,3 +3038,6 @@ The normalized sampler reads the genuine translated integer power of a late orig
 
 The original named Barnes evaluator agrees at independent precisions with the named product of the translated power and the original named deflated coefficient. The same iPRA theorem gives uniform apartness of the coefficient on the certified half-unit disk.
 [GaussianBarnesCanonicalNamedLocalFactorization](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNamedLocalFactorization.lean)
+
+The difference of the two original tail exponential names agrees to quadratic error with the Gaussian step times the named product of the base tail exponential and its cofinal log derivative. Input margins guarantee a uniformly small actual logarithmic increment.
+[GaussianBarnesCanonicalTailExponentialMargin](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalTailExponentialMargin.lean), [GaussianBarnesCanonicalTailExponentialDerivative](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalTailExponentialDerivative.lean)
