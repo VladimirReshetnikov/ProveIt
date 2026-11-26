@@ -2915,3 +2915,6 @@ A bounded search across actual factor bases identifies an exact zero in the fini
 
 Two original regular names with explicit apartness witnesses give apartness at the actual retimed product observation.
 [GaussianNamedProductApartness](Lean/IPRADerivations/Analysis/GaussianNamedProductApartness.lean)
+
+The exact exponential of the negated cofinal logarithm supplies a named inverse and quantitative apartness of the actual tail sampler.
+[GaussianBarnesCanonicalTailApartness](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalTailApartness.lean)
