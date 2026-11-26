@@ -31,7 +31,7 @@ open GaussianFastValueCut (exponent query_budget)
 open GaussianGammaCanonicalExponent (constantF constant_at)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
 open GaussianPolynomialExponentialCoefficientVariation (variationBudget)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_from_later_observations)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalSyntheticBounds (natCode natCode_nonnegative)
@@ -160,15 +160,11 @@ theorem sample_comparison (p P z R B M e q r : PTm n)
     (hz : Γ ⊢[PRAAx] source z R B) (he : Γ ⊢[PRAAx] le e (previous M)) (h : Γ ⊢[PRAAx] ready P z R B M e q r) :
     Γ ⊢[PRAAx] distanceBounded (sample p z R B M e) (productCoefficient q z R B r M e)
       (unit p+unit P) (unit p*unit P) := by
-  refine .orE (le_total p P) ?_ ?_
-  · exact distance_radius_mono _ _ _ _ _ _ (unit_positive p) (positive_product _ _ (unit_positive p) (unit_positive P))
-      (le_of_eq_add (d := unit p*unit p) (by ipra_ring))
-      (ready_gap p _ q z R B _ r M e hz.wk he.wk (sample_ready p z R B M e)
-        (ready_weaken p P z R B M e q r Prf.hyp0 h.wk))
-  · exact distance_radius_mono _ _ _ _ _ _ (unit_positive P) (positive_product _ _ (unit_positive p) (unit_positive P))
-      (le_of_eq_add (d := unit P*unit P) (by ipra_ring))
-      (ready_gap P _ q z R B _ r M e hz.wk he.wk
-        (ready_weaken P p z R B M e _ _ Prf.hyp0 (sample_ready p z R B M e)) h.wk)
+  exact distance_from_later_observations _ _ p P
+    (ready_gap p q _ z R B r _ M e hz.wk he.wk
+      (ready_weaken p P z R B M e q r Prf.hyp0 h.wk) (sample_ready p z R B M e))
+    (ready_gap P _ q z R B _ r M e hz.wk he.wk
+      (ready_weaken P p z R B M e _ _ Prf.hyp0 (sample_ready p z R B M e)) h.wk)
 
 theorem sample_at (p z R B M e : PTm n) : Γ ⊢[PRAAx] ap2 nameF p (data z R B M e) ≐ sample p z R B M e := by
   let x := data z R B M e

@@ -22,7 +22,7 @@ open GaussianRationalFiniteProduct (product_zero product_succ product_split prod
 open GaussianRationalSyntheticDivision (qone qmul_congr)
 open GaussianRationalReciprocal (qone_bounded bounded_sum bounded_product bound_congr)
 open GaussianRationalMetric (bounded distanceBounded qsub qsub_canonical)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_from_later_observations)
 open GaussianRationalLinearProduct (add_sub_right)
 open GaussianReciprocalHorner (qmul_one_right)
 open GaussianEuclideanDistanceName (pointCN)
@@ -166,15 +166,10 @@ theorem ordered_samples (z R B p q : PTm n) (hB : Γ ⊢[PRAAx] le one B)
 theorem sample_pair (z R B p q : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hz : Γ ⊢[PRAAx] ComplexLogarithmRemainder.bounded z (R*B)) :
     Γ ⊢[PRAAx] distanceBounded (ap2 nameF p (data z R B)) (ap2 nameF q (data z R B))
-      (unit p+unit q) (unit p*unit q) := by
-  have hD := positive_product _ _ (unit_positive (Γ := Γ) p) (unit_positive q)
-  refine .orE (le_total p q) ?_ ?_
-  · exact distance_radius_mono _ _ _ _ _ _ (unit_positive p) hD.wk
-      (le_of_eq_add (d := unit p*unit p) (by ipra_ring))
-      (distance_symmetric _ _ _ _ (unit_positive p) (ordered_samples z R B p q hB.wk hz.wk Prf.hyp0))
-  · exact distance_radius_mono _ _ _ _ _ _ (unit_positive q) hD.wk
-      (le_of_eq_add (d := unit q*unit q) (by ipra_ring))
-      (ordered_samples z R B q p hB.wk hz.wk Prf.hyp0)
+      (unit p+unit q) (unit p*unit q) :=
+  distance_from_later_observations _ _ p q
+    (ordered_samples z R B p q hB.wk hz.wk Prf.hyp0)
+    (ordered_samples z R B q p hB.wk hz.wk Prf.hyp0)
 
 theorem name_regular (z R B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hz : Γ ⊢[PRAAx] ComplexLogarithmRemainder.bounded z (R*B)) :

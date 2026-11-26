@@ -27,8 +27,7 @@ open GaussianExponentialReference (unit_monotone)
 open GaussianFastValueCut (query_budget)
 open GaussianGammaCanonicalExponent (constantF)
 open GaussianNamedInverseRate (independentRate)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
-open GaussianRationalHorner (positive_product)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_from_later_observations)
 open GaussianRationalMetric (distanceBounded)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -103,16 +102,11 @@ private theorem sample_gap (p q z R B r M e : PTm n) (hz : Γ ⊢[PRAAx] source 
     (he : Γ ⊢[PRAAx] le e (previous M)) :
     Γ ⊢[PRAAx] distanceBounded (sample p z R B r M e) (sample q z R B r M e)
       (unit p+unit q) (unit p*unit q) := by
-  have hd := positive_product _ _ (unit_positive (Γ := Γ) p) (unit_positive q)
   have hp := sample_ready (Γ := Γ) p z R B M e
   have hq := sample_ready (Γ := Γ) q z R B M e
-  refine .orE (le_total p q) ?_ ?_
-  · exact distance_radius_mono _ _ _ _ _ _ (unit_positive p) hd.wk
-      (le_of_eq_add (d := unit p*unit p) (by ipra_ring))
-      (ready_gap p _ _ z R B r M e hz.wk he.wk hp.wk (ready_weaken p q z R B M e _ Prf.hyp0 hq.wk))
-  · exact distance_radius_mono _ _ _ _ _ _ (unit_positive q) hd.wk
-      (le_of_eq_add (d := unit q*unit q) (by ipra_ring))
-      (ready_gap q _ _ z R B r M e hz.wk he.wk (ready_weaken q p z R B M e _ Prf.hyp0 hp.wk) hq.wk)
+  exact distance_from_later_observations _ _ p q
+    (ready_gap p _ _ z R B r M e hz.wk he.wk (ready_weaken p q z R B M e _ Prf.hyp0 hq.wk) hp.wk)
+    (ready_gap q _ _ z R B r M e hz.wk he.wk (ready_weaken q p z R B M e _ Prf.hyp0 hp.wk) hq.wk)
 
 theorem regular (z R B r M e : PTm n) (hz : Γ ⊢[PRAAx] source z R B) (he : Γ ⊢[PRAAx] le e (previous M)) :
     Γ ⊢[PRAAx] pointCN nameF (data z R B r M e) := by

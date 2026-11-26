@@ -25,7 +25,8 @@ open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianLocalLogarithmName (source data)
 open GaussianNameArithmetic (addF addData add_fast sum_distance)
 open GaussianNameEquivalence (crossEquivalent)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder
+  (distance_congr distance_radius_mono distance_symmetric distance_triangle_same distance_from_later_observations)
 open GaussianRationalHorner (ofGaussian ofGaussian_represents ofGaussian_canonical qadd positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalSyntheticDivision (qadd_congr rescale_to)
@@ -78,18 +79,9 @@ theorem regular (z R N : PTm n) (h : Γ ⊢[PRAAx] source z R N) :
     distance_radius_mono _ _ _ _ _ _ (GaussianLocalLogarithmName.unit_positive _) (GaussianCoefficientNameBounds.unit_positive _)
       (guard_bits a (num 5) (le_of_eq_add (d := num 11) (by ipra_ring)))
       (cubic_ordered_distance a b (sh z) (sh R) (sh N) hc hab)
-  have P := GaussianCoefficientNameBounds.unit_positive (Γ := Δ) p
-  have Q := GaussianCoefficientNameBounds.unit_positive (Γ := Δ) q
-  have hD := positive_product _ _ P Q
   have hbound : Δ ⊢[PRAAx] distanceBounded (roundedCubic p (sh z) (sh R) (sh N)) (roundedCubic q (sh z) (sh R) (sh N))
-      (dyadic p+dyadic q) (dyadic p*dyadic q) := by
-    refine (le_total p q).orE ?_ ?_
-    · exact distance_radius_mono _ _ _ _ _ _ P.wk hD.wk
-        (le_of_eq_add (d := dyadic p*dyadic p) (by ipra_ring))
-        (distance_symmetric _ _ _ _ P.wk (ordered p q Prf.hyp0 h'.wk))
-    · exact distance_radius_mono _ _ _ _ _ _ Q.wk hD.wk
-        (le_of_eq_add (d := dyadic q*dyadic q) (by ipra_ring))
-        (ordered q p Prf.hyp0 h'.wk)
+      (dyadic p+dyadic q) (dyadic p*dyadic q) :=
+    distance_from_later_observations _ _ p q (ordered p q Prf.hyp0 h'.wk) (ordered q p Prf.hyp0 h'.wk)
   simpa only [pointCN,GaussianLocalLogarithmName.subst_data,GaussianEuclideanPointDistance.unit,
     GaussianCoefficientNameBounds.unit,Syn.shift,sh,p,q,Δ] using
     distance_congr (sample_at p (sh z) (sh R) (sh N)).eqSymm

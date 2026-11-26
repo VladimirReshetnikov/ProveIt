@@ -24,6 +24,7 @@ open LeanProofs.IPRA.Analysis.GaussianRationalL1
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision
   (rescale_to qsub_congr)
 open LeanProofs.IPRA.Analysis.GaussianRationalReciprocal (bound_congr bounded_negative)
+open GaussianCoefficientNameBounds (unit unit_positive)
 open LeanProofs.IPRA.Analysis.GaussianRootAlgebra
   (equal_of_values re_sub im_sub re_neg im_neg)
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder (scale)
@@ -76,6 +77,22 @@ theorem distance_two_errors (z w B C D : PTm n)
   apply distance_radius_mono _ _ _ _ _ _ (positive_product _ _ hB hC) hD _ h
   exact le_congr (by ipra_ring) (by ipra_ring)
     (add_le_add₂ (mul_le_mul_right B hDC) (mul_le_mul_right C hDB))
+
+/-- A later observation within one unit of the earlier precision gives the
+usual symmetric two-clock comparison. -/
+theorem distance_from_later_observations (z w p q : PTm n)
+    (hpq : le p q :: Γ ⊢[PRAAx] distanceBounded w z one (unit p))
+    (hqp : le q p :: Γ ⊢[PRAAx] distanceBounded z w one (unit q)) :
+    Γ ⊢[PRAAx] distanceBounded z w (unit p+unit q) (unit p*unit q) := by
+  have hp := unit_positive (Γ := Γ) p
+  have hq := unit_positive (Γ := Γ) q
+  have hD := positive_product _ _ hp hq
+  refine .orE (le_total p q) ?_ ?_
+  · exact distance_radius_mono _ _ _ _ _ _ hp.wk hD.wk
+      (le_of_eq_add (d := unit p*unit p) (by ipra_ring))
+      (distance_symmetric _ _ _ _ hp.wk hpq)
+  · exact distance_radius_mono _ _ _ _ _ _ hq.wk hD.wk
+      (le_of_eq_add (d := unit q*unit q) (by ipra_ring)) hqp
 
 theorem distance_triangle_same (z y w A C B : PTm n)
     (hB : Γ ⊢[PRAAx] le one B)

@@ -21,8 +21,7 @@ open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianExponentialReference (unit_monotone)
 open GaussianFastValueCut (exponent query_budget)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
-open GaussianRationalHorner (positive_product)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_from_later_observations)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianReconstructionRoots (norm_from_distance)
@@ -101,16 +100,10 @@ theorem later_rounding (p v z R B N r : PTm n) (h : Γ ⊢[PRAAx] source z R B N
 
 theorem observations (p q z R B N r : PTm n) (h : Γ ⊢[PRAAx] source z R B N) :
     Γ ⊢[PRAAx] distanceBounded (sample p z R B N r) (sample q z R B N r)
-      (unit p+unit q) (unit p*unit q) := by
-  have pos := positive_product _ _ (unit_positive (Γ := Γ) p) (unit_positive q)
-  refine .orE (le_total p q) ?_ ?_
-  · have near := later_rounding p (clock q N r) z R B N r h.wk (clock_monotone p q N r Prf.hyp0)
-    exact distance_radius_mono _ _ _ _ _ _ (unit_positive p) pos.wk
-      (le_of_eq_add (d := unit p*unit p) (by ipra_ring))
-      (distance_symmetric _ _ _ _ (unit_positive p) near)
-  · have near := later_rounding q (clock p N r) z R B N r h.wk (clock_monotone q p N r Prf.hyp0)
-    exact distance_radius_mono _ _ _ _ _ _ (unit_positive q) pos.wk
-      (le_of_eq_add (d := unit q*unit q) (by ipra_ring)) near
+      (unit p+unit q) (unit p*unit q) :=
+  distance_from_later_observations _ _ p q
+    (later_rounding p (clock q N r) z R B N r h.wk (clock_monotone p q N r Prf.hyp0))
+    (later_rounding q (clock p N r) z R B N r h.wk (clock_monotone q p N r Prf.hyp0))
 
 theorem regular (z R B N r : PTm n) (h : Γ ⊢[PRAAx] source z R B N) :
     Γ ⊢[PRAAx] pointCN nameF (data z R B N r) := by
