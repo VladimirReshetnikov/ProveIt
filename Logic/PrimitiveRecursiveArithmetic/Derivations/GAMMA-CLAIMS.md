@@ -2957,3 +2957,6 @@ The original rational evaluator, applied to an explicit late original input obse
 
 Throughout the certified half-unit neighborhood, each retained factor has a lower bound independent of the input numerator and denominator. The same uniform apartness holds at the exact skipped-head observation.
 [GaussianBarnesCanonicalDeflatedHeadUniform](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDeflatedHeadUniform.lean)
+
+The three admitted Mercator names satisfy the exact addition and difference identity when their rational bases multiply. This supplies an exact name identity for the Barnes derivative comparison.
+[GaussianLocalLogarithmMultiplicativeIncrement](Lean/IPRADerivations/Analysis/GaussianLocalLogarithmMultiplicativeIncrement.lean)
