@@ -2924,3 +2924,6 @@ For the original sampler $F(z)=G(1+z)$ on admitted Gaussian rational inputs, a b
 
 An explicit bound on the actual prefactor and fixed head gives a single primitive-recursive cutoff depending only on the disk radius and requested precision. Every admitted rational input and every later literal product obey the same leading dyadic error.
 [GaussianBarnesCanonicalDiskBound](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDiskBound.lean), [GaussianBarnesCanonicalUniformCutoff](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalUniformCutoff.lean)
+
+The original cofinal sampler represents the same value under different disk radii and denominator encodings of the same Gaussian rational. Both comparisons use a common literal cutoff and eliminate the leading dyadic errors by a finite rational gap query.
+[GaussianBarnesCanonicalProperness](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalProperness.lean)
