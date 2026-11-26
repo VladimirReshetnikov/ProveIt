@@ -65,7 +65,7 @@ def data (z h R B p N m : PTm n) : PTm n :=
 def tailNumerator (z R B A L H m : PTm n) : PTm n :=
   U E (baseData z R B)*((A*pw (num 3) L)*pw H (succ m))
 
-private theorem gather_constants (z h R B v : PTm n) (hz : Γ ⊢[PRAAx] source z R B) :
+theorem gather_constants (z h R B v : PTm n) (hz : Γ ⊢[PRAAx] source z R B) :
     Γ ⊢[PRAAx] crossEquivalent (P C) nameF (pd C z h R B v)
       (multiplyData E C (baseData z R B) (qmul (head z h R B) v)) := by
   let a := head z h R B
@@ -105,7 +105,7 @@ private theorem constant_rate (a b A D : PTm n) (hd : Γ ⊢[PRAAx] le one D)
     GaussianRationalDistanceOrder.distance_congr (constant_at p (sh a)).eqSymm (constant_at q (sh b)).eqSymm
       (.eqRefl _) (.eqRefl _) radius
 
-private theorem scaled_rate (z R B a b A D : PTm n) (hz : Γ ⊢[PRAAx] source z R B)
+theorem scaled_rate (z R B a b A D : PTm n) (hz : Γ ⊢[PRAAx] source z R B)
     (hd : Γ ⊢[PRAAx] le one D) (hr : Γ ⊢[PRAAx] distanceBounded a b A D) :
     Γ ⊢[PRAAx] independentRate nameF nameF (multiplyData E C (baseData z R B) a)
       (multiplyData E C (baseData z R B) b) (U E (baseData z R B)*A) D := by
