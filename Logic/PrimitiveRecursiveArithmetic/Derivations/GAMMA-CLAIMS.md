@@ -2945,3 +2945,6 @@ The original ranges on both sides of the isolated index are apart throughout the
 
 On each common rational disk, an explicit input clock certifies a dyadic value budget for the original cofinal evaluator. The estimate combines the literal prefactor and head variation with two uniform convergence errors.
 [GaussianBarnesCanonicalPrefactorLipschitz](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefactorLipschitz.lean), [GaussianBarnesCanonicalUniformContinuity](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalUniformContinuity.lean)
+
+On each admitted half-unit neighborhood of a negative integer, the actual Barnes value equals the exact power of the shifted input times a regular coefficient with explicit apartness. The original prefactor, remaining finite ranges and cofinal tail supply that coefficient. The analytic multiplicity theorem still requires the analytic contracts.
+[GaussianBarnesCanonicalDeflatedValue](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDeflatedValue.lean)
