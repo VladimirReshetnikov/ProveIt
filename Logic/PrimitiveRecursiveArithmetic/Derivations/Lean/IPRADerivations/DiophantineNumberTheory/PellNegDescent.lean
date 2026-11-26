@@ -24,7 +24,7 @@ namespace LeanProofs.IPRA.DiophantineNumberTheory.PellNegDescent
 open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
-open LeanProofs.IPRA.DiophantineNumberTheory.PellDescent (lt_of_sq_lt A_pos rr tt)
+open LeanProofs.IPRA.DiophantineNumberTheory.PellDescent (lt_of_sq_lt A_pos rr tt residual_norm_balance positive_residual)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -76,29 +76,8 @@ theorem neg_descent {A B D x y : PTm n} (hA : Γ ⊢[PRAAx] A * A ≐ one + D * 
       le one (rr A B D x y) ⋏ le one (tt A B D x y) ⋏ lt (tt A B D x y) y ⋏
       (x ≐ A * rr A B D x y + D * (B * tt A B D x y)) ⋏ (y ≐ B * rr A B D x y + A * tt A B D x y) := by
   have lr := lt_r hA hx hD hBy
-  have lt := lt_t' hA hx hB
-  have er := ((eq_add_of_le (le_of_lt lr)).eqTrans (add_comm _ _)).eqSymm
-  have et := ((eq_add_of_le (le_of_lt lt)).eqTrans (add_comm _ _)).eqSymm
-  have h₁ := natEq hA; have h₂ := natEq hx; have h₃ := natEq er; have h₄ := natEq et
-  refine .andI ?_ (.andI ?_ (.andI ?_ (.andI ?_ (.andI ?_ ?_))))
-  · ipra_lc (Groth.ι (IPRA.Q.mk Γ (rr A B D x y)) + Groth.ι (IPRA.Q.mk Γ A) * Groth.ι (IPRA.Q.mk Γ x) - Groth.ι (IPRA.Q.mk Γ D) * Groth.ι (IPRA.Q.mk Γ B) * Groth.ι (IPRA.Q.mk Γ y)) * h₃ -
-      Groth.ι (IPRA.Q.mk Γ D) * (Groth.ι (IPRA.Q.mk Γ (tt A B D x y)) + Groth.ι (IPRA.Q.mk Γ A) * Groth.ι (IPRA.Q.mk Γ y) - Groth.ι (IPRA.Q.mk Γ B) * Groth.ι (IPRA.Q.mk Γ x)) * h₄ +
-      (Groth.ι (IPRA.Q.mk Γ x) ^ 2 - Groth.ι (IPRA.Q.mk Γ D) * Groth.ι (IPRA.Q.mk Γ y) ^ 2) * h₁ + h₂
-  · refine le_of_eq_add (d := monus (A * x) (succ (D * (B * y)))) ?_
-    have h₅ := natEq (eq_add_of_le lr)
-    apply deriveNat; ipra_simps
-    linear_combination h₃ + h₅
-  · refine le_of_eq_add (d := monus (A * y) (succ (B * x))) ?_
-    have h₅ := natEq (eq_add_of_le lt)
-    apply deriveNat; ipra_simps
-    linear_combination h₄ + h₅
-  · have w := eq_add_of_le (lt_y hA hx hB hD hBy)
-    refine le_of_eq_add (d := monus (B * x) (succ (pred A * y))) ?_
-    have h₅ := natEq w; have h₆ := natEq (A_pos hA)
-    apply deriveNat; ipra_simps
-    linear_combination -h₄ + h₅ - Groth.ι (IPRA.Q.mk Γ y) * h₆
-  · ipra_lc -Groth.ι (IPRA.Q.mk Γ x) * h₁ - Groth.ι (IPRA.Q.mk Γ A) * h₃ -
-      Groth.ι (IPRA.Q.mk Γ D) * Groth.ι (IPRA.Q.mk Γ B) * h₄
-  · ipra_lc -Groth.ι (IPRA.Q.mk Γ y) * h₁ - Groth.ι (IPRA.Q.mk Γ B) * h₃ - Groth.ι (IPRA.Q.mk Γ A) * h₄
+  have lt' := lt_t' hA hx hB
+  refine .andI ?_ (positive_residual hA lr lt' (lt_y hA hx hB hD hBy))
+  ipra_lc natEq (residual_norm_balance hA (le_of_lt lr) (le_of_lt lt')) + natEq hx
 
 end LeanProofs.IPRA.DiophantineNumberTheory.PellNegDescent
