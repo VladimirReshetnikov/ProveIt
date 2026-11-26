@@ -3122,3 +3122,6 @@ The original full rational derivative has a primitive-recursive uniform disk mod
 
 For $F(z)=G(1+z)$, the actual entire reciprocal Gamma name gives the cleared recurrence $F(z+1) / \Gamma(z+1)=F(z)$ on every admitted Gaussian rational, including poles. Multiplying by the original Gamma name on the certified pole-free domain gives the ordinary recurrence.
 [GaussianBarnesCanonicalFiniteGaussRate](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalFiniteGaussRate.lean), [GaussianBarnesCanonicalFunctionalEquation](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalFunctionalEquation.lean), [GaussianBarnesCanonicalPoleFreeRecurrence](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPoleFreeRecurrence.lean)
+
+A single dyadic upper bound on the native step pays the original quotient margin and desired output precision, independently of the nonzero certificate.
+[GaussianBarnesCanonicalDerivativeIncrementPrecision](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDerivativeIncrementPrecision.lean)
