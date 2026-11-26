@@ -2927,3 +2927,6 @@ An explicit bound on the actual prefactor and fixed head gives a single primitiv
 
 The original cofinal sampler represents the same value under different disk radii and denominator encodings of the same Gaussian rational. Both comparisons use a common literal cutoff and eliminate the leading dyadic errors by a finite rational gap query.
 [GaussianBarnesCanonicalProperness](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalProperness.lean)
+
+Explicit disk and index bounds give an independent-clock Lipschitz rate for the actual factor observations, including separately encoded Gaussian rational inputs.
+[GaussianBarnesCanonicalFactorLipschitz](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalFactorLipschitz.lean)
