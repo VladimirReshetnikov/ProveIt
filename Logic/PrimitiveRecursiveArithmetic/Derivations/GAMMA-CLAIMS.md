@@ -2906,3 +2906,6 @@ The original finite prefactor and factors at each admitted cutoff compare at ind
 
 The same encoded Gaussian rational in two positive-denominator presentations gives equivalent names for the original factor, prefactor and full finite product on independently certified disks.
 [GaussianBarnesCanonicalFiniteProperness](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalFiniteProperness.lean)
+
+At zero input every sample of the literal finite canonical product is exactly one. The original cofinal sampler represents one for every admitted radius and positive denominator, proving $G(1)=1$.
+[GaussianBarnesCanonicalNormalization](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNormalization.lean)
