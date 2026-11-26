@@ -14,13 +14,10 @@ set_option maxHeartbeats 1800000
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalFiniteTaylorMixedGridRows
 
 open_ipra
-open ComplexLogarithmRemainder (add bounded bounded_mono scale)
-open GaussianBarnesCanonicalCofinalTaylorMixedGridRows (polynomialGrid productCap rowNumerator)
+open ComplexLogarithmRemainder (add bounded scale)
+open GaussianBarnesCanonicalCofinalTaylorMixedGridRows (literal_node_error polynomialGrid productCap rowNumerator)
 open GaussianBarnesCanonicalFiniteTaylorGridObservations (literalGrid literal_at)
-open GaussianBarnesCanonicalFiniteCentralExponential (finiteNameF finiteData finite_regular)
 open GaussianBarnesCanonicalFiniteTaylorDiskGridLimit (analyticGain clockGain)
-open GaussianBarnesCanonicalFiniteTaylorGrid (polynomial)
-open GaussianBarnesCanonicalFiniteTaylorGridObservations (cap cost_le_cap scaledPolynomial)
 open GaussianBarnesCanonicalFiniteTaylorNormalizedGridBudget (rowNumeratorWithGains rowDenominator row_denominator_positive)
 open GaussianBarnesCanonicalHigherRows (previous)
 open GaussianBarnesCanonicalLogCofinal (source)
@@ -28,24 +25,17 @@ open GaussianBarnesCanonicalLogSchedule (initial)
 open GaussianBarnesCanonicalMixedTaylorGridGeometry
   (native_associative forward_bound backward_bound forward_point backward_point backwardDisplacement)
 open GaussianBarnesCanonicalWeightedTaylorBallSource (stepDivisor)
-open GaussianCoefficientNameBounds (unit unit_positive)
-open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
-open GaussianNameArithmetic (multiplyData multiplyModulus)
-open GaussianNamedInverseRate (rate_at rateNumerator rateDenominator denominator_positive)
-open GaussianPolynomialForwardDifferenceGrid (point samples sample_lookup)
+open GaussianCoefficientNameBounds (unit)
+open GaussianPolynomialForwardDifferenceGrid (point)
 open GaussianPolynomialForwardDifferenceGridError (rowBound)
-open GaussianRationalCoefficientScaling (scaled evaluation_linearity)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
-open GaussianRationalHorner (evaluate ofGaussian positive_product qmul qzero)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
+open GaussianRationalHorner (ofGaussian qzero)
 open GaussianRationalMetric (distanceBounded qnegative)
-open GaussianRationalSyntheticDivision (qmul_congr)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 local notation "V" => GaussianBarnesCanonicalValue.prefixF
-local notation "C" => GaussianBarnesCanonicalFiniteWeightedTaylorValue.nameF
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 local notation "gneg" => ComplexLogarithmRemainder.neg
 
 local notation "literal" => GaussianBarnesCanonicalProduct.literalData
@@ -66,69 +56,18 @@ theorem node_error (t q z δ R B H r M x k j : PTm n)
     Γ ⊢[PRAAx] distanceBounded (ap2 V t (literal (add z δ) (R+one) B (initial (R+one)+r)))
       (entry (polynomialGrid t q z R B H r M x k) j)
       (rowNumerator t q z R B H r M x k) (rowDenominator q t B M) := by
-  let S := R+one
-  let N := previous M
-  let P := polynomial q z R B H r M N
-  let d := finiteData z S B r
-  let c := ap2 finiteNameF t d
-  let α := samples P (succ N) x k
-  let v := entry α j
-  let y := point x k j
-  let L := multiplyModulus finiteNameF constantF d v+one
-  let K := productCap q z R B H r M x k
-  let A := GaussianBarnesCanonicalFiniteWeightedTaylorUniformValue.numerator q S B (N*H) M
-  let D := GaussianBarnesCanonicalFiniteWeightedTaylorValue.denominator q S B M
-  let D' := GaussianBarnesCanonicalFiniteTaylorGridBudget.denominator q B M
-  let U := unit t
-  let Q := unit q
-  let J := pw B (succ N)
-  let A' := GaussianBarnesCanonicalFiniteTaylorGridBudget.numeratorWithCaps q S B H M
-    (GaussianBarnesCanonicalHeadUniformMass.headCap S) (GaussianBarnesCanonicalFiniteCentralDiskBound.cap S)
-  have z' : Γ ⊢[PRAAx] source z S B :=
-    .andI hz.andE₁ (bounded_mono hz.andE₂ (le_of_eq_add (d := B) (by dsimp only [S]; ipra_ring)))
-  have finite := GaussianBarnesCanonicalFiniteWeightedTaylorUniformValue.shared_rate q z δ R B (N*H) r M hz hδ hs
-  have step₂ := rate_at _ _ _ _ _ _ t t finite
-  have cmp : Γ ⊢[PRAAx] le (A*D') (A'*D) :=
-    GaussianBarnesCanonicalFiniteTaylorGridBudget.radius_comparison_with_caps q S B H M _ _
-  have pos : Γ ⊢[PRAAx] le one D' :=
-    GaussianBarnesCanonicalFiniteTaylorGridBudget.denominator_positive q B M hz.andE₁
-  have hd : Γ ⊢[PRAAx] le one D :=
-    GaussianBarnesCanonicalFiniteTaylorGrid.denominator_positive q R B M hz.andE₁
-  have hsamp : Γ ⊢[PRAAx] evaluate P (ofGaussian δ B) ≐ v :=
-    (GaussianRationalReconstruction.evaluate_congr (.eqRefl P) hp).eqTrans
-      (sample_lookup P (succ N) x k j hj).eqSymm
-  have pd : Γ ⊢[PRAAx] GaussianBarnesCanonicalFiniteWeightedTaylorValue.data q z δ S B (N*H) r M ≐
-      multiplyData finiteNameF constantF d v := by
-    ipra_congr (multiplyData finiteNameF constantF (var 0) (var 1) : PTm 2) with [.eqRefl d, hsamp]
-      using [GaussianBarnesCanonicalFiniteWeightedTaylorValue.data, P, polynomial, d, S, N]
-  have product := GaussianNameRingLaws.multiply_sample_error finiteNameF constantF d v t
-    (finite_regular z S B r z') (constant_regular v)
-  have eval : Γ ⊢[PRAAx] qmul c (ap2 constantF t v) ≐ entry (polynomialGrid t q z R B H r M x k) j :=
-    (qmul_congr (.eqRefl c) ((constant_at t v).eqTrans (sample_lookup P (succ N) x k j hj))).eqTrans
-      ((evaluation_linearity P c y).eqSymm.eqTrans (sample_lookup (scaled P c) (succ N) x k j hj).eqSymm)
-  have step₃ := distance_congr (congrAp2 C (.eqRefl t) pd).eqSymm eval (.eqRefl _) (.eqRefl _) product
-  have Epos := row_denominator_positive q t B M hz.andE₁
-  have bound : Γ ⊢[PRAAx] le L K := cost_le_cap d α N j hj
-  have hleft : Γ ⊢[PRAAx] L*(D'*U) ≐ L*rowDenominator q t B M := .eqRefl _
-  have hright : Γ ⊢[PRAAx] K*(D'*U) ≐ (D'*K)*U := by ipra_ring
-  have paid := distance_radius_mono _ _ _ _ (D'*K) (rowDenominator q t B M) (unit_positive t) Epos
-    (le_congr hleft hright (mul_le_mul_right (D'*U) bound)) step₃
-  have first : Γ ⊢[PRAAx] distanceBounded
-      (ap2 V t (literal (add z δ) S B (initial S+r)))
-      (ap2 C t (GaussianBarnesCanonicalFiniteWeightedTaylorValue.data q z δ S B (N*H) r M))
-      (A'*U+D'*two) (rowDenominator q t B M) :=
-    distance_radius_mono _ _ _ _ _ _ (denominator_positive _ _ _ hd) Epos
-      (by
-        change Γ ⊢[PRAAx] le ((A*U*U+D*(U+U))*(D'*U)) ((A'*U+D'*two)*(D*U*U))
-        ipra_le 𝔞(U)*𝔞(U)*𝔞(U)*sl cmp) step₂
-  have sum := distance_triangle_same _ _ _ _ _ _ Epos first paid
-  have fit : Γ ⊢[PRAAx] le (A'*U+D'*two+D'*K) (rowNumerator t q z R B H r M x k) :=
-    le_of_eq_add (d := J*U+D'*two) (by
-      dsimp only [rowNumerator,rowNumeratorWithGains,A',D',analyticGain,clockGain,
-        GaussianBarnesCanonicalFiniteTaylorGridBudget.numeratorWithCaps,
-        GaussianBarnesCanonicalFiniteTaylorGridBudget.denominator,J,Q,U,K]
+  let J := pw B (succ (previous M))
+  let D := GaussianBarnesCanonicalFiniteTaylorGridBudget.denominator q B M
+  let E := rowDenominator q t B M
+  have hE := row_denominator_positive q t B M hz.andE₁
+  have fit : Γ ⊢[PRAAx] le
+      (rowNumeratorWithGains q t B H M (two+productCap q z R B H r M x k) (analyticGain R M) (clockGain R))
+      (rowNumerator t q z R B H r M x k) :=
+    le_of_eq_add (d := J*unit t+D*two) (by
+      dsimp only [rowNumerator,rowNumeratorWithGains,D,J]
       ipra_ring)
-  exact distance_radius_mono _ _ _ _ _ _ Epos Epos (mul_le_mul_right (rowDenominator q t B M) fit) sum
+  exact distance_radius_mono _ _ _ _ _ _ hE hE (mul_le_mul_right E fit)
+    (literal_node_error t q z δ R B H r M x k j hz hδ hs hj hp)
 
 theorem forward_rows (t q z h R B H r M : PTm n) (hz : Γ ⊢[PRAAx] source z R B)
     (hh : Γ ⊢[PRAAx] bounded h H)

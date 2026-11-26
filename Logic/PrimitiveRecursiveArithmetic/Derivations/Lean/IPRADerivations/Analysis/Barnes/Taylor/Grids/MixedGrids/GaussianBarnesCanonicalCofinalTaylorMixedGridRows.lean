@@ -36,7 +36,7 @@ open GaussianPolynomialForwardDifferenceGrid (point samples sample_lookup)
 open GaussianPolynomialForwardDifferenceGridError (rowBound)
 open GaussianRationalCoefficientScaling (scaled evaluation_linearity)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
-open GaussianRationalHorner (evaluate ofGaussian positive_product qmul qzero)
+open GaussianRationalHorner (evaluate ofGaussian qmul qzero)
 open GaussianRationalMetric (distanceBounded qnegative)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
@@ -46,6 +46,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "G" => GaussianBarnesCanonicalValue.nameF
 local notation "V" => GaussianBarnesCanonicalValue.prefixF
 local notation "C" => GaussianBarnesCanonicalFiniteWeightedTaylorValue.nameF
+local notation "literal" => GaussianBarnesCanonicalProduct.literalData
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 local notation "gneg" => ComplexLogarithmRemainder.neg
 
@@ -98,38 +99,17 @@ theorem sufficient_disk_width (R B H : PTm n) (hs : Γ ⊢[PRAAx] le (stepDiviso
     Γ ⊢[PRAAx] le H B :=
   le_trans (le_congr (one_mul H) (.eqRefl _) (mul_le_mul_right H (stepDivisor_positive R))) hs
 
-private theorem row_chain (U X W A B D t q C₀ : PTm n)
-    (hD : Γ ⊢[PRAAx] le one D) (hD' : Γ ⊢[PRAAx] le one (B*unit q))
-    (hA : Γ ⊢[PRAAx] le (A*(B*unit q)) (C₀*D))
-    (h₁ : Γ ⊢[PRAAx] distanceBounded U X (rateNumerator one (unit q) t t) (rateDenominator (unit q) t t))
-    (h₂ : Γ ⊢[PRAAx] distanceBounded X W (rateNumerator A D t t) (rateDenominator D t t)) :
-    Γ ⊢[PRAAx] distanceBounded U W ((B+C₀)*unit t+(B*unit q)*num 4) ((B*unit q)*unit t) := by
-  let Q := unit q
-  let T := unit t
-  let F := B*Q
-  let E := F*T
-  have hE : Γ ⊢[PRAAx] le one E := positive_product _ _ hD' (unit_positive t)
-  have u : Γ ⊢[PRAAx] distanceBounded U X (B*T+F*two) E :=
-    distance_radius_mono _ _ _ _ _ _ (denominator_positive _ _ _ (unit_positive q)) hE
-      (le_of_eq_add (d := zero) (by dsimp only [E,F,Q,T,rateNumerator,rateDenominator]; ipra_ring)) h₁
-  have v : Γ ⊢[PRAAx] distanceBounded X W (C₀*T+F*two) E :=
-    distance_radius_mono _ _ _ _ _ _ (denominator_positive _ _ _ hD) hE
-      (by
-        dsimp only [E,F,rateNumerator,rateDenominator,T,Q] at *
-        ipra_le 𝔞(T)*𝔞(T)*𝔞(T)*sl hA) h₂
-  exact distance_congr (.eqRefl _) (.eqRefl _) (by dsimp only [F,Q,T]; ipra_ring) (.eqRefl _)
-    (distance_triangle_same _ _ _ _ _ _ hE u v)
-
-theorem node_error (t q z δ R B H r M x k j : PTm n)
+/-- Bound an original finite product observation by its stored polynomial grid node. -/
+theorem literal_node_error (t q z δ R B H r M x k j : PTm n)
     (hz : Γ ⊢[PRAAx] source z R B)
     (hδ : Γ ⊢[PRAAx] bounded δ (previous M*H))
     (hs : Γ ⊢[PRAAx] le (stepDivisor R*(previous M*H)) B)
-    (hr : Γ ⊢[PRAAx] le (tailCutoff q R) r)
     (hj : Γ ⊢[PRAAx] lt j (succ (previous M)))
     (hp : Γ ⊢[PRAAx] ofGaussian δ B ≐ point x k j) :
-    Γ ⊢[PRAAx] distanceBounded (ap2 G t (GaussianBarnesCanonicalValue.data (add z δ) (R+one) B))
+    Γ ⊢[PRAAx] distanceBounded (ap2 V t (literal (add z δ) (R+one) B (initial (R+one)+r)))
       (entry (polynomialGrid t q z R B H r M x k) j)
-      (rowNumerator t q z R B H r M x k) (rowDenominator q t B M) := by
+      (rowNumeratorWithGains q t B H M (two+productCap q z R B H r M x k) (analyticGain R M) (clockGain R))
+      (rowDenominator q t B M) := by
   let S := R+one
   let N := previous M
   let P := polynomial q z R B H r M N
@@ -144,23 +124,14 @@ theorem node_error (t q z δ R B H r M x k j : PTm n)
   let D := GaussianBarnesCanonicalFiniteWeightedTaylorValue.denominator q S B M
   let D' := GaussianBarnesCanonicalFiniteTaylorGridBudget.denominator q B M
   let U := unit t
-  let Q := unit q
-  let J := pw B (succ N)
   let A' := GaussianBarnesCanonicalFiniteTaylorGridBudget.numeratorWithCaps q S B H M
     (GaussianBarnesCanonicalHeadUniformMass.headCap S) (GaussianBarnesCanonicalFiniteCentralDiskBound.cap S)
   have z' : Γ ⊢[PRAAx] source z S B :=
     .andI hz.andE₁ (bounded_mono hz.andE₂ (le_of_eq_add (d := B) (by dsimp only [S]; ipra_ring)))
-  have node := admitted_node z δ R B (N*H) hz hδ (sufficient_disk_width R B (N*H) hs)
-  have guard := le_trans hr (le_add_left r (initial S))
-  have tail := GaussianBarnesCanonicalUniformCutoff.uniform_rate (add z δ) S B q (initial S+r) node guard
-  have earlier := GaussianNamedRateComposition.symmetric _ _ _ _ _ _ (unit_positive q) tail
-  have step₁ := rate_at _ _ _ _ _ _ t t earlier
   have finite := GaussianBarnesCanonicalFiniteWeightedTaylorUniformValue.shared_rate q z δ R B (N*H) r M hz hδ hs
   have step₂ := rate_at _ _ _ _ _ _ t t finite
   have cmp : Γ ⊢[PRAAx] le (A*D') (A'*D) :=
     GaussianBarnesCanonicalFiniteTaylorGridBudget.radius_comparison_with_caps q S B H M _ _
-  have pos : Γ ⊢[PRAAx] le one D' :=
-    GaussianBarnesCanonicalFiniteTaylorGridBudget.denominator_positive q B M hz.andE₁
   have hd : Γ ⊢[PRAAx] le one D :=
     GaussianBarnesCanonicalFiniteTaylorGrid.denominator_positive q R B M hz.andE₁
   have hsamp : Γ ⊢[PRAAx] evaluate P (ofGaussian δ B) ≐ v :=
@@ -182,12 +153,60 @@ theorem node_error (t q z δ R B H r M x k j : PTm n)
   have hright : Γ ⊢[PRAAx] K*(D'*U) ≐ (D'*K)*U := by ipra_ring
   have paid := distance_radius_mono _ _ _ _ (D'*K) (rowDenominator q t B M) (unit_positive t) Epos
     (le_congr hleft hright (mul_le_mul_right (D'*U) bound)) step₃
-  have sum := distance_triangle_same _ _ _ _ _ _ Epos (row_chain _ _ _ A J D t q A' hd pos cmp step₁ step₂) paid
+  have first : Γ ⊢[PRAAx] distanceBounded
+      (ap2 V t (literal (add z δ) S B (initial S+r)))
+      (ap2 C t (GaussianBarnesCanonicalFiniteWeightedTaylorValue.data q z δ S B (N*H) r M))
+      (A'*U+D'*two) (rowDenominator q t B M) :=
+    distance_radius_mono _ _ _ _ _ _ (denominator_positive _ _ _ hd) Epos
+      (by
+        change Γ ⊢[PRAAx] le ((A*U*U+D*(U+U))*(D'*U)) ((A'*U+D'*two)*(D*U*U))
+        ipra_le 𝔞(U)*𝔞(U)*𝔞(U)*sl cmp) step₂
+  have sum := distance_triangle_same _ _ _ _ _ _ Epos first paid
   exact distance_congr (.eqRefl _) (.eqRefl _)
-    (by dsimp only [rowNumerator,rowNumeratorWithGains,A',D',analyticGain,clockGain,
-      GaussianBarnesCanonicalFiniteTaylorGridBudget.numeratorWithCaps,
-      GaussianBarnesCanonicalFiniteTaylorGridBudget.denominator,J,Q,U,K]; ipra_ring)
+    (by
+      dsimp only [rowNumeratorWithGains,A',D',analyticGain,clockGain,
+        GaussianBarnesCanonicalFiniteTaylorGridBudget.numeratorWithCaps,U,K]
+      ipra_ring)
     (.eqRefl _) sum
+
+theorem node_error (t q z δ R B H r M x k j : PTm n)
+    (hz : Γ ⊢[PRAAx] source z R B)
+    (hδ : Γ ⊢[PRAAx] bounded δ (previous M*H))
+    (hs : Γ ⊢[PRAAx] le (stepDivisor R*(previous M*H)) B)
+    (hr : Γ ⊢[PRAAx] le (tailCutoff q R) r)
+    (hj : Γ ⊢[PRAAx] lt j (succ (previous M)))
+    (hp : Γ ⊢[PRAAx] ofGaussian δ B ≐ point x k j) :
+    Γ ⊢[PRAAx] distanceBounded (ap2 G t (GaussianBarnesCanonicalValue.data (add z δ) (R+one) B))
+      (entry (polynomialGrid t q z R B H r M x k) j)
+      (rowNumerator t q z R B H r M x k) (rowDenominator q t B M) := by
+  let S := R+one
+  let N := previous M
+  let J := pw B (succ N)
+  let D := GaussianBarnesCanonicalFiniteTaylorGridBudget.denominator q B M
+  let K := productCap q z R B H r M x k
+  let U := unit t
+  let Q := unit q
+  have node := admitted_node z δ R B (N*H) hz hδ (sufficient_disk_width R B (N*H) hs)
+  have guard := le_trans hr (le_add_left r (initial S))
+  have tail := GaussianBarnesCanonicalUniformCutoff.uniform_rate (add z δ) S B q (initial S+r) node guard
+  have earlier := GaussianNamedRateComposition.symmetric _ _ _ _ _ _ (unit_positive q) tail
+  have raw := rate_at _ _ _ _ _ _ t t earlier
+  have hE := row_denominator_positive q t B M hz.andE₁
+  have cutoff : Γ ⊢[PRAAx]
+      distanceBounded (ap2 G t (GaussianBarnesCanonicalValue.data (add z δ) S B))
+        (ap2 V t (literal (add z δ) S B (initial S+r))) (J*U+D*two) (rowDenominator q t B M) :=
+    distance_radius_mono _ _ _ _ _ _ (denominator_positive _ _ _ (unit_positive q)) hE
+      (le_of_eq_add (d := zero) (by
+        dsimp only [rowDenominator,D,GaussianBarnesCanonicalFiniteTaylorGridBudget.denominator,J,U,Q,
+          rateNumerator,rateDenominator]
+        ipra_ring)) raw
+  have finite := literal_node_error t q z δ R B H r M x k j hz hδ hs hj hp
+  exact distance_congr (.eqRefl _) (.eqRefl _)
+    (by
+      dsimp only [rowNumerator,rowNumeratorWithGains,D,GaussianBarnesCanonicalFiniteTaylorGridBudget.denominator,
+        J,U,Q,K]
+      ipra_ring)
+    (.eqRefl _) (distance_triangle_same _ _ _ _ _ _ hE cutoff finite)
 
 theorem forward_rows (t q z h R B H r M : PTm n) (hz : Γ ⊢[PRAAx] source z R B)
     (hh : Γ ⊢[PRAAx] bounded h H)
