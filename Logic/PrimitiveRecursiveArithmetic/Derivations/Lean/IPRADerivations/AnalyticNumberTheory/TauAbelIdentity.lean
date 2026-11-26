@@ -25,8 +25,7 @@ namespace LeanProofs.IPRA.AnalyticNumberTheory.TauAbelIdentity
 open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB inst2_h)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg zero_mul_l)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (S_mono)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum (U)
+open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum (U U_paired U_zero U_increment_mul)
 open LeanProofs.IPRA.AnalyticNumberTheory.TauLogAbel (As A_succ)
 open LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz (cvB conv cv_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (cvF inst2_cvF)
@@ -88,39 +87,22 @@ theorem inst2_tuB (k z : PTm n) : inst2 tuB k z =
 theorem tuB_at (k K F : PTm n) :
     Γ ⊢[PRAAx] inst2 tuB k (pairT K F) ≐ conv one one k (pairT K F) * U k K F := by
   rw [inst2_tuB]
-  exact congrMul (.eqRefl _) (congrMonus (congrAp2 (sumF hB) (congrMul (fst_pair _ _) (.eqRefl _)) (snd_pair _ _))
-    (congrAp2 (sumF hB) (fst_pair _ _) (snd_pair _ _)))
+  exact congrMul (.eqRefl _) (U_paired k K F)
 
 /-- The invariant `Σ_{n≤N} τ(n) u_n + A(N) = D(N) u_N`. -/
 abbrev Ab (N K F : PTm n) : Fm PTm n :=
   ap2 (sumF tuB) (succ N) (pairT K F) + As N K F ≐ S N N * U N K F
 
 theorem ab_zero (K F : PTm n) : Γ ⊢[PRAAx] Ab zero K F := by
-  have t0 : Γ ⊢[PRAAx] inst2 tuB zero (pairT K F) ≐ zero := by
-    refine (tuB_at _ _ _).eqTrans (zero_mul_l ?_ _)
-    exact (sum_succ' _ _ _).eqTrans ((congrAdd (sum_zero _ _) (cv_at _ _ _ _ _)).eqTrans
-      ((congrAdd (.eqRefl _) (zero_mul_l (zero_mul_l sg_zero _) _)).eqTrans (add_zero _)))
+  have t0 := (tuB_at (Γ := Γ) zero K F).eqTrans
+    ((congrMul (.eqRefl _) (U_zero K F)).eqTrans (mul_zero _))
   ipra_lc natEq (sum_succ' (Γ := Γ) tuB zero (pairT K F)) + natEq (sum_zero (Γ := Γ) tuB (pairT K F)) + natEq t0 +
     natEq (sum_zero (Γ := Γ) TauLogAbel.AB (pairT K F)) - 𝔞 (U zero K F) * natEq (sum_zero (Γ := Γ) hB (zero : PTm n))
 
 theorem ab_step {N K F : PTm n} (ih : Γ ⊢[PRAAx] Ab N K F) : Γ ⊢[PRAAx] Ab (succ N) K F := by
   have d := natEq (tau_succ (Γ := Γ) N (pairT K F))
-  -- `D(N) (u_N + (x_{N+1} − x_N) − u_{N+1}) = 0`
-  have key : Γ ⊢[PRAAx] S N N * (U N K F + monus (S (K * succ N) F) (S (K * N) F)) ≐ S N N * U (succ N) K F := by
-    refine .orE (zero_or_succ N) ?_ ?_
-    · have h0 : ((N ≐ zero) :: Γ) ⊢[PRAAx] S N N ≐ zero :=
-        (congrAp2 (sumF hB) Prf.hyp0 Prf.hyp0).eqTrans (sum_zero _ _)
-      exact (zero_mul_l h0 _).eqTrans (zero_mul_l h0 _).eqSymm
-    · let C : List (Fm PTm n) := (N ≐ succ (pred N)) :: Γ
-      have hN : C ⊢[PRAAx] N ≐ succ (pred N) := Prf.hyp0
-      have wN := natEq hN
-      have m1 : C ⊢[PRAAx] le (S K F) (S (K * N) F) :=
-        S_mono F (le_of_eq_add (d := K * pred N) (by apply deriveNat; ipra_simps; linear_combination 𝔞 K * wN))
-      have m2 : C ⊢[PRAAx] le (S K F) (S (K * succ N) F) :=
-        S_mono F (le_of_eq_add (d := K * N) (by ipra_ring))
-      have m3 : C ⊢[PRAAx] le (S (K * N) F) (S (K * succ N) F) :=
-        S_mono F (le_of_eq_add (d := K) (by ipra_ring))
-      ipra_lc 𝔞 (S N N) * (natEq (eq_add_of_le m2) - natEq (eq_add_of_le m1) - natEq (eq_add_of_le m3))
+  have key := U_increment_mul (Γ := Γ) N K F (S N N)
+    ((congrAp2 (sumF hB) Prf.hyp0 Prf.hyp0).eqTrans (sum_zero _ _))
   ipra_lc natEq (sum_succ' (Γ := Γ) tuB (succ N) (pairT K F)) + natEq (tuB_at (Γ := Γ) (succ N) K F) +
     natEq (A_succ (Γ := Γ) N K F) + natEq ih - 𝔞 (U (succ N) K F) * d + natEq key
 

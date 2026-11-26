@@ -27,7 +27,7 @@ open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (S_mono wt psi_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertensLower (delta_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum (U)
+open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum (U U_paired delta_paired U_increment_mul)
 open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (Psi LamB inst2_LamB pos_of_lt_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt (Lam Lw)
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (lam_zero)
@@ -74,15 +74,13 @@ theorem inst2_adB (k z : PTm n) : inst2 (adB a) k z =
 theorem auB_at (k K F : PTm n) :
     Γ ⊢[PRAAx] inst2 (auB a) k (pairT K F) ≐ inst2 a k (pairT K F) * U k K F := by
   rw [inst2_auB]
-  exact congrMul (.eqRefl _) (congrMonus (congrAp2 (sumF hB) (congrMul (fst_pair _ _) (.eqRefl _)) (snd_pair _ _))
-    (congrAp2 (sumF hB) (fst_pair _ _) (snd_pair _ _)))
+  exact congrMul (.eqRefl _) (U_paired k K F)
 
 theorem adB_at (k K F : PTm n) :
     Γ ⊢[PRAAx] inst2 (adB a) k (pairT K F) ≐
       ap2 (sumF a) (succ k) (pairT K F) * monus (S (K * succ k) F) (S (K * k) F) := by
   rw [inst2_adB]
-  exact congrMul (.eqRefl _) (congrMonus (congrAp2 (sumF hB) (congrMul (fst_pair _ _) (.eqRefl _)) (snd_pair _ _))
-    (congrAp2 (sumF hB) (congrMul (fst_pair _ _) (.eqRefl _)) (snd_pair _ _)))
+  exact congrMul (.eqRefl _) (delta_paired k K F)
 
 /-- `Σ_{n≤N} a(n) u_n + Σ_{n<N} A(n)(x_{n+1} − x_n) = A(N) u_N`. -/
 abbrev Ab (N K F : PTm n) : Fm PTm n :=
@@ -90,8 +88,7 @@ abbrev Ab (N K F : PTm n) : Fm PTm n :=
     ap2 (sumF a) (succ N) (pairT K F) * U N K F
 
 theorem U_zero (K F : PTm n) : Γ ⊢[PRAAx] U zero K F ≐ zero :=
-  (congrMonus ((congrAp2 (sumF hB) (mul_zero K) (.eqRefl F)).eqTrans (sum_zero _ _)) (.eqRefl _)).eqTrans
-    (zero_monus _)
+  HarmonicLogSquareSum.U_zero K F
 
 theorem ab_zero (K F : PTm n) : Γ ⊢[PRAAx] Ab a zero K F := by
   ipra_lc natEq (sum_succ' (Γ := Γ) (auB a) zero (pairT K F)) + natEq (sum_zero (Γ := Γ) (auB a) (pairT K F)) +
@@ -102,25 +99,10 @@ theorem ab_zero (K F : PTm n) : Γ ⊢[PRAAx] Ab a zero K F := by
 theorem ab_step {N K F : PTm n} (h0 : Γ ⊢[PRAAx] inst2 a zero (pairT K F) ≐ zero) (ih : Γ ⊢[PRAAx] Ab a N K F) :
     Γ ⊢[PRAAx] Ab a (succ N) K F := by
   have d := natEq (sum_succ' (Γ := Γ) (adB a) N (pairT K F))
-  have key : Γ ⊢[PRAAx] ap2 (sumF a) (succ N) (pairT K F) * (U N K F + monus (S (K * succ N) F) (S (K * N) F)) ≐
-      ap2 (sumF a) (succ N) (pairT K F) * U (succ N) K F := by
-    refine .orE (zero_or_succ N) ?_ ?_
-    · let C : List (Fm PTm n) := (N ≐ zero) :: Γ
-      have hN : C ⊢[PRAAx] N ≐ zero := Prf.hyp0
-      have a0 : C ⊢[PRAAx] ap2 (sumF a) (succ N) (pairT K F) ≐ zero :=
-        (sum_succ' _ _ _).eqTrans ((congrAdd ((congrAp2 _ hN (.eqRefl _)).eqTrans (sum_zero _ _))
-          ((congrInst2 a hN (.eqRefl _)).eqTrans h0.wk)).eqTrans (add_zero _))
-      exact (zero_mul_l a0 _).eqTrans (zero_mul_l a0 _).eqSymm
-    · let C : List (Fm PTm n) := (N ≐ succ (pred N)) :: Γ
-      have hN : C ⊢[PRAAx] N ≐ succ (pred N) := Prf.hyp0
-      have wN := natEq hN
-      have m1 : C ⊢[PRAAx] le (S K F) (S (K * N) F) :=
-        S_mono F (le_of_eq_add (d := K * pred N) (by apply deriveNat; ipra_simps; linear_combination 𝔞 K * wN))
-      have m2 : C ⊢[PRAAx] le (S K F) (S (K * succ N) F) :=
-        S_mono F (le_of_eq_add (d := K * N) (by ipra_ring))
-      have m3 : C ⊢[PRAAx] le (S (K * N) F) (S (K * succ N) F) :=
-        S_mono F (le_of_eq_add (d := K) (by ipra_ring))
-      ipra_lc 𝔞 (ap2 (sumF a) (succ N) (pairT K F)) * (natEq (eq_add_of_le m2) - natEq (eq_add_of_le m1) - natEq (eq_add_of_le m3))
+  have key := U_increment_mul (Γ := Γ) N K F (ap2 (sumF a) (succ N) (pairT K F)) (by
+    have hN : ((N ≐ zero) :: Γ) ⊢[PRAAx] N ≐ zero := Prf.hyp0
+    exact (sum_succ' _ _ _).eqTrans ((congrAdd ((congrAp2 _ hN (.eqRefl _)).eqTrans (sum_zero _ _))
+      ((congrInst2 a hN (.eqRefl _)).eqTrans h0.wk)).eqTrans (add_zero _)))
   ipra_lc natEq (sum_succ' (Γ := Γ) (auB a) (succ N) (pairT K F)) + natEq (auB_at (Γ := Γ) a (succ N) K F) + d +
     natEq (adB_at (Γ := Γ) a N K F) + natEq ih + natEq key -
     𝔞 (U (succ N) K F) * natEq (sum_succ' (Γ := Γ) a (succ N) (pairT K F))

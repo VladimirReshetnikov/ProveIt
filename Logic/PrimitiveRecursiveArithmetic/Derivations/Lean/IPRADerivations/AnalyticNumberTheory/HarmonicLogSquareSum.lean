@@ -45,6 +45,39 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 /-- `u_N = F λ_K(N) = S(KN) ∸ S(K)`. -/
 abbrev U (N K F : PTm n) : PTm n := monus (S (K * N) F) (S K F)
 
+private theorem scaled_sum_paired (N K F : PTm n) :
+    Γ ⊢[PRAAx] S (fstT (pairT K F) * N) (sndT (pairT K F)) ≐ S (K * N) F :=
+  congrAp2 (sumF hB) (congrMul (fst_pair _ _) (.eqRefl _)) (snd_pair _ _)
+
+/-- Read back a logarithm observation at the paired parameters `(K, F)`. -/
+theorem U_paired (N K F : PTm n) :
+    Γ ⊢[PRAAx] U N (fstT (pairT K F)) (sndT (pairT K F)) ≐ U N K F :=
+  congrMonus (scaled_sum_paired N K F) (congrAp2 (sumF hB) (fst_pair _ _) (snd_pair _ _))
+
+/-- Read back the adjacent difference of two harmonic sums at `(K, F)`. -/
+theorem delta_paired (N K F : PTm n) :
+    Γ ⊢[PRAAx] monus (S (fstT (pairT K F) * succ N) (sndT (pairT K F)))
+      (S (fstT (pairT K F) * N) (sndT (pairT K F))) ≐ monus (S (K * succ N) F) (S (K * N) F) :=
+  congrMonus (scaled_sum_paired (succ N) K F) (scaled_sum_paired N K F)
+
+theorem U_zero (K F : PTm n) : Γ ⊢[PRAAx] U zero K F ≐ zero :=
+  (congrMonus ((congrAp2 (sumF hB) (mul_zero K) (.eqRefl F)).eqTrans (sum_zero _ _)) (.eqRefl _)).eqTrans
+    (zero_monus _)
+
+/-- Above index zero, the adjacent harmonic increment is also the logarithm increment. -/
+theorem U_increment (N K F : PTm n) (hN : Γ ⊢[PRAAx] le one N) :
+    Γ ⊢[PRAAx] U N K F + monus (S (K * succ N) F) (S (K * N) F) ≐ U (succ N) K F := by
+  have first := S_mono F (le_congr (by ipra_ring : Γ ⊢[PRAAx] K * one ≐ K) (.eqRefl _) (mul_le_mul_left K hN))
+  have step := S_mono F (mul_le_mul_left K (le_succ_self (Γ := Γ) N))
+  ipra_lc natEq (eq_add_of_le (le_trans first step)) - natEq (eq_add_of_le first) - natEq (eq_add_of_le step)
+
+/-- Multiplying by a coefficient that vanishes at zero extends the increment law to that index. -/
+theorem U_increment_mul (N K F M : PTm n) (h0 : ((N ≐ zero) :: Γ) ⊢[PRAAx] M ≐ zero) :
+    Γ ⊢[PRAAx] M * (U N K F + monus (S (K * succ N) F) (S (K * N) F)) ≐ M * U (succ N) K F := by
+  refine .orE (zero_or_succ N) ?_ ?_
+  · exact (Mobius.zero_mul_l h0 _).eqTrans (Mobius.zero_mul_l h0 _).eqSymm
+  · exact congrMul (.eqRefl _) (U_increment N K F (Common.one_le_of_pos Prf.hyp0))
+
 /-- `u_{k+1}` with parameter `z = (K, F)`. -/
 abbrev uB : PTm 2 := monus (S (fstT (var 1) * succ (var 0)) (sndT (var 1))) (S (fstT (var 1)) (sndT (var 1)))
 abbrev QB : PTm 2 := uB * uB
@@ -59,11 +92,7 @@ abbrev Qs (N K F : PTm n) : PTm n := ap2 (sumF QB) N (pairT K F)
 theorem Q_succ (N K F : PTm n) : Γ ⊢[PRAAx] Qs (succ N) K F ≐ Qs N K F + U (succ N) K F * U (succ N) K F := by
   refine (sum_succ' QB N (pairT K F)).eqTrans (congrAdd (.eqRefl _) ?_)
   rw [inst2_QB]
-  have e : Γ ⊢[PRAAx] monus (S (fstT (pairT K F) * succ N) (sndT (pairT K F))) (S (fstT (pairT K F)) (sndT (pairT K F)))
-      ≐ U (succ N) K F :=
-    congrMonus (congrAp2 (sumF hB) (congrMul (fst_pair _ _) (.eqRefl _)) (snd_pair _ _))
-      (congrAp2 (sumF hB) (fst_pair _ _) (snd_pair _ _))
-  exact congrMul e e
+  exact congrMul (U_paired (succ N) K F) (U_paired (succ N) K F)
 
 theorem S_succ (N F : PTm n) : Γ ⊢[PRAAx] S (succ N) F ≐ S N F + quo F (succ N) := by
   have s := sum_succ' (Γ := Γ) hB N F

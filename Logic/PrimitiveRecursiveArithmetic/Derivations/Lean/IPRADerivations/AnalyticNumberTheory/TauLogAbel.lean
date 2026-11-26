@@ -38,7 +38,7 @@ open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (S_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertensLower (delta_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSum (inc_lower fact_quo)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum (S_succ U)
+open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum (S_succ U delta_paired)
 open LeanProofs.IPRA.AnalyticNumberTheory.DivisorBound (eta_bounds divisor_upper divisor_lower)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (quo_eq)
 open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (pos_of_lt_zero)
@@ -65,8 +65,7 @@ theorem A_succ (N K F : PTm n) :
     Γ ⊢[PRAAx] As (succ N) K F ≐ As N K F + S N N * monus (S (K * succ N) F) (S (K * N) F) := by
   refine (sum_succ' AB N (pairT K F)).eqTrans (congrAdd (.eqRefl _) ?_)
   rw [inst2_AB]
-  exact congrMul (.eqRefl _) (congrMonus (congrAp2 (sumF hB) (congrMul (fst_pair _ _) (.eqRefl _)) (snd_pair _ _))
-    (congrAp2 (sumF hB) (congrMul (fst_pair _ _) (.eqRefl _)) (snd_pair _ _)))
+  exact congrMul (.eqRefl _) (delta_paired N K F)
 
 /-- `F c = C = (S(X) + S(K)) ∸ S(KX)`. -/
 abbrev CT (K X F : PTm n) : PTm n := monus (S X F + S K F) (S (K * X) F)

@@ -27,9 +27,8 @@ namespace LeanProofs.IPRA.AnalyticNumberTheory.HarmonicHalfSquare
 
 open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (S_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum (U)
+open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum (U U_paired delta_paired U_increment)
 open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevAbel (dlt_k)
 open LeanProofs.IPRA.AnalyticNumberTheory.ComparisonEnvelope (le_mul2)
 open LeanProofs.IPRA.AnalyticNumberTheory.FloorTelescope (qB inst2_qB floor_square_sum)
@@ -58,22 +57,16 @@ abbrev Dl (j K F : PTm n) : PTm n := monus (S (K * succ (succ j)) F) (S (K * suc
 theorem dl_at (j K F : PTm n) : Γ ⊢[PRAAx] inst2 dlB j (pairT K F) ≐ Dl j K F := by
   rw [show inst2 dlB j (pairT K F) = monus (S (fstT (pairT K F) * succ (succ j)) (sndT (pairT K F)))
     (S (fstT (pairT K F) * succ j) (sndT (pairT K F))) by simp [inst2]]
-  exact congrMonus (congrAp2 (sumF hB) (congrMul (fst_pair _ _) (.eqRefl _)) (snd_pair _ _))
-    (congrAp2 (sumF hB) (congrMul (fst_pair _ _) (.eqRefl _)) (snd_pair _ _))
+  exact delta_paired (succ j) K F
 
 theorem u2_at (j K F : PTm n) : Γ ⊢[PRAAx] inst2 u2B j (pairT K F) ≐ U (succ (succ j)) K F := by
   rw [show inst2 u2B j (pairT K F) = monus (S (fstT (pairT K F) * succ (succ j)) (sndT (pairT K F)))
     (S (fstT (pairT K F)) (sndT (pairT K F))) by simp [inst2]]
-  exact congrMonus (congrAp2 (sumF hB) (congrMul (fst_pair _ _) (.eqRefl _)) (snd_pair _ _))
-    (congrAp2 (sumF hB) (fst_pair _ _) (snd_pair _ _))
+  exact U_paired (succ (succ j)) K F
 
 /-- `u_{j+2} = u_{j+1} + Δ_{j+2}`. -/
-theorem u_step (j K F : PTm n) : Γ ⊢[PRAAx] U (succ (succ j)) K F ≐ U (succ j) K F + Dl j K F := by
-  have m1 : Γ ⊢[PRAAx] le (S K F) (S (K * succ j) F) :=
-    S_mono F (le_of_eq_add (d := K * j) (by ipra_ring))
-  have m2 : Γ ⊢[PRAAx] le (S (K * succ j) F) (S (K * succ (succ j)) F) :=
-    S_mono F (le_of_eq_add (d := K) (by ipra_ring))
-  ipra_lc -natEq (eq_add_of_le (le_trans m1 m2)) + natEq (eq_add_of_le m1) + natEq (eq_add_of_le m2)
+theorem u_step (j K F : PTm n) : Γ ⊢[PRAAx] U (succ (succ j)) K F ≐ U (succ j) K F + Dl j K F :=
+  (U_increment (succ j) K F (Common.one_le_succ j)).eqSymm
 
 theorem half_alg {S1 Sd u1 u2 d : PTm n} (ih : Γ ⊢[PRAAx] two * S1 ≐ u1 * u1 + Sd) (e : Γ ⊢[PRAAx] u2 ≐ u1 + d) :
     Γ ⊢[PRAAx] two * (S1 + u2 * d) ≐ u2 * u2 + (Sd + d * d) := by

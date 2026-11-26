@@ -25,11 +25,11 @@ set_option linter.unusedSimpArgs false
 namespace LeanProofs.IPRA.AnalyticNumberTheory.WeightBridge
 
 open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
+open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (S_mono wt harmonic_lw)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertensLower (lw_lower)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum (U QB Qs inst2_QB)
+open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum (U U_paired QB Qs inst2_QB)
 open LeanProofs.IPRA.AnalyticNumberTheory.ComparisonEnvelope (le_mul2)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory (bS inst2_bS Bs)
 open LeanProofs.IPRA.AnalyticNumberTheory.SymmetrySum (bL inst2_bL)
@@ -83,11 +83,7 @@ theorem sum_le_add_const (f g : PTm 2) {x y c N : PTm n}
 theorem qb_at (k K F : PTm n) :
     Γ ⊢[PRAAx] inst2 QB k (pairT K F) ≐ U (succ k) K F * U (succ k) K F := by
   rw [inst2_QB]
-  have e : Γ ⊢[PRAAx] monus (S (fstT (pairT K F) * succ k) (sndT (pairT K F))) (S (fstT (pairT K F)) (sndT (pairT K F)))
-      ≐ U (succ k) K F :=
-    congrMonus (congrAp2 (sumF hB) (congrMul (fst_pair _ _) (.eqRefl _)) (snd_pair _ _))
-      (congrAp2 (sumF hB) (fst_pair _ _) (snd_pair _ _))
-  exact congrMul e e
+  exact congrMul (U_paired (succ k) K F) (U_paired (succ k) K F)
 
 /-- `L_w(k+1) ≤ u_{k+1}`. -/
 theorem lw_le_u {k K L : PTm n} (hK : Γ ⊢[PRAAx] le one K) (hkL : Γ ⊢[PRAAx] le (K * succ k) L) :
