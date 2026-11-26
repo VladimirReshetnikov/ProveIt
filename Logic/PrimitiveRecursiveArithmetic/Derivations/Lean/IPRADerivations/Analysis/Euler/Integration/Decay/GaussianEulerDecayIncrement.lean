@@ -19,7 +19,7 @@ open GaussianEulerDecayAddition (original_decay_add original_decay_linear_remain
 open GaussianEulerDecayFactorBounds (original_half_decay_factor_bound)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianNameArithmetic (multiplyF multiplyData multiplyModulus multiply_at)
-open GaussianNameEquivalence (cross_to_diagonal diagonal_at point_at)
+open GaussianNameEquivalence (point_at cross_diagonal_at)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianRationalHorner (canonical positive_product qadd qmul qmul_canonical)
 open GaussianRationalSyntheticDivision (qmul_congr qone)
@@ -84,7 +84,7 @@ theorem decay_product_observation (a b c d p : PTm n)
     two two (unit p) three three (unit_positive p)
     (decay_precision_mono a b p K hK) (decay_precision_mono c d p K hK)
     (decay_observation_uniform_bound c d K hc hd) (decay_observation_uniform_bound a b p ha hb)
-  have known := diagonal_at _ _ _ _ p (cross_to_diagonal _ _ _ _ (original_decay_add a b c d hb hd))
+  have known := cross_diagonal_at p (original_decay_add a b c d hb hd)
   have first := distance_symmetric _ _ _ _ (unit_positive p) known
   have second := distance_congr read.eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _) blend
   exact distance_congr (.eqRefl _) (.eqRefl _) (by dsimp only [three]; ipra_ring) (.eqRefl _)

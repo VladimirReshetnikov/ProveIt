@@ -21,7 +21,7 @@ open GaussianCompactRiemannName (evaluatorName nameData inside evaluator_at grid
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNamedDifference (nameF data sample_error)
-open GaussianNameEquivalence (crossEquivalent diagonal_at cross_to_diagonal)
+open GaussianNameEquivalence (crossEquivalent cross_diagonal_at)
 open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_triangle_same distance_radius_mono)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded qsub)
@@ -48,7 +48,7 @@ theorem raw_at (F G H : PR 3) (p x y z t : PTm n)
     distanceBounded (qsub (ap3 F p t x) (ap3 G p t y)) (ap3 H p t z) (num 8) (unit p) := by
   have first := sample_error (evaluatorName F) (evaluatorName G) (nameData t x) (nameData t y) p
     h.andE₁ h.andE₂.andE₁
-  have second := diagonal_at _ _ _ _ p (cross_to_diagonal _ _ _ _ h.andE₂.andE₂)
+  have second := cross_diagonal_at p h.andE₂.andE₂
   exact distance_congr
     (GaussianRationalSyntheticDivision.qsub_congr (evaluator_at F p t x) (evaluator_at G p t y))
     (evaluator_at H p t z) (by ipra_ring) (.eqRefl _)

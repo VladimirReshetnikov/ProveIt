@@ -24,7 +24,7 @@ open GaussianGammaEncodingRescaling (original_encoded_one_at_radius)
 open GaussianGammaCanonicalExponent (constantF constant_at)
 open GaussianNameRingLaws (oneF one_fast multiply_one)
 open GaussianNameArithmetic (multiplyF multiplyData)
-open GaussianNameEquivalence (crossEquivalent cross_trans diagonal_at cross_to_diagonal)
+open GaussianNameEquivalence (crossEquivalent cross_trans cross_diagonal_at)
 open GaussianNamedFiniteProduct (sample sample_succ sample_bound sample_canonical)
 open GaussianNamedFiniteProductName (rowBounds rowRegular bounds_at raw_regular rawF rawData raw_at)
 open GaussianValueNormalizerExtensionality (rawDiagonal normalized_names_equivalent)
@@ -71,7 +71,7 @@ theorem terminal_at (p N : PTm n) :
     Γ ⊢[PRAAx] distanceBounded (ap3 rowF p N (succ N)) qone two (unit p) := by
   have h := terminal_one (Γ := Γ) (succ N) (zero_lt_succ N)
   exact distance_congr (row_at p N (succ N)).eqSymm (constant_at p qone) (.eqRefl _) (.eqRefl _)
-    (diagonal_at _ _ _ _ p (cross_to_diagonal _ _ _ _ h))
+    (cross_diagonal_at p h)
 
 theorem prefix_bounds (N : PTm n) :
     Γ ⊢[PRAAx] rowBounds rowF N (rowRadius (succ N)) (succ N) :=

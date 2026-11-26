@@ -18,7 +18,7 @@ open_ipra
 open GaussianEulerIntegrandName (decayF decayData decayPoint)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianNameArithmetic (addF addData add_at add_fast multiplyF multiplyData recode_congr)
-open GaussianNameEquivalence (crossEquivalent cross_to_diagonal diagonal_at)
+open GaussianNameEquivalence (crossEquivalent cross_diagonal_at)
 open GaussianGammaFiniteApproximantName (exponential_input)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (canonical canonical_unique ofGaussian_represents positive_product qadd qadd_canonical
@@ -113,7 +113,7 @@ theorem original_decay_linear_remainder (a b p : PTm n) (hb : Γ ⊢[PRAAx] le o
       GaussianRationalReciprocal.bound_congr (constant_at (var 0) (Syn.shift x)).eqSymm (.eqRefl one) (.eqRefl one) hrs
   have cr := GaussianExponentialRadiusIndependence.same_input_cross constantF R one x
     (exponential_input constantF x (constant_regular x)) hI
-  have d : Γ ⊢[PRAAx] distanceBounded u v two (unit p) := diagonal_at _ _ _ _ p (cross_to_diagonal _ _ _ _ cr)
+  have d : Γ ⊢[PRAAx] distanceBounded u v two (unit p) := cross_diagonal_at p cr
   have tail := GaussianExponentialLinearRemainder.original_constant_exponential_linear_remainder
     x a b p hb hab hx (qnegative_canonical _)
   exact distance_congr (.eqRefl _) (.eqRefl _) (by dsimp only [B]; ipra_ring) (by dsimp only [B]; ipra_ring)

@@ -24,7 +24,7 @@ open GaussianNamedPositiveExponentialOrder (real_order_at)
 open GaussianGammaCanonicalExponent (constantF constant_at)
 open GaussianCoordinateRadius (coordinates)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open GaussianNameEquivalence (diagonal_at cross_to_diagonal cross_symm)
+open GaussianNameEquivalence (cross_symm cross_diagonal_at)
 open GaussianRationalHorner (ofGaussian_represents scalar_congr positive_product)
 open GaussianRationalL1 (rawGaussian rawDen raw_den_positive raw_represents)
 open GaussianRationalDistanceOrder (distance_triangle_same)
@@ -58,7 +58,7 @@ theorem first_half_upper (p r m x : PTm n) (h : Γ ⊢[PRAAx] source r m) :
   let q := realSine p r m x
   have hU := unit_positive (Γ := Γ) p
   have eq := cross_symm _ _ _ _ (sine_divided_cross r m x h)
-  have near := diagonal_at _ _ _ _ p (cross_to_diagonal _ _ _ _ eq)
+  have near := cross_diagonal_at p eq
   have rest := sine_error p r m x (GaussianCyclicRootHalfAngle.cyclic_source r m h)
   have upper2 := upper_of_radius _ _ _ _ (coordinates s q (two+num 10) U hU
     (distance_triangle_same s t q two (num 10) U hU near rest)).andE₁

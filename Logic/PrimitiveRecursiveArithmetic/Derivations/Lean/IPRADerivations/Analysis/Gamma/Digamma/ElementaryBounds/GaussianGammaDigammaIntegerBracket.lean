@@ -21,7 +21,7 @@ open GaussianGammaDigammaFiniteSum (index reciprocalBody reciprocalSum reciproca
 open GaussianGammaDigammaMonotone (monotone)
 open GaussianGammaDigammaRescale (integer_rescale)
 open GaussianGammaCanonicalExponent (constantF)
-open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_at)
+open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm)
 open GaussianNamedPositiveExponentialOrder (realOrder real_order_at)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
@@ -163,8 +163,7 @@ theorem real_sample_distance (p a b N : PTm n) (hs : Γ ⊢[PRAAx] source a b) (
   have cy := GaussianGammaDigammaReal.original_cross B one hy
   have convert (f g : PR 2) (x y : PTm n) (h : Γ ⊢[PRAAx] crossEquivalent f g x y) :
       Γ ⊢[PRAAx] upper (fstT (ap2 f p x)) (fstT (ap2 g p y)) two (unit p) :=
-    scalar_upper _ _ _ _ hp (distance_radius_mono _ _ _ _ two (unit p) (positive_product _ _ hp hp)
-      hp (le_of_eq_add (d := zero) (by ipra_ring)) (cross_at f g x y p p h))
+    scalar_upper _ _ _ _ hp (GaussianNameEquivalence.cross_diagonal_at p h)
   have combine (x y X' Y' : PTm n) (l : Γ ⊢[PRAAx] upper (fstT x) (fstT X') two (unit p))
       (m : Γ ⊢[PRAAx] upper (fstT X') (fstT Y') ((num 5*a+num 4)*N+a*unit p) (denominator p N))
       (r : Γ ⊢[PRAAx] upper (fstT Y') (fstT y) two (unit p)) :

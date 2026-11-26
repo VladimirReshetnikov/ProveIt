@@ -29,7 +29,7 @@ open GaussianLogGammaEulerResidualDomain (native)
 open GaussianLogGammaEulerResidualRadius (radius)
 open GaussianLogGammaEulerTaylorRows (coefficient errorDenominator)
 open GaussianNameArithmetic (multiplyData multiplyF multiply_fast)
-open GaussianNameEquivalence (cross_at cross_symm)
+open GaussianNameEquivalence (cross_symm)
 open GaussianNamedDifference (difference_distance name_regular sample_error)
 open GaussianNamedInverseRate (rateNumerator rateDenominator independentRate)
 open GaussianNamedLipschitzRate (diagonalEnvelope diagonalNumerator diagonalDenominator)
@@ -119,13 +119,6 @@ private theorem paid_head (p A B D neg N : PTm n) (h : Γ ⊢[PRAAx] source A D 
   exact distance_radius_mono _ _ _ _ _ _ (positive_product _ _ (positive_product _ _ hN hp) hp) hp
     (by ipra_le 𝔞(unit p)*𝔞(unit p)*sl hpay) old
 
-private theorem diagonal_cross (f g : PR 2) (x y p : PTm n)
-    (h : Γ ⊢[PRAAx] GaussianNameEquivalence.crossEquivalent f g x y) :
-    Γ ⊢[PRAAx] distanceBounded (ap2 f p x) (ap2 g p y) two (unit p) := by
-  have hp := unit_positive (Γ := Γ) p
-  exact distance_radius_mono _ _ _ _ _ _ (positive_product _ _ hp hp) hp
-    (le_of_eq_add (d := zero) (by ipra_ring)) (cross_at f g x y p p h)
-
 private theorem weighted_gap (p A B neg a b sign D H N : PTm n)
     (h : Γ ⊢[PRAAx] source A D neg) (hN : Γ ⊢[PRAAx] le one N)
     (hb : Γ ⊢[PRAAx] bounded (step A B neg a b sign D) H one)
@@ -163,9 +156,9 @@ private theorem weighted_gap (p A B neg a b sign D H N : PTm n)
   have eT := GaussianBoundedConstantProductName.ordinary_product_identity T H d t (.andI ht hb)
   have eS := GaussianBoundedConstantProductName.ordinary_product_identity S H d s (.andI hs hb)
   have first : Γ ⊢[PRAAx] distanceBounded (ap2 P p x) z two (unit p) :=
-    diagonal_cross P (BProduct T) x (bpData H d t) p (cross_symm _ _ _ _ eT)
+    GaussianNameEquivalence.cross_diagonal_at p (cross_symm _ _ _ _ eT)
   have last : Γ ⊢[PRAAx] distanceBounded w (ap2 weightedF p y) two (unit p) :=
-    diagonal_cross (BProduct S) weightedF (bpData H d s) y p eS
+    GaussianNameEquivalence.cross_diagonal_at p eS
   exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
     (distance_triangle_same _ _ _ _ _ _ hp (distance_triangle_same _ _ _ _ _ _ hp first near) last)
 

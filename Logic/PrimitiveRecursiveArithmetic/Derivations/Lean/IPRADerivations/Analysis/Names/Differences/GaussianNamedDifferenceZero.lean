@@ -11,21 +11,15 @@ namespace LeanProofs.IPRA.Analysis.GaussianNamedDifferenceZero
 open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
-open GaussianNameEquivalence (crossEquivalent cross_at)
+open GaussianNameEquivalence (crossEquivalent)
 open GaussianNameRingLaws (equivalent_of_envelope zeroF zero_at zero_fast)
 open GaussianNamedDifference (nameF data name_regular sample_error)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
-open GaussianRationalHorner (positive_product qzero)
+open GaussianRationalHorner (qzero)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianReconstructionRoots (distance_zero_iff)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-private theorem same_clock (F G : PR 2) (x y p : PTm n) (h : Γ ⊢[PRAAx] crossEquivalent F G x y) :
-    Γ ⊢[PRAAx] distanceBounded (ap2 F p x) (ap2 G p y) two (unit p) := by
-  have hu := unit_positive (Γ := Γ) p
-  exact distance_radius_mono _ _ _ _ _ _ (positive_product _ _ hu hu) hu
-    (by ipra_le 0) (cross_at F G x y p p h)
 
 theorem difference_zero (F G : PR 2) (x y z : PTm n)
     (hF : Γ ⊢[PRAAx] pointCN F x) (hG : Γ ⊢[PRAAx] pointCN G y)
@@ -41,7 +35,7 @@ theorem difference_zero (F G : PR 2) (x y z : PTm n)
   have he := GaussianNameEquivalence.shift_crossEquivalent h
   have hp := unit_positive (Γ := Δ) p
   have norm := (distance_zero_iff (qsub (ap2 F p (s x)) (ap2 G p (s y))) two (unit p) hp).iffMpr
-    (same_clock F G (s x) (s y) p he)
+    (GaussianNameEquivalence.cross_diagonal_at p he)
   have out := distance_triangle_same _ _ _ _ _ _ hp (sample_error F G _ _ p hf hg) norm
   have res : Δ ⊢[PRAAx] distanceBounded (ap2 (nameF F G) p (data (s x) (s y))) (ap2 zeroF p (s z))
       (num 8) (unit p) :=
@@ -65,7 +59,7 @@ theorem cross_of_zero (F G : PR 2) (x y z : PTm n)
       GaussianNameEquivalence.shift_crossEquivalent h
   have hp := unit_positive (Γ := Δ) p
   have diff := distance_congr (.eqRefl _) (zero_at (Γ := Δ) p (s z)) (.eqRefl _) (.eqRefl _)
-    (same_clock _ _ _ _ p he)
+    (GaussianNameEquivalence.cross_diagonal_at p he)
   have raw := distance_triangle_same _ _ _ _ _ _ hp
     (distance_symmetric _ _ _ _ hp (sample_error F G _ _ p hf hg)) diff
   have bound := (distance_zero_iff (qsub (ap2 F p (s x)) (ap2 G p (s y))) _ _ hp).iffMp raw

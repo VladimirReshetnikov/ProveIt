@@ -24,7 +24,7 @@ open GaussianGammaIntegralCutoffs (etaDen eta_den_positive)
 open GaussianPositiveRationalExponentialDecay (expF inverseData inverseQuery inverse_sample_at degree_in_cutoff)
 open GaussianDominantPairAlgebra (radius_bounded)
 open GaussianEulerDecayFactorBounds (fraction_is_radius_point original_decay_matches_reciprocal)
-open GaussianNameEquivalence (cross_symm cross_to_diagonal diagonal_at)
+open GaussianNameEquivalence (cross_symm cross_diagonal_at)
 open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (bounded)
@@ -79,7 +79,7 @@ theorem integer_decay_factorial (p T j : PTm n) (hT : Γ ⊢[PRAAx] le one T) : 
     bound_congr (inverse_sample_at T one j p).eqSymm (.eqRefl _) (.eqRefl _)
       (GaussianRationalLowerBounds.inverse_bound _ _ _ hp hf low)
   have law := cross_symm (Γ := Γ) _ _ _ _ (original_decay_matches_reciprocal T one j (le_refl one))
-  have near := diagonal_at _ _ _ _ p (cross_to_diagonal _ _ _ _ law)
+  have near := cross_diagonal_at p law
   exact bound_congr (.eqRefl X) (by ipra_ring) (by ipra_ring)
     (GaussianReconstructionRoots.norm_from_distance X Y _ _ _ _ (unit_positive p) hp near bound)
 

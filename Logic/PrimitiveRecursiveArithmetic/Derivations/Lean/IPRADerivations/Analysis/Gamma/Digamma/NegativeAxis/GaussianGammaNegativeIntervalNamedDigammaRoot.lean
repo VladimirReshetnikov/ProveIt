@@ -81,7 +81,7 @@ theorem root_diagonal (p N : PTm n) : Γ ⊢[PRAAx]
   have first : Γ ⊢[PRAAx] distanceBounded (ap2 rootF p x) (ap2 F p y) (C+two) P :=
     distance_radius_mono _ _ _ _ _ _ hpp hp (by ipra_le 0) freeze
   have middle : Γ ⊢[PRAAx] distanceBounded (ap2 F p y) (ap2 F p z) two P :=
-    distance_radius_mono _ _ _ _ _ _ hpp hp (by ipra_le 0) (cross_at F F y z p p (original_frozen_root_cross p N))
+    GaussianNameEquivalence.cross_diagonal_at p (original_frozen_root_cross p N)
   have hm : Γ ⊢[PRAAx] le one (mesh N) := le_trans (by ipra_le 7) (mesh_minimum N)
   have grow : Γ ⊢[PRAAx] le P B := by unfold B denominator; ipra_le 𝔞(P)*sl hm
   have last : Γ ⊢[PRAAx] distanceBounded (ap2 F p z) qzero (R+one) P :=

@@ -66,8 +66,7 @@ theorem original_reciprocal_shift_observations (t D : PTm n) (hD : Γ ⊢[PRAAx]
       (by unfold stepCost GaussianGammaRepeatedShift.factorBound; ipra_ring) (.eqRefl _) trace
   have eqn := GaussianGammaInputProperness.original_C7_proper Z (neighbor D) (one+one) D traceSource (native_shift D)
   have moved : Γ ⊢[PRAAx] distanceBounded V W two (unit t) :=
-    distance_radius_mono _ _ _ _ _ _ (positive_product _ _ (unit_positive t) (unit_positive t)) (unit_positive t)
-      (le_of_eq_add (d := zero) (by ipra_ring)) (GaussianNameEquivalence.cross_at _ _ _ _ t t eqn)
+    GaussianNameEquivalence.cross_diagonal_at t eqn
   have norm := GaussianGammaUnitEulerDifference.increment_bound one D (le_refl one) hD
   have near := GaussianNamedDifferenceQuotient.scale_distance S V W one two (unit t) (unit_positive t) norm moved
   have actual : Γ ⊢[PRAAx] W ≐ large t D :=

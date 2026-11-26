@@ -74,8 +74,7 @@ theorem input_distance (f g : PR 2) (p x y A B : PTm n) (hf : Γ ⊢[PRAAx] sour
   have hM : Γ ⊢[PRAAx] le one M := le_trans (GaussianNameBounds.U_positive f x) (le_add_right _ _)
   have left := distance_symmetric _ _ _ _ hP (frozen_observation f p k x A hf hl)
   have right := frozen_observation g p k y B hg hr
-  have middle := distance_radius_mono _ _ _ _ two (unit p) (positive_product _ _ hP hP) hP
-    (le_of_eq_add (d := zero) (by unfold two; ipra_ring)) (cross_at _ _ _ _ p p he)
+  have middle := GaussianNameEquivalence.cross_diagonal_at p he
   have close := distance_triangle_same _ _ _ _ _ _ hP (distance_triangle_same _ _ _ _ _ _ hP left middle) right
   have d1 := frozen_rational_domain f k x A hf ml
   have d2 := frozen_rational_domain g k y B hg mr

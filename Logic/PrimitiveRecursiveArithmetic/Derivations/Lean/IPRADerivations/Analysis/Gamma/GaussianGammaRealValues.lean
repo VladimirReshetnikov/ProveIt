@@ -134,12 +134,9 @@ theorem axis_sample_axis (f : PR 2) (p x : PTm n) : Γ ⊢[PRAAx]
 theorem axis_gap_at (f : PR 2) (x p : PTm n)
     (he : Γ ⊢[PRAAx] crossEquivalent (GaussianNameConjugation.nameF f) f x x) : Γ ⊢[PRAAx]
     distanceBounded (ap2 f p x) (ap2 (axisF f) p x) two (unit p) := by
-  have raw := GaussianNameEquivalence.cross_at _ _ _ _ p p he
   have small : Γ ⊢[PRAAx] distanceBounded (point (ap2 f p x)) (ap2 f p x) two (unit p) :=
-    GaussianRationalDistanceOrder.distance_radius_mono _ _ _ _ _ _
-      (positive_product _ _ (unit_positive p) (unit_positive p)) (unit_positive p)
-      (le_of_eq_add (d := zero) (by ipra_ring))
-      (GaussianRationalDistanceOrder.distance_congr (GaussianNameConjugation.sample_at f p x) (.eqRefl _) (.eqRefl _) (.eqRefl _) raw)
+    GaussianRationalDistanceOrder.distance_congr (GaussianNameConjugation.sample_at f p x)
+      (.eqRefl _) (.eqRefl _) (.eqRefl _) (GaussianNameEquivalence.cross_diagonal_at p he)
   have gap := projection_gap _ two (unit p) (unit_positive p)
     (GaussianRationalDistanceOrder.distance_symmetric _ _ _ _ (unit_positive p) small)
   exact GaussianRationalDistanceOrder.distance_congr (.eqRefl _) (axis_sample_at f p x).eqSymm (.eqRefl _) (.eqRefl _) gap

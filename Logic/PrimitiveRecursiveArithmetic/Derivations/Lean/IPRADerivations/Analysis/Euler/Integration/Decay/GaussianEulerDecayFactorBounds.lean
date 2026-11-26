@@ -29,7 +29,7 @@ open GaussianRationalHorner (ofGaussian positive_product canonical_unique repres
 open GaussianRationalMetric (bounded qnegative qsub)
 open GaussianRationalReciprocal (reciprocal power bound_congr bounded_product bounded_sum)
 open GaussianRationalSyntheticDivision (qsub_congr qmul_congr qzero_add)
-open GaussianNameEquivalence (crossEquivalent cross_symm cross_trans cross_to_diagonal diagonal_at)
+open GaussianNameEquivalence (crossEquivalent cross_symm cross_trans cross_diagonal_at)
 open GaussianNameRingLaws (negativeF negativeData negative_at negative_fast)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianRationalNaturalScale (naturalPoint)
@@ -107,7 +107,7 @@ theorem original_integer_decay_bound (R p : PTm n) :
   let y := ap2 F p (inverseData R one R)
   have e := cross_symm (Γ := Γ) F decayF (inverseData R one R) (decayData R one)
     (original_decay_matches_reciprocal R one R (le_refl one))
-  have d := diagonal_at _ _ _ _ p (cross_to_diagonal _ _ _ _ e)
+  have d := cross_diagonal_at p e
   have hcan : Γ ⊢[PRAAx] GaussianRationalHorner.canonical x :=
     GaussianRadiusExponentialName.sample_canonical constantF _ p (decayPoint R one)
   exact bound_congr (GaussianRationalLinearProduct.add_sub_right y x hcan) (by ipra_ring) (.eqRefl _)
@@ -131,7 +131,7 @@ theorem original_half_decay_factor_bound (a b j p : PTm n)
       (le_refl one) (le_refl one) (radius_bounded (unit j) one (le_refl one))
       (exact_reciprocal_weighted_decay a b j p ha hb))
   have e := cross_symm F decayF (inverseData a b j) (decayData a b) (original_decay_matches_reciprocal a b j hb)
-  have d := diagonal_at _ _ _ _ p (cross_to_diagonal _ _ _ _ e)
+  have d := cross_diagonal_at p e
   have hY := GaussianPolynomialPerturbation.power_positive b j hb
   have wBound : Γ ⊢[PRAAx] bounded w (pw (two*a) j) one :=
     bound_congr (radius_power (two*a) b j hb).eqSymm (.eqRefl _) (.eqRefl _)

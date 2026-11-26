@@ -28,7 +28,7 @@ open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open GaussianNameEquivalence (crossEquivalent cross_to_diagonal diagonal_at cross_symm cross_refl)
+open GaussianNameEquivalence (crossEquivalent cross_symm cross_refl cross_diagonal_at)
 open GaussianRadiusExponentialName (boundedSamples)
 open GaussianNamedLipschitzRate (diagonalEnvelope diagonalNumerator diagonalDenominator)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
@@ -85,9 +85,9 @@ theorem original_product_envelope (p z R B E T a b c : PTm n) (h : Γ ⊢[PRAAx]
   have near := GaussianExponentialRadiusIndependence.same_input_cross powerExponentF
     (powerRadius z B (a+c) b) (radius R E T) (powerExponentData z B (a+c) b) old late
   have first : Γ ⊢[PRAAx] distanceBounded (ap2 powerF p X) (ap2 powerF p Y) two P :=
-    diagonal_at _ _ _ _ p (cross_to_diagonal _ _ _ _ near)
+    cross_diagonal_at p near
   have third : Γ ⊢[PRAAx] distanceBounded (ap2 F p Z) (ap2 productF p W) two P :=
-    diagonal_at _ _ _ _ p (cross_to_diagonal _ _ _ _ (cross_symm _ _ _ _ (product_cross z R B E T a b c h)))
+    cross_diagonal_at p (cross_symm _ _ _ _ (product_cross z R B E T a b c h))
   have middle := GaussianRadiusExponentialLipschitzRate.observations powerExponentF shiftedF (radius R E T)
     (powerExponentData z B (a+c) b) (shiftedData z B a b c) (numerator R c) (a*a) p p
     (GaussianEulerPowerShiftRate.original_exponential_comparison_input z R B E T a b c h)

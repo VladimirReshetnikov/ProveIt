@@ -14,13 +14,12 @@ set_option linter.unusedSimpArgs false
 namespace LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductFamilyCongruence
 
 open_ipra
-open GaussianCoefficientNameBounds (unit unit_positive)
+open GaussianCoefficientNameBounds (unit)
 open GaussianNamedFiniteProduct (rowDistance amplification)
 open GaussianNamedFiniteProductFamily (rowF row_at regularRows radius productData family_bounds family_regular)
 open GaussianNamedFiniteProductName (nameF rowBounds cofinalRows cofinal_raw raw_regular)
-open GaussianNameEquivalence (crossEquivalent cross_at)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
-open GaussianRationalHorner (positive_product)
+open GaussianNameEquivalence (crossEquivalent cross_diagonal_at)
+open GaussianRationalDistanceOrder (distance_congr)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -48,10 +47,7 @@ theorem row_rate (f g : PR 2) (t u : PTm 2) (N x y : PTm n) (h : Γ ⊢[PRAAx] e
   let Y := inst2 u i (sh y)
   have hs : Δ ⊢[PRAAx] equalRows f g t u (sh N) (sh x) (sh y) := by
     simpa [Fm.shift,Syn.shift,sh,Δ] using h.shift.shift.wk
-  have e := cross_at f g X Y p p (equal_at f g t u (sh N) (sh x) (sh y) i hs Prf.hyp0)
-  have hp := unit_positive (Γ := Δ) p
-  have rate := distance_radius_mono _ _ _ _ two (unit p) (positive_product _ _ hp hp) hp
-    (le_congr (by ipra_ring) (.eqRefl _) (le_refl _)) e
+  have rate := cross_diagonal_at p (equal_at f g t u (sh N) (sh x) (sh y) i hs Prf.hyp0)
   simpa [cofinalRows,rowDistance,Syn.shift,sh,Δ,p,i,X,Y,two,one] using
     distance_congr (row_at f t p i (sh x)).eqSymm (row_at g u p i (sh y)).eqSymm (.eqRefl _) (.eqRefl _) rate
 

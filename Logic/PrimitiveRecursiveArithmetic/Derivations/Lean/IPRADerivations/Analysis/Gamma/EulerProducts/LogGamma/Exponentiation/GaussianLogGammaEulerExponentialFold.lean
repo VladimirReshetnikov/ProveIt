@@ -27,11 +27,11 @@ open GaussianLogGammaEulerResidualDomain (source native)
 open GaussianLogGammaEulerExponentialFactors (rowExpF rowExpBody)
 open GaussianNameArithmetic (multiplyF multiplyData multiplyModulus)
 open GaussianNameBounds (U)
-open GaussianNameEquivalence (crossEquivalent cross_symm cross_at)
+open GaussianNameEquivalence (crossEquivalent cross_symm)
 open GaussianNameRingLaws (multiply_sample_error)
 open GaussianNamedDiagonalRate (diagonalRate cross_of_diagonal_rate)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
-open GaussianRationalHorner (qmul qzero positive_product)
+open GaussianRationalHorner (qmul qzero)
 open GaussianRationalMetric (distanceBounded bounded)
 open GaussianRationalSyntheticDivision (qone)
 
@@ -97,11 +97,6 @@ private theorem fold_zero (p A B D neg R : PTm n) : Γ ⊢[PRAAx] foldError p A 
     (budget_zero R (rowData A B D neg)).eqSymm (.eqRefl _)
     (GaussianRationalPowerDifference.distance_refl_zero qone (unit p) (unit_positive p))
 
-private theorem at_same (f g : PR 2) (x y p : PTm n) (h : Γ ⊢[PRAAx] crossEquivalent f g x y) :
-    Γ ⊢[PRAAx] distanceBounded (ap2 f p x) (ap2 g p y) two (unit p) :=
-  distance_radius_mono _ _ _ _ _ _ (positive_product _ _ (unit_positive p) (unit_positive p)) (unit_positive p)
-    (le_of_eq_add (d := zero) (by ipra_ring)) (cross_at f g x y p p h)
-
 theorem prefix_regular (A B D neg i : PTm n) (hs : Γ ⊢[PRAAx] GaussianRightHalfPlaneLogarithm.source A D neg) :
     Γ ⊢[PRAAx] pointCN prefixF (prefixData i (rowData A B D neg)) := by
   have h := GaussianNamedFiniteSumFamily.regular _ _ _ _ (residual_rows A B D neg i hs)
@@ -141,11 +136,11 @@ private theorem fold_succ (p A B D neg R i : PTm n) (hs : Γ ⊢[PRAAx] source A
     rw [readBody]
     exact GaussianGammaFoldedApproximantBalance.exponential_product_equivalent _ _ _ _ _ _ _ _ _
       hI hR hJ (cross_symm _ _ _ _ append)
-  have first := at_same _ _ _ _ p (cross_symm _ _ _ _ expAppend)
+  have first := GaussianNameEquivalence.cross_diagonal_at p (cross_symm _ _ _ _ expAppend)
   have second := multiply_sample_error prefixF rowExpF a b p hE hW
   have row : Γ ⊢[PRAAx] distanceBounded w v two P :=
     distance_congr (.eqRefl _) (constant_at p v) (.eqRefl _) (.eqRefl _)
-      (at_same rowExpF constantF b v p (GaussianLogGammaEulerExponentialFactors.row_recovery i A B D neg hs.andE₁))
+      (GaussianNameEquivalence.cross_diagonal_at p (GaussianLogGammaEulerExponentialFactors.row_recovery i A B D neg hs.andE₁))
   have boundV := GaussianGammaEulerHead.factor_bound i z R D hs.andE₁.andE₂ hs.andE₂
   have boundE := GaussianNameBounds.sample_bound prefixF a p hE
   have prev : Γ ⊢[PRAAx] distanceBounded e s (budget R i x) P := ih

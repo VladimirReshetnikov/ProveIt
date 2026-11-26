@@ -16,7 +16,7 @@ namespace LeanProofs.IPRA.Analysis.GaussianNamedFiniteEqualityChain
 open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open GaussianNameEquivalence (crossEquivalent diagonal_at cross_to_diagonal)
+open GaussianNameEquivalence (crossEquivalent cross_diagonal_at)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_triangle_same)
 
@@ -46,8 +46,7 @@ theorem estimate_zero (f : PR 2) (t : PTm 2) (p x : PTm n) : Γ ⊢[PRAAx] estim
 
 theorem estimate_succ (f : PR 2) (t : PTm 2) (p j x : PTm n) (h : Γ ⊢[PRAAx] allSteps f t x)
     (ih : Γ ⊢[PRAAx] estimate f t p j x) : Γ ⊢[PRAAx] estimate f t p (succ j) x := by
-  have e := diagonal_at f f (inst2 t (succ j) x) (inst2 t j x) p
-    (cross_to_diagonal _ _ _ _ (step_at f t j x h))
+  have e := cross_diagonal_at p (step_at f t j x h)
   exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
     (distance_triangle_same _ _ _ _ _ _ (unit_positive p) e ih)
 

@@ -155,8 +155,7 @@ private theorem fourth_at (g : PR 2) (x anchor p : PTm n) (hg : Γ ⊢[PRAAx] po
   have wb := GaussianNameBounds.sample_bound h y p hw
   have a := GaussianNameArithmetic.product_distance v w v w M M (unit p) (U g x*U g x) (U h y) hp small small vb wb
   have b := distance_symmetric _ _ _ _ hp (multiply_sample_error h h y y p hw hw)
-  have c := distance_radius_mono _ _ _ _ two (unit p) (positive_product _ _ hp hp) hp
-    (le_of_eq_add (d := zero) (by ipra_ring)) (cross_at _ _ _ _ p p he)
+  have c := GaussianNameEquivalence.cross_diagonal_at p he
   exact distance_congr (.eqRefl _) (one_at p anchor) (by dsimp only [fourthBudget,M,h,y]; ipra_ring) (.eqRefl _)
     (distance_triangle_same _ _ _ _ _ _ hp (distance_triangle_same _ _ _ _ _ _ hp a b) c)
 
@@ -250,8 +249,7 @@ private theorem difference_zero_at (f g : PR 2) (x y p : PTm n)
   have hp := unit_positive (Γ := Γ) p
   have sub := distance_symmetric _ _ _ _ hp (GaussianNamedDifference.sample_error f g x y p hf hg)
   have close := distance_congr (.eqRefl _) (zero_at p y) (.eqRefl _) (.eqRefl _)
-    (distance_radius_mono _ _ _ _ two (unit p) (positive_product _ _ hp hp) hp
-      (le_of_eq_add (d := zero) (by ipra_ring)) (cross_at _ _ _ _ p p he))
+    (GaussianNameEquivalence.cross_diagonal_at p he)
   exact (GaussianReconstructionRoots.distance_zero_iff _ _ _ hp).iffMp
     (distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
       (distance_triangle_same _ _ _ _ _ _ hp sub close))

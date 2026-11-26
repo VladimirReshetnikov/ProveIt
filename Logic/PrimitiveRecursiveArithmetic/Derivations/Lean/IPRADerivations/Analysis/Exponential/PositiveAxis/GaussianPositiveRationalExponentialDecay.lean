@@ -29,7 +29,7 @@ open GaussianRationalLowerBounds (lower lower_congr)
 open GaussianRationalHorner (qmul qmul_canonical)
 open GaussianRationalMetric (bounded)
 open GaussianEuclideanDistanceName (pointCN)
-open GaussianNameEquivalence (crossEquivalent cross_to_diagonal diagonal_at cross_symm cross_trans)
+open GaussianNameEquivalence (crossEquivalent cross_symm cross_trans cross_diagonal_at)
 open GaussianNameRingLaws (negativeF negativeData oneF)
 open GaussianNameArithmetic (multiplyF multiplyData)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
@@ -143,7 +143,7 @@ theorem original_negative_weighted_decay (a b j p : PTm n)
   let x := ap2 negF p (negData a b j)
   let y := ap2 (GaussianNameReciprocal.nameF expF) p (inverseData a b j)
   have eq := cross_symm _ _ _ _ (named_negative_is_reciprocal a b j hb)
-  have d := diagonal_at _ _ _ _ p (cross_to_diagonal _ _ _ _ eq)
+  have d := cross_diagonal_at p eq
   have den := GaussianPolynomialPerturbation.power_positive b j hb
   have raw := radius_bounded (pw a j) (pw b j) den
   have wBound : Γ ⊢[PRAAx] bounded w (pw a j) one :=

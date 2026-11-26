@@ -84,8 +84,7 @@ theorem initial_observation_bound (f : PR 2) (b : PTm 2) (x B C p : PTm n)
       (le_of_eq_add (d := U) (by dsimp only [j,witnessIndex,U]; ipra_ring)) estimate
   have link := cross_symm f f z a (index_cross f b x j hr hs)
   have near : Γ ⊢[PRAAx] distanceBounded (ap2 f p a) (ap2 f p z) two U :=
-    distance_radius_mono _ _ _ _ _ _ (positive_product _ _ hu hu) hu
-      (le_of_eq_add (d := zero) (by ipra_ring)) (cross_at f f a z p p link)
+    GaussianNameEquivalence.cross_diagonal_at p link
   have both := distance_triangle_same _ _ qzero _ _ U hu near ((distance_zero_iff _ _ _ hu).iffMpr small)
   exact (distance_zero_iff _ _ _ hu).iffMp
     (distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _) both)

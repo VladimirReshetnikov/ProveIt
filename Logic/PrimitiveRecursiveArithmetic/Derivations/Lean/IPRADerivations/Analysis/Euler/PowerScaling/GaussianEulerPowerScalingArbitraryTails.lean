@@ -78,8 +78,7 @@ private theorem transfer_bound (F : PR 3) (p s x y : PTm n)
       (two*unit p+num 11*unit s) (unit s*unit p) := by
   have hp := unit_positive (Γ := Γ) p
   have hd := positive_product _ _ (unit_positive s) hp
-  have near := distance_radius_mono _ _ _ _ two (unit p) (positive_product _ _ hp hp) hp
-    (le_of_eq_add (d := zero) (by ipra_ring)) (cross_at _ _ _ _ p p hc)
+  have near := GaussianNameEquivalence.cross_diagonal_at p hc
   have raw := GaussianReconstructionRoots.norm_from_distance _ _ _ _ _ _ hp hd near hy
   exact bounded_radius_mono _ _ _ _ _ (positive_product _ _ hp hd) hd
     (le_of_eq_add (d := zero) (by ipra_ring)) raw

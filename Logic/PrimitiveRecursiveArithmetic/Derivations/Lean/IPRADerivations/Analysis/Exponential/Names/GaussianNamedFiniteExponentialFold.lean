@@ -24,7 +24,7 @@ open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaFiniteApproximantName (exponential_input exponentialInputData)
 open GaussianNameArithmetic (addF addData multiplyF multiplyData multiplyModulus)
 open GaussianNameBounds (U sample_bound)
-open GaussianNameEquivalence (crossEquivalent cross_symm cross_to_diagonal diagonal_at)
+open GaussianNameEquivalence (crossEquivalent cross_symm cross_diagonal_at)
 open GaussianNamedFiniteProductFamily (rowF regularRows regular_at family_product_regular)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianRationalMetric (distanceBounded)
@@ -123,8 +123,8 @@ private theorem observation_step (F P G : PR 2) (p X X' Y Y' Z d : PTm n)
     Γ ⊢[PRAAx] distanceBounded (ap2 F p X') (ap2 P p Y')
       ((U F X+U P Y+two*U G Z+num 6)+U G Z*d) (unit p) := by
   have hU := unit_positive (Γ := Γ) p
-  have fx := diagonal_at _ _ _ _ p (cross_to_diagonal _ _ _ _ fc)
-  have px := diagonal_at _ _ _ _ p (cross_to_diagonal _ _ _ _ pc)
+  have fx := cross_diagonal_at p fc
+  have px := cross_diagonal_at p pc
   have fm := GaussianNameRingLaws.multiply_sample_error F G X Z p hf hg
   have pm := GaussianNameRingLaws.multiply_sample_error P G Y Z p hp hg
   have first := distance_triangle_same _ _ _ _ _ _ hU fx fm

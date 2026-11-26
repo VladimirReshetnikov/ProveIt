@@ -48,13 +48,11 @@ private theorem synchronous_from_window (f g j : PR 2) (x y u v p lin A B C D N 
   let a := ap2 (F f f) p (X x y)
   let b := ap2 (F g j) p (X u v)
   have hU := unit_positive (Γ := Γ) p
-  have hUU := positive_product (Γ := Γ) U U hU hU
   have hK := positive_product (Γ := Γ) N U hN hU
   have m₁ : Γ ⊢[PRAAx] distanceBounded dx a (num 6) U :=
     distance_symmetric _ _ _ _ hU (GaussianNamedDifference.sample_error f f x y p hx hy)
   have m₂ : Γ ⊢[PRAAx] distanceBounded a b two U :=
-    distance_radius_mono a b (U+U) (U*U) two U hUU hU
-      (le_of_eq_add (d := zero) (by ipra_ring)) (cross_at (F f f) (F g j) (X x y) (X u v) p p he)
+    GaussianNameEquivalence.cross_diagonal_at p he
   have m₃ : Γ ⊢[PRAAx] distanceBounded b wx (num 6) U :=
     GaussianNamedDifference.sample_error g j u v p hu hv
   have m₄ := distance_triangle_same dx a b (num 6) two U hU m₁ m₂

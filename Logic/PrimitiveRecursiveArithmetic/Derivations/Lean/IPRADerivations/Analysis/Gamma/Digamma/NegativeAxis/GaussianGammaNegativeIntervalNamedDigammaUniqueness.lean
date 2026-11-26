@@ -50,9 +50,8 @@ theorem offset_distance (f g : PR 2) (p x y E F N : PTm n)
   let v := ap2 (nameF f) p (data x E N)
   let w := ap2 (nameF g) p (data y F N)
   have hp := unit_positive (Γ := Γ) p
-  have hpp := positive_product _ _ hp hp
   have mid : Γ ⊢[PRAAx] distanceBounded v w two P :=
-    distance_radius_mono _ _ _ _ _ _ hpp hp (by ipra_le 0) (cross_at _ _ _ _ p p he)
+    GaussianNameEquivalence.cross_diagonal_at p he
   have left := distance_symmetric _ _ _ _ hp (frozen_diagonal f p x E N hf)
   have right := frozen_diagonal g p y F N hg
   have native := distance_triangle_same _ _ _ _ _ _ hp (distance_triangle_same _ _ _ _ _ _ hp left mid) right

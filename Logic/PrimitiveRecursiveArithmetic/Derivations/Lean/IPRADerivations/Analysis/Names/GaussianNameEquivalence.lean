@@ -142,13 +142,17 @@ theorem diagonal_to_cross (f g : PR 2) (x y : PTm n)
     simpa only [Fm.shift,subst_diagonalEquivalent,Syn.shift] using hEq.shift.shift
   exact diagonal_cross_at f g _ _ (var 1) (var 0) hf hg he
 
+/-- Compare the original observations at one precision, canceling the common dyadic factor. -/
+theorem cross_diagonal_at {f g : PR 2} {x y : PTm n} (p : PTm n)
+    (hEq : Γ ⊢[PRAAx] crossEquivalent f g x y) :
+    Γ ⊢[PRAAx] distanceBounded (ap2 f p x) (ap2 g p y) two (unit p) :=
+  distance_radius_mono _ _ _ _ _ _
+    (positive_product _ _ (unit_positive p) (unit_positive p)) (unit_positive p)
+    (le_of_eq_add (d := zero) (by ipra_ring)) (cross_at f g x y p p hEq)
+
 theorem cross_to_diagonal (f g : PR 2) (x y : PTm n)
-    (hEq : Γ ⊢[PRAAx] crossEquivalent f g x y) : Γ ⊢[PRAAx] diagonalEquivalent f g x y := by
-  refine .allI ?_
-  have he := shift_crossEquivalent hEq
-  exact distance_radius_mono _ _ _ _ _ _
-    (positive_product _ _ (unit_positive (var 0)) (unit_positive (var 0))) (unit_positive (var 0))
-    (le_of_eq_add (d := zero) (by ipra_ring)) (cross_at f g _ _ (var 0) (var 0) he)
+    (hEq : Γ ⊢[PRAAx] crossEquivalent f g x y) : Γ ⊢[PRAAx] diagonalEquivalent f g x y :=
+  .allI (cross_diagonal_at (var 0) (shift_crossEquivalent hEq))
 
 theorem diagonal_iff_cross (f g : PR 2) (x y : PTm n)
     (hF : Γ ⊢[PRAAx] pointCN f x) (hG : Γ ⊢[PRAAx] pointCN g y) : Γ ⊢[PRAAx]
