@@ -3089,3 +3089,6 @@ The derivative of the actual prefactor times the original kept head has a unifor
 
 Equivalent fractions give identical data for the actual prefactor derivative sampler and equivalent output names at independent precisions.
 [GaussianBarnesCanonicalPrefactorDerivativeProperness](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefactorDerivativeProperness.lean)
+
+A rational input distance bound `A/M` on a common certified disk gives a uniform leading derivative error `gain(R) A/M` for the original independent observations.
+[GaussianBarnesCanonicalPrefactorDerivativeContinuity](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefactorDerivativeContinuity.lean)
