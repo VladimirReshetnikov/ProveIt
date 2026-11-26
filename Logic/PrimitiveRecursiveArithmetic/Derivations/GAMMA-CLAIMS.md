@@ -3185,3 +3185,6 @@ The kept base-power product has a quantitative zero-free Mercator chart. Its rel
 
 The corrected finite interval Mercator polynomial is exactly the sum of the original retained first, second, and higher coefficient blocks times their displacement powers. The original finite named increment therefore has the checked arbitrary-order Taylor bound for that coefficient polynomial.
 [GaussianBarnesCanonicalCorrectedMercatorCoefficients](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalCorrectedMercatorCoefficients.lean), [GaussianBarnesCanonicalCorrectedMercatorPrefix](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalCorrectedMercatorPrefix.lean)
+
+The original cofinal logarithmic increment admits the literal corrected finite Taylor polynomial with a combined finite-prefix and summable Taylor error. Its primitive-recursive cutoff makes the finite-prefix contribution dyadic and retains the analytic remainder at every encoded degree at least two.
+[GaussianBarnesCanonicalCorrectedMercatorCofinal](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalCorrectedMercatorCofinal.lean)
