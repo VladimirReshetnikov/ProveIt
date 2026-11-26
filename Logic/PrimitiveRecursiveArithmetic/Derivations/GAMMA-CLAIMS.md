@@ -2828,3 +2828,6 @@ Both actual difference quotients converge to the negative successor moment on a 
 
 Uniform Gamma and Dirichlet sample bounds and the independent factor rates yield a concrete primitive-recursive input demand for the original normalized product on the certified rational half-plane.
 [GaussianGammaZetaDirichletUniformBound](Lean/IPRADerivations/Analysis/GaussianGammaZetaDirichletUniformBound.lean), [GaussianGammaZetaDirichletProductParameterRate](Lean/IPRADerivations/Analysis/GaussianGammaZetaDirichletProductParameterRate.lean)
+
+The signed native numerator, denominator, and certified wider radius give a common rational chart. The three actual rational providers share one input demand for Gamma, the cofinal Dirichlet series, and their original normalized product.
+[GaussianGammaZetaNamedChart](Lean/IPRADerivations/Analysis/GaussianGammaZetaNamedChart.lean)
