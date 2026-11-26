@@ -3107,3 +3107,6 @@ The cofinal logarithmic slope has Lipschitz constant `4(R+R²)` on a certified d
 
 At a common positive cutoff, the original Barnes truncations satisfy the finite recurrence with the original Gauss reciprocal approximation and the matched exponential remainder times `1+w/K`. The cleared identity allows Gamma poles and zeros of the Barnes factors.
 [GaussianBarnesCanonicalGaussNormalizers](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalGaussNormalizers.lean), [GaussianBarnesCanonicalNormalizedMultiplier](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNormalizedMultiplier.lean), [GaussianBarnesCanonicalFiniteGaussIdentity](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalFiniteGaussIdentity.lean)
+
+Comparing the actual padded synthetic quotients and finite harmonic correction gives a disk Lipschitz bound for the original kept head derivative at arbitrary Gaussian rational presentations. The same program has an explicit uniform bound on every sample.
+[GaussianRationalSyntheticSlopeLipschitz](Lean/IPRADerivations/Analysis/GaussianRationalSyntheticSlopeLipschitz.lean), [GaussianBarnesCanonicalHeadCorrectionContinuity](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadCorrectionContinuity.lean), [GaussianBarnesCanonicalHeadDerivativeContinuity](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadDerivativeContinuity.lean)
