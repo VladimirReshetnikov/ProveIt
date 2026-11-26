@@ -3299,3 +3299,6 @@ A finite maximum of the retained coefficient clocks selects a single actual poly
 
 At every encoded integer m at least one, the original integer superfactorial sequence dominates the m-squared power of twice m at index four times m. A second closed bound uses base m and index four times m plus one. This establishes the arithmetic lower witness for the order and type argument.
 [BarnesIntegerGrowth](Lean/IPRADerivations/Analysis/Barnes/BarnesIntegerGrowth.lean)
+
+The original Barnes sampler at every encoded nonnegative integer n equals the constant superfactorial value G(n+1) at independent observation clocks. A quantifier-free induction controls the finite approximation error of the original recurrence and exact factorial factors.
+[GaussianBarnesCanonicalIntegerRecurrence](Lean/IPRADerivations/Analysis/Barnes/FunctionalEquations/GaussianBarnesCanonicalIntegerRecurrence.lean), [GaussianBarnesCanonicalIntegerValues](Lean/IPRADerivations/Analysis/Barnes/FunctionalEquations/GaussianBarnesCanonicalIntegerValues.lean)
