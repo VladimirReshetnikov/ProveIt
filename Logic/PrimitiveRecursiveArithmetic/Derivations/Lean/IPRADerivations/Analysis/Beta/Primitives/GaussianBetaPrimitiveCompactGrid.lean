@@ -74,7 +74,7 @@ theorem grid_domain (i a C E T M : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hE : Γ
   have low : Γ ⊢[PRAAx] le M (a*M+C*i) :=
     le_trans (le_congr (one_mul M) (.eqRefl _) (mul_le_mul_right M ha)) (le_add_right (a*M) (C*i))
   have lower : Γ ⊢[PRAAx] le (E*M) (E*(a*M+C*i)) :=
-    le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right E low)
+    mul_le_mul_left E low
   have row : Γ ⊢[PRAAx] le (a*M+C*i) ((a+C)*M) :=
     le_congr (.eqRefl _) (by ipra_ring) (add_le_add₂ (le_refl (a*M)) (AnalyticNumberTheory.PhiLower.le_mul_mono (le_refl C) hi))
   have upper : Γ ⊢[PRAAx] le ((a+C)*M) (T*(E*M)) :=

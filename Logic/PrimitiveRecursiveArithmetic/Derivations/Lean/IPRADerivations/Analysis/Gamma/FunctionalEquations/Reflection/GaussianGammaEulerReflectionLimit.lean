@@ -98,7 +98,7 @@ theorem cofinal_Q_bound (z R B p q : PTm n) (h : Γ ⊢[PRAAx] GaussianGammaCano
   have u := unit_positive (Γ := Γ) p
   have source := GaussianGammaC9Bound.reciprocal_sample_bound p z R B h
   have compare : Γ ⊢[PRAAx] le (num 3*one) (num 3*unit p) :=
-    le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right (num 3) u)
+    mul_le_mul_left (num 3) u
   have close := distance_radius_mono _ _ _ _ (num 3) one u (le_refl one)
     compare (cofinal_Q_error z R B p q h hq)
   have nb := GaussianReconstructionRoots.norm_from_distance _ _ (num 3) one (mu R) one

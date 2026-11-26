@@ -129,7 +129,7 @@ theorem rounded_digit_bound (q t : PTm k) (h : Γ ⊢[PRAAx] interval q) : Γ �
   have div := divide_spec (Γ := Γ) D (scale t*P) (RationalArgmin.denominator_positive q)
   have first : Γ ⊢[PRAAx] le (D*roundedDigit q t) (scale t*P) := le_of_eq_add (.andE₁ div)
   have next : Γ ⊢[PRAAx] le (scale t*P) (scale t*D) :=
-    le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right (scale t) (positive_part_bound q h))
+    mul_le_mul_left (scale t) (positive_part_bound q h)
   have bound := le_trans first next
   exact RationalValueBounds.positive_cancel (RationalArgmin.denominator_positive q) (le_congr (.eqRefl _) (mul_comm _ _) bound)
 

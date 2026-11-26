@@ -36,7 +36,7 @@ private theorem supported_grid_read (i p M a C E z B N : PTm n)
   let v := E*M
   let x := sampleDataBeta z B N
   have grow := add_le_add₂ (le_refl (Γ := Γ) (a*M))
-    (le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right C (le_of_lt hi)))
+    (mul_le_mul_left C (le_of_lt hi))
   have reach : Γ ⊢[PRAAx] le (a*M+C*M) (v*N) :=
     le_congr (by ipra_ring) (by dsimp only [v]; ipra_ring) (mul_le_mul_right M hend)
   have support : Γ ⊢[PRAAx] le u (v*N) := le_trans grow reach

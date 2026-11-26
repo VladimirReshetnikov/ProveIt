@@ -60,7 +60,7 @@ theorem exact_partition (k A R N : PTm n) (h : Γ ⊢[PRAAx] source k A R N) :
        ((halfPoint k A R N+supportTailWidth k A R N ≐ etaDen k A R*N) ⋏
         (etaDen k A R*N+exteriorWidth k A R N ≐ etaDen k A R*top k A R))) := by
   have mid := half_boundary_order k A R N h.andE₁ h.andE₂.andE₁
-  have out := le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right (etaDen k A R) h.andE₂.andE₂)
+  have out := mul_le_mul_left (etaDen k A R) h.andE₂.andE₂
   exact .andI (eq_add_of_le (eta_den_positive k A R)).eqSymm
     (.andI (eq_add_of_le mid.andE₁).eqSymm (.andI (eq_add_of_le mid.andE₂).eqSymm (eq_add_of_le out).eqSymm))
 

@@ -37,7 +37,7 @@ theorem fraction_gap (r a c : PTm n)
   have l := fraction_same r a (r*c) D ha hD (by unfold D; ipra_ring)
   have k := fraction_same r c (r*a) D hc hD (by unfold D; ipra_ring)
   have ordered : Γ ⊢[PRAAx] le (r*a) (r*c) :=
-    le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right r hac)
+    mul_le_mul_left r hac
   have eg : Γ ⊢[PRAAx] monus (r*c) (r*a) ≐ r*monus c a := by
     have e := natEq (eq_add_of_le hac)
     have f := natEq (eq_add_of_le ordered)

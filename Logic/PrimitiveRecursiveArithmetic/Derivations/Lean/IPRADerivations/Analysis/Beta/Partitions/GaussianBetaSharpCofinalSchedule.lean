@@ -192,7 +192,7 @@ theorem middle_time_budget (p t H z R B A N : PTm n)
   have endpoint := (GaussianBetaSharpPartition.exact_partition k A R N part).andE₂.andE₁
   have halfBound := (GaussianBetaSharpPartition.half_boundary_order k A R N part.andE₁ part.andE₂.andE₁).andE₂
   have right : Γ ⊢[PRAAx] le (E*N) (E*top k A R) :=
-    le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right E part.andE₂.andE₂)
+    mul_le_mul_left E part.andE₂.andE₂
   have width : Γ ⊢[PRAAx] le C (E*top k A R) := le_trans (le_add_left C E)
     (le_trans (le_congr endpoint.eqSymm (.eqRefl _) halfBound) right)
   have clock := finite_binding_time_budget p t H z R B A N hp

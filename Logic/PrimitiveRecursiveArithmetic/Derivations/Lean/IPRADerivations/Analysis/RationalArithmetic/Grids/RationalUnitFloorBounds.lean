@@ -130,8 +130,8 @@ theorem block_native_source (q r G M j : PTm n) (hq : Γ ⊢[PRAAx] source q G)
   have r := native_source r G M hr hM
   exact .andI (.andI (le_trans l.andE₁.andE₁ hLeft) (lt_of_le_of_lt hRight r.andE₁.andE₂))
     (.andI l.andE₂.andE₁ (.andI
-      (le_trans l.andE₂.andE₂.andE₁ (le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right (two*G) hLeft)))
-      (le_trans (add_le_add₂ (le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right (two*G) hRight)) (le_refl M)) r.andE₂.andE₂.andE₂)))
+      (le_trans l.andE₂.andE₂.andE₁ (mul_le_mul_left (two*G) hLeft))
+      (le_trans (add_le_add₂ (mul_le_mul_left (two*G) hRight) (le_refl M)) r.andE₂.andE₂.andE₂)))
 
 theorem actual_rational_floor_native_unit_compact_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3
     ((source (var 0) (var 1) ⋏ le (two*var 1) (var 2)) ⟶

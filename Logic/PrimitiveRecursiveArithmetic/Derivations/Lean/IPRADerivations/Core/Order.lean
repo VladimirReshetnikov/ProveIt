@@ -181,6 +181,10 @@ theorem mul_le_mul_right {a b : PTm n} (c : PTm n) (h : Γ ⊢[PRAAx] le a b) :
     Γ ⊢[PRAAx] le (a * c) (b * c) :=
   le_of_eq_add (d := monus b a * c) ((congrMul (eq_add_of_le h) (.eqRefl c)).eqTrans (add_mul _ _ _))
 
+theorem mul_le_mul_left {a b : PTm n} (c : PTm n) (h : Γ ⊢[PRAAx] le a b) :
+    Γ ⊢[PRAAx] le (c * a) (c * b) :=
+  le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right c h)
+
 /-- Variables: `0 = c` (induction), `1 = a`, `2 = b`. -/
 private abbrev mcF : Fm PTm 3 := monus (var 1 + var 0) (var 2 + var 0) ≐ monus (var 1) (var 2)
 

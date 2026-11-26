@@ -85,7 +85,7 @@ theorem original_grid_dyadic_accuracy_at (t p z R B A a C E T M N : PTm n)
   have hM := le_trans (mesh_positive t z R B C E T N) hm
   have width : Γ ⊢[PRAAx] le ((R+one)*C) (a*M) :=
     le_trans (small_step t z R B a C E T N h.andE₂.andE₂.andE₂.andE₁)
-      (le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right a hm))
+      (mul_le_mul_left a hm)
   have guard : Γ ⊢[PRAAx] GaussianBetaPrimitiveCompactGrid.source z R B A a C E T M N :=
     .andI h.andE₁ (.andI (.andI hE (.andI hM h.andE₂.andE₂.andE₁))
       (.andI h.andE₂.andE₂.andE₂.andE₁ (.andI h.andE₂.andE₂.andE₂.andE₂.andE₁

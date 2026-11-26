@@ -52,7 +52,7 @@ private theorem weight_monotone (q A B S i j : PTm n) (hA : Γ ⊢[PRAAx] le one
   have hu : Γ ⊢[PRAAx] le one (start A S) :=
     positive_product _ _ hS (positive_product _ _ (by ipra_le 7) hA)
   have step : Γ ⊢[PRAAx] le (B*i) (B*j) :=
-    le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right B hij)
+    mul_le_mul_left B hij
   have bound : Γ ⊢[PRAAx] le (two*(B*j)) (mesh B S) := by
     unfold mesh
     exact le_congr (by ipra_ring) (by ipra_ring) (mul_le_mul_right B hj)

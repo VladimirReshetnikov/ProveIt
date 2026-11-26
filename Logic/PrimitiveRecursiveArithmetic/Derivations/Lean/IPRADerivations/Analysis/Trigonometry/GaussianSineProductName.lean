@@ -57,7 +57,7 @@ theorem factor_norm (i z R B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
   let j := succ i
   have hp : Γ ⊢[PRAAx] le one (j*j) := positive_product _ _ (zero_lt_succ _) (zero_lt_succ _)
   have compare : Γ ⊢[PRAAx] le ((R*R)*one) ((R*R)*(j*j)) :=
-    le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right (R*R) hp)
+    mul_le_mul_left (R*R) hp
   have hf := distance_radius_mono F qone (R*R) (j*j) (R*R) one hp (le_refl _)
     compare (sine_factor_bound i z R B hB hz)
   have sum := bounded_sum qone (qsub F qone) one one (R*R) one (le_refl _) (le_refl _) qone_bounded hf
@@ -167,7 +167,7 @@ theorem ordered_samples (z R B p q : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hz : Γ ⊢[PRAAx] ComplexLogarithmRemainder.bounded z (R*B)) (h : Γ ⊢[PRAAx] le p q) :
     Γ ⊢[PRAAx] distanceBounded (ap2 nameF q (data z R B)) (ap2 nameF p (data z R B)) one (unit p) := by
   have hm : Γ ⊢[PRAAx] le (cutoff R p) (cutoff R q) := add_le_add₂ (le_refl (initial R))
-    (le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right (rate R) (unit_monotone p q h)))
+    (mul_le_mul_left (rate R) (unit_monotone p q h))
   exact distance_congr (sample_at z R B q).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _)
     (cofinal_error z R B p (cutoff R q) hB hz hm)
 

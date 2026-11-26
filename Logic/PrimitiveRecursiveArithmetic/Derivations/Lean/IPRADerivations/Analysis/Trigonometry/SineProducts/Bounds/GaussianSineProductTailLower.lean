@@ -96,7 +96,7 @@ theorem inverse_deviation (z R B L i : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     distance_congr ((qmul_one_right v (reciprocal_canonical _)).eqTrans (inverse_at z B L i).eqSymm)
       e (.eqRefl _) (.eqRefl _) close
   have cmp : Γ ⊢[PRAAx] le ((two*(R*R))*(succ i*succ i)) ((two*(R*R))*(k*k)) :=
-    le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right (two*(R*R)) (le_mul_mono j j))
+    mul_le_mul_left (two*(R*R)) (le_mul_mono j j)
   exact distance_radius_mono _ _ _ _ _ _ k2 j2 cmp atK
 
 theorem inverse_bound_all (z R B L r : PTm n) (hB : Γ ⊢[PRAAx] le one B)

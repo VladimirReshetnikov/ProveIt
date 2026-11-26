@@ -86,7 +86,7 @@ theorem dividend_bound (P Q D R M : PTm n) (hD : Γ ⊢[PRAAx] le one D)
     (h : Γ ⊢[PRAAx] box P Q D R) : Γ ⊢[PRAAx]
     lt (dividend P Q D R M) ((two*D)*succ (two*R*M)) := by
   have first : Γ ⊢[PRAAx] le (dividend P Q D R M) (two*M*(two*R*D)+D) :=
-    add_le_add_right D (le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right (two*M) (shifted_bound P Q D R h)))
+    add_le_add_right D (mul_le_mul_left (two*M) (shifted_bound P Q D R h))
   have next : Γ ⊢[PRAAx] lt (two*M*(two*R*D)+D) ((two*D)*succ (two*R*M)) := by
     apply le_of_eq_add (d := monus D one)
     ipra_lc natEq (eq_add_of_le hD)

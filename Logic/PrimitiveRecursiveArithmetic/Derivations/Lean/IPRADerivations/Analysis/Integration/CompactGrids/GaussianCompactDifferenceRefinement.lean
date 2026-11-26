@@ -38,7 +38,7 @@ theorem at_refined_grid (F : PR 3) (p q N R a C E L T x : PTm n)
     (name_at F p a C E L T x).eqSymm (.eqRefl _) (.eqRefl _) refined
   have mono := GaussianCompactRiemannName.dyadic_monotone (Γ := Γ) p (p+num 6) (le_add_right _ _)
   exact distance_radius_mono _ _ _ _ _ _ (unit_positive _) (unit_positive p)
-    (le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right (num 3) mono))
+    (mul_le_mul_left (num 3) mono)
     (distance_symmetric _ _ _ _ (unit_positive _) converted)
 
 theorem difference_at_refined_grid (F G : PR 3) (p q N R S a C E L M T x y : PTm n)

@@ -60,7 +60,7 @@ theorem support_and_exterior_width (k A R N : PTm n)
   let X := exteriorWidth k A R N
   have hs := support_width_endpoint E N (eta_den_positive k A R) hN
   have hx : Γ ⊢[PRAAx] E*N+X ≐ E*top k A R := by
-    exact (eq_add_of_le (le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right E hTop))).eqSymm
+    exact (eq_add_of_le (mul_le_mul_left E hTop)).eqSymm
   apply add_left_cancel (a := one)
   exact (show Γ ⊢[PRAAx] one+(U+X) ≐ (one+U)+X by ipra_ring).eqTrans
     ((congrAdd hs (.eqRefl X)).eqTrans (hx.eqTrans (exact_right_endpoint k A R).eqSymm))
