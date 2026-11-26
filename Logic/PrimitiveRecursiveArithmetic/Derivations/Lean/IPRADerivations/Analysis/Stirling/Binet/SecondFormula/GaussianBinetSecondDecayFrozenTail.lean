@@ -37,10 +37,11 @@ def mesh (T M k : PTm n) : PTm n :=
   let C := frozenPiNumerator M k*T
   succ (C+num 3*(C*C))
 
-def clock (p T M k : PTm n) : PTm n :=
-  let N := mesh T M k
+def clockFloor (N T M k : PTm n) : PTm n :=
   let H := frozenPiNumerator M k
-  p+(num 20*N+(two*(T*N*H)+(M*M)*T*(num 8+num 10*T)))
+  num 20*N+(two*(T*N*H)+(M*M)*T*(num 8+num 10*T))
+
+def clock (p T M k : PTm n) : PTm n := p+clockFloor (mesh T M k) T M k
 
 private theorem le_unit (p : PTm n) : Γ ⊢[PRAAx] le p (unit p) :=
   le_trans (le_succ_self p) (RationalClosure.succ_le_two_pow p)
@@ -48,6 +49,36 @@ private theorem le_unit (p : PTm n) : Γ ⊢[PRAAx] le p (unit p) :=
 private theorem frozen_order (m M k : PTm n) (h : Γ ⊢[PRAAx] le m M) :
     Γ ⊢[PRAAx] le (frozenPiNumerator m k) (frozenPiNumerator M k) :=
   mul_le_mul_right _ h
+
+theorem mesh_bounds (N T M k m : PTm n) (hM : Γ ⊢[PRAAx] le m M)
+    (hn : Γ ⊢[PRAAx] le (mesh T M k) N) :
+    let H := frozenPiNumerator m k
+    Γ ⊢[PRAAx] le one N ⋏ (le (H*T) (piDenominator k*N) ⋏ le (num 3*((H*T)*(H*T))) N) := by
+  let H := frozenPiNumerator m k
+  let C := frozenPiNumerator M k*T
+  have hC : Γ ⊢[PRAAx] le (H*T) C := mul_le_mul_right T (frozen_order m M k hM)
+  have upC : Γ ⊢[PRAAx] le C N := le_trans (le_trans (le_add_right _ _) (le_succ_self _)) hn
+  have hJ := (frozen_pi_rate (Γ := Γ) m k).andE₁
+  have step := le_trans (le_trans hC upC) (le_congr (one_mul N) (.eqRefl _) (mul_le_mul_right N hJ))
+  have sharp := le_trans (mul_le_mul_left (num 3) (sq_le_sq hC))
+    (le_trans (le_trans (le_add_left (num 3*(C*C)) C) (le_succ_self _)) hn)
+  exact .andI (le_trans (zero_lt_succ _) hn) (.andI step sharp)
+
+theorem clock_bounds (q N T M k m : PTm n) (hM : Γ ⊢[PRAAx] le m M)
+    (hq : Γ ⊢[PRAAx] le (clockFloor N T M k) (unit q)) :
+    let H := frozenPiNumerator m k
+    Γ ⊢[PRAAx] le (num 20*N) (unit q) ⋏
+      (le (two*(T*N*H)) (unit q) ⋏ le ((m*m)*T*(num 8+num 10*T)) (unit q)) := by
+  let A := num 20*N
+  let B := two*(T*N*frozenPiNumerator M k)
+  let E := (M*M)*T*(num 8+num 10*T)
+  have grow : Γ ⊢[PRAAx] le (A+(B+E)) (unit q) := hq
+  have rest := le_trans (le_add_left (B+E) A) grow
+  have row := le_trans (mul_le_mul_left two (mul_le_mul_left (T*N) (frozen_order m M k hM)))
+    (le_trans (le_add_right B E) rest)
+  have slack := le_trans (mul_le_mul_right (num 8+num 10*T) (mul_le_mul_right T (sq_le_sq hM)))
+    (le_trans (le_add_left E B) rest)
+  exact .andI (le_trans (le_add_right A _) grow) (.andI row slack)
 
 theorem scheduled_row_bound (p T M k m K X Y D sign : PTm n)
     (hz : Γ ⊢[PRAAx] source X D sign) (hT : Γ ⊢[PRAAx] le one T)
@@ -57,33 +88,11 @@ theorem scheduled_row_bound (p T M k m K X Y D sign : PTm n)
       (num 11*K) (m*m) := by
   let N := mesh T M k
   let q := clock p T M k
-  let H := frozenPiNumerator m k
-  let Hmax := frozenPiNumerator M k
-  let J := piDenominator k
-  let C := Hmax*T
-  let A := num 20*N
-  let B := two*(T*N*Hmax)
-  let E := (M*M)*T*(num 8+num 10*T)
   have rate := frozen_pi_rate (Γ := Γ) m k
-  have ho := frozen_order m M k hM
-  have hN : Γ ⊢[PRAAx] le one N := zero_lt_succ _
-  have hC : Γ ⊢[PRAAx] le (H*T) C := mul_le_mul_right T ho
-  have upC : Γ ⊢[PRAAx] le C N := le_trans (le_add_right _ _) (le_succ_self _)
-  have sharp : Γ ⊢[PRAAx] le (num 3*((H*T)*(H*T))) N :=
-    le_trans (le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right (num 3) (sq_le_sq hC)))
-      (le_trans (le_add_left (num 3*(C*C)) C) (le_succ_self _))
-  have step : Γ ⊢[PRAAx] le (H*T) (J*N) :=
-    le_trans (le_trans hC upC) (le_congr (one_mul N) (.eqRefl _) (mul_le_mul_right N rate.andE₁))
-  have grow : Γ ⊢[PRAAx] le (A+(B+E)) (unit q) := le_trans (le_add_left _ p) (le_unit q)
-  have hA : Γ ⊢[PRAAx] le A (unit q) := le_trans (le_add_right A _) grow
-  have hBE : Γ ⊢[PRAAx] le (B+E) (unit q) := le_trans (le_add_left _ A) grow
-  have hB : Γ ⊢[PRAAx] le (two*(T*N*H)) (unit q) :=
-    le_trans (le_congr (by ipra_ring) (by dsimp only [B]; ipra_ring)
-      (mul_le_mul_right (two*T*N) ho)) (le_trans (le_add_right B E) hBE)
-  have hE : Γ ⊢[PRAAx] le ((m*m)*T*(num 8+num 10*T)) (unit q) :=
-    le_trans (mul_le_mul_right (num 8+num 10*T) (mul_le_mul_right T (sq_le_sq hM)))
-      (le_trans (le_add_left E B) hBE)
-  exact finite_bound q N T H J m K X Y D sign hz hN hT rate.andE₁ hm rate.andE₂ hK step sharp hA hB hE
+  have meshBound := mesh_bounds N T M k m hM (le_refl N)
+  have clockBound := clock_bounds q N T M k m hM (le_trans (le_add_left _ p) (le_unit q))
+  exact finite_bound q N T _ _ m K X Y D sign hz meshBound.andE₁ hT rate.andE₁ hm rate.andE₂ hK
+    meshBound.andE₂.andE₁ meshBound.andE₂.andE₂ clockBound.andE₁ clockBound.andE₂.andE₁ clockBound.andE₂.andE₂
 
 private theorem val_five {α : Type} {m : ℕ} (a : α) (u : Fin (m+5) → α) :
     Matrix.vecCons a u 5 = Matrix.vecHead (Matrix.vecTail (Matrix.vecTail (Matrix.vecTail (Matrix.vecTail u)))) := rfl
@@ -120,25 +129,22 @@ def data (p T k C r X Y D sign : PTm n) : PTm n :=
 
 ipra_subst mesh [frozenPiNumerator]
 
-ipra_subst clock [frozenPiNumerator, one, two]
+ipra_subst clockFloor [frozenPiNumerator, one, two]
+
+ipra_subst clock
 
 ipra_subst data
 
-theorem row_at (i p T k C r X Y D sign : PTm n) :
-    let M := succ (C+r)
-    Γ ⊢[PRAAx] inst2 body i (data p T k C r X Y D sign) ≐
-      value (clock p T M k) (mesh T M k) T (frozenPiNumerator (succ (C+i)) k) (piDenominator k) X Y D sign := by
-  let M := succ (C+r)
-  let P := clock p T M k
-  let N := mesh T M k
-  let x := pairT (D*D) (GaussianBinetArctangentQuadrature.fixedData X Y D sign)
-  let d := sampleData P N T k C x
-  change Γ ⊢[PRAAx] inst2 body i d ≐ term i P N T k C x
+theorem row_at_sample_data (i q N T k C x : PTm n) :
+    Γ ⊢[PRAAx] inst2 body i (sampleData q N T k C x) ≐
+      leftSum rowBody N (sampleData q N T (frozenPiNumerator (succ (C+i)) k) (piDenominator k) x) T one := by
+  let d := sampleData q N T k C x
+  change Γ ⊢[PRAAx] inst2 body i d ≐ term i q N T k C x
   simpa only [body,inst2,subst_term,subst_field0,subst_field1,subst_field2,subst_field3,subst_field4,
     subst_field5,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,
     Matrix.cons_val_four,val_five,val_six,Matrix.head_cons,Matrix.tail_cons] using
     Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (term (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) : PTm 7)
-      (σ := ![i,field0 d,field1 d,field2 d,field3 d,field4 d,field5 d]) (σ' := ![i,P,N,T,k,C,x])
+      (σ := ![i,field0 d,field1 d,field2 d,field3 d,field4 d,field5 d]) (σ' := ![i,q,N,T,k,C,x])
       (fun j => by
         fin_cases j
         exact .eqRefl _
@@ -148,6 +154,12 @@ theorem row_at (i p T k C r X Y D sign : PTm n) :
         exact field3_at _ _ _ _ _ _
         exact field4_at _ _ _ _ _ _
         exact field5_at _ _ _ _ _ _)
+
+theorem row_at (i p T k C r X Y D sign : PTm n) :
+    let M := succ (C+r)
+    Γ ⊢[PRAAx] inst2 body i (data p T k C r X Y D sign) ≐
+      value (clock p T M k) (mesh T M k) T (frozenPiNumerator (succ (C+i)) k) (piDenominator k) X Y D sign :=
+  row_at_sample_data i _ _ T k C _
 
 theorem frozen_tail_bound (p T k C r K X Y D sign : PTm n)
     (hz : Γ ⊢[PRAAx] source X D sign) (hT : Γ ⊢[PRAAx] le one T)
@@ -167,8 +179,7 @@ theorem frozen_tail_bound (p T k C r K X Y D sign : PTm n)
     have hi : Δ ⊢[PRAAx] le i (s r) := le_of_lt Prf.hyp0
     have order : Δ ⊢[PRAAx] le m M :=
       le_congr (succ_eq_add_one _).eqSymm (succ_eq_add_one _).eqSymm
-        (add_le_add_right one (le_congr (add_comm i (s C)) (add_comm (s r) (s C))
-          (add_le_add_right (s C) hi)))
+        (add_le_add_right one (add_le_add_left (s C) hi))
     have estimate := scheduled_row_bound (s p) (s T) M (s k) m (s K) (s X) (s Y) (s D) (s sign)
       sz st (zero_lt_succ _) order sk
     have read := row_at (Γ := Δ) i (s p) (s T) (s k) (s C) (s r) (s X) (s Y) (s D) (s sign)

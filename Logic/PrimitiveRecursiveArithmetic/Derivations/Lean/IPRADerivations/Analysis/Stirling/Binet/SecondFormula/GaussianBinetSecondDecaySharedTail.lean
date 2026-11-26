@@ -15,30 +15,28 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetSecondDecaySharedTail
 
-open GaussianBinetSecondDecayFrozenTail (mesh body)
+open GaussianBinetSecondDecayFrozenTail (mesh body mesh_bounds clock_bounds row_at_sample_data)
 open_ipra
 open GaussianBinetSecondDecayFinite (finite_bound)
-open GaussianBinetSecondDecayGrid (value rowBody)
+open GaussianBinetSecondDecayGrid (value)
 open GaussianBinetSecondDecayPointwise (frozenPiNumerator frozen_pi_rate)
 open GaussianBinetSecondDecayTail (rowBounds finite_tail)
 open GaussianCoefficientNameBounds (unit)
-open GaussianCompactRiemannName (sampleData field0 field1 field2 field3 field4 field5
-  field0_at field1_at field2_at field3_at field4_at field5_at
-  subst_field0 subst_field1 subst_field2 subst_field3 subst_field4 subst_field5)
+open GaussianCompactRiemannName (sampleData)
 open GaussianStirlingConstant (piDenominator)
-open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr)
-open GaussianRationalRiemannRefinement (leftSum)
 open GaussianRightHalfPlaneLogarithm (source)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
-def clockFloor (N T M k : PTm n) : PTm n :=
-  let H := frozenPiNumerator M k
-  num 20*N+(two*(T*N*H)+(M*M)*T*(num 8+num 10*T))
+abbrev clockFloor (N T M k : PTm n) : PTm n :=
+  GaussianBinetSecondDecayFrozenTail.clockFloor N T M k
 
-ipra_subst clockFloor [frozenPiNumerator, one, two]
+@[simp] theorem subst_clockFloor {m : ℕ} (σ : Fin n → PTm m) (N T M k : PTm n) :
+    Syn.subst σ (clockFloor N T M k) =
+      clockFloor (Syn.subst σ N) (Syn.subst σ T) (Syn.subst σ M) (Syn.subst σ k) :=
+  GaussianBinetSecondDecayFrozenTail.subst_clockFloor σ N T M k
 
 theorem shared_row_bound (q N T M k m K X Y D sign : PTm n)
     (hz : Γ ⊢[PRAAx] source X D sign) (hT : Γ ⊢[PRAAx] le one T)
@@ -46,58 +44,11 @@ theorem shared_row_bound (q N T M k m K X Y D sign : PTm n)
     (hn : Γ ⊢[PRAAx] le (mesh T M k) N) (hq : Γ ⊢[PRAAx] le (clockFloor N T M k) (unit q)) :
     Γ ⊢[PRAAx] bounded (value q N T (frozenPiNumerator m k) (piDenominator k) X Y D sign)
       (num 11*K) (m*m) := by
-  let H := frozenPiNumerator m k
-  let Hmax := frozenPiNumerator M k
-  let J := piDenominator k
-  let C := Hmax*T
-  let A := num 20*N
-  let B := two*(T*N*Hmax)
-  let E := (M*M)*T*(num 8+num 10*T)
   have rate := frozen_pi_rate (Γ := Γ) m k
-  have ho : Γ ⊢[PRAAx] le H Hmax := mul_le_mul_right _ hM
-  have hN : Γ ⊢[PRAAx] le one N := le_trans (zero_lt_succ _) hn
-  have hC : Γ ⊢[PRAAx] le (H*T) C := mul_le_mul_right T ho
-  have upC : Γ ⊢[PRAAx] le C N := le_trans (le_trans (le_add_right _ _) (le_succ_self _)) hn
-  have sharp : Γ ⊢[PRAAx] le (num 3*((H*T)*(H*T))) N :=
-    le_trans (le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right (num 3) (sq_le_sq hC)))
-      (le_trans (le_trans (le_add_left (num 3*(C*C)) C) (le_succ_self _)) hn)
-  have step : Γ ⊢[PRAAx] le (H*T) (J*N) :=
-    le_trans (le_trans hC upC) (le_congr (one_mul N) (.eqRefl _) (mul_le_mul_right N rate.andE₁))
-  have grow : Γ ⊢[PRAAx] le (A+(B+E)) (unit q) := hq
-  have hA : Γ ⊢[PRAAx] le A (unit q) := le_trans (le_add_right A _) grow
-  have hBE : Γ ⊢[PRAAx] le (B+E) (unit q) := le_trans (le_add_left _ A) grow
-  have hB : Γ ⊢[PRAAx] le (two*(T*N*H)) (unit q) :=
-    le_trans (le_congr (by ipra_ring) (by dsimp only [B]; ipra_ring)
-      (mul_le_mul_right (two*T*N) ho)) (le_trans (le_add_right B E) hBE)
-  have hE : Γ ⊢[PRAAx] le ((m*m)*T*(num 8+num 10*T)) (unit q) :=
-    le_trans (mul_le_mul_right (num 8+num 10*T) (mul_le_mul_right T (sq_le_sq hM)))
-      (le_trans (le_add_left E B) hBE)
-  exact finite_bound q N T H J m K X Y D sign hz hN hT rate.andE₁ hm rate.andE₂ hK step sharp hA hB hE
-
-private theorem val_five {α : Type} {m : ℕ} (a : α) (u : Fin (m+5) → α) :
-    Matrix.vecCons a u 5 = Matrix.vecHead (Matrix.vecTail (Matrix.vecTail (Matrix.vecTail (Matrix.vecTail u)))) := rfl
-private theorem val_six {α : Type} {m : ℕ} (a : α) (u : Fin (m+6) → α) :
-    Matrix.vecCons a u 6 = Matrix.vecHead (Matrix.vecTail (Matrix.vecTail (Matrix.vecTail (Matrix.vecTail (Matrix.vecTail u))))) := rfl
-
-@[simp] private theorem subst_piNumerator {m : ℕ} (σ : Fin n → PTm m) (k : PTm n) :
-    Syn.subst σ (GaussianStirlingConstant.piNumerator k) = GaussianStirlingConstant.piNumerator (Syn.subst σ k) := by
-  simp [GaussianStirlingConstant.piNumerator,BaselQuadrature.Q,GaussianGammaHalfPiName.clearing,
-    GaussianGammaHalfPiName.meshAt,GaussianGammaHalfPiName.meshIndex,GaussianGammaHalfPiName.orderAt,
-    GaussianGammaHalfPiName.orderIndex,WallisFinite.Dm,one,two]
-
-@[simp] private theorem subst_piDenominator {m : ℕ} (σ : Fin n → PTm m) (k : PTm n) :
-    Syn.subst σ (piDenominator k) = piDenominator (Syn.subst σ k) := by
-  simp [piDenominator,Products.fact,GaussianGammaHalfPiName.clearing,GaussianGammaHalfPiName.meshAt,
-    GaussianGammaHalfPiName.meshIndex,GaussianGammaHalfPiName.orderAt,GaussianGammaHalfPiName.orderIndex,
-    WallisFinite.Dm,one,two]
-
-private def term (i p N T k C x : PTm n) : PTm n :=
-  leftSum rowBody N (sampleData p N T (frozenPiNumerator (succ (C+i)) k) (piDenominator k) x) T one
-
-@[simp] private theorem subst_term {m : ℕ} (σ : Fin n → PTm m) (i p N T k C x : PTm n) :
-    Syn.subst σ (term i p N T k C x) = term (Syn.subst σ i) (Syn.subst σ p) (Syn.subst σ N)
-      (Syn.subst σ T) (Syn.subst σ k) (Syn.subst σ C) (Syn.subst σ x) := by
-  simp [term,frozenPiNumerator,one]
+  have meshBound := mesh_bounds N T M k m hM hn
+  have clockBound := clock_bounds q N T M k m hM hq
+  exact finite_bound q N T _ _ m K X Y D sign hz meshBound.andE₁ hT rate.andE₁ hm rate.andE₂ hK
+    meshBound.andE₂.andE₁ meshBound.andE₂.andE₂ clockBound.andE₁ clockBound.andE₂.andE₁ clockBound.andE₂.andE₂
 
 def data (q N T k C X Y D sign : PTm n) : PTm n :=
   sampleData q N T k C (pairT (D*D) (GaussianBinetArctangentQuadrature.fixedData X Y D sign))
@@ -107,24 +58,7 @@ ipra_subst data
 theorem row_at (i q N T k C X Y D sign : PTm n) :
     Γ ⊢[PRAAx] inst2 body i (data q N T k C X Y D sign) ≐
       value q N T (frozenPiNumerator (succ (C+i)) k) (piDenominator k) X Y D sign := by
-  let x := pairT (D*D) (GaussianBinetArctangentQuadrature.fixedData X Y D sign)
-  let d := sampleData q N T k C x
-  change Γ ⊢[PRAAx] inst2 (term (var 0) (field0 (var 1)) (field1 (var 1)) (field2 (var 1))
-    (field3 (var 1)) (field4 (var 1)) (field5 (var 1)) : PTm 2) i d ≐ term i q N T k C x
-  simpa only [inst2,subst_term,subst_field0,subst_field1,subst_field2,subst_field3,subst_field4,
-    subst_field5,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,
-    Matrix.cons_val_four,val_five,val_six,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (term (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) : PTm 7)
-      (σ := ![i,field0 d,field1 d,field2 d,field3 d,field4 d,field5 d]) (σ' := ![i,q,N,T,k,C,x])
-      (fun j => by
-        fin_cases j
-        exact .eqRefl _
-        exact field0_at _ _ _ _ _ _
-        exact field1_at _ _ _ _ _ _
-        exact field2_at _ _ _ _ _ _
-        exact field3_at _ _ _ _ _ _
-        exact field4_at _ _ _ _ _ _
-        exact field5_at _ _ _ _ _ _)
+  exact row_at_sample_data i q N T k C _
 
 theorem tail_bound (q N T k C r K X Y D sign : PTm n)
     (hz : Γ ⊢[PRAAx] source X D sign) (hT : Γ ⊢[PRAAx] le one T)
@@ -152,8 +86,7 @@ theorem tail_bound (q N T k C r K X Y D sign : PTm n)
     have hi : Δ ⊢[PRAAx] le i (s r) := le_of_lt Prf.hyp0
     have order : Δ ⊢[PRAAx] le m M :=
       le_congr (succ_eq_add_one _).eqSymm (succ_eq_add_one _).eqSymm
-        (add_le_add_right one (le_congr (add_comm i (s C)) (add_comm (s r) (s C))
-          (add_le_add_right (s C) hi)))
+        (add_le_add_right one (add_le_add_left (s C) hi))
     have estimate := shared_row_bound (s q) (s N) (s T) M (s k) m (s K) (s X) (s Y) (s D) (s sign)
       sz st (zero_lt_succ _) order sk sn sq
     have read := row_at (Γ := Δ) i (s q) (s N) (s T) (s k) (s C) (s X) (s Y) (s D) (s sign)

@@ -18,7 +18,7 @@ namespace LeanProofs.IPRA.Analysis.GaussianBinetSecondDecaySuffixBound
 open_ipra
 open GaussianBinetSecondDecayFinite (terms_majorized dominated_bound)
 open GaussianBinetSecondDecayGrid (rowData rowBody envelopeData envelopeBody)
-open GaussianBinetSecondDecayFrozenTail (mesh)
+open GaussianBinetSecondDecayFrozenTail (mesh mesh_bounds clock_bounds)
 open GaussianBinetSecondDecaySharedTail (clockFloor)
 open GaussianBinetSecondDecayPointwise (frozenPiNumerator frozen_pi_rate)
 open GaussianCoefficientNameBounds (unit)
@@ -80,32 +80,12 @@ theorem frozen_window_bound (q N S L T M k m K X Y D sign : PTm n)
     (hs : Γ ⊢[PRAAx] N ≐ S+L) (hn : Γ ⊢[PRAAx] le (mesh T M k) N)
     (hq : Γ ⊢[PRAAx] le (clockFloor N T M k) (unit q)) : Γ ⊢[PRAAx]
     bounded (value q N S L T (frozenPiNumerator m k) (piDenominator k) X Y D sign) (num 11*K) (m*m) := by
-  let H := frozenPiNumerator m k
-  let Hmax := frozenPiNumerator M k
-  let J := piDenominator k
-  let C := Hmax*T
-  let A := num 20*N
-  let B := two*(T*N*Hmax)
-  let F := (M*M)*T*(num 8+num 10*T)
   have rate := frozen_pi_rate (Γ := Γ) m k
-  have ho : Γ ⊢[PRAAx] le H Hmax := mul_le_mul_right _ hM
-  have hN : Γ ⊢[PRAAx] le one N := le_trans (zero_lt_succ _) hn
-  have hC : Γ ⊢[PRAAx] le (H*T) C := mul_le_mul_right T ho
-  have cap : Γ ⊢[PRAAx] le C N := le_trans (le_trans (le_add_right _ _) (le_succ_self _)) hn
-  have sharp : Γ ⊢[PRAAx] le (num 3*((H*T)*(H*T))) N :=
-    le_trans (le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right (num 3) (sq_le_sq hC)))
-      (le_trans (le_trans (le_add_left (num 3*(C*C)) C) (le_succ_self _)) hn)
-  have step : Γ ⊢[PRAAx] le (H*T) (J*N) :=
-    le_trans (le_trans hC cap) (le_congr (one_mul N) (.eqRefl _) (mul_le_mul_right N rate.andE₁))
-  have grow : Γ ⊢[PRAAx] le (A+(B+F)) (unit q) := hq
-  have first : Γ ⊢[PRAAx] le A (unit q) := le_trans (le_add_right A _) grow
-  have rest : Γ ⊢[PRAAx] le (B+F) (unit q) := le_trans (le_add_left _ A) grow
-  have mid : Γ ⊢[PRAAx] le (two*(T*N*H)) (unit q) :=
-    le_trans (le_congr (by ipra_ring) (by dsimp only [B]; ipra_ring)
-      (mul_le_mul_right (two*T*N) ho)) (le_trans (le_add_right B F) rest)
-  have last : Γ ⊢[PRAAx] le ((m*m)*T*(num 8+num 10*T)) (unit q) :=
-    le_trans (mul_le_mul_right (num 8+num 10*T) (mul_le_mul_right T (sq_le_sq hM)))
-      (le_trans (le_add_left F B) rest)
-  exact window_bound q N S L T H J m K X Y D sign hz hN hT rate.andE₁ hm rate.andE₂ hK hs step sharp first mid last
+  have meshBound := mesh_bounds N T M k m hM hn
+  have clockBound := clock_bounds q N T M k m hM hq
+  exact window_bound q N S L T _ _ m K X Y D sign hz meshBound.andE₁ hT rate.andE₁ hm rate.andE₂ hK hs
+    meshBound.andE₂.andE₁ meshBound.andE₂.andE₂ clockBound.andE₁ clockBound.andE₂.andE₁ clockBound.andE₂.andE₂
+
+
 
 end LeanProofs.IPRA.Analysis.GaussianBinetSecondDecaySuffixBound
