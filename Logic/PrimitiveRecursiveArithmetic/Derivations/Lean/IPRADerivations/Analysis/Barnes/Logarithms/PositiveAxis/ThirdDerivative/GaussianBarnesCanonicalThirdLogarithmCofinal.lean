@@ -20,7 +20,7 @@ open GaussianBarnesCanonicalThirdLogarithmSeries (decayNumerator value)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianPositiveRealArithmetic (positive positive_congr)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
+open GaussianRationalDistanceOrder (distance_congr distance_from_later_observations distance_radius_mono)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded bounded)
 open GaussianRationalReciprocal (bound_congr)
@@ -74,28 +74,15 @@ theorem late_prefix_error (p A B r : PTm n) (h : Γ ⊢[PRAAx] source A B)
 theorem observations (p q A B : PTm n) (h : Γ ⊢[PRAAx] source A B) :
     Γ ⊢[PRAAx] distanceBounded (ap2 nameF p (data A B)) (ap2 nameF q (data A B))
       (unit p+unit q) (unit p*unit q) := by
-  let U := unit p
-  let V := unit q
-  have hu : Γ ⊢[PRAAx] le one U := unit_positive p
-  have hv : Γ ⊢[PRAAx] le one V := unit_positive q
-  have hD := positive_product U V hu hv
-  refine (le_total p q).orE ?_ ?_
-  · let Δ := le p q :: Γ
-    have pq : Δ ⊢[PRAAx] le p q := Prf.hyp0
-    have fit : Δ ⊢[PRAAx] le (cutoff p) (cutoff q) :=
-      mul_le_mul (le_refl gain) (GaussianExponentialReference.unit_monotone pq)
-    have raw := late_prefix_error p A B (cutoff q) h.wk fit
-    have d := distance_congr (sample_at (Γ := Δ) q A B).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _) raw
-    have budget : Δ ⊢[PRAAx] le (one*(U*V)) ((U+V)*U) := le_of_eq_add (d := U*U) (by ipra_ring)
-    exact distance_radius_mono _ _ _ _ _ _ hu.wk hD.wk budget (distance_symmetric _ _ _ _ hu.wk d)
-  · let Δ := le q p :: Γ
-    have qp : Δ ⊢[PRAAx] le q p := Prf.hyp0
-    have fit : Δ ⊢[PRAAx] le (cutoff q) (cutoff p) :=
-      mul_le_mul (le_refl gain) (GaussianExponentialReference.unit_monotone qp)
-    have raw := late_prefix_error q A B (cutoff p) h.wk fit
-    have d := distance_congr (sample_at (Γ := Δ) p A B).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _) raw
-    have budget : Δ ⊢[PRAAx] le (one*(U*V)) ((U+V)*V) := le_of_eq_add (d := V*V) (by ipra_ring)
-    exact distance_radius_mono _ _ _ _ _ _ hv.wk hD.wk budget d
+  apply distance_from_later_observations _ _ p q
+  · have fit : le p q :: Γ ⊢[PRAAx] le (cutoff p) (cutoff q) :=
+      mul_le_mul (le_refl gain) (GaussianExponentialReference.unit_monotone Prf.hyp0)
+    exact distance_congr (sample_at q A B).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _)
+      (late_prefix_error p A B (cutoff q) h.wk fit)
+  · have fit : le q p :: Γ ⊢[PRAAx] le (cutoff q) (cutoff p) :=
+      mul_le_mul (le_refl gain) (GaussianExponentialReference.unit_monotone Prf.hyp0)
+    exact distance_congr (sample_at p A B).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _)
+      (late_prefix_error q A B (cutoff p) h.wk fit)
 
 theorem regular (A B : PTm n) (h : Γ ⊢[PRAAx] source A B) : Γ ⊢[PRAAx] pointCN nameF (data A B) := by
   refine .allI (.allI ?_)
