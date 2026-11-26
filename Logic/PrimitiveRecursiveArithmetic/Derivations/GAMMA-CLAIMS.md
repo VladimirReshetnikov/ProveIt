@@ -3047,3 +3047,6 @@ For nonzero rational Gaussian steps the actual divided differences approach the 
 
 The exact product split applies to the original quotient by a literal rational Gaussian step. Independent quotient and continuity rates for the two factors give the product derivative rate with a common denominator, including at zeros of either factor.
 [GaussianNamedNativeProductDerivativeRate](Lean/IPRADerivations/Analysis/GaussianNamedNativeProductDerivativeRate.lean)
+
+The actual terminal logarithm, harmonic difference and Stirling remainder give a uniform bound `(R²+M+1)/K+(17M+18)2⁻ᵖ` at cutoff K under the certified disk and coefficient bounds.
+[GaussianBarnesCanonicalTerminalRemainder](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalTerminalRemainder.lean), [GaussianBarnesCanonicalHarmonicRemainder](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHarmonicRemainder.lean), [GaussianBarnesCanonicalCombinedRemainder](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalCombinedRemainder.lean)
